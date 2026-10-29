@@ -1,0 +1,4 @@
+provider,model,input_per_mtok,output_per_mtok,currency,source_url,checked_on
+anthropic,claude-haiku-5-5,,,USD,,
+anthropic,claude-sonnet-5-5,,,USD,,
+anthropic,claude-opus-5-5,,,USD,,

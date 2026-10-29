@@ -1,0 +1,11 @@
+tier,provider,model,role
+cheap,anthropic,claude-haiku-5-5,default
+cheap,google,gemini-3.1-lite,candidate
+cheap,deepseek,deepseek-chat,candidate
+cheap,openai,gpt-5-mini,candidate
+mid,anthropic,claude-sonnet-5-5,default
+mid,google,gemini-3.1-pro,candidate
+mid,openai,gpt-5,candidate
+strong,anthropic,claude-opus-5-5,default
+strong,google,gemini-3.1-ultra,candidate
+strong,openai,gpt-5-pro,candidate

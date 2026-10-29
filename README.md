@@ -49,6 +49,7 @@ Hub code stays in its own project. This repository holds the seats, the registry
 | `ai_hub_of_hubs/registry/` | the registry: areas and their hubs, researched candidates, each consumer's hub connections and hand-wired services |
 | `ai_hub_of_hubs/` | the scorer: `Binding`, `evaluate`, the static vendor-branch scan, the case generator, the page renderer |
 | `ai_hub_of_hubs/examples/` | a lane config with one aggregator connection and no per-app entry |
+| `ai_hub_of_hubs/tiers.py` | per-tier model selection by passing work per cost, credits counted as cost ([how](docs/tier-selection.md)) |
 | `docs/` | [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |
 | `scripts/status.py` | rewrites the table below from the registry |
 

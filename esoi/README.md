@@ -30,7 +30,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `hold-the-intents` | hold-the-intents: the Higher mind seat |  | hold-the-intents metric (draft) |
 | `take-in-the-world` | take-in-the-world: the World seat |  | take-in-the-world metric (draft) |
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat |  | remember-and-recall metric (draft) |
-| `reason-and-answer` | reason-and-answer: the Mind seat |  | reason-and-answer metric (draft) |
+| `reason-and-answer` | reason-and-answer: the Mind seat |  | reason-and-answer metric (draft);tier-passing-work-per-cost (draft) |
 | `know-the-world` | know-the-world: the Science seat |  | know-the-world metric (draft) |
 | `think-critically` | think-critically: the Critical thinking seat |  | think-critically metric (draft) |
 | `act-in-the-world` | act-in-the-world: the Body seat |  | act-in-the-world metric (draft) |
@@ -46,6 +46,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 |---|---|---|---|
 | `stay-current:registry_scan` | Registry freshness reading | ai_hub_of_hubs/registry.py |  |
 | `connect-any-integration:hub_of_hubs_scorer` | Hub-of-hubs scorer | ai_hub_of_hubs/measure.py |  |
+| `reason-and-answer:tier_selector` | Tier selector | ai_hub_of_hubs/tiers.py |  |
 
 ## Metrics
 
@@ -63,3 +64,4 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-integration-added-with-zero-code`, integration-added-with-zero-code (draft): `none`
 - `metric-integration-availability-lag`, integration-availability-lag (draft): `none`
 - `metric-integration-credential-isolation`, integration-credential-isolation (draft): `none`
+- `metric-tier-passing-work-per-cost`, tier-passing-work-per-cost (draft): `python3 -m pytest tests/test_tiers.py`
