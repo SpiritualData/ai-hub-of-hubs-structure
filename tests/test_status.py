@@ -5,15 +5,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import status  # noqa: E402
 
 
-def test_build_lists_every_seat_and_marks_empty_ones():
+def test_table_lists_every_area():
+    from ai_hub_of_hubs import registry
     block = status.build()
-    for row in status.read("solutions"):
-        assert f"| {row['solution_id']} |" in block
-    assert "no arm yet" in block
+    for row in registry.read("hubs.csv"):
+        assert f"| {row['area']} |" in block
 
 
 def test_rewrite_is_idempotent_and_never_grows():
-    text = f"top\n{status.START}\nstale one\nstale two\n{status.END}\nbottom\n"
+    text = f"top\n{status.render_docs.STATUS_BEGIN}\nstale one\nstale two\n{status.render_docs.STATUS_END}\nbottom\n"
     once = status.rewrite(text, status.build())
     twice = status.rewrite(once, status.build())
     assert once == twice
@@ -21,6 +21,7 @@ def test_rewrite_is_idempotent_and_never_grows():
     assert "stale" not in once
 
 
-def test_readme_status_is_current():
+def test_readme_table_is_current():
     readme = (status.ROOT / "README.md").read_text()
     assert status.rewrite(readme, status.build()) == readme
+    assert len(readme.splitlines()) <= 120

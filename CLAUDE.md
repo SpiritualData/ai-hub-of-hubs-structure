@@ -14,13 +14,16 @@ what differs from general practice; the `README.md` explains the idea.
   "unconfirmed: for Joshua to confirm". Do not invent implementations; a seat with none stays "no arm yet".
 - **Selection by metric only.** Set `selected` from the seat's metric result, never from preference.
 - **Generic and thin.** No consumer-specific prompts or settings here; those stay in the consumer (QAR for Quest).
-- **README status block** is generated: run `python3 scripts/status.py`, never edit between its markers by hand.
+- **README seats table** is generated from the registry: run `python3 scripts/status.py`, never edit between its markers by hand.
+- **The registry** is `ai_hub_of_hubs/registry/*.csv`. A capability is a hub connection (a class, counted once), never one service;
+  a single service a consumer hand-wires goes in `hub_integrations.csv`. Facts need a dated source; see `docs/refresh.md`.
+- **Consumers** hand this package a `Binding`; the package never imports a consumer. Keep it dependency-free.
 
 ## Checks
 
 ```bash
 PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi check
-python3 -m pytest tests/test_status.py
+python3 -m pytest tests/test_registry.py tests/test_status.py
 ```
 
 The ESOI library (`evolvable-structure`) is read-only from here: never edit or commit there.

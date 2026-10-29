@@ -1,2 +1,5 @@
-# esoi configuration for ai-hub-of-hubs-structure. Records only for now: no package, the code arrives in a later step.
+# esoi configuration for ai-hub-of-hubs-structure.
+package = "ai_hub_of_hubs"
+layers = ["core"]
+other_layers = ["docs", "tests", "scripts", "examples"]
 max_lines = 1500

@@ -1,40 +1,19 @@
-"""Rewrite the status block of README.md from esoi/*.csv. Run: python3 scripts/status.py [--check]."""
-import csv
+"""Rewrite the seats table of README.md from the registry. Run: python3 scripts/status.py [--check]."""
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-START, END = "<!-- status:start -->", "<!-- status:end -->"
+sys.path.insert(0, str(ROOT))
+
+from ai_hub_of_hubs import render_docs  # noqa: E402
 
 
-def read(name, root=ROOT):
-    with open(root / "esoi" / f"{name}.csv", newline="") as handle:
-        return list(csv.DictReader(handle))
-
-
-def build(root=ROOT):
-    solutions, impls = read("solutions", root), read("implementations", root)
-    arms = {}
-    for row in impls:
-        arms[row["solution_id"]] = arms.get(row["solution_id"], 0) + 1
-    lines = [
-        f"{len(read('problems', root))} problems, {len(read('ideals', root))} ideals, "
-        f"{len(solutions)} seats, {len(read('metrics', root))} draft metrics, {len(impls)} arms.",
-        "",
-        "| Seat | Arms | Selected by metric |",
-        "|---|---|---|",
-    ]
-    for row in solutions:
-        count = arms.get(row["solution_id"], 0)
-        selected = row["selected"] or "no arm yet"
-        lines.append(f"| {row['solution_id']} | {count} | {selected} |")
-    return "\n".join(lines)
+def build():
+    return render_docs.seat_table()
 
 
 def rewrite(text, block):
-    head, rest = text.split(START, 1)
-    tail = rest.split(END, 1)[1]
-    return f"{head}{START}\n{block}\n{END}{tail}"
+    return render_docs.rewrite(text, render_docs.STATUS_BEGIN, render_docs.STATUS_END, block)
 
 
 def main(argv):

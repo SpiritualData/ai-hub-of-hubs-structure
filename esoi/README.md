@@ -40,6 +40,13 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
 | `connect-any-integration` | connect-any-integration: the Hands seat |  | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft) |
 
+## Implementations
+
+| Implementation | Name | Where | Sub-intent |
+|---|---|---|---|
+| `stay-current:registry_scan` | Registry freshness reading | ai_hub_of_hubs/registry.py |  |
+| `connect-any-integration:hub_of_hubs_scorer` | Hub-of-hubs scorer | ai_hub_of_hubs/measure.py |  |
+
 ## Metrics
 
 - `metric-hold-the-intents`, hold-the-intents metric (draft): `none`

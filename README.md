@@ -2,8 +2,9 @@
 
 **The best of the best hubs for AI intelligence, assembled, evaluated and refreshed weekly. Production-proven in Quest AI Runner.**
 
-Status: seed. The structure is specified as [ESOI](https://github.com/JoshuaMathias/evolvable-structure) records in
-`esoi/`; the wording is a draft that the owner has not confirmed, and no seat has an arm yet.
+A consumer that connects one hub gains everything the hub supports, with no code per integration. This repository holds the
+seats of an AI mind, the registry of hubs that can fill them, the scorer that reads the registry with a consumer's code, and the
+ESOI records that define them.
 
 ## Not a list
 
@@ -11,9 +12,9 @@ A list of hubs says what exists. This repository is an assembled, evaluated stru
 
 - **Seats.** One narrow interface per part of an AI mind (memory, models, tools, risk, and so on).
 - **Arms.** Open-source hubs, combinations of them, or a plain fallback. Arms compete for a seat on the same cases.
-- **Assembly.** Configuration in, working system out: the winning arms are wired together for you.
+- **Assembly.** Configuration in, working system out: the winning arms are wired together.
 - **Selection by metric.** A seat holds the arm that measures best. Taste never picks.
-- **Weekly refresh.** Every seat is researched and compared again each week, so a pick that stops being best is replaced.
+- **Weekly refresh.** Every area is researched and compared again before its research is 90 days old.
 
 ## The idea, as a mind
 
@@ -38,65 +39,72 @@ flowchart TB
   HM -. "rep and intents" .-> MIND
 ```
 
-Each seat is filled from hubs: ready-made tools, services and data sources. The hub code stays in its own project; this
-repository holds the seats, the shared cases, thin adapters, the assembly, default prompts as editable data, and the
-weekly refresh.
+Hub code stays in its own project. This repository holds the seats, the registry, the scorer and the ESOI records.
 
-```mermaid
-flowchart LR
-  H1["Agent harnesses"] --> WORLD["take-in-the-world"]
-  H2["Tools and MCP"] --> WORLD
-  H2 --> BODY["act-in-the-world"]
-  H3["Web search"] --> SCI["know-the-world"]
-  H4["Science sources"] --> SCI
-  H5["Context assembly"] --> SUB["remember-and-recall"]
-  H5 --> CT["think-critically"]
-  H6["Model providers"] --> MIND["reason-and-answer"]
-  H6 --> OV["watch-for-risk"]
-  H7["Memory stores"] --> SUB
-  H7 --> HM["hold-the-intents"]
+## What is here
+
+| Path | What it is |
+|---|---|
+| `esoi/` | the ESOI records: intent, problems, ideals, seats (solutions), implementations, metrics |
+| `ai_hub_of_hubs/registry/` | the registry: areas and their hubs, researched candidates, each consumer's hub connections and hand-wired services |
+| `ai_hub_of_hubs/` | the scorer: `Binding`, `evaluate`, the static vendor-branch scan, the case generator, the page renderer |
+| `ai_hub_of_hubs/examples/` | a lane config with one aggregator connection and no per-app entry |
+| `docs/` | [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |
+| `scripts/status.py` | rewrites the table below from the registry |
+
+## The registry
+
+One row per area. The seat says which part of the mind the area serves. Candidates are researched with dated sources in
+`hub_findings.csv`.
+
+<!-- seats:start -->
+| Area | Seat | Built on | Candidates | Researched |
+|---|---|---|---|---|
+| agent_harness | act-in-the-world | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | OpenCode; Goose; OpenHands; Codex CLI | 2026-10-29 |
+| tools_mcp | act-in-the-world | Model Context Protocol Python SDK | Official MCP Registry; PulseMCP subregistry; GitHub MCP directory | 2026-10-29 |
+| web_search | know-the-world | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Firecrawl; Crawl4AI; Exa; self-hosted SearXNG with MCP | 2026-10-29 |
+| world | take-in-the-world | none | Activepieces; Pipedream; Composio; n8n | 2026-10-29 |
+| context_assembly | remember-and-recall | bm25s, Qdrant and fastembed | Haystack; LlamaIndex; LightRAG | 2026-10-29 |
+| science | know-the-world | none | OpenAlex API; Semantic Scholar API; PaperQA2; community scholarly MCP servers | 2026-10-29 |
+| model_providers | reason-and-answer | none | LiteLLM; Portkey gateway; OpenRouter | 2026-10-29 |
+| memory | remember-and-recall | none | Mem0; Letta; Graphiti; Cognee | 2026-10-29 |
+| evals | stay-current | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; Ragas | 2026-10-29 |
+| voice | take-in-the-world | none | Pipecat; LiveKit Agents; TEN Framework | 2026-10-29 |
+<!-- seats:end -->
+
+Regenerate with `python3 scripts/status.py` (rewritten in place, never appended).
+
+## How a consumer uses it
+
+Import it the way the ESOI library is imported: a sibling checkout on `PYTHONPATH`, or install it.
+
+```bash
+PYTHONPATH=../ai-hub-of-hubs-structure python3 -c "import ai_hub_of_hubs"      # sibling checkout
+pip install -e ../ai-hub-of-hubs-structure                                     # or by path
+pip install "ai-hub-of-hubs-structure @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@main"
 ```
 
-## Relation to Quest AI Runner
+The consumer builds a `Binding` (its root, which of its solutions fill which area, its core folder, its ESOI records, and
+one probe per area that registers a fake hub through the area's configuration entry) and calls `evaluate`. The result is
+eight checks per area and a combined score. The hub never imports the consumer.
 
-[Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner) (QAR) is the production consumer. Its own intent
-implements this one. It keeps what is specific to Quest: its prompts, its configuration and the grounding of answers in a
-person's goals. It imports this repository for each seat. Nothing is moved out of QAR yet.
+## Selection and refresh
 
-## Status
+Each seat holds the arm that measures best on its metric (`esoi select`). Each area is researched again every week, oldest
+first, by the consumer's autopilot using [the refresh instruction](docs/refresh.md); research older than 90 days counts as stale.
 
-<!-- status:start -->
-7 problems, 6 ideals, 12 seats, 14 draft metrics, 0 arms.
+## Quest AI Runner
 
-| Seat | Arms | Selected by metric |
-|---|---|---|
-| hold-the-intents | 0 | no arm yet |
-| take-in-the-world | 0 | no arm yet |
-| remember-and-recall | 0 | no arm yet |
-| reason-and-answer | 0 | no arm yet |
-| know-the-world | 0 | no arm yet |
-| think-critically | 0 | no arm yet |
-| act-in-the-world | 0 | no arm yet |
-| watch-for-risk | 0 | no arm yet |
-| assemble-the-whole | 0 | no arm yet |
-| stay-current | 0 | no arm yet |
-| keep-it-generic | 0 | no arm yet |
-| connect-any-integration | 0 | no arm yet |
-<!-- status:end -->
-
-Regenerate with `python3 scripts/status.py` (rewritten in place between the markers, never grows). Test with
-`python3 -m pytest tests/test_status.py`.
+[Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner) (QAR) is the production consumer. It keeps what is
+specific to Quest: its adapters, its bindings (which of its modules fills which area), its prompts and the grounding of
+answers in a person's goals. Its `hub_of_hubs` component hands those bindings to this scorer and records the result.
 
 ## Records and checks
 
-The ESOI library is the shared standard both repositories import. With a checkout of it beside this one:
-
 ```bash
 PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi check
+python3 -m pytest tests/test_registry.py tests/test_status.py
 ```
-
-Known remaining failure: `implementations.csv` has no records, because no arm exists yet. It clears when the first real
-arm is recorded.
 
 ## License
 
