@@ -46,10 +46,10 @@ This repository holds the seats, the registry, the scorer, the ESOI records and 
 | Path | What it is |
 |---|---|
 | `esoi/` | the ESOI records: intent, problems, ideals, seats (solutions), implementations, metrics |
-| `ai_hub_of_hubs/registry/` | the registry: areas and their hubs, researched candidates, each consumer's hub connections and hand-wired services |
-| `ai_hub_of_hubs/` | the scorer: `Binding`, `evaluate`, the static vendor-branch scan, the case generator, the page renderer |
-| `ai_hub_of_hubs/examples/` | a lane config with one aggregator connection and no per-app entry |
-| `ai_hub_of_hubs/tiers.py` | per-tier model selection by passing work per cost, credits counted as cost ([how](docs/tier-selection.md)) |
+| `hubofhubs/registry/` | the registry: areas and their hubs, researched candidates, each consumer's hub connections and hand-wired services |
+| `hubofhubs/` | the scorer: `Binding`, `evaluate`, the static vendor-branch scan, the case generator, the page renderer |
+| `hubofhubs/examples/` | a lane config with one aggregator connection and no per-app entry |
+| `hubofhubs/tiers.py` | per-tier model selection by passing work per cost, credits counted as cost ([how](docs/tier-selection.md)) |
 | `docs/` | [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |
 | `scripts/status.py` | rewrites the table below from the registry |
 
@@ -80,9 +80,9 @@ Regenerate with `python3 scripts/status.py` (rewritten in place, never appended)
 Import it the way the ESOI library is imported: a sibling checkout on `PYTHONPATH`, or install it.
 
 ```bash
-PYTHONPATH=../ai-hub-of-hubs-structure python3 -c "import ai_hub_of_hubs"      # sibling checkout
+PYTHONPATH=../ai-hub-of-hubs-structure python3 -c "import hubofhubs"      # sibling checkout
 pip install -e ../ai-hub-of-hubs-structure                                     # or by path
-pip install "ai-hub-of-hubs-structure @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@main"
+pip install "hubofhubs @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@main"
 ```
 
 The consumer builds a `Binding` (its root, which of its solutions fill which area, its core folder, its ESOI records, and

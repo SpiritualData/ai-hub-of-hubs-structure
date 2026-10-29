@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from ai_hub_of_hubs import render_docs  # noqa: E402
+from hubofhubs import render_docs  # noqa: E402
 
 
 def build():

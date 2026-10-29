@@ -1,8 +1,8 @@
 # Resolution design: name-based parts, done safely, for mass adoption
 
 Descriptive wording in the ESOI records stays the owner's: any new prose reads "unconfirmed: for Payal to confirm".
-The hub (package `hubofhubs`, today `ai_hub_of_hubs`; the distribution name `hubofhubs` was unclaimed on PyPI when
-checked on 2026-10-29, and `pyproject.toml` keeps the old name until the rename step) holds real executing code: seats as
+The hub (package, import name and distribution name `hubofhubs`; the name was unclaimed on PyPI when checked on 2026-10-29, and the
+GitHub repository keeps the name `ai-hub-of-hubs-structure`) holds real executing code: seats as
 Protocols, arms in per-library extras, and the assembly that wires them. Its core is the standard library plus `esoi`.
 It gives a consumer what the earlier name-keyed framework (`repo-utils`) gave: pass a name from configuration or a row
 and get the implementation that holds it, loaded lazily, installed only if needed, without that framework's risks.

@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PACKAGE_DIRS = ("ai_hub_of_hubs", "hubofhubs")  # the second name applies after the rename
+PACKAGE_DIRS = ("hubofhubs",)
 ALLOWED = set(sys.stdlib_module_names) | set(PACKAGE_DIRS) | {"esoi"}
 
 

@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from ai_hub_of_hubs import registry, tiers  # noqa: E402
+from hubofhubs import registry, tiers  # noqa: E402
 
 PRICES = [dict(provider="p", model=m, input_per_mtok=i, output_per_mtok=o) for m, i, o in
           (("small", "1", "5"), ("big", "10", "50"), ("tiny", "0.1", "0.5"), ("mid", "3", "15"))]

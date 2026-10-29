@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ai-hub-of-hubs-structure"
+name = "hubofhubs"
 version = "0.1.0"
 description = "A registry of the best AI-intelligence hubs and the scorer that reads it with a consumer's code"
 requires-python = ">=3.11"
@@ -11,7 +11,7 @@ license = { text = "Apache-2.0" }
 dependencies = []
 
 [tool.setuptools]
-packages = ["ai_hub_of_hubs"]
+packages = ["hubofhubs"]
 
 [tool.setuptools.package-data]
-ai_hub_of_hubs = ["registry/*.csv", "examples/*.toml"]
+hubofhubs = ["registry/*.csv", "examples/*.toml"]

@@ -25,7 +25,7 @@ def measure() -> dict:
         data = str(Path(tmp) / "cov")
         env = {"COVERAGE_FILE": data, "PATH": "/usr/bin:/bin"}
         subprocess.run(
-            [sys.executable, "-m", "coverage", "run", "--source=ai_hub_of_hubs", "-m", "pytest", "-q", *TESTS],
+            [sys.executable, "-m", "coverage", "run", "--source=hubofhubs", "-m", "pytest", "-q", *TESTS],
             cwd=ROOT, check=True, env={**env, "PYTHONPATH": str(ROOT)},
             stdout=subprocess.DEVNULL,
         )

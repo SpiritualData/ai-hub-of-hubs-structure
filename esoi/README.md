@@ -44,9 +44,9 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 
 | Implementation | Name | Where | Sub-intent |
 |---|---|---|---|
-| `stay-current:registry_scan` | Registry freshness reading | ai_hub_of_hubs/registry.py |  |
-| `connect-any-integration:hub_of_hubs_scorer` | Hub-of-hubs scorer | ai_hub_of_hubs/measure.py |  |
-| `reason-and-answer:tier_selector` | Tier selector | ai_hub_of_hubs/tiers.py |  |
+| `stay-current:registry_scan` | Registry freshness reading | hubofhubs/registry.py |  |
+| `connect-any-integration:hub_of_hubs_scorer` | Hub-of-hubs scorer | hubofhubs/measure.py |  |
+| `reason-and-answer:tier_selector` | Tier selector | hubofhubs/tiers.py |  |
 
 ## Metrics
 

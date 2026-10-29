@@ -6,7 +6,7 @@ import status  # noqa: E402
 
 
 def test_table_lists_every_area():
-    from ai_hub_of_hubs import registry
+    from hubofhubs import registry
     block = status.build()
     for row in registry.read("hubs.csv"):
         assert f"| {row['area']} |" in block

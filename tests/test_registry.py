@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from ai_hub_of_hubs import Binding, cases, evaluate, registry, render_docs, scan  # noqa: E402
-from ai_hub_of_hubs.measure import KINDS, check  # noqa: E402
+from hubofhubs import Binding, cases, evaluate, registry, render_docs, scan  # noqa: E402
+from hubofhubs.measure import KINDS, check  # noqa: E402
 
 
 def write(path, header, rows):

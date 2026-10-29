@@ -10,7 +10,7 @@ the hub grows, not when the consumer gains code.
 ## Connections by configuration
 
 - **Tools and data sources (MCP).** One `[[mcp_servers]]` table in the consumer's lane file. Prefer one aggregator over one
-  entry per app. `ai_hub_of_hubs/examples/lane-world-hub.toml` is the shape: a placeholder URL, and `token_env` naming the
+  entry per app. `hubofhubs/examples/lane-world-hub.toml` is the shape: a placeholder URL, and `token_env` naming the
   environment variable that holds the bearer token (the token never sits in a file).
 - **Agents.** Any agent that speaks the Agent Client Protocol can do the deep work when the consumer is told its command.
 - **Models.** Any OpenAI-compatible gateway (LiteLLM, vLLM, Ollama): a base URL, and the model-id prefixes it serves.
@@ -18,7 +18,7 @@ the hub grows, not when the consumer gains code.
   (see [search-api-entries.md](search-api-entries.md)); that is a convenience for one service, not a hub connection, so it does
   not count as a capability.
 
-## The registry files (`ai_hub_of_hubs/registry/`)
+## The registry files (`hubofhubs/registry/`)
 
 | File | One row is | Columns |
 |---|---|---|
@@ -33,7 +33,7 @@ the hub grows, not when the consumer gains code.
 ## What the scorer measures
 
 Given a `Binding` (the consumer's root, which of its solutions fill which area, its core code folder, its ESOI records, and a
-probe per area), `ai_hub_of_hubs.evaluate` answers eight checks per area: registered, by_config, fresh (within 90 days), seam
+probe per area), `hubofhubs.evaluate` answers eight checks per area: registered, by_config, fresh (within 90 days), seam
 (one registry in code), selectable (the seam solution has an authoritative metric and two or more implementations), core_clean
 (no vendor-specific branch in core, by the static rule in `scan.py`), fake_hub (a fake hub added through the area's
 configuration entry works with zero library edits) and no_reinvented. The score is the mean of coverage, integration by

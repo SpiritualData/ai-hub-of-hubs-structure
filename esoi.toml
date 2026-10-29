@@ -1,5 +1,5 @@
 # esoi configuration for ai-hub-of-hubs-structure.
-package = "ai_hub_of_hubs"
+package = "hubofhubs"
 layers = ["core"]
 other_layers = ["docs", "tests", "scripts", "examples"]
 max_lines = 1500
