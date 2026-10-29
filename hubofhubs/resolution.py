@@ -153,3 +153,15 @@ def load(solution_id: str, picked: str, config: Optional[HubConfig] = None) -> A
 def resolve(solution_id: str, name: Optional[str] = None, config: Optional[HubConfig] = None) -> Any:
     """The chosen implementation object of a seat (a class is not instantiated). Reads no environment."""
     return load(solution_id, choice(solution_id, name, config).name, config)
+
+
+def register(solution_id: str, name: str, target: Any, replace: bool = False) -> None:
+    """Register an implementation (a class, a function, or an instance) under a name the consumer owns. The hub's own names
+    are never replaced: asking to register or replace one raises, so a consumer cannot shadow a hub arm by accident or by
+    attack. Registered targets are trusted code of the consumer that called this; they are never loaded from a record."""
+    check_solution(solution_id)
+    check_name(name, f"registered name for {solution_id!r}")
+    if name in hub_declared(solution_id):
+        raise HubError(f"{name!r} is declared by the hub for {solution_id!r} in scope {SCOPE!r} and cannot be "
+                       f"{'replaced' if replace else 'registered over'}; remedy: register your own under a name you own")
+    runtime.register(solution_id, name, target, scope=SCOPE, replace=replace)
