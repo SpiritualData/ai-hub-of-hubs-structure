@@ -39,7 +39,7 @@ flowchart TB
   HM -. "rep and intents" .-> MIND
 ```
 
-Hub code stays in its own project. This repository holds the seats, the registry, the scorer and the ESOI records.
+This repository holds the seats, the registry, the scorer, the ESOI records and the code that wires arms into seats. Its core is the standard library plus `esoi`; each arm's third-party library is a per-library extra ([resolution design](docs/resolution-design.md)).
 
 ## What is here
 

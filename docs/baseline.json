@@ -1,0 +1,22 @@
+{
+ "connect-any-integration:hub_of_hubs_scorer": {
+  "executed": 47,
+  "statements": 52,
+  "percent": 90.4
+ },
+ "reason-and-answer:tier_selector": {
+  "executed": 79,
+  "statements": 83,
+  "percent": 95.2
+ },
+ "stay-current:registry_scan": {
+  "executed": 43,
+  "statements": 45,
+  "percent": 95.6
+ },
+ "unassigned": {
+  "executed": 67,
+  "statements": 99,
+  "percent": 67.7
+ }
+}

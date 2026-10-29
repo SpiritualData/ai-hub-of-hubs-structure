@@ -1,0 +1,68 @@
+"""Record the executed-line share of the hub's own code, per implementation id.
+
+Dev-only (needs `coverage`). Runs the scoped tests, then maps each module to the implementation
+whose `filepath` it is; modules no record names are grouped under "unassigned". Writes
+docs/baseline.json. `--check` compares against the stored file and fails on a drop beyond the
+tolerance. The key is the implementation id, so a module move does not break the baseline.
+"""
+import csv
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "docs" / "baseline.json"
+TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py"]
+TOLERANCE = 1.0  # percentage points
+
+
+def measure() -> dict:
+    import coverage
+
+    with tempfile.TemporaryDirectory() as tmp:
+        data = str(Path(tmp) / "cov")
+        env = {"COVERAGE_FILE": data, "PATH": "/usr/bin:/bin"}
+        subprocess.run(
+            [sys.executable, "-m", "coverage", "run", "--source=ai_hub_of_hubs", "-m", "pytest", "-q", *TESTS],
+            cwd=ROOT, check=True, env={**env, "PYTHONPATH": str(ROOT)},
+            stdout=subprocess.DEVNULL,
+        )
+        cov = coverage.Coverage(data_file=data)
+        cov.load()
+        owner = {}
+        with open(ROOT / "esoi" / "implementations.csv", newline="") as handle:
+            for row in csv.DictReader(handle):
+                owner[(ROOT / row["filepath"]).resolve()] = row["implementation_id"]
+        totals: dict = {}
+        for name in cov.get_data().measured_files():
+            path = Path(name).resolve()
+            if ROOT not in path.parents:
+                continue
+            _, statements, _, missing, _ = cov.analysis2(name)
+            key = owner.get(path, "unassigned")
+            entry = totals.setdefault(key, [0, 0])
+            entry[0] += len(statements) - len(missing)
+            entry[1] += len(statements)
+    return {
+        key: {"executed": hit, "statements": total, "percent": round(100 * hit / total, 1) if total else 100.0}
+        for key, (hit, total) in sorted(totals.items())
+    }
+
+
+def main() -> int:
+    now = measure()
+    if "--check" in sys.argv:
+        stored = json.loads(OUT.read_text())
+        bad = [k for k, v in stored.items() if now.get(k, {"percent": 0})["percent"] < v["percent"] - TOLERANCE]
+        for key in bad:
+            print(f"baseline dropped: {key} {stored[key]['percent']} -> {now.get(key, {}).get('percent', 0)}")
+        return 1 if bad else 0
+    OUT.write_text(json.dumps(now, indent=1) + "\n")
+    print(json.dumps(now, indent=1))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
