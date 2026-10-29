@@ -125,7 +125,10 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
 7. **Per-seat import check, then the port move.** Moving ports "as they are" is impossible: 65 of the consumer's 106
    adapter modules import its core. For each seat, compute its imports first; move the Protocol and neutral helpers only;
    everything else arrives through `assemble`. The consumer keeps re-exports at the old paths. The seats to move are
-   measured in the consumer before the move (a later task).
+   measured in the consumer before the move. Done for the first pass (2026-10-29): `hubofhubs.ports.scope`, `.model` and `.context`
+   (usage scoping, `ModelProvider` and the step-hint helpers, the context assembler, conversation store and vector store Protocols) moved
+   verbatim from the consumer, comments made consumer-free; the consumer's modules re-export them. The progress events, channels,
+   guidance and value objects stay in the consumer (they carry its vocabulary or fields).
 8. **Docs**: quickstart (done: `docs/quickstart.md`, run by `tests/test_quickstart.py`); versioning, releasing and
    changelog remain.
 

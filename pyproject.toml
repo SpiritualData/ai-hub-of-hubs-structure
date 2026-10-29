@@ -11,7 +11,7 @@ license = { text = "Apache-2.0" }
 dependencies = ["esoi"]
 
 [tool.setuptools]
-packages = ["hubofhubs"]
+packages = ["hubofhubs", "hubofhubs.ports"]
 
 [tool.setuptools.package-data]
 hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]
