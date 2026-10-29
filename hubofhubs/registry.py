@@ -1,6 +1,5 @@
 """The registry files and the arithmetic over them. Pure functions: no model call, no network."""
 import csv
-import os
 from datetime import date
 from pathlib import Path
 
@@ -15,14 +14,15 @@ def read(name, folder=None):
         return list(csv.DictReader(handle))
 
 
-def today():
-    """Today, or the day ``HUBS_TODAY`` names (an ISO date) so a test can age the registry."""
-    return date.fromisoformat(os.environ.get("HUBS_TODAY") or date.today().isoformat())
+def today(clock=None):
+    """``clock`` (a date) when given, else today from the system clock. The hub reads no environment: a test ages the
+    registry by passing a date."""
+    return clock if clock is not None else date.today()
 
 
-def days_since(iso):
+def days_since(iso, clock=None):
     try:
-        return (today() - date.fromisoformat(iso)).days
+        return (today(clock) - date.fromisoformat(iso)).days
     except (TypeError, ValueError):
         return None
 

@@ -8,6 +8,8 @@ Cost of an arm = money actually spent after credits + ``credit_value`` x the cre
 ``credit_value`` (0 to 1) is what a credit is worth to the owner if it were not used here (1 when unused credit is not lost,
 lower when it expires).
 """
+from esoi import implementation
+
 from . import registry
 
 MIN_CASES = 1
@@ -136,3 +138,17 @@ def always_most_expensive(tiers, prices):
 def always_cheapest(tiers, prices):
     """Broken baseline two: the lowest-priced model in every tier, whatever its quality."""
     return by_price(tiers, prices, min)
+
+
+@implementation("reason-and-answer", "tier_selector")
+class TierSelector:
+    """The tier selector as one registered implementation of the reason-and-answer seat: the functions above, behind an
+    object a consumer can build and hand around. Pure functions, no state."""
+    price_of = staticmethod(price_of)
+    arm_cost = staticmethod(arm_cost)
+    evaluate_arm = staticmethod(evaluate_arm)
+    pick = staticmethod(pick)
+    select = staticmethod(select)
+    default_arms = staticmethod(default_arms)
+    portfolio = staticmethod(portfolio)
+    scripted_choices = staticmethod(scripted_choices)

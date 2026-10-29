@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "baseline.json"
-TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py"]
+TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py", "tests/test_no_environment.py"]
 TOLERANCE = 1.0  # percentage points
 
 

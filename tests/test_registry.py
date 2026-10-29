@@ -1,5 +1,6 @@
 """Offline tests of the scorer against a small fake consumer: no model call, no network."""
 import csv
+from datetime import date
 import sys
 from pathlib import Path
 
@@ -48,11 +49,10 @@ def test_every_area_gets_every_check():
     assert got == {(r["area"], k) for r in registry.read("hubs.csv") for k in KINDS}
 
 
-def test_freshness_ages_with_the_calendar(consumer, monkeypatch):
+def test_freshness_ages_with_the_calendar(consumer):
     facts, _, _ = evaluate(consumer)
     assert all(f["fresh"] for f in facts.values())
-    monkeypatch.setenv("HUBS_TODAY", "2099-01-01")
-    facts, _, numbers = evaluate(consumer)
+    facts, _, numbers = evaluate(consumer, today=date(2099, 1, 1))
     assert not any(f["fresh"] for f in facts.values()) and numbers["fresh_share"] == 0 and numbers["days_mean"] > 90
 
 

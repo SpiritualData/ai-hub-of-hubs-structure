@@ -26,8 +26,8 @@ def declared(binding, solution_id):
         return []
 
 
-def evaluate(binding: Binding, folder=None):
-    """({area: facts}, wired connections of this consumer, numbers)."""
+def evaluate(binding: Binding, folder=None, today=None):
+    """({area: facts}, wired connections of this consumer, numbers). ``today`` (a date) defaults to the system clock."""
     hubs = registry.read("hubs.csv", folder)
     findings = registry.read("hub_findings.csv", folder)
     connections = registry.read("hub_capabilities.csv", folder)
@@ -38,7 +38,7 @@ def evaluate(binding: Binding, folder=None):
     for row in hubs:
         area = row["area"]
         seat = seats.get(area, {"seam_solution_id": "", "vendor_terms": "", "code_paths": ""})
-        days = registry.days_since(row["last_researched"])
+        days = registry.days_since(row["last_researched"], today)
         wired = registry.connections_of(area, connections, binding.consumer)
         config = [c for c in wired if c["connect"] == "config"]
         seams = registry.split(seat["seam_solution_id"])      # an area may have several seats: it holds if any seat does

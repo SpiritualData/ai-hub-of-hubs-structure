@@ -8,10 +8,10 @@ version = "0.1.0"
 description = "A registry of the best AI-intelligence hubs and the scorer that reads it with a consumer's code"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
-dependencies = []
+dependencies = ["esoi"]
 
 [tool.setuptools]
 packages = ["hubofhubs"]
 
 [tool.setuptools.package-data]
-hubofhubs = ["registry/*.csv", "examples/*.toml"]
+hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]

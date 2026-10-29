@@ -1,0 +1,20 @@
+{
+ "connect-any-integration": {
+  "default": "",
+  "modules": {
+   "hub_of_hubs_scorer": "hubofhubs.measure"
+  }
+ },
+ "reason-and-answer": {
+  "default": "tier_selector",
+  "modules": {
+   "tier_selector": "hubofhubs.tiers"
+  }
+ },
+ "stay-current": {
+  "default": "",
+  "modules": {
+   "registry_scan": "hubofhubs.registry"
+  }
+ }
+}
