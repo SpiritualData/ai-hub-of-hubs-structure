@@ -15,7 +15,7 @@ from support import ROOT  # noqa: E402
 
 SEATS = {"card-store": seats.CardStore, "model-call": seats.ModelCall, "search-backend": seats.SearchBackend,
          "reason-and-answer": seats.TierSelection, "stay-current": seats.FreshnessReading,
-         "connect-any-integration": seats.HubScoring}
+         "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching}
 SOLUTIONS = graph.read_rows(ROOT / "esoi", "solutions.csv")
 IMPLEMENTATIONS = graph.read_rows(ROOT / "esoi", "implementations.csv")
 

@@ -51,6 +51,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `connect-any-integration:hub_of_hubs_scorer` | Hub-of-hubs scorer | hubofhubs/measure.py |  |
 | `reason-and-answer:tier_selector` | Tier selector | hubofhubs/tiers.py |  |
 | `card-store:local_card_store` | Local card store | hubofhubs/cardstore.py |  |
+| `watch-for-risk:overseer` | Digest-driven overseer | hubofhubs/risk.py |  |
 
 ## Metrics
 

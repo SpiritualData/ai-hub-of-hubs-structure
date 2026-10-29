@@ -22,5 +22,11 @@
   "modules": {
    "registry_scan": "hubofhubs.registry"
   }
+ },
+ "watch-for-risk": {
+  "default": "",
+  "modules": {
+   "overseer": "hubofhubs.risk"
+  }
  }
 }
