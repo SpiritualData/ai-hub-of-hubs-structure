@@ -66,7 +66,7 @@ person's goals. It imports this repository for each seat. Nothing is moved out o
 ## Status
 
 <!-- status:start -->
-6 problems, 6 ideals, 11 seats, 11 draft metrics, 0 arms.
+7 problems, 6 ideals, 12 seats, 14 draft metrics, 0 arms.
 
 | Seat | Arms | Selected by metric |
 |---|---|---|
@@ -81,6 +81,7 @@ person's goals. It imports this repository for each seat. Nothing is moved out o
 | assemble-the-whole | 0 | no arm yet |
 | stay-current | 0 | no arm yet |
 | keep-it-generic | 0 | no arm yet |
+| connect-any-integration | 0 | no arm yet |
 <!-- status:end -->
 
 Regenerate with `python3 scripts/status.py` (rewritten in place between the markers, never grows). Test with

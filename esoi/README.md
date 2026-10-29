@@ -12,6 +12,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `HP4`: unconfirmed: for Joshua to confirm. One hub's outage, price change or shutdown stops the system, and switching needs code changes.
 - `HP5`: unconfirmed: for Joshua to confirm. Parts that are best alone can fail when assembled, and nobody tests the whole.
 - `HP6`: unconfirmed: for Joshua to confirm. One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
+- `HP7`: unconfirmed: for Joshua to confirm. Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it.
 
 ## Ideals
 
@@ -37,6 +38,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | assemble-the-whole metric (draft) |
 | `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft) |
 | `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
+| `connect-any-integration` | connect-any-integration: the Hands seat |  | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft) |
 
 ## Metrics
 
@@ -51,3 +53,6 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-assemble-the-whole`, assemble-the-whole metric (draft): `none`
 - `metric-stay-current`, stay-current metric (draft): `none`
 - `metric-keep-it-generic`, keep-it-generic metric (draft): `none`
+- `metric-integration-added-with-zero-code`, integration-added-with-zero-code (draft): `none`
+- `metric-integration-availability-lag`, integration-availability-lag (draft): `none`
+- `metric-integration-credential-isolation`, integration-credential-isolation (draft): `none`
