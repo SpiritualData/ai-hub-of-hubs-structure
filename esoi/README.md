@@ -39,6 +39,9 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft) |
 | `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
 | `connect-any-integration` | connect-any-integration: the Hands seat |  | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft) |
+| `card-store` | card-store: a place to keep and find cards | local_card_store | card-store metric (draft) |
+| `model-call` | model-call: ask a model one question |  | model-call metric (draft) |
+| `search-backend` | search-backend: run one search |  | search-backend metric (draft) |
 
 ## Implementations
 
@@ -47,6 +50,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `stay-current:registry_scan` | Registry freshness reading | hubofhubs/registry.py |  |
 | `connect-any-integration:hub_of_hubs_scorer` | Hub-of-hubs scorer | hubofhubs/measure.py |  |
 | `reason-and-answer:tier_selector` | Tier selector | hubofhubs/tiers.py |  |
+| `card-store:local_card_store` | Local card store | hubofhubs/cardstore.py |  |
 
 ## Metrics
 
@@ -65,3 +69,6 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-integration-availability-lag`, integration-availability-lag (draft): `none`
 - `metric-integration-credential-isolation`, integration-credential-isolation (draft): `none`
 - `metric-tier-passing-work-per-cost`, tier-passing-work-per-cost (draft): `python3 -m pytest tests/test_tiers.py`
+- `metric-card-store`, card-store metric (draft): `none`
+- `metric-model-call`, model-call metric (draft): `none`
+- `metric-search-backend`, search-backend metric (draft): `none`

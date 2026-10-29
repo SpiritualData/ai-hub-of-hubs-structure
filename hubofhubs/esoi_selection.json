@@ -1,4 +1,10 @@
 {
+ "card-store": {
+  "default": "local_card_store",
+  "modules": {
+   "local_card_store": "hubofhubs.cardstore"
+  }
+ },
  "connect-any-integration": {
   "default": "",
   "modules": {

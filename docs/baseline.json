@@ -1,22 +1,27 @@
 {
+ "card-store:local_card_store": {
+  "executed": 44,
+  "statements": 44,
+  "percent": 100.0
+ },
  "connect-any-integration:hub_of_hubs_scorer": {
-  "executed": 47,
-  "statements": 52,
-  "percent": 90.4
+  "executed": 53,
+  "statements": 58,
+  "percent": 91.4
  },
  "reason-and-answer:tier_selector": {
-  "executed": 79,
-  "statements": 83,
-  "percent": 95.2
+  "executed": 90,
+  "statements": 94,
+  "percent": 95.7
  },
  "stay-current:registry_scan": {
-  "executed": 43,
-  "statements": 45,
-  "percent": 95.6
+  "executed": 47,
+  "statements": 49,
+  "percent": 95.9
  },
  "unassigned": {
-  "executed": 67,
-  "statements": 99,
-  "percent": 67.7
+  "executed": 407,
+  "statements": 459,
+  "percent": 88.7
  }
 }

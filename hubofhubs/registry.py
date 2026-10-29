@@ -3,6 +3,8 @@ import csv
 from datetime import date
 from pathlib import Path
 
+from esoi import implementation
+
 DATA = Path(__file__).resolve().parent / "registry"
 STALENESS_DAYS = 90          # research older than this is stale (a quarter)
 REGISTERED = ("builds_on", "compared", "no_hub_exists")
@@ -74,3 +76,10 @@ def combine(facts, connections):
                reinvented_free_share=reinvented_free_share)
     out["score"] = (coverage + config_share + fresh_share + code + reinvented_free_share) / 5
     return out
+
+
+@implementation("stay-current", "registry_scan")
+class RegistryScan:
+    """The registry freshness reading as one registered implementation of the stay-current seat."""
+    days_since = staticmethod(days_since)
+    combine = staticmethod(combine)

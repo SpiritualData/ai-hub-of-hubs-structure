@@ -3,6 +3,8 @@ holds. ``evaluate`` returns the per-area facts and the combined numbers; ``check
 import csv
 from pathlib import Path
 
+from esoi import implementation
+
 from . import registry, scan
 from .binding import Binding
 
@@ -84,3 +86,11 @@ def check(fact, kind):
 
 def metrics(facts, connections):
     return registry.combine(list(facts.values()), connections)
+
+
+@implementation("connect-any-integration", "hub_of_hubs_scorer")
+class HubScorer:
+    """The hub-of-hubs scorer as one registered implementation of the connect-any-integration seat."""
+    evaluate = staticmethod(evaluate)
+    check = staticmethod(check)
+    metrics = staticmethod(metrics)
