@@ -1,0 +1,3 @@
+component_id,layer,path,role,solutions
+esoi-records,docs,esoi/*.csv;esoi/*.md;esoi.toml;README.md;CLAUDE.md;LICENSE;.gitignore,"The intent, problems, ideals, solutions, implementations and metrics records, their generated docs and the checker configuration",assemble-the-whole
+status-script,scripts,scripts/status.py;tests/test_status.py,"Rewrites the status block of README.md from the records, and its test",stay-current

@@ -1,0 +1,53 @@
+These are ESOI records (evolvable structure that optimizes intent): why this project exists, and its problems, solutions, implementations, ideals and metrics. This page is generated from the CSV files beside it by `esoi check --write-docs`; edit the CSV files, not this page.
+
+# The best parts for AI intelligence, assembled and proven
+
+unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble a working system from the best open-source parts available, chosen by measurement and kept current every week, without writing the glue themselves.
+
+## Problems
+
+- `HP1`: unconfirmed: for Joshua to confirm. Every team re-researches and re-glues the same AI parts, and the private copies drift apart.
+- `HP2`: unconfirmed: for Joshua to confirm. Lists of hubs say what exists, not which works best or fits together. Nothing evaluates the parts.
+- `HP3`: unconfirmed: for Joshua to confirm. Hubs go stale. A pick that was best last quarter quietly stops being best.
+- `HP4`: unconfirmed: for Joshua to confirm. One hub's outage, price change or shutdown stops the system, and switching needs code changes.
+- `HP5`: unconfirmed: for Joshua to confirm. Parts that are best alone can fail when assembled, and nobody tests the whole.
+- `HP6`: unconfirmed: for Joshua to confirm. One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
+
+## Ideals
+
+- `HI1`, Best by measurement: unconfirmed: for Joshua to confirm. Each seat holds the part that measures best on shared cases. Taste never picks.
+- `HI2`, One-step assembly: unconfirmed: for Joshua to confirm. Configuration in, working system out, no glue code.
+- `HI3`, Always current: unconfirmed: for Joshua to confirm. No area goes a week without a fresh search and comparison.
+- `HI4`, Swappable parts: unconfirmed: for Joshua to confirm. Any part can be replaced by configuration when another measures better or fails.
+- `HI5`, Proven whole: unconfirmed: for Joshua to confirm. The assembled system is tested end to end on a production consumer, not only part by part.
+- `HI6`, Generic and thin: unconfirmed: for Joshua to confirm. No consumer-specific content. Defaults are data anyone can edit. Implementations stay in their own projects.
+
+## Solutions
+
+| Solution | Name | Selected | Metric |
+|---|---|---|---|
+| `hold-the-intents` | hold-the-intents: the Higher mind seat |  | hold-the-intents metric (draft) |
+| `take-in-the-world` | take-in-the-world: the World seat |  | take-in-the-world metric (draft) |
+| `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat |  | remember-and-recall metric (draft) |
+| `reason-and-answer` | reason-and-answer: the Mind seat |  | reason-and-answer metric (draft) |
+| `know-the-world` | know-the-world: the Science seat |  | know-the-world metric (draft) |
+| `think-critically` | think-critically: the Critical thinking seat |  | think-critically metric (draft) |
+| `act-in-the-world` | act-in-the-world: the Body seat |  | act-in-the-world metric (draft) |
+| `watch-for-risk` | watch-for-risk: the Overseer seat |  | watch-for-risk metric (draft) |
+| `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | assemble-the-whole metric (draft) |
+| `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft) |
+| `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
+
+## Metrics
+
+- `metric-hold-the-intents`, hold-the-intents metric (draft): `none`
+- `metric-take-in-the-world`, take-in-the-world metric (draft): `none`
+- `metric-remember-and-recall`, remember-and-recall metric (draft): `none`
+- `metric-reason-and-answer`, reason-and-answer metric (draft): `none`
+- `metric-know-the-world`, know-the-world metric (draft): `none`
+- `metric-think-critically`, think-critically metric (draft): `none`
+- `metric-act-in-the-world`, act-in-the-world metric (draft): `none`
+- `metric-watch-for-risk`, watch-for-risk metric (draft): `none`
+- `metric-assemble-the-whole`, assemble-the-whole metric (draft): `none`
+- `metric-stay-current`, stay-current metric (draft): `none`
+- `metric-keep-it-generic`, keep-it-generic metric (draft): `none`
