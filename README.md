@@ -47,11 +47,12 @@ This repository holds the seats, the registry, the scorer, the ESOI records and 
 |---|---|
 | `esoi/` | the ESOI records: intent, problems, ideals, seats (solutions), implementations, metrics |
 | `hubofhubs/registry/` | the registry: areas and their hubs, researched candidates, each consumer's hub connections and hand-wired services |
-| `hubofhubs/` | the scorer: `Binding`, `evaluate`, the static vendor-branch scan, the case generator, the page renderer |
+| `hubofhubs/` | the scorer (`Binding`, `evaluate`, the vendor-branch scan, the case generator, the page renderer) and the assembly: `seats.py` (Protocols), `resolution.py` (`resolve`, `register`), `assembly.py` (`assemble`), `needs.py`, `graph.py`, `cardstore.py` (the default card store) |
 | `hubofhubs/examples/` | a lane config with one aggregator connection and no per-app entry |
 | `hubofhubs/tiers.py` | per-tier model selection by passing work per cost, credits counted as cost ([how](docs/tier-selection.md)) |
-| `docs/` | [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |
+| `docs/` | [quickstart](docs/quickstart.md), [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |
 | `scripts/status.py` | rewrites the table below from the registry |
+| `scripts/sync_uses.py` | checks (or writes) `uses_solution_ids` from typed constructor parameters, and the dependency graph |
 
 ## The registry
 
@@ -89,6 +90,10 @@ The consumer builds a `Binding` (its root, which of its solutions fill which are
 one probe per area that registers a fake hub through the area's configuration entry) and calls `evaluate`. The result is
 eight checks per area and a combined score. The hub never imports the consumer.
 
+To use the parts themselves, a consumer registers any part it owns under its own name (`hubofhubs.register`), builds a
+`HubConfig` and calls `hubofhubs.assemble(config, provided={...})` ([quickstart](docs/quickstart.md)). The hub reads no
+environment: settings are `HubConfig` fields, and a name is never an import path.
+
 ## Selection and refresh
 
 Each seat holds the arm that measures best on its metric (`esoi select`). Each area is researched again every week, oldest
@@ -104,7 +109,8 @@ answers in a person's goals. Its `hub_of_hubs` component hands those bindings to
 
 ```bash
 PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi check
-python3 -m pytest tests/test_registry.py tests/test_status.py
+python3 -m pytest tests/test_registry.py tests/test_status.py tests/test_import_boundary.py
+python3 scripts/sync_uses.py --check
 ```
 
 ## License

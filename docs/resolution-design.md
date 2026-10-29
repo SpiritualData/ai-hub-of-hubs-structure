@@ -105,19 +105,30 @@ PyPI release exists, and a three-OS matrix before snapshot paths exist.
 
 ## 5. Plan
 
-Each step ends with its tests and one local commit by explicit path; nothing is pushed.
+Each step ends with its tests and one local commit by explicit path; nothing is pushed. Status on 2026-10-29.
 
 1. **Baseline by implementation id**: `scripts/baseline.py` writes `docs/baseline.json` (executed-line share per
    implementation id, not per module path); `--check` fails on a drop. Done.
 2. **Import-boundary allowlist test**: `tests/test_import_boundary.py`. Done.
-3. **Rename to `hubofhubs`, no alias**, in one change with the consumer's imports of the hub (coordinate with the
-   consumer's owner; a later task). `pyproject.toml` and the distribution name follow here.
-4. **No environment reads**, plus the hostile-directory and vendored-copy tests (R2, R5).
-5. **Resolve wrapper and `assemble`**: cascade, refusal of `replace` on hub names, reason line.
-6. **Needs from typed constructor parameters**, the generated `uses_solution_ids` check, and the graph checks (no cycles,
-   every need resolves, external-seat rule).
+3. **Rename to `hubofhubs`, no alias**: package, import name, distribution, esoi scope, docs, tests, records. Done in the hub;
+   the consumer's imports of the hub change in its own repository (a later task, owned by its agent).
+4. **No environment reads**, plus the hostile-directory and vendored-copy tests (R2, R5). Done: `tests/test_no_environment.py`.
+   One hole stays with `esoi`: a hostile `esoi.toml` in a parent folder of a vendored copy that is not under
+   `site-packages` is still found by `esoi`'s upward walk (the section 2 proposal); a pip install is not affected.
+5. **Resolve wrapper and `assemble`**: cascade, refusal of `replace` on hub names, reason line, name validation, safe
+   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py`, `test_assemble.py`,
+   `test_safe_loading.py`, `test_example_consumer.py` (a second consumer and a leak detector).
+6. **Needs from typed constructor parameters**, the `uses_solution_ids` check and the graph checks (no cycles, every need
+   resolves, external-seat rule). Done: `hubofhubs.seats`, `needs.py`, `graph.py`, `scripts/sync_uses.py --check`,
+   `tests/test_graph.py`; the default card store `LocalCardStore` is the first executing arm. Eight seats have no natural
+   Protocol yet and stay "no arm yet".
 7. **Per-seat import check, then the port move.** Moving ports "as they are" is impossible: 65 of the consumer's 106
    adapter modules import its core. For each seat, compute its imports first; move the Protocol and neutral helpers only;
    everything else arrives through `assemble`. The consumer keeps re-exports at the old paths. The seats to move are
    measured in the consumer before the move (a later task).
-8. **Docs**: quickstart, versioning, releasing, changelog.
+8. **Docs**: quickstart (done: `docs/quickstart.md`, run by `tests/test_quickstart.py`); versioning, releasing and
+   changelog remain.
+
+Not done and still owed from section 4: `tests/test_inert_import.py`, `test_errors.py` as a named file, `test_public_api.py`
+(the pinned `(solution id, name)` list), `test_isolation.py` as a named file (covered in `test_resolution.py`), the
+per-arm extras and the generated-extras import check, the `hubofhubs call` command, `py.typed` and the CI type-check.

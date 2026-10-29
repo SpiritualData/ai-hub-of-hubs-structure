@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "baseline.json"
 TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py", "tests/test_no_environment.py",
          "tests/test_resolution.py", "tests/test_assemble.py", "tests/test_safe_loading.py", "tests/test_example_consumer.py",
-         "tests/test_graph.py", "tests/test_cardstore.py"]
+         "tests/test_graph.py", "tests/test_cardstore.py", "tests/test_quickstart.py", "tests/test_metadata.py"]
 TOLERANCE = 1.0  # percentage points
 
 
