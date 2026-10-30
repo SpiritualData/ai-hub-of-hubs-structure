@@ -303,6 +303,36 @@ def protection(card: Dict[str, Any], check_edits: bool = True) -> str:
     return ""
 
 
+def last_touched(card: Dict[str, Any]) -> float:
+    """Newest time anything on ``card`` was used, learned or changed; 0.0 when it carries none.
+
+    Reads only what the card already holds, so it does no I/O: the ``last_used_ts`` and ``ts`` of
+    its content items, the ``last_used_ts`` and ``mtime`` of its pinned files (when that file last
+    changed, as of the card's last refresh), and ``provenance.last_verified_at``. Never raises.
+    """
+    newest = 0.0
+    try:
+        # Compared as stored (seconds since the epoch): a card is a few dozen stamps and a store can
+        # hold hundreds of thousands, so this loop converts and allocates nothing.
+        for entries in (card.get("content"), card.get("files")):
+            for entry in entries or ():
+                if isinstance(entry, dict):
+                    for field in ("last_used_ts", "ts", "mtime"):
+                        stamp = entry.get(field)
+                        if stamp and stamp > newest:
+                            newest = stamp
+        provenance = card.get("provenance")
+        verified = provenance.get("last_verified_at") if isinstance(provenance, dict) else None
+        if verified:
+            try:
+                newest = max(newest, float(verified))
+            except ValueError:
+                newest = max(newest, datetime.fromisoformat(str(verified)).timestamp())
+    except (TypeError, ValueError, OverflowError):
+        pass
+    return newest
+
+
 def exported_origin(card: Dict[str, Any], source_ref: str, source_root: Path, store_dir_name: str) -> Optional[Origin]:
     """The origin a card offered by ``source_root``'s store is a copy of, relative to that root.
 
