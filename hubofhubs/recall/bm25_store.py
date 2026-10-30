@@ -50,6 +50,7 @@ import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
+from esoi import implementation
 from hubofhubs.ports.context import AssembledContext, ContextAssemblerBase
 from hubofhubs.recall.walk import effective_skip_dirs, is_claude_state_file, prune_dirnames
 
@@ -157,6 +158,7 @@ def _best_snippet(content: str, query_tokens: Set[str], n_lines: int = _SNIPPET_
 # BM25ContentStore
 # ---------------------------------------------------------------------------
 
+@implementation("context-assembler", "bm25")
 class BM25ContentStore(ContextAssemblerBase):
     """ContextAssembler using BM25 over the ACTUAL CONTENT of files in ``root``.
 

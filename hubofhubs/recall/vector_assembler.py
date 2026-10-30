@@ -72,6 +72,7 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
+from esoi import implementation
 from hubofhubs.ports.context import AssembledContext, ContextAssemblerBase, VectorHit, VectorStore
 from hubofhubs.ports.model import STEP_SELECT, STEP_SUMMARIZE, answer_with_reasoning
 from hubofhubs.recall.card_content_render import (
@@ -229,6 +230,7 @@ class VectorPrompts:
     excerpt: Callable[[str], str] = keep_whole_task
 
 
+@implementation("context-assembler", "vector")
 class VectorContextAssembler(ContextAssemblerBase):
     """ContextAssembler that retrieves context via vector (semantic) search.
 

@@ -31,7 +31,10 @@
  "context-assembler": {
   "default": "",
   "modules": {
-   "composite": "hubofhubs.recall.composite_assembler"
+   "bm25": "hubofhubs.recall.bm25_store",
+   "composite": "hubofhubs.recall.composite_assembler",
+   "hybrid": "hubofhubs.recall.hybrid_assembler",
+   "vector": "hubofhubs.recall.vector_assembler"
   }
  },
  "know-the-world": {

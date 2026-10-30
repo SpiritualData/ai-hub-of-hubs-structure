@@ -162,3 +162,10 @@ def test_assemble_never_raises(broken):
             raise broken
 
     assert VectorContextAssembler(Broken(), num_queries=0).assemble("x").card_ids == []
+
+
+def test_the_retrieval_arms_are_registered_under_the_context_assembler_seat_and_none_is_selected():
+    import hubofhubs
+    from hubofhubs.recall.vector_assembler import VectorContextAssembler as Arm
+    assert {"vector", "bm25", "hybrid", "composite"} <= set(hubofhubs.names("context-assembler"))
+    assert hubofhubs.resolve("context-assembler", config=hubofhubs.AssemblyConfig(selections={"context-assembler": "vector"})) is Arm

@@ -70,6 +70,9 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `act-in-the-world:fast_edit` | unconfirmed: for Joshua to confirm. | hubofhubs/act/fast_edit.py |  |
 | `act-in-the-world:mcp_operations` | unconfirmed: for Joshua to confirm. | hubofhubs/act/mcp_operations.py |  |
 | `know-the-world:openalex` | unconfirmed: for Joshua to confirm. | hubofhubs/science/openalex.py |  |
+| `context-assembler:bm25` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/bm25_store.py |  |
+| `context-assembler:hybrid` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/hybrid_assembler.py |  |
+| `context-assembler:vector` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/vector_assembler.py |  |
 
 ## Metrics
 
