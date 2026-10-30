@@ -34,6 +34,11 @@
   "statements": 95,
   "percent": 80.0
  },
+ "know-the-world:web_research": {
+  "executed": 107,
+  "statements": 272,
+  "percent": 39.3
+ },
  "reason-and-answer:tier_selector": {
   "executed": 129,
   "statements": 132,
@@ -55,9 +60,9 @@
   "percent": 95.7
  },
  "unassigned": {
-  "executed": 1053,
-  "statements": 3111,
-  "percent": 33.8
+  "executed": 1952,
+  "statements": 3560,
+  "percent": 54.8
  },
  "watch-for-risk:overseer": {
   "executed": 24,
