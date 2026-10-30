@@ -13,6 +13,7 @@ from typing import Any, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 from .card import Card
+from .ports.model import ModelProvider
 from .ports.search import SearchResponse
 
 
@@ -34,6 +35,13 @@ class ModelCall(typing.Protocol):
     """Asks a model one question at a given tier and returns the text. External: the consumer provides it."""
 
     def complete(self, prompt: str, tier: str = "") -> str: ...
+
+
+@solution("call-a-model")
+@runtime_checkable
+class ModelCalling(ModelProvider, typing.Protocol):
+    """Plans, answers and lists models for one vendor (or, as the router, for several). External system: the hub ships arms over
+    the vendor SDKs (extras ``anthropic``, ``gemini``, ``openai``) and a router; the consumer passes keys and settings as arguments."""
 
 
 @solution("search-backend")

@@ -11,3 +11,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | `hub-scorer` | core | The scorer that reads the registry with a consumer binding: eight checks per area and a combined score | stay-current, connect-any-integration, reason-and-answer, watch-for-risk |
 | `hub-ports` | core | unconfirmed: for Payal to confirm: neutral ports moved out of a consumer core (usage scope, model provider, context assembly) | remember-and-recall, reason-and-answer |
 | `hub-websearch` | core | unconfirmed: for Payal to confirm: the search-backend arms and the web research code moved out of a consumer (backends, cache, limiter, page fetch and extraction, the research adapter) | search-backend |
+| `hub-models` | core | unconfirmed: for Joshua to confirm. | call-a-model, reason-and-answer |

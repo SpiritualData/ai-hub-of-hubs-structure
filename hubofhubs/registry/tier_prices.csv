@@ -1,4 +1,8 @@
-provider,model,input_per_mtok,output_per_mtok,currency,source_url,checked_on
-anthropic,claude-haiku-5-5,,,USD,,
-anthropic,claude-sonnet-5-5,,,USD,,
-anthropic,claude-opus-5-5,,,USD,,
+provider,model,input_per_mtok,output_per_mtok,currency,from_prompt_tokens,valid_from,valid_until,source_url,checked_on
+anthropic,claude-haiku-5-5,0.10,0.50,USD,,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
+anthropic,claude-haiku-5-5,0.50,2.50,USD,100000,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
+anthropic,claude-sonnet-5-5,2,10,USD,,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
+anthropic,claude-opus-5-5,4,20,USD,,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
+gemini,gemini-3.1-flash-lite,0.25,1.50,USD,,,,https://ai.google.dev/gemini-api/docs/pricing,2026-10-30
+gemini,gemini-3.6-flash,0.75,3.75,USD,,,2026-12-31,https://ai.google.dev/gemini-api/docs/pricing,2026-10-30
+gemini,gemini-3.6-flash,1.50,7.50,USD,,2027-01-01,,https://ai.google.dev/gemini-api/docs/pricing,2026-10-30

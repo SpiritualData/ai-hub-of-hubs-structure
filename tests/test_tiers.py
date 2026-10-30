@@ -89,4 +89,48 @@ def test_price_and_credit_rows_carry_a_source_and_a_checked_date_when_they_hold_
             assert row["source_url"].startswith("https://") and registry.days_since(row["checked_on"]) is not None
     for row in registry.read("tier_credits.csv"):
         if row["balance"] or row["allowance"]:
-            assert row["credit_value"] and row["source_url"].startswith("https://") and registry.days_since(row["checked_on"]) is not None
+            assert row["credit_value"] or row["note"] == "unconfirmed: for Payal to confirm."     # never defaulted: unset and flagged
+            assert row["source_url"].startswith("https://") and registry.days_since(row["checked_on"]) is not None
+
+
+def test_a_blank_credit_value_is_face_value_never_free():
+    credits = [dict(provider="p", balance="", allowance="3", credit_value="")]
+    listed, spent, used, effective = tiers.arm_cost(arm("small", 9), PRICES, credits)
+    assert (round(used, 6), round(spent, 6), round(effective, 6)) == (2.0, 0.0, 2.0) and effective == listed
+
+
+def test_the_recorded_prices_are_the_official_ones_with_their_tiers_and_dates():
+    prices = registry.read("tier_prices.csv")
+    assert tiers.rates(prices, "anthropic", "claude-haiku-5-5") == (0.10, 0.50)
+    assert tiers.rates(prices, "anthropic", "claude-haiku-5-5", prompt_tokens=100_000) == (0.50, 2.50)
+    assert tiers.rates(prices, "anthropic", "claude-sonnet-5-5") == (2.0, 10.0)
+    assert tiers.rates(prices, "anthropic", "claude-opus-5-5") == (4.0, 20.0)
+    assert tiers.rates(prices, "gemini", "gemini-3.1-flash-lite") == (0.25, 1.50)
+    assert tiers.rates(prices, "gemini", "gemini-3.6-flash", day="2026-12-31") == (0.75, 3.75)
+    assert tiers.rates(prices, "gemini", "gemini-3.6-flash", day="2027-01-01") == (1.50, 7.50)
+    assert tiers.rates(prices, "anthropic", "no-such-model") is None
+    assert round(tiers.list_cost(prices, "anthropic", "claude-haiku-5-5", 50_000, 50_000), 6) == 0.03
+    assert round(tiers.list_cost(prices, "anthropic", "claude-haiku-5-5", 200_000, 100_000), 6) == 0.35
+
+
+def test_choose_keeps_each_default_with_no_measurement_and_counts_the_allowance_as_cost():
+    got = tiers.choose()
+    assert {t: r["arm"] for t, r in got.items()} == {"cheap": ("anthropic", "claude-haiku-5-5"), "mid": ("anthropic", "claude-sonnet-5-5"),
+                                                      "strong": ("anthropic", "claude-opus-5-5")}
+    credits = registry.read("tier_credits.csv")
+    assert tiers.credit_of(credits, "anthropic") == (200.0, 1.0)
+
+
+def test_choose_offers_only_configured_providers(tmp_path):
+    import shutil
+    for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv", "tier_measurements.csv"):
+        shutil.copy(registry.DATA / name, tmp_path / name)
+    got = tiers.choose(tmp_path, available={"gemini"})
+    assert got["cheap"]["arm"] == ("gemini", "gemini-3.1-flash-lite") and "cheapest priced available" in got["cheap"]["reason"]
+    assert got["mid"]["arm"] == ("gemini", "gemini-3.6-flash") and got["strong"]["arm"] is None
+    (tmp_path / "tier_measurements.csv").write_text(
+        "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
+        "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n"
+        "cheap,gemini,gemini-3.1-flash-lite,10,9,1000000,200000,test,2026-10-30\n")
+    both = tiers.choose(tmp_path)
+    assert both["cheap"]["arm"] == ("anthropic", "claude-haiku-5-5")          # same passing work, the cheaper arm wins

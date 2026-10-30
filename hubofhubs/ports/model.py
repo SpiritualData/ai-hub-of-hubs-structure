@@ -4,8 +4,11 @@ Split out of ``adapters.py`` by definition; that module re-exports every name he
 """
 from __future__ import annotations
 
+import abc
 import typing
 from typing import Any, Dict, List, Optional, runtime_checkable
+
+from .scope import ThreadLocalCounter
 
 
 def accepts_reasoning_hint(provider: Any) -> bool:
@@ -158,3 +161,29 @@ class ModelProvider(typing.Protocol):
         Uses the same LLM API key the provider already has (no separate web-search key).
         Callers should gate on ``supports_web_search(model)`` first.
         """
+
+
+class ModelProviderBase(abc.ABC):
+    """Nominal base of the provider arms: per-usage-scope counters (``ThreadLocalCounter``), because one provider instance is shared
+    by tasks running concurrently and each turn reads only its own ``tokens_in`` / ``tokens_out``."""
+    call_count = ThreadLocalCounter()
+    tokens_in = ThreadLocalCounter()
+    tokens_out = ThreadLocalCounter()
+
+    def __init__(self):
+        self.call_count = 0
+        self.tokens_in = 0
+        self.tokens_out = 0
+
+    @abc.abstractmethod
+    def plan(self, prompt, *, model, tool_schema, layers=None) -> Dict[str, Any]: ...
+    @abc.abstractmethod
+    def answer(self, messages, *, model, system=None, layers=None) -> str: ...
+    @abc.abstractmethod
+    def list_models(self) -> List[str]: ...
+
+    def supports_web_search(self, model: Optional[str] = None) -> bool:
+        return False
+
+    def web_search(self, query: str, *, model: str, max_results: int = 5) -> Dict[str, Any]:
+        raise NotImplementedError("web search not supported by this provider")

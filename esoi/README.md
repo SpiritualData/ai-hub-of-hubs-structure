@@ -42,6 +42,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `card-store` | card-store: a place to keep and find cards | local_card_store | card-store metric (draft) |
 | `model-call` | model-call: ask a model one question |  | model-call metric (draft) |
 | `search-backend` | search-backend: run one search |  | search-backend metric (draft) |
+| `call-a-model` | unconfirmed: for Joshua to confirm. |  | model-call metric (draft) |
 
 ## Implementations
 
@@ -58,6 +59,11 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `search-backend:searxng` | SearXNG backend | hubofhubs/websearch/backends.py |  |
 | `search-backend:serper` | Serper backend | hubofhubs/websearch/backends.py |  |
 | `search-backend:tavily` | Tavily backend | hubofhubs/websearch/backends.py |  |
+| `call-a-model:anthropic` | unconfirmed: for Joshua to confirm. | hubofhubs/models/anthropic.py |  |
+| `call-a-model:deepseek` | unconfirmed: for Joshua to confirm. | hubofhubs/models/openai.py |  |
+| `call-a-model:gemini` | unconfirmed: for Joshua to confirm. | hubofhubs/models/gemini.py |  |
+| `call-a-model:multi_provider` | unconfirmed: for Joshua to confirm. | hubofhubs/models/router.py |  |
+| `call-a-model:openai` | unconfirmed: for Joshua to confirm. | hubofhubs/models/openai.py |  |
 
 ## Metrics
 

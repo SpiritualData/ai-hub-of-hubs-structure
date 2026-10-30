@@ -13,12 +13,14 @@ dependencies = ["esoi"]
 [project.optional-dependencies]
 # One extra per arm that needs a third-party library; the library is imported lazily, only when that arm runs.
 web = ["httpx"]                      # search-backend arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching
-gemini = ["google-genai", "httpx"]   # search-backend arm: gemini
+gemini = ["google-genai", "httpx"]   # search-backend arm: gemini; call-a-model arm: gemini
 locks = ["filelock"]                 # search-backend arm: the daily limiter shares one spend across processes (degrades to per-process without it)
+anthropic = ["anthropic"]               # call-a-model arm: anthropic
+openai = ["openai"]                   # call-a-model arms: openai, deepseek (an OpenAI-compatible endpoint)
 pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
 
 [tool.setuptools]
-packages = ["hubofhubs", "hubofhubs.ports", "hubofhubs.websearch"]
+packages = ["hubofhubs", "hubofhubs.models", "hubofhubs.ports", "hubofhubs.websearch"]
 
 [tool.setuptools.package-data]
 hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]

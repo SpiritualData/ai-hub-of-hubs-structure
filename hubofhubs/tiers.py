@@ -6,8 +6,11 @@ million tokens, with a source URL and a checked-on date). Prepaid credits come f
 
 Cost of an arm = money actually spent after credits + ``credit_value`` x the credits it used. Credits are therefore never free:
 ``credit_value`` (0 to 1) is what a credit is worth to the owner if it were not used here (1 when unused credit is not lost,
-lower when it expires).
+lower when it expires). A credit row whose ``credit_value`` is blank is counted at its face value (1): the value is not defaulted
+in the data, and the reading that never understates cost applies until it is confirmed.
 """
+from datetime import date
+
 from esoi import implementation
 
 from . import registry
@@ -15,15 +18,37 @@ from . import registry
 MIN_CASES = 1
 
 
+def in_force(row, day):
+    """Whether a price row applies on ``day`` (an ISO date): ``valid_from`` and ``valid_until`` are inclusive and blank when open."""
+    return (not row.get("valid_from") or row["valid_from"] <= day) and (not row.get("valid_until") or day <= row["valid_until"])
+
+
+def rates(prices, provider, model, prompt_tokens=0, day=None):
+    """``(input, output)`` USD per million tokens for a model, or None when no row in force holds a number. A model may have
+    several rows: ``from_prompt_tokens`` marks a higher rate for prompts at least that long (the longest threshold reached wins),
+    and ``valid_from`` / ``valid_until`` a price change on a date. The hub reads no clock for the rule: pass ``day`` to fix it."""
+    day = day or date.today().isoformat()
+    rows = [r for r in prices if r["provider"] == provider and r["model"] == model and in_force(r, day)
+            and int(number(r.get("from_prompt_tokens"))) <= prompt_tokens]
+    if not rows:
+        return None
+    row = max(rows, key=lambda r: number(r.get("from_prompt_tokens")))
+    try:
+        return float(row["input_per_mtok"]), float(row["output_per_mtok"])
+    except (TypeError, ValueError):
+        return None
+
+
+def list_cost(prices, provider, model, tokens_in, tokens_out, prompt_tokens=None, day=None):
+    """The list price in USD of ``tokens_in`` and ``tokens_out`` on a model, or None when it is not priced. ``prompt_tokens`` (the
+    length of the prompt, default ``tokens_in``) picks the rate tier."""
+    got = rates(prices, provider, model, tokens_in if prompt_tokens is None else prompt_tokens, day)
+    return None if got is None else tokens_in / 1e6 * got[0] + tokens_out / 1e6 * got[1]
+
+
 def price_of(prices, arm):
-    """The price row for an arm, or None when there is none or it holds no number."""
-    for row in prices:
-        if row["provider"] == arm["provider"] and row["model"] == arm["model"]:
-            try:
-                return float(row["input_per_mtok"]), float(row["output_per_mtok"])
-            except (TypeError, ValueError):
-                return None
-    return None
+    """The base ``(input, output)`` price for an arm (a prompt under any threshold), or None when there is none."""
+    return rates(prices, arm["provider"], arm["model"])
 
 
 def number(text):
@@ -33,12 +58,20 @@ def number(text):
         return 0.0
 
 
+def credit_value(text):
+    """What a credit is worth (0 to 1); blank or unreadable is face value (1), so an unconfirmed value never understates cost."""
+    try:
+        return min(1.0, max(0.0, float(text)))
+    except (TypeError, ValueError):
+        return 1.0
+
+
 def credit_of(credits, provider):
     """(available amount, credit_value) for a provider: balance plus allowance, 0 when no row or no number."""
     for row in credits:
         if row["provider"] == provider:
-            return number(row.get("balance")) + number(row.get("allowance")), min(1.0, max(0.0, number(row.get("credit_value"))))
-    return 0.0, 0.0
+            return number(row.get("balance")) + number(row.get("allowance")), credit_value(row.get("credit_value"))
+    return 0.0, 1.0
 
 
 def arm_cost(arm, prices, credits):
@@ -104,6 +137,38 @@ def default_arms(folder=None):
     return held, candidates
 
 
+def measured_arms(folder=None):
+    """``{tier: [arm]}`` from ``tier_measurements.csv`` (one row per tier and arm: cases, passed, tokens_in, tokens_out)."""
+    out = {}
+    for r in registry.read("tier_measurements.csv", folder):
+        out.setdefault(r["tier"], []).append(dict(provider=r["provider"], model=r["model"], cases=int(number(r["cases"])),
+                                                   passed=int(number(r["passed"])), tokens_in=int(number(r["tokens_in"])),
+                                                   tokens_out=int(number(r["tokens_out"]))))
+    return out
+
+
+def choose(folder=None, available=None, **bars):
+    """``{tier: {arm, reason, scored}}`` from the registry's own data: arms, prices, credits and measurements. ``available`` (the
+    providers a consumer has configured; None for all) restricts the arms. With a measurement the metric decides; with none the
+    held default stays, and when the held default is not available the cheapest priced arm of an available provider is used, with
+    that reason. Nothing is chosen for a tier with no priced available arm (``arm`` is None)."""
+    held, candidates = default_arms(folder)
+    prices, credits = (registry.read(f"tier_{n}.csv", folder) for n in ("prices", "credits"))
+    measured = measured_arms(folder)
+    ok = lambda pair: available is None or pair[0] in available
+    out = {}
+    for tier in sorted(set(held) | set(candidates)):
+        default = held.get(tier) if tier in held and ok(held[tier]) else None
+        got = pick([a for a in measured.get(tier, []) if ok((a["provider"], a["model"]))], prices, credits, default, **bars)
+        if got["arm"] is None:
+            pairs = [p for p in ([held[tier]] if tier in held else []) + candidates.get(tier, []) if ok(p) and rates(prices, *p)]
+            if pairs:
+                best = min(pairs, key=lambda p: sum(rates(prices, *p)))
+                got = dict(got, arm=best, reason="no measurement and the held arm is not available: the cheapest priced available arm")
+        out[tier] = got
+    return out
+
+
 def portfolio(choices, tiers, prices, credits=()):
     """Passing cases per unit of cost over all tiers for a ``{tier: (provider, model)}`` choice (an unpriced choice counts as 0)."""
     passed = cost = 0.0
@@ -150,5 +215,7 @@ class TierSelector:
     pick = staticmethod(pick)
     select = staticmethod(select)
     default_arms = staticmethod(default_arms)
+    choose = staticmethod(choose)
+    list_cost = staticmethod(list_cost)
     portfolio = staticmethod(portfolio)
     scripted_choices = staticmethod(scripted_choices)

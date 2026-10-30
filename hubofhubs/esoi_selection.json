@@ -1,4 +1,14 @@
 {
+ "call-a-model": {
+  "default": "",
+  "modules": {
+   "anthropic": "hubofhubs.models.anthropic",
+   "deepseek": "hubofhubs.models.openai",
+   "gemini": "hubofhubs.models.gemini",
+   "multi_provider": "hubofhubs.models.router",
+   "openai": "hubofhubs.models.openai"
+  }
+ },
  "card-store": {
   "default": "local_card_store",
   "modules": {
