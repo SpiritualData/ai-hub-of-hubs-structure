@@ -357,3 +357,87 @@ def test_the_router_routes_by_prefix_counts_the_delta_and_stops_at_the_limit():
     seen.append((11, 0, ""))
     assert mp.answer([], model="claude-haiku-5-5") == "limit reached" and mp.plan("p", model="m", tool_schema={})["action"] == "answer"
     assert mp.web_search("q", model="m")["results"] == [] and sorted(mp.list_models()) == []
+
+
+# ---- a missing key or library is an error the router can fail over on, never an empty decision --------------------------
+
+def test_plan_raises_when_the_key_is_missing_so_the_router_can_fail_over(monkeypatch):
+    monkeypatch.setattr(retry.time, "sleep", lambda s: None)
+    fake_openai(monkeypatch, {})
+    google = types.ModuleType("google")
+    google.genai = types.ModuleType("google.genai")
+    google.genai.Client = lambda **kw: Obj()
+    monkeypatch.setitem(sys.modules, "google", google)
+    monkeypatch.setitem(sys.modules, "google.genai", google.genai)
+    fake_anthropic = types.ModuleType("anthropic")
+    fake_anthropic.Anthropic = lambda **kw: Obj()
+    monkeypatch.setitem(sys.modules, "anthropic", fake_anthropic)
+    for provider in (GeminiProvider(), OpenAIProvider(), DeepSeekProvider(), AnthropicProvider()):
+        provider.resolve_model = lambda m: m
+        with pytest.raises(RuntimeError, match="key"):
+            provider.plan("p", model="m", tool_schema=TOOL)
+
+
+def test_plan_raises_when_the_library_is_missing(monkeypatch):
+    for name in ("openai", "google", "google.genai", "anthropic"):
+        monkeypatch.setitem(sys.modules, name, None)       # None in sys.modules makes the import fail
+    for provider in (GeminiProvider(api_key="k"), OpenAIProvider(api_key="k"), AnthropicProvider(api_key="k")):
+        provider.resolve_model = lambda m: m
+        with pytest.raises((RuntimeError, ImportError), match="install|No module|import"):
+            provider.plan("p", model="m", tool_schema=TOOL)
+
+
+def test_a_missing_key_names_the_variable_the_consumer_passed(monkeypatch):
+    fake_openai(monkeypatch, {})
+    google = types.ModuleType("google")
+    google.genai = types.ModuleType("google.genai")
+    google.genai.Client = lambda **kw: Obj()
+    monkeypatch.setitem(sys.modules, "google", google)
+    monkeypatch.setitem(sys.modules, "google.genai", google.genai)
+    fake_anthropic = types.ModuleType("anthropic")
+    fake_anthropic.Anthropic = lambda **kw: Obj()
+    monkeypatch.setitem(sys.modules, "anthropic", fake_anthropic)
+    for provider, name in ((GeminiProvider(env_name="MY_GOOGLE_KEY"), "MY_GOOGLE_KEY"), (OpenAIProvider(env_name="MY_OPENAI_KEY"), "MY_OPENAI_KEY"),
+                           (DeepSeekProvider(env_name="MY_DS_KEY"), "MY_DS_KEY"), (AnthropicProvider(env_name="MY_ANTHROPIC_KEY"), "MY_ANTHROPIC_KEY")):
+        with pytest.raises(RuntimeError, match=name):
+            provider.get_client()
+    with pytest.raises(RuntimeError, match="API key"):
+        GeminiProvider().get_client()                      # no name given: the message still says what is missing
+
+
+# ---- calls the first version of the suite covered and the move dropped ---------------------------------------------------
+
+def test_anthropic_web_search_keeps_thinking_off_and_caps_the_server_side_searches():
+    m = Messages()
+    p = anthropic(m)
+    p.web_search("q", model="x", max_results=9)
+    assert m.last["thinking"] == {"type": "disabled"} and p.call_count == 1
+    assert m.last["tools"] == [{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}]
+    p.web_search("q", model="x", max_results=0)
+    assert m.last["tools"][0]["max_uses"] == 1
+    on = Messages()
+    anthropic(on, thinking=True).web_search("q", model="x")
+    assert on.last["thinking"] is None
+
+
+def test_gemini_fetch_url_and_web_search_count_their_calls_and_tokens(monkeypatch):
+    types_module = types.ModuleType("google.genai.types")
+    types_module.GenerateContentConfig = lambda **kw: Obj(**kw)
+    types_module.Tool = lambda **kw: Obj(**kw)
+    types_module.GoogleSearch = lambda: "search"
+    types_module.UrlContext = lambda: "context"
+    google = types.ModuleType("google")
+    google.genai = types.ModuleType("google.genai")
+    google.genai.types = types_module
+    monkeypatch.setitem(sys.modules, "google", google)
+    monkeypatch.setitem(sys.modules, "google.genai", google.genai)
+    monkeypatch.setitem(sys.modules, "google.genai.types", types_module)
+    entry = Obj(url_retrieval_status="URL_RETRIEVAL_STATUS_SUCCESS", retrieved_url="https://example.org/final")
+    p = gemini("page text", candidates=[Obj(url_context_metadata=Obj(url_metadata=[entry]))])
+    p.fetch_url("https://example.org/a", model="m", instruction="copy it")
+    assert (p.call_count, p.tokens_in, p.tokens_out) == (1, 5, 2)
+    assert p.client.models.last["contents"] == "copy it\n\nhttps://example.org/a"
+    chunk = Obj(web=Obj(title="T", uri="https://example.org/r"))
+    searcher = gemini("found", candidates=[Obj(grounding_metadata=Obj(grounding_chunks=[chunk, chunk]))])
+    assert searcher.web_search("q", model="m", max_results=1) == {"answer": "found", "results": [{"title": "T", "url": "https://example.org/r", "snippet": ""}]}
+    assert (searcher.call_count, searcher.tokens_in) == (1, 5)

@@ -44,9 +44,11 @@ def thinking_kwargs(create, enabled: bool = False) -> Dict[str, Any]:
 @implementation("call-a-model", "anthropic")
 class AnthropicProvider(ModelProviderBase):
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, max_answer_tokens: int = 2048,
-                 max_plan_tokens: int = 800, thinking: bool = False):
+                 max_plan_tokens: int = 800, thinking: bool = False,
+                 env_name: Optional[str] = None):
         super().__init__()
         self.api_key = api_key
+        self.env_name = env_name           # the consumer's name for where the key comes from, so a missing key can name it
         self.max_answer_tokens = max_answer_tokens
         self.max_plan_tokens = max_plan_tokens
         self.thinking = thinking
@@ -57,7 +59,7 @@ class AnthropicProvider(ModelProviderBase):
         if self.client is None:
             import anthropic  # lazy: the anthropic extra
             if not self.api_key:
-                raise RuntimeError("an Anthropic API key is not configured")
+                raise RuntimeError(f"{self.env_name} is not configured" if self.env_name else "an Anthropic API key is not configured")
             self.client = anthropic.Anthropic(api_key=self.api_key)
         return self.client
 
@@ -79,6 +81,7 @@ class AnthropicProvider(ModelProviderBase):
 
     def plan(self, prompt: str, *, model: str, tool_schema: Dict[str, Any],
              layers: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
+        self.get_client()      # first: a missing key or library raises here, so a router can fail over
         kwargs: Dict[str, Any] = {"model": self.resolve_model(model), "max_tokens": self.max_plan_tokens, "tools": [tool_schema],
                                   "tool_choice": {"type": "tool", "name": tool_schema["name"]}}
         system_array, tail = build_cached_system(None, layers) if layers else ([], prompt)

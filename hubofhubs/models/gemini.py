@@ -36,9 +36,10 @@ def image_part(block: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
 @implementation("call-a-model", "gemini")
 class GeminiProvider(ModelProviderBase):
-    def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0):
+    def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, env_name: Optional[str] = None):
         super().__init__()
         self.api_key = api_key
+        self.env_name = env_name           # the consumer's name for where the key comes from, so a missing key can name it
         self.client = None
         self.listing = ModelListCache(cache_seconds)
 
@@ -49,7 +50,7 @@ class GeminiProvider(ModelProviderBase):
             except ImportError:
                 raise RuntimeError("google-genai is not installed. Install it with: pip install google-genai")
             if not self.api_key:
-                raise RuntimeError("a Google API key is not configured")
+                raise RuntimeError(f"{self.env_name} is not configured" if self.env_name else "a Google API key is not configured")
             self.client = google.genai.Client(api_key=self.api_key)
         return self.client
 
@@ -82,7 +83,8 @@ class GeminiProvider(ModelProviderBase):
 
     def plan(self, prompt: str, *, model: str, tool_schema: Dict[str, Any],
              layers: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
-        """Forced JSON output (Gemini has no tool_choice); a malformed response is re-asked, and after the retries the decision is {}."""
+        """Forced JSON output (Gemini has no tool_choice); a malformed response is re-asked, and after the retries the decision is {}. A missing key or library raises."""
+        self.get_client()      # first: a missing key or library raises here, so a router can fail over; only a bad reply becomes {}
         model = self.resolve_model(model)
         instruction, contents = split_layers_for_gemini(None, layers) if layers else (None, prompt)
         config: Dict[str, Any] = {"response_mime_type": "application/json"}
