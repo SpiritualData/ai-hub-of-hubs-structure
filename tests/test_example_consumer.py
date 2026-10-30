@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import example_consumer  # noqa: E402
 from support import ROOT  # noqa: E402
 
-FIRST_CONSUMER_TERMS = re.compile(r"quest|qar|spiritual|payal|joshua", re.I)
+FIRST_CONSUMER_TERMS = re.compile(r"quest|qar|spiritual", re.I)
 SECOND_CONSUMER_TERMS = re.compile(r"acme", re.I)
 
 
