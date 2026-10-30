@@ -6,3 +6,4 @@ hub-scorer,core,hubofhubs/*.py;hubofhubs/esoi_selection.json;tests/test_registry
 hub-ports,core,hubofhubs/ports/*.py;tests/test_ports.py,"unconfirmed: for Payal to confirm: neutral ports moved out of a consumer core (usage scope, model provider, context assembly)",remember-and-recall;reason-and-answer
 hub-websearch,core,hubofhubs/websearch/*.py;tests/test_websearch.py;tests/test_ws_*.py,"unconfirmed: for Payal to confirm: the search-backend arms and the web research code moved out of a consumer (backends, cache, limiter, page fetch and extraction, the research adapter)",search-backend
 hub-models,core,hubofhubs/models/*.py;tests/test_models.py,unconfirmed: for Joshua to confirm.,call-a-model;reason-and-answer
+hub-recall,core,hubofhubs/recall/*.py;tests/test_recall_*.py,unconfirmed: for Joshua to confirm.,remember-and-recall;context-assembler

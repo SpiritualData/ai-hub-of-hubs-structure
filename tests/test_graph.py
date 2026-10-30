@@ -14,7 +14,8 @@ from hubofhubs.card import Card  # noqa: E402
 from hubofhubs.cardstore import LocalCardStore  # noqa: E402
 from support import ROOT  # noqa: E402
 
-SEATS = {"card-store": seats.CardStore, "model-call": seats.ModelCall, "search-backend": seats.SearchBackend,
+SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssembling, "model-call": seats.ModelCall,
+         "call-a-model": seats.ModelCalling, "search-backend": seats.SearchBackend,
          "reason-and-answer": seats.TierSelection, "stay-current": seats.FreshnessReading,
          "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching}
 SOLUTIONS = registry.read("solutions.csv", ROOT / "esoi")
@@ -26,7 +27,7 @@ def test_the_seats_module_holds_only_protocol_classes_and_imports():
     for node in tree.body:
         assert isinstance(node, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.Expr)), ast.dump(node)[:80]
         if isinstance(node, ast.ClassDef):
-            assert [ast.unparse(b) for b in node.bases] == ["typing.Protocol"]
+            assert [ast.unparse(b) for b in node.bases][-1] == "typing.Protocol"   # a seat may extend a port Protocol first
             assert all(isinstance(n, (ast.FunctionDef, ast.Expr)) for n in node.body)
 
 
@@ -42,7 +43,9 @@ def test_every_recorded_arm_is_declared_in_code_and_satisfies_its_seat():
     for row in IMPLEMENTATIONS:
         sid, _, name = row["implementation_id"].partition(":")
         target = resolve(sid, name)
-        assert isinstance(target(), SEATS[sid]), row["implementation_id"]
+        # An arm that needs arguments (a vendor key, a list of assemblers) is checked as a class; the others are built and checked.
+        satisfied = issubclass(target, SEATS[sid]) if isinstance(target, type) else isinstance(target(), SEATS[sid])
+        assert satisfied, row["implementation_id"]
 
 
 def test_uses_solution_ids_equals_the_constructor_parameters_and_the_graph_is_sound():

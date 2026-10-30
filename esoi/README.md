@@ -43,6 +43,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `model-call` | model-call: ask a model one question |  | model-call metric (draft) |
 | `search-backend` | search-backend: run one search |  | search-backend metric (draft) |
 | `call-a-model` | unconfirmed: for Joshua to confirm. |  | model-call metric (draft) |
+| `context-assembler` | unconfirmed: for Joshua to confirm. |  | unconfirmed: for Joshua to confirm. |
 
 ## Implementations
 
@@ -64,6 +65,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `call-a-model:gemini` | unconfirmed: for Joshua to confirm. | hubofhubs/models/gemini.py |  |
 | `call-a-model:multi_provider` | unconfirmed: for Joshua to confirm. | hubofhubs/models/router.py |  |
 | `call-a-model:openai` | unconfirmed: for Joshua to confirm. | hubofhubs/models/openai.py |  |
+| `context-assembler:composite` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/composite_assembler.py |  |
 
 ## Metrics
 
@@ -85,3 +87,4 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-card-store`, card-store metric (draft): `none`
 - `metric-model-call`, model-call metric (draft): `none`
 - `metric-search-backend`, search-backend metric (draft): `none`
+- `metric-context-assembler`, unconfirmed: for Joshua to confirm.: `none`

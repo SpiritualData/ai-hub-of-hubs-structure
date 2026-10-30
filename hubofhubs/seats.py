@@ -13,6 +13,7 @@ from typing import Any, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 from .card import Card
+from .ports.context import ContextAssembler
 from .ports.model import ModelProvider
 from .ports.search import SearchResponse
 
@@ -27,6 +28,13 @@ class CardStore(typing.Protocol):
     def search(self, query: str = "", limit: int = 10, tag: str = "") -> Sequence[Card]: ...
     def delete(self, card_id: str) -> bool: ...
     def count(self) -> int: ...
+
+
+@solution("context-assembler")
+@runtime_checkable
+class ContextAssembling(ContextAssembler, typing.Protocol):
+    """Selects and renders the context a task needs into one view (and the ids of the cards it drew on); never raises. The hub ships
+    the composite arm, which runs several assemblers in order as one; a consumer's own retrieval arms are provided by the consumer."""
 
 
 @solution("model-call")

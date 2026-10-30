@@ -21,6 +21,12 @@
    "hub_of_hubs_scorer": "hubofhubs.measure"
   }
  },
+ "context-assembler": {
+  "default": "",
+  "modules": {
+   "composite": "hubofhubs.recall.composite_assembler"
+  }
+ },
  "reason-and-answer": {
   "default": "tier_selector",
   "modules": {

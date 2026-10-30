@@ -20,7 +20,7 @@ openai = ["openai"]                   # call-a-model arms: openai, deepseek (an 
 pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
 
 [tool.setuptools]
-packages = ["hubofhubs", "hubofhubs.models", "hubofhubs.ports", "hubofhubs.websearch"]
+packages = ["hubofhubs", "hubofhubs.models", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.websearch"]
 
 [tool.setuptools.package-data]
 hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]
