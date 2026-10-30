@@ -83,13 +83,9 @@ def test_default_arms_are_data_with_one_cheap_default_and_candidates_not_default
     assert candidates["cheap"] and not any(c in held.values() for c in candidates["cheap"])
 
 
-def test_price_and_credit_rows_carry_a_source_and_a_checked_date_when_they_hold_a_number():
+def test_price_rows_carry_a_source_and_a_checked_date_when_they_hold_a_number():
     for row in registry.read("tier_prices.csv"):
         if row["input_per_mtok"] or row["output_per_mtok"]:
-            assert row["source_url"].startswith("https://") and registry.days_since(row["checked_on"]) is not None
-    for row in registry.read("tier_credits.csv"):
-        if row["balance"] or row["allowance"]:
-            assert row["credit_value"] or row["note"] == "unconfirmed: for Payal to confirm."     # never defaulted: unset and flagged
             assert row["source_url"].startswith("https://") and registry.days_since(row["checked_on"]) is not None
 
 
@@ -113,12 +109,38 @@ def test_the_recorded_prices_are_the_official_ones_with_their_tiers_and_dates():
     assert round(tiers.list_cost(prices, "anthropic", "claude-haiku-5-5", 200_000, 100_000), 6) == 0.35
 
 
-def test_choose_keeps_each_default_with_no_measurement_and_counts_the_allowance_as_cost():
+def test_choose_keeps_each_default_with_no_measurement():
     got = tiers.choose()
     assert {t: r["arm"] for t, r in got.items()} == {"cheap": ("anthropic", "claude-haiku-5-5"), "mid": ("anthropic", "claude-sonnet-5-5"),
                                                       "strong": ("anthropic", "claude-opus-5-5")}
-    credits = registry.read("tier_credits.csv")
-    assert tiers.credit_of(credits, "anthropic") == (200.0, 1.0)
+    assert registry.read("tier_credits.csv") == []             # the hub ships the schema only: allowances are the consumer's own
+
+
+def test_the_hub_holds_no_allowance_and_a_consumer_passes_its_own_credits():
+    assert registry.read("tier_credits.csv") == []
+    plain = tiers.choose()["cheap"]["scored"]
+    own = [dict(provider="anthropic", balance="", allowance="200", credit_value="0.5")]
+    assert tiers.credit_of([], "anthropic") == (0.0, 1.0) and tiers.credit_of(own, "anthropic") == (200.0, 0.5)
+    assert plain == tiers.choose(credits=[])["cheap"]["scored"]
+    measured = {"cheap": [dict(provider="anthropic", model="claude-haiku-5-5", cases=10, passed=9, tokens_in=1_000_000, tokens_out=200_000)]}
+    prices = registry.read("tier_prices.csv")
+    free = tiers.pick(measured["cheap"], prices, own)["scored"][0]
+    paid = tiers.pick(measured["cheap"], prices, [])["scored"][0]
+    assert free["credits_used"] > 0 and free["money_spent"] == 0 and paid["credits_used"] == 0 and paid["money_spent"] > 0
+    assert free["cost"] < paid["cost"]                          # half-value credits cost half, so the same work is cheaper
+
+
+def test_choose_scores_measured_arms_with_the_credits_it_is_given(tmp_path):
+    import shutil
+    for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv", "tier_measurements.csv"):
+        shutil.copy(registry.DATA / name, tmp_path / name)
+    (tmp_path / "tier_measurements.csv").write_text(
+        "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
+        "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n")
+    own = [dict(provider="anthropic", balance="", allowance="200", credit_value="")]
+    without = tiers.choose(tmp_path)["cheap"]["scored"][0]
+    with_credit = tiers.choose(tmp_path, credits=own)["cheap"]["scored"][0]
+    assert without["credits_used"] == 0 and with_credit["credits_used"] > 0 and with_credit["money_spent"] == 0
 
 
 def test_choose_offers_only_configured_providers(tmp_path):

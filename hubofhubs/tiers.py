@@ -2,7 +2,9 @@
 
 Pure functions over data: no model call, no network. An arm is a dict with ``provider``, ``model``, ``cases`` (shared cases run),
 ``passed`` and the token totals ``tokens_in`` and ``tokens_out`` those cases used. Prices come from ``tier_prices.csv`` (per
-million tokens, with a source URL and a checked-on date). Prepaid credits come from ``tier_credits.csv``.
+million tokens, with a source URL and a checked-on date). Prepaid credits are the consumer's own: it
+passes its rows (``provider``, ``balance``, ``allowance``, ``credit_value``) to ``choose`` or ``pick``; the hub ships ``tier_credits.csv`` as the
+schema only and holds no organization's allowance.
 
 Cost of an arm = money actually spent after credits + ``credit_value`` x the credits it used. Credits are therefore never free:
 ``credit_value`` (0 to 1) is what a credit is worth to the owner if it were not used here (1 when unused credit is not lost,
@@ -147,13 +149,15 @@ def measured_arms(folder=None):
     return out
 
 
-def choose(folder=None, available=None, **bars):
-    """``{tier: {arm, reason, scored}}`` from the registry's own data: arms, prices, credits and measurements. ``available`` (the
+def choose(folder=None, available=None, credits=None, **bars):
+    """``{tier: {arm, reason, scored}}`` from the registry's own data (arms, prices and measurements) and the ``credits`` rows the
+    consumer passes (None: the folder's ``tier_credits.csv``, which ships empty). ``available`` (the
     providers a consumer has configured; None for all) restricts the arms. With a measurement the metric decides; with none the
     held default stays, and when the held default is not available the cheapest priced arm of an available provider is used, with
     that reason. Nothing is chosen for a tier with no priced available arm (``arm`` is None)."""
     held, candidates = default_arms(folder)
-    prices, credits = (registry.read(f"tier_{n}.csv", folder) for n in ("prices", "credits"))
+    prices = registry.read("tier_prices.csv", folder)
+    credits = registry.read("tier_credits.csv", folder) if credits is None else list(credits)
     measured = measured_arms(folder)
     ok = lambda pair: available is None or pair[0] in available
     out = {}

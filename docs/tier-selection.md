@@ -11,11 +11,13 @@ decides; no provider or model is a default by preference.
 - **Price rows** may have several rows for one model: `from_prompt_tokens` is a higher rate for prompts at least that long (Claude
   Haiku 5.5 above 100,000 tokens), and `valid_from` / `valid_until` a price change on a date (Gemini 3.6 Flash on 2027-01-01).
   Arm cost uses the base row; `tiers.list_cost` takes the prompt length.
-- **Credits** are data in `registry/tier_credits.csv`: a prepaid balance and an allowance per provider, and `credit_value`, what
-  a credit is worth if it is not used here. Cost is the money spent after credits plus `credit_value` times the credits used, so
-  credits lower the money spent and never count as free. The Anthropic row holds the 200 USD monthly allowance (Joshua's
-  direction of 2026-10-30; the `source_url` is the billing page where it is confirmed) and leaves `credit_value` blank:
-  unconfirmed, for Payal to confirm. A blank value is counted at face value (1), the reading that never understates cost.
+- **Credits** belong to the consumer: a prepaid balance and an allowance per provider, and `credit_value`, what a credit is worth
+  if it is not used here. The consumer passes its rows to `tiers.choose(credits=...)` (or `pick`) with the columns of
+  `registry/tier_credits.csv`: `provider`, `balance`, `allowance`, `credit_value`. That file ships with the header only, because
+  an organization's allowance is private to it. Cost is the money spent after credits plus `credit_value` times the credits
+  used, so credits lower the money spent and never count as free. A blank `credit_value` is counted at face value (1), the
+  reading that never understates cost; the value is set only by the owner of the credit. Example row (not data):
+  `anthropic,,100,0.5,USD,monthly`.
 - **Measurements** are data in `registry/tier_measurements.csv` (tier, provider, model, cases, passed, tokens, source,
   measured_on), written only from a metric run. None exists yet, so `tiers.choose` keeps each tier's default arm.
 - **`tiers.choose(available=...)`** reads all four files and returns the arm per tier, with the reason. A consumer passes the
