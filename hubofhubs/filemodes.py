@@ -1,4 +1,4 @@
-"""filemodes — give an atomically written file the permissions a normal write would have had.
+"""filemodes: give an atomically written file the permissions a normal write would have had.
 
 Every store here writes through ``tempfile.mkstemp`` + ``os.replace`` so a reader never sees half a
 file. But ``mkstemp`` ALWAYS creates the file as 0600, whatever the process umask, and ``os.replace``

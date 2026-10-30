@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional
 
 @dataclass
 class Observation:
-    """One result of a gather step — a read, a grep, or a structured query.
+    """One result of a gather step: a read, a grep, or a structured query.
 
     ``kind`` is "read" | "grep" | "query" | "error". The brain renders these into the
     planner prompt, so they stay small and JSON-serializable.
@@ -49,7 +49,7 @@ class RetrievalAdapterBase(abc.ABC):
     def query(self, spec: Dict[str, Any]) -> Observation:  # optional default
         return Observation(kind="error", error="query not supported by this adapter")
 
-    # Discovery defaults — non-abstract so existing adapters keep satisfying the ABC. An
+    # Discovery defaults, non-abstract so existing adapters keep satisfying the ABC. An
     # adapter that can enumerate its sources/operations overrides these; one that can't
     # returns a benign "nothing to discover" Observation (never an error that stalls the loop).
     def list_sources(self) -> Observation:
@@ -76,10 +76,10 @@ class RetrievalAdapterBase(abc.ABC):
     reference_type: Optional[str] = None
 
     def make_locator(self, candidate: Any) -> Dict[str, Any]:
-        """Default: unsupported — no locator. Override in an adapter that sets ``reference_type``."""
+        """Default: unsupported, no locator. Override in an adapter that sets ``reference_type``."""
         return {}
 
     def resolve_reference(self, locator: Dict[str, Any], *, max_chars: int = 2000) -> Optional[str]:
-        """Default: unsupported — nothing to resolve. Override in an adapter that sets
+        """Default: unsupported, nothing to resolve. Override in an adapter that sets
         ``reference_type`` to re-fetch fresh content for its own references. Never raises."""
         return None
