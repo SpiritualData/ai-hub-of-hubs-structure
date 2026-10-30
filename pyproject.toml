@@ -17,7 +17,7 @@ gemini = ["google-genai", "httpx"]   # search-backend arm: gemini; call-a-model 
 locks = ["filelock"]                 # search-backend arm: the daily limiter shares one spend across processes (degrades to per-process without it)
 anthropic = ["anthropic"]               # call-a-model arm: anthropic
 openai = ["openai"]                   # call-a-model arms: openai, deepseek (an OpenAI-compatible endpoint)
-mcp = ["mcp"]                       # act-in-the-world helper: the MCP protocol client (the arms over it live in the consumer)
+mcp = ["mcp==2.0.0"]                # act-in-the-world helper: the MCP protocol client (the arms over it live in the consumer)
 pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
 
 [tool.setuptools]
