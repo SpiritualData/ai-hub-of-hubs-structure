@@ -19,7 +19,9 @@ TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py"
          "tests/test_graph.py", "tests/test_cardstore.py", "tests/test_quickstart.py", "tests/test_metadata.py",
          "tests/test_recall_background_pacing.py", "tests/test_recall_card_content.py", "tests/test_recall_card_store_lock.py",
          "tests/test_recall_card_thread.py", "tests/test_recall_composite_assembler.py", "tests/test_recall_conversation_format.py",
-         "tests/test_recall_text_sampling.py", "tests/test_recall_walk.py"]
+         "tests/test_recall_text_sampling.py", "tests/test_recall_walk.py",
+         "tests/test_critique_jsonl_ledger.py", "tests/test_critique_link_detect.py", "tests/test_critique_link_guard.py",
+         "tests/test_critique_specificity.py", "tests/test_critique_sufficiency.py"]
 TOLERANCE = 1.0  # percentage points
 
 

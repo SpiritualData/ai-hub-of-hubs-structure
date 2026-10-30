@@ -13,3 +13,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | `hub-websearch` | core | unconfirmed: for Payal to confirm: the search-backend arms and the web research code moved out of a consumer (backends, cache, limiter, page fetch and extraction, the research adapter) | search-backend |
 | `hub-models` | core | unconfirmed: for Joshua to confirm. | call-a-model, reason-and-answer |
 | `hub-recall` | core | unconfirmed: for Joshua to confirm. | remember-and-recall, context-assembler |
+| `hub-critique` | core | unconfirmed: for Joshua to confirm. | think-critically |
