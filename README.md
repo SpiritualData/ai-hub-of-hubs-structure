@@ -62,16 +62,16 @@ One row per area. The seat says which part of the mind the area serves. Candidat
 <!-- seats:start -->
 | Area | Seat | Built on | Candidates | Researched |
 |---|---|---|---|---|
-| agent_harness | act-in-the-world | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | OpenCode; Goose; OpenHands; Codex CLI | 2026-10-29 |
-| tools_mcp | act-in-the-world | Model Context Protocol Python SDK | Official MCP Registry; PulseMCP subregistry; GitHub MCP directory | 2026-10-29 |
-| web_search | know-the-world | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Firecrawl; Crawl4AI; Exa; self-hosted SearXNG with MCP | 2026-10-29 |
-| world | take-in-the-world | none | Activepieces; Pipedream; Composio; n8n | 2026-10-29 |
-| context_assembly | remember-and-recall | bm25s, Qdrant and fastembed | Haystack; LlamaIndex; LightRAG | 2026-10-29 |
-| science | know-the-world | none | OpenAlex API; Semantic Scholar API; PaperQA2; community scholarly MCP servers | 2026-10-29 |
-| model_providers | reason-and-answer | none | LiteLLM; Portkey gateway; OpenRouter | 2026-10-29 |
-| memory | remember-and-recall | none | Mem0; Letta; Graphiti; Cognee | 2026-10-29 |
-| evals | stay-current | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; Ragas | 2026-10-29 |
-| voice | take-in-the-world | none | Pipecat; LiveKit Agents; TEN Framework | 2026-10-29 |
+| agent_harness | act-in-the-world | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 2026-10-30 |
+| tools_mcp | act-in-the-world | Model Context Protocol Python SDK | Official MCP Registry; PulseMCP; GitHub MCP directory; Smithery; Glama; FastMCP; Claude Code native MCP client; agentgateway; IBM ContextForge; LiteLLM MCP Gateway; Docker MCP Gateway | 2026-10-30 |
+| web_search | know-the-world | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Exa; Parallel; Perplexity Search API; Brave LLM Context; Anthropic web search server tool; Firecrawl; Crawl4AI | 2026-10-30 |
+| world | take-in-the-world | none | Composio; Activepieces; Pipedream Connect; Nango; Arcade; Klavis AI; n8n; Zapier MCP; Google Workspace MCP servers; Notion hosted MCP server | 2026-10-30 |
+| context_assembly | remember-and-recall | bm25s, Qdrant and fastembed, bge-small-en-v1.5 | Qdrant native weighted RRF hybrid; Qwen3-Embedding-0.6B; EmbeddingGemma-300m; contextual retrieval prefix; LanceDB; PyLate; Haystack; LlamaIndex; Qwen3-Reranker; bge-reranker-v2-m3; Qdrant multivector rescoring; Cohere Rerank; Voyage rerank | 2026-10-30 |
+| science | know-the-world | none | OpenAlex API; cyanheads/openalex-mcp-server; Semantic Scholar API; PaperQA2; Docling; Asta Scientific Corpus MCP; Europe PMC REST API; PubMed MCP server; scite MCP | 2026-10-30 |
+| model_providers | reason-and-answer | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 2026-10-30 |
+| memory | remember-and-recall | QAR card store and conversation recall | Graphiti; Mem0; Hindsight; Cognee; Letta; Supermemory; LangMem; A-MEM | 2026-10-30 |
+| evals | stay-current | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; DSPy and GEPA; Ragas | 2026-10-30 |
+| voice | take-in-the-world | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 2026-10-30 |
 <!-- seats:end -->
 
 Regenerate with `python3 scripts/status.py` (rewritten in place, never appended).
