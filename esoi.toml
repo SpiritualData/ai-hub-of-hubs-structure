@@ -3,3 +3,6 @@ package = "hubofhubs"
 layers = ["core"]
 other_layers = ["docs", "tests", "scripts", "examples"]
 max_lines = 1500
+
+[records]
+template_version = 1
