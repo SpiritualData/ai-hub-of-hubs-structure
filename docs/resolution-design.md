@@ -1,5 +1,10 @@
 # Resolution design: name-based parts, done safely, for mass adoption
 
+**Status 2026-10-30:** the generic parts of this design (name validation, safe loading, the cascade, needs from typed parameters, the
+`uses_solution_ids` check, build order, startup failure) now live in the esoi library as `esoi.assemble`; `hubofhubs.resolution`
+binds one `Assembler` to scope `hubofhubs`. Where this page says `needs.py`, `graph.py` or `assembly.py`, read `esoi.assemble`.
+What stays here is the seats, the arms, the registry and the scorer.
+
 Descriptive wording in the ESOI records stays the owner's: any new prose reads "unconfirmed: for Payal to confirm".
 The hub (package, import name and distribution name `hubofhubs`; the name was unclaimed on PyPI when checked on 2026-10-29, and the
 GitHub repository keeps the name `ai-hub-of-hubs-structure`) holds real executing code: seats as
@@ -116,10 +121,10 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    One hole stays with `esoi`: a hostile `esoi.toml` in a parent folder of a vendored copy that is not under
    `site-packages` is still found by `esoi`'s upward walk (the section 2 proposal); a pip install is not affected.
 5. **Resolve wrapper and `assemble`**: cascade, refusal of `replace` on hub names, reason line, name validation, safe
-   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py`, `test_assemble.py`,
-   `test_safe_loading.py`, `test_example_consumer.py` (a second consumer and a leak detector).
+   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py` and `test_safe_loading.py` (the generic tests are the library's `test_assemble.py`),
+  , `test_example_consumer.py` (a second consumer and a leak detector).
 6. **Needs from typed constructor parameters**, the `uses_solution_ids` check and the graph checks (no cycles, every need
-   resolves, external-seat rule). Done: `hubofhubs.seats`, `needs.py`, `graph.py`, `scripts/sync_uses.py --check`,
+   resolves, external-seat rule). Done: `hubofhubs.seats`, `esoi.assemble`, `scripts/sync_uses.py --check`,
    `tests/test_graph.py`; the default card store `LocalCardStore` is the first executing arm. Eight seats have no natural
    Protocol yet and stay "no arm yet".
 7. **Per-seat import check, then the port move.** Moving ports "as they are" is impossible: 65 of the consumer's 106

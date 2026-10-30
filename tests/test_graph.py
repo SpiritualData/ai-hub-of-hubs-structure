@@ -7,7 +7,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hubofhubs import HubConfig, HubError, assemble, graph, resolve  # noqa: E402
+from hubofhubs import HubConfig, HubError, assemble, registry, resolve  # noqa: E402
+from hubofhubs.resolution import HUB  # noqa: E402
 from hubofhubs import seats  # noqa: E402
 from hubofhubs.card import Card  # noqa: E402
 from hubofhubs.cardstore import LocalCardStore  # noqa: E402
@@ -16,8 +17,8 @@ from support import ROOT  # noqa: E402
 SEATS = {"card-store": seats.CardStore, "model-call": seats.ModelCall, "search-backend": seats.SearchBackend,
          "reason-and-answer": seats.TierSelection, "stay-current": seats.FreshnessReading,
          "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching}
-SOLUTIONS = graph.read_rows(ROOT / "esoi", "solutions.csv")
-IMPLEMENTATIONS = graph.read_rows(ROOT / "esoi", "implementations.csv")
+SOLUTIONS = registry.read("solutions.csv", ROOT / "esoi")
+IMPLEMENTATIONS = registry.read("implementations.csv", ROOT / "esoi")
 
 
 def test_the_seats_module_holds_only_protocol_classes_and_imports():
@@ -34,8 +35,7 @@ def test_every_seat_is_a_runtime_protocol_with_a_record():
     for sid, protocol in SEATS.items():
         assert sid in ids
         assert getattr(protocol, "_is_protocol", False) and getattr(protocol, "_is_runtime_protocol", False)
-        from hubofhubs.needs import seat_of
-        assert seat_of(protocol) == sid
+        assert HUB.seat_of(protocol) == sid
 
 
 def test_every_recorded_arm_is_declared_in_code_and_satisfies_its_seat():
@@ -46,53 +46,13 @@ def test_every_recorded_arm_is_declared_in_code_and_satisfies_its_seat():
 
 
 def test_uses_solution_ids_equals_the_constructor_parameters_and_the_graph_is_sound():
-    needs = graph.declared_needs(IMPLEMENTATIONS)
-    assert graph.problems(SOLUTIONS, IMPLEMENTATIONS, needs) == []
+    assert HUB.uses_problems(ROOT / "esoi") == []
 
 
 def test_external_seats_are_consumer_provided_and_have_no_default():
     by = {s["solution_id"]: s for s in SOLUTIONS}
     for sid in ("model-call", "search-backend"):
-        assert {"external", "consumer-provided"} <= set(graph.split(by[sid]["tags"])) and by[sid]["selected"] == ""
-
-
-def planted(selected="x", tags="", uses="", sid="a", other_sid="b"):
-    solutions = [{"solution_id": sid, "selected": selected, "tags": tags}, {"solution_id": other_sid, "selected": "y", "tags": ""}]
-    impls = [{"implementation_id": f"{sid}:x", "solution_id": sid, "uses_solution_ids": uses},
-             {"implementation_id": f"{other_sid}:y", "solution_id": other_sid, "uses_solution_ids": ""}]
-    return solutions, impls
-
-
-def test_a_planted_mismatch_between_uses_and_parameters_is_reported():
-    solutions, impls = planted()
-    bad = graph.problems(solutions, impls, {"a:x": {"b"}, "b:y": set()})
-    assert any("uses_solution_ids is empty but its constructor parameters need ['b']" in line for line in bad)
-    solutions, impls = planted(uses="b")
-    assert graph.problems(solutions, impls, {"a:x": {"b"}, "b:y": set()}) == []
-    assert any("needs []" not in line and "nothing" in line for line in graph.problems(solutions, impls, {"a:x": set(), "b:y": set()}))
-
-
-def test_a_planted_cycle_is_reported():
-    solutions, impls = planted(uses="b")
-    impls[1]["uses_solution_ids"] = "a"
-    bad = graph.problems(solutions, impls, {"a:x": {"b"}, "b:y": {"a"}})
-    assert any("default arms form a cycle: a -> b -> a" in line for line in bad)
-
-
-def test_a_need_on_a_seat_with_no_arm_is_reported_unless_consumer_provided():
-    solutions, impls = planted(uses="b")
-    solutions[1]["selected"] = ""
-    assert any("has no default arm and is not tagged consumer-provided" in line
-               for line in graph.problems(solutions, impls, {"a:x": {"b"}, "b:y": set()}))
-    solutions[1]["tags"] = "external;consumer-provided"
-    assert graph.problems(solutions, impls, {"a:x": {"b"}, "b:y": set()}) == []
-    solutions[1]["selected"] = "y"
-    assert any("tagged consumer-provided but has a default arm" in line for line in graph.problems(solutions, impls, {"a:x": {"b"}, "b:y": set()}))
-
-
-def test_a_need_on_an_unknown_seat_is_reported():
-    solutions, impls = planted(uses="zzz")
-    assert any("zzz, which is no solution" in line for line in graph.problems(solutions, impls, {"a:x": {"zzz"}, "b:y": set()}))
+        assert {"external", "consumer-provided"} <= set(registry.split(by[sid]["tags"])) and by[sid]["selected"] == ""
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():

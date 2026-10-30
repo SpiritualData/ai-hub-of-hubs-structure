@@ -47,7 +47,7 @@ This repository holds the seats, the registry, the scorer, the ESOI records and 
 |---|---|
 | `esoi/` | the ESOI records: intent, problems, ideals, seats (solutions), implementations, metrics |
 | `hubofhubs/registry/` | the registry: areas and their hubs, researched candidates, each consumer's hub connections and hand-wired services |
-| `hubofhubs/` | the scorer (`Binding`, `evaluate`, the vendor-branch scan, the case generator, the page renderer) and the assembly: `seats.py` (Protocols), `resolution.py` (`resolve`, `register`), `assembly.py` (`assemble`), `needs.py`, `graph.py`, `cardstore.py` (the default card store) |
+| `hubofhubs/` | the scorer (`Binding`, `evaluate`, the vendor-branch scan, the case generator, the page renderer) and the assembly: `seats.py` (Protocols), `resolution.py` (the hub's one `esoi.assemble.Assembler` and its public names; the assembly itself is the library's), `cardstore.py` (the default card store) |
 | `hubofhubs/examples/` | a lane config with one aggregator connection and no per-app entry |
 | `hubofhubs/tiers.py` | per-tier model selection by passing work per cost, credits counted as cost ([how](docs/tier-selection.md)) |
 | `docs/` | [quickstart](docs/quickstart.md), [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |

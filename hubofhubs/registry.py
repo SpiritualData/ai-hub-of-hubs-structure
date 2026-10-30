@@ -1,9 +1,9 @@
 """The registry files and the arithmetic over them. Pure functions: no model call, no network."""
-import csv
 from datetime import date
 from pathlib import Path
 
 from esoi import implementation
+from esoi.tables import ids, read_csv
 
 DATA = Path(__file__).resolve().parent / "registry"
 STALENESS_DAYS = 90          # research older than this is stale (a quarter)
@@ -12,8 +12,7 @@ CONFIG_SHARE_BAR = 0.5       # an area is "by configuration" when at least this 
 
 
 def read(name, folder=None):
-    with open(Path(folder or DATA) / name, newline="", encoding="utf-8") as handle:
-        return list(csv.DictReader(handle))
+    return read_csv(Path(folder or DATA) / name)
 
 
 def today(clock=None):
@@ -29,8 +28,7 @@ def days_since(iso, clock=None):
         return None
 
 
-def split(cell):
-    return [x.strip() for x in (cell or "").split(";") if x.strip()]
+split = ids
 
 
 def parse_hubs(cell):

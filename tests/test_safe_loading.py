@@ -9,10 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import toy  # noqa: E402
-from toy import MemoryStore, toys  # noqa: E402,F401
 from hubofhubs import HubConfig, HubError, assemble, choice, names, register, resolve  # noqa: E402
-from hubofhubs.resolution import safe_module  # noqa: E402
 from support import ROOT, run_vendored, vendor  # noqa: E402
 
 SEAT = "reason-and-answer"
@@ -45,28 +42,6 @@ def test_a_config_value_that_is_an_import_path_is_rejected_before_esoi(bad, no_s
                                selection_environ=config.selection_environ))
     with pytest.raises(HubError, match="rejected"):
         resolve(SEAT, bad)
-
-
-def test_a_valid_looking_name_that_is_not_listed_is_refused_not_imported(no_system):
-    with pytest.raises(HubError, match="unknown implementation"):
-        resolve(SEAT, "os")
-    assert names(SEAT) == ["tier_selector"]
-
-
-def test_a_consumer_registered_object_is_never_looked_up_by_path(toys):
-    register("toy-store", "acme-memory", MemoryStore)
-    with pytest.raises(HubError):
-        resolve("toy-store", "toy.MemoryStore")
-
-
-@pytest.mark.parametrize("module", ["os", "json", "hubofhubs", "hubofhubs_evil", "hubofhubs..x", ".hubofhubs.tiers", "", None])
-def test_safe_module_rejects_anything_not_inside_the_package(module):
-    with pytest.raises(HubError):
-        safe_module(module)
-
-
-def test_safe_module_accepts_the_hubs_own_modules():
-    assert safe_module("hubofhubs.tiers") == "hubofhubs.tiers"
 
 
 def tamper(site: Path, module: str) -> None:
@@ -110,25 +85,6 @@ def attempt(tmp_path, module, evil_name, setup="", after=""):
 def test_a_snapshot_module_of_the_standard_library_is_rejected(tmp_path):
     out = attempt(tmp_path, "os", "evil.py")
     assert "rejected" in out["raised"] and not out["executed"]
-
-
-def test_a_snapshot_module_that_only_looks_like_the_package_is_rejected(tmp_path):
-    setup = "import sys; sys.path.insert(0, attacker)"
-    out = attempt(tmp_path, "hubofhubs_evil", "hubofhubs_evil.py", setup)
-    assert "rejected" in out["raised"] and not out["executed"]
-
-
-def test_a_look_alike_module_earlier_on_sys_path_is_not_imported(tmp_path):
-    # The attacker directory comes first on sys.path and holds hubofhubs/evil.py, but the package is already the vendored one.
-    setup = "import sys; sys.path.insert(0, {})".format("attacker")
-    out = attempt(tmp_path, "hubofhubs.evil", "unused.py", setup, after="import hubofhubs, sys; assert hubofhubs.__file__.startswith(sys.path[1])")
-    assert "rejected" in out["raised"] and not out["executed"]
-
-
-def test_a_module_found_outside_the_package_directory_is_rejected(tmp_path):
-    # The package search path was extended to a directory that holds the module: find_spec finds it, the origin check refuses.
-    out = attempt(tmp_path, "hubofhubs.evil", "unused.py", after="import hubofhubs; hubofhubs.__path__.append(attacker + '/hubofhubs')")
-    assert "not inside the installed hubofhubs package" in out["raised"] and not out["executed"]
 
 
 def test_a_record_filepath_that_leaves_the_package_is_rejected(tmp_path):

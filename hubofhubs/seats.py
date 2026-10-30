@@ -3,7 +3,7 @@
 They are written ``typing.Protocol`` on purpose: esoi's port scan (S7) does not read intent-mode solutions, so the bare
 ``Protocol`` form is flagged as a port with no row. The seat is tied to its record by the solution id.
 
-An implementation's constructor parameters typed with one of these Protocols are its needs (``hubofhubs.needs``).
+An implementation's constructor parameters typed with one of these Protocols are its needs (``esoi.assemble``).
 ``model-call`` is an external seat with no hub arm: the consumer provides it. ``search-backend`` is external too, but the hub executes
 its default arms (SearXNG, JSON search APIs described as data, Gemini grounding, a provider's own search); none is selected by default.
 """

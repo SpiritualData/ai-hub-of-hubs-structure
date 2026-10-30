@@ -19,6 +19,7 @@ what differs from general practice; the `README.md` explains the idea.
   a single service a consumer hand-wires goes in `hub_integrations.csv`. Facts need a dated source; see `docs/refresh.md`.
 - **Consumers** hand this package a `Binding`; the package never imports a consumer. Core imports stay stdlib, the package and `esoi` (`tests/test_import_boundary.py`); third-party libraries belong in per-arm extras.
 - **No environment reads.** Settings are `HubConfig` fields (`selection_environ` is the only environment `esoi` sees). Names are validated, never import paths. A seat is a `typing.Protocol` declared with `@solution(id)` in `hubofhubs/seats.py`; an arm's constructor parameters typed with a seat are its needs. No alias for a renamed package or arm. Read `docs/resolution-design.md` before changing resolution or assembly.
+- **Generic assembly, selection, cascade and checking belong in esoi, not here;** see `evolvable-structure/docs/explanation/what-belongs-where.md` (when unsure, propose the change to Joshua).
 
 ## Checks
 

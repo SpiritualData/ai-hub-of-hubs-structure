@@ -4,13 +4,14 @@ import sys
 from pathlib import Path
 
 from hubofhubs.ports import context, model, scope
+from support import ESOI_PATH
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 def test_importing_the_ports_loads_no_consumer():
     code = "import sys, hubofhubs.ports.scope, hubofhubs.ports.model, hubofhubs.ports.context\nassert not [m for m in sys.modules if m.startswith(('quest', 'quest_ai_runner'))]"
-    done = subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, env={"PYTHONPATH": str(ROOT)})
+    done = subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, env={"PYTHONPATH": f"{ROOT}:{ESOI_PATH}"})
     assert done.returncode == 0, done.stderr
 
 

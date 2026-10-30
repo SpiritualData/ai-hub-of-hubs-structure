@@ -8,9 +8,8 @@ environment read.
     from hubofhubs import Binding, evaluate, HubConfig, assemble, register, resolve
 """
 from .binding import Binding
-from .config import HubConfig
 from .measure import evaluate, check, metrics
-from .assembly import Assembly, assemble
-from .resolution import HubError, choice, names, register, resolve
+from esoi.assemble import Assembly
+from .resolution import HubConfig, HubError, assemble, choice, names, register, resolve
 
 __all__ = ["Binding", "evaluate", "check", "metrics", "HubConfig", "HubError", "choice", "names", "resolve", "register", "assemble", "Assembly"]
