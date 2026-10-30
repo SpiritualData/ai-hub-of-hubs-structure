@@ -1,4 +1,24 @@
 {
+ "call-a-model:anthropic": {
+  "executed": 26,
+  "statements": 104,
+  "percent": 25.0
+ },
+ "call-a-model:gemini": {
+  "executed": 31,
+  "statements": 133,
+  "percent": 23.3
+ },
+ "call-a-model:multi_provider": {
+  "executed": 28,
+  "statements": 109,
+  "percent": 25.7
+ },
+ "call-a-model:openai": {
+  "executed": 23,
+  "statements": 64,
+  "percent": 35.9
+ },
  "card-store:local_card_store": {
   "executed": 44,
   "statements": 44,
@@ -9,19 +29,39 @@
   "statements": 58,
   "percent": 91.4
  },
+ "context-assembler:composite": {
+  "executed": 76,
+  "statements": 95,
+  "percent": 80.0
+ },
  "reason-and-answer:tier_selector": {
-  "executed": 90,
-  "statements": 94,
-  "percent": 95.7
+  "executed": 129,
+  "statements": 132,
+  "percent": 97.7
+ },
+ "search-backend:gemini": {
+  "executed": 19,
+  "statements": 153,
+  "percent": 12.4
+ },
+ "search-backend:tavily": {
+  "executed": 65,
+  "statements": 247,
+  "percent": 26.3
  },
  "stay-current:registry_scan": {
-  "executed": 47,
-  "statements": 49,
-  "percent": 95.9
+  "executed": 45,
+  "statements": 47,
+  "percent": 95.7
  },
  "unassigned": {
-  "executed": 407,
-  "statements": 459,
-  "percent": 88.7
+  "executed": 1053,
+  "statements": 3111,
+  "percent": 33.8
+ },
+ "watch-for-risk:overseer": {
+  "executed": 24,
+  "statements": 120,
+  "percent": 20.0
  }
 }
