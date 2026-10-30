@@ -15,15 +15,10 @@ def test_an_account_that_cannot_write_the_shared_folder_gets_its_own(tmp_path, m
     assert jsonl_ledger.default_directory("ledger") == f"{shared}-{os.getuid()}"
 
 
-def test_appends_are_read_back_in_order_and_a_torn_line_is_skipped(tmp_path):
-    files = jsonl_ledger.KeyedJsonlFiles(str(tmp_path))
-    assert files.append("run-1", {"a": 1}) and files.append("run-1", {"b": 2})
-    with open(files.path_for("run-1"), "a", encoding="utf-8") as handle:
-        handle.write("{not json\n")
-    assert files.read("run-1") == [{"a": 1}, {"b": 2}]
-    assert files.read("unknown") == [] and files.append("", {"a": 1}) is False
-
-
-def test_a_key_cannot_leave_the_directory(tmp_path):
-    files = jsonl_ledger.KeyedJsonlFiles(str(tmp_path))
-    assert os.path.dirname(files.path_for("../../etc/passwd")) == str(tmp_path)
+def test_the_tool_ledger_keeps_its_files_with_esois_run_files(tmp_path):
+    """The file-per-key store is esoi's: one implementation, not a copy beside it."""
+    from esoi.metric_results import RunFiles
+    from hubofhubs.act.tool_ledger import FileToolLedger
+    ledger = FileToolLedger(str(tmp_path))
+    assert type(ledger.files) is RunFiles and not hasattr(jsonl_ledger, "KeyedJsonlFiles")
+    assert os.path.dirname(ledger.path_for("../../etc/passwd")) == str(tmp_path)

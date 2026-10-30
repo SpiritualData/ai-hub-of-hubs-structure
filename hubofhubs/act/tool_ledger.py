@@ -23,7 +23,9 @@ import time
 from dataclasses import asdict, dataclass
 from typing import Dict, Iterable, List, Optional
 
-from ..critique.jsonl_ledger import KeyedJsonlFiles, default_directory  # noqa: F401  (age re-exported)
+from esoi.metric_results import RunFiles
+
+from ..critique.jsonl_ledger import default_directory
 
 log = logging.getLogger("hubofhubs.act.tool_ledger")
 
@@ -74,7 +76,7 @@ def outcome_from_result(tool: str, ok: bool, text: str, mutates: bool) -> ToolOu
 
 
 class FileToolLedger:
-    """An append-only JSON-lines file per task in a shared directory (``jsonl_ledger.KeyedJsonlFiles``).
+    """An append-only JSON-lines file per task in a shared directory (esoi's ``RunFiles``).
 
     A file, because the deep worker calls tools from a separate process: the brain and the worker
     share nothing in memory, but they share the machine's temp directory. One whole-line append
@@ -83,7 +85,7 @@ class FileToolLedger:
 
     def __init__(self, directory: Optional[str] = None, *, name: str = "tool-ledger"):
         self.directory = directory or default_directory(name)
-        self.files = KeyedJsonlFiles(self.directory)
+        self.files = RunFiles(self.directory)
 
     def path_for(self, task_id: str) -> str:
         return self.files.path_for(task_id)
