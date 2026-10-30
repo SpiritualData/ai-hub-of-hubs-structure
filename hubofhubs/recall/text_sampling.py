@@ -2,7 +2,7 @@
 
 Provides reusable functions for selecting representative items (files, conversations, etc.)
 from a larger corpus using TF-DF-IDF heuristic: distinctive within their group, penalizing
-corpus-wide generic terms. Used by FileContextStore, ClaudeConversationsAdapter, etc.
+corpus-wide generic terms. Used by card stores and conversation adapters.
 
 TF-DF-IDF = tf(t,d) × df(t,cluster) × idf(t,corpus) after Schilder & Kondadadi (2008):
 - tf: binary term presence in a document (1 or 0)

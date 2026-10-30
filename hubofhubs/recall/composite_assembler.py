@@ -58,7 +58,7 @@ class CompositeContextAssembler:
     Usage::
 
         assembler = CompositeContextAssembler([file_store, turn_store])
-        cfg = RunnerConfig(..., context_assembler=assembler)
+        consumer_config = Config(..., context_assembler=assembler)
     """
 
     def __init__(self, assemblers: List[Any]):
