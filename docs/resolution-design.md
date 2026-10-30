@@ -5,7 +5,7 @@
 binds one `Assembler` to scope `hubofhubs`. Where this page says `needs.py`, `graph.py` or `assembly.py`, read `esoi.assemble`.
 What stays here is the seats, the arms, the registry and the scorer.
 
-Descriptive wording in the ESOI records stays the owner's: any new prose reads "unconfirmed: for Payal to confirm".
+Descriptive wording in the ESOI records stays the owner's: any new prose reads "unconfirmed: for the owner to confirm".
 The hub (package, import name and distribution name `hubofhubs`; the name was unclaimed on PyPI when checked on 2026-10-29, and the
 GitHub repository keeps the name `ai-hub-of-hubs-structure`) holds real executing code: seats as
 Protocols, arms in per-library extras, and the assembly that wires them. Its core is the standard library plus `esoi`.
@@ -142,7 +142,7 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    and the hub never imports it; (4) third-party libraries are imported inside functions and listed as per-library extras
    (`tests/test_import_boundary.py` enforces both); (5) the consumer keeps a thin module at the old path: a re-export, or a
    subclass that declares the consumer's own `@implementation` row and restores any environment default; (6) the hub records
-   get ids, paths and `unconfirmed: for Payal to confirm.` text, and `selected` stays empty until a metric result chooses.
+   get ids, paths and `unconfirmed: for the owner to confirm.` text, and `selected` stays empty until a metric result chooses.
    Not moved: the Tavily retrieval adapter (a duplicate of the `tavily` arm plus the research adapter; a deletion candidate in
    the consumer), and the consumer's one-call research constructor. `WebResearchAdapter` is library code, not yet a seat arm:
    `know-the-world` has no Protocol, which is a decision for the seat's owner.
