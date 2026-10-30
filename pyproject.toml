@@ -14,6 +14,7 @@ dependencies = ["esoi"]
 # One extra per arm that needs a third-party library; the library is imported lazily, only when that arm runs.
 web = ["httpx"]                      # search-backend arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching
 gemini = ["google-genai", "httpx"]   # search-backend arm: gemini
+locks = ["filelock"]                 # search-backend arm: the daily limiter shares one spend across processes (degrades to per-process without it)
 pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
 
 [tool.setuptools]

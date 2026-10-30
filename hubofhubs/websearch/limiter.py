@@ -1,6 +1,6 @@
 """websearch.limiter, the daily cost guard: ``DailyLimiter`` counts REAL, PAID calls per UTC day (backend
-searches and the Gemini ``url_fetch_fallback``), shared across processes through an advisory file
-lock when the platform has one.
+searches and the Gemini ``url_fetch_fallback``), shared across processes through a ``filelock`` file
+lock when the ``filelock`` extra is installed.
 
 ``research`` re-exports it.
 """
@@ -11,7 +11,6 @@ import json
 import os
 import tempfile
 import threading
-import time
 
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,11 +24,6 @@ logger = logging.getLogger("hubofhubs.websearch.limiter")
 #: without it" rather than hanging a turn.
 LOCK_TIMEOUT_SECONDS = 2.0
 LOCK_POLL_INTERVAL_SECONDS = 0.05
-
-try:
-    import fcntl  # type: ignore
-except ImportError:  # Windows: no advisory file locking.
-    fcntl = None  # type: ignore[assignment]
 
 
 class DailyLimiter:
@@ -114,54 +108,34 @@ class DailyLimiter:
             self._count = 0
 
     def _acquire_cross_process_lock(self):
-        """Open (creating if needed) and exclusively lock the sidecar lock file, bounded by
-        ``LOCK_TIMEOUT_SECONDS``. Returns the open fd on success, or ``None`` if locking is
-        unavailable (no ``fcntl``, e.g. Windows) or the lock could not be acquired in time --
+        """Take an exclusive ``filelock`` on the sidecar lock file, bounded by ``LOCK_TIMEOUT_SECONDS``.
+        Returns the held lock on success, or ``None`` if locking is unavailable (``filelock`` not
+        installed, the lock file cannot be opened) or the lock could not be acquired in time --
         callers must proceed without it rather than block a turn."""
-        if fcntl is None or self._lock_path is None:
+        if self._lock_path is None:
             return None
         try:
-            fd = os.open(str(self._lock_path), os.O_CREAT | os.O_RDWR, 0o666)
-            match_umask(fd)
+            from filelock import FileLock, Timeout
+        except ImportError:
+            return None
+        lock = FileLock(str(self._lock_path), timeout=LOCK_TIMEOUT_SECONDS, mode=0o666)
+        try:
+            lock.acquire(poll_interval=LOCK_POLL_INTERVAL_SECONDS)
+            return lock
+        except Timeout:
+            logger.debug("web search daily limiter: lock acquisition timed out; proceeding without it")
         except OSError:
             logger.debug("web search daily limiter: could not open lock file", exc_info=True)
-            return None
-        deadline = datetime.now(timezone.utc).timestamp() + LOCK_TIMEOUT_SECONDS
-        try:
-            while True:
-                try:
-                    fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                    return fd
-                except OSError:
-                    if datetime.now(timezone.utc).timestamp() >= deadline:
-                        logger.debug(
-                            "web search daily limiter: lock acquisition timed out; "
-                            "proceeding without it"
-                        )
-                        os.close(fd)
-                        return None
-                    time.sleep(LOCK_POLL_INTERVAL_SECONDS)
-        except Exception:  # noqa: BLE001
-            try:
-                os.close(fd)
-            except OSError:
-                pass
-            return None
+        return None
 
     @staticmethod
-    def _release_cross_process_lock(fd: Optional[int]) -> None:
-        if fd is None:
+    def _release_cross_process_lock(lock) -> None:
+        if lock is None:
             return
         try:
-            if fcntl is not None:
-                fcntl.flock(fd, fcntl.LOCK_UN)
+            lock.release()
         except OSError:
             pass
-        finally:
-            try:
-                os.close(fd)
-            except OSError:
-                pass
 
     def exhausted(self) -> bool:
         """Whether today's count has reached the limit. When persisted, re-reads the file under
@@ -187,15 +161,15 @@ class DailyLimiter:
         cross-process lock, re-reads the latest count, rolls the day if the stored day is stale,
         increments, and writes atomically before releasing the lock -- so two processes recording
         concurrently both land (never one clobbering the other's increment). Never raises: a lock
-        that can't be acquired in time (no ``fcntl``, or genuine contention) degrades to the old
+        that can't be acquired in time (``filelock`` missing, or genuine contention) degrades to the old
         in-process-only behavior for this call rather than blocking the turn.
         """
         if self._limit <= 0:
             return
         with self._lock:
-            lock_fd = self._acquire_cross_process_lock() if self._state_path is not None else None
+            held_lock = self._acquire_cross_process_lock() if self._state_path is not None else None
             try:
-                if lock_fd is not None:
+                if held_lock is not None:
                     # Another process may have advanced the count (or rolled the day) since our
                     # last read; the lock guarantees this read is current.
                     self._load()
@@ -203,4 +177,4 @@ class DailyLimiter:
                 self._count += 1
                 self._save_locked()
             finally:
-                self._release_cross_process_lock(lock_fd)
+                self._release_cross_process_lock(held_lock)
