@@ -5,8 +5,8 @@ deterministic toy embedder, fully offline.  Skipped when qdrant-client is not
 installed (same guard as the smoke test in test_vector_context.py).
 
 The behaviors under test are the fix for collection sprawl: an earlier layout
-created one Qdrant collection per unique scope dict — including on mere
-search — which accumulated hundreds of permanently empty collections on a
+created one Qdrant collection per unique scope dict, including on mere
+search, which accumulated hundreds of permanently empty collections on a
 shared server.  Now:
 
 - ALL points live in one collection ({prefix}_default); scope is a payload
@@ -31,7 +31,7 @@ VEC_SIZE = 8
 def toy_embedder(texts):
     """Deterministic, dependency-free embedder: bucket characters into dims.
 
-    Similar strings get similar vectors; exactness does not matter — the tests
+    Similar strings get similar vectors; exactness does not matter, the tests
     assert on membership/visibility, not on ranking.
     """
     vecs = []
