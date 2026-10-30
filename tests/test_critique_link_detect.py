@@ -26,3 +26,5 @@ def test_describe_link():
     assert describe_link(f"https://docs.google.com/document/d/{ID}/edit") == "Google Doc"
     assert describe_link(f"https://docs.google.com/presentation/d/{ID}/edit") == "Google Slides"
     assert describe_link(f"https://drive.google.com/file/d/{ID}/view") == "Google Drive file"
+    assert describe_link("https://x.org/a.PDF") == "PDF"
+    assert describe_link("https://x.org/") == "web page"
