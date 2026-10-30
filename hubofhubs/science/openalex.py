@@ -44,7 +44,7 @@ SELECT = ("id,doi,display_name,publication_year,cited_by_count,authorships,prima
           "abstract_inverted_index,type")
 MAX_PER_PAGE = 25
 DOI_PATTERN = re.compile(r"10\.\d{4,9}/[^\s?#]+", re.I)
-CITATION_RULE = "Cite only the works listed here, by title, authors, year and DOI link; name no other paper, author or DOI."
+CITATION_RULE = "Cite only the works listed here, by title, authors, year and DOI; name no other paper, author or DOI."
 
 
 def abstract_text(inverted: Optional[Mapping[str, Sequence[int]]]) -> str:
@@ -96,7 +96,7 @@ def citation_line(work: Work, abstract_chars: int = 0) -> str:
     if work.venue:
         parts.append(work.venue)
     line = ". ".join(parts) + "."
-    line += f" DOI: {work.doi_url}." if work.doi else f" No DOI listed; page: {work.url}." if work.url else " No DOI or page listed."
+    line += f" DOI {work.doi} ({work.doi_url})." if work.doi else f" No DOI listed; page: {work.url}." if work.url else " No DOI or page listed."
     line += f" Cited by {work.cited_by_count}."
     if work.open_access is not None:
         line += f" Open access ({work.oa_status})." if work.open_access and work.oa_status else (" Open access." if work.open_access else " Not open access.")

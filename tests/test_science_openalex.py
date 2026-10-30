@@ -99,7 +99,7 @@ def test_the_seat_search_returns_numbered_citation_lines_with_doi_links_and_the_
     openalex, _ = arm(SEARCH)
     observation = openalex.search("aerobic fitness knee injury")
     assert observation.kind == "query" and len(observation.hits) == 3
-    assert "https://doi.org/10.3389/fspor.2024.1418598" in observation.text and "https://doi.org/10.3390/ijerph19052993" in observation.text
+    assert "DOI 10.3389/fspor.2024.1418598 (https://doi.org/10.3389/fspor.2024.1418598)" in observation.text and "DOI 10.3390/ijerph19052993" in observation.text
     assert "Cite only the works listed here" in observation.text and "3 of 7 matches" in observation.text
     assert "No DOI listed; page: https://" in observation.text    # a work without a DOI says so rather than showing none
     assert observation.hits[2]["doi"] == "" and observation.hits[0]["doi"].startswith("10.")
