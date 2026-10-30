@@ -65,14 +65,14 @@
   "percent": 26.3
  },
  "stay-current:registry_scan": {
-  "executed": 45,
-  "statements": 47,
-  "percent": 95.7
+  "executed": 49,
+  "statements": 51,
+  "percent": 96.1
  },
  "unassigned": {
-  "executed": 2734,
-  "statements": 8115,
-  "percent": 33.7
+  "executed": 5581,
+  "statements": 8747,
+  "percent": 63.8
  },
  "watch-for-risk:overseer": {
   "executed": 24,

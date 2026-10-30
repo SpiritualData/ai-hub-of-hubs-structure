@@ -20,6 +20,7 @@ TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py"
          "tests/test_recall_background_pacing.py", "tests/test_recall_card_content.py", "tests/test_recall_card_store_lock.py",
          "tests/test_recall_card_thread.py", "tests/test_recall_composite_assembler.py", "tests/test_recall_conversation_format.py",
          "tests/test_recall_text_sampling.py", "tests/test_recall_walk.py",
+         "tests/test_recall_bootstrap_support.py", "tests/test_recall_card_ceilings.py", "tests/test_recall_card_limit.py", "tests/test_recall_card_limit_report.py", "tests/test_recall_card_origin.py", "tests/test_recall_card_repository.py", "tests/test_recall_card_store_identity.py", "tests/test_recall_card_store_merge.py", "tests/test_recall_card_store_mounts.py", "tests/test_recall_card_store_tidy.py", "tests/test_recall_folder_review.py", "tests/test_recall_index_file_refs.py", "tests/test_recall_scope_tags.py",
          "tests/test_critique_jsonl_ledger.py", "tests/test_critique_link_detect.py", "tests/test_critique_link_guard.py",
          "tests/test_critique_specificity.py", "tests/test_critique_sufficiency.py",
          "tests/test_ports_deep.py", "tests/test_act_execution_record.py", "tests/test_act_editblock.py", "tests/test_act_mcp_client.py", "tests/test_act_tool_ledger.py",
