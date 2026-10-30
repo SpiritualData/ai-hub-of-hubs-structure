@@ -53,3 +53,11 @@ def test_a_write_result_is_a_value_and_a_writer_base_needs_both_methods():
 def test_the_modes_and_the_surfacing_events():
     assert {m.value for m in events.Mode} == {"live", "background"}
     assert events.EVENT_RESULT in events.SURFACING_EVENTS and events.EVENT_EXEC not in events.SURFACING_EVENTS
+
+
+def test_a_run_control_defaults_to_no_messages_no_cancel_no_pause():
+    from hubofhubs.ports.control import ControlMessage, RunControl
+    control = RunControl()
+    assert control.claim_inputs() == [] and not control.cancel_requested() and not control.pause_requested()
+    control.mark_seen(["m1"], "deep_worker")
+    assert ControlMessage(id="m1", text="hello").text == "hello" and control.poll_seconds == 2.0

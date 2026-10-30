@@ -22,7 +22,7 @@ TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py"
          "tests/test_recall_text_sampling.py", "tests/test_recall_walk.py",
          "tests/test_critique_jsonl_ledger.py", "tests/test_critique_link_detect.py", "tests/test_critique_link_guard.py",
          "tests/test_critique_specificity.py", "tests/test_critique_sufficiency.py",
-         "tests/test_ports_deep.py", "tests/test_act_editblock.py", "tests/test_act_mcp_client.py", "tests/test_act_tool_ledger.py",
+         "tests/test_ports_deep.py", "tests/test_act_execution_record.py", "tests/test_act_editblock.py", "tests/test_act_mcp_client.py", "tests/test_act_tool_ledger.py",
          "tests/test_act_fast_edit.py", "tests/test_act_mcp_operations.py"]
 TOLERANCE = 1.0  # percentage points
 
