@@ -47,7 +47,7 @@ def evaluate(binding: Binding, folder=None, today=None):
         records = [solution_facts(binding.records_dir, sid) for sid in seams]
         mine = [i for i in integrations if i["area"] == area and i["consumer"] == binding.consumer]
         facts[area] = dict(
-            area=area, seat=row["seat"], days=days, status=row["status"], capabilities=len(wired), by_config=len(config),
+            area=area, seat=row["seat"], call=(row.get("call") or "").strip().lower(), expected=registry.should_connect(row), days=days, status=row["status"], capabilities=len(wired), by_config=len(config),
             registered=row["status"] in registry.REGISTERED and bool(registry.findings_of(row, findings)),
             fresh=days is not None and days <= registry.STALENESS_DAYS,
             config_ok=bool(wired) and len(config) / len(wired) >= registry.CONFIG_SHARE_BAR,

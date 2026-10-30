@@ -62,9 +62,9 @@ def area_detail(folder=None, seats=None):
         mine = [r for r in hubs if r["seat"] == seat]
         if not mine:
             continue
-        out += [f"### {seat} ({part})", "", "| Area | Serves | Status | Built on | Candidates | Findings | Researched |", "|---|---|---|---|---|---|---|"]
+        out += [f"### {seat} ({part})", "", "| Area | Serves | Status | Call | Built on | Candidates | Findings | Researched |", "|---|---|---|---|---|---|---|---|"]
         for r in mine:
-            out.append("| " + " | ".join([r["area"], r["serves"], r["status"], names(r["current_hubs"]),
+            out.append("| " + " | ".join([r["area"], r["serves"], r["status"], r.get("call") or "-", names(r["current_hubs"]),
                                           "; ".join(registry.split(r["candidate_hubs"])) or "none",
                                           str(len(registry.findings_of(r, findings))), r["last_researched"]]) + " |")
         out.append("")
@@ -80,8 +80,9 @@ def metric_lines(m, facts):
         f"stale: {', '.join(stale) or 'none'}",
         f"- reinvented integrations (single services hand-wired where a hub covers them, no waiver): {m['reinvented']} "
         f"({m['waived']} more waived with a reason); areas free of them {m['reinvented_free_share']:.2f}",
-        f"- code: areas with one seam {m['seam_share']:.2f}, selectable by metric {m['selectable_share']:.2f}, "
-        f"vendor branches in core {m['vendor_branches']}",
+        f"- code: of the {m.get('to_connect', len(facts))} areas whose call is adopt or coexist, share with one seam {m['seam_share']:.2f} "
+        f"and selectable by metric {m['selectable_share']:.2f}; vendor branches in core {m['vendor_branches']}",
+        f"- real gaps (call adopt or coexist, no seam): {', '.join(m.get('unconnected') or []) or 'none'}",
         f"- score: {m['score']:.3f}"])
 
 

@@ -43,3 +43,11 @@ def test_readme_stays_small():
     readme = (status.ROOT / "README.md").read_text()
     assert status.rewrite(readme, status.build()) == readme
     assert len(readme.splitlines()) <= 120
+
+
+def test_the_detail_file_shows_each_areas_call():
+    from hubofhubs import registry
+    detail = status.build_detail()
+    assert "| Call |" in detail
+    for row in registry.read("hubs.csv"):
+        assert f"| {row['status']} | {row['call'] or '-'} |" in detail, row["area"]

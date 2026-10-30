@@ -22,10 +22,14 @@ the hub grows, not when the consumer gains code.
 
 | File | One row is | Columns |
 |---|---|---|
-| `hubs.csv` | an area (a family of hubs) | area, seat, serves, status, current_hubs, candidate_hubs, connect, last_researched, researched_by, finding_id, recommendation |
+| `hubs.csv` | an area (a family of hubs) | area, seat, serves, status, current_hubs, candidate_hubs, connect, last_researched, researched_by, finding_id, recommendation, call |
 | `hub_findings.csv` | a researched candidate | finding_id, area, candidate, url, license, role, summary, evidence_url, date_researched, source_quality |
 | `hub_capabilities.csv` | a hub connection of a consumer | consumer, capability_id, area, capability, hub, connect (config or code), wired (yes or no), evidence_path |
 | `hub_integrations.csv` | a single service a consumer hand-wires | consumer, area, integration, kind, path, covered_by, status (violation or waived), waiver_reason |
+
+`call` is the recommendation as one word: `adopt`, `coexist` (only if measured), `keep`, `watch` or `avoid`; blank means unclassified and counts as `coexist`. A scorer
+reads the checks that need a connection (by configuration, one seam, selectable, a fake hub) only over areas whose call is `adopt` or
+`coexist`, so a consumer is not behind on an area the research says to keep, watch or avoid.
 
 `current_hubs` is `name|url|license` entries joined by semicolons. `status` is `builds_on`, `compared` or `no_hub_exists`
 (a recorded decision). In `hubs.csv`, `finding_id` is the area's id prefix (`HF-<date>-<area>`); each row of `hub_findings.csv`

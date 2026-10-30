@@ -44,9 +44,10 @@ def test_a_consumer_is_read_per_area(consumer):
     assert 0 <= numbers["score"] <= 1
 
 
-def test_every_area_gets_every_check():
+def test_every_area_gets_every_check_that_applies_to_it():
     got = {(c["args"]["area"], c["kind"]) for c in cases.cases()}
-    assert got == {(r["area"], k) for r in registry.read("hubs.csv") for k in KINDS}
+    assert got == {(r["area"], k) for r in registry.read("hubs.csv") for k in KINDS
+                   if k not in registry.CONNECTION_KINDS or registry.should_connect(r)}
 
 
 def test_freshness_ages_with_the_calendar(consumer):
@@ -140,3 +141,41 @@ def test_the_example_lane_is_one_aggregator_with_no_secret():
 def test_rewrite_swaps_a_block_in_place():
     out = render_docs.rewrite("a\n<!-- b -->\nold\n<!-- e -->\nz", "<!-- b -->", "<!-- e -->", "new")
     assert out == "a\n<!-- b -->\nnew\n<!-- e -->\nz"
+
+
+# THE CALL COLUMN. `call` is the recommendation as one machine-readable word, so a scorer can tell an area a consumer should be connected
+# to (adopt, coexist) from one it should not (keep, watch, avoid) without parsing prose. A blank is read as coexist.
+def test_every_area_has_a_known_call_that_its_recommendation_states():
+    for row in registry.read("hubs.csv"):
+        assert row["call"] in registry.CALLS, (row["area"], row["call"])      # a blank would count as coexist; none is blank today
+        words = row["recommendation"].upper().split()
+        if words[0].strip(".,;:") in ("ADOPT", "WATCH", "AVOID"):
+            assert row["call"] == words[0].strip(".,;:").lower(), row["area"]
+
+
+def test_only_adopt_coexist_and_blank_should_be_connected():
+    for call, wanted in (("adopt", True), ("coexist", True), ("", True), ("keep", False), ("watch", False), ("avoid", False)):
+        assert registry.should_connect({"call": call}) is wanted, call
+    assert registry.should_connect({}) is True, "a row with no call column is unclassified, so it counts as coexist"
+    assert registry.should_connect({"call": " Keep "}) is False
+
+
+def test_seam_and_selectable_shares_are_over_the_areas_that_should_be_connected():
+    base = dict(registered=True, fresh=True, vendor_branches=[], days=1)
+    facts = [dict(base, area="a", expected=True, seam=True, selectable=True), dict(base, area="b", expected=True, seam=False, selectable=False),
+             dict(base, area="c", expected=False, seam=False, selectable=False), dict(base, area="d", expected=False, seam=False, selectable=False)]
+    m = registry.combine(facts, [])
+    assert (m["seam_share"], m["selectable_share"], m["to_connect"], m["unconnected"]) == (0.5, 0.5, 2, ["b"])
+    assert m["code"] == pytest.approx((0.5 + 0.5 + 1.0) / 3), "the weights of the terms are unchanged"
+    none_wanted = registry.combine([dict(base, area="c", expected=False, seam=False, selectable=False)], [])
+    assert none_wanted["seam_share"] == 1.0 and none_wanted["to_connect"] == 0
+
+
+def test_connection_checks_are_cases_only_for_areas_that_should_be_connected():
+    from hubofhubs import cases
+    from hubofhubs.measure import KINDS
+    have = {(c["args"]["area"], c["kind"]) for c in cases.cases()}
+    for row in registry.read("hubs.csv"):
+        for kind in KINDS:
+            expected = kind not in registry.CONNECTION_KINDS or registry.should_connect(row)
+            assert ((row["area"], kind) in have) is expected, (row["area"], kind)

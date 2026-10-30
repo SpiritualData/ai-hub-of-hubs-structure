@@ -40,6 +40,6 @@ def aggregate(rows, facts, connections):
             f"integration-by-config {m['config_share']:.2f}, no reinvented integration {m['reinvented_free_share']:.2f}, "
             f"freshness {m['fresh_share']:.2f}, code structure {m['code']:.2f}); research age max {m['days_max']} mean "
             f"{m['days_mean']:.1f} days (bar {registry.STALENESS_DAYS}), stale areas {stale or 'none'}; code: one seam "
-            f"{m['seam_share']:.2f}, selectable by metric {m['selectable_share']:.2f}, core free of vendor branches "
+            f"{m['seam_share']:.2f} and selectable by metric {m['selectable_share']:.2f} (both over the {m['to_connect']} areas whose call is adopt or coexist), core free of vendor branches "
             f"{m['clean_share']:.2f} ({m['vendor_branches']} branches); hand-wired integrations a hub covers "
             f"{m['reinvented']} ({m['waived']} more waived with a reason)")

@@ -9,6 +9,9 @@ from esoi.tables import ids, read_csv
 DATA = Path(__file__).resolve().parent / "registry"
 STALENESS_DAYS = 90          # research older than this is stale (a quarter)
 REGISTERED = ("builds_on", "compared", "no_hub_exists")
+CALLS = ("adopt", "coexist", "keep", "watch", "avoid")   # the machine-readable call of an area's recommendation (hubs.csv ``call``)
+CONNECT_CALLS = ("adopt", "coexist", "")                  # areas a consumer SHOULD be connected to; a blank call counts as coexist
+CONNECTION_KINDS = ("by_config", "seam", "selectable", "fake_hub")   # checks that can only hold once a consumer has connected the area
 CONFIG_SHARE_BAR = 0.5       # an area is "by configuration" when at least this share of its wired hub connections need no code
 
 
@@ -42,6 +45,13 @@ def parse_hubs(cell):
     return out
 
 
+def should_connect(row):
+    """Whether the area's call says a consumer should be connected to it: ADOPT, or COEXIST (a blank call is read as coexist, so an
+    area nobody classified is never excused). KEEP, WATCH and AVOID are decisions not to connect, so a consumer without a seam
+    there is not behind. Pure data: the same for every consumer."""
+    return (row.get("call") or "").strip().lower() in CONNECT_CALLS
+
+
 def findings_of(row, findings):
     """The researched candidates of one area. ``hubs.csv`` holds the area's id prefix in ``finding_id``; each row of
     ``hub_findings.csv`` carries ``<prefix>-<n>``, so every finding id is unique and the join stays one value per area."""
@@ -69,14 +79,18 @@ def combine(facts, connections):
     coverage = sum(1 for f in facts if f["registered"]) / n
     config_share = (sum(1 for c in connections if c["connect"] == "config") / len(connections)) if connections else 0.0
     fresh_share = sum(1 for f in facts if f["fresh"]) / n
-    seam_share = sum(1 for f in facts if f["seam"]) / n
-    selectable_share = sum(1 for f in facts if f["selectable"]) / n
+    # seam and selectable are read over the areas that SHOULD be connected (call adopt or coexist): an area called KEEP, WATCH or
+    # AVOID has no seam to miss. The weights and the 1/3 split of ``code`` are unchanged. With none to connect the shares are 1.
+    wanted = [f for f in facts if f.get("expected", True)]
+    seam_share = sum(1 for f in wanted if f["seam"]) / len(wanted) if wanted else 1.0
+    selectable_share = sum(1 for f in wanted if f["selectable"]) / len(wanted) if wanted else 1.0
     clean_share = sum(1 for f in facts if not f["vendor_branches"]) / n
     reinvented_free_share = sum(1 for f in facts if not f.get("reinvented")) / n
     code = (seam_share + selectable_share + clean_share) / 3
     out = dict(coverage=coverage, config_share=config_share, fresh_share=fresh_share,
                days_max=max(days) if days else None, days_mean=(sum(days) / len(days)) if days else None,
-               seam_share=seam_share, selectable_share=selectable_share, clean_share=clean_share,
+               seam_share=seam_share, selectable_share=selectable_share, clean_share=clean_share, to_connect=len(wanted),
+               unconnected=sorted(f.get("area", "") for f in wanted if not f["seam"]),
                vendor_branches=sum(len(f["vendor_branches"]) for f in facts), code=code,
                reinvented=sum(len(f.get("reinvented", [])) for f in facts), waived=sum(f.get("waived", 0) for f in facts),
                reinvented_free_share=reinvented_free_share)
