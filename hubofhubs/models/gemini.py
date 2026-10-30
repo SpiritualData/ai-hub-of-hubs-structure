@@ -53,7 +53,7 @@ class GeminiProvider(ModelProviderBase):
             self.client = google.genai.Client(api_key=self.api_key)
         return self.client
 
-    def generate(self, model: str, contents: Any, config: Any = None, reasoning: Optional[str] = None) -> Any:
+    def request(self, model: str, contents: Any, config: Any = None, reasoning: Optional[str] = None) -> Any:
         """One ``generate_content``, counting the call and its tokens. With ``reasoning == "minimal"`` the thinking level is
         minimal (hidden reasoning cost ~11s per call on real prompts for the same output); a model that rejects the thinking
         config is retried once without it."""
@@ -89,7 +89,7 @@ class GeminiProvider(ModelProviderBase):
         if instruction:
             config["system_instruction"] = instruction
         try:
-            return parse_json_with_retry(lambda: self.generate(model, contents, config).text,
+            return parse_json_with_retry(lambda: self.request(model, contents, config).text,
                                          validate=lambda o: isinstance(o, (dict, list)), label="gemini planner")
         except Exception:  # noqa: BLE001
             return {}
@@ -102,7 +102,7 @@ class GeminiProvider(ModelProviderBase):
         model = self.resolve_model(model)
         if layers:
             instruction, contents = split_layers_for_gemini(system, layers)
-            response = self.generate(model, contents, {"system_instruction": instruction} if instruction else None, reasoning)
+            response = self.request(model, contents, {"system_instruction": instruction} if instruction else None, reasoning)
             return response.text if response and response.text else ""
         parts = [f"System: {system}\n"] if system else []
         images: List[Dict[str, Any]] = []
@@ -117,7 +117,7 @@ class GeminiProvider(ModelProviderBase):
                     part = image_part(block)
                     images.append(part) if part is not None else parts.append("[Image included]\n")
         prompt = "".join(parts).strip()
-        response = self.generate(model, [{"role": "user", "parts": [{"text": prompt}, *images]}] if images else prompt, None, reasoning)
+        response = self.request(model, [{"role": "user", "parts": [{"text": prompt}, *images]}] if images else prompt, None, reasoning)
         return response.text if response and response.text else ""
 
     def supports_web_search(self, model: Optional[str] = None) -> bool:
@@ -128,7 +128,7 @@ class GeminiProvider(ModelProviderBase):
         """Search through Google Search grounding (no extra key): ``{"answer", "results": [{title, url, snippet}]}``."""
         from google.genai import types
         config = types.GenerateContentConfig(tools=[types.Tool(google_search=types.GoogleSearch())])
-        response = self.generate(self.resolve_model(model), query, config)
+        response = self.request(self.resolve_model(model), query, config)
         results: List[Dict[str, str]] = []
         for cand in (getattr(response, "candidates", None) or []):
             for chunk in (getattr(getattr(cand, "grounding_metadata", None), "grounding_chunks", None) or []):
@@ -148,7 +148,7 @@ class GeminiProvider(ModelProviderBase):
         ask = instruction or ("Return the full visible text content of this page, verbatim and complete, as plain text with its "
                               "structure preserved. Do not summarize, comment, or add anything.")
         config = types.GenerateContentConfig(tools=[types.Tool(url_context=types.UrlContext())])
-        response = self.generate(self.resolve_model(model), f"{ask}\n\n{url}", config)
+        response = self.request(self.resolve_model(model), f"{ask}\n\n{url}", config)
         status, retrieved = "", url
         for cand in (getattr(response, "candidates", None) or []):
             for entry in (getattr(getattr(cand, "url_context_metadata", None), "url_metadata", None) or []):
