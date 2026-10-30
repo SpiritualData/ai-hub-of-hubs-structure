@@ -1,0 +1,43 @@
+"""Reserved vector-store scopes and the seed list type, shared by a vector store and its writers.
+
+One collection holds points of different KINDS: the context CARDS seeded from a keyword store, and the
+task-to-context ASSOCIATIONS that a vector context assembler compounds over time. They are written by different code
+paths, they have different lifetimes, and they must not share a capacity bound.
+
+They used to share one: seeding wrote cards UNSCOPED (shared, so every scoped search can see them), and recording then
+bounded "associations" with ``count(scope=None)`` / ``evict_oldest(..., scope=None)``, which is a filter over exactly
+those unscoped points. So the first recorded association on a store holding 500+ seeded cards evicted the cards, every
+one of them embedded moments earlier, at real cost, by a seed pass that was about to run again and embed them all over
+again.
+
+``CARD_SEED_SCOPE`` fixes that by giving seeded cards a scope of their own. The store treats it as a VISIBILITY-shared
+partition: it admits it under every scope exactly as it admits unscoped points, so retrieval is unchanged, while the
+exact-scope filter (the one ``count`` and ``evict_oldest`` use) never matches it from any other scope. Cards are
+therefore reachable from everywhere and evictable from nowhere.
+
+The value is a plain dict because that is what every ``VectorStore`` method already takes as its ``scope``. A scope's
+digest is part of the stored points (and of the point id), so a consumer whose stored data was written under a differently
+named key passes its own dict as ``seed_scope``; the default below is for a consumer with no earlier data.
+"""
+from __future__ import annotations
+
+from typing import Any, Dict, Iterable
+
+__all__ = ["CARD_SEED_SCOPE", "SeedItems"]
+
+
+CARD_SEED_SCOPE: Dict[str, Any] = {"point_class": "card_seed"}
+
+
+class SeedItems(list):
+    """The items a seed source built, plus how many cards the source holds in all (``offered``).
+
+    A seed source that is handed the ceiling builds embed items for that many cards only, so the
+    list it returns is no longer the whole store and its length no longer says how far over the
+    ceiling the store is. ``offered`` carries that, for the one warning that tells a person to
+    prune. A plain list from any other source is still accepted everywhere.
+    """
+
+    def __init__(self, items: Iterable[Dict[str, Any]] = (), offered: int = 0) -> None:
+        super().__init__(items)
+        self.offered = max(int(offered), len(self))

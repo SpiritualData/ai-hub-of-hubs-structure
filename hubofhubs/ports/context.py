@@ -4,6 +4,7 @@ Split out of ``adapters.py`` by definition; that module re-exports every name he
 """
 from __future__ import annotations
 
+import abc
 import typing
 from typing import Any, Dict, List, Optional, runtime_checkable
 from dataclasses import dataclass, field
@@ -171,7 +172,7 @@ class ContextAssembler(typing.Protocol):
 
 # ---------------------------------------------------------------------------
 # VectorStore: optional VECTOR ORIENTATION role (Protocol + ABC, stdlib-only).
-# Heavy deps (qdrant-client, fastembed) live in adapters.qdrant_vector_store
+# Heavy deps (qdrant-client, fastembed) live in hubofhubs.recall.qdrant_store
 # behind the [qdrant] optional extra.  This Protocol is stdlib so the core
 # stays dependency-free.
 # ---------------------------------------------------------------------------
@@ -251,3 +252,84 @@ class VectorStore(typing.Protocol):
         scope: Optional[Dict[str, Any]] = None,
     ) -> int:
         """AUTO-UPDATE: re-embed only changed/new items; return count re-embedded.  Never raises."""
+
+
+class VectorStoreBase(abc.ABC):
+    """ABC variant of VectorStore for explicit subclassing.
+
+    Subclasses must implement search / upsert / sync.  All three must never raise
+    from the public surface (wrap internals in try/except).
+
+    ``count`` and ``evict_oldest`` are optional capacity-management methods with
+    no-op defaults.  Override them in stores that support bounded capacity.
+    """
+
+    @abc.abstractmethod
+    def search(
+        self,
+        query: str,
+        *,
+        scope: Optional[Dict[str, Any]] = None,
+        top_k: int = 8,
+    ) -> "List[VectorHit]":
+        """Embed ``query`` and return top-``top_k`` nearest hits.  Never raises."""
+
+    @abc.abstractmethod
+    def upsert(
+        self,
+        items: "List[Dict[str, Any]]",
+        *,
+        scope: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Embed item texts and upsert into the scope collection.  Never raises."""
+
+    @abc.abstractmethod
+    def sync(
+        self,
+        items: "List[Dict[str, Any]]",
+        *,
+        scope: Optional[Dict[str, Any]] = None,
+    ) -> int:
+        """AUTO-UPDATE: re-embed only changed/new items; return count.  Never raises."""
+
+    def count(self, *, scope: Optional[Dict[str, Any]] = None) -> int:
+        """Return the number of stored associations for the given scope.
+
+        No-op default: returns 0.  Override in stores that support capacity
+        management.  Never raises.
+        """
+        return 0
+
+    def evict_oldest(
+        self,
+        n: int,
+        *,
+        scope: Optional[Dict[str, Any]] = None,
+        ts_key: str = "ts",
+    ) -> int:
+        """Delete the ``n`` oldest points (sorted by ``ts_key`` payload field, asc).
+
+        No-op default: returns 0.  Override in stores that support capacity
+        management.  Never raises.
+        """
+        return 0
+
+
+class ContextAssemblerBase(abc.ABC):
+    """ABC variant for implementers who prefer explicit subclassing."""
+
+    @abc.abstractmethod
+    def assemble(
+        self, task_text: str, *, meta: Optional[Dict[str, Any]] = None
+    ) -> "AssembledContext":
+        """Return pre-assembled context for ``task_text``. Never raises."""
+
+    def record(self, task_text: str, outcome: Dict[str, Any]) -> None:
+        """Best-effort write-back -- no-op default; override to persist outcomes."""
+
+    def render_card(
+        self, card_id: str, *, meta: Optional[Dict[str, Any]] = None
+    ) -> Optional[str]:
+        """OPTIONAL: render ONE card by id for the mid-loop {"card": id} read. Default: unsupported
+        (returns None). Override to fetch a single card's rendered content. Never raises."""
+        return None
