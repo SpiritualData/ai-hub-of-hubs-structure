@@ -19,3 +19,4 @@ context-assembler:composite,context-assembler,unconfirmed: for Joshua to confirm
 know-the-world:web_research,know-the-world,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/websearch/research.py,search-backend
 act-in-the-world:fast_edit,act-in-the-world,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/act/fast_edit.py,
 act-in-the-world:mcp_operations,act-in-the-world,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/act/mcp_operations.py,
+know-the-world:openalex,know-the-world,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/science/openalex.py,

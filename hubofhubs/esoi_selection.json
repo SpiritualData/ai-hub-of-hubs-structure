@@ -37,6 +37,7 @@
  "know-the-world": {
   "default": "",
   "modules": {
+   "openalex": "hubofhubs.science.openalex",
    "web_research": "hubofhubs.websearch.research"
   }
  },

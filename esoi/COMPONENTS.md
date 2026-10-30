@@ -15,3 +15,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | `hub-recall` | core | unconfirmed: for Joshua to confirm. | remember-and-recall, context-assembler |
 | `hub-critique` | core | unconfirmed: for Joshua to confirm. | think-critically |
 | `hub-act` | core | unconfirmed: for Joshua to confirm. | act-in-the-world |
+| `hub-science` | core | unconfirmed: for Joshua to confirm. | know-the-world |

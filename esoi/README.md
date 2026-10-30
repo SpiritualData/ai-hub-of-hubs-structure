@@ -69,6 +69,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `know-the-world:web_research` | unconfirmed: for Joshua to confirm. | hubofhubs/websearch/research.py |  |
 | `act-in-the-world:fast_edit` | unconfirmed: for Joshua to confirm. | hubofhubs/act/fast_edit.py |  |
 | `act-in-the-world:mcp_operations` | unconfirmed: for Joshua to confirm. | hubofhubs/act/mcp_operations.py |  |
+| `know-the-world:openalex` | unconfirmed: for Joshua to confirm. | hubofhubs/science/openalex.py |  |
 
 ## Metrics
 

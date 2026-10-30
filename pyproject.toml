@@ -18,10 +18,11 @@ locks = ["filelock"]                 # search-backend arm: the daily limiter sha
 anthropic = ["anthropic"]               # call-a-model arm: anthropic
 openai = ["openai"]                   # call-a-model arms: openai, deepseek (an OpenAI-compatible endpoint)
 mcp = ["mcp==2.0.0"]                # act-in-the-world helper: the MCP protocol client (the arms over it live in the consumer)
+science = ["httpx"]                 # know-the-world arm: openalex (scholarly works search); the Crossref DOI helper
 pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
 
 [tool.setuptools]
-packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.models", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.websearch"]
+packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.models", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.science", "hubofhubs.websearch"]
 
 [tool.setuptools.package-data]
 hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]

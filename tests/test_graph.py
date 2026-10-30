@@ -105,7 +105,7 @@ def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend_and_is_select
             return SearchResponse(hits=[SearchHit(title="A page", url="https://example.com/a", snippet="a fact", date="")])
 
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    assert by["know-the-world"]["selected"] == "" and by["know-the-world"]["implementations"] == "web_research"
+    assert by["know-the-world"]["selected"] == "" and by["know-the-world"]["implementations"] == "web_research;openalex"
     config = AssemblyConfig(solutions=("know-the-world",), selections={"know-the-world": "web_research"})
     system = assemble(config, provided={"search-backend": Backend()})
     arm = system["know-the-world"]
