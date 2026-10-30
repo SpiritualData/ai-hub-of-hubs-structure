@@ -1,4 +1,14 @@
 {
+ "act-in-the-world:fast_edit": {
+  "executed": 200,
+  "statements": 227,
+  "percent": 88.1
+ },
+ "act-in-the-world:mcp_operations": {
+  "executed": 78,
+  "statements": 87,
+  "percent": 89.7
+ },
  "call-a-model:anthropic": {
   "executed": 26,
   "statements": 104,
@@ -60,9 +70,9 @@
   "percent": 95.7
  },
  "unassigned": {
-  "executed": 1952,
-  "statements": 3560,
-  "percent": 54.8
+  "executed": 2734,
+  "statements": 8115,
+  "percent": 33.7
  },
  "watch-for-risk:overseer": {
   "executed": 24,
