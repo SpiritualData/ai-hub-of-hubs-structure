@@ -12,7 +12,7 @@ PACKAGE_DIRS = ("hubofhubs",)
 ALLOWED = set(sys.stdlib_module_names) | set(PACKAGE_DIRS) | {"esoi"}
 # Third-party libraries of the per-arm extras (pyproject optional-dependencies), by import name. They may be imported only
 # inside a function, so importing a module never needs them.
-LAZY = {"httpx", "google", "trafilatura", "pypdf", "filelock", "anthropic", "openai"}
+LAZY = {"httpx", "google", "trafilatura", "pypdf", "filelock", "anthropic", "openai", "mcp"}
 
 
 def top_level_imports(source: str) -> set[str]:

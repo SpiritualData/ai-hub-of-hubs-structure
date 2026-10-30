@@ -8,12 +8,13 @@ An implementation's constructor parameters typed with one of these Protocols are
 its default arms (SearXNG, JSON search APIs described as data, Gemini grounding, a provider's own search); none is selected by default.
 """
 import typing
-from typing import Any, List, Mapping, Optional, Sequence, Union, runtime_checkable
+from typing import Any, Callable, List, Mapping, Optional, Sequence, Union, runtime_checkable
 
 from esoi import solution
 
 from .card import Card
 from .ports.context import ContextAssembler
+from .ports.deep import DeepResult, ProgressEvent
 from .ports.model import ModelProvider
 from .ports.retrieval import Observation
 from .ports.search import SearchResponse
@@ -103,6 +104,20 @@ class HubScoring(typing.Protocol):
     def evaluate(self, binding: Any, folder: Any = None, today: Any = None) -> Any: ...
     def check(self, fact: Mapping[str, Any], kind: str) -> Mapping[str, Any]: ...
     def metrics(self, facts: Mapping[str, Any], connections: Sequence[Mapping[str, Any]]) -> Mapping[str, Any]: ...
+
+
+@solution("act-in-the-world")
+@runtime_checkable
+class Acting(typing.Protocol):
+    """Takes a goal with a written done-standard and tries to bring it about outside the model (edit files, call a write operation,
+    run an agent), then returns a ``DeepResult`` that says whether the goal was met. Never raises: a refusal or failure comes back as
+    ``met=False`` with the reason, and nothing is changed when it declines. An arm also carries ``write_surface`` (what kind of change
+    it can make: files, operations or an agent) and may stream ``ProgressEvent`` rows through ``emit``. The model it needs and the
+    writer it is granted (``FileWriter``, ``OperationWriter``) are constructor arguments the consumer provides."""
+
+    def run_goal(self, *, goal: str, brief: str, model: Optional[str] = None, max_turns: Optional[int] = None,
+                 emit: Optional[Callable[[ProgressEvent], None]] = None, context_preamble: Optional[str] = None,
+                 run_id: Optional[str] = None) -> DeepResult: ...
 
 
 @solution("watch-for-risk")

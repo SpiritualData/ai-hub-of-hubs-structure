@@ -1,4 +1,11 @@
 {
+ "act-in-the-world": {
+  "default": "",
+  "modules": {
+   "fast_edit": "hubofhubs.act.fast_edit",
+   "mcp_operations": "hubofhubs.act.mcp_operations"
+  }
+ },
  "call-a-model": {
   "default": "",
   "modules": {

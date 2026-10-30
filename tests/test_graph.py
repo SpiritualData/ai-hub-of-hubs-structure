@@ -18,7 +18,7 @@ SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssemb
          "call-a-model": seats.ModelCalling, "search-backend": seats.SearchBackend,
          "reason-and-answer": seats.TierSelection, "stay-current": seats.FreshnessReading,
          "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching,
-         "know-the-world": seats.WorldKnowing}
+         "know-the-world": seats.WorldKnowing, "act-in-the-world": seats.Acting}
 SOLUTIONS = registry.read("solutions.csv", ROOT / "esoi")
 IMPLEMENTATIONS = registry.read("implementations.csv", ROOT / "esoi")
 

@@ -67,6 +67,8 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `call-a-model:openai` | unconfirmed: for Joshua to confirm. | hubofhubs/models/openai.py |  |
 | `context-assembler:composite` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/composite_assembler.py |  |
 | `know-the-world:web_research` | unconfirmed: for Joshua to confirm. | hubofhubs/websearch/research.py |  |
+| `act-in-the-world:fast_edit` | unconfirmed: for Joshua to confirm. | hubofhubs/act/fast_edit.py |  |
+| `act-in-the-world:mcp_operations` | unconfirmed: for Joshua to confirm. | hubofhubs/act/mcp_operations.py |  |
 
 ## Metrics
 

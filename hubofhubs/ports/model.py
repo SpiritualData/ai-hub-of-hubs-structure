@@ -99,6 +99,13 @@ def plan_with_step(provider: Any, prompt: str, *, step: Optional[str] = None,
 
 
 @runtime_checkable
+class TierResolving(typing.Protocol):
+    """Turns a tier name (``fast``, ``balanced``, ``quality``, ``best`` or the consumer's own) into a model id."""
+
+    def resolve_tier(self, tier: str) -> str: ...
+
+
+@runtime_checkable
 class ModelProvider(typing.Protocol):
     """The LLM behind planning, answering, and the live model list."""
 
