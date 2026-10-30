@@ -50,16 +50,15 @@ module must equal its declared extra, and the extras list is generated from it. 
 **Names only.** Config values, database rows and environment carry NAMES, validated against
 `^[a-z0-9][a-z0-9_-]*$` and accepted only if in `names()`. Anything containing `:` or `.` is rejected before `esoi`
 sees it. Import targets come only from (a) a `register` call in consumer code (trusted) and (b) the hub's own packaged
-records and snapshot, where the module must start with `hubofhubs.` and its `find_spec` origin must lie inside the
-installed `hubofhubs` directory.
+records and snapshot, where the module must start with `hubofhubs.` and its file must lie inside the
+installed `hubofhubs` directory (`Assembler.safe_module` decides that from the file's position, importing nothing).
 
-**`esoi` reads more than the environment**: `ESOI_ROOT` and `ESOI_SNAPSHOT`, the working directory, an upward walk for
-`esoi.toml`, swallowed load errors, `sys.path` appends. Hub-side fixes: the wrapper always passes `environ` from a config
-field (`selection_environ`, default `{}`); the hub's own `esoi.toml` has no `[selection]` table (a test).
-
-**Proposal for the `esoi` owner (not applied here; `esoi` is not edited from this repository):** an explicit project root
-per scope with no upward walk; raise with the offending path instead of swallowing a load error; no `sys.path` changes;
-no working-directory fallback when a scope is named.
+**Plain `esoi.runtime` reads more than the environment**: `ESOI_ROOT` and `ESOI_SNAPSHOT`, the working directory, an upward
+walk for `esoi.toml`, swallowed load errors, `sys.path` appends. The hub does not use it for assembly. `esoi.assemble.Assembler`
+takes an explicit records folder or the packaged snapshot (the hub passes none: it uses its snapshot), does no upward walk,
+consults no deployment table, `override()` or process environment, raises load errors and leaves `sys.path` alone. Its
+`selection_environ` field is the only environment `esoi` is given. The tests are the library's (`tests/test_assemble.py`:
+the hostile parent `esoi.toml`, `sys.path` unchanged, hostile names, look-alike modules).
 
 ## 3. Risks found in repo-utils and the hub answer
 
@@ -68,8 +67,8 @@ Sources: the repo-utils sections and GAP entries of the evolvable-structure skil
 | # | Risk or oddity | Hub answer |
 |---|---|---|
 | R1 | Filesystem walk at import: wrappers attached per folder, so import cost and behaviour depend on what is on disk | Registry comes from declarations and record rows. Importing the package reads no directory. Records are read on first resolve, once. Test: inert import (section 4) |
-| R2 | Git-root dependence: lookups depend on where the repository is | The hub's own code never asks where the repo is. But `esoi` still reads cwd, `ESOI_ROOT`/`ESOI_SNAPSHOT` and walks up for `esoi.toml`, so the hub closes this itself: a packaged snapshot read from package data, `environ` passed explicitly, and tests that resolve from a directory holding a hostile `esoi.toml` and from a `pip --target` vendored copy, asserting unchanged results, `sys.path` unchanged and snapshot equal to records. The `esoi` side is the section 2 proposal |
-| R3 | First match by folder name wins silently | Keys are scope + solution id + name. `esoi.runtime.add` raises on a second declaration with a different object, but `register(..., replace=True)` can replace, so the hub wrapper refuses `replace` of any hub-declared name; consumers use their own names. Test: replacing a hub name raises |
+| R2 | Git-root dependence: lookups depend on where the repository is | The hub's own code never asks where the repo is. Plain `esoi.runtime` reads cwd, `ESOI_ROOT`/`ESOI_SNAPSHOT` and walks up for `esoi.toml`; `esoi.assemble.Assembler` does not (section 2). The hub reads its packaged snapshot, and `tests/test_no_environment.py` asserts the snapshot equals the records; the library's `test_r2_r4_a_hostile_parent_esoi_toml_is_never_read_and_sys_path_is_unchanged` resolves from a directory holding a hostile `esoi.toml` |
+| R3 | First match by folder name wins silently | Keys are scope + solution id + name. `esoi.runtime.add` raises on a second declaration with a different object, but `register(..., replace=True)` can replace, so `Assembler.register` refuses `replace` of any name the package declares, and a `runtime.register(..., replace=True)` made behind it is refused when the arm is loaded; consumers use their own names. Tests: `tests/test_resolution.py`, and the library's `test_r3_nothing_routes_around_shadowing` |
 | R4 | `sys.modules` wrapper magic changes identity, `isinstance` and tracebacks | No `sys.modules` edits. Resolve returns the real object |
 | R5 | Env-var reload switch with truthiness trap (`"0"` turns it on) | The hub reads no environment itself: settings are config fields. `esoi.runtime` does read `ESOI_SELECT_*`, `ESOI_ROOT` and `ESOI_SNAPSHOT`, so passing `environ` from a config field (default `{}`) is the control, and a test proves an environment variable does not change a result. A scan for `os.environ` in the hub is secondary |
 | R6 | Install-time bootstrap in `setup.py` writes files and installs packages | `pyproject.toml` only, declarative. Test: the build runs no hub code |
@@ -78,7 +77,7 @@ Sources: the repo-utils sections and GAP entries of the evolvable-structure skil
 | R9 | Registry forked by copying | One registry (`esoi.runtime`), consumed as a dependency, never copied |
 | R10 | Name and metadata drift | One test: package name, import name, changelog heading and `esoi.toml` package agree |
 | R11 | Dependency pruning by text scan misses dynamic names | Extras per arm, generated from a per-arm import check (section 1). A missing extra at run time raises an error naming the extra |
-| R12 | Swallowed errors | The hub adds no retry or swallow wrappers, and its own errors name the solution, scope and layer. `esoi` currently swallows some load errors; the section 2 proposal asks it to raise with the path, and until then the hub's tests assert a broken record fails visibly |
+| R12 | Swallowed errors | The hub adds no retry or swallow wrappers, and its own errors name the solution, scope and layer. `esoi.assemble` raises `AssemblyError` for an unreadable snapshot or records, an arm that cannot be imported and a default that cannot be chosen (library tests `test_r12_errors_are_raised_not_swallowed`) |
 | R13 | Everything public is a CLI command; install runs arbitrary files | Public API is an explicit `__all__`. CLI is a fixed table: `call` limited to declared interfaces, `check`. No command installs or executes arbitrary files |
 | R14 | Kind decided by path | Kind is declared: a Protocol for the seat, a class or function for the arm. Conformance is checked once, in tests |
 | R15 | Version from an env var, private pinned zips | Version is a literal in `pyproject.toml`; dependencies pinned there |
@@ -95,7 +94,7 @@ Sources: the repo-utils sections and GAP entries of the evolvable-structure skil
 | Inert import | No code, network, thread or file write at import | `tests/test_import_is_inert.py`: subprocess with sockets blocked, read-only directory, empty environment |
 | Reproducible resolution | Same inputs, same result, in any directory, any registration order | `tests/test_resolution_order.py`, plus the hostile-directory and vendored-copy tests (R2) |
 | Clear errors | Every error names solution id, scope, layer, available names and a remedy | `tests/test_errors.py` |
-| Safe loading | Section 2 rules | `tests/test_safe_loading.py`: config value `os:system`, snapshot module `os`, filepath `../x.py`, and a look-alike `hubofhubs` module earlier on `sys.path`, all rejected |
+| Safe loading | Section 2 rules | The library's `tests/test_assemble.py` (config value `os:system`, snapshot module `os`, filepath `../x.py`, a look-alike module earlier on `sys.path`, all rejected); the hub's `tests/test_safe_loading.py` checks that every module its snapshot names is its own file |
 | Quickstart | A second consumer with no Quest content: register a toy part, assemble, print the reason | `docs/quickstart.md` run as `tests/test_quickstart.py` |
 | Types | `py.typed`, hints on the public API, a Protocol per seat | type-check of the package in CI |
 | Public API | Solution ids and implementation names ARE the public API. The `(solution id, name)` pairs are pinned in a stored list; removal without a deprecated alias is a breaking change. Deprecated names warn and name the replacement for at least one minor release | `tests/test_public_api.py` |
@@ -118,11 +117,10 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
 3. **Rename to `hubofhubs`, no alias**: package, import name, distribution, esoi scope, docs, tests, records. Done in the hub;
    the consumer's imports of the hub change in its own repository (a later task, owned by its agent).
 4. **No environment reads**, plus the hostile-directory and vendored-copy tests (R2, R5). Done: `tests/test_no_environment.py`.
-   One hole stays with `esoi`: a hostile `esoi.toml` in a parent folder of a vendored copy that is not under
-   `site-packages` is still found by `esoi`'s upward walk (the section 2 proposal); a pip install is not affected.
+   The hole that was left with `esoi` (a hostile `esoi.toml` in a parent folder found by its upward walk) is closed by
+   `esoi.assemble.Assembler`, which never walks up.
 5. **Resolve wrapper and `assemble`**: cascade, refusal of `replace` on hub names, reason line, name validation, safe
-   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py` and `test_safe_loading.py` (the generic tests are the library's `test_assemble.py`),
-  , `test_example_consumer.py` (a second consumer and a leak detector).
+   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py`, `tests/test_safe_loading.py` and `test_example_consumer.py` (a second consumer and a leak detector); the generic tests are the library's `test_assemble.py`.
 6. **Needs from typed constructor parameters**, the `uses_solution_ids` check and the graph checks (no cycles, every need
    resolves, external-seat rule). Done: `hubofhubs.seats`, `esoi.assemble`, `scripts/sync_uses.py --check`,
    `tests/test_graph.py`; the default card store `LocalCardStore` is the first executing arm. Eight seats have no natural
