@@ -48,7 +48,7 @@ def evaluate(binding: Binding, folder=None, today=None):
         mine = [i for i in integrations if i["area"] == area and i["consumer"] == binding.consumer]
         facts[area] = dict(
             area=area, seat=row["seat"], days=days, status=row["status"], capabilities=len(wired), by_config=len(config),
-            registered=row["status"] in registry.REGISTERED and any(f["finding_id"] == row["finding_id"] for f in findings),
+            registered=row["status"] in registry.REGISTERED and bool(registry.findings_of(row, findings)),
             fresh=days is not None and days <= registry.STALENESS_DAYS,
             config_ok=bool(wired) and len(config) / len(wired) >= registry.CONFIG_SHARE_BAR,
             seam=bool([n for sid in seams for n in declared(binding, sid)]),

@@ -1,9 +1,9 @@
 consumer,area,integration,kind,path,covered_by,status,waiver_reason
 quest-ai-runner,web_search,Serper,data_entry,quest_ai_runner/adapters/web_search_backends.py,SearXNG,waived,Hosted fallback chain kept for outage resilience when no SearXNG is hosted (FallbackSearchBackend); confirm: from Joshua
 quest-ai-runner,web_search,Brave Search API,data_entry,quest_ai_runner/adapters/web_search_backends.py,SearXNG,waived,Hosted fallback chain kept for outage resilience when no SearXNG is hosted (FallbackSearchBackend); confirm: from Joshua
-quest-ai-runner,world,Notion,adapter,quest_ai_runner/adapters/notion_adapter.py,MCP servers via the official registry;Activepieces;Composio,violation,
-quest-ai-runner,world,Google Drive,adapter,quest_ai_runner/adapters/google_drive_adapter.py,MCP servers via the official registry;Activepieces;Composio,violation,
-quest-ai-runner,world,Google Chat,adapter,quest_ai_runner/adapters/google_chat_adapter.py,MCP servers via the official registry;Activepieces;Composio,violation,
+quest-ai-runner,integration_aggregators,Notion,adapter,quest_ai_runner/adapters/notion_adapter.py,MCP servers via the official registry;Composio;Activepieces,violation,
+quest-ai-runner,integration_aggregators,Google Drive,adapter,quest_ai_runner/adapters/google_drive_adapter.py,MCP servers via the official registry;Composio;Activepieces,violation,
+quest-ai-runner,integration_aggregators,Google Chat,adapter,quest_ai_runner/adapters/google_chat_adapter.py,MCP servers via the official registry;Composio;Activepieces,violation,
 quest-ai-runner,model_providers,Anthropic,adapter,quest_ai_runner/providers.py,LiteLLM,violation,
 quest-ai-runner,model_providers,Gemini,adapter,quest_ai_runner/providers.py,LiteLLM,violation,
 quest-ai-runner,model_providers,OpenAI,adapter,quest_ai_runner/providers.py,LiteLLM,violation,

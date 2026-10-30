@@ -1,4 +1,5 @@
 """The registry files and the arithmetic over them. Pure functions: no model call, no network."""
+import re
 from datetime import date
 from pathlib import Path
 
@@ -39,6 +40,13 @@ def parse_hubs(cell):
             parts = (entry.split("|") + ["", ""])[:3]
             out.append(tuple(p.strip() for p in parts))
     return out
+
+
+def findings_of(row, findings):
+    """The researched candidates of one area. ``hubs.csv`` holds the area's id prefix in ``finding_id``; each row of
+    ``hub_findings.csv`` carries ``<prefix>-<n>``, so every finding id is unique and the join stays one value per area."""
+    own = re.compile(re.escape(row["finding_id"]) + r"-\d+")
+    return [f for f in findings if own.fullmatch(f["finding_id"])]
 
 
 def connections_of(area, connections, consumer):

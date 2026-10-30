@@ -82,21 +82,54 @@ def test_a_prepared_connection_and_a_waived_integration_do_not_count():
     assert [i["integration"] for i in registry.reinvented_of("a", ints, "c")] == ["x"]
 
 
+# A sub-solution area may weigh many candidates (the widest, prompt-injection defence, carries 16), because Joshua asked for broad
+# seats to be broken into sub-solutions and metrics, so the cap is 16, not the 4 of the first-pass research. An area that would
+# need more is split into narrower areas. The checks that matter stay strict: at least 2 candidates unless the area names a
+# single one, every finding has an https url and evidence url, a licence, a parseable date and a source quality, a role from the
+# known vocabulary, ids are unique, and hubs.csv joins to findings by id prefix with no orphan on either side.
+MOST_FINDINGS = 16
+ROLES = {"adopt", "avoid", "builds_on", "coexist", "compare", "incorporate", "watch"}
+
+
 def test_registry_integrity():
     hubs = registry.read("hubs.csv")
     findings = registry.read("hub_findings.csv")
+    areas = [r["area"] for r in hubs]
+    assert len(set(areas)) == len(areas)
+    assert len({r["finding_id"] for r in hubs}) == len(hubs)
+    ids = [f["finding_id"] for f in findings]
+    assert len(set(ids)) == len(ids), "finding ids must be unique, one per row"
+    joined = []
     for row in hubs:
-        mine = [f for f in findings if f["finding_id"] == row["finding_id"]]
-        assert 2 <= len(mine) <= 4, row["area"]
-        assert all(f["url"].startswith("https://") and f["evidence_url"].startswith("https://") for f in mine)
+        mine = registry.findings_of(row, findings)
+        joined += mine
+        single = len(registry.split(row["candidate_hubs"])) <= 1
+        assert (1 if single else 2) <= len(mine) <= MOST_FINDINGS, (row["area"], len(mine))
+        assert all(f["area"] == row["area"] for f in mine), row["area"]
+        assert [f["finding_id"] for f in mine] == [f"{row['finding_id']}-{n}" for n in range(1, len(mine) + 1)], row["area"]
         assert registry.days_since(row["last_researched"]) is not None
+    assert len(joined) == len(findings), "every finding belongs to an area of hubs.csv"
+    for f in findings:
+        assert f["url"].startswith("https://") and f["evidence_url"].startswith("https://"), f["finding_id"]
+        assert f["license"].strip() and f["source_quality"].strip() and f["summary"].strip(), f["finding_id"]
+        assert f["role"] in ROLES, f["finding_id"]
+        assert registry.days_since(f["date_researched"]) is not None, f["finding_id"]
     for cap in registry.read("hub_capabilities.csv"):
         assert cap["connect"] in ("config", "code") and cap["wired"] in ("yes", "no")
+        assert cap["area"] in areas, cap["capability_id"]
         named = ("serper", "brave", "tavily", "notion", "drive", "chat", "anthropic", "gemini", "deepseek")
         assert not any(n in cap["capability"].lower() for n in named), cap["capability_id"]
     for item in registry.read("hub_integrations.csv"):
+        assert item["area"] in areas, item["integration"]
         assert item["status"] in ("violation", "waived")
         assert item["status"] == "violation" or item["waiver_reason"].strip()
+
+
+def test_findings_join_by_prefix_without_crossing_areas():
+    hubs = [dict(area="science", finding_id="HF-1-science"), dict(area="science_graph", finding_id="HF-1-science_graph")]
+    findings = [dict(finding_id="HF-1-science-1"), dict(finding_id="HF-1-science_graph-1"), dict(finding_id="HF-1-science_graph-2")]
+    assert [f["finding_id"] for f in registry.findings_of(hubs[0], findings)] == ["HF-1-science-1"]
+    assert len(registry.findings_of(hubs[1], findings)) == 2
 
 
 def test_the_example_lane_is_one_aggregator_with_no_secret():

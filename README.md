@@ -51,30 +51,35 @@ This repository holds the seats, the registry, the scorer, the ESOI records and 
 | `hubofhubs/examples/` | a lane config with one aggregator connection and no per-app entry |
 | `hubofhubs/tiers.py` | per-tier model selection by passing work per cost, credits counted as cost ([how](docs/tier-selection.md)) |
 | `docs/` | [quickstart](docs/quickstart.md), [connect a hub](docs/connect-a-hub.md), [search API entries](docs/search-api-entries.md), [the weekly refresh](docs/refresh.md) |
-| `scripts/status.py` | rewrites the table below from the registry |
+| `scripts/status.py` | rewrites the seat table below and `docs/registry.md` from the registry |
 | `scripts/sync_uses.py` | checks (or writes) `uses_solution_ids` from typed constructor parameters, and the dependency graph |
 
 ## The registry
 
-One row per area. The seat says which part of the mind the area serves. Candidates are researched with dated sources in
-`hub_findings.csv`.
+A broad seat is broken into sub-solution areas, each compared on its own metric. The table counts areas per seat;
+[docs/registry.md](docs/registry.md) lists every area with its candidates, and `hub_findings.csv` holds each candidate with a
+dated source.
 
 <!-- seats:start -->
-| Area | Seat | Built on | Candidates | Researched |
-|---|---|---|---|---|
-| agent_harness | act-in-the-world | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 2026-10-30 |
-| tools_mcp | act-in-the-world | Model Context Protocol Python SDK | Official MCP Registry; PulseMCP; GitHub MCP directory; Smithery; Glama; FastMCP; Claude Code native MCP client; agentgateway; IBM ContextForge; LiteLLM MCP Gateway; Docker MCP Gateway | 2026-10-30 |
-| web_search | know-the-world | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Exa; Parallel; Perplexity Search API; Brave LLM Context; Anthropic web search server tool; Firecrawl; Crawl4AI | 2026-10-30 |
-| world | take-in-the-world | none | Composio; Activepieces; Pipedream Connect; Nango; Arcade; Klavis AI; n8n; Zapier MCP; Google Workspace MCP servers; Notion hosted MCP server | 2026-10-30 |
-| context_assembly | remember-and-recall | bm25s, Qdrant and fastembed, bge-small-en-v1.5 | Qdrant native weighted RRF hybrid; Qwen3-Embedding-0.6B; EmbeddingGemma-300m; contextual retrieval prefix; LanceDB; PyLate; Haystack; LlamaIndex; Qwen3-Reranker; bge-reranker-v2-m3; Qdrant multivector rescoring; Cohere Rerank; Voyage rerank | 2026-10-30 |
-| science | know-the-world | none | OpenAlex API; cyanheads/openalex-mcp-server; Semantic Scholar API; PaperQA2; Docling; Asta Scientific Corpus MCP; Europe PMC REST API; PubMed MCP server; scite MCP | 2026-10-30 |
-| model_providers | reason-and-answer | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 2026-10-30 |
-| memory | remember-and-recall | QAR card store and conversation recall | Graphiti; Mem0; Hindsight; Cognee; Letta; Supermemory; LangMem; A-MEM | 2026-10-30 |
-| evals | stay-current | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; DSPy and GEPA; Ragas | 2026-10-30 |
-| voice | take-in-the-world | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 2026-10-30 |
+| Seat | Part of the mind | Areas | Built on now | Candidates researched | Oldest research |
+|---|---|---|---|---|---|
+| hold-the-intents | Higher mind | 1 | 0 | 10 | 2026-10-30 |
+| take-in-the-world | World | 7 | 1 | 36 | 2026-10-30 |
+| remember-and-recall | Subconscious, Intuition | 10 | 8 | 66 | 2026-10-30 |
+| reason-and-answer | Mind | 6 | 1 | 39 | 2026-10-30 |
+| know-the-world | Science | 10 | 2 | 71 | 2026-10-30 |
+| think-critically | Critical thinking | 4 | 4 | 18 | 2026-10-30 |
+| act-in-the-world | Body | 20 | 5 | 133 | 2026-10-30 |
+| watch-for-risk | Overseer | 5 | 5 | 28 | 2026-10-30 |
+| assemble-the-whole | The whole being | 3 | 1 | 6 | 2026-10-30 |
+| stay-current | Learning | 3 | 2 | 17 | 2026-10-30 |
+| keep-it-generic | Character | 3 | 2 | 12 | 2026-10-30 |
+| connect-any-integration | Hands | 0 | 0 | 0 | none |
+
+72 areas and 436 researched candidates in all; every area is listed in [docs/registry.md](docs/registry.md).
 <!-- seats:end -->
 
-Regenerate with `python3 scripts/status.py` (rewritten in place, never appended).
+Regenerate both with `python3 scripts/status.py` (rewritten in place, never appended).
 
 ## How a consumer uses it
 
@@ -88,7 +93,7 @@ pip install "hubofhubs @ git+https://github.com/SpiritualData/ai-hub-of-hubs-str
 
 The consumer builds a `Binding` (its root, which of its solutions fill which area, its core folder, its ESOI records, and
 one probe per area that registers a fake hub through the area's configuration entry) and calls `evaluate`. The result is
-eight checks per area and a combined score. The hub never imports the consumer.
+eight checks per area (an area the consumer does not bind counts as not yet connected) and a combined score. The hub never imports the consumer.
 
 To use the parts themselves, a consumer registers any part it owns under its own name (`hubofhubs.register`), builds a
 `AssemblyConfig` and calls `hubofhubs.assemble(config, provided={...})` ([quickstart](docs/quickstart.md)). The hub reads no
@@ -107,11 +112,7 @@ answers in a person's goals. Its `hub_of_hubs` component hands those bindings to
 
 ## Records and checks
 
-```bash
-PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi check
-python3 -m pytest tests/test_registry.py tests/test_status.py tests/test_import_boundary.py
-python3 scripts/sync_uses.py --check
-```
+The commands that check the records, the registry and the import boundary are in [CLAUDE.md](CLAUDE.md#checks).
 
 ## License
 

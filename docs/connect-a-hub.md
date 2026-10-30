@@ -28,7 +28,10 @@ the hub grows, not when the consumer gains code.
 | `hub_integrations.csv` | a single service a consumer hand-wires | consumer, area, integration, kind, path, covered_by, status (violation or waived), waiver_reason |
 
 `current_hubs` is `name|url|license` entries joined by semicolons. `status` is `builds_on`, `compared` or `no_hub_exists`
-(a recorded decision). A connection that is only prepared (`wired` no) does not count.
+(a recorded decision). In `hubs.csv`, `finding_id` is the area's id prefix (`HF-<date>-<area>`); each row of `hub_findings.csv`
+carries `<prefix>-<n>`, so every finding id is unique and `tests/test_registry.py` joins them by prefix. A seat is broken into
+sub-solution areas (`docs/registry.md` lists them); a consumer binds only the areas it uses, and an area it does not bind scores
+as not yet connected. A connection that is only prepared (`wired` no) does not count.
 
 ## What the scorer measures
 
