@@ -15,13 +15,14 @@ class Work:
     year: Optional[int] = None
     venue: str = ""
     doi: str = ""                 # bare, e.g. "10.1234/abc"; empty when the service has none
-    url: str = ""                 # a landing page; the DOI link when there is no landing page
+    url: str = ""                 # a landing page (http or https only); empty when the service gave none that is a web link
     cited_by_count: int = 0
     abstract: str = ""            # rebuilt text, empty when the service holds none
     open_access: Optional[bool] = None
     oa_status: str = ""
     work_id: str = ""             # the service's own id
     source: str = ""              # which service answered ("openalex", "crossref")
+    retracted: Optional[bool] = None   # True when the service knows the work was retracted; None when it did not say
 
     @property
     def doi_url(self) -> str:

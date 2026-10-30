@@ -18,7 +18,7 @@ from typing import Any, Mapping, Optional
 from urllib.parse import quote
 
 from ..ports.scholarly import ScholarlyError, Work, WorksResult
-from .openalex import doi_of
+from .openalex import doi_of, one_line, web_url
 from .transport import Transport, TransportError, default_transport, error_for_status
 
 BASE_URL = "https://api.crossref.org/works/"
@@ -35,9 +35,9 @@ def work_from_message(message: Mapping[str, Any]) -> Work:
     title = message.get("title") or [""]
     venue = message.get("container-title") or [""]
     doi = doi_of(message.get("DOI"))
-    return Work(title=str(title[0] if title else "").strip(), authors=tuple(names),
-                year=parts[0] if isinstance(parts[0], int) else None, venue=str(venue[0] if venue else "").strip(),
-                doi=doi, url=str(message.get("URL") or ""), cited_by_count=int(message.get("is-referenced-by-count") or 0),
+    return Work(title=one_line(title[0] if title else ""), authors=tuple(one_line(n) for n in names),
+                year=parts[0] if isinstance(parts[0], int) else None, venue=one_line(venue[0] if venue else ""),
+                doi=doi, url=web_url(message.get("URL")), cited_by_count=int(message.get("is-referenced-by-count") or 0),
                 work_id=doi, source=SERVICE)
 
 
