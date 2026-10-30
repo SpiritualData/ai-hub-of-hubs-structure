@@ -32,14 +32,14 @@ class ListCardStore:                     # a part the consumer owns; it satisfie
 
 
 hubofhubs.register("card-store", "my-list-store", ListCardStore)     # a name the consumer owns
-config = hubofhubs.HubConfig(seats=("card-store",), selections={"card-store": "my-list-store"})
+config = hubofhubs.AssemblyConfig(solutions=("card-store",), selections={"card-store": "my-list-store"})
 system = hubofhubs.assemble(config)                                   # built once, at startup, then frozen
 
 system["card-store"].add(Card("a", "hello from a second consumer"))
 print(system["card-store"].search("second"))
 print(system.reasons[0])
 
-default = hubofhubs.assemble(hubofhubs.HubConfig(seats=("card-store",)))   # no selection: the hub's own default arm
+default = hubofhubs.assemble(hubofhubs.AssemblyConfig(solutions=("card-store",)))   # no selection: the hub's own default arm
 print(default.reasons[0])
 ```
 
@@ -50,4 +50,4 @@ What to know:
 - `provided={"model-call": my_model}` hands the hub an object you already have; it wins for that seat. `model-call` is an external seat: you always provide it. `search-backend` is external too, but the hub ships arms for it
   (`searxng`, `serper`, `brave`, `tavily`, `gemini`, `provider`; extras `web`, `gemini`); none is selected by default, so name one or provide your own.
 - A name is lower-case letters, digits, `_` and `-`. A value with `:` or `.` is refused before anything is imported.
-- The hub reads no environment. Settings (`options`, `selections`, `selection_environ`) are fields of `HubConfig`.
+- The hub reads no environment. Settings (`options`, `selections`, `selection_environ`) are fields of `AssemblyConfig`.

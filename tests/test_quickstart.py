@@ -17,5 +17,5 @@ def test_the_quickstart_runs_and_prints_the_reasons():
     lines = out.getvalue().splitlines()
     assert lines[0].startswith("[Card(id='a'") and "second consumer" in lines[0]
     assert lines[1].startswith("card-store -> my-list-store (layer: consumer selections, package version ")
-    assert lines[2].startswith("card-store -> local_card_store (layer: hub default, package version ")
+    assert lines[2].startswith("card-store -> local_card_store (layer: hubofhubs default, package version ")
     assert not re.search(r"quest|qar", code, re.I)

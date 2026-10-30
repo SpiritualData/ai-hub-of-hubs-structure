@@ -5,11 +5,11 @@ Import it like the esoi library: with a checkout of this repository on ``PYTHONP
 ``pip install -e`` it, or install it from its git URL. It reads only files, makes no model call, no network request and no
 environment read.
 
-    from hubofhubs import Binding, evaluate, HubConfig, assemble, register, resolve
+    from hubofhubs import Binding, evaluate, AssemblyConfig, assemble, register, resolve
 """
 from .binding import Binding
 from .measure import evaluate, check, metrics
-from esoi.assemble import Assembly
-from .resolution import HubConfig, HubError, assemble, choice, names, register, resolve
+from esoi.assemble import Assembly, AssemblyConfig, AssemblyError
+from .resolution import assemble, choice, names, register, resolve
 
-__all__ = ["Binding", "evaluate", "check", "metrics", "HubConfig", "HubError", "choice", "names", "resolve", "register", "assemble", "Assembly"]
+__all__ = ["Binding", "evaluate", "check", "metrics", "AssemblyConfig", "AssemblyError", "choice", "names", "resolve", "register", "assemble", "Assembly"]

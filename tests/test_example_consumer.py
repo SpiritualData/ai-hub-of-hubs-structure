@@ -22,7 +22,7 @@ def test_the_second_consumer_assembles_its_system_from_its_own_part():
 
 def test_the_hub_default_still_works_for_a_consumer_that_selects_nothing():
     system = example_consumer.build_system(use_own=False)
-    assert "tier_selector (layer: hub default" in system.reasons[0]
+    assert "tier_selector (layer: hubofhubs default" in system.reasons[0]
 
 
 def test_the_example_consumer_has_no_content_of_the_first_consumer():

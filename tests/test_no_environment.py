@@ -12,7 +12,7 @@ from esoi import runtime
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hubofhubs  # noqa: E402
-from hubofhubs import HubConfig, HubError, choice, resolve  # noqa: E402
+from hubofhubs import AssemblyConfig, AssemblyError, choice, resolve  # noqa: E402
 from support import ROOT, run_vendored, vendor  # noqa: E402
 
 SEAT = "reason-and-answer"
@@ -32,7 +32,7 @@ def test_no_module_reads_the_environment():
 
 def test_the_hub_default_resolves_and_names_its_layer():
     picked = choice(SEAT)
-    assert (picked.name, picked.layer) == ("tier_selector", "hub default")
+    assert (picked.name, picked.layer) == ("tier_selector", "hubofhubs default")
     assert resolve(SEAT).__name__ == "TierSelector"
 
 
@@ -46,11 +46,11 @@ def test_an_environment_variable_changes_nothing(monkeypatch, tmp_path):
 
 
 def test_selection_environ_is_the_only_control():
-    config = HubConfig(selection_environ={"ESOI_SELECT_HUBOFHUBS_REASON_AND_ANSWER": "tier_selector"})
+    config = AssemblyConfig(selection_environ={"ESOI_SELECT_HUBOFHUBS_REASON_AND_ANSWER": "tier_selector"})
     assert choice(SEAT, config=config).layer == "selection environ"
     for bad in ({"ESOI_ROOT": "/x"}, {"ESOI_SNAPSHOT": "/x"}, {"ESOI_SELECT_HUBOFHUBS_REASON_AND_ANSWER": "os:system"}):
-        with pytest.raises(HubError):
-            choice(SEAT, config=HubConfig(selection_environ=bad))
+        with pytest.raises(AssemblyError):
+            choice(SEAT, config=AssemblyConfig(selection_environ=bad))
 
 
 def test_a_hostile_esoi_toml_in_the_working_directory_is_ignored(monkeypatch, tmp_path):

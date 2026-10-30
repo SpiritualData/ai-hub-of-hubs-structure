@@ -23,7 +23,7 @@ class AcmeFlatTiers:
 def build_system(use_own: bool = True) -> "hubofhubs.Assembly":
     hubofhubs.register(SEAT, "acme-flat", AcmeFlatTiers)
     selections = {SEAT: "acme-flat"} if use_own else {}
-    return hubofhubs.assemble(hubofhubs.HubConfig(seats=(SEAT,), selections=selections))
+    return hubofhubs.assemble(hubofhubs.AssemblyConfig(solutions=(SEAT,), selections=selections))
 
 
 if __name__ == "__main__":

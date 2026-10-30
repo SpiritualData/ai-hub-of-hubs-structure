@@ -52,7 +52,7 @@ def test_the_consumers_prompt_is_the_only_prompt_and_the_call_names_the_judge_st
 
 
 def test_assembly_builds_the_overseer_with_the_consumers_prompt_and_names_the_layer():
-    config = hubofhubs.HubConfig(seats=("watch-for-risk",), selections={"watch-for-risk": "overseer"},
+    config = hubofhubs.AssemblyConfig(solutions=("watch-for-risk",), selections={"watch-for-risk": "overseer"},
                                  options={"watch-for-risk": {"render": render}})
     system = hubofhubs.assemble(config)
     watcher = system["watch-for-risk"]

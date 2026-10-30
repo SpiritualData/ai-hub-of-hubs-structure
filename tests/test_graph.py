@@ -7,7 +7,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hubofhubs import HubConfig, HubError, assemble, registry, resolve  # noqa: E402
+from hubofhubs import AssemblyConfig, AssemblyError, assemble, registry, resolve  # noqa: E402
 from hubofhubs.resolution import HUB  # noqa: E402
 from hubofhubs import seats  # noqa: E402
 from hubofhubs.card import Card  # noqa: E402
@@ -35,7 +35,7 @@ def test_every_seat_is_a_runtime_protocol_with_a_record():
     for sid, protocol in SEATS.items():
         assert sid in ids
         assert getattr(protocol, "_is_protocol", False) and getattr(protocol, "_is_runtime_protocol", False)
-        assert HUB.seat_of(protocol) == sid
+        assert HUB.solution_of(protocol) == sid
 
 
 def test_every_recorded_arm_is_declared_in_code_and_satisfies_its_seat():
@@ -56,8 +56,8 @@ def test_external_seats_are_consumer_provided_and_have_no_default():
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
-    system = assemble(HubConfig())
-    assert system.seats() == ["card-store", "reason-and-answer"]   # the other two arms have no measured default
+    system = assemble(AssemblyConfig())
+    assert system.solutions() == ["card-store", "reason-and-answer"]   # the other two arms have no measured default
     assert isinstance(system["card-store"], LocalCardStore)
 
 
@@ -71,7 +71,7 @@ def test_a_consumer_provided_card_store_wins():
         def delete(self, card_id): return bool(self.rows.pop(card_id, None))
         def count(self): return len(self.rows)
     mine = Mine()
-    system = assemble(HubConfig(seats=("card-store",)), provided={"card-store": mine})
+    system = assemble(AssemblyConfig(solutions=("card-store",)), provided={"card-store": mine})
     assert system["card-store"] is mine and "consumer provided" in system.reasons[0]
     system["card-store"].add(Card("a", "x"))
     assert mine.count() == 1
@@ -79,8 +79,8 @@ def test_a_consumer_provided_card_store_wins():
 
 def test_external_seats_fail_at_startup_unless_provided():
     for sid in ("model-call", "search-backend"):
-        with pytest.raises(HubError, match=f"{sid}: no arm, not provided"):
-            assemble(HubConfig(seats=(sid,)))
+        with pytest.raises(AssemblyError, match=f"{sid}: no arm, not provided"):
+            assemble(AssemblyConfig(solutions=(sid,)))
 
 
 def test_sync_uses_check_passes_on_the_repository():

@@ -345,7 +345,7 @@ class SelectionKeys:
 
 def hub_resolver(name: str) -> Any:
     """The default way a name becomes a backend class: the hub's own resolution for the ``search-backend`` seat. Raises
-    ``ValueError`` (``HubError``) for an unknown name."""
+    ``ValueError`` (``AssemblyError``) for an unknown name."""
     from ..resolution import resolve
     return resolve("search-backend", name)
 

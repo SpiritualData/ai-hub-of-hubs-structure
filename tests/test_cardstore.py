@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs import HubConfig, assemble, resolve  # noqa: E402
+from hubofhubs import AssemblyConfig, assemble, resolve  # noqa: E402
 from hubofhubs.card import Card  # noqa: E402
 from hubofhubs.cardstore import LocalCardStore  # noqa: E402
 from hubofhubs.seats import CardStore  # noqa: E402
@@ -67,9 +67,9 @@ def test_threads_can_add_at_once(store):
 def test_it_is_the_hub_default_and_takes_its_path_from_the_config(tmp_path):
     assert resolve("card-store") is LocalCardStore
     path = tmp_path / "cards.db"
-    system = assemble(HubConfig(seats=("card-store",), options={"card-store": {"path": str(path)}}))
+    system = assemble(AssemblyConfig(solutions=("card-store",), options={"card-store": {"path": str(path)}}))
     system["card-store"].add(Card("a", "x"))
-    assert path.exists() and "layer: hub default" in system.reasons[0]
+    assert path.exists() and "layer: hubofhubs default" in system.reasons[0]
 
 
 def test_importing_the_module_creates_no_file(tmp_path, monkeypatch):

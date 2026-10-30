@@ -91,8 +91,8 @@ one probe per area that registers a fake hub through the area's configuration en
 eight checks per area and a combined score. The hub never imports the consumer.
 
 To use the parts themselves, a consumer registers any part it owns under its own name (`hubofhubs.register`), builds a
-`HubConfig` and calls `hubofhubs.assemble(config, provided={...})` ([quickstart](docs/quickstart.md)). The hub reads no
-environment: settings are `HubConfig` fields, and a name is never an import path.
+`AssemblyConfig` and calls `hubofhubs.assemble(config, provided={...})` ([quickstart](docs/quickstart.md)). The hub reads no
+environment: settings are `AssemblyConfig` fields, and a name is never an import path.
 
 ## Selection and refresh
 
