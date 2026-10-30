@@ -43,7 +43,7 @@ class Voice:
     the log and the report; ``lane_note(lines, guard)`` the notice for a task feed that has a task's text around it;
     ``report_command(cards_dir)`` the command that prints the report. The other fields are the consumer's words for a card
     another system manages: the last word of the count line (full and shortened forms in ``count_words``), the report
-    table's row label, "learned or <that> cards", and the "from <those>" phrase of the log text.
+    table's row label, "learned or <that> cards", and the "from <those>" phrase of the log text; ``limit_setting`` is the name of the setting that holds the limit.
     """
 
     how_to_change_line: Callable[[], str]
@@ -54,6 +54,7 @@ class Voice:
     managed_row_label: str = "Managed by another system"
     learned_or_managed: str = "learned or managed"
     managed_source: str = "other systems"
+    limit_setting: str = ""             # the name of the consumer's card-limit setting, shown beside the limit in the report
 
 
 @dataclass
@@ -223,7 +224,8 @@ def render_report(b: Breakdown, state: limit_mod.LimitState, cards_dir: Path, vo
         f"Store: {cards_dir}",
         f"Written: {card_origin.now_iso()}", "",
         "## Where the store stands", "",
-        f"- Limit: {b.limit:,} cards" if b.limit else "- Limit: none (the setting is 0 or unlimited)",
+        f"- Limit: {b.limit:,} cards" + (f" ({voice.limit_setting})" if voice.limit_setting else "") if b.limit else
+        f"- Limit: none ({voice.limit_setting or 'the setting'} is 0 or unlimited)",
         f"- Cards in the index: {b.total:,}" + (" (over the limit; nothing is removed to fit it)"
                                                  if b.limit and b.total > b.limit else ""),
         f"- Moved out of the index (quarantine, not counted): {sum(b.quarantined.values()):,}", "",

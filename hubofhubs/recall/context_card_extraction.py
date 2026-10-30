@@ -63,14 +63,14 @@ _RECENCY_BOOST_USAGE_CAP = 5.0             # usage_count saturates here (5+ uses
 _SOURCE_USAGE_MIN_INTERVAL_SECONDS = 60.0
 
 
-# QUEST-FOLDER BOOST: unlike the recency/usage boost above (a soft heuristic applied only AFTER
+# LINKED-FOLDER BOOST: unlike the recency/usage boost above (a soft heuristic applied only AFTER
 # the confidence gate), this applies BEFORE the gate, multiplying the raw score itself. That's
-# deliberate: a quest_folder_map match means the CALLER already established this run is about that
-# quest (its own goal_id, not a keyword guess), so a card pinning files under the linked folder
+# deliberate: a folder link match means the CALLER already established this run is about that
+# work item (its own id, not a keyword guess), so a card pinning files under the linked folder
 # gets a strong nudge to clear the gate even on a thinner keyword match, while a card with ZERO
 # shared keywords (score 0) still scores 0 after the boost, so unrelated folder content is never
 # forced in "never worse by construction" still holds.
-_QUEST_FOLDER_BOOST = 4.0
+_LINKED_FOLDER_BOOST = 4.0
 
 
 # Max length for a card summary built from docstrings/descriptions (~400 chars).

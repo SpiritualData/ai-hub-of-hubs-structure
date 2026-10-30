@@ -56,6 +56,11 @@ def test_the_report_names_the_state_and_carries_the_consumers_steps(tmp_path):
     text = report.render_report(b, card_limit.LimitState(reached_at="then"), tmp_path, voice(managed_row_label="From elsewhere"))
     assert "# Card limit report" in text and "| From elsewhere | 1 |" in text and "First, tidy it." in text
     assert "- First reached: then" in text and "| alpha | 2 |" in text
+    assert "- Limit: 7 cards\n" in text
+    named = report.render_report(b, card_limit.LimitState(), tmp_path, voice(limit_setting="MY_LIMIT"))
+    assert "- Limit: 7 cards (MY_LIMIT)" in named
+    off = report.render_report(report.breakdown(cards(), tmp_path, 0), card_limit.LimitState(), tmp_path, voice(limit_setting="MY_LIMIT"))
+    assert "- Limit: none (MY_LIMIT is 0 or unlimited)" in off
 
 
 def test_report_for_reads_the_folder_when_it_is_given_no_cards(tmp_path):
