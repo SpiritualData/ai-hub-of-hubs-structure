@@ -13,7 +13,7 @@ def test_the_default_install_brings_esoi_only():
 def test_distribution_import_name_and_esoi_package_agree():
     assert PROJECT["name"] == "hubofhubs" == tomllib.loads((ROOT / "esoi.toml").read_text())["package"]
     assert (ROOT / "hubofhubs" / "__init__.py").is_file() and not (ROOT / "ai_hub_of_hubs").exists()
-    assert tomllib.loads((ROOT / "pyproject.toml").read_text())["tool"]["setuptools"]["packages"] == ["hubofhubs", "hubofhubs.ports"]
+    assert tomllib.loads((ROOT / "pyproject.toml").read_text())["tool"]["setuptools"]["packages"] == ["hubofhubs", "hubofhubs.ports", "hubofhubs.websearch"]
 
 
 def test_the_version_is_a_literal_in_pyproject():

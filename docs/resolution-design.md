@@ -129,6 +129,20 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    (usage scoping, `ModelProvider` and the step-hint helpers, the context assembler, conversation store and vector store Protocols) moved
    verbatim from the consumer, comments made consumer-free; the consumer's modules re-export them. The progress events, channels,
    guidance and value objects stay in the consumer (they carry its vocabulary or fields).
+   Second pass (2026-10-29), the web-search seat: `hubofhubs.websearch` holds the `search-backend` arms (SearXNG, JSON search APIs
+   described as data, Gemini grounding, a provider's own search), the cache, the daily limiter, SSRF-guarded fetching and
+   extraction, and the research adapter; `hubofhubs.ports.search` and `.retrieval` hold the neutral values. The convention for
+   moving a seat, to follow for the next one: (1) compute each module's imports and move a module only if it is generic;
+   (2) the hub reads no environment, so a function that read one takes the mapping and the names of its settings as arguments
+   (`SelectionKeys`), and the consumer's one-call constructor from its own settings stays in the consumer; (3) the hub resolves
+   by name through its own seat and takes an optional `resolver` callable, so a consumer that owns its selection passes its own
+   and the hub never imports it; (4) third-party libraries are imported inside functions and listed as per-library extras
+   (`tests/test_import_boundary.py` enforces both); (5) the consumer keeps a thin module at the old path: a re-export, or a
+   subclass that declares the consumer's own `@implementation` row and restores any environment default; (6) the hub records
+   get ids, paths and `unconfirmed: for Payal to confirm.` text, and `selected` stays empty until a metric result chooses.
+   Not moved: the Tavily retrieval adapter (a duplicate of the `tavily` arm plus the research adapter; a deletion candidate in
+   the consumer), and the consumer's one-call research constructor. `WebResearchAdapter` is library code, not yet a seat arm:
+   `know-the-world` has no Protocol, which is a decision for the seat's owner.
 8. **Docs**: quickstart (done: `docs/quickstart.md`, run by `tests/test_quickstart.py`); versioning, releasing and
    changelog remain.
 

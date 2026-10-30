@@ -47,7 +47,7 @@ What to know:
 
 - A seat is a Protocol in `hubofhubs.seats`; an arm's constructor parameters typed with a seat are its needs, and
   `assemble` builds them first. A cycle or an unmet need stops startup and names the chain.
-- `provided={"model-call": my_model}` hands the hub an object you already have; it wins for that seat. `model-call` and
-  `search-backend` are external seats: you always provide them.
+- `provided={"model-call": my_model}` hands the hub an object you already have; it wins for that seat. `model-call` is an external seat: you always provide it. `search-backend` is external too, but the hub ships arms for it
+  (`searxng`, `serper`, `brave`, `tavily`, `gemini`, `provider`; extras `web`, `gemini`); none is selected by default, so name one or provide your own.
 - A name is lower-case letters, digits, `_` and `-`. A value with `:` or `.` is refused before anything is imported.
 - The hub reads no environment. Settings (`options`, `selections`, `selection_environ`) are fields of `HubConfig`.

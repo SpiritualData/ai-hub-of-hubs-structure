@@ -4,7 +4,8 @@ They are written ``typing.Protocol`` on purpose: esoi's port scan (S7) does not 
 ``Protocol`` form is flagged as a port with no row. The seat is tied to its record by the solution id.
 
 An implementation's constructor parameters typed with one of these Protocols are its needs (``hubofhubs.needs``).
-External seats (``model-call``, ``search-backend``) have no hub arm: the consumer provides them.
+``model-call`` is an external seat with no hub arm: the consumer provides it. ``search-backend`` is external too, but the hub executes
+its default arms (SearXNG, JSON search APIs described as data, Gemini grounding, a provider's own search); none is selected by default.
 """
 import typing
 from typing import Any, Mapping, Optional, Sequence, runtime_checkable
@@ -12,6 +13,7 @@ from typing import Any, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 from .card import Card
+from .ports.search import SearchResponse
 
 
 @solution("card-store")
@@ -37,9 +39,11 @@ class ModelCall(typing.Protocol):
 @solution("search-backend")
 @runtime_checkable
 class SearchBackend(typing.Protocol):
-    """Runs one web or knowledge search and returns result rows (title, url, snippet). External: the consumer provides it."""
+    """Runs one web search and returns a ``SearchResponse`` (hits with title, url, snippet and date, an optional direct answer,
+    the queries issued); raises ``SearchBackendError`` on failure. An arm also carries a ``name`` attribute (the chain's label).
+    External system: the hub ships arms, the consumer may provide its own."""
 
-    def search(self, query: str, limit: int = 10) -> Sequence[Mapping[str, str]]: ...
+    def search(self, query: str, *, max_results: int = 5) -> SearchResponse: ...
 
 
 @solution("reason-and-answer")

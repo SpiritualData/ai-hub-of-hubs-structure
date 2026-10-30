@@ -52,6 +52,12 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `reason-and-answer:tier_selector` | Tier selector | hubofhubs/tiers.py |  |
 | `card-store:local_card_store` | Local card store | hubofhubs/cardstore.py |  |
 | `watch-for-risk:overseer` | Digest-driven overseer | hubofhubs/risk.py |  |
+| `search-backend:brave` | Brave Search API backend | hubofhubs/websearch/backends.py |  |
+| `search-backend:gemini` | Gemini grounding backend | hubofhubs/websearch/gemini.py |  |
+| `search-backend:provider` | Provider-native backend | hubofhubs/websearch/backends.py |  |
+| `search-backend:searxng` | SearXNG backend | hubofhubs/websearch/backends.py |  |
+| `search-backend:serper` | Serper backend | hubofhubs/websearch/backends.py |  |
+| `search-backend:tavily` | Tavily backend | hubofhubs/websearch/backends.py |  |
 
 ## Metrics
 

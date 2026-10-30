@@ -17,6 +17,17 @@
    "tier_selector": "hubofhubs.tiers"
   }
  },
+ "search-backend": {
+  "default": "",
+  "modules": {
+   "brave": "hubofhubs.websearch.backends",
+   "gemini": "hubofhubs.websearch.gemini",
+   "provider": "hubofhubs.websearch.backends",
+   "searxng": "hubofhubs.websearch.backends",
+   "serper": "hubofhubs.websearch.backends",
+   "tavily": "hubofhubs.websearch.backends"
+  }
+ },
  "stay-current": {
   "default": "",
   "modules": {
