@@ -27,6 +27,8 @@ import logging
 
 from typing import Any, Callable, Dict, List, Optional, Union
 
+from esoi import implementation
+
 from ..ports.retrieval import Observation
 from ..ports.search import SearchBackendError, SearchHit, SearchResponse
 from ..seats import SearchBackend
@@ -98,6 +100,7 @@ DAILY_LIMIT_FALLBACK_MESSAGE = (
 # ---------------------------------------------------------------------------
 
 
+@implementation("know-the-world", "web_research")
 class WebResearchAdapter:
     """Snippet-first web search + focus-scored page fetch, for the orchestrator's planner.
 

@@ -27,6 +27,12 @@
    "composite": "hubofhubs.recall.composite_assembler"
   }
  },
+ "know-the-world": {
+  "default": "",
+  "modules": {
+   "web_research": "hubofhubs.websearch.research"
+  }
+ },
  "reason-and-answer": {
   "default": "tier_selector",
   "modules": {

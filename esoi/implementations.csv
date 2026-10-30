@@ -16,3 +16,4 @@ call-a-model:gemini,call-a-model,unconfirmed: for Joshua to confirm.,unconfirmed
 call-a-model:multi_provider,call-a-model,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/models/router.py,
 call-a-model:openai,call-a-model,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/models/openai.py,
 context-assembler:composite,context-assembler,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/recall/composite_assembler.py,
+know-the-world:web_research,know-the-world,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,unconfirmed: for Joshua to confirm.,hubofhubs/websearch/research.py,search-backend

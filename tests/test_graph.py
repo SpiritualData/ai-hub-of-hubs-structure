@@ -17,7 +17,8 @@ from support import ROOT  # noqa: E402
 SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssembling, "model-call": seats.ModelCall,
          "call-a-model": seats.ModelCalling, "search-backend": seats.SearchBackend,
          "reason-and-answer": seats.TierSelection, "stay-current": seats.FreshnessReading,
-         "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching}
+         "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching,
+         "know-the-world": seats.WorldKnowing}
 SOLUTIONS = registry.read("solutions.csv", ROOT / "esoi")
 IMPLEMENTATIONS = registry.read("implementations.csv", ROOT / "esoi")
 
@@ -92,3 +93,24 @@ def test_sync_uses_check_passes_on_the_repository():
     env = {"PYTHONPATH": str(Path(esoi.__file__).resolve().parent.parent), "PATH": "/usr/bin:/bin"}
     done = subprocess.run([sys.executable, str(ROOT / "scripts" / "sync_uses.py"), "--check"], capture_output=True, text=True, env=env)
     assert (done.returncode, done.stdout) == (0, "")
+
+
+def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend_and_is_selected_by_no_record():
+    from hubofhubs.ports.search import SearchHit, SearchResponse
+
+    class Backend:
+        name = "toy"
+
+        def search(self, query, *, max_results=5):
+            return SearchResponse(hits=[SearchHit(title="A page", url="https://example.com/a", snippet="a fact", date="")])
+
+    by = {s["solution_id"]: s for s in SOLUTIONS}
+    assert by["know-the-world"]["selected"] == "" and by["know-the-world"]["implementations"] == "web_research"
+    config = AssemblyConfig(solutions=("know-the-world",), selections={"know-the-world": "web_research"})
+    system = assemble(config, provided={"search-backend": Backend()})
+    arm = system["know-the-world"]
+    assert isinstance(arm, seats.WorldKnowing) and arm.describe() == "web search via toy"
+    observation = arm.search("a question")
+    assert observation.kind != "error" and "https://example.com/a" in observation.text
+    with pytest.raises(AssemblyError):
+        assemble(config)   # the search need is the consumer's: with none provided the startup fails, naming the need

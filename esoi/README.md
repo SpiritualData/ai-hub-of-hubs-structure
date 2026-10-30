@@ -66,6 +66,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `call-a-model:multi_provider` | unconfirmed: for Joshua to confirm. | hubofhubs/models/router.py |  |
 | `call-a-model:openai` | unconfirmed: for Joshua to confirm. | hubofhubs/models/openai.py |  |
 | `context-assembler:composite` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/composite_assembler.py |  |
+| `know-the-world:web_research` | unconfirmed: for Joshua to confirm. | hubofhubs/websearch/research.py |  |
 
 ## Metrics
 
