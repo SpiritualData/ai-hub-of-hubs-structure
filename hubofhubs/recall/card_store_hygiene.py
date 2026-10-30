@@ -925,10 +925,10 @@ def indexable_folders(root: Path, skip_extra: Iterable[str] = ()) -> int:
     """How many directories of the corpus hold an indexable file at any depth: the most places a topic
     card can be about (a card is about the deepest folder its files share). A fact about the corpus.
     ``skip_extra`` are the consumer's directory names the walk never enters (see ``walk.effective_skip_dirs``)."""
-    from .context_folder_review import _dir_file_counts
+    from .context_folder_review import dir_file_counts
     from .walk import effective_skip_dirs
     keys: Set[str] = set()
-    for rel in _dir_file_counts(root, effective_skip_dirs(root, extra=skip_extra)):
+    for rel in dir_file_counts(root, effective_skip_dirs(root, extra=skip_extra)):
         parts = [p for p in rel.split("/") if p and p != "."]
         keys.add(".")
         for depth in range(1, len(parts) + 1):

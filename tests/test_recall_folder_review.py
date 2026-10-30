@@ -1,7 +1,7 @@
 """The folder review decides what is not worth indexing; its settings are arguments and it names no consumer folder."""
 from pathlib import Path
 
-from hubofhubs.recall.context_folder_review import _folder_review, _nested_vcs_dirs, review_corpus
+from hubofhubs.recall.context_folder_review import folder_review, nested_vcs_dirs, review_corpus
 
 
 def make_corpus(root: Path, store_dir_name: str) -> Path:
@@ -24,17 +24,17 @@ class Silent:
 
 def test_nested_repositories_are_found_by_their_markers(tmp_path):
     corpus = make_corpus(tmp_path, ".cards")
-    assert set(_nested_vcs_dirs(corpus, set())) == {"dep", "owned"}
+    assert set(nested_vcs_dirs(corpus, set())) == {"dep", "owned"}
 
 
 def test_an_unreviewable_corpus_is_indexed_in_full(tmp_path):
     corpus = make_corpus(tmp_path, ".cards")
-    assert _folder_review(corpus, set(), Silent(), None, tmp_path / "cards", store_dir_name=".cards") == set()
+    assert folder_review(corpus, set(), Silent(), None, tmp_path / "cards", store_dir_name=".cards") == set()
 
 
 def test_the_consumers_store_folder_name_decides_whether_a_nested_repo_has_its_own_store(tmp_path, monkeypatch):
     import hubofhubs.recall.context_folder_review as review
-    monkeypatch.setattr(review, "_FOLDER_REVIEW_MIN_FILES", 1)
+    monkeypatch.setattr(review, "FOLDER_REVIEW_MIN_FILES", 1)
     corpus = make_corpus(tmp_path, ".cards")
     excluded, verdicts = review_corpus(corpus, set(), None, None, tmp_path / "cards1", store_dir_name=".cards")
     assert {"dep", "owned"} <= excluded
@@ -46,7 +46,7 @@ def test_the_consumers_store_folder_name_decides_whether_a_nested_repo_has_its_o
 
 def test_nested_repositories_are_indexed_when_the_consumer_switches_the_safeguard_off(tmp_path, monkeypatch):
     import hubofhubs.recall.context_folder_review as review
-    monkeypatch.setattr(review, "_FOLDER_REVIEW_MIN_FILES", 1)
+    monkeypatch.setattr(review, "FOLDER_REVIEW_MIN_FILES", 1)
     corpus = make_corpus(tmp_path, ".cards")
     excluded, _ = review_corpus(corpus, set(), None, None, tmp_path / "cards", store_dir_name=".cards", skip_nested_repos=False)
     assert "dep" not in excluded and "owned" not in excluded

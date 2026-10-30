@@ -2,10 +2,10 @@
 import json
 
 from hubofhubs.recall.context_bootstrap_support import (
-    _BOOTSTRAP_MAX_BYTES,
-    _BOOTSTRAP_WORKERS_DEFAULT,
-    _read_bootstrap_meta,
-    _write_bootstrap_meta,
+    BOOTSTRAP_MAX_BYTES,
+    BOOTSTRAP_WORKERS_DEFAULT,
+    read_bootstrap_meta,
+    write_bootstrap_meta,
     bootstrap_workers,
     flag_enabled,
     optional_positive_int,
@@ -16,11 +16,11 @@ from hubofhubs.recall.context_card_ceilings import positive_int
 def test_workers_take_the_first_integer_setting_in_order_of_strength():
     assert bootstrap_workers([("STAGE", ""), ("BUDGET", "3")]) == 3
     assert bootstrap_workers([("STAGE", "2"), ("BUDGET", "3")]) == 2
-    assert bootstrap_workers() == _BOOTSTRAP_WORKERS_DEFAULT
+    assert bootstrap_workers() == BOOTSTRAP_WORKERS_DEFAULT
 
 
 def test_a_garbage_worker_setting_is_skipped_and_never_zero():
-    assert bootstrap_workers([("STAGE", "not-a-number")]) == _BOOTSTRAP_WORKERS_DEFAULT
+    assert bootstrap_workers([("STAGE", "not-a-number")]) == BOOTSTRAP_WORKERS_DEFAULT
     assert bootstrap_workers([("STAGE", "not-a-number"), ("BUDGET", "4")]) == 4
     # A 0 would deadlock the semaphore rather than "disable" the stage.
     assert bootstrap_workers([("BUDGET", "0")]) == 1
@@ -50,15 +50,15 @@ def test_a_per_folder_cap_keeps_zero_as_no_cap_and_garbage_as_the_default():
 
 
 def test_the_meta_file_keeps_the_stores_identity_across_passes(tmp_path):
-    _write_bootstrap_meta(str(tmp_path), 3, root="/corpus")
-    first = _read_bootstrap_meta(str(tmp_path))
+    write_bootstrap_meta(str(tmp_path), 3, root="/corpus")
+    first = read_bootstrap_meta(str(tmp_path))
     assert first["card_count"] == 3 and first["store_id"].startswith("st_") and first["root"] == "/corpus"
-    _write_bootstrap_meta(str(tmp_path), 9, root="/elsewhere")
-    second = _read_bootstrap_meta(str(tmp_path))
+    write_bootstrap_meta(str(tmp_path), 9, root="/elsewhere")
+    second = read_bootstrap_meta(str(tmp_path))
     assert second["card_count"] == 9
     assert second["store_id"] == first["store_id"] and second["root"] == "/corpus"
     (tmp_path / "bootstrap_meta.json").write_text("{not json")
-    assert _read_bootstrap_meta(str(tmp_path)) == {}
+    assert read_bootstrap_meta(str(tmp_path)) == {}
 
 
 def test_head_extractors_read_a_prefix_not_the_whole_file(tmp_path):
@@ -78,17 +78,17 @@ def test_head_extractors_read_a_prefix_not_the_whole_file(tmp_path):
 
 
 def test_ast_extractors_skip_a_file_too_big_to_card(tmp_path):
-    from hubofhubs.recall.context_card_extraction import _extract_symbols, _read_whole_if_small
+    from hubofhubs.recall.context_card_extraction import extract_symbols, _read_whole_if_small
 
     small = tmp_path / "small.py"
     small.write_text("def alpha():\n    pass\n\nclass Beta:\n    pass\n")
-    assert "alpha" in _extract_symbols(small)
+    assert "alpha" in extract_symbols(small)
     assert _read_whole_if_small(small)
 
     # The AST path needs a complete source text, so oversize is SKIPPED rather than truncated --
     # a truncated module is a SyntaxError, not a smaller card. Same limit the snippet path uses.
     huge = tmp_path / "huge.py"
-    huge.write_text("def gamma():\n    pass\n" + "# pad\n" * (_BOOTSTRAP_MAX_BYTES // 6))
-    assert huge.stat().st_size > _BOOTSTRAP_MAX_BYTES
+    huge.write_text("def gamma():\n    pass\n" + "# pad\n" * (BOOTSTRAP_MAX_BYTES // 6))
+    assert huge.stat().st_size > BOOTSTRAP_MAX_BYTES
     assert _read_whole_if_small(huge) == ""
-    assert _extract_symbols(huge) == []
+    assert extract_symbols(huge) == []

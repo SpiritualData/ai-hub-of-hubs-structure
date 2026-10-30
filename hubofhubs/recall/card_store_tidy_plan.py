@@ -48,7 +48,7 @@ def excluded_prefixes_from_review(cards_dir: Path) -> List[str]:
     a duplicate tree) stands whatever its children say; only a model skip that the model itself called "mixed"
     is superseded by its kept children.
     """
-    from .context_folder_review import _has_kept_child, verdict_is_final
+    from .context_folder_review import has_kept_child, verdict_is_final
     try:
         loaded = json.loads((Path(cards_dir) / "folder_review.json").read_text(encoding="utf-8"))
     except Exception:  # noqa: BLE001
@@ -62,7 +62,7 @@ def excluded_prefixes_from_review(cards_dir: Path) -> List[str]:
         if not isinstance(verdict, dict) or verdict.get("index", True):
             continue
         superseded = (not verdict_is_final(verdict) and bool(verdict.get("mixed"))
-                      and folder in expanded and _has_kept_child(verdicts, folder))
+                      and folder in expanded and has_kept_child(verdicts, folder))
         if not superseded:
             excluded.append(folder)
     return sorted(excluded)

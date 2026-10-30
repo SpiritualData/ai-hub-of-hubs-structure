@@ -17,10 +17,10 @@ from hubofhubs.recall.card_content_render import (
     tokenize as _tokenize,
 )
 from .context_bootstrap_support import (
-    _BOOTSTRAP_MAX_BYTES,
-    _extract_json_array,
+    BOOTSTRAP_MAX_BYTES,
+    extract_json_array,
     _log,
-    _select_representative_files,
+    select_representative_files,
 )
 
 
@@ -35,10 +35,10 @@ _TEST_PATH_RE = re.compile(
 
 
 # Weight given to test-file cards vs source-file cards (used in summary metadata).
-_TEST_FILE_WEIGHT = 0.5
+TEST_FILE_WEIGHT = 0.5
 
 
-_SOURCE_FILE_WEIGHT = 1.0
+SOURCE_FILE_WEIGHT = 1.0
 
 
 # RECENCY/USAGE RANKING BOOST (keyword arm). A card the user recently relied on or that was just
@@ -46,13 +46,13 @@ _SOURCE_FILE_WEIGHT = 1.0
 # The boost is a small bounded multiplier applied to the RANKING score only; the confidence GATE
 # always uses the un-boosted relevance score, so a recently-used-but-irrelevant card is never
 # resurrected. Set the max to 0.0 (constructor arg) to disable entirely.
-_RECENCY_BOOST_MAX_DEFAULT = 0.20          # at most +20% to the ranking score, never the gate
+RECENCY_BOOST_MAX_DEFAULT = 0.20          # at most +20% to the ranking score, never the gate
 
 
-_RECENCY_BOOST_HALF_LIFE_DAYS = 30.0       # recency component half-life (matches the vector arm)
+RECENCY_BOOST_HALF_LIFE_DAYS = 30.0       # recency component half-life (matches the vector arm)
 
 
-_RECENCY_BOOST_USAGE_CAP = 5.0             # usage_count saturates here (5+ uses = full usage signal)
+RECENCY_BOOST_USAGE_CAP = 5.0             # usage_count saturates here (5+ uses = full usage signal)
 
 
 # PER-SOURCE usage-recency debounce. One turn assembles context several times (the run-level view,
@@ -60,7 +60,7 @@ _RECENCY_BOOST_USAGE_CAP = 5.0             # usage_count saturates here (5+ uses
 # use. Without a debounce a single turn would rewrite each used card once per assemble and inflate
 # every source's use_count. A source re-used inside this window is left alone, which bounds card
 # writes (and, on an embedding-backed repository, re-embeds) to roughly one per card per turn.
-_SOURCE_USAGE_MIN_INTERVAL_SECONDS = 60.0
+SOURCE_USAGE_MIN_INTERVAL_SECONDS = 60.0
 
 
 # LINKED-FOLDER BOOST: unlike the recency/usage boost above (a soft heuristic applied only AFTER
@@ -70,7 +70,7 @@ _SOURCE_USAGE_MIN_INTERVAL_SECONDS = 60.0
 # gets a strong nudge to clear the gate even on a thinner keyword match, while a card with ZERO
 # shared keywords (score 0) still scores 0 after the boost, so unrelated folder content is never
 # forced in "never worse by construction" still holds.
-_LINKED_FOLDER_BOOST = 4.0
+LINKED_FOLDER_BOOST = 4.0
 
 
 # Max length for a card summary built from docstrings/descriptions (~400 chars).
@@ -123,7 +123,7 @@ _SYMBOL_RE = re.compile(
 )
 
 
-def _card_slug(task_text: str) -> str:
+def card_slug(task_text: str) -> str:
     """Stable card id: first few keywords (sorted) + short sha256 digest of the text."""
     tokens = sorted(_tokenize(task_text))
     prefix = "-".join(tokens[:4]) if tokens else "card"
@@ -131,7 +131,7 @@ def _card_slug(task_text: str) -> str:
     return f"{prefix}-{digest}"
 
 
-def _path_slug(rel_path: str) -> str:
+def path_slug(rel_path: str) -> str:
     """Stable card id for a source file derived from its relative path.
 
     Uses the file path itself (lowercased, non-alphanumeric chars replaced with
@@ -143,7 +143,7 @@ def _path_slug(rel_path: str) -> str:
     return f"{clean}-{digest}"
 
 
-def _card_display_title(card: Dict[str, Any]) -> str:
+def card_display_title(card: Dict[str, Any]) -> str:
     """The card's one-line title, whatever KIND of card it is. Never raises.
 
     A BOOTSTRAPPED card (built from a file) carries a ``summary``; a LEARNED card (written by an
@@ -161,7 +161,7 @@ def _card_display_title(card: Dict[str, Any]) -> str:
     return ""
 
 
-def _card_covered_paths(card: Dict[str, Any], limit: int = 10) -> List[str]:
+def card_covered_paths(card: Dict[str, Any], limit: int = 10) -> List[str]:
     """The file paths a card COVERS: its pinned ``files`` plus its ``file`` content REFERENCES.
 
     A learned card pins no files: the paths it knows live in its content locators. Anything that
@@ -187,7 +187,7 @@ def _card_covered_paths(card: Dict[str, Any], limit: int = 10) -> List[str]:
     return paths[:limit]
 
 
-def _managed_names(raw: Any) -> Set[str]:
+def managed_names(raw: Any) -> Set[str]:
     """The set of names in a card's ``managed_fields`` / ``managed_items`` declaration.
 
     A card written by a consumer that owns it (see ``_update_card_inner``) may declare which
@@ -199,7 +199,7 @@ def _managed_names(raw: Any) -> Set[str]:
     return {str(x).strip() for x in raw if isinstance(x, (str, int)) and str(x).strip()}
 
 
-def _trim_content_by_recency(
+def trim_content_by_recency(
     content: List[Dict[str, Any]], *, max_items: int = _MAX_CARD_CONTENT_ITEMS
 ) -> List[Dict[str, Any]]:
     """Cap a card's stored content at ``max_items``, dropping the OLDEST (lowest ``ts``) first.
@@ -247,19 +247,19 @@ def _read_whole_if_small(file_path: Path) -> str:
     """The whole file, but only when it is small enough to card. Never raises; "" on any error.
 
     For the AST extractors, which genuinely need a complete, parseable source text and cannot work
-    from a prefix (a truncated module is a SyntaxError). The size gate is ``_BOOTSTRAP_MAX_BYTES``
-    -- the SAME limit ``_extract_file_snippet`` already applies -- so "too big to card" means one
+    from a prefix (a truncated module is a SyntaxError). The size gate is ``BOOTSTRAP_MAX_BYTES``
+    -- the SAME limit ``extract_file_snippet`` already applies -- so "too big to card" means one
     thing across this module instead of depending on which extractor happened to be called.
     """
     try:
-        if file_path.stat().st_size > _BOOTSTRAP_MAX_BYTES:
+        if file_path.stat().st_size > BOOTSTRAP_MAX_BYTES:
             return ""
         return file_path.read_text(encoding="utf-8", errors="replace")
     except Exception:  # noqa: BLE001
         return ""
 
 
-def _extract_symbols(file_path: Path, max_symbols: int = 30) -> List[str]:
+def extract_symbols(file_path: Path, max_symbols: int = 30) -> List[str]:
     """Extract top-level symbol names from a source file. Never raises.
 
     For ``.py`` files uses the stdlib ``ast`` module to collect top-level and
@@ -314,7 +314,7 @@ def _first_sentence(text: str, max_len: int = 120) -> str:
     return ""
 
 
-def _is_test_path(rel_path: str) -> bool:
+def is_test_path(rel_path: str) -> bool:
     """Return True when *rel_path* looks like a test file."""
     return bool(_TEST_PATH_RE.search(rel_path))
 
@@ -427,7 +427,7 @@ def _extract_leading_comment(file_path: Path) -> str:
         return ""
 
 
-def _build_rich_summary(
+def build_rich_summary(
     rel_path: str,
     file_path: Path,
     syms: List[str],
@@ -589,7 +589,7 @@ def _resolve_file_refs(refs: Any, ordered: List[str], allowed: Set[str]) -> List
 
 def _parse_raw_entries(raw: str, allowed: Set[str]) -> List[Dict[str, Any]]:
     """Parse a JSON array from ``raw`` and validate each entry. Returns [] on any failure."""
-    payload = _extract_json_array(raw or "")
+    payload = extract_json_array(raw or "")
     if not payload:
         return []
     try:
@@ -606,7 +606,7 @@ def _parse_raw_entries(raw: str, allowed: Set[str]) -> List[Dict[str, Any]]:
     return out
 
 
-def _discover_areas(chunk: List[str], provider, model) -> List[Dict[str, Any]]:
+def discover_areas(chunk: List[str], provider, model) -> List[Dict[str, Any]]:
     """Stage 1: ask the LLM to identify top-level areas in ``chunk``. Never raises."""
     try:
         ordered = list(chunk)
@@ -626,7 +626,7 @@ def _discover_areas(chunk: List[str], provider, model) -> List[Dict[str, Any]]:
         return []
 
 
-def _extract_file_snippet(fpath: str, walk_root: Optional[Path] = None, max_bytes: int = 2048) -> str:
+def extract_file_snippet(fpath: str, walk_root: Optional[Path] = None, max_bytes: int = 2048) -> str:
     """Extract a concise snippet from a file: docstring + function/class signatures.
 
     For each file, attempts to read first docstring, function/class definitions,
@@ -639,7 +639,7 @@ def _extract_file_snippet(fpath: str, walk_root: Optional[Path] = None, max_byte
         else:
             full_path = Path(fpath)
 
-        if not full_path.exists() or full_path.stat().st_size > _BOOTSTRAP_MAX_BYTES:
+        if not full_path.exists() or full_path.stat().st_size > BOOTSTRAP_MAX_BYTES:
             return ""
 
         with open(full_path, "r", encoding="utf-8", errors="ignore") as fh:
@@ -691,7 +691,7 @@ def _extract_file_snippet(fpath: str, walk_root: Optional[Path] = None, max_byte
     return "\n".join(snippet_lines[:20])
 
 
-def _summarize_snippet(fpath: str, snippet: str) -> str:
+def summarize_snippet(fpath: str, snippet: str) -> str:
     """Summarize a file snippet based on its length.
 
     - Short (< 200 chars): return as-is
@@ -736,22 +736,22 @@ def _summarize_snippet(fpath: str, snippet: str) -> str:
     return f"{fpath} (detailed content omitted, {len(snippet)} bytes):\n" + "\n".join(kept)
 
 
-def _extract_topic_cards(area: Dict[str, Any], allowed: Set[str], provider, model, walk_root: Optional[Path] = None) -> List[Dict[str, Any]]:
+def extract_topic_cards(area: Dict[str, Any], allowed: Set[str], provider, model, walk_root: Optional[Path] = None) -> List[Dict[str, Any]]:
     """Stage 2: given an area dict, sample representative files, extract & summarize snippets,
     then ask the LLM for topic cards. Never raises."""
     try:
         # Sample representative files from the area (reduce token spend on large areas).
         area_files = area.get("files", [])
-        sampled_files = _select_representative_files(area_files, samples_per_folder=2) if len(area_files) > 5 else area_files
+        sampled_files = select_representative_files(area_files, samples_per_folder=2) if len(area_files) > 5 else area_files
 
         # Extract snippets + summarize by length for each sampled file.
         file_entries: List[str] = []
         ordered: List[str] = []
         for fpath in sampled_files:
             ordered.append(fpath)
-            snippet = _extract_file_snippet(fpath, walk_root=walk_root)
+            snippet = extract_file_snippet(fpath, walk_root=walk_root)
             if snippet:
-                summarized = _summarize_snippet(fpath, snippet)
+                summarized = summarize_snippet(fpath, snippet)
                 file_entries.append(f"{len(ordered)}. {summarized}")
             else:
                 # Fallback: just the path if snippet extraction failed

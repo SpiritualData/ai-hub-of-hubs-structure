@@ -48,7 +48,7 @@ log = logging.getLogger(__name__)
 BOOTSTRAP_META_FILE = "bootstrap_meta.json"
 
 # Keys of bootstrap_meta.json that describe the store's identity rather than one bootstrap pass.
-# ``_write_bootstrap_meta`` rewrites the pass keys every time and must carry these through.
+# ``write_bootstrap_meta`` rewrites the pass keys every time and must carry these through.
 IDENTITY_KEYS = ("store_id", "created_at", "root", "root_history", "mounts",
                  "vector_id_scheme", "vector_space", "vector_location",
                  "merged_from", "merged_into")

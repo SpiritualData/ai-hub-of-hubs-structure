@@ -28,7 +28,7 @@ _log = logging.getLogger(__name__)
 # stored version is older. v2: LLM-based keyword-cluster dedup (replaced Jaccard file-overlap).
 # v3: TF-DF-IDF sampling in Stage 1 & 2 (representative files + snippets instead of all paths).
 # v4: per-file TF-DF-IDF term signatures from actual content stored in file entries (tfdfidf_terms).
-_BOOTSTRAP_VERSION = 4
+BOOTSTRAP_VERSION = 4
 
 
 # Per-feature algorithm versions. Bump ONLY the version for the feature whose algorithm changed:
@@ -37,11 +37,11 @@ _BOOTSTRAP_VERSION = 4
 # entries that are already current. ``bootstrap_meta.json`` records which features are fully
 # migrated across ALL cards under ``feature_versions``; a feature is only marked complete there
 # once every on-disk card/file-entry carries the current version for that feature.
-_TFDFIDF_VERSION = 1  # stored as "tfdfidf_v" in each file entry within a card
+TFDFIDF_VERSION = 1  # stored as "tfdfidf_v" in each file entry within a card
 
 
 # Name of the meta file written to cards_dir after a successful bootstrap.
-_BOOTSTRAP_META_FILE = "bootstrap_meta.json"
+BOOTSTRAP_META_FILE = "bootstrap_meta.json"
 
 
 # {rel_path: mtime} of files a topic-discovery pass has already been shown. Discovery samples
@@ -49,17 +49,17 @@ _BOOTSTRAP_META_FILE = "bootstrap_meta.json"
 # this record they counted as "new" forever and every refresh re-ran paid LLM discovery on them
 # (20,376 files on one corpus, at every chat start). A file drops out of this record, and becomes
 # new again, as soon as its mtime changes.
-_DISCOVERED_FILE = "index-state/discovered_files.json"
+DISCOVERED_FILE = "index-state/discovered_files.json"
 
 
 # Sane bound on how many parent directories ``_discover_ancestor_card_dir`` will walk up looking
 # for an already-indexed ancestor corpus, so a pathological mount (e.g. a very deep or looping
 # filesystem namespace) can't make the upward walk hang. 12 comfortably covers any realistic
 # corpus nesting depth.
-_MAX_ANCESTOR_WALK_LEVELS = 12
+MAX_ANCESTOR_WALK_LEVELS = 12
 
 
-def _run_parallel(callables: List, max_workers: int) -> List:
+def run_parallel(callables: List, max_workers: int) -> List:
     """Run callables in parallel with daemon threads; return results in input order.
 
     Unlike ``ThreadPoolExecutor``, the worker threads are daemon threads and are NOT
@@ -105,10 +105,10 @@ def _run_parallel(callables: List, max_workers: int) -> List:
     return results
 
 
-def _read_bootstrap_meta(cards_dir: str) -> dict:
+def read_bootstrap_meta(cards_dir: str) -> dict:
     """Read ``bootstrap_meta.json`` from ``cards_dir``. Returns {} on any error. Never raises."""
     try:
-        meta_path = Path(cards_dir) / _BOOTSTRAP_META_FILE
+        meta_path = Path(cards_dir) / BOOTSTRAP_META_FILE
         with open(meta_path, "r", encoding="utf-8") as fh:
             data = json.load(fh)
         return data if isinstance(data, dict) else {}
@@ -116,7 +116,7 @@ def _read_bootstrap_meta(cards_dir: str) -> dict:
         return {}
 
 
-def _write_bootstrap_meta(
+def write_bootstrap_meta(
     cards_dir: str,
     count: int,
     *,
@@ -138,19 +138,19 @@ def _write_bootstrap_meta(
     try:
         Path(cards_dir).mkdir(parents=True, exist_ok=True)
         payload = {
-            "version": _BOOTSTRAP_VERSION,
+            "version": BOOTSTRAP_VERSION,
             "feature_versions": feature_versions or {},
             "card_count": int(count),
             "completed_at": datetime.now(timezone.utc).isoformat(),
         }
-        payload.update(identity_of(_read_bootstrap_meta(cards_dir), root=root))
+        payload.update(identity_of(read_bootstrap_meta(cards_dir), root=root))
         tmp_fd, tmp_path = tempfile.mkstemp(dir=str(cards_dir), prefix=".tmp_meta_", suffix=".json")
         match_umask(tmp_fd)  # mkstemp makes 0600; another account sharing the corpus must read it
         try:
             with os.fdopen(tmp_fd, "w", encoding="utf-8") as fh:
                 json.dump(payload, fh, indent=2, ensure_ascii=False)
                 fh.write("\n")
-            os.replace(tmp_path, str(Path(cards_dir) / _BOOTSTRAP_META_FILE))
+            os.replace(tmp_path, str(Path(cards_dir) / BOOTSTRAP_META_FILE))
         except Exception:  # noqa: BLE001
             try:
                 os.unlink(tmp_path)
@@ -162,7 +162,7 @@ def _write_bootstrap_meta(
 
 # Max file paths per area-discovery chunk. Keeping each chunk small means the LLM call finishes
 # quickly and many chunks can run in parallel, so total wall-clock is bounded.
-_CHUNK_SIZE = 150
+CHUNK_SIZE = 150
 
 
 # Max parallel LLM workers for bootstrap (area discovery and topic extraction).
@@ -180,7 +180,7 @@ _CHUNK_SIZE = 150
 # model calls" has said it about this fan-out too, and having one stage quietly ignore that is how the limit gets
 # set, believed, and then exceeded anyway. ``bootstrap_workers`` reads no environment: the consumer reads its
 # settings and hands them over as ``(name, raw value)`` pairs, strongest first.
-_BOOTSTRAP_WORKERS_DEFAULT = 8
+BOOTSTRAP_WORKERS_DEFAULT = 8
 
 
 def bootstrap_workers(settings: Sequence[Tuple[str, str]] = ()) -> int:
@@ -197,7 +197,7 @@ def bootstrap_workers(settings: Sequence[Tuple[str, str]] = ()) -> int:
             return max(1, int(raw))
         except ValueError:
             _log.warning("context index: %s=%r is not an integer, ignoring it", name, raw)
-    return _BOOTSTRAP_WORKERS_DEFAULT
+    return BOOTSTRAP_WORKERS_DEFAULT
 
 
 # ---------------------------------------------------------------------------
@@ -205,7 +205,7 @@ def bootstrap_workers(settings: Sequence[Tuple[str, str]] = ()) -> int:
 # ---------------------------------------------------------------------------
 
 # Source / text file extensions worth indexing.
-_SOURCE_EXTS: Set[str] = {
+SOURCE_EXTS: Set[str] = {
     ".py", ".ts", ".tsx", ".js", ".jsx", ".go", ".rs",
     ".java", ".rb", ".md", ".sh", ".yaml", ".yml", ".toml", ".json",
     ".c", ".cpp", ".h", ".hpp", ".cs", ".swift", ".kt", ".scala",
@@ -244,10 +244,10 @@ def optional_positive_int(name: str, value: Optional[str]) -> Optional[int]:
 
 
 # Max file size to fingerprint/parse during bootstrap (512 KB).
-_BOOTSTRAP_MAX_BYTES = 512 * 1024
+BOOTSTRAP_MAX_BYTES = 512 * 1024
 
 
-def _extract_json_array(text: str) -> str:
+def extract_json_array(text: str) -> str:
     """Pull a JSON array substring out of an LLM response. Returns "" if none found.
 
     Handles markdown code fences (```json ... ```), leading prose, and trailing prose by
@@ -290,7 +290,7 @@ def _extract_json_array(text: str) -> str:
         return ""
 
 
-def _jaccard(a: Set[str], b: Set[str]) -> float:
+def jaccard(a: Set[str], b: Set[str]) -> float:
     """File-set Jaccard similarity. Returns 0.0 when both sets are empty."""
     if not a and not b:
         return 0.0
@@ -301,10 +301,10 @@ def _jaccard(a: Set[str], b: Set[str]) -> float:
 # Two cards are dedup CANDIDATES when they share at least this many keywords.
 # Ceiling on a merged card's keyword list. The prompt asks for 5-12 per card; merging unions
 # them, and repeated merges compound without this.
-_MAX_MERGED_KEYWORDS = 24
+MAX_MERGED_KEYWORDS = 24
 
 
-def _card_file_paths(card: Dict[str, Any]) -> List[str]:
+def card_file_paths(card: Dict[str, Any]) -> List[str]:
     """A card's file entries as plain path strings, whichever shape they are stored in.
 
     Two shapes exist and they MEET here. A freshly identified card carries plain paths (that is
@@ -324,17 +324,17 @@ def _card_file_paths(card: Dict[str, Any]) -> List[str]:
     return out
 
 
-def _merge_card_group(group: List[Dict[str, Any]]) -> Dict[str, Any]:
+def merge_card_group(group: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Merge a group of cards into one. The first card keeps its id/name/summary; keywords and
     files are unioned across the group (order-preserving, and normalised to path strings)."""
     rep = {**group[0]}
     keywords = list(rep.get("keywords", []))
-    files = _card_file_paths(rep)
+    files = card_file_paths(rep)
     for card in group[1:]:
         for k in card.get("keywords", []):
             if k not in keywords:
                 keywords.append(k)
-        for f in _card_file_paths(card):
+        for f in card_file_paths(card):
             if f not in files:
                 files.append(f)
     # A merged card's keyword list was unioned without any bound, and merges compound: one real
@@ -343,12 +343,12 @@ def _merge_card_group(group: List[Dict[str, Any]]) -> Dict[str, Any]:
     # genuinely answer one. The earliest keywords come from the representative card of the group,
     # so truncating keeps the most on-topic ones and drops the accumulated tail. FILES are never
     # truncated: a card must keep pointing at everything it covers.
-    rep["keywords"] = keywords[:_MAX_MERGED_KEYWORDS]
+    rep["keywords"] = keywords[:MAX_MERGED_KEYWORDS]
     rep["files"] = files
     return rep
 
 
-def _select_representative_files(file_paths: List[str], samples_per_folder: int = 3) -> List[str]:
+def select_representative_files(file_paths: List[str], samples_per_folder: int = 3) -> List[str]:
     """Select representative files per folder using shared TF-DF-IDF heuristic.
 
     Delegates to the shared select_representatives() function from tfdfidf_sampling module,

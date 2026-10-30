@@ -368,7 +368,7 @@ def format_conversation_date(conv: Any) -> Optional[str]:
     return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
 
 
-def _find_conversation_dirs(corpus_root: Path, skip_dirs: Optional[Set[str]] = None) -> List[Path]:
+def find_conversation_dirs(corpus_root: Path, skip_dirs: Optional[Set[str]] = None) -> List[Path]:
     """Every ``.claude`` and ``conversations`` directory under ``corpus_root``, in ONE pruned walk.
 
     Two unpruned ``glob("**/...")`` calls used to do this, each descending into every
@@ -422,7 +422,7 @@ def scan_conversation_files(
     search_dirs: List[Path] = []
     if corpus_root and corpus_root.is_dir():
         try:
-            search_dirs.extend(_find_conversation_dirs(corpus_root, skip_dirs))
+            search_dirs.extend(find_conversation_dirs(corpus_root, skip_dirs))
         except Exception:  # noqa: BLE001
             pass
     if sessions_dir.is_dir():

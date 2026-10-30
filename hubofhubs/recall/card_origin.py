@@ -44,7 +44,7 @@ ORIGIN_ID = "origin_id"
 ORIGIN_ROOT = "origin_root"
 MAX_ID_CHARS = 200
 
-# The slug of an import root (``_path_slug``): words joined by hyphens, then six hex digits.
+# The slug of an import root (``path_slug``): words joined by hyphens, then six hex digits.
 NAMESPACE_PREFIX = re.compile(r"^(?:[a-z0-9]+-)+[0-9a-f]{6}$")
 # ``context merge-into`` renames a colliding card ``<id>--m<8 hex of the source store id>``.
 MERGE_RENAME = re.compile(r"--m[0-9a-f]{8}$")
@@ -145,8 +145,8 @@ def compounding_evidence(card_id: str) -> str:
 
 def root_slug(origin_root: str) -> str:
     """The namespace a copy's id starts with: a stable slug of the origin's root path."""
-    from .context_card_extraction import _path_slug  # local: that module imports this one
-    return _path_slug(origin_root)
+    from .context_card_extraction import path_slug  # local: that module imports this one
+    return path_slug(origin_root)
 
 
 def import_id(origin_root: str, origin_id: str) -> str:

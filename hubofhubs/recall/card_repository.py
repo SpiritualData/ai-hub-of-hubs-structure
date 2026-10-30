@@ -34,8 +34,8 @@ from . import card_origin
 
 # Name of the bootstrap meta sidecar written next to cards on the filesystem. The filesystem repo
 # ignores it when enumerating cards (it is store meta-state, not a card). Kept in sync with
-# ``file_context_store._BOOTSTRAP_META_FILE``.
-_BOOTSTRAP_META_FILE = "bootstrap_meta.json"
+# ``file_context_store.BOOTSTRAP_META_FILE``.
+BOOTSTRAP_META_FILE = "bootstrap_meta.json"
 
 # Every sidecar the store keeps NEXT TO its cards. Each one is store state, not a card, and
 # ``bootstrap_meta.json`` used to be the only one excluded: the folder-review cache was enumerated
@@ -43,7 +43,7 @@ _BOOTSTRAP_META_FILE = "bootstrap_meta.json"
 # It is a dictionary of folder verdicts, so it could only ever be noise in a context view, and it
 # inflated every card count by one. Kept in sync with ``file_context_store``.
 _SIDECAR_FILES = frozenset({
-    _BOOTSTRAP_META_FILE,
+    BOOTSTRAP_META_FILE,
     "folder_review.json",
     "discovered_files.json",
     "bootstrap_report_state.json",

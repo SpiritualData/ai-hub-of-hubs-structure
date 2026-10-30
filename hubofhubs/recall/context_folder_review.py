@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from pathlib import Path
 
 from hubofhubs.recall.walk import is_claude_state_file, prune_dirnames
-from .context_bootstrap_support import _BOOTSTRAP_MAX_BYTES, _SOURCE_EXTS, _extract_json_array, _log
+from .context_bootstrap_support import BOOTSTRAP_MAX_BYTES, SOURCE_EXTS, extract_json_array, _log
 
 
 # ---------------------------------------------------------------------------
@@ -31,7 +31,7 @@ from .context_bootstrap_support import _BOOTSTRAP_MAX_BYTES, _SOURCE_EXTS, _extr
 # Verdicts are cached in the cards dir so the cost is paid once and a human can read, edit or
 # delete the file to override any decision. A consumer may turn the whole thing off.
 
-_FOLDER_REVIEW_FILE = "folder_review.json"
+FOLDER_REVIEW_FILE = "folder_review.json"
 
 
 # Bumped when the MEANING of a cached verdict changes. v2 introduced "final" verdicts (see
@@ -43,10 +43,10 @@ _FOLDER_REVIEW_VERSION = 2
 _FOLDER_REVIEW_BATCH = 40        # folders per LLM call
 
 
-_FOLDER_REVIEW_MIN_FILES = 2000  # below this the skip list is enough; do not spend model calls
+FOLDER_REVIEW_MIN_FILES = 2000  # below this the skip list is enough; do not spend model calls
 
 
-_FOLDER_REVIEW_START_DEPTH = 2   # first level judged, relative to the corpus root
+FOLDER_REVIEW_START_DEPTH = 2   # first level judged, relative to the corpus root
 
 
 _FOLDER_REVIEW_MAX_DEPTH = 6     # never descend past this
@@ -113,7 +113,7 @@ _AI_INSTRUCTION_FILES = (
 )
 
 
-def _ai_instruction_files_in(walk_root: Path, folder: str, limit: int = 400) -> List[str]:
+def ai_instruction_files_in(walk_root: Path, folder: str, limit: int = 400) -> List[str]:
     """Names of AI-orientation files at or under ``folder`` (deduped, capped). Never raises."""
     found: List[str] = []
     base = walk_root / folder if folder != "." else walk_root
@@ -135,13 +135,13 @@ def _ai_instruction_files_in(walk_root: Path, folder: str, limit: int = 400) -> 
     return found
 
 
-def _dir_file_counts(walk_root: Path, skip_dirs: Set[str]) -> Dict[str, int]:
+def dir_file_counts(walk_root: Path, skip_dirs: Set[str]) -> Dict[str, int]:
     """``{relative dir: indexable file count}`` for every dir holding indexable files."""
     counts: Dict[str, int] = {}
     for dirpath, dirnames, filenames in os.walk(walk_root):
         prune_dirnames(dirnames, current=Path(dirpath), base_skip=skip_dirs)
         n = sum(1 for fn in filenames
-                if not is_claude_state_file(fn) and Path(fn).suffix.lower() in _SOURCE_EXTS)
+                if not is_claude_state_file(fn) and Path(fn).suffix.lower() in SOURCE_EXTS)
         if n:
             try:
                 counts[Path(dirpath).relative_to(walk_root).as_posix()] = n
@@ -150,7 +150,7 @@ def _dir_file_counts(walk_root: Path, skip_dirs: Set[str]) -> Dict[str, int]:
     return counts
 
 
-def _roll_up_to_depth(counts: Dict[str, int], depth: int) -> Dict[str, int]:
+def roll_up_to_depth(counts: Dict[str, int], depth: int) -> Dict[str, int]:
     """Aggregate per-directory counts onto their ancestor at ``depth`` path segments."""
     rolled: Dict[str, int] = {}
     for rel, n in counts.items():
@@ -167,7 +167,7 @@ def _sample_filenames(walk_root: Path, folder: str, limit: int = 6) -> List[str]
     try:
         for dirpath, dirnames, filenames in os.walk(base):
             for fn in filenames:
-                if not is_claude_state_file(fn) and Path(fn).suffix.lower() in _SOURCE_EXTS:
+                if not is_claude_state_file(fn) and Path(fn).suffix.lower() in SOURCE_EXTS:
                     names.append(fn)
                     if len(names) >= limit:
                         return names
@@ -189,7 +189,7 @@ def _review_folder_batch(batch: List[Tuple[str, int]], walk_root: Path, provider
     lines = []
     for folder, count in batch:
         samples = ", ".join(_sample_filenames(walk_root, folder)) or "(none)"
-        guides = _ai_instruction_files_in(walk_root, folder)
+        guides = ai_instruction_files_in(walk_root, folder)
         hint = f" [contains {', '.join(guides)}]" if guides else ""
         risk = f" [RISK: {notes[folder]}]" if notes and notes.get(folder) else ""
         size = f"{count} files" if count else "size not measured"
@@ -201,8 +201,8 @@ def _review_folder_batch(batch: List[Tuple[str, int]], walk_root: Path, provider
         _log.info("context index: folder review call failed; those folders default to INDEXED",
                   exc_info=True)
         return {}
-    # _extract_json_array returns the array SUBSTRING (fences and prose stripped), not a value.
-    blob = _extract_json_array(raw) if raw else ""
+    # extract_json_array returns the array SUBSTRING (fences and prose stripped), not a value.
+    blob = extract_json_array(raw) if raw else ""
     try:
         parsed = json.loads(blob) if blob else None
     except (ValueError, TypeError):
@@ -251,7 +251,7 @@ def _review_folder_batch(batch: List[Tuple[str, int]], walk_root: Path, provider
 _NESTED_VCS_MARKERS = (".git", ".hg", ".svn")
 
 
-def _nested_vcs_dirs(walk_root: Path, skip_dirs: Set[str]) -> Dict[str, str]:
+def nested_vcs_dirs(walk_root: Path, skip_dirs: Set[str]) -> Dict[str, str]:
     """``{relative dir: marker}`` for directories holding their own VCS metadata (root excluded)."""
     found: Dict[str, str] = {}
     for dirpath, dirnames, _filenames in os.walk(walk_root):
@@ -294,11 +294,11 @@ def _folder_signature(walk_root: Path, folder: str, limit: int = _DUP_SAMPLE_FIL
             dirnames[:] = [d for d in dirnames if d not in _NESTED_VCS_MARKERS
                            and d != "__pycache__"]
             for fn in sorted(filenames):
-                if is_claude_state_file(fn) or Path(fn).suffix.lower() not in _SOURCE_EXTS:
+                if is_claude_state_file(fn) or Path(fn).suffix.lower() not in SOURCE_EXTS:
                     continue
                 fp = Path(dirpath) / fn
                 try:
-                    if fp.stat().st_size > _BOOTSTRAP_MAX_BYTES:
+                    if fp.stat().st_size > BOOTSTRAP_MAX_BYTES:
                         continue
                     digest = hashlib.sha1(fp.read_bytes()).hexdigest()[:12]
                 except OSError:
@@ -311,7 +311,7 @@ def _folder_signature(walk_root: Path, folder: str, limit: int = _DUP_SAMPLE_FIL
     return sig
 
 
-def _duplicate_folders(walk_root: Path, folders: List[str],
+def duplicate_folders(walk_root: Path, folders: List[str],
                        counts: Dict[str, int]) -> Dict[str, Tuple[str, float]]:
     """``{folder: (duplicate_of, overlap)}`` for folders that mirror a larger sibling.
 
@@ -336,7 +336,7 @@ def _duplicate_folders(walk_root: Path, folders: List[str],
     return dupes
 
 
-def _is_excluded_folder(rel: str, excluded: Set[str]) -> bool:
+def is_excluded_folder(rel: str, excluded: Set[str]) -> bool:
     """Whether ``rel`` is, or sits under, an excluded folder. ``"."`` is never excluded here.
 
     The CORPUS ROOT is not an excludable folder, and an entry of ``"."`` in ``excluded`` must not
@@ -358,7 +358,7 @@ def _folder_file_count(counts: Dict[str, int], folder: str) -> int:
     return sum(n for f, n in counts.items() if f == folder or f.startswith(folder + "/"))
 
 
-def _has_kept_child(verdicts: Dict[str, Dict[str, Any]], folder: str) -> bool:
+def has_kept_child(verdicts: Dict[str, Dict[str, Any]], folder: str) -> bool:
     """Whether any directly-judged descendant of ``folder`` was kept."""
     prefix = folder + "/"
     return any(f.startswith(prefix) and v.get("index", True) for f, v in verdicts.items())
@@ -374,7 +374,7 @@ def _has_kept_child(verdicts: Dict[str, Dict[str, Any]], folder: str) -> bool:
 #
 # The bug this closes, measured on a real corpus: a nested repository of 23k generated files was
 # correctly excluded, then opened up anyway because it was large, its 1,211 children were judged
-# individually and kept, and ``_has_kept_child`` read those keeps as "the parent's verdict was
+# individually and kept, and ``has_kept_child`` read those keeps as "the parent's verdict was
 # superseded" and let the whole subtree back in. 2,082 cards of generated subject-matter summaries
 # followed. One folder, two opposite verdicts, from the same bytes.
 #
@@ -437,7 +437,7 @@ def drop_verdicts_under_final_exclusions(verdicts: Dict[str, Dict[str, Any]]) ->
 def load_verdicts(cards_dir: Path) -> Dict[str, Dict[str, Any]]:
     """The cached ``folder_review.json`` verdicts, ``{}`` when missing or unreadable."""
     try:
-        cache_path = Path(cards_dir) / _FOLDER_REVIEW_FILE
+        cache_path = Path(cards_dir) / FOLDER_REVIEW_FILE
         if cache_path.exists():
             loaded = json.loads(cache_path.read_text(encoding="utf-8"))
             if isinstance(loaded, dict) and isinstance(loaded.get("folders"), dict):
@@ -447,7 +447,7 @@ def load_verdicts(cards_dir: Path) -> Dict[str, Dict[str, Any]]:
     return {}
 
 
-def _folder_review(walk_root: Path, skip_dirs: Set[str], provider, model: Optional[str],
+def folder_review(walk_root: Path, skip_dirs: Set[str], provider, model: Optional[str],
                    cards_dir: Path, *, store_dir_name: str, skip_nested_repos: bool = True) -> Set[str]:
     """Relative folders to EXCLUDE from indexing, judged by batched LLM review.
 
@@ -506,14 +506,14 @@ def review_corpus(walk_root: Path, skip_dirs: Set[str], provider, model: Optiona
     ``skip_nested_repos`` is the consumer's setting for excluding nested repositories without a model call.
     """
     risk = risk or {}
-    cache_path = cards_dir / _FOLDER_REVIEW_FILE
+    cache_path = cards_dir / FOLDER_REVIEW_FILE
     verdicts: Dict[str, Dict[str, Any]] = load_verdicts(cards_dir)
     hard_risk = {f: sigs for f, sigs in risk.items()
                  if any(kind in HARD_RISK_KINDS for kind, _ in sigs)}
     notes = {f: "; ".join(text for _, text in sigs) for f, sigs in risk.items()}
 
     if counts is None:
-        counts = _dir_file_counts(walk_root, skip_dirs)
+        counts = dir_file_counts(walk_root, skip_dirs)
     if not counts and not hard_risk:
         return set(), verdicts
 
@@ -524,7 +524,7 @@ def review_corpus(walk_root: Path, skip_dirs: Set[str], provider, model: Optiona
     # checkouts, generated data and build output. A folder with a structural risk signal is the
     # one exception: the floor is about ordinary folders, and a series of dated copies is small
     # in the files it shows and enormous in the cards it would make.
-    if sum(counts.values()) < _FOLDER_REVIEW_MIN_FILES:
+    if sum(counts.values()) < FOLDER_REVIEW_MIN_FILES:
         if not hard_risk:
             return set(), verdicts
         _review_risk_folders(verdicts, risk, counts, walk_root, provider, model, notes)
@@ -534,7 +534,7 @@ def review_corpus(walk_root: Path, skip_dirs: Set[str], provider, model: Optiona
     # Recorded as verdicts so they are visible and editable in the cache file like any other.
     if skip_nested_repos:
         unstored: List[str] = []
-        for rel, marker in _nested_vcs_dirs(walk_root, skip_dirs).items():
+        for rel, marker in nested_vcs_dirs(walk_root, skip_dirs).items():
             # A nested repo is a separate project with its own history. Two kinds, and the
             # difference decides whether excluding it loses anything:
             #   - it has its OWN card store -> already imported wholesale by the reuse path, so
@@ -568,8 +568,8 @@ def review_corpus(walk_root: Path, skip_dirs: Set[str], provider, model: Optiona
     # --- Safeguard 2: fuzzy duplicates, also without a model call --------------------------
     # Only the biggest folders are compared: a duplicate small enough not to matter is not worth
     # the hashing, and the pair that motivates this is always among the largest.
-    biggest = sorted(_roll_up_to_depth(counts, 4), key=lambda f: -_folder_file_count(counts, f))
-    for folder, (dup_of, overlap) in _duplicate_folders(walk_root, biggest[:40], counts).items():
+    biggest = sorted(roll_up_to_depth(counts, 4), key=lambda f: -_folder_file_count(counts, f))
+    for folder, (dup_of, overlap) in duplicate_folders(walk_root, biggest[:40], counts).items():
         if verdict_is_pinned(verdicts.get(folder)):
             continue
         verdicts[folder] = {
@@ -593,8 +593,8 @@ def review_corpus(walk_root: Path, skip_dirs: Set[str], provider, model: Optiona
 
     # --- Safeguard 3b: the model, for what the two above cannot see ------------------------
     if provider is not None:
-        depth = _FOLDER_REVIEW_START_DEPTH
-        pending = [(f, n) for f, n in _roll_up_to_depth(counts, depth).items()
+        depth = FOLDER_REVIEW_START_DEPTH
+        pending = [(f, n) for f, n in roll_up_to_depth(counts, depth).items()
                    if f not in verdicts and final_exclusion_covering(verdicts, f) is None]
         while depth <= _FOLDER_REVIEW_MAX_DEPTH:
             for i in range(0, len(pending), _FOLDER_REVIEW_BATCH):
@@ -604,7 +604,7 @@ def review_corpus(walk_root: Path, skip_dirs: Set[str], provider, model: Optiona
             depth += 1
             if depth > _FOLDER_REVIEW_MAX_DEPTH:
                 break
-            deeper = _roll_up_to_depth(counts, depth)
+            deeper = roll_up_to_depth(counts, depth)
             pending = []
             for folder, n in deeper.items():
                 if folder in verdicts:
@@ -673,7 +673,7 @@ def _finish_review(verdicts: Dict[str, Dict[str, Any]], counts: Dict[str, int], 
             not verdict_is_final(verdict)
             and bool(verdict.get("mixed"))
             and folder in expanded
-            and _has_kept_child(verdicts, folder)
+            and has_kept_child(verdicts, folder)
         )
         if not superseded:
             excluded.add(folder)
