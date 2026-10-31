@@ -56,17 +56,19 @@ def area_detail(folder=None, seats=None):
     """Every area, grouped by seat, with its candidates and the evidence count: the generated body of ``docs/registry.md``."""
     hubs = registry.read("hubs.csv", folder)
     findings = registry.read("hub_findings.csv", folder)
+    evidence = registry.read("hub_evidence.csv", folder)
     seats = seats or [(s, s) for s in dict.fromkeys(r["seat"] for r in hubs)]
     out = []
     for seat, part in seats:
         mine = [r for r in hubs if r["seat"] == seat]
         if not mine:
             continue
-        out += [f"### {seat} ({part})", "", "| Area | Serves | Status | Call | Built on | Candidates | Findings | Researched |", "|---|---|---|---|---|---|---|---|"]
+        out += [f"### {seat} ({part})", "", "| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |", "|---|---|---|---|---|---|---|---|---|"]
         for r in mine:
             out.append("| " + " | ".join([r["area"], r["serves"], r["status"], r.get("call") or "-", names(r["current_hubs"]),
                                           "; ".join(registry.split(r["candidate_hubs"])) or "none",
-                                          str(len(registry.findings_of(r, findings))), r["last_researched"]]) + " |")
+                                          str(len(registry.findings_of(r, findings))), str(len(registry.evidence_of(r["area"], evidence))),
+                                          r["last_researched"]]) + " |")
         out.append("")
     return "\n".join(out).rstrip()
 

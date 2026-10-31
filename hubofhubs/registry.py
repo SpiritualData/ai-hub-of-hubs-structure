@@ -16,6 +16,15 @@ AREA_KINDS = ("registered", "fresh", "no_reinvented")                           
 SEAT_KINDS = ("by_config", "seam", "selectable", "core_clean", "fake_hub")           # facts of a consumer's code: checked once per seat
 CONFIG_SHARE_BAR = 0.5       # an area is "by configuration" when at least this share of its wired hub connections need no code
 
+# Public evidence (hub_evidence.csv): numbers other people measured, never our own result rows. See docs/public-evidence.md.
+EVIDENCE_DIMENSIONS = ("quality", "token_efficiency", "speed", "cost", "reliability", "safety", "maintenance")
+EVIDENCE_BETTER = ("higher", "lower")
+EVIDENCE_SOURCE_KINDS = ("independent_benchmark", "replication", "peer_reviewed", "vendor_reported", "maintainer_reported",
+                         "community_report", "own_run")
+EVIDENCE_INDEPENDENT = ("yes", "no", "unknown")
+EVIDENCE_METHOD = ("yes", "partial", "no")
+EVIDENCE_STATUS = ("live", "saturated", "archived", "contamination_risk", "unknown")
+
 
 def read(name, folder=None):
     return read_csv(Path(folder or DATA) / name)
@@ -70,6 +79,11 @@ def findings_of(row, findings):
     ``hub_findings.csv`` carries ``<prefix>-<n>``, so every finding id is unique and the join stays one value per area."""
     own = re.compile(re.escape(row["finding_id"]) + r"-\d+")
     return [f for f in findings if own.fullmatch(f["finding_id"])]
+
+
+def evidence_of(area, evidence, candidate=None):
+    """The public evidence rows of one area (and of one candidate when given): the data the esoi evidence grader reads."""
+    return [e for e in evidence if e["area"] == area and (candidate is None or e["candidate"] == candidate)]
 
 
 def connections_of(area, connections, consumer):

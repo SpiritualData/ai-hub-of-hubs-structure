@@ -16,3 +16,7 @@ oldest first. The instruction, with no paid model calls (a subscription model an
 4. Run the consumer's scorer and `python3 scripts/status.py` (it rewrites the README seat table and `docs/registry.md`), then `esoi hygiene`. No names, ids, emails or machine paths; no
    em dashes.
 5. Commit only those files. If a recommendation is worth building, raise a decision rather than building it unasked.
+
+Public evidence is refreshed in the same pass: for the area, re-open each `source_url` in `hubofhubs/registry/hub_evidence.csv`,
+update `value` and `date_checked`, add rows for new independent sources, and keep conflicting sources side by side. Enter no
+number you could not confirm on its page. How a row is judged is in [public evidence](public-evidence.md).
