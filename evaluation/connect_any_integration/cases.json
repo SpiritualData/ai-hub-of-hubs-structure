@@ -1,0 +1,391 @@
+[
+ {
+  "id": "registered-True",
+  "area": "registered",
+  "kind": "registered",
+  "args": {
+   "fact": {
+    "registered": true
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "registered-False",
+  "area": "registered",
+  "kind": "registered",
+  "args": {
+   "fact": {
+    "registered": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "by_config-True",
+  "area": "by_config",
+  "kind": "by_config",
+  "args": {
+   "fact": {
+    "config_ok": true
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "by_config-False",
+  "area": "by_config",
+  "kind": "by_config",
+  "args": {
+   "fact": {
+    "config_ok": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "fresh-True",
+  "area": "fresh",
+  "kind": "fresh",
+  "args": {
+   "fact": {
+    "fresh": true
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "fresh-False",
+  "area": "fresh",
+  "kind": "fresh",
+  "args": {
+   "fact": {
+    "fresh": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "seam-True",
+  "area": "seam",
+  "kind": "seam",
+  "args": {
+   "fact": {
+    "seam": true
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "seam-False",
+  "area": "seam",
+  "kind": "seam",
+  "args": {
+   "fact": {
+    "seam": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "selectable-True",
+  "area": "selectable",
+  "kind": "selectable",
+  "args": {
+   "fact": {
+    "selectable": true
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "selectable-False",
+  "area": "selectable",
+  "kind": "selectable",
+  "args": {
+   "fact": {
+    "selectable": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "core_clean-0",
+  "area": "core_clean",
+  "kind": "core_clean",
+  "args": {
+   "fact": {
+    "vendor_branches": []
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "core_clean-1",
+  "area": "core_clean",
+  "kind": "core_clean",
+  "args": {
+   "fact": {
+    "vendor_branches": [
+     "openai"
+    ]
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "core_clean-2",
+  "area": "core_clean",
+  "kind": "core_clean",
+  "args": {
+   "fact": {
+    "vendor_branches": [
+     "a",
+     "b"
+    ]
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "no_reinvented-0",
+  "area": "no_reinvented",
+  "kind": "no_reinvented",
+  "args": {
+   "fact": {
+    "reinvented": []
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "no_reinvented-1",
+  "area": "no_reinvented",
+  "kind": "no_reinvented",
+  "args": {
+   "fact": {
+    "reinvented": [
+     "x"
+    ]
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "no_reinvented-2",
+  "area": "no_reinvented",
+  "kind": "no_reinvented",
+  "args": {
+   "fact": {
+    "reinvented": [
+     "x",
+     "y"
+    ]
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "fake_hub-accepts",
+  "area": "fake_hub",
+  "kind": "fake_hub",
+  "args": {
+   "probe": "accepts"
+  },
+  "expect": true
+ },
+ {
+  "id": "fake_hub-rejects",
+  "area": "fake_hub",
+  "kind": "fake_hub",
+  "args": {
+   "probe": "rejects"
+  },
+  "expect": false
+ },
+ {
+  "id": "fake_hub-raises",
+  "area": "fake_hub",
+  "kind": "fake_hub",
+  "args": {
+   "probe": "raises"
+  },
+  "expect": false
+ },
+ {
+  "id": "fake_hub-none",
+  "area": "fake_hub",
+  "kind": "fake_hub",
+  "args": {
+   "probe": "none"
+  },
+  "expect": false
+ },
+ {
+  "id": "registered-independent",
+  "area": "independence",
+  "kind": "registered",
+  "args": {
+   "fact": {
+    "config_ok": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "by_config-independent",
+  "area": "independence",
+  "kind": "by_config",
+  "args": {
+   "fact": {
+    "registered": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "fresh-independent",
+  "area": "independence",
+  "kind": "fresh",
+  "args": {
+   "fact": {
+    "registered": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "seam-independent",
+  "area": "independence",
+  "kind": "seam",
+  "args": {
+   "fact": {
+    "registered": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "selectable-independent",
+  "area": "independence",
+  "kind": "selectable",
+  "args": {
+   "fact": {
+    "registered": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "core_clean-independent",
+  "area": "independence",
+  "kind": "core_clean",
+  "args": {
+   "fact": {
+    "seam": false,
+    "fresh": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "no_reinvented-independent",
+  "area": "independence",
+  "kind": "no_reinvented",
+  "args": {
+   "fact": {
+    "seam": false,
+    "fresh": false
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "registered-all-false",
+  "area": "independence",
+  "kind": "registered",
+  "args": {
+   "fact": {
+    "registered": false,
+    "config_ok": false,
+    "fresh": false,
+    "seam": false,
+    "selectable": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "by_config-all-false",
+  "area": "independence",
+  "kind": "by_config",
+  "args": {
+   "fact": {
+    "registered": false,
+    "config_ok": false,
+    "fresh": false,
+    "seam": false,
+    "selectable": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "fresh-all-false",
+  "area": "independence",
+  "kind": "fresh",
+  "args": {
+   "fact": {
+    "registered": false,
+    "config_ok": false,
+    "fresh": false,
+    "seam": false,
+    "selectable": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "seam-all-false",
+  "area": "independence",
+  "kind": "seam",
+  "args": {
+   "fact": {
+    "registered": false,
+    "config_ok": false,
+    "fresh": false,
+    "seam": false,
+    "selectable": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "selectable-all-false",
+  "area": "independence",
+  "kind": "selectable",
+  "args": {
+   "fact": {
+    "registered": false,
+    "config_ok": false,
+    "fresh": false,
+    "seam": false,
+    "selectable": false
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "fake_hub-ignores-facts",
+  "area": "independence",
+  "kind": "fake_hub",
+  "args": {
+   "probe": "accepts",
+   "fact": {
+    "registered": false,
+    "seam": false
+   }
+  },
+  "expect": true
+ }
+]

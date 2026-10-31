@@ -39,7 +39,7 @@ def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_res
     assert system.solutions() == ["card-store", "reason-and-answer"]
     assert all(line.startswith(seat + ":") for seat, line in system.pending.items())
     assert "no selected arm; pass arms=" in system.pending["search-backend"]
-    assert "pass provided=" in system.pending["model-call"]
+    assert "via_call_a_model" in system.pending["model-call"]
 
 
 def test_assemble_overrides_name_only_what_differs():

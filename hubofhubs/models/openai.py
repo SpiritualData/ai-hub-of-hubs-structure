@@ -17,17 +17,20 @@ DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 class OpenAIProvider(ModelProviderBase):
     """``base_url`` points at any OpenAI-compatible endpoint (a proxy, vLLM, Ollama, a gateway); ``keyless`` allows a
     self-hosted one that takes no key. ``create_kwargs`` are extra keyword arguments for every completion; ``model_marker`` is the
-    substring that keeps a listed model id; ``fallback_models`` is the list used when listing fails."""
+    substring that keeps a listed model id; ``fallback_models`` is the list used when listing fails. ``keyless`` left unset means
+    keyless exactly when a ``base_url`` is given."""
+    ENVIRON = {"api_key": "OPENAI_API_KEY", "base_url": "OPENAI_BASE_URL"}      # option <- variable (esoi.assemble)
+    ENVIRON_REQUIRED = (("api_key", "base_url"),)                                # a key, or an endpoint that takes none
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, base_url: Optional[str] = None,
-                 keyless: bool = False, create_kwargs: Optional[Dict[str, Any]] = None, model_marker: str = "gpt",
+                 keyless: Optional[bool] = None, create_kwargs: Optional[Dict[str, Any]] = None, model_marker: str = "gpt",
                  fallback_models: Sequence[str] = ("gpt-4o", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"),
                  env_name: Optional[str] = None):
         super().__init__()
         self.api_key = api_key
         self.env_name = env_name           # the consumer's name for where the key comes from, so a missing key can name it
         self.base_url = base_url
-        self.keyless = keyless
+        self.keyless = bool(base_url) if keyless is None else keyless
         self.create_kwargs = dict(create_kwargs or {})
         self.model_marker = model_marker
         self.fallback_models = tuple(fallback_models)
@@ -96,9 +99,11 @@ class OpenAIProvider(ModelProviderBase):
 @implementation("call-a-model", "deepseek")
 class DeepSeekProvider(OpenAIProvider):
     """DeepSeek's OpenAI-compatible API. Thinking is off by default (slower, and more output tokens when on)."""
+    ENVIRON = {"api_key": "DEEPSEEK_API_KEY", "base_url": "DEEPSEEK_BASE_URL"}
+    ENVIRON_REQUIRED = ("api_key",)
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, base_url: Optional[str] = None,
                  thinking: bool = False, env_name: Optional[str] = None):
-        super().__init__(api_key=api_key, cache_seconds=cache_seconds, base_url=base_url or DEEPSEEK_BASE_URL, env_name=env_name,
+        super().__init__(api_key=api_key, cache_seconds=cache_seconds, base_url=base_url or DEEPSEEK_BASE_URL, keyless=False, env_name=env_name,
                          create_kwargs={} if thinking else {"extra_body": {"thinking": {"type": "disabled"}}},
                          model_marker="deepseek", fallback_models=("deepseek-flash", "deepseek-v4-pro"))

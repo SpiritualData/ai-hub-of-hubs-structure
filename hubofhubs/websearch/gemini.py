@@ -41,6 +41,8 @@ class GeminiGroundingBackend:
     returns to their real destinations (concurrent HEAD, falling back to GET, 3s timeout each,
     per-instance cache) so citations point at the actual source page.
     """
+    ENVIRON = {"api_key": ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY")}     # option <- variable (esoi.assemble)
+    ENVIRON_REQUIRED = ("api_key",)
 
     name = "gemini-grounding"
 

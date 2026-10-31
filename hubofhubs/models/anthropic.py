@@ -43,6 +43,9 @@ def thinking_kwargs(create, enabled: bool = False) -> Dict[str, Any]:
 
 @implementation("call-a-model", "anthropic")
 class AnthropicProvider(ModelProviderBase):
+    ENVIRON = {"api_key": "ANTHROPIC_API_KEY"}       # option <- variable the consumer's mapping may hold (esoi.assemble)
+    ENVIRON_REQUIRED = ("api_key",)
+
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, max_answer_tokens: int = 2048,
                  max_plan_tokens: int = 800, thinking: bool = False,
                  env_name: Optional[str] = None):

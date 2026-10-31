@@ -1,0 +1,496 @@
+[
+ {
+  "id": "days-00",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-09-30",
+   "today": "2026-10-31"
+  },
+  "expect": 31
+ },
+ {
+  "id": "days-01",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-08-03",
+   "today": "2026-10-31"
+  },
+  "expect": 89
+ },
+ {
+  "id": "days-02",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-30",
+   "today": "2026-10-31"
+  },
+  "expect": 1
+ },
+ {
+  "id": "days-03",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-01",
+   "today": "2026-10-31"
+  },
+  "expect": 30
+ },
+ {
+  "id": "days-04",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-07-31",
+   "today": "2026-10-31"
+  },
+  "expect": 92
+ },
+ {
+  "id": "days-05",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-31",
+   "today": "2026-10-31"
+  },
+  "expect": 0
+ },
+ {
+  "id": "days-06",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-07-31",
+   "today": "2026-10-31"
+  },
+  "expect": 92
+ },
+ {
+  "id": "days-07",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-29",
+   "today": "2026-10-31"
+  },
+  "expect": 2
+ },
+ {
+  "id": "days-08",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-27",
+   "today": "2026-10-31"
+  },
+  "expect": 4
+ },
+ {
+  "id": "days-09",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-31",
+   "today": "2026-10-31"
+  },
+  "expect": 0
+ },
+ {
+  "id": "days-10",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-24",
+   "today": "2026-10-31"
+  },
+  "expect": 7
+ },
+ {
+  "id": "days-11",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-05-01",
+   "today": "2026-10-31"
+  },
+  "expect": 183
+ },
+ {
+  "id": "days-12",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-30",
+   "today": "2026-10-31"
+  },
+  "expect": 1
+ },
+ {
+  "id": "days-13",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-30",
+   "today": "2026-10-31"
+  },
+  "expect": 1
+ },
+ {
+  "id": "days-14",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-09-29",
+   "today": "2026-10-31"
+  },
+  "expect": 32
+ },
+ {
+  "id": "days-15",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-29",
+   "today": "2026-10-31"
+  },
+  "expect": 2
+ },
+ {
+  "id": "days-16",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-05-02",
+   "today": "2026-10-31"
+  },
+  "expect": 182
+ },
+ {
+  "id": "days-17",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-07-31",
+   "today": "2026-10-31"
+  },
+  "expect": 92
+ },
+ {
+  "id": "days-18",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-29",
+   "today": "2026-10-31"
+  },
+  "expect": 2
+ },
+ {
+  "id": "days-19",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-01",
+   "today": "2026-10-31"
+  },
+  "expect": 30
+ },
+ {
+  "id": "days-20",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-08-01",
+   "today": "2026-10-31"
+  },
+  "expect": 91
+ },
+ {
+  "id": "days-21",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-05-04",
+   "today": "2026-10-31"
+  },
+  "expect": 180
+ },
+ {
+  "id": "days-22",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-05-03",
+   "today": "2026-10-31"
+  },
+  "expect": 181
+ },
+ {
+  "id": "days-23",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-07-30",
+   "today": "2026-10-31"
+  },
+  "expect": 93
+ },
+ {
+  "id": "days-24",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2025-09-24",
+   "today": "2026-10-31"
+  },
+  "expect": 402
+ },
+ {
+  "id": "days-25",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-07-30",
+   "today": "2026-10-31"
+  },
+  "expect": 93
+ },
+ {
+  "id": "days-26",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-09-29",
+   "today": "2026-10-31"
+  },
+  "expect": 32
+ },
+ {
+  "id": "days-27",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-23",
+   "today": "2026-10-31"
+  },
+  "expect": 8
+ },
+ {
+  "id": "days-28",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2025-10-29",
+   "today": "2026-10-31"
+  },
+  "expect": 367
+ },
+ {
+  "id": "days-29",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-10-28",
+   "today": "2026-10-31"
+  },
+  "expect": 3
+ },
+ {
+  "id": "days-bad-0",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "",
+   "today": "2026-10-31"
+  },
+  "expect": null
+ },
+ {
+  "id": "days-bad-1",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "not a date",
+   "today": "2026-10-31"
+  },
+  "expect": null
+ },
+ {
+  "id": "days-bad-2",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-13-40",
+   "today": "2026-10-31"
+  },
+  "expect": null
+ },
+ {
+  "id": "days-bad-3",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "31/10/2026",
+   "today": "2026-10-31"
+  },
+  "expect": null
+ },
+ {
+  "id": "days-bad-4",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": null,
+   "today": "2026-10-31"
+  },
+  "expect": null
+ },
+ {
+  "id": "days-future",
+  "area": "days_since",
+  "kind": "days_since",
+  "args": {
+   "iso": "2026-11-05",
+   "today": "2026-10-31"
+  },
+  "expect": -5
+ },
+ {
+  "id": "combine-0",
+  "area": "combine",
+  "kind": "combine",
+  "args": {
+   "facts": [
+    [
+     true,
+     true
+    ],
+    [
+     true,
+     true
+    ]
+   ],
+   "today": "2026-10-31"
+  },
+  "expect": {
+   "coverage": 1.0,
+   "fresh_share": 1.0
+  }
+ },
+ {
+  "id": "combine-1",
+  "area": "combine",
+  "kind": "combine",
+  "args": {
+   "facts": [
+    [
+     true,
+     true
+    ],
+    [
+     false,
+     true
+    ]
+   ],
+   "today": "2026-10-31"
+  },
+  "expect": {
+   "coverage": 1.0,
+   "fresh_share": 0.5
+  }
+ },
+ {
+  "id": "combine-2",
+  "area": "combine",
+  "kind": "combine",
+  "args": {
+   "facts": [
+    [
+     false,
+     false
+    ],
+    [
+     false,
+     true
+    ],
+    [
+     true,
+     true
+    ],
+    [
+     true,
+     false
+    ]
+   ],
+   "today": "2026-10-31"
+  },
+  "expect": {
+   "coverage": 0.5,
+   "fresh_share": 0.5
+  }
+ },
+ {
+  "id": "combine-3",
+  "area": "combine",
+  "kind": "combine",
+  "args": {
+   "facts": [
+    [
+     true,
+     false
+    ],
+    [
+     true,
+     false
+    ],
+    [
+     true,
+     false
+    ],
+    [
+     true,
+     false
+    ],
+    [
+     true,
+     false
+    ]
+   ],
+   "today": "2026-10-31"
+  },
+  "expect": {
+   "coverage": 0.0,
+   "fresh_share": 1.0
+  }
+ },
+ {
+  "id": "combine-4",
+  "area": "combine",
+  "kind": "combine",
+  "args": {
+   "facts": [
+    [
+     false,
+     false
+    ],
+    [
+     false,
+     false
+    ],
+    [
+     false,
+     false
+    ]
+   ],
+   "today": "2026-10-31"
+  },
+  "expect": {
+   "coverage": 0.0,
+   "fresh_share": 0.0
+  }
+ }
+]

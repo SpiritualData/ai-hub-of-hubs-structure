@@ -109,6 +109,12 @@ class ConfiguredJsonBackend:
     """Searches any JSON search API from a description (see ``apis.py``). Behaviour matches the hand-written
     Serper, Brave and Tavily backends this replaced: same request, same hit fields, same errors."""
     spec: Dict[str, Any] = {}
+    ENVIRON_REQUIRED = ("api_key",)
+
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        if cls.spec.get("key_env"):
+            cls.ENVIRON = {"api_key": tuple(cls.spec["key_env"])}       # option <- the variable names the description lists (esoi.assemble)
 
     def __init__(self, api_key: str = "", http: HttpCallable = default_http) -> None:
         self.api_key = api_key
@@ -199,6 +205,8 @@ def load_file_specs(path: str) -> Dict[str, type]:
 @implementation("search-backend", "searxng")
 class SearxngBackend:
     name = "searxng"
+    ENVIRON = {"base_url": "SEARXNG_URL"}       # option <- variable (esoi.assemble)
+    ENVIRON_REQUIRED = ("base_url",)
 
     def __init__(self, base_url: str = "", http: HttpCallable = default_http) -> None:
         self.base_url = (base_url or "").rstrip("/")

@@ -1,0 +1,2924 @@
+[
+ {
+  "id": "search-00",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "fox",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c07"
+  ]
+ },
+ {
+  "id": "search-01",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "brown",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c03",
+   "c10"
+  ]
+ },
+ {
+  "id": "search-02",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "brown fox",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01"
+  ]
+ },
+ {
+  "id": "search-03",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "FOX",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c07"
+  ]
+ },
+ {
+  "id": "search-04",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "berries",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c03",
+   "c04"
+  ]
+ },
+ {
+  "id": "search-05",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "goals quick",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c06"
+  ]
+ },
+ {
+  "id": "search-06",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c02",
+   "c03",
+   "c04",
+   "c05",
+   "c06",
+   "c07",
+   "c08",
+   "c09",
+   "c10"
+  ]
+ },
+ {
+  "id": "search-07",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 3,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c02",
+   "c03"
+  ]
+ },
+ {
+  "id": "search-08",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 0,
+   "tag": ""
+  },
+  "expect": []
+ },
+ {
+  "id": "search-09",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "zebra",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": []
+ },
+ {
+  "id": "search-10",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "the",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c08"
+  ]
+ },
+ {
+  "id": "search-11",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "the",
+   "limit": 2,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c08"
+  ]
+ },
+ {
+  "id": "search-12",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "vitamins",
+   "limit": 10,
+   "tag": "food"
+  },
+  "expect": [
+   "c04",
+   "c09"
+  ]
+ },
+ {
+  "id": "search-13",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "brown",
+   "limit": 10,
+   "tag": "animal"
+  },
+  "expect": [
+   "c01",
+   "c03"
+  ]
+ },
+ {
+  "id": "search-14",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 10,
+   "tag": "science"
+  },
+  "expect": [
+   "c02",
+   "c04"
+  ]
+ },
+ {
+  "id": "search-15",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 10,
+   "tag": "product"
+  },
+  "expect": [
+   "c05",
+   "c06"
+  ]
+ },
+ {
+  "id": "search-16",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 10,
+   "tag": "nothing"
+  },
+  "expect": []
+ },
+ {
+  "id": "search-17",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "lazy",
+   "limit": 10,
+   "tag": "story"
+  },
+  "expect": [
+   "c01"
+  ]
+ },
+ {
+  "id": "search-18",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "  brown   fox  ",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01"
+  ]
+ },
+ {
+  "id": "search-19",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "quick feedback",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c06"
+  ]
+ },
+ {
+  "id": "search-20",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "goal",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c05",
+   "c06"
+  ]
+ },
+ {
+  "id": "search-21",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "ox",
+   "limit": 10,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c07"
+  ]
+ },
+ {
+  "id": "search-22",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "rice beans",
+   "limit": 10,
+   "tag": "food"
+  },
+  "expect": [
+   "c10"
+  ]
+ },
+ {
+  "id": "search-23",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "",
+   "limit": 1,
+   "tag": "food"
+  },
+  "expect": [
+   "c04"
+  ]
+ },
+ {
+  "id": "search-24",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "search",
+   "query": "a",
+   "limit": 100,
+   "tag": ""
+  },
+  "expect": [
+   "c01",
+   "c02",
+   "c03",
+   "c04",
+   "c05",
+   "c06",
+   "c07",
+   "c08",
+   "c09",
+   "c10"
+  ]
+ },
+ {
+  "id": "get-c01",
+  "area": "get",
+  "kind": "get",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "get",
+   "id": "c01"
+  },
+  "expect": [
+   "c01",
+   "The quick brown fox jumps over the lazy dog",
+   [
+    "animal",
+    "story"
+   ]
+  ]
+ },
+ {
+  "id": "get-c08",
+  "area": "get",
+  "kind": "get",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "get",
+   "id": "c08"
+  },
+  "expect": [
+   "c08",
+   "The lazy river ride",
+   []
+  ]
+ },
+ {
+  "id": "get-zz",
+  "area": "get",
+  "kind": "get",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "get",
+   "id": "zz"
+  },
+  "expect": null
+ },
+ {
+  "id": "replace-same-id",
+  "area": "replace",
+  "kind": "get",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c02",
+     "Replaced text",
+     [
+      "new"
+     ]
+    ]
+   ],
+   "op": "get",
+   "id": "c02"
+  },
+  "expect": [
+   "c02",
+   "Replaced text",
+   [
+    "new"
+   ]
+  ]
+ },
+ {
+  "id": "replace-keeps-count",
+  "area": "replace",
+  "kind": "count",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c02",
+     "Replaced text",
+     []
+    ]
+   ],
+   "op": "count"
+  },
+  "expect": 10
+ },
+ {
+  "id": "count-empty",
+  "area": "count",
+  "kind": "count",
+  "args": {
+   "cards": [],
+   "op": "count"
+  },
+  "expect": 0
+ },
+ {
+  "id": "count-ten",
+  "area": "count",
+  "kind": "count",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "count"
+  },
+  "expect": 10
+ },
+ {
+  "id": "delete-present",
+  "area": "delete",
+  "kind": "delete",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "delete",
+   "id": "c03"
+  },
+  "expect": [
+   true,
+   9,
+   true
+  ]
+ },
+ {
+  "id": "delete-absent",
+  "area": "delete",
+  "kind": "delete",
+  "args": {
+   "cards": [
+    [
+     "c01",
+     "The quick brown fox jumps over the lazy dog",
+     [
+      "animal",
+      "story"
+     ]
+    ],
+    [
+     "c02",
+     "Quantum computing uses qubits",
+     [
+      "science"
+     ]
+    ],
+    [
+     "c03",
+     "A brown bear eats berries",
+     [
+      "animal"
+     ]
+    ],
+    [
+     "c04",
+     "Berries are rich in vitamins",
+     [
+      "food",
+      "science"
+     ]
+    ],
+    [
+     "c05",
+     "Quest helps people reach goals",
+     [
+      "product"
+     ]
+    ],
+    [
+     "c06",
+     "Goals need small steps and quick feedback",
+     [
+      "product",
+      "method"
+     ]
+    ],
+    [
+     "c07",
+     "FOX news is not about foxes",
+     [
+      "media"
+     ]
+    ],
+    [
+     "c08",
+     "The lazy river ride",
+     []
+    ],
+    [
+     "c09",
+     "Vitamins and minerals",
+     [
+      "food"
+     ]
+    ],
+    [
+     "c10",
+     "Brown rice and beans",
+     [
+      "food"
+     ]
+    ]
+   ],
+   "op": "delete",
+   "id": "nope"
+  },
+  "expect": [
+   false,
+   10,
+   true
+  ]
+ },
+ {
+  "id": "search-empty-store",
+  "area": "search",
+  "kind": "search",
+  "args": {
+   "cards": [],
+   "op": "search",
+   "query": "x"
+  },
+  "expect": []
+ }
+]

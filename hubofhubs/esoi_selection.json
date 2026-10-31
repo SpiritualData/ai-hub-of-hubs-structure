@@ -47,6 +47,12 @@
    "web_research": "hubofhubs.websearch.research"
   }
  },
+ "model-call": {
+  "default": "",
+  "modules": {
+   "via_call_a_model": "hubofhubs.models.via_provider"
+  }
+ },
  "reason-and-answer": {
   "default": "tier_selector",
   "modules": {

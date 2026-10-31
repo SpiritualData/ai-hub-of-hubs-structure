@@ -1,0 +1,853 @@
+[
+ {
+  "id": "model-id-as-tier-0",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "What is 2+2?",
+   "tier": [
+    "claude-x"
+   ],
+   "reply": "r0"
+  },
+  "expect": [
+   "r0",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "What is 2+2?"
+      }
+     ],
+     "claude-x",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "model-id-as-tier-1",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "Summarize this.",
+   "tier": [
+    "claude-x"
+   ],
+   "reply": "r1"
+  },
+  "expect": [
+   "r1",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "Summarize this."
+      }
+     ],
+     "claude-x",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "model-id-as-tier-2",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "",
+   "tier": [
+    "claude-x"
+   ],
+   "reply": "r2"
+  },
+  "expect": [
+   "r2",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": ""
+      }
+     ],
+     "claude-x",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "model-id-as-tier-3",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "Line one\nline two",
+   "tier": [
+    "claude-x"
+   ],
+   "reply": "r3"
+  },
+  "expect": [
+   "r3",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "Line one\nline two"
+      }
+     ],
+     "claude-x",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "model-id-as-tier-4",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "Unicode: caf\u00e9",
+   "tier": [
+    "claude-x"
+   ],
+   "reply": "r4"
+  },
+  "expect": [
+   "r4",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "Unicode: caf\u00e9"
+      }
+     ],
+     "claude-x",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "model-id-as-tier-5",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "tier": [
+    "claude-x"
+   ],
+   "reply": "r5"
+  },
+  "expect": [
+   "r5",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      }
+     ],
+     "claude-x",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "mapped-tier-fast",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "fast"
+   ],
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    }
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-fast",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "unmapped-tier-fast",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "fast"
+   ],
+   "build": {
+    "tiers": {
+     "other": "z"
+    }
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "fast",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "default-tier-fast",
+  "area": "default",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    },
+    "default_tier": "fast"
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-fast",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "explicit-beats-default-fast",
+  "area": "default",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "fast"
+   ],
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    },
+    "default_tier": "fast"
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-fast",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "mapped-tier-deep",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "deep"
+   ],
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    }
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-deep",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "unmapped-tier-deep",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "deep"
+   ],
+   "build": {
+    "tiers": {
+     "other": "z"
+    }
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "deep",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "default-tier-deep",
+  "area": "default",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    },
+    "default_tier": "deep"
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-deep",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "explicit-beats-default-deep",
+  "area": "default",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "fast"
+   ],
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    },
+    "default_tier": "deep"
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-fast",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "mapped-tier-cheap",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "cheap"
+   ],
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    }
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-cheap",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "unmapped-tier-cheap",
+  "area": "tier",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "cheap"
+   ],
+   "build": {
+    "tiers": {
+     "other": "z"
+    }
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "cheap",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "default-tier-cheap",
+  "area": "default",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    },
+    "default_tier": "cheap"
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-cheap",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "explicit-beats-default-cheap",
+  "area": "default",
+  "kind": "complete",
+  "args": {
+   "prompt": "hi",
+   "tier": [
+    "fast"
+   ],
+   "build": {
+    "tiers": {
+     "fast": "m-fast",
+     "deep": "m-deep",
+     "cheap": "m-cheap"
+    },
+    "default_tier": "cheap"
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "hi"
+      }
+     ],
+     "m-fast",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "system-0",
+  "area": "system",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "build": {
+    "system": "Be brief."
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     "Be brief."
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "system-1",
+  "area": "system",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "build": {
+    "system": "You answer in French."
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     "You answer in French."
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "system-2",
+  "area": "system",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "build": {
+    "system": null
+   }
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "no-tier-no-default",
+  "area": "error",
+  "kind": "complete",
+  "args": {
+   "prompt": "q"
+  },
+  "expect": [
+   "ValueError",
+   []
+  ]
+ },
+ {
+  "id": "empty-tier-no-default",
+  "area": "error",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    ""
+   ]
+  },
+  "expect": [
+   "ValueError",
+   []
+  ]
+ },
+ {
+  "id": "provider-error-propagates",
+  "area": "error",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "fail": true
+  },
+  "expect": [
+   "RuntimeError",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "reply-verbatim-0",
+  "area": "reply",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "reply": ""
+  },
+  "expect": [
+   "",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "reply-verbatim-1",
+  "area": "reply",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "reply": "  padded  "
+  },
+  "expect": [
+   "  padded  ",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "reply-verbatim-2",
+  "area": "reply",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "reply": "multi\nline"
+  },
+  "expect": [
+   "multi\nline",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "reply-verbatim-3",
+  "area": "reply",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "reply": "json {\"a\": 1}"
+  },
+  "expect": [
+   "json {\"a\": 1}",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "reply-long",
+  "area": "reply",
+  "kind": "complete",
+  "args": {
+   "prompt": "q",
+   "tier": [
+    "m"
+   ],
+   "reply": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+  },
+  "expect": [
+   "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "q"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ },
+ {
+  "id": "one-call-only",
+  "area": "reply",
+  "kind": "complete",
+  "args": {
+   "prompt": "a",
+   "tier": [
+    "m"
+   ]
+  },
+  "expect": [
+   "ok",
+   [
+    [
+     [
+      {
+       "role": "user",
+       "content": "a"
+      }
+     ],
+     "m",
+     null
+    ]
+   ]
+  ]
+ }
+]

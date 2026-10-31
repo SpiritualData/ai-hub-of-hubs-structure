@@ -1,8 +1,15 @@
 # esoi configuration for ai-hub-of-hubs-structure.
 package = "hubofhubs"
 layers = ["core"]
-other_layers = ["docs", "tests", "scripts", "examples"]
+other_layers = ["docs", "tests", "scripts", "examples", "evaluation"]
 max_lines = 1500
+
+# Evaluation: one component folder per seat under evaluation/ (cases.json, score.py, impls/), results and per-case logs beside the records.
+# The measured code is the package without the critique module (no seat measured here uses it), so an unrelated edit there does not
+# make a result stale; docs are not code.
+evaluation_dir = "evaluation"
+results = "esoi/results.csv"
+code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md"]
 
 [records]
 template_version = 1

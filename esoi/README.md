@@ -88,26 +88,27 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `act-in-the-world:subprocess_goal_runner` | unconfirmed: for Joshua to confirm. | hubofhubs/deep/subprocess_runner.py |  |
 | `act-in-the-world:stream_json_goal_runner` | unconfirmed: for Joshua to confirm. | hubofhubs/deep/stream_runner.py |  |
 | `act-in-the-world:acp_deep_runner` | unconfirmed: for Joshua to confirm. | hubofhubs/deep/acp_runner.py |  |
+| `model-call:via_call_a_model` | unconfirmed: for Joshua to confirm. | hubofhubs/models/via_provider.py |  |
 
 ## Metrics
 
 - `metric-hold-the-intents`, hold-the-intents metric (draft): `none`
 - `metric-take-in-the-world`, take-in-the-world metric (draft): `none`
 - `metric-remember-and-recall`, remember-and-recall metric (draft): `none`
-- `metric-reason-and-answer`, reason-and-answer metric (draft): `none`
+- `metric-reason-and-answer`, reason-and-answer metric (draft): `esoi run reason_and_answer --impl tier_selector`
 - `metric-know-the-world`, know-the-world metric (draft): `none`
 - `metric-think-critically`, think-critically metric (draft): `none`
 - `metric-act-in-the-world`, act-in-the-world metric (draft): `none`
 - `metric-watch-for-risk`, watch-for-risk metric (draft): `none`
-- `metric-assemble-the-whole`, assemble-the-whole metric (draft): `none`
-- `metric-stay-current`, stay-current metric (draft): `none`
+- `metric-assemble-the-whole`, assemble-the-whole metric (draft): `esoi run assemble_the_whole --impl zero_config`
+- `metric-stay-current`, stay-current metric (draft): `esoi run stay_current --impl registry_scan`
 - `metric-keep-it-generic`, keep-it-generic metric (draft): `none`
-- `metric-integration-added-with-zero-code`, integration-added-with-zero-code (draft): `none`
+- `metric-integration-added-with-zero-code`, integration-added-with-zero-code (draft): `esoi run connect_any_integration --impl hub_of_hubs_scorer`
 - `metric-integration-availability-lag`, integration-availability-lag (draft): `none`
 - `metric-integration-credential-isolation`, integration-credential-isolation (draft): `none`
 - `metric-tier-passing-work-per-cost`, tier-passing-work-per-cost (draft): `python3 -m pytest tests/test_tiers.py`
-- `metric-card-store`, card-store metric (draft): `none`
-- `metric-model-call`, model-call metric (draft): `none`
+- `metric-card-store`, card-store metric (draft): `esoi run card_store --impl local_card_store`
+- `metric-model-call`, model-call metric (draft): `esoi run model_call --impl via_call_a_model`
 - `metric-search-backend`, search-backend metric (draft): `none`
 - `metric-context-assembler`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-hub-jarvis-ness`, unconfirmed: for Joshua to confirm.: `none`
@@ -118,3 +119,4 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-guard-marginal-value-over-native-and-harness`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-harness-context-subagents-recursion-ranked`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-integration-served-by-combined-hubs`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-call-a-model`, model-call metric (draft): `none`

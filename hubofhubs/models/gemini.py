@@ -36,6 +36,9 @@ def image_part(block: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
 @implementation("call-a-model", "gemini")
 class GeminiProvider(ModelProviderBase):
+    ENVIRON = {"api_key": ("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY")}
+    ENVIRON_REQUIRED = ("api_key",)
+
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, env_name: Optional[str] = None):
         super().__init__()
         self.api_key = api_key

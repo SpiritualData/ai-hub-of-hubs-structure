@@ -1,0 +1,744 @@
+[
+ {
+  "id": "seat-act-in-the-world",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "act-in-the-world"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-call-a-model",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "call-a-model"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-card-store",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "card-store"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-connect-any-integration",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "connect-any-integration"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-context-assembler",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "context-assembler"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-know-the-world",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "know-the-world"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-model-call",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "model-call"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-reason-and-answer",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "reason-and-answer"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-search-backend",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-stay-current",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "stay-current"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-watch-for-risk",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "watch-for-risk"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-stay-current-registry_scan",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "stay-current",
+   "arms": {
+    "stay-current": "registry_scan"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-connect-any-integration-hub_of_hubs_scorer",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "connect-any-integration",
+   "arms": {
+    "connect-any-integration": "hub_of_hubs_scorer"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-reason-and-answer-tier_selector",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "reason-and-answer",
+   "arms": {
+    "reason-and-answer": "tier_selector"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-card-store-local_card_store",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "card-store",
+   "arms": {
+    "card-store": "local_card_store"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-watch-for-risk-overseer",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "watch-for-risk",
+   "arms": {
+    "watch-for-risk": "overseer"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-search-backend-brave",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "brave"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-search-backend-gemini",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "gemini"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-search-backend-provider",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "provider"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-search-backend-searxng",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "searxng"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-search-backend-serper",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "serper"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-search-backend-tavily",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "tavily"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-call-a-model-anthropic",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "anthropic"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-call-a-model-deepseek",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "deepseek"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-call-a-model-gemini",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "gemini"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-call-a-model-multi_provider",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "multi_provider"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-call-a-model-openai",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "openai"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-context-assembler-composite",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "context-assembler",
+   "arms": {
+    "context-assembler": "composite"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-know-the-world-web_research",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "know-the-world",
+   "arms": {
+    "know-the-world": "web_research"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-act-in-the-world-fast_edit",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "act-in-the-world",
+   "arms": {
+    "act-in-the-world": "fast_edit"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-act-in-the-world-mcp_operations",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "act-in-the-world",
+   "arms": {
+    "act-in-the-world": "mcp_operations"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-know-the-world-openalex",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "know-the-world",
+   "arms": {
+    "know-the-world": "openalex"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-context-assembler-bm25",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "context-assembler",
+   "arms": {
+    "context-assembler": "bm25"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-context-assembler-hybrid",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "context-assembler",
+   "arms": {
+    "context-assembler": "hybrid"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-context-assembler-vector",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "context-assembler",
+   "arms": {
+    "context-assembler": "vector"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-act-in-the-world-subprocess_goal_runner",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "act-in-the-world",
+   "arms": {
+    "act-in-the-world": "subprocess_goal_runner"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-act-in-the-world-stream_json_goal_runner",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "act-in-the-world",
+   "arms": {
+    "act-in-the-world": "stream_json_goal_runner"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-act-in-the-world-acp_deep_runner",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "act-in-the-world",
+   "arms": {
+    "act-in-the-world": "acp_deep_runner"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "arm-model-call-via_call_a_model",
+  "area": "arm",
+  "kind": "seat",
+  "args": {
+   "seat": "model-call",
+   "arms": {
+    "model-call": "via_call_a_model"
+   }
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "absent-call-a-model-anthropic",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "anthropic"
+   },
+   "variables": [
+    "ANTHROPIC_API_KEY"
+   ]
+  },
+  "expect": "pending names ANTHROPIC_API_KEY"
+ },
+ {
+  "id": "present-call-a-model-anthropic",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "anthropic"
+   },
+   "environ": {
+    "ANTHROPIC_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "ANTHROPIC_API_KEY"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-call-a-model-gemini",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "gemini"
+   },
+   "variables": [
+    "GOOGLE_API_KEY",
+    "GEMINI_API_KEY"
+   ]
+  },
+  "expect": "pending names GOOGLE_API_KEY,GEMINI_API_KEY"
+ },
+ {
+  "id": "present-call-a-model-gemini",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "gemini"
+   },
+   "environ": {
+    "GOOGLE_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "GOOGLE_API_KEY",
+    "GEMINI_API_KEY"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-call-a-model-openai",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "openai"
+   },
+   "variables": [
+    "OPENAI_API_KEY",
+    "OPENAI_BASE_URL"
+   ]
+  },
+  "expect": "pending names OPENAI_API_KEY,OPENAI_BASE_URL"
+ },
+ {
+  "id": "present-call-a-model-openai",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "openai"
+   },
+   "environ": {
+    "OPENAI_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "OPENAI_API_KEY",
+    "OPENAI_BASE_URL"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-call-a-model-deepseek",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "deepseek"
+   },
+   "variables": [
+    "DEEPSEEK_API_KEY"
+   ]
+  },
+  "expect": "pending names DEEPSEEK_API_KEY"
+ },
+ {
+  "id": "present-call-a-model-deepseek",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "call-a-model",
+   "arms": {
+    "call-a-model": "deepseek"
+   },
+   "environ": {
+    "DEEPSEEK_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "DEEPSEEK_API_KEY"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-search-backend-serper",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "serper"
+   },
+   "variables": [
+    "SERPER_API_KEY"
+   ]
+  },
+  "expect": "pending names SERPER_API_KEY"
+ },
+ {
+  "id": "present-search-backend-serper",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "serper"
+   },
+   "environ": {
+    "SERPER_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "SERPER_API_KEY"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-search-backend-brave",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "brave"
+   },
+   "variables": [
+    "BRAVE_SEARCH_API_KEY",
+    "BRAVE_API_KEY"
+   ]
+  },
+  "expect": "pending names BRAVE_SEARCH_API_KEY,BRAVE_API_KEY"
+ },
+ {
+  "id": "present-search-backend-brave",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "brave"
+   },
+   "environ": {
+    "BRAVE_SEARCH_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "BRAVE_SEARCH_API_KEY",
+    "BRAVE_API_KEY"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-search-backend-tavily",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "tavily"
+   },
+   "variables": [
+    "TAVILY_API_KEY",
+    "WEB_SEARCH_API_KEY"
+   ]
+  },
+  "expect": "pending names TAVILY_API_KEY,WEB_SEARCH_API_KEY"
+ },
+ {
+  "id": "present-search-backend-tavily",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "tavily"
+   },
+   "environ": {
+    "TAVILY_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "TAVILY_API_KEY",
+    "WEB_SEARCH_API_KEY"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-search-backend-searxng",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "searxng"
+   },
+   "variables": [
+    "SEARXNG_URL"
+   ]
+  },
+  "expect": "pending names SEARXNG_URL"
+ },
+ {
+  "id": "present-search-backend-searxng",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "searxng"
+   },
+   "environ": {
+    "SEARXNG_URL": "value-not-logged"
+   },
+   "variables": [
+    "SEARXNG_URL"
+   ]
+  },
+  "expect": "built"
+ },
+ {
+  "id": "absent-search-backend-gemini",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "gemini"
+   },
+   "variables": [
+    "GEMINI_API_KEY",
+    "GOOGLE_API_KEY"
+   ]
+  },
+  "expect": "pending names GEMINI_API_KEY,GOOGLE_API_KEY"
+ },
+ {
+  "id": "present-search-backend-gemini",
+  "area": "variable",
+  "kind": "variable",
+  "args": {
+   "seat": "search-backend",
+   "arms": {
+    "search-backend": "gemini"
+   },
+   "environ": {
+    "GEMINI_API_KEY": "value-not-logged"
+   },
+   "variables": [
+    "GEMINI_API_KEY",
+    "GOOGLE_API_KEY"
+   ]
+  },
+  "expect": "built"
+ }
+]
