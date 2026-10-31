@@ -126,3 +126,16 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-10-31,context_assembler_paraphrase,bm25@analyzer=english,300,270,270/300,0/0,0,0,0,0.0,87.2,,32b4e64-dirty,faf6b752,,none,ndcg_at_10=0.8664; recall_at_10=0.91; sample_sha=702a8515
 2026-10-31,context_assembler_paraphrase,hybrid,300,257,257/300,0/0,10,13272,0,0.0003,112.7,,32b4e64-dirty,faf6b752,,voyage-3.5-lite,ndcg_at_10=0.8384; recall_at_10=0.89; sample_sha=702a8515
 2026-10-31,context_assembler_paraphrase,composite,300,257,257/300,0/0,10,13272,0,0.0003,127.2,,32b4e64-dirty,faf6b752,,voyage-3.5-lite,ndcg_at_10=0.8384; recall_at_10=0.89; sample_sha=702a8515
+2026-10-31,reason_and_answer,tier_selector,36,36,36/36,0/0,0,0,0,0.0,0.0,,6aa4ec7,10a4d505,,none,
+2026-10-31,know_the_world_150,openalex_semantic,150,0,0/150,0/0,0,0,0,0.0,298.1,,6aa4ec7,cee80874,,none,
+2026-10-31,file_edit_goals,none,30,0,0/30,0/0,0,0,0,0.0,28.4,,6aa4ec7,01f923df,,none,
+2026-10-31,watch_for_risk,consent_gate,36,36,36/36,0/0,0,0,0,0.0,0.0,,6aa4ec7,ad6b5f47,,gemini-2.5-flash-lite,
+2026-10-31,watch_for_risk,none,36,18,18/36,0/0,0,0,0,0.0,0.0,,6aa4ec7,ad6b5f47,,none,
+2026-10-31,stay_current,registry_scan,41,41,41/41,0/0,0,0,0,0.0,0.0,,6aa4ec7,05131492,,none,
+2026-10-31,connect_any_integration,hub_of_hubs_scorer,33,33,33/33,0/0,0,0,0,0.0,0.0,,6aa4ec7,db96087b,,none,
+2026-10-31,card_store,local_card_store,35,35,35/35,0/0,0,0,0,0.0,0.0,,6aa4ec7,aed9589c,,none,
+2026-10-31,model_call,via_call_a_model,30,30,30/30,0/0,0,0,0,0.0,0.0,,6aa4ec7,5424e8a6,,none,
+2026-10-31,provider_failover,multi_provider,30,30,30/30,0/0,0,0,0,0.0,0.0,,6aa4ec7,da53231a,,none,
+2026-10-31,provider_failover,single_provider,30,12,12/30,0/0,0,0,0,0.0,0.0,,6aa4ec7,da53231a,,none,
+2026-10-31,context_assembler,bm25,323,200,200/323,0/0,0,0,0,0.0,102.4,,6aa4ec7,e09fd8ba,,none,ndcg_at_10=0.3065; recall_at_10=0.1455
+2026-10-31,context_assembler,bm25@analyzer=english,323,208,208/323,0/0,0,0,0,0.0,103.0,,6aa4ec7,e09fd8ba,,none,ndcg_at_10=0.3211; recall_at_10=0.1471

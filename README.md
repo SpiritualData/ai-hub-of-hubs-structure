@@ -143,6 +143,7 @@ candidate has a dated source in [docs/reference/registry.md](docs/reference/regi
 Install by path or git (`pip install -e ../ai-hub-of-hubs-structure`, or `pip install "hubofhubs @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@main"`),
 register any part you own (`hubofhubs.register`), then assemble. To score your own integration, build a `Binding` and call
 `evaluate`; the hub never imports the consumer. Record and registry checks are in [CLAUDE.md](CLAUDE.md#checks).
+Pin selections: `esoi lock` holds the arms you use until you choose to move ([how to](https://github.com/JoshuaMathias/evolvable-structure/blob/main/docs/how-to/pin-selections-for-production.md)); the hub itself follows the latest selection.
 
 ## License
 

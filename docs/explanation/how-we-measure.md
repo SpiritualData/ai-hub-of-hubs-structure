@@ -35,8 +35,7 @@ The rule is the same for every seat, and pragmatic for each one:
 6. **The highest stage is sized so a real difference can reach significance.** The page shows p and the number of cases the two
    arms disagree on, so a reader sees when a stage is too small to settle a question; running the next, larger stage is how it
    is settled, never a hand-picked margin.
-7. **Consumers can pin selections** with `esoi lock` and update on their own schedule (the esoi how-to for locking will be
-   linked here once it exists).
+7. **Consumers can pin selections** with `esoi lock` and update on their own schedule ([pin selections for production](https://github.com/JoshuaMathias/evolvable-structure/blob/main/docs/how-to/pin-selections-for-production.md)).
 8. The selected arm is set from these results by the tool (`esoi select`), never by preference.
 
 ## Public evaluations
