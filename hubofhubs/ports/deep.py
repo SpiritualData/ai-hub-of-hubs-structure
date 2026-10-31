@@ -217,6 +217,13 @@ class DeepResult:
     # not-applicable, after the one request made for it.
     metric_results: List[Dict[str, Any]] = field(default_factory=list)
     metric_missing: bool = False
+    # HOW MUCH OF A SET THIS RUN COVERED, declared by the runner from its own bookkeeping (the data call that
+    # returned a capped page, a count it made), never from the words of its output. A plain dict, every key optional:
+    # ``{"processed": int, "total": int, "unit": str, "complete": bool, "capped": bool, "remaining": int,
+    # "next_skip": int, "reads": [...], "withheld": ...}``. The goal loop gates on it (``critique.done_evidence``):
+    # an incomplete coverage is not a met goal while the budget allows another attempt, and the final reply states it.
+    # None = the runner declares nothing, and the loop behaves exactly as it did before this field existed.
+    coverage: Optional[Dict[str, Any]] = None
 
 
 # The two ways a deep runner can hand its future-context bullets back. Declared per runner as

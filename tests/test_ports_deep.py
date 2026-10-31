@@ -61,3 +61,15 @@ def test_a_run_control_defaults_to_no_messages_no_cancel_no_pause():
     assert control.claim_inputs() == [] and not control.cancel_requested() and not control.pause_requested()
     control.mark_seen(["m1"], "deep_worker")
     assert ControlMessage(id="m1", text="hello").text == "hello" and control.poll_seconds == 2.0
+
+
+def test_a_deep_result_declares_no_coverage_by_default_and_carries_one_as_plain_data():
+    assert deep.DeepResult(met=True).coverage is None
+    declared = {"processed": 200, "total": 344, "unit": "entries", "complete": False, "capped": True}
+    assert deep.DeepResult(met=False, coverage=declared).coverage == declared
+
+
+def test_the_interim_event_type_is_its_own_string_and_does_not_surface_in_the_background():
+    assert events.EVENT_INTERIM == "interim" and events.EVENT_INTERIM not in events.SURFACING_EVENTS
+    event = deep.ProgressEvent(type=events.EVENT_INTERIM, text="so far", data={"final": False, "coverage": None})
+    assert event.to_dict() == {"type": "interim", "text": "so far", "data": {"final": False, "coverage": None}}

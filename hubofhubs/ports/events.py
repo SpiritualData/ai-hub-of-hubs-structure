@@ -84,6 +84,14 @@ EVENT_DECISION = "decision"    # a confirm / human decision-request was raised (
 EVENT_MILESTONE = "milestone"  # an explicit, real milestone worth surfacing (ALWAYS surfaces)
 
 
+EVENT_INTERIM = "interim"      # a PARTIAL RESULT of a run whose goal is not met yet and which keeps going.
+
+
+                               # Carries ``text`` (the partial result, ending with a code-written line saying the run is
+                               # still working) and ``data`` = {"final": False, "coverage": {...} | None, "attempt": int}.
+                               # Unlike EVENT_PARTIAL (streaming chunks of the one reply) this is a settled message the
+                               # reader keeps; the final EVENT_RESULT follows. LIVE-only like the chatter types: it is not
+                               # in SURFACING_EVENTS, so a BACKGROUND run drops it.
 EVENT_DONE = "done"            # the run reached a terminal state (ALWAYS surfaces)
 
 
