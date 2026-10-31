@@ -49,3 +49,9 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-10-31,context_assembler,bm25,323,200,200/323,0/0,0,0,0,0.0,107.1,,fbeae5d,e09fd8ba,,none,ndcg_at_10=0.3065; recall_at_10=0.1455
 2026-10-31,context_assembler,vector,323,205,205/323,0/0,0,0,0,0.0,26.9,,fbeae5d,e09fd8ba,,none,ndcg_at_10=0.3365; recall_at_10=0.1612
 2026-10-31,know_the_world,web_research,40,8,8/40,0/0,40,2049,8767,0.0037,109.7,,fbeae5d,7be47b74,,gemini-2.5-flash-lite,
+2026-10-31,search_backend,gemini,40,30,30/40,0/0,40,2041,4277,0.0019,86.8,,20e899f,0fb68e3d,,gemini-2.5-flash-lite,
+2026-10-31,search_backend,provider,40,12,12/40,0/0,40,1042,3538,0.0015,64.2,,20e899f,0fb68e3d,,gemini-2.5-flash-lite,
+2026-10-31,know_the_world,openalex,40,2,2/40,0/0,0,0,0,0.0,15.3,,20e899f,7be47b74,,none,
+2026-10-31,file_edit_goals,subprocess_goal_runner,30,30,30/30,0/0,30,0,0,0.1469,640.8,,20e899f,01f923df,,haiku,
+2026-10-31,know_the_world,web_research,40,6,6/40,0/0,40,2049,9036,0.0038,108.0,,20e899f,7be47b74,,gemini-2.5-flash-lite,
+2026-10-31,file_edit_goals,stream_json_goal_runner,3,3,3/3,0/0,3,0,0,0.0159,70.5,,20e899f,01f923df,sample:3,haiku,
