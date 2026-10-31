@@ -85,6 +85,7 @@ from hubofhubs.recall.reference_resolver import build_resolver_registry
 from hubofhubs.recall.scope_tags import scope_tags_allow
 from hubofhubs.recall.vector_scopes import CARD_SEED_SCOPE
 from hubofhubs.critique.specificity import SpecificityResult, rerank_factor, score_candidates
+from .. import arm_needs as needs
 
 # Type alias for a seed source callable: returns a list of items suitable for
 # ``VectorStore.sync()`` (each has id/text/payload/fingerprint keys). It takes no arguments, or an
@@ -309,6 +310,7 @@ class VectorContextAssembler(ContextAssemblerBase):
         changed cards (AUTO-UPDATE). The seeding is best-effort: any error is
         silently swallowed. The guard fires ONCE per process (instance flag).
     """
+    REQUIRES = (needs.QDRANT_CLIENT, needs.FASTEMBED, needs.FASTEMBED_MODEL, needs.QDRANT_SERVICE, needs.VOYAGE_SDK, needs.VOYAGE_API)     # the default store is Qdrant; the store and embedder are the consumer's choice, so each is optional
 
     def __init__(
         self,

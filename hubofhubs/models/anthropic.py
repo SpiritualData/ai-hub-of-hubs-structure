@@ -10,6 +10,7 @@ from .family import is_family_name, resolve_model_name
 from .layers import blocks_to_prompt, cache_control_indices
 from .listing import ModelListCache
 from .retry import retry_transient
+from .. import arm_needs as needs
 
 
 def build_cached_system(system: Optional[str], layers: List[Dict[str, Any]]) -> tuple:
@@ -43,8 +44,7 @@ def thinking_kwargs(create, enabled: bool = False) -> Dict[str, Any]:
 
 @implementation("call-a-model", "anthropic")
 class AnthropicProvider(ModelProviderBase):
-    ENVIRON = {"api_key": "ANTHROPIC_API_KEY"}       # option <- variable the consumer's mapping may hold (esoi.assemble)
-    ENVIRON_REQUIRED = ("api_key",)
+    REQUIRES = (needs.ANTHROPIC_API, needs.ANTHROPIC_SDK)
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, max_answer_tokens: int = 2048,
                  max_plan_tokens: int = 800, thinking: bool = False,

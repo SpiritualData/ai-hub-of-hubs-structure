@@ -6,5 +6,5 @@ One folder per seat, named by the seat id with underscores (`card_store`, `reaso
 
     PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run card_store --impl local_card_store --record
 
-The method every component follows is `docs/how-we-measure.md`. Components that call a model or the network belong to the
+The method every component follows is `docs/explanation/how-we-measure.md`. Components that call a model or the network belong to the
 measurement lanes of those seats; the components here are offline and deterministic.

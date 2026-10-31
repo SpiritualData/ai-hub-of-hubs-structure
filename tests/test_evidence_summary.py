@@ -48,8 +48,8 @@ def test_unmeasured_seats_and_arms_are_listed_with_a_reason():
 
 
 def test_the_labels_name_only_real_pages_and_anchors():
-    page = (ROOT / "docs" / "what-public-research-says.md").read_text().lower()
-    for row in csv.DictReader(open(ROOT / "docs" / "evidence-labels.csv")):
+    page = (ROOT / "docs" / "explanation" / "what-public-research-says.md").read_text().lower()
+    for row in csv.DictReader(open(ROOT / "docs" / "reference" / "evidence-labels.csv")):
         if row["anchor"]:
             heading = row["anchor"].replace("-", " ").split()[0]
             assert heading in page, row["key"]

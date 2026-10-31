@@ -43,6 +43,7 @@ from ..ports.retrieval import Observation
 from ..ports.scholarly import ScholarlyError, Work, WorksResult
 from ..websearch.limiter import DailyLimiter
 from .transport import Transport, TransportError, default_transport, error_for_status, header_number
+from .. import arm_needs as needs
 
 BASE_URL = "https://api.openalex.org"
 SERVICE = "openalex"
@@ -168,10 +169,10 @@ class OpenAlexWorks:
     lookup still returns one, marked RETRACTED, so a reader can say so). ``limiter`` lets a consumer that rebuilds the arm hand
     in one ``DailyLimiter`` it keeps, so the day's count survives the rebuild; without it each arm counts for itself.
     """
+    REQUIRES = (needs.OPENALEX_API, needs.HTTPX_SCIENCE, needs.FILELOCK)
 
-    #: option <- variable (esoi.assemble). Optional: with no key the arm still works on the small keyless allowance. The key is sent
+    #: The key (``OPENALEX_API_KEY`` fills ``api_key``) is optional: with no key the arm still works on the small keyless allowance. It is sent
     #: in the ``Authorization: Bearer`` header, which the authentication page lists as identical to ``?api_key=`` and which keeps it out of logged URLs.
-    ENVIRON = {"api_key": "OPENALEX_API_KEY"}
 
     def __init__(self, *, api_key: str = "", mailto: str = "", transport: Optional[Transport] = None, timeout: float = 10.0,
                  min_interval: float = 0.1, daily_limit: Optional[int] = None, max_results: int = 5,

@@ -15,7 +15,7 @@ the hub grows, not when the consumer gains code.
 - **Agents.** Any agent that speaks the Agent Client Protocol can do the deep work when the consumer is told its command.
 - **Models.** Any OpenAI-compatible gateway (LiteLLM, vLLM, Ollama): a base URL, and the model-id prefixes it serves.
 - **Search.** The hub for search is a federating engine such as SearXNG. A hosted JSON search API can be described as data
-  (see [search-api-entries.md](search-api-entries.md)); that is a convenience for one service, not a hub connection, so it does
+  (see [search-api-entries.md](../reference/search-api-entries.md)); that is a convenience for one service, not a hub connection, so it does
   not count as a capability.
 
 ## The registry files (`hubofhubs/registry/`)
@@ -29,14 +29,14 @@ the hub grows, not when the consumer gains code.
 
 `call` is the recommendation as one word: `adopt`, `coexist` (only if measured), `keep`, `watch` or `avoid`; blank means unclassified and counts as `coexist`. The
 `seat` column maps every area to the hub seat (a `solution_id` in `esoi/solutions.csv`) that owns it: an area is a research category, mostly an arm or
-tool inside its seat, and the hub has 12 seats at the top level (11 own areas today; `docs/registry.md` lists them). A scorer reads the checks that need a
+tool inside its seat, and the hub has 12 seats at the top level (11 own areas today; `docs/reference/registry.md` lists them). A scorer reads the checks that need a
 connection (by configuration, one seam, selectable, a fake hub) once per SEAT, and only for seats with at least one area whose call is `adopt` or
 `coexist`, so a consumer is not behind on a seat the research says to keep, watch or avoid.
 
 `current_hubs` is `name|url|license` entries joined by semicolons. `status` is `builds_on`, `compared` or `no_hub_exists`
 (a recorded decision). In `hubs.csv`, `finding_id` is the area's id prefix (`HF-<date>-<area>`); each row of `hub_findings.csv`
 carries `<prefix>-<n>`, so every finding id is unique and `tests/test_registry.py` joins them by prefix. A seat is broken into
-sub-solution areas (`docs/registry.md` lists them). A consumer binds SEATS, one row per seat it uses (`seat`, `areas` its arms cover,
+sub-solution areas (`docs/reference/registry.md` lists them). A consumer binds SEATS, one row per seat it uses (`seat`, `areas` its arms cover,
 `seam_solution_id`, `vendor_terms`, `code_paths`); it does not bind the 72 areas one by one. An adopt or coexist area that no arm of the consumer
 covers is an ARM GAP: research to build or connect, listed in the numbers, and not a missing binding. A row that names only an `area` still
 binds that area's seat. A connection that is only prepared (`wired` no) does not count.

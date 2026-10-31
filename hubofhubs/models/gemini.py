@@ -11,6 +11,7 @@ from .family import is_family_name, resolve_model_name
 from .layers import join_layers
 from .listing import ModelListCache
 from .retry import parse_json_with_retry, retry_transient
+from .. import arm_needs as needs
 
 log = logging.getLogger("hubofhubs.models.gemini")
 FALLBACK_MODELS = ("gemini-2.0-flash", "gemini-1.5-pro")
@@ -36,8 +37,7 @@ def image_part(block: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
 @implementation("call-a-model", "gemini")
 class GeminiProvider(ModelProviderBase):
-    ENVIRON = {"api_key": ("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY")}
-    ENVIRON_REQUIRED = ("api_key",)
+    REQUIRES = (needs.gemini_api("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"), needs.GOOGLE_GENAI)
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, env_name: Optional[str] = None):
         super().__init__()

@@ -7,6 +7,7 @@ from esoi import implementation
 
 from . import registry, scan
 from .binding import Binding
+from . import arm_needs as needs
 
 KINDS = ("registered", "by_config", "fresh", "seam", "selectable", "core_clean", "fake_hub", "no_reinvented")
 # registry.AREA_KINDS are checked once per area, registry.SEAT_KINDS once per seat (the fact passed to ``check`` is the matching one).
@@ -160,6 +161,7 @@ def metrics(facts, connections, seat_facts=None):
 @implementation("score-hub-connections", "hub_of_hubs_scorer")
 class HubScorer:
     """The hub-of-hubs scorer as one registered implementation of the score-hub-connections solution."""
+    REQUIRES = ()     # pure functions over the registry files
     evaluate = staticmethod(evaluate)
     evaluate_seats = staticmethod(evaluate_seats)
     check = staticmethod(check)

@@ -42,6 +42,7 @@ from ..ports.deep import (FUTURE_CONTEXT_VIA_FIELD, WRITE_SURFACE_OPERATIONS, De
                           ProgressEvent)
 from ..ports.events import EVENT_EXEC
 from ..ports.model import ModelProvider, TierResolving
+from .. import arm_needs as needs
 
 _log = logging.getLogger("hubofhubs.act.mcp_operations")
 
@@ -106,6 +107,7 @@ class MCPOperationRunner(DeepRunnerBase):
         registry: resolves ``config.tier`` to a model id when the caller does not pin a model (anything
             with ``resolve_tier(tier)``). Required.
     """
+    REQUIRES = (needs.MCP_SDK,)
 
     # Its output is a mechanical execution report, not composed prose, and it knows the reusable
     # facts (which operation ran, with what args) exactly and for free -- same reasoning as

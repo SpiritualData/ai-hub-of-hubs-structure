@@ -1,5 +1,5 @@
 """Rewrite the generated blocks from the records: the seat summary, the evidence table and the list of what is not measured yet in
-README.md, the area detail in docs/registry.md, and every arm of every check in docs/evidence-by-arm.md. The evidence comes from
+README.md, the area detail in docs/reference/registry.md, and every arm of every check in docs/reference/evidence-by-arm.md. The evidence comes from
 esoi/results.csv, esoi/per_case.csv and esoi/evidence.csv (hubofhubs/evidence_summary.py); nothing is typed by hand.
 Run: python3 scripts/status.py [--check]. The README shows one row per seat so it does not grow with the registry; the detail
 file lists every area."""
@@ -13,16 +13,17 @@ sys.path.insert(0, str(ROOT))
 from esoi import config as esoi_config  # noqa: E402
 from esoi import registry as esoi_registry  # noqa: E402
 from esoi.tables import read_csv  # noqa: E402
-from hubofhubs import evidence_summary, render_docs  # noqa: E402
+from hubofhubs import evidence_summary, render_docs, requirements_doc  # noqa: E402
 
 TARGETS = (("README.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
-           ("docs/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
+           ("docs/reference/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
            ("README.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
-           ("docs/announcement-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
-           ("docs/medium-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
+           ("drafts/announcement-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
+           ("drafts/medium-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
            ("README.md", evidence_summary.EVIDENCE_BEGIN, evidence_summary.EVIDENCE_END),
            ("README.md", evidence_summary.UNMEASURED_BEGIN, evidence_summary.UNMEASURED_END),
-           ("docs/evidence-by-arm.md", evidence_summary.ARMS_BEGIN, evidence_summary.ARMS_END))
+           ("docs/reference/evidence-by-arm.md", evidence_summary.ARMS_BEGIN, evidence_summary.ARMS_END),
+           ("docs/reference/requirements-by-arm.md", requirements_doc.BEGIN, requirements_doc.END))
 
 
 def seats():
@@ -60,7 +61,8 @@ def blocks():
             evidence_summary.COMPACT_BEGIN: evidence_summary.compact_headline(config, ROOT),
             evidence_summary.EVIDENCE_BEGIN: evidence_summary.evidence_block(config, registry, ROOT),
             evidence_summary.UNMEASURED_BEGIN: evidence_summary.unmeasured_block(config, registry, ROOT),
-            evidence_summary.ARMS_BEGIN: evidence_summary.arms_block(config, registry)}
+            evidence_summary.ARMS_BEGIN: evidence_summary.arms_block(config, registry),
+            requirements_doc.BEGIN: requirements_doc.requirements_block()}
 
 
 def main(argv):

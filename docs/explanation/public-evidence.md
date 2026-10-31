@@ -30,7 +30,7 @@ Judge it as a scientist would, on the evidence:
 
 Open the URL, confirm the number, unit and date appear on the page, then add the row with `date_checked` set to the day you read
 it. A number you cannot confirm is not entered. New descriptive prose in a row is unconfirmed: for Joshua to confirm. The rules
-are checked by `tests/test_evidence_registry.py`. The per-area row count appears in the generated `docs/registry.md`.
+are checked by `tests/test_evidence_registry.py`. The per-area row count appears in the generated `docs/reference/registry.md`.
 
 ## How the library reads it
 

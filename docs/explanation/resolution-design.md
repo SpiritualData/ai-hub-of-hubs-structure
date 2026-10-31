@@ -104,7 +104,7 @@ Sources: the repo-utils sections and GAP entries of the evolvable-structure skil
 | Reproducible resolution | Same inputs, same result, in any directory, any registration order | `tests/test_resolution_order.py`, plus the hostile-directory and vendored-copy tests (R2) |
 | Clear errors | Every error names solution id, scope, layer, available names and a remedy | `tests/test_errors.py` |
 | Safe loading | Section 2 rules | The library's `tests/test_assemble.py` (config value `os:system`, snapshot module `os`, filepath `../x.py`, a look-alike module earlier on `sys.path`, all rejected); the hub's `tests/test_safe_loading.py` checks that every module its snapshot names is its own file |
-| Quickstart | A second consumer with no Quest content: register a toy part, assemble, print the reason | `docs/quickstart.md` run as `tests/test_quickstart.py` |
+| Quickstart | A second consumer with no Quest content: register a toy part, assemble, print the reason | `docs/how-to/register-a-second-consumer.md` run as `tests/test_quickstart.py` |
 | Types | `py.typed`, hints on the public API, a Protocol per seat | type-check of the package in CI |
 | Public API | Solution ids and implementation names ARE the public API. The `(solution id, name)` pairs are pinned in a stored list; removal without a deprecated alias is a breaking change. Deprecated names warn and name the replacement for at least one minor release | `tests/test_public_api.py` |
 | Thread safety | Resolve inside `assemble` at startup, then freeze | test: two threads calling an assembled object while nothing resolves |
@@ -120,7 +120,7 @@ PyPI release exists, and a three-OS matrix before snapshot paths exist.
 
 Each step ends with its tests and one local commit by explicit path; nothing is pushed. Status on 2026-10-29.
 
-1. **Baseline by implementation id**: `scripts/baseline.py` writes `docs/baseline.json` (executed-line share per
+1. **Baseline by implementation id**: `scripts/baseline.py` writes `docs/reference/baseline.json` (executed-line share per
    implementation id, not per module path); `--check` fails on a drop. Done.
 2. **Import-boundary allowlist test**: `tests/test_import_boundary.py`. Done.
 3. **Rename to `hubofhubs`, no alias**: package, import name, distribution, esoi scope, docs, tests, records. Done in the hub;
@@ -155,7 +155,7 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    Not moved: the Tavily retrieval adapter (a duplicate of the `tavily` arm plus the research adapter; a deletion candidate in
    the consumer), and the consumer's one-call research constructor. `WebResearchAdapter` is library code, not yet a seat arm:
    `know-the-world` has no Protocol, which is a decision for the seat's owner.
-8. **Docs**: quickstart (done: `docs/quickstart.md`, run by `tests/test_quickstart.py`); versioning, releasing and
+8. **Docs**: quickstart (done: `docs/how-to/register-a-second-consumer.md`, run by `tests/test_quickstart.py`); versioning, releasing and
    changelog remain.
 
 Not done and still owed from section 4: `tests/test_inert_import.py`, `test_errors.py` as a named file, `test_public_api.py`

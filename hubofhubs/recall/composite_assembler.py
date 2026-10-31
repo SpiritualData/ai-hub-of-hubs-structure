@@ -2,6 +2,7 @@
 import inspect
 from typing import Any, Dict, List, Optional
 from esoi import implementation
+from .. import arm_needs as needs
 
 
 def _accepts_meta(assembler: Any) -> bool:
@@ -60,6 +61,7 @@ class CompositeContextAssembler:
         assembler = CompositeContextAssembler([file_store, turn_store])
         consumer_config = Config(..., context_assembler=assembler)
     """
+    REQUIRES = ()     # joins the assemblers it is handed
 
     def __init__(self, assemblers: List[Any]):
         self._assemblers = assemblers

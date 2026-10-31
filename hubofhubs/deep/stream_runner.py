@@ -74,6 +74,7 @@ from .session import (
     worker_output_is_thin,
 )
 from .subprocess_runner import SubprocessGoalRunner
+from .. import arm_needs as needs
 
 # The first Claude Code release whose stream-json session answers an ``interrupt`` control request
 # with a receipt. Older releases are handed to the one-shot runner.
@@ -425,6 +426,7 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
     tools, timeouts, grace for a stop). The extra per-call argument is ``control``, a
     ``hubofhubs.ports.control.RunControl``; without one the run is the same single prompt, only over a
     session that is closed when the model finishes."""
+    REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY)
 
     config_class = SubprocessConfig
 

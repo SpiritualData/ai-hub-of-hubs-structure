@@ -22,6 +22,7 @@ from typing import Any, Callable, Dict, List, Optional
 from esoi import implementation
 
 from .ports.model import STEP_JUDGE, plan_with_step
+from . import arm_needs as needs
 
 
 @dataclass
@@ -286,6 +287,7 @@ class RunOverseer:
     consumer's consent rules and wording enter; the hub carries none.
     With no ``render`` there is no policy to apply, so every consultation is a degraded ``proceed`` and makes no model call.
     """
+    REQUIRES = ()     # the model comes from the provider handed to oversee()
 
     def __init__(self, render: Optional[Callable[[str], str]] = None):
         self.render = render

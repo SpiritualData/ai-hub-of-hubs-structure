@@ -51,6 +51,7 @@ from typing import Any, Callable, Dict, List, Optional
 from esoi import implementation
 from hubofhubs.ports.context import AssembledContext, ContextAssembler, ContextAssemblerBase
 from hubofhubs.recall.card_content_render import render_block_lines
+from .. import arm_needs as needs
 
 logger = logging.getLogger(__name__)
 
@@ -139,6 +140,7 @@ class HybridContextAssembler(ContextAssemblerBase):
         The consolidating pass itself, see the argument of that name; the consumer binds its prompts into it. Without it
         the merge stays mechanical whatever ``consolidate`` says.
     """
+    REQUIRES = (needs.QDRANT_CLIENT, needs.FASTEMBED, needs.FASTEMBED_MODEL, needs.QDRANT_SERVICE, needs.BM25S, needs.STEMMER)     # a keyword assembler and a vector assembler it is handed
 
     def __init__(
         self,

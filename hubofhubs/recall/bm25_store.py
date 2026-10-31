@@ -53,6 +53,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 from esoi import implementation
 from hubofhubs.ports.context import AssembledContext, ContextAssemblerBase
 from hubofhubs.recall.walk import effective_skip_dirs, is_claude_state_file, prune_dirnames
+from .. import arm_needs as needs
 
 logger = logging.getLogger(__name__)
 
@@ -206,6 +207,7 @@ class BM25ContentStore(ContextAssemblerBase):
     ImportError
         If ``bm25s`` is not installed (the ``[bm25]`` optional extra).
     """
+    REQUIRES = (needs.BM25S, needs.STEMMER)
 
     def __init__(
         self,

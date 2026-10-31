@@ -1,7 +1,7 @@
 # model_quality_aime
 
 How well many current models do hard exact-answer maths, measured the same way, and fed to the tier selector
-(`hubofhubs/registry/tier_measurements.csv`, see `docs/tier-selection.md`). Paid: run it staged, cheapest first.
+(`hubofhubs/registry/tier_measurements.csv`, see `docs/explanation/tier-selection.md`). Paid: run it staged, cheapest first.
 
 - **Benchmark**: AIME 2025 I and II, 30 problems, each with an integer answer from 0 to 999. The problems are published by the
   Mathematical Association of America (MAA). A mirror's license does not settle the MAA's rights in the text, so **the text is not committed**:

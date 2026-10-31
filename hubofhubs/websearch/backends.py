@@ -31,10 +31,15 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Mapping, Optional
 
 from esoi import implementation
+from esoi.requirements import env
 
 from ..ports.search import SearchBackendError, SearchHit, SearchResponse
 from ..seats import SearchBackend  # noqa: F401  (the seat Protocol, importable from here)
 from .apis import SPECS
+from .. import arm_needs as needs
+
+# The official signup, pricing and dated free-tier facts of the described APIs that have them; any other description gets a plain key variable.
+KEY_APIS = {"serper": needs.SERPER_API, "brave": needs.BRAVE_API, "tavily": needs.TAVILY_API}
 
 logger = logging.getLogger("hubofhubs.websearch.backends")
 
@@ -116,12 +121,13 @@ class ConfiguredJsonBackend:
     Serper, Brave and Tavily backends this replaced: same request, same hit fields, same errors.
     ``instruction`` is accepted and ignored: a search API takes a query, not an instruction."""
     spec: Dict[str, Any] = {}
-    ENVIRON_REQUIRED = ("api_key",)
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
         if cls.spec.get("key_env"):
-            cls.ENVIRON = {"api_key": tuple(cls.spec["key_env"])}       # option <- the variable names the description lists (esoi.assemble)
+            names = tuple(cls.spec["key_env"])      # option <- the variable names the description lists (esoi.assemble)
+            declared = KEY_APIS.get(cls.spec.get("name"))
+            cls.REQUIRES = (declared or env(names[0], option="api_key", secret=True, also=names[1:]), needs.HTTPX)
 
     def __init__(self, api_key: str = "", http: HttpCallable = default_http) -> None:
         self.api_key = api_key
@@ -211,9 +217,8 @@ def load_file_specs(path: str) -> Dict[str, type]:
 @implementation("search-backend", "searxng")
 class SearxngBackend:
     """A self-hosted SearXNG instance. ``instruction`` is accepted and ignored (not model-backed)."""
+    REQUIRES = (needs.SEARXNG_URL, needs.SEARXNG_SERVICE, needs.HTTPX)
     name = "searxng"
-    ENVIRON = {"base_url": "SEARXNG_URL"}       # option <- variable (esoi.assemble)
-    ENVIRON_REQUIRED = ("base_url",)
 
     def __init__(self, base_url: str = "", http: HttpCallable = default_http) -> None:
         self.base_url = (base_url or "").rstrip("/")
@@ -264,6 +269,7 @@ class ProviderNativeBackend:
     A provider's result row may carry ``passages`` (a list), ``passage_kind`` and ``date``; they pass through. A row with only
     ``snippet`` keeps ``snippet`` and no kind (the provider does not say what it is). ``instruction`` is handed to the provider
     as ``instruction=`` only when the caller gives one, so a provider written before it existed keeps working."""
+    REQUIRES = ()     # uses a model provider the consumer already holds
 
     name = "provider-native"
 

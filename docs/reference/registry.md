@@ -6,7 +6,7 @@ candidates in `hubofhubs/registry/hub_findings.csv` (an area with a single named
 dated evidence URL and the quality of the source. A claim not read on a primary page is marked unverified in its row.
 
 The file is generated: run `python3 scripts/status.py` and never edit between the markers by hand. How an area is refreshed is in
-[the weekly refresh](refresh.md); how the files join is in [connect a hub](connect-a-hub.md).
+[the weekly refresh](../how-to/refresh-the-registry.md); how the files join is in [connect a hub](../how-to/connect-a-hub.md).
 
 <!-- registry:start -->
 ### hold-the-intents (Higher mind)

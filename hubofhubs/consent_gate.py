@@ -24,6 +24,7 @@ from typing import Any, Callable, FrozenSet, Optional, Pattern, Tuple
 from esoi import implementation
 
 from .risk import OverseerSignal, RunOverseer, build_digest
+from . import arm_needs as needs
 
 FLAG, CLEAR, UNSURE = "flag", "clear", "unsure"
 
@@ -110,6 +111,7 @@ def judge(digest: str, rules: Optional[ConsentRules] = None) -> Tuple[str, str]:
 class ConsentGate:
     """Flags a step that pays, sends outward, deletes, publishes or uses a credential, by rule, with no model call. ``render`` is
     accepted so the gate is built the way every arm of the seat is, and is not used."""
+    REQUIRES = ()     # rules only: no model, no network
 
     def __init__(self, render: Optional[Callable[[str], str]] = None, rules: Optional[ConsentRules] = None) -> None:
         self.rules = rules or ConsentRules()
@@ -129,6 +131,7 @@ class ConsentGate:
 class TwoStage:
     """The consent gate first; the model overseer only when the gate is unsure. A flagged step is ``escalate_human`` and a clear one
     is ``proceed``, both with no model call."""
+    REQUIRES = ()     # the gate, then the overseer's provider only when the gate is unsure
 
     def __init__(self, render: Optional[Callable[[str], str]] = None, rules: Optional[ConsentRules] = None) -> None:
         self.gate, self.overseer = ConsentGate(rules=rules), RunOverseer(render)

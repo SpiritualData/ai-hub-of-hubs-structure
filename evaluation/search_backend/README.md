@@ -46,4 +46,4 @@ An arm whose credential is not set is "not measured: no credential" and writes n
     PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run search_backend --impl gemini --sample 3
     PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run search_backend --impl gemini --record
 
-The same command with `--impl provider` measures the provider arm. The method is `docs/how-we-measure.md`.
+The same command with `--impl provider` measures the provider arm. The method is `docs/explanation/how-we-measure.md`.

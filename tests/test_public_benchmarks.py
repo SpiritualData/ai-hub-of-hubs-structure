@@ -116,7 +116,7 @@ def test_reporting_formats_are_complete():
 
 
 def test_the_files_are_public_safe():
-    for path in (REGISTRY / "public_benchmarks.csv", REGISTRY / "reporting_formats.csv", ROOT / "docs" / "public-benchmarks.md"):
+    for path in (REGISTRY / "public_benchmarks.csv", REGISTRY / "reporting_formats.csv", ROOT / "docs" / "reference" / "public-benchmarks.md"):
         text = path.read_text()
         assert "\u2014" not in text and "\u2013" not in text, f"{path.name}: dash characters are not allowed"
         assert not EMAIL.search(text), f"{path.name}: contains an email address"
@@ -125,7 +125,7 @@ def test_the_files_are_public_safe():
 
 
 def test_the_doc_is_short_and_states_the_rule():
-    text = (ROOT / "docs" / "public-benchmarks.md").read_text()
+    text = (ROOT / "docs" / "reference" / "public-benchmarks.md").read_text()
     assert len(text.splitlines()) < 120
     for phrase in ("Null when not covered", "Triangulate", "Sanity gate", "Record version and date", "source type"):
         assert phrase.lower() in text.lower(), phrase

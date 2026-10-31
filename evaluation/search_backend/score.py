@@ -7,7 +7,7 @@ a gold host that is a Wikipedia site (``wikipedia.org`` or a subdomain) needs th
 accept any article. An arm that returns an unresolved Google grounding link (host vertexaisearch.cloud.google.com) with the
 source's bare host name as the hit title is read by that title for the domain match only.
 
-An arm needs a credential or a service address, read here by the names the arm itself declares (``ENVIRON``); with none set the
+An arm needs a credential or a service address, read here by the names the arm itself declares (``REQUIRES``); with none set the
 arm is "not measured: no credential" and ``adapt`` raises, so no row is written.
 """
 import os
@@ -52,9 +52,10 @@ def from_gold_source(url, gold_urls, title=""):
 
 
 def settings_for(arm_class):
-    """The constructor keywords the arm's declared ``ENVIRON`` names, read from the environment; NoCredential when one is unset."""
+    """The constructor keywords the arm's declared environment variables name, read from the environment; NoCredential when one is unset."""
+    from esoi.assemble import environ_declared
     found = {}
-    for option, names in getattr(arm_class, "ENVIRON", {}).items():
+    for option, names in environ_declared(arm_class).items():
         names = (names,) if isinstance(names, str) else names
         value = next((os.environ[n] for n in names if os.environ.get(n)), "")
         if not value:

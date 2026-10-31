@@ -5,6 +5,7 @@ from pathlib import Path
 
 from esoi import implementation
 from esoi.tables import ids, read_csv
+from . import arm_needs as needs
 
 DATA = Path(__file__).resolve().parent / "registry"
 STALENESS_DAYS = 90          # research older than this is stale (a quarter)
@@ -16,7 +17,7 @@ AREA_KINDS = ("registered", "fresh", "no_reinvented")                           
 SEAT_KINDS = ("by_config", "seam", "selectable", "core_clean", "fake_hub")           # facts of a consumer's code: checked once per seat
 CONFIG_SHARE_BAR = 0.5       # an area is "by configuration" when at least this share of its wired hub connections need no code
 
-# Public evidence (hub_evidence.csv): numbers other people measured, never our own result rows. See docs/public-evidence.md.
+# Public evidence (hub_evidence.csv): numbers other people measured, never our own result rows. See docs/explanation/public-evidence.md.
 EVIDENCE_DIMENSIONS = ("quality", "token_efficiency", "speed", "cost", "reliability", "safety", "maintenance")
 EVIDENCE_BETTER = ("higher", "lower")
 EVIDENCE_SOURCE_KINDS = ("independent_benchmark", "replication", "peer_reviewed", "vendor_reported", "maintainer_reported",
@@ -142,5 +143,6 @@ def combine(facts, connections, seats=None):
 @implementation("read-registry-freshness", "registry_scan")
 class RegistryScan:
     """The registry freshness reading as one registered implementation of the read-registry-freshness solution."""
+    REQUIRES = ()     # pure functions over the registry files
     days_since = staticmethod(days_since)
     combine = staticmethod(combine)

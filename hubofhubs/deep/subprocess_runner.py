@@ -62,6 +62,7 @@ from .session import (
     worker_output_is_thin,
 )
 from .settings import GoalSettings, GoalSettingsSource, resolve_goal_settings
+from .. import arm_needs as needs
 
 
 @implementation("act-in-the-world", "subprocess_goal_runner")
@@ -75,6 +76,7 @@ class SubprocessGoalRunner(DeepRunner):
     When an emit callback is provided, streams live Claude Code session updates to the
     caller so they see what Claude is doing in real-time.
     """
+    REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY)
 
     config_class = SubprocessConfig   # the dataclass this runner is built from (core.resolve.resolve_config)
     model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None

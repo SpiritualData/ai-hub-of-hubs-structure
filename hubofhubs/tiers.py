@@ -16,6 +16,7 @@ from datetime import date
 from esoi import implementation
 
 from . import registry
+from . import arm_needs as needs
 
 MIN_CASES = 1
 
@@ -213,6 +214,7 @@ def always_cheapest(tiers, prices):
 class TierSelector:
     """The tier selector as one registered implementation of the choose-a-model-tier solution: the functions above, behind an
     object a consumer can build and hand around. Pure functions, no state."""
+    REQUIRES = ()     # pure functions
     price_of = staticmethod(price_of)
     arm_cost = staticmethod(arm_cost)
     evaluate_arm = staticmethod(evaluate_arm)

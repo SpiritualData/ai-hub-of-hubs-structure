@@ -2,7 +2,7 @@
 
 Dev-only (needs `coverage`). Runs the scoped tests, then maps each module to the implementation
 whose `filepath` it is; modules no record names are grouped under "unassigned". Writes
-docs/baseline.json. `--check` compares against the stored file and fails on a drop beyond the
+docs/reference/baseline.json. `--check` compares against the stored file and fails on a drop beyond the
 tolerance. The key is the implementation id, so a module move does not break the baseline.
 """
 import csv
@@ -13,7 +13,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "docs" / "baseline.json"
+OUT = ROOT / "docs" / "reference" / "baseline.json"
 TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py", "tests/test_no_environment.py",
          "tests/test_resolution.py", "tests/test_safe_loading.py", "tests/test_example_consumer.py",
          "tests/test_graph.py", "tests/test_cardstore.py", "tests/test_quickstart.py", "tests/test_metadata.py",

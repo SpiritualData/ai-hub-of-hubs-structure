@@ -14,6 +14,7 @@ from esoi import implementation
 
 from ..ports.search import SearchBackendError, SearchHit, SearchResponse
 from .backends import HttpCallable, DEFAULT_GEMINI_MODEL, default_http
+from .. import arm_needs as needs
 
 REDIRECT_TIMEOUT = 3.0
 
@@ -46,8 +47,7 @@ class GeminiGroundingBackend:
     The grounding API exposes no page date (a chunk has only ``uri``, ``title`` and ``domain``), so ``date`` is empty.
     ``instruction`` is added to the search prompt.
     """
-    ENVIRON = {"api_key": ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY")}     # option <- variable (esoi.assemble)
-    ENVIRON_REQUIRED = ("api_key",)
+    REQUIRES = (needs.gemini_api("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY"), needs.GOOGLE_GENAI, needs.HTTPX, needs.FILELOCK)
 
     name = "gemini-grounding"
 

@@ -70,6 +70,7 @@ from .editblock import (
     find_similar_lines,
     find_whole_file_blocks,
 )
+from .. import arm_needs as needs
 
 _log = logging.getLogger("hubofhubs.act.fast_edit")
 
@@ -212,6 +213,7 @@ class FastEditRunner(DeepRunnerBase):
         registry: resolves ``config.tier`` to a model id when the caller does not pin a model (anything
             with ``resolve_tier(tier)``). Required: this package holds no tier table of its own here.
     """
+    REQUIRES = ()     # one model call through the provider it is handed, and a writer
 
     # Its output is a mechanical edit report rather than composed prose, and it knows the reusable
     # facts (which files changed) exactly and for free, so it fills ``future_context`` itself

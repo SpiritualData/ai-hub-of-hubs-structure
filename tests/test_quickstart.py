@@ -1,4 +1,4 @@
-"""docs/quickstart.md is run, so it cannot rot."""
+"""docs/how-to/register-a-second-consumer.md is run, so it cannot rot."""
 import contextlib
 import io
 import re
@@ -10,7 +10,7 @@ from support import ROOT  # noqa: E402
 
 
 def test_the_quickstart_runs_and_prints_the_reasons():
-    code = re.search(r"```python\n(.*?)```", (ROOT / "docs" / "quickstart.md").read_text(), re.S).group(1)
+    code = re.search(r"```python\n(.*?)```", (ROOT / "docs" / "how-to" / "register-a-second-consumer.md").read_text(), re.S).group(1)
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
         exec(compile(code, "quickstart", "exec"), {"__name__": "quickstart"})
@@ -23,7 +23,7 @@ def test_the_quickstart_runs_and_prints_the_reasons():
 
 def test_the_one_line_section_is_true():
     import hubofhubs
-    text = (ROOT / "docs" / "quickstart.md").read_text()
+    text = (ROOT / "docs" / "how-to" / "register-a-second-consumer.md").read_text()
     assert "hubofhubs.assemble(environ=os.environ)" in text and "arms=" in text
     system = hubofhubs.assemble()
     assert "card-store" in system and "model-call" in system.pending

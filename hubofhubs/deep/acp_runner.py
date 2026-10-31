@@ -75,6 +75,7 @@ from .contract import (
     extract_escalation_id,
     resolve_deep_timeout_seconds,
 )
+from .. import arm_needs as needs
 
 # ---------------------------------------------------------------------------------------------
 # The DeepRunner
@@ -96,6 +97,7 @@ class AcpDeepRunner(DeepRunnerBase):
     can also call ``steer()`` directly. Both routes go through ``_session/steering``; a message that
     arrives after the turn settled is handed back to the queue rather than dropped.
     """
+    REQUIRES = (needs.ACP_SDK, needs.ACP_BINARY, needs.NODE_BINARY, needs.CLAUDE_ACCOUNT, needs.ACP_BOUNDARY)
 
     config_class = AcpConfig   # the dataclass this runner is built from (core.resolve.resolve_config)
     settings_source: Optional[AcpSettingsSource] = None

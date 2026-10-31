@@ -1,7 +1,7 @@
 """The generated evidence summary of the README: one row per recorded check, read from ``esoi/results.csv``, ``esoi/per_case.csv`` and
 ``esoi/evidence.csv`` with the esoi library's own statistics, never typed by hand. It is the hub's thin layer over ``esoi.leaderboard``
 and ``esoi.evidence_table`` (which keeps one row per solution's first component): here every component of a solution gets its row,
-and the plain words (what the check is, where the cases come from, what public research says) come from ``docs/evidence-labels.csv``.
+and the plain words (what the check is, where the cases come from, what public research says) come from ``docs/reference/evidence-labels.csv``.
 A check with no recorded run does not appear until it has one; ``unmeasured`` lists what is named but has no run, with the reason.
 Nothing here calls a model or the network."""
 import datetime
@@ -19,14 +19,16 @@ UNMEASURED_BEGIN, UNMEASURED_END = "<!-- unmeasured:start -->", "<!-- unmeasured
 ARMS_BEGIN, ARMS_END = "<!-- arms:start -->", "<!-- arms:end -->"
 HEADLINE_BEGIN, HEADLINE_END = "<!-- headline:start -->", "<!-- headline:end -->"
 COMPACT_BEGIN, COMPACT_END = "<!-- headline-compact:start -->", "<!-- headline-compact:end -->"
-RESEARCH = "docs/what-public-research-says.md"
+RESEARCH = "docs/explanation/what-public-research-says.md"
+LEAD_SIGNIFICANT = "significant lead: "          # the two labels of the lead column; the rule is docs/explanation/how-we-measure.md
+LEAD_GUESS = "best guess, not yet significant: "
 HEADER = ["Check (solution, part of the mind)", "What it does", "Common-sense check", "Cases and source", "Selected arm", "Pass rate (95% interval)",
-          "Cost per passing case", "Is the lead real?", "What public research says"]
+          "Cost per passing case", "Lead: significant or best guess?", "What public research says"]
 Row = Dict[str, str]
 
 
 def labels(root: Path) -> List[Row]:
-    return read_csv(root / "docs" / "evidence-labels.csv")
+    return read_csv(root / "docs" / "reference" / "evidence-labels.csv")
 
 
 def p_value(text: str) -> str:
@@ -90,7 +92,7 @@ def check_rows(config: Config, registry: Registry, root: Path, today: Optional[d
     for component in [*described, *sorted(set(history) - set(described))]:   # a recorded check nobody described still appears
         if component not in history:
             continue
-        label = described.get(component) or {"key": component, "seat": "", "check": "No plain-words description yet: add a row to docs/evidence-labels.csv.",
+        label = described.get(component) or {"key": component, "seat": "", "check": "No plain-words description yet: add a row to docs/reference/evidence-labels.csv.",
                                              "cases": "{n} cases", "research": "not linked yet", "anchor": "", "reason": ""}
         sid = owner.get(component) or label["seat"]
         rows = latest_whole(history[component])
@@ -113,6 +115,8 @@ def check_rows(config: Config, registry: Registry, root: Path, today: Optional[d
             arm_cell = selected
             rate, cost = evidence_table.rate_label(row), evidence_table.cost_label(row)
             lead = "; ".join(standing(d, rows) for d in found) or "no rival measured on the same cases, so no lead to test"
+            significant = bool(found) and all(d.basis == "significance" and (d.outcome == "incumbent" or (d.outcome == "rival" and d.switch)) for d in found)
+            lead = (LEAD_SIGNIFICANT if significant else LEAD_GUESS) + lead
             if any(d.outcome == "rival" and d.switch for d in found):
                 lead += "; the selected arm is the floor and selection is pending"
             for impl, why in leaderboard.incomparable_rivals(rows, selected, config.evaluation, history[component]):
@@ -122,7 +126,7 @@ def check_rows(config: Config, registry: Registry, root: Path, today: Optional[d
             row = rows[impl] if impl in rows else next(iter(rows.values()))
             arm_cell = f"{row['impl']} (best guess, none selected)"
             rate, cost = evidence_table.rate_label(row), evidence_table.cost_label(row)
-            lead = "best guess: only one arm measured, no test possible"
+            lead = LEAD_GUESS + "only one arm measured, no test possible"
         shown = selected if selected in rows else next(iter(rows))
         out.append({"check": f"`{sid or component}`" + (f", {seat.get('name', '').split(': the ')[-1].replace(' seat', '')}" if seat and ': the ' in seat.get("name", "") else ""),
                     "does": words, "test": label["check"], "cases": label["cases"].replace("{n}", str(rows[shown].get("cases", ""))),
@@ -139,9 +143,9 @@ def evidence_block(config: Config, registry: Registry, root: Path, today: Option
     for r in rows:
         cells = [r["check"], r["does"], r["test"], r["cases"], r["arm"], r["rate"], r["cost"], r["lead"], r["research"]]
         lines.append("| " + " | ".join(evidence_table.cell(c) for c in cells) + " |")
-    lines += ["", "A lead is real only when a one-sided exact paired test on the same cases gives p below 0.05 after Holm's correction; "
-              "otherwise the selected arm stays and the cell says how many cases the arms disagree on. "
-              "Every arm of every check is in [docs/evidence-by-arm.md](docs/evidence-by-arm.md)."]
+    lines += ["", "The arm with the highest result at the latest comparable stage is used. A lead is labelled significant when a one-sided exact paired test on the same cases gives p below 0.05 after Holm's correction, "
+              "and otherwise a best guess, not yet significant, with the number of cases the arms disagree on. "
+              "Every arm of every check is in [docs/reference/evidence-by-arm.md](docs/reference/evidence-by-arm.md)."]
     return "\n".join(lines)
 
 
@@ -210,7 +214,7 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
 
 def counted_arms(config: Config, root: Path) -> Dict[str, List[str]]:
     """``{area: [arm, ...]}``: the distinct real alternatives with a recorded whole run, by the area label of their check
-    (``docs/evidence-labels.csv``). Left out: a check with no area label (mechanics such as the single-scenario assembly), and any arm
+    (``docs/reference/evidence-labels.csv``). Left out: a check with no area label (mechanics such as the single-scenario assembly), and any arm
     that marks itself a baseline, floor, ablation or validity reference in its module docstring (``none``, ``single_provider``)."""
     history = leaderboard.all_results(config.results_path)
     out: Dict[str, List[str]] = {}
@@ -235,7 +239,7 @@ def headline_block(config: Config, registry: Registry, root: Path) -> str:
     for area in sorted(areas, key=lambda a: order.index(a)):
         lines.append(f"| {area} | {len(areas[area])} | {', '.join('`' + a + '`' for a in areas[area])} |")
     lines += ["", "Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors "
-              "(such as `none` and `single_provider`) and single-scenario mechanics checks ([how we measure](docs/how-we-measure.md#what-counts-as-an-alternative))."]
+              "(such as `none` and `single_provider`) and single-scenario mechanics checks ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative))."]
     return "\n".join(lines)
 
 

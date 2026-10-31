@@ -3,5 +3,5 @@ filters, abstracts rebuilt from the inverted index, a DOI lookup) and a small Cr
 
 Importing this package runs nothing. ``httpx`` is loaded lazily, only by the default transport (extra ``science``). The
 consumer passes the key, the contact address and the limits as arguments; nothing here reads the environment.
-Design and sources: ``docs/science-search.md``.
+Design and sources: ``docs/explanation/science-search.md``.
 """

@@ -1,6 +1,6 @@
 """openalex_semantic_and_web -- the ``know-the-world`` arm that asks a scholarly semantic search and a broader web search and merges them.
 
-Public research favours combining a semantic paper search with a broader one (``docs/what-public-research-says.md``). Both arms answer the same
+Public research favours combining a semantic paper search with a broader one (``docs/explanation/what-public-research-says.md``). Both arms answer the same
 question; their ranked hit lists are interleaved (scholarly first, then web, then the second of each, ...), duplicates are dropped
 (by DOI when both hits carry one, else by the normalized title: lower case, letters and digits only), and the first ``max_results`` are kept.
 The merged text lists those hits and then carries the web arm's own summary text unchanged, because a web arm answers in prose. Either
@@ -20,6 +20,7 @@ from ..seats import SearchBackend
 from ..websearch.research import WebResearchAdapter
 from .openalex import doi_of
 from .openalex_semantic import OpenAlexSemantic
+from .. import arm_needs as needs
 
 MAX_RESULTS = 5
 
@@ -48,9 +49,7 @@ def interleave(first: List[dict], second: List[dict], limit: int) -> List[dict]:
 @implementation("know-the-world", "openalex_semantic_and_web")
 class SemanticAndWeb:
     """Merges a scholarly semantic search and a web search into one observation."""
-
-    #: option <- variable (esoi.assemble); optional, as for the OpenAlex arms.
-    ENVIRON = OpenAlexSemantic.ENVIRON
+    REQUIRES = (needs.OPENALEX_API, needs.HTTPX_SCIENCE, needs.HTTPX, needs.FILELOCK, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the web search
 
     def __init__(self, backend: SearchBackend, *, api_key: str = "", mailto: str = "", max_results: int = MAX_RESULTS,
                  scholarly=None, web=None) -> None:

@@ -2,7 +2,7 @@
 
 Read 2026-10-31. For each seat: the strongest outside evidence on tasks like the seat's job, what it favours, whether our own
 results agree, and what to compare, add, improve or drop. This page guides **which arms to build and compare**. It never selects
-an arm and never mixes an outside number into our results (`docs/how-we-measure.md`, `docs/public-evidence.md`).
+an arm and never mixes an outside number into our results (`docs/explanation/how-we-measure.md`, `docs/explanation/public-evidence.md`).
 
 How to read a grade. Each claim carries the letter that `esoi evidence grade` computes from the registry row
 (`hubofhubs/registry/hub_evidence.csv`, rows with ids shown): A to D, from who ran it, whether the method is disclosed, the sample
@@ -55,7 +55,7 @@ authorized), so the main public prediction, that fusion beats both parts, is unt
 ## call-a-model (vendor models; router failover)
 
 - **Public evidence is thin.** We found no peer-reviewed or independent study of provider failover; it is engineering practice,
-  not a research question. For choosing between vendor models, independent aggregate indexes exist (see `docs/public-benchmarks.md`)
+  not a research question. For choosing between vendor models, independent aggregate indexes exist (see `docs/reference/public-benchmarks.md`)
   and serve as a shortlist only.
 - **Our results.** Failover is deterministic mechanics: `multi_provider` 30 of 30, `single_provider` 12 of 30 on simulated
   outages. The three vendor arms on 50 cases passed 50, 46 and 47, a spread that 50 cases cannot separate.
@@ -182,7 +182,7 @@ chase vector store leaderboards without a cardinality that needs one.
   accuracy with about 400 times lower cost on LLM-AggreFact (`EV-minicheck-cost`; grade D, the authors' own model). **Add** a
   MiniCheck arm (or Vectara HHEM-2.1-Open, an existing candidate), a CPU-capable extra, about 60 lines, scored on a small
   LLM-AggreFact subset. The model download is large, not an embedding run.
-- **hold-the-intents.** No public task represents a hierarchy of life intents (`docs/public-benchmarks.md`). No recommendation;
+- **hold-the-intents.** No public task represents a hierarchy of life intents (`docs/reference/public-benchmarks.md`). No recommendation;
   an honest gap.
 - **keep-it-generic.** The check is a scan of our own files; no outside evidence applies.
 - **take-in-the-world.** Evidence gathered so far is vendor-run (search-engine BrowseComp tables); nothing graded above D, so no arm

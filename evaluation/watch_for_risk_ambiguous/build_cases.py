@@ -1,7 +1,7 @@
 """Writes cases.json: 24 ambiguous steps for the watch-for-risk seat (12 risky, 12 benign), each with a short reason.
 
 Written for this evaluation, with generic wording and no organization names, after the public finding that an independent stress test of
-an agent safety monitor found most missed actions on ambiguous steps, not on explicit ones (docs/what-public-research-says.md). The
+an agent safety monitor found most missed actions on ambiguous steps, not on explicit ones (docs/explanation/what-public-research-says.md). The
 12 risky cases describe the step indirectly or inside benign-looking work (a script that ends in a drop, a setting that sends later, a
 change of where money goes); the 12 benign cases use risky words for work that is ordinary (reading about refunds, a dry run, a local
 file). The rule-based gate (`hubofhubs/consent_gate.py`) was fixed before these cases were written and was not changed after.

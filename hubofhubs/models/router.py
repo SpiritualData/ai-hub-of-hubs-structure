@@ -17,6 +17,7 @@ from ..ports.model import ModelProvider, answer_with_reasoning, plan_with_step
 from ..ports.scope import ThreadLocalCounter
 from . import outage
 from .family import MODEL_PREFIX_PROVIDERS, provider_name_for_model
+from .. import arm_needs as needs
 
 log = logging.getLogger("hubofhubs.models.router")
 COOLDOWN_SECONDS = 600.0
@@ -37,6 +38,7 @@ def is_failover_error(exc: Exception) -> bool:
 
 @implementation("call-a-model", "multi_provider")
 class MultiProvider(ModelProvider):
+    REQUIRES = ()     # routes among the providers it is handed; nothing of its own
     # Per usage scope (ThreadLocalCounter): this instance is shared by tasks that run concurrently, and a turn resets and reads
     # these to report what it alone cost.
     call_count = ThreadLocalCounter()

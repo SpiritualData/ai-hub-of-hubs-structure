@@ -30,7 +30,7 @@ summary mentions the title without the paper being one of its hits (counted as f
 | Arm | Runs on | Cost counted |
 |---|---|---|
 | web_research | the search-backend seat's `gemini` arm (Gemini 2.5 Flash-Lite with Google Search grounding); page fetching is not used | tokens at $0.10 in, $0.40 out per million; grounded prompts are free up to 1,500 a day (Google pricing page, read 2026-10-31) |
-| openalex | OpenAlex works search, no key and no contact address | $0 to us: no model is called; OpenAlex bills a search about $0.001 against its small keyless daily allowance (its documentation, read 2026-10-30, per `docs/science-search.md`) |
+| openalex | OpenAlex works search, no key and no contact address | $0 to us: no model is called; OpenAlex bills a search about $0.001 against its small keyless daily allowance (its documentation, read 2026-10-30, per `docs/explanation/science-search.md`) |
 | openalex_semantic | OpenAlex semantic search (`search.semantic`, GTE Large EN embeddings of titles and abstracts, computed by OpenAlex; we embed nothing), question sent whole | same as `openalex`; the documented limit is 1 request a second, so the arm waits 2 s between calls (1 s drew HTTP 429 on 11 of 40 cases in the first run, whose row is invalid and is superseded by the rerun) (https://help.openalex.org/api/semantic-search.md, read 2026-10-31) |
 | openalex_keywords | the same keyword search after a deterministic, model-free rewrite of the question into at most 5 specific terms | $0 model cost, search as `openalex` |
 | openalex_keywords_model | the same keyword search after the cheapest Gemini model (`gemini-2.5-flash-lite`, $0.10 in, $0.40 out per million) writes a short keyword query through the `model-call` seat; the deterministic rewrite is the fallback | tokens at those prices plus the search |
@@ -43,4 +43,4 @@ new arm cannot all happen on one day without a key; runs are therefore split acr
     PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run know_the_world --impl openalex --sample 3
     PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run know_the_world --impl web_research --record
 
-The method is `docs/how-we-measure.md`.
+The method is `docs/explanation/how-we-measure.md`.

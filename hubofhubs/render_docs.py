@@ -34,7 +34,7 @@ def seat_table(folder=None, facts=None, areas=None):
     return "\n".join(lines)
 
 
-def seat_summary(folder=None, seats=None, link="docs/registry.md"):
+def seat_summary(folder=None, seats=None, link="docs/reference/registry.md"):
     """One row per seat with its area count, so the table stays the size of the mind and not of the registry. ``seats`` is the
     ordered list of ``(seat id, part of the mind)``; a seat with no researched area shows 0. Without it, the seats of the
     registry in order of first appearance."""
@@ -53,7 +53,7 @@ def seat_summary(folder=None, seats=None, link="docs/registry.md"):
 
 
 def area_detail(folder=None, seats=None):
-    """Every area, grouped by seat, with its candidates and the evidence count: the generated body of ``docs/registry.md``."""
+    """Every area, grouped by seat, with its candidates and the evidence count: the generated body of ``docs/reference/registry.md``."""
     hubs = registry.read("hubs.csv", folder)
     findings = registry.read("hub_findings.csv", folder)
     evidence = registry.read("hub_evidence.csv", folder)

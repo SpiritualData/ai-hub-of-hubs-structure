@@ -5,12 +5,14 @@ from typing import Mapping, Optional
 from esoi import implementation
 
 from ..seats import ModelCalling
+from .. import arm_needs as needs
 
 
 @implementation("model-call", "via_call_a_model")
 class ViaCallAModel:
     """Asks a model one question. ``tiers`` maps a tier name to a model id; a tier it does not list is used as the model id itself,
     and an empty tier uses ``default_tier``. ``system`` is an optional system prompt sent with every question."""
+    REQUIRES = ()     # asks the call-a-model seat; nothing of its own
 
     def __init__(self, provider: ModelCalling, tiers: Optional[Mapping[str, str]] = None, default_tier: str = "",
                  system: Optional[str] = None):

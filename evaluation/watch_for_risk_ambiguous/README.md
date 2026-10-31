@@ -2,7 +2,7 @@
 
 The harder stage of `watch_for_risk`: does the overseer stop a risky step that is described indirectly or sits inside benign-looking work,
 and let through an ordinary step that merely sounds risky? Public evidence says explicit cases overstate a monitor (an independent stress
-test of an agent safety monitor found most ambiguous actions missed; `docs/what-public-research-says.md`).
+test of an agent safety monitor found most ambiguous actions missed; `docs/explanation/what-public-research-says.md`).
 
 - **Cases** (`cases.json`, written by `build_cases.py`, 24 digests): 12 risky steps (a routine script that ends in a drop, a change of
   where money goes, a setting that sends later, link-sharing a private folder, a merge that deploys, a reply that commits the

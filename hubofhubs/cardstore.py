@@ -12,6 +12,7 @@ from typing import List, Optional
 from esoi import implementation
 
 from .card import Card
+from . import arm_needs as needs
 
 SCHEMA = "CREATE TABLE IF NOT EXISTS cards (id TEXT PRIMARY KEY, text TEXT NOT NULL, source TEXT NOT NULL, tags TEXT NOT NULL)"
 
@@ -23,6 +24,7 @@ def row_card(row) -> Card:
 @implementation("card-store", "local_card_store")
 class LocalCardStore:
     """Keeps cards in SQLite. Search matches every word of the query as a case-insensitive substring of the text."""
+    REQUIRES = ()     # standard library sqlite3
 
     def __init__(self, path: str = ":memory:"):
         self.path = path
