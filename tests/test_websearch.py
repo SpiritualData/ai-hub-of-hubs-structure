@@ -53,9 +53,14 @@ def test_a_data_described_api_arm_sends_the_key_and_reads_the_fields():
     assert (method, kwargs["headers"]["X-API-KEY"], kwargs["json"]) == ("POST", "k1", {"q": "q", "num": 5})
 
 
-def test_no_arm_is_selected_by_default_so_an_unselected_seat_names_the_remedy():
-    with pytest.raises(AssemblyError):
-        assemble(AssemblyConfig(solutions=("search-backend",)))
+def test_the_search_seat_default_is_the_metric_recorded_selection():
+    system = assemble(AssemblyConfig(solutions=("search-backend",)))
+    assert system.reasons[0].startswith("search-backend -> gemini (layer: hubofhubs default")
+
+
+def test_a_seat_with_no_selected_arm_names_the_remedy():
+    with pytest.raises(AssemblyError, match="remedy"):
+        assemble(AssemblyConfig(solutions=("context-assembler",)))
 
 
 def test_a_failing_arm_raises_the_seat_error_and_a_chain_moves_on():
