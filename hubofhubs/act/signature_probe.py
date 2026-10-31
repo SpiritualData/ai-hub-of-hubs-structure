@@ -1,6 +1,6 @@
 """Version-skew primitives: which keywords an installed class or function accepts, and a filter.
 
-A consumer and QAR can ship as separate deploys with no order guarantee, so a consumer that passes a
+A consumer and the library it calls can ship as separate deploys with no order guarantee, so a consumer that passes a
 brand-new keyword to a stale library would raise ``TypeError`` on its hot path. The consumer decides
 support by INSPECTING the installed signature (never by comparing version strings) and drops what the
 library does not understand. These are the generic primitives; which keywords matter is the
