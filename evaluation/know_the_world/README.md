@@ -13,7 +13,7 @@ questions and passes an arm when the gold paper is among the observations it ret
 - Sample: `build_cases.py`, seed 20261031, 40 questions drawn at random from the 280 with quality 2 (the dataset's top rating) and
   exactly one gold paper. `cases.json` (sha256 `7be47b7452a1c41b930f2a2386d2dcad16fcabf25cbb32037283857f70d281a4`) is that sample and
   nothing else is committed. The `area` of a case is the dataset's query set; `--sample N` spreads N cases over them.
-- The question is given to the arm as written (a full sentence). Neither arm rewrites it.
+- The question is given to the arm as written (a full sentence). The two original arms do not rewrite it; the `openalex_keywords*` arms rewrite it themselves, inside the arm, and the `openalex_semantic` arm sends it whole.
 
 ## Matching rule (written before any run)
 
@@ -31,6 +31,12 @@ summary mentions the title without the paper being one of its hits (counted as f
 |---|---|---|
 | web_research | the search-backend seat's `gemini` arm (Gemini 2.5 Flash-Lite with Google Search grounding); page fetching is not used | tokens at $0.10 in, $0.40 out per million; grounded prompts are free up to 1,500 a day (Google pricing page, read 2026-10-31) |
 | openalex | OpenAlex works search, no key and no contact address | $0 to us: no model is called; OpenAlex bills a search about $0.001 against its small keyless daily allowance (its documentation, read 2026-10-30, per `docs/science-search.md`) |
+| openalex_semantic | OpenAlex semantic search (`search.semantic`, GTE Large EN embeddings of titles and abstracts, computed by OpenAlex; we embed nothing), question sent whole | same as `openalex`; the documented limit is 1 request a second, so the arm waits 1 s between calls (https://help.openalex.org/api/semantic-search.md, read 2026-10-31) |
+| openalex_keywords | the same keyword search after a deterministic, model-free rewrite of the question into at most 5 specific terms | $0 model cost, search as `openalex` |
+| openalex_keywords_model | the same keyword search after the cheapest Gemini model (`gemini-2.5-flash-lite`, $0.10 in, $0.40 out per million) writes a short keyword query through the `model-call` seat; the deterministic rewrite is the fallback | tokens at those prices plus the search |
+
+OpenAlex's keyless allowance is $0.10 a day shared by every user of the same network address (about 100 searches), so a 40-case run of each
+new arm cannot all happen on one day without a key; runs are therefore split across days and the date of each row says which.
 
 ## Run
 

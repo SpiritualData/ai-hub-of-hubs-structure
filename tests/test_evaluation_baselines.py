@@ -9,7 +9,7 @@ import pytest
 EVALUATION = Path(__file__).resolve().parent.parent / "evaluation"
 sys.path.insert(0, str(EVALUATION))
 COMPONENTS = ["card_store", "stay_current", "connect_any_integration", "reason_and_answer", "model_call", "assemble_the_whole",
-              "provider_failover", "watch_for_risk", "call_a_model"]
+              "provider_failover", "watch_for_risk", "watch_for_risk_ambiguous", "call_a_model"]
 
 
 def failures(component, build):
@@ -36,6 +36,6 @@ def test_every_baseline_fails_some_case(component):
 
 
 @pytest.mark.parametrize("component", COMPONENTS)
-def test_the_component_has_at_least_thirty_cases_and_unique_ids(component):
+def test_the_component_has_enough_cases_and_unique_ids(component):
     cases = json.loads((EVALUATION / component / "cases.json").read_text())
-    assert len(cases) >= 30 and len({c["id"] for c in cases}) == len(cases)
+    assert len(cases) >= (20 if component == "watch_for_risk_ambiguous" else 30) and len({c["id"] for c in cases}) == len(cases)

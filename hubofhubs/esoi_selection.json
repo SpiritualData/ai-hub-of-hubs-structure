@@ -10,7 +10,7 @@
   }
  },
  "call-a-model": {
-  "default": "",
+  "default": "multi_provider",
   "modules": {
    "anthropic": "hubofhubs.models.anthropic",
    "deepseek": "hubofhubs.models.openai",
@@ -41,9 +41,12 @@
   }
  },
  "know-the-world": {
-  "default": "",
+  "default": "web_research",
   "modules": {
    "openalex": "hubofhubs.science.openalex",
+   "openalex_keywords": "hubofhubs.science.openalex_keywords",
+   "openalex_keywords_model": "hubofhubs.science.openalex_keywords",
+   "openalex_semantic": "hubofhubs.science.openalex_semantic",
    "web_research": "hubofhubs.websearch.research"
   }
  },
@@ -60,7 +63,7 @@
   }
  },
  "search-backend": {
-  "default": "",
+  "default": "gemini",
   "modules": {
    "brave": "hubofhubs.websearch.backends",
    "gemini": "hubofhubs.websearch.gemini",
@@ -77,9 +80,11 @@
   }
  },
  "watch-for-risk": {
-  "default": "",
+  "default": "overseer",
   "modules": {
-   "overseer": "hubofhubs.risk"
+   "consent_gate": "hubofhubs.consent_gate",
+   "overseer": "hubofhubs.risk",
+   "two_stage": "hubofhubs.consent_gate"
   }
  }
 }
