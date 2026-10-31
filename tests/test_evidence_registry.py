@@ -34,7 +34,7 @@ def iso(value):
 def test_columns_are_the_fixed_schema():
     with open(PATH, newline="") as handle:
         assert next(csv.reader(handle)) == COLUMNS
-    assert 1 <= len(rows()) <= 60
+    assert 1 <= len(rows()) <= 80   # was 60, the count when the registry began; raised for the context-assembler rows
 
 
 def test_allowed_values_and_required_fields():
