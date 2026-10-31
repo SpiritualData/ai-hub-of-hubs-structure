@@ -10,7 +10,7 @@ from __future__ import annotations
 import threading
 import time
 from concurrent.futures import Future, TimeoutError as FuturesTimeoutError
-from typing import Any, Dict, List, Optional, Protocol, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from hubofhubs.ports.deep import ProgressEvent
 from hubofhubs.ports.events import EVENT_OVERSEER
@@ -22,8 +22,8 @@ from .turn import Emitter
 from .watch import worth_a_look
 
 
-class OverseeHost(Protocol):
-    """What the mixin reads off the loop class that carries it."""
+class OverseeHost:
+    """What the mixin reads off the loop class that carries it (a contract to read, not a seat; the host does not inherit it)."""
 
     cfg: Any          # max_steps, max_elapsed_seconds, max_gathered_chars, planner_tier, overseer_tier,
                       # overseer_digest_char_budget, overseer_gate_min_consecutive_reads, overseer_gate_repeat_plan,
