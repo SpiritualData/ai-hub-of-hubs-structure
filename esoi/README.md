@@ -13,6 +13,12 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `HP5`: unconfirmed: for Joshua to confirm. Parts that are best alone can fail when assembled, and nobody tests the whole.
 - `HP6`: unconfirmed: for Joshua to confirm. One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
 - `HP7`: unconfirmed: for Joshua to confirm. Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it.
+- `hprob-assembly-not-jarvis-from-the-users-seat`: unconfirmed: for Joshua to confirm. hprob-assembly-not-jarvis-from-the-users-seat
+- `hprob-public-evals-relied-on-singly`: unconfirmed: for Joshua to confirm. hprob-public-evals-relied-on-singly
+- `hprob-one-best-pick-ignores-circumstance`: unconfirmed: for Joshua to confirm. hprob-one-best-pick-ignores-circumstance
+- `hprob-addon-guard-without-marginal-value`: unconfirmed: for Joshua to confirm. hprob-addon-guard-without-marginal-value
+- `hprob-harness-dear-and-slow-on-the-subscription`: unconfirmed: for Joshua to confirm. hprob-harness-dear-and-slow-on-the-subscription
+- `hprob-one-integration-needs-several-hubs`: unconfirmed: for Joshua to confirm. hprob-one-integration-needs-several-hubs
 
 ## Ideals
 
@@ -22,6 +28,12 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `HI4`, Swappable parts: unconfirmed: for Joshua to confirm. Any part can be replaced by configuration when another measures better or fails.
 - `HI5`, Proven whole: unconfirmed: for Joshua to confirm. The assembled system is tested end to end on a production consumer, not only part by part.
 - `HI6`, Generic and thin: unconfirmed: for Joshua to confirm. No consumer-specific content. Defaults are data anyone can edit. Implementations stay in their own projects.
+- `hideal-jarvis-from-the-users-seat`, unconfirmed: for Joshua to confirm.: unconfirmed: for Joshua to confirm.
+- `hideal-common-sense-metrics-with-sourced-stages`, unconfirmed: for Joshua to confirm.: unconfirmed: for Joshua to confirm.
+- `hideal-best-in-circumstance-with-variants`, unconfirmed: for Joshua to confirm.: unconfirmed: for Joshua to confirm.
+- `hideal-guards-earn-their-place`, unconfirmed: for Joshua to confirm.: unconfirmed: for Joshua to confirm.
+- `hideal-cheap-fast-harness-with-ideal-context`, unconfirmed: for Joshua to confirm.: unconfirmed: for Joshua to confirm.
+- `hideal-hubs-combined-per-integration`, unconfirmed: for Joshua to confirm.: unconfirmed: for Joshua to confirm.
 
 ## Solutions
 
@@ -33,12 +45,12 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `reason-and-answer` | reason-and-answer: the Mind seat | tier_selector | reason-and-answer metric (draft);tier-passing-work-per-cost (draft) |
 | `know-the-world` | know-the-world: the Science seat |  | know-the-world metric (draft) |
 | `think-critically` | think-critically: the Critical thinking seat |  | think-critically metric (draft) |
-| `act-in-the-world` | act-in-the-world: the Body seat |  | act-in-the-world metric (draft) |
-| `watch-for-risk` | watch-for-risk: the Overseer seat |  | watch-for-risk metric (draft) |
-| `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | assemble-the-whole metric (draft) |
-| `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft) |
+| `act-in-the-world` | act-in-the-world: the Body seat |  | act-in-the-world metric (draft);unconfirmed: for Joshua to confirm. |
+| `watch-for-risk` | watch-for-risk: the Overseer seat |  | watch-for-risk metric (draft);unconfirmed: for Joshua to confirm. |
+| `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | assemble-the-whole metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
+| `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
 | `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
-| `connect-any-integration` | connect-any-integration: the Hands seat |  | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft) |
+| `connect-any-integration` | connect-any-integration: the Hands seat |  | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft);unconfirmed: for Joshua to confirm. |
 | `card-store` | card-store: a place to keep and find cards | local_card_store | card-store metric (draft) |
 | `model-call` | model-call: ask a model one question |  | model-call metric (draft) |
 | `search-backend` | search-backend: run one search |  | search-backend metric (draft) |
@@ -95,3 +107,11 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-model-call`, model-call metric (draft): `none`
 - `metric-search-backend`, search-backend metric (draft): `none`
 - `metric-context-assembler`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-hub-jarvis-ness`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-hub-jarvis-floor-consent`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-hub-jarvis-floor-honesty`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-public-stage-sourced-and-triangulated`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-best-in-circumstance-with-variants`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-guard-marginal-value-over-native-and-harness`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-harness-context-subagents-recursion-ranked`, unconfirmed: for Joshua to confirm.: `none`
+- `metric-integration-served-by-combined-hubs`, unconfirmed: for Joshua to confirm.: `none`
