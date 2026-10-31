@@ -41,6 +41,10 @@ class PlanDecision:
     # gives the nearest option that works. That reply IS the complete response, so the escalation nets
     # that turn an answer to an "act" message into a deep run must not fire on it.
     act_declined: bool = False
+    # The planner chose "answer" for a message that cannot be acted on or planned without facts only the person holds (their times,
+    # their choices): the reply asks for them first and drafts nothing. A structured self-report on the planning call, so the reply
+    # writer is told by a field, never by the wording of the planner's prose.
+    asks_first: bool = False
     # User clarification/input needed: when action="clarify"
     clarification: Optional[Dict[str, Any]] = None  # {"question": "...", "options": [...], "allow_free_input": bool}
     # EXPLICIT execution-mode signal the planner detected in the user's message (LLM judgment on
