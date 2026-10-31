@@ -84,7 +84,7 @@ def arm_scores(result: AssembledContext, *, by_metadata_score: bool) -> Dict[str
 
 
 def fused_card_order(kw_result: AssembledContext, vec_result: AssembledContext,
-                     priority: Optional[List[str]] = None) -> List[str]:
+                     priority: Optional[List[str]] = None, vector_weight: float = VECTOR_RANK_WEIGHT) -> List[str]:
     """Union of both arms' card ids, best first: reciprocal-rank fusion of the arm rankings, so a card
     both arms found beats one only a single arm found, and each arm's own best stays near the top.
     Priority cards (the caller's pinned ones) lead; ties fall back to keyword-first, then arm order."""
@@ -92,7 +92,7 @@ def fused_card_order(kw_result: AssembledContext, vec_result: AssembledContext,
     vec_scores = arm_scores(vec_result, by_metadata_score=True)
     fused: Dict[str, float] = {}
     first_seen: Dict[str, int] = {}
-    for weight, scores in ((1.0, kw_scores), (VECTOR_RANK_WEIGHT, vec_scores)):
+    for weight, scores in ((1.0, kw_scores), (vector_weight, vec_scores)):
         for rank, cid in enumerate(sorted(scores, key=lambda c: -scores[c]), start=1):
             fused[cid] = fused.get(cid, 0.0) + weight / (RRF_K + rank)
             first_seen.setdefault(cid, len(first_seen))
@@ -149,6 +149,7 @@ class HybridContextAssembler(ContextAssemblerBase):
         model: Optional[str] = None,
         consolidate: bool = True,
         consolidate_fn: Optional[Callable[..., List[Dict[str, Any]]]] = None,
+        vector_weight: float = VECTOR_RANK_WEIGHT,
     ) -> None:
         self._keyword = keyword
         self._vector = vector
@@ -159,6 +160,9 @@ class HybridContextAssembler(ContextAssemblerBase):
         # the verdict (``hubofhubs.recall.card_selection.consolidate_context`` bound to the consumer's prompts). None
         # leaves the merge mechanical.
         self._consolidate_fn = consolidate_fn
+        # How much a vector hit's rank counts against a keyword card's in the fused order (``VECTOR_RANK_WEIGHT`` by default;
+        # 1.0 is plain reciprocal-rank fusion, the published method).
+        self._vector_weight = vector_weight
 
     # ------------------------------------------------------------------
     # ContextAssemblerBase implementation
@@ -322,7 +326,8 @@ class HybridContextAssembler(ContextAssemblerBase):
         # Union card_ids, deduped and ORDERED BY RELEVANCE (see ``fused_card_order``). The rendered
         # sections above keep their arm order and stable-by-id cards, so the prompt text stays cache
         # friendly; only the ranking a consumer reads from ``card_ids`` and ``card_metadata`` changes.
-        merged_ids = fused_card_order(kw_result, vec_result, priority=(meta or {}).get("priority_card_ids"))
+        merged_ids = fused_card_order(kw_result, vec_result, priority=(meta or {}).get("priority_card_ids"),
+                                      vector_weight=self._vector_weight)
 
         # Union stale lists, deduped.
         seen_stale: set = set()

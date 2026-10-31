@@ -31,3 +31,10 @@ def test_keyword_order_is_kept_for_single_arm_cards():
 def test_priority_cards_lead_and_union_is_deduped():
     order = fused_card_order(keyword("a", "b"), vector(b=0.9, c=0.8), priority=["c"])
     assert order[0] == "c" and sorted(order) == ["a", "b", "c"]
+
+
+def test_vector_weight_one_is_plain_rrf_and_lets_a_vector_only_card_lead():
+    kw, vec = keyword("a", "b", "c"), vector(z=0.9)
+    assert fused_card_order(kw, vec)[0] == "a"                      # the default weight keeps the keyword order
+    assert fused_card_order(kw, vec, vector_weight=1.0)[:2] == ["a", "z"]   # equal ranks tie to the keyword card, then the vector card
+    assert fused_card_order(keyword("a"), vector(z=0.9), vector_weight=2.0)[0] == "z"
