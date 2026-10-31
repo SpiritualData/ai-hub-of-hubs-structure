@@ -1,0 +1,13 @@
+date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,cost_usd,seconds,balanced,git_sha,cases_sha,sample,model,details
+2026-10-31,card_store,local_card_store,35,35,35/35,0/0,0,0,0,0.0,0.0,,8fa5f97,aed9589c,,none,
+2026-10-31,stay_current,registry_scan,41,41,41/41,0/0,0,0,0,0.0,0.0,,8fa5f97,05131492,,none,
+2026-10-31,connect_any_integration,hub_of_hubs_scorer,33,33,33/33,0/0,0,0,0,0.0,0.0,,8fa5f97,db96087b,,none,
+2026-10-31,reason_and_answer,tier_selector,36,36,36/36,0/0,0,0,0,0.0,0.0,,8fa5f97,10a4d505,,none,
+2026-10-31,model_call,via_call_a_model,30,30,30/30,0/0,0,0,0,0.0,0.0,,8fa5f97,5424e8a6,,none,
+2026-10-31,assemble_the_whole,zero_config,57,57,57/57,0/0,0,0,0,0.0,0.3,,8fa5f97,b515dfe2,,none,
+2026-10-31,reason_and_answer,tier_selector,36,36,36/36,0/0,0,0,0,0.0,0.0,,d443684,10a4d505,,none,
+2026-10-31,stay_current,registry_scan,41,41,41/41,0/0,0,0,0,0.0,0.0,,d443684,05131492,,none,
+2026-10-31,connect_any_integration,hub_of_hubs_scorer,33,33,33/33,0/0,0,0,0,0.0,0.0,,d443684,db96087b,,none,
+2026-10-31,card_store,local_card_store,35,35,35/35,0/0,0,0,0,0.0,0.0,,d443684,aed9589c,,none,
+2026-10-31,model_call,via_call_a_model,30,30,30/30,0/0,0,0,0,0.0,0.0,,d443684,5424e8a6,,none,
+2026-10-31,assemble_the_whole,zero_config,57,57,57/57,0/0,0,0,0,0.0,0.3,,d443684,b515dfe2,,none,
