@@ -31,3 +31,14 @@ Judge it as a scientist would, on the evidence:
 Open the URL, confirm the number, unit and date appear on the page, then add the row with `date_checked` set to the day you read
 it. A number you cannot confirm is not entered. New descriptive prose in a row is unconfirmed: for Joshua to confirm. The rules
 are checked by `tests/test_evidence_registry.py`. The per-area row count appears in the generated `docs/registry.md`.
+
+## How the library reads it
+
+The registry csv stays the one source of truth. `esoi/evidence.csv` is derived from it by `python3 scripts/export_evidence.py`
+(the library's fixed header: no `area`, no `seat`; a row with no value, a direction only, is left out; a comma in a candidate name
+becomes a space). The derived file is committed so a package that builds on the hub can read it, and
+`tests/test_export_evidence.py` fails when it differs from the export, so edit the registry and re-run the script, never the
+derived file. `esoi.toml` names it under `[evidence]` and maps the candidates that match one of our arms under
+`[evidence.aliases]`; `esoi evidence list|grade|rank|table` and `esoi cascade` read it. The `public` stage of the
+`context-assembler` and `act-in-the-world` metrics is satisfied only when graded evidence for an arm is at grade C or better, and it
+never replaces our own first-stage result.

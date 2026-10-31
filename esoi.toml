@@ -6,3 +6,15 @@ max_lines = 1500
 
 [records]
 template_version = 1
+
+# Public evidence: others' measurements, shown beside our own results and never counted as one. The registry
+# hubofhubs/registry/hub_evidence.csv is the one source of truth; esoi/evidence.csv is derived from it by
+# scripts/export_evidence.py (a test fails when they differ). The default file is esoi/evidence.csv, named here for clarity.
+[evidence]
+file = "esoi/evidence.csv"
+
+# candidate (as the evidence names it) to the hub implementation it measures. Only where the match is honest: the hub's bm25 arm
+# is built on the bm25s library, and its stream-json goal runner drives the Claude Code CLI over stream-json.
+[evidence.aliases]
+"bm25s" = "bm25"
+"Claude Code CLI (claude -p stream-json)" = "stream_json_goal_runner"
