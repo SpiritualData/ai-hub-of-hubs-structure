@@ -17,3 +17,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | `hub-act` | core | unconfirmed: for Joshua to confirm. | act-in-the-world |
 | `hub-science` | core | unconfirmed: for Joshua to confirm. | know-the-world |
 | `hub-deep` | core | unconfirmed: for Joshua to confirm. | act-in-the-world |
+| `hub-orchestrate` | core | unconfirmed: for Payal to confirm. | reason-and-answer |
