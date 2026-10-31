@@ -21,4 +21,18 @@ rule as `../context_assembler_papers`. Only the query differs.
 ## Results
 
 <!-- results:start -->
+| arm | pass (relevant in top 5) | 95% Wilson | nDCG@10 | recall@10 | median s/query | cost |
+|---|---|---|---|---|---|---|
+| bm25 | 257/300 (85.7%) | 81.2% to 89.2% | 0.8384 | 0.89 | 0.3 | $0.00 |
+| bm25@analyzer=english | 270/300 (90.0%) | 86.1% to 92.9% | 0.8664 | 0.91 | 0.3 | $0.00 |
+| vector | 295/300 (98.3%) | 96.2% to 99.3% | 0.9411 | 0.9967 | 0.1 | $0.00 |
+| hybrid | 257/300 (85.7%) | 81.2% to 89.2% | 0.8384 | 0.89 | 0.3 | $0.00 |
+| hybrid@vector_weight=1.0 | 284/300 (94.7%) | 91.5% to 96.7% | 0.8941 | 0.9867 | 0.3 | $0.00 |
+| composite | 257/300 (85.7%) | 81.2% to 89.2% | 0.8384 | 0.89 | 0.4 | $0.00 |
 <!-- results:end -->
+
+Reading the table: `vector` finds 295 of 300 where `bm25` finds 257, and `bm25` with the English analyzer 270. The hub's `hybrid` and
+`composite` equal `bm25` exactly: `hybrid` weights a vector hit at half a keyword hit when fusing ranks (a weight measured on another
+task), which keeps every vector-only hit below all ten keyword hits, and `composite` lists the keyword hits first. With `vector_weight=1.0`
+(plain reciprocal-rank fusion, the published method) `hybrid` reaches 284 of 300, still below `vector` alone on these queries: on
+paraphrases the keyword list drags the fused order down.

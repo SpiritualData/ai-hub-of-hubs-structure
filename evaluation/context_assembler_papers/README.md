@@ -32,4 +32,12 @@ Do the arms find a known paper in a collection of scientific papers that is alre
 ## Results
 
 <!-- results:start -->
+| arm | pass (relevant in top 5) | 95% Wilson | nDCG@10 | recall@10 | median s/query | cost |
+|---|---|---|---|---|---|---|
+| bm25 | 300/300 (100.0%) | 98.7% to 100.0% | 1.0 | 1.0 | 0.3 | $0.00 |
+| bm25@analyzer=english | 300/300 (100.0%) | 98.7% to 100.0% | 1.0 | 1.0 | 0.3 | $0.00 |
 <!-- results:end -->
+
+The vector (297 of 300) and hybrid (300 of 300) rows of the log were recorded on the same 300 papers before the cases carried their
+query text, so they carry an earlier case hash and are not in the table; their numbers are in `esoi/results.csv`. `bm25` and `bm25` with
+the English analyzer both pass all 300 on the final cases, so the costlier arms were not re-run.

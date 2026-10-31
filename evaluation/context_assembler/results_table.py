@@ -17,7 +17,7 @@ from pathlib import Path
 COMPONENT = next((a for a in sys.argv[1:] if not a.startswith("--")), "context_assembler")
 ROOT = Path(__file__).resolve().parent.parent.parent
 HERE = ROOT / "evaluation" / COMPONENT
-ARMS = ["bm25", "vector", "hybrid", "composite"]
+ARMS = ["bm25", "bm25@analyzer=english", "vector", "hybrid", "hybrid@vector_weight=1.0", "composite"]
 START, END = "<!-- results:start -->", "<!-- results:end -->"
 
 

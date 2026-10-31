@@ -37,6 +37,7 @@ Does the arm put a document that answers the query in its first five results? Fo
 | arm | pass (relevant in top 5) | 95% Wilson | nDCG@10 | recall@10 | median s/query | cost |
 |---|---|---|---|---|---|---|
 | bm25 | 200/323 (61.9%) | 56.5% to 67.0% | 0.3065 | 0.1455 | 0.3 | $0.00 |
+| bm25@analyzer=english | 208/323 (64.4%) | 59.0% to 69.4% | 0.3211 | 0.1471 | 0.3 | $0.00 |
 | vector | 205/323 (63.5%) | 58.1% to 68.5% | 0.3365 | 0.1612 | 0.1 | $0.00 |
 <!-- results:end -->
 
