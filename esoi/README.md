@@ -46,7 +46,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `know-the-world` | know-the-world: the Science seat |  | know-the-world metric (draft) |
 | `think-critically` | think-critically: the Critical thinking seat |  | think-critically metric (draft) |
 | `act-in-the-world` | act-in-the-world: the Body seat |  | act-in-the-world metric (draft);unconfirmed: for Joshua to confirm. |
-| `watch-for-risk` | watch-for-risk: the Overseer seat |  | watch-for-risk metric (draft);unconfirmed: for Joshua to confirm. |
+| `watch-for-risk` | watch-for-risk: the Overseer seat | overseer | watch-for-risk metric (draft);unconfirmed: for Joshua to confirm. |
 | `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | assemble-the-whole metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
 | `stay-current` | stay-current: the Learning seat | registry_scan | stay-current metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
 | `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
@@ -54,7 +54,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `card-store` | card-store: a place to keep and find cards | local_card_store | card-store metric (draft) |
 | `model-call` | model-call: ask a model one question | via_call_a_model | model-call metric (draft) |
 | `search-backend` | search-backend: run one search |  | search-backend metric (draft) |
-| `call-a-model` | unconfirmed: for Joshua to confirm. |  | model-call metric (draft) |
+| `call-a-model` | unconfirmed: for Joshua to confirm. | multi_provider | model-call metric (draft) |
 | `context-assembler` | unconfirmed: for Joshua to confirm. |  | unconfirmed: for Joshua to confirm. |
 
 ## Implementations
@@ -99,7 +99,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-know-the-world`, know-the-world metric (draft): `none`
 - `metric-think-critically`, think-critically metric (draft): `none`
 - `metric-act-in-the-world`, act-in-the-world metric (draft): `none`
-- `metric-watch-for-risk`, watch-for-risk metric (draft): `none`
+- `metric-watch-for-risk`, watch-for-risk metric (draft): `esoi run watch_for_risk --impl overseer; esoi run watch_for_risk --impl none`
 - `metric-assemble-the-whole`, assemble-the-whole metric (draft): `none`
 - `metric-stay-current`, stay-current metric (draft): `esoi run stay_current --impl registry_scan`
 - `metric-keep-it-generic`, keep-it-generic metric (draft): `none`
@@ -119,4 +119,4 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-guard-marginal-value-over-native-and-harness`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-harness-context-subagents-recursion-ranked`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-integration-served-by-combined-hubs`, unconfirmed: for Joshua to confirm.: `none`
-- `metric-call-a-model`, model-call metric (draft): `none`
+- `metric-call-a-model`, model-call metric (draft): `esoi run provider_failover --impl multi_provider`
