@@ -2,8 +2,11 @@
  "act-in-the-world": {
   "default": "",
   "modules": {
+   "acp_deep_runner": "hubofhubs.deep.acp_runner",
    "fast_edit": "hubofhubs.act.fast_edit",
-   "mcp_operations": "hubofhubs.act.mcp_operations"
+   "mcp_operations": "hubofhubs.act.mcp_operations",
+   "stream_json_goal_runner": "hubofhubs.deep.stream_runner",
+   "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
   }
  },
  "call-a-model": {

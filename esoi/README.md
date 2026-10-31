@@ -85,6 +85,9 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `context-assembler:bm25` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/bm25_store.py |  |
 | `context-assembler:hybrid` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/hybrid_assembler.py |  |
 | `context-assembler:vector` | unconfirmed: for Joshua to confirm. | hubofhubs/recall/vector_assembler.py |  |
+| `act-in-the-world:subprocess_goal_runner` | unconfirmed: for Joshua to confirm. | hubofhubs/deep/subprocess_runner.py |  |
+| `act-in-the-world:stream_json_goal_runner` | unconfirmed: for Joshua to confirm. | hubofhubs/deep/stream_runner.py |  |
+| `act-in-the-world:acp_deep_runner` | unconfirmed: for Joshua to confirm. | hubofhubs/deep/acp_runner.py |  |
 
 ## Metrics
 

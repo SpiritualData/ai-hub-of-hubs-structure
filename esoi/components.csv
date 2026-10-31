@@ -10,3 +10,4 @@ hub-recall,core,hubofhubs/recall/*.py;tests/test_recall_*.py,unconfirmed: for Jo
 hub-critique,core,hubofhubs/critique/*.py;tests/test_critique_*.py,unconfirmed: for Joshua to confirm.,think-critically
 hub-act,core,hubofhubs/act/*.py;tests/test_act_*.py;tests/act_support.py,unconfirmed: for Joshua to confirm.,act-in-the-world
 hub-science,core,hubofhubs/science/*.py;tests/test_science_*.py;tests/fixtures/*,unconfirmed: for Joshua to confirm.,know-the-world
+hub-deep,core,hubofhubs/deep/*.py;tests/test_deep_*.py,unconfirmed: for Joshua to confirm.,act-in-the-world
