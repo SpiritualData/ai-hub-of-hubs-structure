@@ -108,3 +108,29 @@ def test_a_missing_library_raises_with_the_hubs_install_hint(monkeypatch, tmp_pa
 
 def test_an_empty_root_assembles_nothing_and_never_raises(store_class, tmp_path):
     assert store_class(root=str(tmp_path)).assemble("anything").card_ids == []
+
+
+def test_analyzer_defaults_keep_tokens_and_english_stems_and_drops_stop_words(tmp_path, monkeypatch):
+    import sys
+    import types
+    seen = []
+
+    class Recording(FakeBM25):
+        pass
+
+    fake = types.ModuleType("bm25s")
+    fake.BM25 = Recording
+    fake.tokenize = lambda texts, stopwords=None, stemmer=None: seen.append((stopwords, stemmer)) or [text.split() for text in texts]
+    monkeypatch.setitem(sys.modules, "bm25s", fake)
+    stemmer_module = types.ModuleType("Stemmer")
+    stemmer_module.Stemmer = lambda language: ("stemmer", language)
+    monkeypatch.setitem(sys.modules, "Stemmer", stemmer_module)
+    from hubofhubs.recall.bm25_store import BM25ContentStore
+    (tmp_path / "a.md").write_text("running abstracts\n")
+    BM25ContentStore(root=str(tmp_path)).assemble("running")
+    assert set(seen) == {(None, None)}
+    seen.clear()
+    BM25ContentStore(root=str(tmp_path), analyzer="english").assemble("running")
+    assert set(seen) == {("en", ("stemmer", "english"))}
+    with pytest.raises(ValueError):
+        BM25ContentStore(root=str(tmp_path), analyzer="french")

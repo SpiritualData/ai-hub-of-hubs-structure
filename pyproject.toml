@@ -23,7 +23,7 @@ pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both option
 qdrant = ["qdrant-client", "fastembed"]   # remember-and-recall: the Qdrant vector store (embedded or server) and its local default embedder
 voyage = ["voyageai"]                # remember-and-recall: the Voyage AI embedder factory
 acp = ["agent-client-protocol"]      # act-in-the-world arm: the Agent Client Protocol deep runner (imported inside one function)
-bm25 = ["bm25s"]                     # remember-and-recall: the BM25 content store
+bm25 = ["bm25s", "PyStemmer"]                     # remember-and-recall: the BM25 content store
 
 [tool.setuptools]
 packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.deep", "hubofhubs.models", "hubofhubs.orchestrate", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.science", "hubofhubs.websearch"]

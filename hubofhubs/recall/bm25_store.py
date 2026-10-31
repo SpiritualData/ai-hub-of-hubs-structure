@@ -195,6 +195,11 @@ class BM25ContentStore(ContextAssemblerBase):
         the root's ``.gitignore``.
     query_prompt:
         ``(num_queries, task_text) -> prompt`` for the query-generation step; the default is ``QUERY_TEMPLATE``.
+    analyzer:
+        How words are normalised before indexing and searching. ``""`` (the default) keeps every token as written (lower case,
+        letters and digits only): the right choice for code and identifiers. ``"english"`` drops English stop words and stems with the
+        Snowball English stemmer, the analysis public BM25 baselines use for prose (needs the ``PyStemmer`` package, part of the
+        ``bm25`` extra). Any other value raises ``ValueError``.
 
     Raises
     ------
@@ -215,6 +220,7 @@ class BM25ContentStore(ContextAssemblerBase):
         confidence_threshold: float = 0.0,
         skip_dirs: Optional[Callable[[Path], Set[str]]] = None,
         query_prompt: Optional[Callable[[int, str], str]] = None,
+        analyzer: str = "",
     ) -> None:
         # Lazy-import bm25s so the package stays importable without the extra.
         try:
@@ -225,6 +231,19 @@ class BM25ContentStore(ContextAssemblerBase):
                 "BM25ContentStore requires the 'bm25s' package. "
                 "Install it with: pip install 'hubofhubs[bm25]'"
             ) from exc
+
+        if analyzer not in ("", "english"):
+            raise ValueError(f"analyzer must be '' or 'english', not {analyzer!r}")
+        self._analysis: Dict[str, Any] = dict(stopwords=None, stemmer=None)
+        if analyzer == "english":
+            try:
+                import Stemmer
+            except ImportError as exc:
+                raise ImportError(
+                    "BM25ContentStore(analyzer='english') requires the 'PyStemmer' package. "
+                    "Install it with: pip install 'hubofhubs[bm25]'"
+                ) from exc
+            self._analysis = dict(stopwords="en", stemmer=Stemmer.Stemmer("english"))
 
         self._root = Path(root).resolve()
         self._index_dir = Path(index_dir).resolve() if index_dir else None
@@ -320,8 +339,7 @@ class BM25ContentStore(ContextAssemblerBase):
         retriever = self._bm25s.BM25()
         corpus_tokens = self._bm25s.tokenize(
             [" ".join(toks) for toks in tokenized],
-            stopwords=None,
-            stemmer=None,
+            **self._analysis,
         )
         retriever.index(corpus_tokens)
 
@@ -411,8 +429,7 @@ class BM25ContentStore(ContextAssemblerBase):
         retriever = self._bm25s.BM25()
         corpus_tokens = self._bm25s.tokenize(
             [" ".join(toks) for toks in tokenized],
-            stopwords=None,
-            stemmer=None,
+            **self._analysis,
         )
         retriever.index(corpus_tokens)
 
@@ -458,8 +475,7 @@ class BM25ContentStore(ContextAssemblerBase):
 
             query_tokens = self._bm25s.tokenize(
                 [query],
-                stopwords=None,
-                stemmer=None,
+                **self._analysis,
             )
             results, scores = self._bm25_index.retrieve(
                 query_tokens,

@@ -107,7 +107,7 @@ def adapt(implementation, meter):
     data = dataset()
     corpus, queries = data["corpus"], data["queries"]
     docs, qdrant = build_store(corpus)
-    arm = implementation.__name__
+    arm = getattr(implementation, "func", implementation).__name__   # a variant (name@key=value) arrives as a partial
     from hubofhubs.recall.bm25_store import BM25ContentStore
     from hubofhubs.recall.vector_assembler import VectorContextAssembler
 
@@ -118,7 +118,7 @@ def adapt(implementation, meter):
         return VectorContextAssembler(vector_store(corpus, qdrant), top_k=HITS, max_in_view=HITS)
 
     if arm == "BM25ContentStore":
-        assembler = bm25()
+        assembler = implementation(root=str(docs), top_k=HITS, max_in_view=HITS)
     elif arm == "VectorContextAssembler":
         assembler = vector()
     elif arm == "HybridContextAssembler":

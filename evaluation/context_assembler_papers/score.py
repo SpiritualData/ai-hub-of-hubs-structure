@@ -135,7 +135,7 @@ def adapt(implementation, meter, cases=None):
         raise RuntimeError("corpus_ids.json and the pulled sample differ in size")
     position = {ident: n for n, ident in enumerate(ids)}
     vectors, tokens = query_vectors([c["query"] for c in cases])
-    arm = implementation.__name__
+    arm = getattr(implementation, "func", implementation).__name__   # a variant (name@key=value) arrives as a partial
     uses_vectors = arm != "BM25ContentStore"
     if uses_vectors:   # every arm that searches vectors is charged the queries' embedding
         meter.model = QUERY_MODEL
@@ -164,7 +164,7 @@ def adapt(implementation, meter, cases=None):
         return VectorContextAssembler(store, top_k=HITS, max_in_view=HITS)
 
     if arm == "BM25ContentStore":
-        assembler = bm25()
+        assembler = implementation(root=str(docs), top_k=HITS, max_in_view=HITS)
     elif arm == "VectorContextAssembler":
         assembler = vector()
     elif arm == "HybridContextAssembler":
