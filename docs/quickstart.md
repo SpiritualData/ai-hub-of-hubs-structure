@@ -51,3 +51,13 @@ What to know:
   (`searxng`, `serper`, `brave`, `tavily`, `gemini`, `provider`; extras `web`, `gemini`); none is selected by default, so name one or provide your own.
 - A name is lower-case letters, digits, `_` and `-`. A value with `:` or `.` is refused before anything is imported.
 - The hub reads no environment. Settings (`options`, `selections`, `selection_environ`) are fields of `AssemblyConfig`.
+
+## The one line
+
+```python
+import hubofhubs
+system = hubofhubs.assemble()                                   # every seat with a selected arm; system.pending says what the rest need
+system = hubofhubs.assemble(options={"card-store": {"repository": my_repository}}, arms={"card-store": "my-list-store"})   # override only what differs
+```
+
+`system.pending` maps each seat that could not be built to one line saying what to pass: `arms={seat: <arm>}`, `options={seat: {argument: ...}}` or `provided={seat: <your object>}`. The hub reads no environment.

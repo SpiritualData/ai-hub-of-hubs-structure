@@ -31,6 +31,13 @@ the solution's own approach and out_of_scope wording, not a new field. A seat wi
 `selected` is empty and the usage note says so. A default-install arm may use an external seat only if that seat has a
 default arm or is consumer-provided.
 
+**Zero configuration.** `hubofhubs.assemble()` with no arguments builds every seat whose selected arm needs nothing from the
+consumer and puts the rest in `result.pending`, one line per seat saying what to pass (`arms`, `options` or `provided`); it raises
+only for an unknown name or a cycle. A consumer names only what differs: `assemble(arms={seat: arm}, options={seat: {...}},
+provided={seat: object})`. Passing an `AssemblyConfig` stays the strict form. The mechanic is `esoi.assemble.Assembler.assemble_defaults`;
+the hub only supplies its scope. Today the seats with a selected arm are `card-store` and `reason-and-answer`; every other seat is
+reported as pending until a metric selects an arm or the consumer provides an object.
+
 **Cascade (QAR's, unchanged).** Explicit name, then the consumer's selections, then the hub default (`selected` in the
 records, or the packaged snapshot in an installed copy). A name that a layer supplies but is unknown is an error, never a
 fall-through. Consumers register into scope `hubofhubs` under names they own; the hub wrapper refuses `replace` of a

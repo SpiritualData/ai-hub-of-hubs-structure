@@ -19,3 +19,11 @@ def test_the_quickstart_runs_and_prints_the_reasons():
     assert lines[1].startswith("card-store -> my-list-store (layer: consumer selections, package version ")
     assert lines[2].startswith("card-store -> local_card_store (layer: hubofhubs default, package version ")
     assert not re.search(r"quest|qar", code, re.I)
+
+
+def test_the_one_line_section_is_true():
+    import hubofhubs
+    text = (ROOT / "docs" / "quickstart.md").read_text()
+    assert "hubofhubs.assemble()" in text and "arms=" in text
+    system = hubofhubs.assemble()
+    assert "card-store" in system and "model-call" in system.pending

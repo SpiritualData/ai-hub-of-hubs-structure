@@ -4,8 +4,23 @@ library's (``esoi/docs/explanation/what-belongs-where.md``); the seats are in ``
 """
 from pathlib import Path
 
-from esoi.assemble import Assembler
+from esoi.assemble import Assembler, AssemblyConfig
 
 SCOPE = "hubofhubs"
 HUB = Assembler(SCOPE, Path(__file__).resolve().parent, modules=(f"{SCOPE}.seats",))
-assemble, choice, names, register, resolve = HUB.assemble, HUB.choice, HUB.names, HUB.register, HUB.resolve
+choice, names, register, resolve = HUB.choice, HUB.names, HUB.register, HUB.resolve
+
+
+def assemble(config=None, provided=None, *, arms=None, options=None):
+    """The hub's one-line assembly.
+
+    ``assemble()`` builds every seat whose selected arm needs nothing from the consumer and lists the others in
+    ``result.pending`` (one line each saying what to pass); it raises only for a name that does not exist or a cycle. A consumer
+    names only what differs: ``arms={seat: arm name}``, ``options={seat: {argument: value}}``, ``provided={seat: object}``.
+    Passing an ``AssemblyConfig`` as ``config`` is the strict form: exactly its ``solutions`` are built and an unmet need raises.
+    """
+    if config is not None:
+        if arms or options:
+            raise TypeError("pass either an AssemblyConfig or arms/options, not both")
+        return HUB.assemble(config, provided)
+    return HUB.assemble_defaults(AssemblyConfig(selections=dict(arms or {}), options=dict(options or {})), provided)

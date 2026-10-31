@@ -32,3 +32,22 @@ def test_a_consumer_selection_beats_the_hub_default_and_two_consumers_do_not_see
 def test_the_hub_default_builds_without_a_consumer():
     system = assemble(AssemblyConfig(solutions=(SEAT,)))
     assert type(system[SEAT]).__name__ == "TierSelector" and "layer: hubofhubs default" in system.reasons[0]
+
+
+def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
+    system = assemble()
+    assert system.solutions() == ["card-store", "reason-and-answer"]
+    assert all(line.startswith(seat + ":") for seat, line in system.pending.items())
+    assert "no selected arm; pass arms=" in system.pending["search-backend"]
+    assert "pass provided=" in system.pending["model-call"]
+
+
+def test_assemble_overrides_name_only_what_differs():
+    register("card-store", "other-store", type("OtherStore", (), {"__init__": lambda self, repository: None}))
+    system = assemble(arms={"card-store": "other-store"}, options={"card-store": {"repository": 1}})
+    assert type(system["card-store"]).__name__ == "OtherStore" and "card-store" not in system.pending
+    assert "card-store" in assemble(arms={"card-store": "other-store"}).pending
+    mine = object.__new__(type("Mine", (), {"add": 0, "get": 0, "search": 0, "delete": 0, "count": 0}))
+    assert assemble(provided={"card-store": mine})["card-store"] is mine
+    with pytest.raises(TypeError):
+        assemble(AssemblyConfig(), arms={"card-store": "x"})
