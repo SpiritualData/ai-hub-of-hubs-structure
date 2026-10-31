@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from priced import first_env, price_of, priced  # noqa: E402
 
-MODEL = "gemini-3.1-flash-lite"
+MODEL = "gemini-2.5-flash-lite"
 
 PROMPT = """\
 You are a quiet overseer watching an AI assistant work through a request. You read a short digest of the run and send exactly one
@@ -44,13 +44,7 @@ def make_provider(meter):
     """The Gemini arm over the cheapest Gemini model, priced from the registry; the meter counts its calls, tokens and dollars."""
     from hubofhubs.models.gemini import GeminiProvider
 
-    class Counting(priced(GeminiProvider, price_of("gemini", MODEL))):
-        def request(self, model, contents, config=None, reasoning=None):
-            response = super().request(model, contents, config, reasoning)
-            self.tokens_out += getattr(getattr(response, "usage_metadata", None), "thoughts_token_count", 0) or 0   # thinking is billed as output
-            return response
-
-    provider = Counting(api_key=first_env("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"))
+    provider = priced(GeminiProvider, price_of("gemini", MODEL))(api_key=first_env("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"))
     meter.model = MODEL
     return meter.wrap(provider, ("plan",))
 

@@ -27,4 +27,10 @@ def priced(base, price):
         @property
         def cost_usd(self):
             return 0.0 if price is None else (self.tokens_in * price[0] + self.tokens_out * price[1]) / 1_000_000
+
+        if hasattr(base, "request"):
+            def request(self, model, contents, config=None, reasoning=None):
+                response = super().request(model, contents, config, reasoning)
+                self.tokens_out += getattr(getattr(response, "usage_metadata", None), "thoughts_token_count", 0) or 0   # thinking is billed as output
+                return response
     return Priced

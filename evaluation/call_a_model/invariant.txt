@@ -1,0 +1,1 @@
+The vendor arms are complementary, not rivals for this seat: the router uses all of them, and which vendor serves a tier is a circumstance of the tier-selection seat (hubofhubs/tiers.py), not a choice of one vendor for the whole seat. This component records quality and cost per vendor at its cheapest current model, as evidence for that choice, and does not rank them.

@@ -3,6 +3,9 @@ anthropic,claude-haiku-5-5,0.10,0.50,USD,,,,https://platform.claude.com/docs/en/
 anthropic,claude-haiku-5-5,0.50,2.50,USD,100000,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
 anthropic,claude-sonnet-5-5,2,10,USD,,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
 anthropic,claude-opus-5-5,4,20,USD,,,,https://platform.claude.com/docs/en/about-claude/pricing,2026-10-30
-gemini,gemini-3.1-flash-lite,0.25,1.50,USD,,,,https://ai.google.dev/gemini-api/docs/pricing,2026-10-30
+gemini,gemini-3.1-flash-lite,0.25,1.50,USD,,,,https://ai.google.dev/gemini-api/docs/pricing,2026-10-31
 gemini,gemini-3.6-flash,0.75,3.75,USD,,,2026-12-31,https://ai.google.dev/gemini-api/docs/pricing,2026-10-30
 gemini,gemini-3.6-flash,1.50,7.50,USD,,2027-01-01,,https://ai.google.dev/gemini-api/docs/pricing,2026-10-30
+gemini,gemini-2.5-flash-lite,0.10,0.40,USD,,,,https://ai.google.dev/gemini-api/docs/pricing,2026-10-31
+openai,gpt-5-nano,0.05,0.40,USD,,,,https://developers.openai.com/api/docs/pricing,2026-10-31
+deepseek,deepseek-flash,0.30,1.20,USD,,,,https://api-docs.deepseek.com/quick_start/pricing,2026-10-31
