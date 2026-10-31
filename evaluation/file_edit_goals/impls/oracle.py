@@ -1,4 +1,4 @@
-"""CHECK OF THE CHECK: writes the benchmark's reference solution, so every case must pass. No model call."""
+"""VALIDITY check of the check: writes the benchmark's reference solution, so every case must pass. No model call."""
 from pathlib import Path
 
 
