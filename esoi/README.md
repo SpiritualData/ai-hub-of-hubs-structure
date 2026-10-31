@@ -44,9 +44,9 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat |  | remember-and-recall metric (draft) |
 | `reason-and-answer` | reason-and-answer: the Mind seat |  | reason-and-answer metric (draft) |
 | `choose-a-model-tier` | choose-a-model-tier: pick the model for each tier | tier_selector | Tier choice by passing work per cost;Tier passing work per cost |
-| `know-the-world` | know-the-world: the Science seat | web_research | Research question finds its paper |
+| `know-the-world` | know-the-world: the Science seat | openalex_semantic_and_web | Research question finds its paper |
 | `think-critically` | think-critically: the Critical thinking seat |  | think-critically metric (draft) |
-| `act-in-the-world` | act-in-the-world: the Body seat |  | Goal met by its own tests;unconfirmed: for Joshua to confirm. |
+| `act-in-the-world` | act-in-the-world: the Body seat | fast_edit | Goal met by its own tests;unconfirmed: for Joshua to confirm. |
 | `watch-for-risk` | watch-for-risk: the Overseer seat | overseer | Risky steps stopped, ordinary steps let through;unconfirmed: for Joshua to confirm. |
 | `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | Whole assembly;unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
 | `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
@@ -58,7 +58,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `model-call` | model-call: ask a model one question | via_call_a_model | Model call answers for the tier |
 | `search-backend` | search-backend: run one web search | gemini | Search finds the source |
 | `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | multi_provider | Provider failover and vendor answers |
-| `context-assembler` | context-assembler: pick the context a task needs |  | Relevant passage in the top five |
+| `context-assembler` | context-assembler: pick the context a task needs | bm25 | Relevant passage in the top five |
 
 ## Implementations
 
@@ -106,9 +106,9 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-remember-and-recall`, remember-and-recall metric (draft): `none`
 - `metric-reason-and-answer`, reason-and-answer metric (draft): `none`
 - `metric-choose-a-model-tier`, Tier choice by passing work per cost: `esoi run reason_and_answer --impl tier_selector`
-- `metric-know-the-world`, Research question finds its paper: `esoi run know_the_world --impl web_research; esoi run know_the_world --impl openalex; esoi run know_the_world --impl openalex_semantic; esoi run know_the_world --impl openalex_keywords; esoi run know_the_world --impl openalex_keywords_model`
+- `metric-know-the-world`, Research question finds its paper: `esoi run know_the_world_150 --impl openalex_semantic_and_web; esoi run know_the_world_150 --impl openalex_semantic; esoi run know_the_world_150 --impl web_research; esoi run know_the_world_150 --impl openalex_semantic_and_web; esoi run know_the_world --impl web_research; esoi run know_the_world --impl openalex; esoi run know_the_world --impl openalex_semantic; esoi run know_the_world --impl openalex_keywords; esoi run know_the_world --impl openalex_keywords_model; esoi run know_the_world --impl openalex_semantic_and_web`
 - `metric-think-critically`, think-critically metric (draft): `none`
-- `metric-act-in-the-world`, Goal met by its own tests: `esoi run file_edit_goals --impl none; esoi run file_edit_goals --impl fast_edit; esoi run file_edit_goals --impl subprocess_goal_runner; esoi run file_edit_goals --impl stream_json_goal_runner; esoi run file_edit_goals --impl acp_deep_runner`
+- `metric-act-in-the-world`, Goal met by its own tests: `esoi run file_edit_goals --impl fast_edit; esoi run file_edit_goals --impl subprocess_goal_runner; esoi run file_edit_goals --impl stream_json_goal_runner; esoi run file_edit_goals --impl acp_deep_runner; esoi run file_edit_goals --impl none`
 - `metric-watch-for-risk`, Risky steps stopped, ordinary steps let through: `esoi run watch_for_risk --impl overseer; esoi run watch_for_risk --impl none; esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl two_stage; esoi run watch_for_risk_ambiguous --impl overseer; esoi run watch_for_risk_ambiguous --impl none; esoi run watch_for_risk_ambiguous --impl consent_gate; esoi run watch_for_risk_ambiguous --impl two_stage`
 - `metric-assemble-the-whole`, Whole assembly: `none`
 - `metric-stay-current`, stay-current metric (draft): `none`
@@ -122,7 +122,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-card-store`, Cards found again, none lost: `esoi run card_store --impl local_card_store`
 - `metric-model-call`, Model call answers for the tier: `esoi run model_call --impl via_call_a_model`
 - `metric-search-backend`, Search finds the source: `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`
-- `metric-context-assembler`, Relevant passage in the top five: `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite; esoi run context_assembler_papers --impl bm25; esoi run context_assembler_papers --impl vector; esoi run context_assembler_papers --impl hybrid; esoi run context_assembler_papers --impl composite`
+- `metric-context-assembler`, Relevant passage in the top five: `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite; esoi run context_assembler_papers --impl bm25; esoi run context_assembler_papers --impl vector; esoi run context_assembler_papers --impl hybrid; esoi run context_assembler_papers --impl composite; esoi run context_assembler_paraphrase --impl bm25; esoi run context_assembler_paraphrase --impl vector; esoi run context_assembler_paraphrase --impl hybrid; esoi run context_assembler_paraphrase --impl composite`
 - `metric-hub-jarvis-ness`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-hub-jarvis-floor-consent`, unconfirmed: for Joshua to confirm.: `none`
 - `metric-hub-jarvis-floor-honesty`, unconfirmed: for Joshua to confirm.: `none`
@@ -131,4 +131,4 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-guard-marginal-value-over-native-and-harness`, unconfirmed: for Joshua to confirm.: `python3 -m pytest tests/test_risk.py`
 - `metric-harness-context-subagents-recursion-ranked`, unconfirmed: for Joshua to confirm.: `python3 -m pytest tests/test_deep_session_subagents.py`
 - `metric-integration-served-by-combined-hubs`, unconfirmed: for Joshua to confirm.: `none`
-- `metric-call-a-model`, Provider failover and vendor answers: `esoi run provider_failover --impl multi_provider; esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek`
+- `metric-call-a-model`, Provider failover and vendor answers: `esoi run provider_failover --impl multi_provider; esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`

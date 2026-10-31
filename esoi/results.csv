@@ -139,3 +139,6 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-10-31,provider_failover,single_provider,30,12,12/30,0/0,0,0,0,0.0,0.0,,6aa4ec7,da53231a,,none,
 2026-10-31,context_assembler,bm25,323,200,200/323,0/0,0,0,0,0.0,102.4,,6aa4ec7,e09fd8ba,,none,ndcg_at_10=0.3065; recall_at_10=0.1455
 2026-10-31,context_assembler,bm25@analyzer=english,323,208,208/323,0/0,0,0,0,0.0,103.0,,6aa4ec7,e09fd8ba,,none,ndcg_at_10=0.3211; recall_at_10=0.1471
+2026-10-31,know_the_world_150,openalex_semantic,150,52,52/150,0/0,0,0,0,0.0,299.3,,6a10cb8,cee80874,,none,
+2026-10-31,know_the_world_150,web_research,150,18,18/150,0/0,150,7663,29467,0.0126,384.6,,6a10cb8,cee80874,,gemini-2.5-flash-lite,
+2026-10-31,know_the_world_150,openalex_semantic_and_web,150,49,49/150,0/0,150,7663,30135,0.0128,559.2,,6a10cb8,cee80874,,gemini-2.5-flash-lite,
