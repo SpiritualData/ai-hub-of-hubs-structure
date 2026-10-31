@@ -36,10 +36,10 @@ def test_the_hub_default_builds_without_a_consumer():
 
 def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
     system = assemble()
-    assert system.solutions() == ["card-store", "reason-and-answer"]
-    assert all(line.startswith(seat + ":") for seat, line in system.pending.items())
+    assert sorted(system.solutions()) == ["card-store", "connect-any-integration", "reason-and-answer", "stay-current"]
+    assert all(line.startswith(seat + ":") or line.startswith(seat + " (") for seat, line in system.pending.items())
     assert "no selected arm; pass arms=" in system.pending["search-backend"]
-    assert "via_call_a_model" in system.pending["model-call"]
+    assert system.pending["model-call"] == "model-call (via_call_a_model): needs call-a-model; see those lines"
 
 
 def test_assemble_overrides_name_only_what_differs():

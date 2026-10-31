@@ -55,9 +55,18 @@ What to know:
 ## The one line
 
 ```python
+import os
 import hubofhubs
-system = hubofhubs.assemble()                                   # every seat with a selected arm; system.pending says what the rest need
-system = hubofhubs.assemble(options={"card-store": {"repository": my_repository}}, arms={"card-store": "my-list-store"})   # override only what differs
+system = hubofhubs.assemble(environ=os.environ)      # every seat with a selected arm; system.pending says what the rest need
+system = hubofhubs.assemble(environ=os.environ, arms={"call-a-model": "anthropic"}, options={"card-store": {"path": "cards.db"}})   # only what differs
 ```
 
-`system.pending` maps each seat that could not be built to one line saying what to pass: `arms={seat: <arm>}`, `options={seat: {argument: ...}}` or `provided={seat: <your object>}`. The hub reads no environment.
+`assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `card-store`, `reason-and-answer`,
+`stay-current` and `connect-any-integration`; the other seats are in `system.pending`, one line each saying what to pass:
+`arms={seat: <arm>}` where no arm is selected yet (several arms await the measurement of their seat), `options={seat: {argument: ...}}`,
+`provided={seat: <your object>}`, or the variable to set (`set ANTHROPIC_API_KEY (option 'api_key')`).
+
+`environ` is a mapping you hand over; the hub reads no environment itself. An arm declares as data which of its options come from
+which variable (`ENVIRON = {"api_key": "ANTHROPIC_API_KEY"}` on the arm), `options` always win over it, and the reason line names
+the variables used, never their values. `model-call` has the arm `via_call_a_model`, selected by its metric: it asks whichever
+`call-a-model` arm you choose, so `arms={"call-a-model": "anthropic"}` plus `ANTHROPIC_API_KEY` in `environ` gives both.

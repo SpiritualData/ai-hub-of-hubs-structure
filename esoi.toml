@@ -9,6 +9,9 @@ max_lines = 1500
 # make a result stale; docs are not code.
 evaluation_dir = "evaluation"
 results = "esoi/results.csv"
+# The coverage of the whole assembly is recorded by `esoi run assemble_the_whole --impl zero_config --record`; the solution has no arm to select, so it is a shared
+# evaluation folder and not the command of a metric.
+shared_eval_dirs = ["__pycache__", "assemble_the_whole"]
 code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md"]
 
 [records]

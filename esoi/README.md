@@ -48,11 +48,11 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `act-in-the-world` | act-in-the-world: the Body seat |  | act-in-the-world metric (draft);unconfirmed: for Joshua to confirm. |
 | `watch-for-risk` | watch-for-risk: the Overseer seat |  | watch-for-risk metric (draft);unconfirmed: for Joshua to confirm. |
 | `assemble-the-whole` | assemble-the-whole: the The whole being seat |  | assemble-the-whole metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
-| `stay-current` | stay-current: the Learning seat |  | stay-current metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
+| `stay-current` | stay-current: the Learning seat | registry_scan | stay-current metric (draft);unconfirmed: for Joshua to confirm.;unconfirmed: for Joshua to confirm. |
 | `keep-it-generic` | keep-it-generic: the Character seat |  | keep-it-generic metric (draft) |
-| `connect-any-integration` | connect-any-integration: the Hands seat |  | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft);unconfirmed: for Joshua to confirm. |
+| `connect-any-integration` | connect-any-integration: the Hands seat | hub_of_hubs_scorer | integration-added-with-zero-code (draft);integration-availability-lag (draft);integration-credential-isolation (draft);unconfirmed: for Joshua to confirm. |
 | `card-store` | card-store: a place to keep and find cards | local_card_store | card-store metric (draft) |
-| `model-call` | model-call: ask a model one question |  | model-call metric (draft) |
+| `model-call` | model-call: ask a model one question | via_call_a_model | model-call metric (draft) |
 | `search-backend` | search-backend: run one search |  | search-backend metric (draft) |
 | `call-a-model` | unconfirmed: for Joshua to confirm. |  | model-call metric (draft) |
 | `context-assembler` | unconfirmed: for Joshua to confirm. |  | unconfirmed: for Joshua to confirm. |
@@ -100,7 +100,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 - `metric-think-critically`, think-critically metric (draft): `none`
 - `metric-act-in-the-world`, act-in-the-world metric (draft): `none`
 - `metric-watch-for-risk`, watch-for-risk metric (draft): `none`
-- `metric-assemble-the-whole`, assemble-the-whole metric (draft): `esoi run assemble_the_whole --impl zero_config`
+- `metric-assemble-the-whole`, assemble-the-whole metric (draft): `none`
 - `metric-stay-current`, stay-current metric (draft): `esoi run stay_current --impl registry_scan`
 - `metric-keep-it-generic`, keep-it-generic metric (draft): `none`
 - `metric-integration-added-with-zero-code`, integration-added-with-zero-code (draft): `esoi run connect_any_integration --impl hub_of_hubs_scorer`

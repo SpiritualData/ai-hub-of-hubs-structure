@@ -55,13 +55,17 @@ def test_uses_solution_ids_equals_the_constructor_parameters_and_the_graph_is_so
 
 def test_external_seats_are_consumer_provided_and_have_no_default():
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    for sid in ("model-call", "search-backend"):
-        assert {"external", "consumer-provided"} <= set(registry.split(by[sid]["tags"])) and by[sid]["selected"] == ""
+    assert {"external", "consumer-provided"} <= set(registry.split(by["search-backend"]["tags"])) and by["search-backend"]["selected"] == ""
+    # model-call is external but the hub ships an arm over call-a-model, which is the consumer-provided seat it needs
+    assert "external" in registry.split(by["model-call"]["tags"]) and by["model-call"]["selected"] == "via_call_a_model"
+    assert "consumer-provided" in registry.split(by["call-a-model"]["tags"])
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
-    system = assemble(AssemblyConfig())
-    assert system.solutions() == ["card-store", "reason-and-answer"]   # the other two arms have no measured default
+    system = assemble(AssemblyConfig(solutions=("card-store", "reason-and-answer", "stay-current", "connect-any-integration")))
+    assert system.solutions() == ["card-store", "reason-and-answer", "stay-current", "connect-any-integration"]
+    with pytest.raises(AssemblyError, match="model-call .via_call_a_model. needs call-a-model: no arm, not provided"):
+        assemble(AssemblyConfig())      # the strict form refuses a selected arm whose need is unmet
     assert isinstance(system["card-store"], LocalCardStore)
 
 
@@ -82,7 +86,7 @@ def test_a_consumer_provided_card_store_wins():
 
 
 def test_external_seats_fail_at_startup_unless_provided():
-    for sid in ("model-call", "search-backend"):
+    for sid in ("call-a-model", "search-backend"):
         with pytest.raises(AssemblyError, match=f"{sid}: no arm, not provided"):
             assemble(AssemblyConfig(solutions=(sid,)))
 

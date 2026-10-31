@@ -26,7 +26,7 @@
   }
  },
  "connect-any-integration": {
-  "default": "",
+  "default": "hub_of_hubs_scorer",
   "modules": {
    "hub_of_hubs_scorer": "hubofhubs.measure"
   }
@@ -48,7 +48,7 @@
   }
  },
  "model-call": {
-  "default": "",
+  "default": "via_call_a_model",
   "modules": {
    "via_call_a_model": "hubofhubs.models.via_provider"
   }
@@ -71,7 +71,7 @@
   }
  },
  "stay-current": {
-  "default": "",
+  "default": "registry_scan",
   "modules": {
    "registry_scan": "hubofhubs.registry"
   }
