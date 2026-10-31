@@ -1,1802 +1,2102 @@
 [
  {
   "id": "q-001",
-  "position": 1252,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1080/0142159x.2021.1958174",
+  "query": "Silver linings: A thematic analysis of case studies describing advances in health professions education during the COVID-19 pandemic."
  },
  {
   "id": "q-002",
-  "position": 990,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1074/jbc.m300596200",
+  "query": "DEC1 negatively regulates the expression of DEC2 through binding to the E-box in the proximal promoter."
  },
  {
   "id": "q-003",
-  "position": 1538,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1021/ac0261449",
+  "query": "Autonomous microfluidic capillary system."
  },
  {
   "id": "q-004",
-  "position": 298,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1001/jamahealthforum.2022.3013",
+  "query": "Receipt of Out-of-State Telemedicine Visits Among Medicare Beneficiaries During the COVID-19 Pandemic."
  },
  {
   "id": "q-005",
-  "position": 2099,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:23493044",
+  "query": "Constructing inexpensive, flexible, and versatile microdialysis probes in an undergraduate microdialysis research lab."
  },
  {
   "id": "q-006",
-  "position": 167,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:21117447",
+  "query": "Neo-regeneration of urinary bladder: a desired metaplasia of autologous membrane from rectosigmoid colon containing stem cells of intestinal crypts."
  },
  {
   "id": "q-007",
-  "position": 854,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1073/pnas.82.15.5083",
+  "query": "Inheritance, organization, and mapping of rbcS and cab multigene families in pea."
  },
  {
   "id": "q-008",
-  "position": 1012,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1088/0031-9155/37/10/002",
+  "query": "Optimization of the electric field distribution in a large volume tissue-equivalent proportional counter."
  },
  {
   "id": "q-009",
-  "position": 1949,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1371/journal.pntd.0011956",
+  "query": "Identification of a potent and selective LAPTc inhibitor by RapidFire-Mass Spectrometry, with antichagasic activity."
  },
  {
   "id": "q-010",
-  "position": 905,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/s0167-4838(00)00246-6",
+  "query": "Glucose isomerase: insights into protein engineering for increased thermostability."
  },
  {
   "id": "q-011",
-  "position": 2585,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1128/jcm.02510-20",
+  "query": "Detection of SARS-CoV-2 Antibodies in Oral Fluid Obtained Using a Rapid Collection Device."
  },
  {
   "id": "q-012",
-  "position": 649,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/bf00685095",
+  "query": "Antitumor activity of treosulfan against human breast carcinomas."
  },
  {
   "id": "q-013",
-  "position": 441,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1097/nmd.0000000000000636",
+  "query": "Expressed Emotion and Attributions in Relatives of Patients With Obsessive-Compulsive Disorder and Panic Disorder."
  },
  {
   "id": "q-014",
-  "position": 2348,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1177/0194599815620174",
+  "query": "Grant-Writing Pearls and Pitfalls: Maximizing Funding Opportunities."
  },
  {
   "id": "q-015",
-  "position": 2403,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1212/01.wnl.0000314832.24682.c6",
+  "query": "CNS aquaporin-4 autoimmunity in children."
  },
  {
   "id": "q-016",
-  "position": 133,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/167395",
+  "query": "The influence of landscape and environmental factors on ranavirus epidemiology in amphibian assemblages"
  },
  {
   "id": "q-017",
-  "position": 1108,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:9004838",
+  "query": "[The role of surgery in the treatment of primary carcinoma of the gallbladder. Review of 86 cases]."
  },
  {
   "id": "q-018",
-  "position": 936,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1073/pnas.1406663111",
+  "query": "Predicting the outcomes of treatment to eradicate the latent reservoir\n  for HIV-1"
  },
  {
   "id": "q-019",
-  "position": 323,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1103/physrevlett.119.150501",
+  "query": "Unconstrained Capacities of Quantum Key Distribution and Entanglement\n  Distillation for Pure-Loss Bosonic Broadcast Channels"
  },
  {
   "id": "q-020",
-  "position": 937,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:2398091",
+  "query": "Management of fractures of the humerus in patients who have an injury of the ipsilateral brachial plexus."
  },
  {
   "id": "q-021",
-  "position": 2307,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1091/mbc.e20-08-0533",
+  "query": "Fibronectin fibril alignment is established upon initiation of extracellular matrix assembly."
  },
  {
   "id": "q-022",
-  "position": 1945,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3390/ma14174919",
+  "query": "Printable and Machinable Dental Restorative Composites for CAD/CAM Application-Comparison of Mechanical Properties, Fractographic, Texture and Fractal Dimension Analysis."
  },
  {
   "id": "q-023",
-  "position": 748,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.xcrm.2024.101577",
+  "query": "Structural basis of broad SARS-CoV-2 cross-neutralization by affinity-matured public antibodies."
  },
  {
   "id": "q-024",
-  "position": 1548,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.anai.2025.02.001",
+  "query": "Mannitol provocation enhances laryngoscopic diagnosis of suspected inducible laryngeal obstruction."
  },
  {
   "id": "q-025",
-  "position": 2749,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1074/jbc.c000135200",
+  "query": "Overexpression of a nuclear protein, TIEG, mimics transforming growth factor-beta action in human osteoblast cells."
  },
  {
   "id": "q-026",
-  "position": 1473,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1099/vir.0.82391-0",
+  "query": "Envelope-specific T-helper and cytotoxic T-lymphocyte responses associated with protective immunity to equine infectious anemia virus."
  },
  {
   "id": "q-027",
-  "position": 2513,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "arxiv:quant-ph/0609128",
+  "query": "Distributions of continuous-time quantum walks"
  },
  {
   "id": "q-028",
-  "position": 981,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/j.1540-8191.2001.tb01165.x",
+  "query": "Pedicled LIMA graft to the posterior coronary artery: which side to be anastomosed, dorsal or ventral?"
  },
  {
   "id": "q-029",
-  "position": 434,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/bf02886715",
+  "query": "Intrafamilial spread of hepatitis B virus infection. (Role of chronic hepatitis and of the hepatitis B e antigen)."
  },
  {
   "id": "q-030",
-  "position": 171,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3390/ijms19082194",
+  "query": "Pre-Harvest Treatment of Chitosan Oligosaccharides Improved Strawberry Fruit Quality."
  },
  {
   "id": "q-031",
-  "position": 1734,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:9005928",
+  "query": "Changes in the permeability and histologic findings of rabbit menisci after immobilization."
  },
  {
   "id": "q-032",
-  "position": 652,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.tig.2015.02.007",
+  "query": "Genes from scratch--the evolutionary fate of de novo genes."
  },
  {
   "id": "q-033",
-  "position": 2591,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/j.1749-6632.1991.tb24402.x",
+  "query": "Steroid chemistry and hormone controls during the hair follicle cycle."
  },
  {
   "id": "q-034",
-  "position": 1699,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:10135743",
+  "query": "Computer-assisted investigational drug information and testing mechanism for nurses."
  },
  {
   "id": "q-035",
-  "position": 2004,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/14651858.cd001005",
+  "query": "Limited (information only) patient education programs for adults with asthma."
  },
  {
   "id": "q-036",
-  "position": 2199,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1021/jp311898v",
+  "query": "Deep impact of the template on molecular weight, structure, and oxidation state of the formed polyaniline."
  },
  {
   "id": "q-037",
-  "position": 1358,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/s0140-6736(00)02149-8",
+  "query": "Epilepsy in elderly people."
  },
  {
   "id": "q-038",
-  "position": 1863,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1177/00220345000790110801",
+  "query": "Polymorphisms in the IL-1A gene are correlated with levels of interleukin-1alpha protein in gingival crevicular fluid of teeth with severe periodontal disease."
  },
  {
   "id": "q-039",
-  "position": 1489,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3390/plants10081724",
+  "query": "Biophenolic Profile Modulations in Olive Tissues as Affected by Manganese Nutrition."
  },
  {
   "id": "q-040",
-  "position": 1587,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1093/braincomms/fcab067",
+  "query": "Inhibitory control in children with tic disorder: aberrant fronto-parietal network activity and connectivity."
  },
  {
   "id": "q-041",
-  "position": 1529,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1177/2374289517716463",
+  "query": "Subarachnoid Hemorrhage Related to Ruptured Berry Aneurysm."
  },
  {
   "id": "q-042",
-  "position": 2656,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:1813198",
+  "query": "[A patient with lambda type light-chain disease associated with Crow-Fukase syndrome and autoimmune thrombocytopenia]."
  },
  {
   "id": "q-043",
-  "position": 1616,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1080/00365549850161593",
+  "query": "Arthritis due to mycobacterium fortuitum."
  },
  {
   "id": "q-044",
-  "position": 1506,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1159/000535898",
+  "query": "Rare Onset of Erdheim-Chester Disease in Children and Young Adults: A Case Series and Review of the Literature."
  },
  {
   "id": "q-045",
-  "position": 479,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.devcel.2007.07.008",
+  "query": "The nuclear life of nucleoporins."
  },
  {
   "id": "q-046",
-  "position": 2251,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1093/ndt/gfr438",
+  "query": "Does allograft failure impact school attendance in children? A NAPRTCS study."
  },
  {
   "id": "q-047",
-  "position": 2627,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3390/nu16091324",
+  "query": "Effects of a Low Dose of Orally Administered Creatine Monohydrate on Post-Fatigue Muscle Power in Young Soccer Players."
  },
  {
   "id": "q-048",
-  "position": 1031,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/s11999-012-2553-7",
+  "query": "Acetabular cup design influences deformational response in total hip arthroplasty."
  },
  {
   "id": "q-049",
-  "position": 760,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/2020.05.04.077180",
+  "query": "Highly accurate long-read HiFi sequencing data for five complex genomes"
  },
  {
   "id": "q-050",
-  "position": 178,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3390/foods12234332",
+  "query": "A Label-Free Aptasensor for Turn-On Fluorescent Detection of Aflatoxin B1 Based on an Aggregation-Induced-Emission-Active Probe and Single-Walled Carbon Nanohorns."
  },
  {
   "id": "q-051",
-  "position": 1776,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1152/jappl.1995.78.3.990",
+  "query": "Adenosine A2 receptors reverse ischemia-reperfusion lung injury independent of beta-receptors."
  },
  {
   "id": "q-052",
-  "position": 308,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/j.1349-7006.1997.tb00342.x",
+  "query": "Dose-dependent promoting effects of catechol on glandular stomach carcinogenesis in BALB/c mice initiated with N-methyl-N-nitrosourea."
  },
  {
   "id": "q-053",
-  "position": 1177,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1300/j069v11n02_06",
+  "query": "Crack cocaine: what constitutes state of the art treatment?"
  },
  {
   "id": "q-054",
-  "position": 1545,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1097/00003086-200101000-00030",
+  "query": "Use of blood culture vial specimens in intraoperative detection of infection."
  },
  {
   "id": "q-055",
-  "position": 474,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1046/j.1365-294x.2002.01605.x",
+  "query": "Evaluating the effects of historic bottleneck events: an assessment of microsatellite variability in the endangered, North Atlantic right whale."
  },
  {
   "id": "q-056",
-  "position": 2503,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:7020523",
+  "query": "Paracrystalline inclusions in Mycobacterium leprae."
  },
  {
   "id": "q-057",
-  "position": 978,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1063/1.4906119",
+  "query": "Density relaxation and particle motion characteristics in a non-ionic deep eutectic solvent (acetamide + urea): time-resolved fluorescence measurements and all-atom molecular dynamics simulations."
  },
  {
   "id": "q-058",
-  "position": 2688,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:9480087",
+  "query": "[Demonstration os isoagglutinins in intravenously applicable immunoglobulin preparations]."
  },
  {
   "id": "q-059",
-  "position": 799,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.4103/jfmpc.jfmpc_998_19",
+  "query": "Comparative evaluation of efficacy and latency of twin mix vs 2% lignocaine HCL with 1:80000 epinephrine in surgical removal of impacted mandibular third molar."
  },
  {
   "id": "q-060",
-  "position": 526,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3389/fonc.2024.1369829",
+  "query": "Transcatheter arterial perfusion chemotherapy combined with lipiodol chemoembolization for advanced colorectal cancer complicated by obstruction."
  },
  {
   "id": "q-061",
-  "position": 490,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:8982832",
+  "query": "Immunohistochemical study of amoeboid microglial cells in fetal rat brain."
  },
  {
   "id": "q-062",
-  "position": 2263,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/s10157-006-0455-2",
+  "query": "Expression of bone type 1 PTH receptor in rats with chronic renal failure."
  },
  {
   "id": "q-063",
-  "position": 820,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.biortech.2014.04.066",
+  "query": "Fermentation of lignocellulosic hydrolyzate using a submerged membrane bioreactor at high dilution rates."
  },
  {
   "id": "q-064",
-  "position": 344,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1038/s41467-021-25298-9",
+  "query": "A unified model of human hemoglobin switching through single-cell genome editing."
  },
  {
   "id": "q-065",
-  "position": 686,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1093/femsle/fny160",
+  "query": "Insights into the phylogeny of false-branching heterocytous cyanobacteria with the description of Scytonema pachmarhiense sp. nov. isolated from Pachmarhi Biosphere Reserve, India."
  },
  {
   "id": "q-066",
-  "position": 2101,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1103/physreva.67.014306",
+  "query": "Spin-based quantum information processing with semiconductor quantum\n  dots and cavity QED"
  },
  {
   "id": "q-067",
-  "position": 1007,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:21786690",
+  "query": "[Induction-resonance energy transfer between the terbium-binding peptide and the red fluorescent proteins Dsred2 and TagRFP]."
  },
  {
   "id": "q-068",
-  "position": 366,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1042/bj3120549",
+  "query": "Antisense oligodeoxynucleotide inhibition of delta protein kinase C expression accelerates induced differentiation of murine erythroleukaemia cells."
  },
  {
   "id": "q-069",
-  "position": 76,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/jvim.14808",
+  "query": "Cell-Free DNA and DNase Activity in Dogs with Immune-Mediated Hemolytic Anemia."
  },
  {
   "id": "q-070",
-  "position": 1018,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1039/c5cp05119c",
+  "query": "On the energetics of cation ordering in tungsten-bronze-type oxides."
  },
  {
   "id": "q-071",
-  "position": 2614,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.bmcl.2013.06.095",
+  "query": "Native chemical ligation derived method for recombinant peptide/protein C-terminal amidation."
  },
  {
   "id": "q-072",
-  "position": 1519,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/adma.201803229",
+  "query": "Directional Acoustic Antennas Based on Valley-Hall Topological Insulators."
  },
  {
   "id": "q-073",
-  "position": 1646,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/s43441-025-00752-8",
+  "query": "Toward an Extensible Regulatory Framework for N-of-1 to N-of-Few Personalized RNA Therapy Design."
  },
  {
   "id": "q-074",
-  "position": 2165,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1055/s-2008-1034044",
+  "query": "[Congenital contractural arachnodactyly (CCA syndrome)--an autosomal dominant hereditary connective tissue disease]."
  },
  {
   "id": "q-075",
-  "position": 2265,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/2024.04.29.24306554",
+  "query": "A Tip Optofluidic Immunoassay System for COVID-19 Immuno-protection Evaluation Using Fingertip Blood"
  },
  {
   "id": "q-076",
-  "position": 913,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.3109/02688697.2011.580393",
+  "query": "Clipping of distal superior cerebellar artery aneurysm with preservation of the parent vessel: a case report."
  },
  {
   "id": "q-077",
-  "position": 358,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.urology.2007.01.091",
+  "query": "Innovative single-armed suture technique for microsurgical vasoepididymostomy."
  },
  {
   "id": "q-078",
-  "position": 1348,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.14219/jada.archive.1996.0101",
+  "query": "Diagnosing protracted submasseteric abscess: the role of computed tomography."
  },
  {
   "id": "q-079",
-  "position": 2335,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:21456462",
+  "query": "The 2010 updates for pediatric life support: how do they impact EMS? Low survival rates show there is room for improvement when it comes to prehospital pediatric arrest management."
  },
  {
   "id": "q-080",
-  "position": 2210,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/2023.07.24.550375",
+  "query": "Characterization of Pik1 function in fission yeast reveals its conserved role in lipid synthesis and not cytokinesis"
  },
  {
   "id": "q-081",
-  "position": 768,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1186/s12951-016-0195-8",
+  "query": "Application prospective of nanoprobes with MRI and FI dual-modality imaging on breast cancer stem cells in tumor."
  },
  {
   "id": "q-082",
-  "position": 893,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:4081987",
+  "query": "[Kidney lesions in dietary and toxic paroxysmal myoglobinuria (Iuksovsk-Sartlansk disease)]."
  },
  {
   "id": "q-083",
-  "position": 1874,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/978-1-4939-6707-0_4",
+  "query": "Fusarium Species and Their Associated Mycotoxins."
  },
  {
   "id": "q-084",
-  "position": 1801,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1053/j.ajkd.2011.06.007",
+  "query": "Living donor kidney transplantation in the United States--looking back, looking forward."
  },
  {
   "id": "q-085",
-  "position": 2588,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/2020.09.11.294017",
+  "query": "Treatment of the X chromosome in mapping multiple quantitative trait loci"
  },
  {
   "id": "q-086",
-  "position": 2660,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/pro.2109",
+  "query": "Designing redox potential-controlled protein switches based on mutually exclusive proteins."
  },
  {
   "id": "q-087",
-  "position": 2284,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/chem.201301553",
+  "query": "Tuning excited state isomerization dynamics through ground state structural changes in analogous ruthenium and osmium sulfoxide complexes."
  },
  {
   "id": "q-088",
-  "position": 542,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1128/jb.172.1.431-436.1990",
+  "query": "Escherichia coli ribosomal protein L10 is rapidly degraded when synthesized in excess of ribosomal protein L7/L12."
  },
  {
   "id": "q-089",
-  "position": 2056,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1177/112972980100200402",
+  "query": "Bridging to a high flow upper arm native fistula for hemodialysis with the LifeSite Hemodialysis Access System."
  },
  {
   "id": "q-090",
-  "position": 2362,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1037/a0023514",
+  "query": "A unique role of endogenous visual-spatial attention in rapid processing of multiple targets."
  },
  {
   "id": "q-091",
-  "position": 2397,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1097/scs.0000000000003749",
+  "query": "An Epithelioid Hemangioendothelioma of the Head and Neck."
  },
  {
   "id": "q-092",
-  "position": 222,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1021/jp062536y",
+  "query": "Gold and silver nanoparticles in sensing and imaging: sensitivity of plasmon response to size, shape, and metal composition."
  },
  {
   "id": "q-093",
-  "position": 1721,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/dar.13438",
+  "query": "Stigma towards dependent drinking and its role on caregiving burden: A qualitative study from Goa, India."
  },
  {
   "id": "q-094",
-  "position": 2845,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1038/nrrheum.2016.183",
+  "query": "Management of psoriatic arthritis in 2016: a comparison of EULAR and GRAPPA recommendations."
  },
  {
   "id": "q-095",
-  "position": 620,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1088/1361-6528/abb105",
+  "query": "Silicon-based PbS-CQDs infrared photodetector with high sensitivity and fast response."
  },
  {
   "id": "q-096",
-  "position": 251,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1038/s41590-024-02068-5",
+  "query": "The lactate receptor HCAR1 drives the recruitment of immunosuppressive PMN-MDSCs in colorectal cancer."
  },
  {
   "id": "q-097",
-  "position": 143,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1021/acs.jpcb.2c03806",
+  "query": "Computationally-Aided Modeling of Hsp70-Client Interactions: Past, Present, and Future."
  },
  {
   "id": "q-098",
-  "position": 232,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.12669/pjms.345.15356",
+  "query": "Role of various complete blood count parameters in predicting the success of single-dose Methotrexate in treating ectopic pregnancy."
  },
  {
   "id": "q-099",
-  "position": 2899,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/pld3.476",
+  "query": "A novel CLAVATA1 mutation causes multilocularity in"
  },
  {
   "id": "q-100",
-  "position": 406,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1371/journal.pone.0166286",
+  "query": "Social Norms Shift Preferences for Healthy and Unhealthy Foods."
  },
  {
   "id": "q-101",
-  "position": 7,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/adma.202208562",
+  "query": "Lightweight 3D Graphene Metamaterials with Tunable Negative Thermal Expansion."
  },
  {
   "id": "q-102",
-  "position": 2980,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1182/blood-2006-11-056291",
+  "query": "Treatment-related risk factors of inhibitor development in previously untreated patients with hemophilia A: the CANAL cohort study."
  },
  {
   "id": "q-103",
-  "position": 2707,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.2217/pmt.14.1",
+  "query": "Multipotent stromal cells for arthritic joint pain therapy and beyond."
  },
  {
   "id": "q-104",
-  "position": 269,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.2214/ajr.10.5514",
+  "query": "Feasibility of using single-slice MDCT to evaluate visceral abdominal fat in an urban pediatric population."
  },
  {
   "id": "q-105",
-  "position": 1163,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/978-1-0716-1186-9_34",
+  "query": "Chloroplast Isolation and Enrichment of Low-Abundance Proteins by Affinity Chromatography for Identification in Complex Proteomes."
  },
  {
   "id": "q-106",
-  "position": 811,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.plefa.2004.08.002",
+  "query": "Lower fetal status of docosahexaenoic acid, arachidonic acid and essential fatty acids is associated with less favorable neonatal neurological condition."
  },
  {
   "id": "q-107",
-  "position": 1521,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/14651858.cd000440",
+  "query": "Risperidone versus typical antipsychotic medication for schizophrenia."
  },
  {
   "id": "q-108",
-  "position": 2949,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/bs.3830410301",
+  "query": "Living systems theory as a paradigm for organizational behavior: understanding humans, organizations, and social processes."
  },
  {
   "id": "q-109",
-  "position": 2162,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1038/s41598-024-54201-x",
+  "query": "Comparative antioxidant activity and phytochemical content of five extracts of Pleurotus ostreatus (oyster mushroom)."
  },
  {
   "id": "q-110",
-  "position": 1471,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:7294758",
+  "query": "[Novobiocin adsorption on active charcoal]."
  },
  {
   "id": "q-111",
-  "position": 2738,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1039/c8sm01072b",
+  "query": "Correlation between grafted nanoparticle-matrix polymer interface wettability and slip in polymer nanocomposites."
  },
  {
   "id": "q-112",
-  "position": 2842,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1590/s0104-11692013000200023",
+  "query": "English in the nursing degree: a pending subject."
  },
  {
   "id": "q-113",
-  "position": 1186,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1080/00071668508416843",
+  "query": "Relationship between food consumption and energy and nitrogen utilisation by chicks given varying amounts of standard and leucine-, isoleucine- and valine-deficient diets."
  },
  {
   "id": "q-114",
-  "position": 819,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1645/ge-2558.1",
+  "query": "Prevalence of Toxoplasma gondii antibodies and DNA in dogs in Shanghai, China."
  },
  {
   "id": "q-115",
-  "position": 1220,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:3102177",
+  "query": "Effect of EGTA on phagocytosis of Salmonella typhimurium by human neutrophils."
  },
  {
   "id": "q-116",
-  "position": 948,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1097/bpb.0000000000000801",
+  "query": "Development of a method to produce a valid and reliable foot mask for plantar pressure evaluation in children with clubfoot."
  },
  {
   "id": "q-117",
-  "position": 2681,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/j.1095-8649.2010.02833.x",
+  "query": "The epidermal structure of Carassius gibelio: a link with ploidy status in spawning and postspawning periods."
  },
  {
   "id": "q-118",
-  "position": 2294,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1099/ijs.0.65271-0",
+  "query": "Hydrogenophaga bisanensis sp. nov., isolated from wastewater of a textile dye works."
  },
  {
   "id": "q-119",
-  "position": 1400,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1089/vbz.2015.1874",
+  "query": "The Driving of Immune Response by Th1 Adjuvants in Immunization of Mice with Trypanosoma cruzi marinkellei Elicits a Controversial Infection Control."
  },
  {
   "id": "q-120",
-  "position": 2490,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1017/s0950268800059082",
+  "query": "A foodborne outbreak of gastroenteritis involving Listeria monocytogenes."
  },
  {
   "id": "q-121",
-  "position": 1339,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/978-1-4939-6603-5_1",
+  "query": "Overview of Cell Synchronization."
  },
  {
   "id": "q-122",
-  "position": 719,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/ana.21104",
+  "query": "Selective neuronal damage and chronic hemodynamic cerebral ischemia."
  },
  {
   "id": "q-123",
-  "position": 1980,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/2022.01.18.476728",
+  "query": "Evolutionary PTEN Gene Divergence Underpins the Remodeling of Plant Vacuolar Compartments"
  },
  {
   "id": "q-124",
-  "position": 2876,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1088/2058-9565/ad80be",
+  "query": "Characterizing randomness in parameterized quantum circuits through\n  expressibility and average entanglement"
  },
  {
   "id": "q-125",
-  "position": 1886,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/j.1477-2574.2012.00439.x",
+  "query": "Meta-analysis of one- vs. two-stage laparoscopic/endoscopic management of common bile duct stones."
  },
  {
   "id": "q-126",
-  "position": 2147,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1080/09500340308234586",
+  "query": "Pancharatnam and Berry Phases in Three-Level Photonic Systems"
  },
  {
   "id": "q-127",
-  "position": 221,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1021/jm500416f",
+  "query": "64Cu-labeled somatostatin analogues conjugated with cross-bridged phosphonate-based chelators via strain-promoted click chemistry for PET imaging: in silico through in vivo studies."
  },
  {
   "id": "q-128",
-  "position": 209,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:7042419",
+  "query": "Microcarrier cultures in vascular endothelial research."
  },
  {
   "id": "q-129",
-  "position": 63,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1007/s15010-018-1174-9",
+  "query": "Dihydroartemisinin-piperaquine treatment failure in uncomplicated Plasmodium falciparum malaria case imported from Ethiopia."
  },
  {
   "id": "q-130",
-  "position": 1185,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/0167-5699(95)80167-7",
+  "query": "Molecular chaperones and the biosynthesis of antigen receptors."
  },
  {
   "id": "q-131",
-  "position": 2237,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/0378-1119(93)90224-q",
+  "query": "The cloning and sequencing of the genes encoding phytase (phy) and pH 2.5-optimum acid phosphatase (aph) from Aspergillus niger var. awamori."
  },
  {
   "id": "q-132",
-  "position": 2020,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1097/00001813-199110000-00010",
+  "query": "Biotransformation and in vitro activity of an arabinosylcytosine 5'-chloro-5'-deoxy analog."
  },
  {
   "id": "q-133",
-  "position": 2264,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/ced.15118",
+  "query": "Direct microscopy in the dermatology clinic: enhancing the management of skin infections and infestations."
  },
  {
   "id": "q-134",
-  "position": 2315,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1152/ajpheart.1997.273.2.h971",
+  "query": "Adenylyl cyclase isoforms and vasopressin enhancement of agonist-stimulated cAMP in vascular smooth muscle cells."
  },
  {
   "id": "q-135",
-  "position": 1123,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1103/physreva.96.013833",
+  "query": "Microwave-to-optical frequency conversion using a cesium atom coupled to\n  a superconducting resonator"
  },
  {
   "id": "q-136",
-  "position": 271,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.fct.2017.12.063",
+  "query": "Cytochrome P450 4A11 inhibition assays based on characterization of lauric acid metabolites."
  },
  {
   "id": "q-137",
-  "position": 600,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/jsap.12206",
+  "query": "Congenital bipartite atlas with hypodactyly in a dog: clinical, radiographic and CT findings."
  },
  {
   "id": "q-138",
-  "position": 2316,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1002/(sici)1097-0169(1997)37:4<378::aid-cm8>3.0.co;2-0",
+  "query": "Extent of radial sarcomere coupling revealed in passively stretched cardiac myocytes."
  },
  {
   "id": "q-139",
-  "position": 958,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1128/cdli.6.2.161-167.1999",
+  "query": "Immunodeficiency due to a unique protracted developmental delay in the B-cell lineage."
  },
  {
   "id": "q-140",
-  "position": 2255,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1093/ons/opab037",
+  "query": "Vascularized Bone Grafts for Spinal Fusion-Part 1: The Iliac Crest."
  },
  {
   "id": "q-141",
-  "position": 2488,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1111/j.1467-7652.2011.00615.x",
+  "query": "Chloroplast-derived vaccines against human diseases: achievements, challenges and scopes."
  },
  {
   "id": "q-142",
-  "position": 1216,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.12659/ajcr.942083",
+  "query": "Robotic-Assisted Resection of a Benign Schwannoma of the Obturator Nerve: A Rare Case."
  },
  {
   "id": "q-143",
-  "position": 332,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.jocn.2009.12.005",
+  "query": "Efficacy and safety of different doses of intravenous tissue plasminogen activator in Chinese patients with ischemic stroke."
  },
  {
   "id": "q-144",
-  "position": 2278,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1371/journal.pone.0233441",
+  "query": "Computational load reduction of the agent guidance problem using Mixed Integer Programming."
  },
  {
   "id": "q-145",
-  "position": 1070,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.phrs.2021.106022",
+  "query": "Therapeutic potential of Saccharomyces boulardii in liver diseases: from passive bystander to protective performer?"
  },
  {
   "id": "q-146",
-  "position": 1665,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.11646/zootaxa.4048.3.2",
+  "query": "Revision of the Nearctic species of the genus Iphthiminus Spilman (Coleoptera: Tenebrionidae)."
  },
  {
   "id": "q-147",
-  "position": 1151,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1101/2024.04.03.587755",
+  "query": "Comparative Analysis of Structural Alignment Algorithms for Protein-Protein Interfaces in Template-Based Docking Studies"
  },
  {
   "id": "q-148",
-  "position": 1875,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "pmid:11219938",
+  "query": "[\"Interventional radiology\" in breast examination]."
  },
  {
   "id": "q-149",
-  "position": 873,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1016/j.adolescence.2011.05.005",
+  "query": "Brief report: how anxiously withdrawn preadolescents think about friendship."
  },
  {
   "id": "q-150",
-  "position": 276,
   "kind": "title",
-  "stratum": "title"
+  "stratum": "title",
+  "gold": "doi:10.1126/science.1240573",
+  "query": "Writing and deleting single magnetic skyrmions."
  },
  {
   "id": "q-151",
-  "position": 2355,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/s0378-4347(96)00178-8",
+  "query": "This technique was used for the assay of propofol, and the estimation of its two metabolites, after calibration with standard solutions of pure propofol."
  },
  {
   "id": "q-152",
-  "position": 2532,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1080/03079457.2015.1012046",
+  "query": "Boot dip samples were collected from commercial laying hen farms in the UK and tested within 24 hours of receipt at the laboratory to assess their anti-Salmonella activity."
  },
  {
   "id": "q-153",
-  "position": 1032,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/bi052646f",
+  "query": "Thus, a recently proposed model suggesting the rotation of the gC1q domain upon ligand recognition may be extended to C1q interaction with CRP and PTX3 in addition to IgG1."
  },
  {
   "id": "q-154",
-  "position": 2892,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1364/oe.15.016316",
+  "query": "We investigate discrete wavelength tuning characteristics of a single-frequency fiber laser locked to either of two external lights."
  },
  {
   "id": "q-155",
-  "position": 2492,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1371/journal.pone.0148858",
+  "query": "Lower heptanol concentrations (0.1, 0.5 and 1 mM) did not alter arrhythmogenicity or the above parameters."
  },
  {
   "id": "q-156",
-  "position": 889,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.prevetmed.2017.02.010",
+  "query": "Aleutian Disease (AD) is an important disease in mink characterized by a persistent chronic infection typically causing a progressive disease with symptoms such as weight loss, polydipsia, polyuria, reduced reproductive performance and increased herd mortality."
  },
  {
   "id": "q-157",
-  "position": 1635,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1371/journal.pone.0149399",
+  "query": "The aim of this work was to develop and validate methods to create ensembles of state-of-the-art texture descriptors and to provide a robust classification tool to separate three different maturation stages of RPE cells by using phase contrast microscopy images."
  },
  {
   "id": "q-158",
-  "position": 669,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1097/01241398-199211000-00001",
+  "query": "As with any spondylolisthesis reduction technique, neurologic risk should limit this procedure to well-selected patients."
  },
  {
   "id": "q-159",
-  "position": 296,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3390/antiox12020358",
+  "query": "We optimized the preparation of cerium-doped SANP (Ce-SANP) and characterized the formulations in terms of both physiochemical and biological properties."
  },
  {
   "id": "q-160",
-  "position": 2907,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s00125-010-1907-5",
+  "query": "The common genetic and environmental effects on endophenotypes related to the metabolic syndrome have been investigated using bivariate and multivariate twin models."
  },
  {
   "id": "q-161",
-  "position": 2536,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2024.01.27.577576",
+  "query": "Synaptic and transcriptional defects are accompanied by increased EPSC frequency and disturbances in the hippocampal network activity of Pcdh9 KO mice."
  },
  {
   "id": "q-162",
-  "position": 2686,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:36568837",
+  "query": "This infection can be acquired through inhalation or direct inoculation of the bacteria, followed by dissemination to various organs, including the brain, through blood circulation."
  },
  {
   "id": "q-163",
-  "position": 1326,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3389/fmolb.2015.00042",
+  "query": "Phytochromes are dimeric biliprotein photoreceptors exhibiting characteristic red/far-red photocycles."
  },
  {
   "id": "q-164",
-  "position": 2042,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/acs.joc.0c00578",
+  "query": "The addition of 0.6 equiv of ABTE allows the differentiation of several spiroglycol proton signals."
  },
  {
   "id": "q-165",
-  "position": 2066,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.5435/jaaos-d-14-00039",
+  "query": "Success rates vary; survival is predicted in part by the mechanism of injury, with sharp cut injuries having better outcomes."
  },
  {
   "id": "q-166",
-  "position": 1088,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1093/jme/tjab222",
+  "query": "With respect to larval habitats, 0.1% of the specimens were collected along the edge of a lake, 5.5% in bamboos, 35.9% in bromeliads, and 58.4% in artificial containers."
  },
  {
   "id": "q-167",
-  "position": 333,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1371/journal.pone.0190893",
+  "query": "Extracellular ATP also induced significant increases in extracellular H+ flux at the level of both the outer and inner plexiform layers in retinal slices of tiger salamander which was significantly reduced by suramin and PPADS."
  },
  {
   "id": "q-168",
-  "position": 1211,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/0896-8411(91)90172-9",
+  "query": "In contrast, antibodies to PDC-E1 alpha are present in lower titers, and have been more difficult to detect."
  },
  {
   "id": "q-169",
-  "position": 2835,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1186/1751-0147-54-48",
+  "query": "The use of this test in combination with bulk larval culture only gives an indication of which gastrointestinal nematodes genera that are involved and these results have to be confirmed by a controlled efficacy test (CET) to get accurate information about resistant nematodes populations at species level."
  },
  {
   "id": "q-170",
-  "position": 2927,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/acs.nanolett.1c01789",
+  "query": "In this work, we develop a versatile, ultrafast, and etching-free method to synthesize self-rolled metallic nanostructures through hydrogel surface buckling enabled exfoliation, which enables rapid exfoliation and self-rolling of metallic nanosheets at a rate about 1 to 2 orders of magnitude faster than other methods."
  },
  {
   "id": "q-171",
-  "position": 1291,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3233/ch-238111",
+  "query": "Global sales of compression garments have risen sharply in recent years."
  },
  {
   "id": "q-172",
-  "position": 949,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3928/01484834-20240614-04",
+  "query": "The emotional experiences of nursing students are linked to learning outcomes."
  },
  {
   "id": "q-173",
-  "position": 1410,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1002/tera.1420480302",
+  "query": "More inseminations [OR = 1.20 (1.01-1.43)] were needed for conception in the exposed area."
  },
  {
   "id": "q-174",
-  "position": 2974,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:24851526",
+  "query": "is among the most common pathogens responsible for bacterial diarrhoeal diseases."
  },
  {
   "id": "q-175",
-  "position": 1639,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1177/22799036241231544",
+  "query": "In response to these challenges, international organizations and countries have played a pivotal role in mitigating the impact of terrorism on healthcare systems."
  },
  {
   "id": "q-176",
-  "position": 158,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.02.03.429557",
+  "query": "Together, this study indicates that changes in peripherally isolated NDEVs can act as both a clinically accessible and informative biomarker of ADT response specifically through size and cargo."
  },
  {
   "id": "q-177",
-  "position": 902,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1103/physreva.66.023801",
+  "query": "We investigate the limitations arising from atomic collisions on the storage\nand delay times of probe pulses in EIT experiments."
  },
  {
   "id": "q-178",
-  "position": 2242,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1242/jcs.122234",
+  "query": "Kv3.1 T1 competes with the motor domain and microtubules, but not with kinesin light chain 1 (KLC1), for binding to the KIF5B tail."
  },
  {
   "id": "q-179",
-  "position": 508,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1364/oe.433067",
+  "query": "The raw images captured by the aspherical lens are deblurred by the trained network, which enables large-DOF imaging at a smaller F number."
  },
  {
   "id": "q-180",
-  "position": 1005,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1023/a:1007389712487",
+  "query": "It is known that among women over the age of 65, bone mineral density is lower, and the risk of hip fracture higher, in smokers than non-smokers."
  },
  {
   "id": "q-181",
-  "position": 1356,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3389/fimmu.2023.1298622",
+  "query": "With the coverage of COVID-19 vaccination, it has been possible to observe the potential side effects of SARS-CoV-2 vaccines, with the most common ones being fever, myalgia, headache, and fatigue."
  },
  {
   "id": "q-182",
-  "position": 426,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2023.05.15.540732",
+  "query": "Alpha-synuclein (-syn) has been widely studied for its involvement in -synucleinopathies."
  },
  {
   "id": "q-183",
-  "position": 1068,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3978/j.issn.2072-1439.2015.08.21",
+  "query": "Up to 17% of patients undergoing TAVI-S require conversion to general anesthesia during the procedure, primarily due to vascular complications, and urgent intubation is frequently associated with hemodynamic instability."
  },
  {
   "id": "q-184",
-  "position": 2476,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1186/s12936-023-04451-3",
+  "query": "Plasmodium vivax malaria is one of the major infectious diseases of public health concern in Nouakchott, the capital city of Mauritania and the biggest urban setting in the Sahara."
  },
  {
   "id": "q-185",
-  "position": 1458,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3171/2023.11.spine23127",
+  "query": "The aim of this study was to explore the effect of multiple social factors on postoperative outcomes and satisfaction."
  },
  {
   "id": "q-186",
-  "position": 47,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:11208312",
+  "query": "The treatment in based on the elimination of aetiological factors and properly balanced diet with support of pharmacotherapy in selected cases."
  },
  {
   "id": "q-187",
-  "position": 1511,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.31083/j.fbe1404025",
+  "query": "Antibiotics' resistance is the leading cause of complications in the treatment of urinary tract infections."
  },
  {
   "id": "q-188",
-  "position": 2098,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.09.19.461001",
+  "query": "agalactiae SrtA which includes the C-terminus, and three others of {beta}7-{beta}8 loop chimeras from S."
  },
  {
   "id": "q-189",
-  "position": 2872,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:4085312",
+  "query": "When ara-c, entrapped into MLV's or REV's composed of PC:C (2:1) and PC:SM (1:4), was given at the dose of 10 mg/kg only once, the effect of intraperitoneal injection was more marked than that of intravenous injection."
  },
  {
   "id": "q-190",
-  "position": 2562,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.chest.2022.03.034",
+  "query": "Her cough occurred several times a minute, causing a significant impact on her daily activities."
  },
  {
   "id": "q-191",
-  "position": 1299,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.01.11.21249276",
+  "query": "Among ICU patients with COVID-19, RNA sequencings can identify gene expression, pathogens (including SARS-CoV-2), and can predict mortality."
  },
  {
   "id": "q-192",
-  "position": 2485,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1159/000040868",
+  "query": "Our results indicate that preoperative epoetin alfa dose-dependently stimulates erythropoiesis and facilitates PAD in anemic orthopedic patients, which may benefit patients by reducing their exposure to the risks of allogeneic transfusion, hastening recovery and discharge from hospital."
  },
  {
   "id": "q-193",
-  "position": 979,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1073/pnas.95.13.7445",
+  "query": "A structural homologue of rad3 in humans (ATR) has been identified based on sequence similarity in the protein kinase domain."
  },
  {
   "id": "q-194",
-  "position": 1228,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.55563/clinexprheumatol/1kr7bs",
+  "query": "A systematic literature review (SLR) and meta-analysis was conducted to: (1) estimate the prevalence of (pre-)frailty in RA patients; (2) explore whether variation in instruments influences (pre-)frailty prevalence."
  },
  {
   "id": "q-195",
-  "position": 329,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/0041-0101(94)00145-x",
+  "query": "The extent of the cutaneous eruption or sting severity was correlated with antibody titer."
  },
  {
   "id": "q-196",
-  "position": 625,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1177/26331055231159658",
+  "query": "Cognitively healthy women (N = 178) ranging in age from 28 to 99 years old underwent a magnetoencephalography scan from which neural network variability was calculated and provided a blood sample from which HLA and apolipoprotein E (ApoE) genotype were determined."
  },
  {
   "id": "q-197",
-  "position": 585,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/bf00441138",
+  "query": "Sideroblastic Anaemias are characterised by a) chronic hypochromic anemia, b) ringed sideroblasts in the bone marrow, c) an increase in total body iron, d) ineffective erythropoiesis and e) often abnormal concentrations of F.E.P."
  },
  {
   "id": "q-198",
-  "position": 170,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1128/aem.01811-10",
+  "query": "The H-α1 loops of Cop3, Cop4, and Cop6 from Coprinus cinereus were altered by site-directed mutagenesis and the resultant product profiles were analyzed by gas chromatography-mass spectrometry and compared to the wild-type enzymes."
  },
  {
   "id": "q-199",
-  "position": 1015,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.ultras.2021.106650",
+  "query": "Furthermore, the accuracy in estimation of velocity vectors was evaluated for investigation of the impact of the proposed filters on velocity estimation."
  },
  {
   "id": "q-200",
-  "position": 2770,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/s0301-0511(98)00031-3",
+  "query": "HR decreased for all patients, but the decrease was larger in the experimental group."
  },
  {
   "id": "q-201",
-  "position": 2988,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1093/jscr/rjab015",
+  "query": "Prior to the vessel occlusion, a BOT with induced arterial hypotension challenge should be performed."
  },
  {
   "id": "q-202",
-  "position": 2331,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.toxicon.2023.107204",
+  "query": "We report a case of great auricular neuralgia treated with botulinum toxin type A subcutaneous injection with significant remission of pain."
  },
  {
   "id": "q-203",
-  "position": 98,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1038/299838a0",
+  "query": "The X chromosome in mammalian somatic cells is subject to unique regulation--usually genes on a single X chromosome are expressed while those on other X chromosomes are inactivated."
  },
  {
   "id": "q-204",
-  "position": 2642,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1161/circresaha.116.305510",
+  "query": "It is usually caused by the abnormal activity of biological processes, such as cell proliferation, cell motility, immune, or inflammation response."
  },
  {
   "id": "q-205",
-  "position": 1723,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s13238-010-0021-2",
+  "query": "Over-expression of Wld(S) attenuates the axon degeneration that is associated with several neurodegenerative disease models, suggesting a new logic for developing a potential protective strategy."
  },
  {
   "id": "q-206",
-  "position": 2280,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/s0005-7967(98)00021-7",
+  "query": "The relevance of associative learning in the development of Obsessive-Compulsive Disorder (OCD) was investigated in a group of 23 OCD patients whose main concern was washing and 23 age and sex matched control subjects who did not have OCD."
  },
  {
   "id": "q-207",
-  "position": 39,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/acsami.2c13368",
+  "query": "Here, we report on self-resettable hydrogel actuators that are powered by a chemical fuel and can spontaneously return to their original states over time once the fuels are depleted."
  },
  {
   "id": "q-208",
-  "position": 1056,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.dci.2022.104625",
+  "query": "These findings help clarify the relationship between trehalose metabolism and BmNPV infection."
  },
  {
   "id": "q-209",
-  "position": 1183,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1159/000395289",
+  "query": "However, many questions concerning etiology and pathogenesis of the inflammatory diseases of the cephalic salivary glands remain unanswered."
  },
  {
   "id": "q-210",
-  "position": 2759,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.03.21.21253999",
+  "query": "One solution may be to compress the images, but detailed information may be lost during the process."
  },
  {
   "id": "q-211",
-  "position": 999,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2020.09.10.286252",
+  "query": "This is initiated by induction of two parallel autophagy-mediated processes, namely, ferritinophagy and nucleophagy."
  },
  {
   "id": "q-212",
-  "position": 2182,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1177/070674379403908s05",
+  "query": "On the basis of this review, future directions for effective approaches to consultative outreach in geriatric psychiatry will then be proposed."
  },
  {
   "id": "q-213",
-  "position": 842,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1103/physrevlett.79.5178",
+  "query": "Based on this scheme, we\nillustrate how to realize quantum communication over a noisy channel when local\noperations are subject to errors."
  },
  {
   "id": "q-214",
-  "position": 2068,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.01.11.21249596",
+  "query": "Functional networks were identified using meta-independent component analysis."
  },
  {
   "id": "q-215",
-  "position": 1025,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/jz501891y",
+  "query": "The ReaxFF RMD simulations were performed on the H2/Ni/YSZ and C4H10/Ni/YSZ triple-phase boundary (TPB) systems at 1250 and 2000 K, respectively."
  },
  {
   "id": "q-216",
-  "position": 1426,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.therap.2016.09.004",
+  "query": "The aim of this pilot study was to assess the effect of regular visits of a CRA in GPs offices on the rate of ADR reporting."
  },
  {
   "id": "q-217",
-  "position": 1184,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3389/fneur.2015.00018",
+  "query": "In the single-arm, observational phase IV TYNERGY study, relapsing-remitting MS patients showed a clinically meaningful decrease in fatigue over 1 year of treatment with natalizumab."
  },
  {
   "id": "q-218",
-  "position": 1988,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1024/0301-1526.32.1.31",
+  "query": "After 16 years of implantation the graft shows different signs of biodegradation."
  },
  {
   "id": "q-219",
-  "position": 1684,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/am5057322",
+  "query": "Various techniques were employed for the characterization of the structure and morphology of as-obtained hybrid nanostructures."
  },
  {
   "id": "q-220",
-  "position": 2257,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1097/ogx.0b013e31821288a4",
+  "query": "The role of routine diagnostic laparoscopy and hysteroscopy is also reviewed."
  },
  {
   "id": "q-221",
-  "position": 959,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3390/ijerph182111535",
+  "query": "Outside activities have decreased due to the spread of the COVID-19 since 2019; therefore, the need for education using information and communication technology (ICT) for older adults with mild cognitive impairment (MCI) has increased."
  },
  {
   "id": "q-222",
-  "position": 1145,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1364/ao.42.001417",
+  "query": "In addition to these examples, surface depth measurements were made by means of a holographic contour technique."
  },
  {
   "id": "q-223",
-  "position": 1878,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s10517-010-0876-5",
+  "query": "The use of a liposomal complex in burn injury stabilizes endogenous antioxidant system and limits the secondary necrotic zone in the wounds."
  },
  {
   "id": "q-224",
-  "position": 933,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.csbj.2024.10.043",
+  "query": "Furthermore, to validate our findings, we conducted an analysis of differentially expressed genes in an ASD cohort, revealing that the encoded proteins also exhibit a higher proportion of IDPs."
  },
  {
   "id": "q-225",
-  "position": 1589,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:9187119",
+  "query": "In Ehrlich ascites tumor-bearing mice, tumor-specific serum alpha-N-acetylgalactosaminidase (NaGalase) activity increased linearly with time as the transplanted tumor cells grew in the peritoneal cavity."
  },
  {
   "id": "q-226",
-  "position": 1724,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1109/embc48229.2022.9871032",
+  "query": "However, the wire wound coil is expected to be more efficient than the coil made through the PCB process, and if the sophistication is supplemented, it can be used as a highly efficient coil for wireless power transmission."
  },
  {
   "id": "q-227",
-  "position": 563,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1067/mai.2003.180",
+  "query": "A single-nucleotide polymorphism (SNP) in the CC16 gene (A38G) was previously associated with asthma."
  },
  {
   "id": "q-228",
-  "position": 1189,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.ymeth.2023.06.007",
+  "query": "Moreover, RabbitQCPlus is at least 4 times faster than other applications when processing gzip-compressed FASTQ files and 1.3 times faster with the error correction module turned on."
  },
  {
   "id": "q-229",
-  "position": 1920,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.29271/jcpsp.2021.09.1099",
+  "query": "When compared with basal free T4 (fT4), a statistically significant increase in fT4 was observed after the first hour (p=0.012)."
  },
  {
   "id": "q-230",
-  "position": 2502,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1111/1756-185x.12181",
+  "query": "Due to the significance of the relationship between serum vitamin D levels and autoimmune diseases, this study aimed to determine the relationship between serum vitamin D level and the severity of disease activity in patients with newly diagnosed RA."
  },
  {
   "id": "q-231",
-  "position": 795,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1002/adma.202210989",
+  "query": "This is achieved by utilizing a self-assembly process of ultrathin membranes composed of the desired oxide."
  },
  {
   "id": "q-232",
-  "position": 977,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1161/01.hyp.7.6_pt_2.ii118",
+  "query": "Diabetic retinopathy (an index of microangiopathy) and absence of peripheral pulses, amputation, or history of myocardial infarction, stroke, or transient ischemic attacks (as evidence of macroangiopathy) caused surprisingly little increase in relative risk for cardiovascular death."
  },
  {
   "id": "q-233",
-  "position": 1393,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2020.07.28.20163329",
+  "query": "To enable comparison between the two differing microarray platforms, we reverse engineered the underlying molecular regulatory network and overlay the identified models."
  },
  {
   "id": "q-234",
-  "position": 2900,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1128/mcb.15.12.7143",
+  "query": "In addition, CHO1/MKLP-1 appears to interact with Plk in vivo and to be phosphorylated by Plk-associated kinase activity in vitro."
  },
  {
   "id": "q-235",
-  "position": 2866,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s10620-015-3665-1",
+  "query": "Patients with low numbers of eosinophils in esophageal biopsy specimens may have esophageal changes and symptomatic disease brought about by eosinophil granule protein deposition without recognizable intact cells."
  },
  {
   "id": "q-236",
-  "position": 1205,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s00216-012-6315-x",
+  "query": "This is very useful especially in case of a marginal isotopic enrichment in the spike or problems with the accurate measurement of the spike isotope ratio."
  },
  {
   "id": "q-237",
-  "position": 1877,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:9803349",
+  "query": "The three dimensional hepatocyte cultures tolerated both media well, and no significant differences were seen compared with hepatocytes cultured in Williams' E (reference hepatocyte culture medium)."
  },
  {
   "id": "q-238",
-  "position": 2603,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.2174/157489009789152212",
+  "query": "The philosophy behind the creation of these systems is that with the controlled absorption and interaction of this heparin with the blood elements, adequate intraoperative anticoagulation with lower doses of systemic heparin and fewer systemic complications can be achieved."
  },
  {
   "id": "q-239",
-  "position": 1089,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:8955181",
+  "query": "The CD4 molecule acts as a receptor for class II MHC molecules to stabilize Ag recognition by the TCR and as a high affinity receptor for HIV-1."
  },
  {
   "id": "q-240",
-  "position": 450,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.10.01.21264405",
+  "query": "Adding within-person FI change to the current FI model improved model fit and it showed that FI increases during the last year were associated with a strong increase in mortality risk."
  },
  {
   "id": "q-241",
-  "position": 1807,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.jhazmat.2023.133370",
+  "query": "This communication is dedicated to rectifying factual errors identified in a recent review article featured in this journal, with a specific emphasis on addressing errors related to the Temkin, Flory-Huggins, Sips, and Baudu isotherm models."
  },
  {
   "id": "q-242",
-  "position": 2396,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/227165",
+  "query": "However, evidence that sexually dimorphic vocal characteristics are correlated with physical strength is equivocal."
  },
  {
   "id": "q-243",
-  "position": 1193,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1080/00221309.2021.1913398",
+  "query": "Therefore, this study aims to evaluate the psychometric properties of the DJGLS in Peruvian older adults."
  },
  {
   "id": "q-244",
-  "position": 973,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1039/d2an01523d",
+  "query": "An adaptive early fire identification algorithm based on a dual-parameter threshold alarming method was proposed to avoid false and missing alarms."
  },
  {
   "id": "q-245",
-  "position": 1780,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.str.2022.06.003",
+  "query": "Oxysterol receptor EBI2 regulates immune responses that mediate the migration of B and T cells and stimulate antibody production."
  },
  {
   "id": "q-246",
-  "position": 35,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2022.08.15.504004",
+  "query": "While the mechanisms of cadmium-induced cell death have been extensively studied in other cell types they remain relatively unknown in hair cells."
  },
  {
   "id": "q-247",
-  "position": 86,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.jaac.2023.01.025",
+  "query": "The purpose of a safety plan is to make it easier for individuals to make wise choices in moments of crisis."
  },
  {
   "id": "q-248",
-  "position": 2867,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:281553",
+  "query": "As shown by light microscopy, tumors were composed of red- to orange-pigmented, dendritic, stellate, or spindle-shaped cells, which coalesced into an excrescence in the dermal layer."
  },
  {
   "id": "q-249",
-  "position": 654,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/978-1-0716-2663-4_16",
+  "query": "Aberrant phase transitions of RBPs from a liquid to a solid state are believed to underlie the formation of pathological RBP aggregates in several neurodegenerative diseases."
  },
  {
   "id": "q-250",
-  "position": 2557,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.jep.2014.03.018",
+  "query": "Skullcap (Scutellaria baicalensis Georgi) has been widely used as a traditional herbal medicine to treat inflammation, cancer, and allergy, but its effects in treating food allergy are not yet known."
  },
  {
   "id": "q-251",
-  "position": 636,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1085/jgp.97.3.413",
+  "query": "Light flashes evoked transient outward currents that saturated at up to approximately 20 pA."
  },
  {
   "id": "q-252",
-  "position": 1409,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1039/c3nr00989k",
+  "query": "Antiferromagnetic (AFM) Co3O4 mesostructures are obtained as negative replicas of KIT-6 silica templates, which are subsequently coated with ferrimagnetic (FiM) FexCo3-xO4 nanolayers."
  },
  {
   "id": "q-253",
-  "position": 900,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1093/nar/gkw1359",
+  "query": "During sexual processes, the ciliate Paramecium eliminates 25-30% of germline DNA from its somatic genome."
  },
  {
   "id": "q-254",
-  "position": 2060,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/ja0284456",
+  "query": "However, association of polymyxin B with lipid A is not fully understood, primarily due to the low solubility of lipid A in water and inhomogeneity of lipid A preparations."
  },
  {
   "id": "q-255",
-  "position": 188,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:10120463",
+  "query": "The effective management of volunteers can ensure success for a non-profit organization and bring great satisfaction to volunteers who will work their hearts out for causes and organizations they believe in."
  },
  {
   "id": "q-256",
-  "position": 597,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1186/s41239-021-00253-2",
+  "query": "Help-seeking is an essential self-regulatory and metacognitive skill."
  },
  {
   "id": "q-257",
-  "position": 1838,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1113/jphysiol.1974.sp010434",
+  "query": "The isometric twitch contraction and half-relaxation times of fast-twitch inferior rectus fibres were only about one half of those of rat extensor digitorum longus fibres in the same conditions, whereas the force: velocity properties of these two fibre groups were virtually the same."
  },
  {
   "id": "q-258",
-  "position": 1611,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1038/aja.2011.145",
+  "query": "Although multiple molecular alterations have been detected in prostate cancer, a basic understanding of gene fusion prostate cancer should help explain the clinical and biologic diversity, providing a rationale for a molecular subclassification of the disease."
  },
  {
   "id": "q-259",
-  "position": 1209,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1093/jb/mvs092",
+  "query": "lipoxins, resolvins, protectins) in controlling the resolution of inflammation."
  },
  {
   "id": "q-260",
-  "position": 2689,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1080/02699931.2018.1535427",
+  "query": "This effect can be explained using an attentional framework in which emotion detracts limited-capacity cognitive resources which are required for reasoning."
  },
  {
   "id": "q-261",
-  "position": 1340,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/0049-3848(86)90076-9",
+  "query": "Another experiment using protein C depleted plasma showed a relatively enhanced stability of F.VIII:C in the protein C deficiency."
  },
  {
   "id": "q-262",
-  "position": 2730,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2023.09.14.557672",
+  "query": "High grade ECs are largely refractory to conventional treatments, presenting poor survival rates and lacking suitable prognostic markers."
  },
  {
   "id": "q-263",
-  "position": 1303,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:8180515",
+  "query": "Modulation of endothelial cell coagulant function is one of a group of changes common to many cytokine-mediated events."
  },
  {
   "id": "q-264",
-  "position": 1443,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3390/children10020328",
+  "query": "The Glycemic Stress Index (GSI) has been shown to predict prolonged Pediatric Intensive Care Unit (PICU) stays in neurosurgical patients."
  },
  {
   "id": "q-265",
-  "position": 1306,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2023.05.26.23290615",
+  "query": "HHAN-DSI predicted frequent and even uncommon SEs of the unseen drug with higher or comparable accuracy against benchmark methods."
  },
  {
   "id": "q-266",
-  "position": 2608,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1002/ptr.3009",
+  "query": "Myocardial damage was induced by administration of ISO (150 mg/kg, s.c.) for two consecutive days."
  },
  {
   "id": "q-267",
-  "position": 2826,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1097/rli.0000000000000593",
+  "query": "The goals of this study were to compare the efficacy of the new manganese-based magnetic resonance imaging (MRI) contrast agent Mn-PyC3A to the commercial gadolinium-based agents Gd-DOTA and to Gd-EOB-DTPA to detect tumors in murine models of breast cancer and metastatic liver disease, respectively, and to quantify the fractional excretion and elimination of Mn-PyC3A in rats."
  },
  {
   "id": "q-268",
-  "position": 1513,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1159/000145725",
+  "query": "On corrosion casts of the bovine choroidal vessels, the vascular architecture was investigated by means of scanning and corresponding transmission electron microscopy."
  },
  {
   "id": "q-269",
-  "position": 2544,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1080/19472498.2022.2050025",
+  "query": "History of domestic service in South Asia is beginning to attract scholars but a rich historiography around it is still distant and difficult."
  },
  {
   "id": "q-270",
-  "position": 1505,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.apergo.2015.10.004",
+  "query": "Further, the CWA outputs are used to inform an analysis of the risks to safety associated with pedestrian behaviour at RLXs and the identification of potential interventions to reduce risk."
  },
  {
   "id": "q-271",
-  "position": 392,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1001/jama.289.8.996",
+  "query": "However, little is known about whether reductions actually occur."
  },
  {
   "id": "q-272",
-  "position": 1427,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s00405-011-1604-0",
+  "query": "ASSR can be used to predict the frequency-specific hearing thresholds of high-risk infants and can provide information for early hearing intervention."
  },
  {
   "id": "q-273",
-  "position": 700,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.3389/fmicb.2018.01417",
+  "query": "As a result, the comprehensive quantitative structure of the human gut microbiota still needs to be fully defined and standardized."
  },
  {
   "id": "q-274",
-  "position": 1767,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1103/physrevapplied.16.034003",
+  "query": "We also demonstrate how these techniques can be used to find molecular\nexcited states of various symmetries using a noisy processor."
  },
  {
   "id": "q-275",
-  "position": 46,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1093/ndt/gfac307",
+  "query": "There is scarce evidence on the fourth dose of severe acute respiratory syndrome coronavirus 2 vaccines in chronic kidney disease (CKD) patients."
  },
  {
   "id": "q-276",
-  "position": 2486,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1172/jci108958",
+  "query": "Serum sodium concentration was unaffected by somatostatin administration in both the human and dog studies."
  },
  {
   "id": "q-277",
-  "position": 1198,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.bbmt.2009.10.005",
+  "query": "After transplantation, most patients also had unchanged or improved pulmonary function."
  },
  {
   "id": "q-278",
-  "position": 1957,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2021.02.10.430563",
+  "query": "Integral to the SPARC program are the rich anatomical and functional datasets produced by investigators across the SPARC consortium that provide key details about organ-specific circuitry, including structural and functional connectivity, mapping of cell types and molecular profiling."
  },
  {
   "id": "q-279",
-  "position": 2828,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1111/mmi.13885",
+  "query": "TbPLK localization to the tip of the new FAZ is also blocked."
  },
  {
   "id": "q-280",
-  "position": 2821,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1186/1471-2202-5-33",
+  "query": "Several types of cells have been considered as candidates for such cell transplantation and replacement therapies."
  },
  {
   "id": "q-281",
-  "position": 2048,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/s0378-1119(96)00461-1",
+  "query": "This new technique was developed because it was impossible to clone certain parts of the L."
  },
  {
   "id": "q-282",
-  "position": 129,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/s0024-3205(99)00340-9",
+  "query": "Plasma gastrin levels were elevated 2.5 fold within 15 min by PRL-2903 (1.3 micromol/kg, i.v.)."
  },
  {
   "id": "q-283",
-  "position": 2955,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1164/arrd.1978.117.1.63",
+  "query": "The method is noninvasive, has a low coefficient of variance, and allows arterial PCO2 to be estimated by multiplying the breath-holding mixed venous PCO2 by 0.8."
  },
  {
   "id": "q-284",
-  "position": 2548,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1289/ehp.99107s5811",
+  "query": "Participants spent the last half-day of the workshop in small group discussions for the purpose of developing consensus on research needs."
  },
  {
   "id": "q-285",
-  "position": 92,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2024.09.13.612991",
+  "query": "Our findings not only present an optimized rearing method for predatory mites under laboratory conditions but also suggest potential broader applications for enhancing the effectiveness and sustainability of biological control strategies across various agroecosystems and reducing dependency on chemical pesticides."
  },
  {
   "id": "q-286",
-  "position": 1013,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1002/cpp.1856",
+  "query": "COURAGE in Europe was a 3-year project involving 12 partners from four European countries and the World Health Organization."
  },
  {
   "id": "q-287",
-  "position": 528,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.forsciint.2024.112047",
+  "query": "The automated fingerprint identification system (AFIS) deferral policy implemented by the Latent Print Comparative Section (LPCS) of the Phoenix Police Department Laboratory Services Bureau (PPD LSB) was employed to address the latent print backlog."
  },
  {
   "id": "q-288",
-  "position": 2792,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1101/2020.09.16.298810",
+  "query": "This study identifies as novel nanoscale phase separated blend of poly(tricyclodecane-dimethanol diacrylate) and poly(butyl acrylate) (2:1 v/v), which supports long-term expansion of hPSCs and can be readily coated onto standard cultureware."
  },
  {
   "id": "q-289",
-  "position": 1595,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:7804568",
+  "query": "The test in a two-year investigation does not seem suitable for monitoring of disease."
  },
  {
   "id": "q-290",
-  "position": 2334,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.7759/cureus.58302",
+  "query": "Knowledge of the mechanism of action, characteristics, and indications of each anticoagulant is necessary, as well as monitoring and dose adjustment."
  },
  {
   "id": "q-291",
-  "position": 227,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.bbamem.2015.02.027",
+  "query": "In contrast, a phase separation was distinguished for both PC mixtures by ESR and XRD, indicative that PDPC and POPC mixtures differed in micron vs nano domain organization."
  },
  {
   "id": "q-292",
-  "position": 2442,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1038/s41598-023-28158-2",
+  "query": "Here, we focused on the relationship between respiration and cognition and investigated whether respiratory rhythms are related to the recalibration of hand perception."
  },
  {
   "id": "q-293",
-  "position": 2200,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "pmid:23007818",
+  "query": "Pelvic fractures are not frequent, yet severe injuries, often associated to other lesions."
  },
  {
   "id": "q-294",
-  "position": 1080,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1103/physrevresearch.3.033203",
+  "query": "The\ndistribution $n(x,t)$ of the classical positions is used to reconstruct the\nquantum Bohm potential $V_{\\rm Bohm} = -\\frac{\\hbar^2}{2 m} \\frac{\\Delta\n\\sqrt{n}}{\\sqrt{n}}$, which in turn acts on the shape of the potential wells."
  },
  {
   "id": "q-295",
-  "position": 2550,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1021/la801735c",
+  "query": "We investigated single crystal hydroxyapatite (100) surfaces bearing crystal defects under acidic dissolution conditions using real-time in situ atomic force microscopy."
  },
  {
   "id": "q-296",
-  "position": 879,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/s0960-894x(99)00540-5",
+  "query": "For the introduction of pyrrole-substituents high yielding transformations including Sonogashira cross-coupling reactions were utilized."
  },
  {
   "id": "q-297",
-  "position": 1128,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.rvsc.2022.08.009",
+  "query": "The frequencies of AS carriers were 1.08% and 1.65% in the Simmental and Sanhe populations, respectively, with a frequency of 1.076% in four populations."
  },
  {
   "id": "q-298",
-  "position": 2781,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1007/s10773-008-9794-y",
+  "query": "Considering a P$_{\\phi}$T$_{\\phi}$-symmetrized H$_{\\phi}$, we\nhave shown that the conventional relativistic energy eigenvalues are\nrecoverable."
  },
  {
   "id": "q-299",
-  "position": 2552,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1002/hep.24580",
+  "query": "The level of IFNλ protein induced was sufficient to inhibit HCVcc infection of naïve cultures."
  },
  {
   "id": "q-300",
-  "position": 1411,
   "kind": "sentence",
-  "stratum": "sentence"
+  "stratum": "sentence",
+  "gold": "doi:10.1016/j.schres.2022.12.012",
+  "query": "There have been increasing calls for schizophrenia to be renamed to reduce negative associations with the diagnosis."
  }
 ]

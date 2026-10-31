@@ -5,15 +5,16 @@ already stores, so no document is embedded. The arms see the same corpus: the ve
 the pulled vectors (the embedder handed to the store looks each text up in the pulled vectors; it never calls a model), the BM25 arm
 indexes the pulled text (title, blank line, abstract) as one file per paper, hybrid and composite combine the two.
 
-A case is one paper and a query made from it: ``title`` (the paper's title) or ``sentence`` (one sentence of its abstract, chosen with a
-fixed seed, which does not contain the title). Pass = that paper is among the first 5 ids the arm ranks. nDCG@10 (one relevant paper,
+A case is one paper, named by its public identifier (``gold``: a DOI, else a PubMed or preprint id; ``corpus_ids.json`` lists the sample in
+order), and the query text itself (``query``): ``title`` (the paper's title) or ``sentence`` (one sentence of its abstract, chosen with a
+fixed seed, which does not contain the title). Abstracts and titles are public, so the cases are committed in full; ``rebuild_corpus.py``
+rebuilds the corpus from the public sources for anyone without our collection. Pass = that paper is among the first 5 ids the arm ranks. nDCG@10 (one relevant paper,
 so 1 / log2(rank + 1) when ranked in the first 10) and recall@10 are returned by ``aggregate`` and recorded in the row's details beside a
-hash of the sample's ids (so a reader can tell whether two runs saw the same corpus without any id being published).
+hash of the sample's public identifiers.
 
 Only the 300 queries are embedded, once, with the model that embedded the collection (voyage-3.5-lite, input type query), and the
 vectors are cached; each arm that searches vectors is charged the queries' tokens at the model's price. The settings are read from the
-environment by the names in ``ENV``; the cache lives in a private temporary folder and holds paper text, so it is never committed and
-should be deleted after the run. The repository holds the method and the numbers, never the texts or ids.
+environment by the names in ``ENV``; the cache lives in a temporary folder and holds the pulled vectors and texts (delete it after a run).
 """
 import hashlib
 import json
@@ -93,9 +94,12 @@ def sentence_of(paper, index):
     return random.Random(SEED + index).choice(sentences)
 
 
-def query_of(case, papers):
-    paper = papers[case["position"]]
-    return paper["title"] if case["kind"] == "title" else sentence_of(paper, case["position"])
+def corpus_ids():
+    return [e["id"] for e in json.loads((Path(__file__).with_name("corpus_ids.json")).read_text(encoding="utf-8"))]
+
+
+def query_of(case, papers=None):
+    return case["query"]
 
 
 def query_vectors(queries):
@@ -119,13 +123,18 @@ def load_cases():
     return json.loads((Path(__file__).with_name("cases.json")).read_text(encoding="utf-8"))
 
 
-def sample_digest(papers):
-    return hashlib.sha256("\n".join(sorted(p["id"] for p in papers)).encode()).hexdigest()[:8]
+def sample_digest(papers=None):
+    return hashlib.sha256("\n".join(corpus_ids()).encode()).hexdigest()[:8]
 
 
-def adapt(implementation, meter):
+def adapt(implementation, meter, cases=None):
+    cases = cases or load_cases()
     papers = pull()
-    vectors, tokens = query_vectors([query_of(c, papers) for c in load_cases()])
+    ids = corpus_ids()
+    if len(ids) != len(papers):
+        raise RuntimeError("corpus_ids.json and the pulled sample differ in size")
+    position = {ident: n for n, ident in enumerate(ids)}
+    vectors, tokens = query_vectors([c["query"] for c in cases])
     arm = implementation.__name__
     uses_vectors = arm != "BM25ContentStore"
     if uses_vectors:   # every arm that searches vectors is charged the queries' embedding
@@ -164,12 +173,11 @@ def adapt(implementation, meter):
         assembler = implementation([bm25(), vector()])
     else:
         raise RuntimeError(f"no wiring for {arm}")
-    first = query_of(load_cases()[0], papers)
-    assembler.assemble(first)   # builds the BM25 index before any case is timed
+    assembler.assemble(cases[0]["query"])   # builds the BM25 index before any case is timed
     adapt.digest = sample_digest(papers)
 
     def run(case):
-        return public.ranked_ids(arm, assembler.assemble(query_of(case, papers)))[:HITS], f"d{case['position']:04d}"
+        return public.ranked_ids(arm, assembler.assemble(case["query"]))[:HITS], f"d{position[case['gold']]:04d}"
     return run
 
 

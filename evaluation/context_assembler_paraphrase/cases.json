@@ -1,0 +1,2102 @@
+[
+ {
+  "id": "p-001",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/0142159x.2021.1958174",
+  "query": "How COVID-19 improved medical training and what educators learned from the experience."
+ },
+ {
+  "id": "p-002",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1074/jbc.m300596200",
+  "query": "How DEC1 protein controls DEC2 production by directly attaching to a specific DNA sequence."
+ },
+ {
+  "id": "p-003",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/ac0261449",
+  "query": "Device uses tiny channels to move different liquids one after another without outside help, useful for quick lab tests."
+ },
+ {
+  "id": "p-004",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1001/jamahealthforum.2022.3013",
+  "query": "Medicare telemedicine use across state lines during COVID-19, examining policy changes on out-of-state care access."
+ },
+ {
+  "id": "p-005",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:23493044",
+  "query": "How to make cheap, adaptable microdialysis tools for student research and teaching neuroscience techniques."
+ },
+ {
+  "id": "p-006",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:21117447",
+  "query": "Scientists created a new bladder by growing tissue from the colon in dogs, finding it functions like a normal bladder."
+ },
+ {
+  "id": "p-007",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1073/pnas.82.15.5083",
+  "query": "How pea genes for photosynthesis are inherited and located on chromosomes."
+ },
+ {
+  "id": "p-008",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1088/0031-9155/37/10/002",
+  "query": "Improving electric field uniformity in large radiation detectors for better radiation measurement efficiency."
+ },
+ {
+  "id": "p-009",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1371/journal.pntd.0011956",
+  "query": "Finding a new drug for Chagas disease that stops a parasite enzyme, showing it works against the infection."
+ },
+ {
+  "id": "p-010",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0167-4838(00)00246-6",
+  "query": "How to make enzymes that make sweeteners work at higher temperatures by understanding how they break down."
+ },
+ {
+  "id": "p-011",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1128/jcm.02510-20",
+  "query": "Finding COVID antibodies in spit using an easy kit, as good as blood tests."
+ },
+ {
+  "id": "p-012",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/bf00685095",
+  "query": "Treosulfan drug effectiveness against breast cancer models in mice, showing significant tumor reduction compared to other treatments."
+ },
+ {
+  "id": "p-013",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/nmd.0000000000000636",
+  "query": "How family members explain problems for people with OCD and panic attacks, and what they found about control and illness explanations."
+ },
+ {
+  "id": "p-014",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/0194599815620174",
+  "query": "Tips for writing successful ear, nose, and throat research proposals and avoiding common mistakes."
+ },
+ {
+  "id": "p-015",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1212/01.wnl.0000314832.24682.c6",
+  "query": "Childhood brain inflammation linked to water channel antibodies, affecting vision and spinal cord, in young patients."
+ },
+ {
+  "id": "p-016",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/167395",
+  "query": "How landscape and animal factors affect frog disease spread and infection likelihood."
+ },
+ {
+  "id": "p-017",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:9004838",
+  "query": "How surgery affects survival for gallbladder cancer, showing better outcomes with early stage tumors and curative operations."
+ },
+ {
+  "id": "p-018",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1073/pnas.1406663111",
+  "query": "HIV cure research model shows how much virus needs to be cleared to stop it from returning after stopping medication."
+ },
+ {
+  "id": "p-019",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physrevlett.119.150501",
+  "query": "Quantum communication for multiple recipients with better rates than simple time sharing."
+ },
+ {
+  "id": "p-020",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:2398091",
+  "query": "Treating broken upper arm bones when nerves are also damaged and what that approach revealed about recovery."
+ },
+ {
+  "id": "p-021",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1091/mbc.e20-08-0533",
+  "query": "How cells create aligned protein fibers in their surroundings to build tissue structure, finding that early cell interactions dictate fiber orientation."
+ },
+ {
+  "id": "p-022",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/ma14174919",
+  "query": "Printing vs milling dental materials for crowns compared strength, fracture, and surface texture findings."
+ },
+ {
+  "id": "p-023",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.xcrm.2024.101577",
+  "query": "How some common antibodies neutralize different COVID variants and why they are effective."
+ },
+ {
+  "id": "p-024",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.anai.2025.02.001",
+  "query": "How to better diagnose vocal cord movement problems with a sugar challenge test."
+ },
+ {
+  "id": "p-025",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1074/jbc.c000135200",
+  "query": "Study found that a protein called TIEG, when increased in bone cells, can copy effects of a growth factor called TGF-beta."
+ },
+ {
+  "id": "p-026",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1099/vir.0.82391-0",
+  "query": "Horse immunity to virus: identifying key viral envelope areas linked to protection and good vaccine results."
+ },
+ {
+  "id": "p-027",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "arxiv:quant-ph/0609128",
+  "query": "Quantum walk behavior on different lattice structures and how to approximate its outcomes using Bessel functions."
+ },
+ {
+  "id": "p-028",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/j.1540-8191.2001.tb01165.x",
+  "query": "Best side for LIMA graft to back heart arteries, dorsal or ventral side, to prevent flow issues."
+ },
+ {
+  "id": "p-029",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/bf02886715",
+  "query": "How hepatitis B spreads in families and if liver damage or a specific antigen affects transmission."
+ },
+ {
+  "id": "p-030",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/ijms19082194",
+  "query": "How treating strawberries before picking with a natural substance improved their flavor and shelf life."
+ },
+ {
+  "id": "p-031",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:9005928",
+  "query": "Rabbit knee immobilization harms meniscus structure and makes it less permeable, with some recovery after movement but lasting damage."
+ },
+ {
+  "id": "p-032",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.tig.2015.02.007",
+  "query": "How new genes arise from noncoding DNA, their high failure rate, and why some survive and function over time."
+ },
+ {
+  "id": "p-033",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/j.1749-6632.1991.tb24402.x",
+  "query": "Hair follicle steroid enzymes transform weak androgens into potent ones, with levels varying in bald versus thick follicles, affecting hair loss treatments."
+ },
+ {
+  "id": "p-034",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:10135743",
+  "query": "Checking nurse knowledge of new medications using a hospital computer system after a hospital inspection."
+ },
+ {
+  "id": "p-035",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/14651858.cd001005",
+  "query": "Does simple patient information about asthma help improve health outcomes in adults?"
+ },
+ {
+  "id": "p-036",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/jp311898v",
+  "query": "How template particles affect the properties of synthesized polyaniline, like its size and crystallinity."
+ },
+ {
+  "id": "p-037",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0140-6736(00)02149-8",
+  "query": "New epilepsy in older adults, its impact, and how treatment helps improve their life quality."
+ },
+ {
+  "id": "p-038",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/00220345000790110801",
+  "query": "How gene variations affect gum disease inflammation proteins and how much is found."
+ },
+ {
+  "id": "p-039",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/plants10081724",
+  "query": "How manganese fertilizer affects beneficial plant compounds in olive leaves, stems, and roots, and if higher levels boost them."
+ },
+ {
+  "id": "p-040",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/braincomms/fcab067",
+  "query": "Brain differences in kids with tics when they try to control their actions, showing less control signal from a specific brain area."
+ },
+ {
+  "id": "p-041",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/2374289517716463",
+  "query": "Brain bleed from burst sac in cerebral artery, presented as a teaching example for medical students."
+ },
+ {
+  "id": "p-042",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:1813198",
+  "query": "Case study of a woman with nerve damage, fluid buildup, bone changes, and low platelets linked to a specific plasma cell tumor."
+ },
+ {
+  "id": "p-043",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/00365549850161593",
+  "query": "Finding a serious knee infection caused by a fast growing bacterium in an AIDS patient."
+ },
+ {
+  "id": "p-044",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1159/000535898",
+  "query": "Finding rare childhood Erdheim-Chester disease cases and how to manage them."
+ },
+ {
+  "id": "p-045",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.devcel.2007.07.008",
+  "query": "How proteins in the cell nucleus control gene activity, according to new research."
+ },
+ {
+  "id": "p-046",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/ndt/gfr438",
+  "query": "How does kidney transplant loss affect children's school attendance and health compared to those never transplanted?"
+ },
+ {
+  "id": "p-047",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/nu16091324",
+  "query": "How small amounts of creatine affect young soccer players' muscle strength after exercise."
+ },
+ {
+  "id": "p-048",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s11999-012-2553-7",
+  "query": "How hip implant cup shape affects its bending and movement after surgery, especially metal ones."
+ },
+ {
+  "id": "p-049",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2020.05.04.077180",
+  "query": "Accurate long DNA sequence reads for five difficult genomes, enabling better assembly and analysis tools."
+ },
+ {
+  "id": "p-050",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/foods12234332",
+  "query": "New way to measure aflatoxin in food using fluorescence and special carbon materials, showing good results."
+ },
+ {
+  "id": "p-051",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1152/jappl.1995.78.3.990",
+  "query": "How adenosine A2 receptors can fix lung damage from blood flow interruption without needing beta receptors."
+ },
+ {
+  "id": "p-052",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/j.1349-7006.1997.tb00342.x",
+  "query": "How a chemical called catechol affects stomach cancer development in mice after a specific chemical exposure, showing it increases tumors."
+ },
+ {
+  "id": "p-053",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1300/j069v11n02_06",
+  "query": "How to best treat crack cocaine addiction, what makes a program good, and what to expect."
+ },
+ {
+  "id": "p-054",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/00003086-200101000-00030",
+  "query": "How to best find infection during surgery for joint replacement using blood culture vials, and what it found."
+ },
+ {
+  "id": "p-055",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1046/j.1365-294x.2002.01605.x",
+  "query": "Genetic diversity in North Atlantic right whales is low due to historical exploitation, impacting their recovery potential."
+ },
+ {
+  "id": "p-056",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:7020523",
+  "query": "Electron microscopy shows leprosy bacteria forming crystal like structures linked to their inner membranes."
+ },
+ {
+  "id": "p-057",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1063/1.4906119",
+  "query": "How acetamide and urea mixture behaves and moves at different temperatures, found rapid polarization relaxation and distinct dynamics from ionic versions."
+ },
+ {
+  "id": "p-058",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:9480087",
+  "query": "Finding unexpected blood group antibodies in intravenous immunoglobulin and potential transfusion risks."
+ },
+ {
+  "id": "p-059",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.4103/jfmpc.jfmpc_998_19",
+  "query": "Compare lidocaine with epinephrine against a lidocaine, epinephrine, dexamethasone mix for pain relief and speed in wisdom tooth surgery."
+ },
+ {
+  "id": "p-060",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3389/fonc.2024.1369829",
+  "query": "Treating blocked advanced colon cancer using infusions and special oily drug delivery showed it was safe and effective."
+ },
+ {
+  "id": "p-061",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:8982832",
+  "query": "Study of immune cells in developing rat brains and how their markers change over time."
+ },
+ {
+  "id": "p-062",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s10157-006-0455-2",
+  "query": "Kidney failure in rats lowers bone receptor for a hormone on bone building cells."
+ },
+ {
+  "id": "p-063",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.biortech.2014.04.066",
+  "query": "New bioreactor method for making ethanol from wood waste quickly, even at high speeds, with good results."
+ },
+ {
+  "id": "p-064",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/s41467-021-25298-9",
+  "query": "How genetic changes control fetal hemoglobin production, revealed by single cell editing and modeling."
+ },
+ {
+  "id": "p-065",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/femsle/fny160",
+  "query": "Study of Indian cyanobacteria reveals a new species, Scytonema pachmarhiense, and explores its evolutionary relationships."
+ },
+ {
+  "id": "p-066",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physreva.67.014306",
+  "query": "Using semiconductor quantum dots in a cavity to control electron spins for universal quantum computation with laser pulses."
+ },
+ {
+  "id": "p-067",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:21786690",
+  "query": "How terbium transfers energy to red fluorescent proteins and how it affects their light emission."
+ },
+ {
+  "id": "p-068",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1042/bj3120549",
+  "query": "Finding how blocking a specific protein helps blood cancer cells mature faster."
+ },
+ {
+  "id": "p-069",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/jvim.14808",
+  "query": "Dog anemia investigation shows free DNA and enzyme levels, finding DNA may increase clotting risk."
+ },
+ {
+  "id": "p-070",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1039/c5cp05119c",
+  "query": "How cation arrangement affects electrical properties in tungsten bronze materials, explored using calculations and a new model."
+ },
+ {
+  "id": "p-071",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.bmcl.2013.06.095",
+  "query": "New chemical way to add amide to end of proteins, useful for hormones."
+ },
+ {
+  "id": "p-072",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/adma.201803229",
+  "query": "How topological insulators create super-focused sound beams for better communication and noise blocking."
+ },
+ {
+  "id": "p-073",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s43441-025-00752-8",
+  "query": "How AI and regulations can speed up custom RNA drugs for rare diseases."
+ },
+ {
+  "id": "p-074",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1055/s-2008-1034044",
+  "query": "Genetic disorder causing joint stiffness and long limbs, with a good outlook and some cases showing milder symptoms."
+ },
+ {
+  "id": "p-075",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2024.04.29.24306554",
+  "query": "New method tests COVID antibody protection using tiny blood drops, offering quick, easy results for vaccination guidance."
+ },
+ {
+  "id": "p-076",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3109/02688697.2011.580393",
+  "query": "Clipping a brain artery aneurysm near the cerebellum, avoiding damage to surrounding brain structures."
+ },
+ {
+  "id": "p-077",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.urology.2007.01.091",
+  "query": "New, cheaper suture method for reconnecting tubes in infertility surgery shows good results."
+ },
+ {
+  "id": "p-078",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.14219/jada.archive.1996.0101",
+  "query": "How CT scans help tell apart deep jaw infections from other cheek swellings when no tooth problem is obvious."
+ },
+ {
+  "id": "p-079",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:21456462",
+  "query": "How do updated pediatric resuscitation guidelines affect emergency care and why are survival rates still low?"
+ },
+ {
+  "id": "p-080",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2023.07.24.550375",
+  "query": "Fission yeast Pik1 enzyme's role in making certain lipids at the Golgi, not in cell division, unlike other related enzymes."
+ },
+ {
+  "id": "p-081",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1186/s12951-016-0195-8",
+  "query": "Detecting breast cancer stem cells using a new type of nanoparticle probe that combines two imaging methods for better results."
+ },
+ {
+  "id": "p-082",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:4081987",
+  "query": "Study of kidney problems after eating contaminated fish, finding acute kidney failure in some patients and using blood cleansing for treatment."
+ },
+ {
+  "id": "p-083",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/978-1-4939-6707-0_4",
+  "query": "Fungi that cause plant disease and produce harmful toxins in food, like fumonisins and trichothecenes."
+ },
+ {
+  "id": "p-084",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1053/j.ajkd.2011.06.007",
+  "query": "Living organ donation for kidneys: what's needed to increase access and ensure safety of donors and patients?"
+ },
+ {
+  "id": "p-085",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2020.09.11.294017",
+  "query": "How to analyze genetic trait locations on the X chromosome with multiple factors and interactions, and software for it."
+ },
+ {
+  "id": "p-086",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/pro.2109",
+  "query": "Protein switches controlled by redox potential, where folding is switched on and off to control function."
+ },
+ {
+  "id": "p-087",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/chem.201301553",
+  "query": "Ruthenium and osmium compounds change shape after being excited, with structural differences affecting how fast they transform."
+ },
+ {
+  "id": "p-088",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1128/jb.172.1.431-436.1990",
+  "query": "How E coli degrades extra L10 protein without enough L7/L12 and how L7/L12 prevents this decay."
+ },
+ {
+  "id": "p-089",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/112972980100200402",
+  "query": "Bridging to a strong arm vein access for dialysis using a new device for better blood flow."
+ },
+ {
+  "id": "p-090",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1037/a0023514",
+  "query": "How voluntary attention helps us quickly process many visual items at once, unlike automatic attention."
+ },
+ {
+  "id": "p-091",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/scs.0000000000003749",
+  "query": "Rare head and neck tumor found to be difficult to treat and diagnose."
+ },
+ {
+  "id": "p-092",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/jp062536y",
+  "query": "How gold and silver nanorod shapes affect their sensitivity for detecting chemicals and biological materials."
+ },
+ {
+  "id": "p-093",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/dar.13438",
+  "query": "How stigma around alcohol problems affects family caregivers in India and the support they provide."
+ },
+ {
+  "id": "p-094",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/nrrheum.2016.183",
+  "query": "2016 psoriatic arthritis treatment guidelines compared, showing how EULAR and GRAPPA advice differs."
+ },
+ {
+  "id": "p-095",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1088/1361-6528/abb105",
+  "query": "Infrared detector made with silicon and quantum dots that can see longer wavelengths and respond quickly."
+ },
+ {
+  "id": "p-096",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/s41590-024-02068-5",
+  "query": "How lactate signals suppress the immune system in colon cancer, driving a specific cell type to weaken the anti-tumor response."
+ },
+ {
+  "id": "p-097",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/acs.jpcb.2c03806",
+  "query": "Computer simulations predict how Hsp70 proteins bind to other cellular proteins, improving understanding of their function."
+ },
+ {
+  "id": "p-098",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.12669/pjms.345.15356",
+  "query": "Can blood counts predict if methotrexate works for ectopic pregnancies?"
+ },
+ {
+  "id": "p-099",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/pld3.476",
+  "query": "How a plant gene mutation creates more fruit seed compartments and bigger fruits."
+ },
+ {
+  "id": "p-100",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1371/journal.pone.0166286",
+  "query": "How social influence changes what people like to eat, finding preferences for healthy options increased but candy consumption stayed the same."
+ },
+ {
+  "id": "p-101",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/adma.202208562",
+  "query": "3D graphene material can shrink when heated, scientists made it using frozen graphene sheets."
+ },
+ {
+  "id": "p-102",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1182/blood-2006-11-056291",
+  "query": "Factors influencing antibody development in children with hemophilia A and the protective role of regular treatment."
+ },
+ {
+  "id": "p-103",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.2217/pmt.14.1",
+  "query": "Using stem cells to treat arthritis pain and regenerate cartilage, finding they may also have natural painkilling abilities."
+ },
+ {
+  "id": "p-104",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.2214/ajr.10.5514",
+  "query": "Can one CT scan accurately measure belly fat in kids and link it to health risks?"
+ },
+ {
+  "id": "p-105",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/978-1-0716-1186-9_34",
+  "query": "How to find rare plant proteins in chloroplasts for study using a new method."
+ },
+ {
+  "id": "p-106",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.plefa.2004.08.002",
+  "query": "Fetal levels of certain fats linked to newborn brain health and development."
+ },
+ {
+  "id": "p-107",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/14651858.cd000440",
+  "query": "Comparing newer risperidone drugs with older antipsychotics for schizophrenia symptoms and side effects."
+ },
+ {
+  "id": "p-108",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/bs.3830410301",
+  "query": "Using living systems to understand organizations, people, and social interactions, finding common patterns and how individuals regulate themselves within groups."
+ },
+ {
+  "id": "p-109",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/s41598-024-54201-x",
+  "query": "Oyster mushroom extracts compared for chemical compounds and antioxidant abilities."
+ },
+ {
+  "id": "p-110",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:7294758",
+  "query": "How active charcoal removes novobiocin from liquids, noting different carbon types and solvent effects improved purification."
+ },
+ {
+  "id": "p-111",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1039/c8sm01072b",
+  "query": "How nanoparticle surface properties affect polymer composite flow and how to control it."
+ },
+ {
+  "id": "p-112",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1590/s0104-11692013000200023",
+  "query": "How nurses need English skills for their jobs and training in Spain."
+ },
+ {
+  "id": "p-113",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/00071668508416843",
+  "query": "How different diets lacking specific amino acids affect chick growth and nutrient use."
+ },
+ {
+  "id": "p-114",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1645/ge-2558.1",
+  "query": "Dog infection rates for Toxoplasma in Shanghai, China, showing lower prevalence than elsewhere and suggesting successful control."
+ },
+ {
+  "id": "p-115",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:3102177",
+  "query": "How calcium affects how neutrophils eat Salmonella and what happens when EGTA is present."
+ },
+ {
+  "id": "p-116",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/bpb.0000000000000801",
+  "query": "How to get accurate foot pressure data for kids with clubfoot, and how reliable different people are at doing it."
+ },
+ {
+  "id": "p-117",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/j.1095-8649.2010.02833.x",
+  "query": "How goldfish skin cells change during spawning and if ploidy affects this."
+ },
+ {
+  "id": "p-118",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1099/ijs.0.65271-0",
+  "query": "New bacteria species discovered in textile factory wastewater that can be distinguished from existing related types."
+ },
+ {
+  "id": "p-119",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1089/vbz.2015.1874",
+  "query": "How specific immune helpers affect control of a mouse parasite infection and its related tissue damage."
+ },
+ {
+  "id": "p-120",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1017/s0950268800059082",
+  "query": "Listeria infection outbreak linked to rice salad at a party, causing stomach illness in guests."
+ },
+ {
+  "id": "p-121",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/978-1-4939-6603-5_1",
+  "query": "How to align cells in the same stage of their life cycle for research and what common methods achieve this."
+ },
+ {
+  "id": "p-122",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/ana.21104",
+  "query": "How blocked neck arteries cause brain damage and what the study found about reduced brain receptors."
+ },
+ {
+  "id": "p-123",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2022.01.18.476728",
+  "query": "How plant PTEN genes evolved to help divide cell vacuoles and what happens when they are changed."
+ },
+ {
+  "id": "p-124",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1088/2058-9565/ad80be",
+  "query": "How different quantum computer layouts affect random quantum circuit behavior and entanglement."
+ },
+ {
+  "id": "p-125",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/j.1477-2574.2012.00439.x",
+  "query": "Comparing single approach versus multiple procedures for clearing bile duct stones, finding which is better."
+ },
+ {
+  "id": "p-126",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/09500340308234586",
+  "query": "Quantum physics study of light behavior in three-level systems, finding new phase effects."
+ },
+ {
+  "id": "p-127",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/jm500416f",
+  "query": "New drugs targeting cancer receptors made with a fast chemical reaction for better scans."
+ },
+ {
+  "id": "p-128",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:7042419",
+  "query": "Growing blood vessel cells on tiny beads and seeing how they interact and make helpful substances."
+ },
+ {
+  "id": "p-129",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s15010-018-1174-9",
+  "query": "Malaria drug DHA-PPQ failed to cure a patient who traveled from Ethiopia, showing the medication may not work in people returning from Africa."
+ },
+ {
+  "id": "p-130",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/0167-5699(95)80167-7",
+  "query": "How proteins help immune system receptors assemble and mature in cells, and their impact on immune function."
+ },
+ {
+  "id": "p-131",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/0378-1119(93)90224-q",
+  "query": "Finding genes for two enzymes in a mold and showing they work better with more copies."
+ },
+ {
+  "id": "p-132",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/00001813-199110000-00010",
+  "query": "New chemotherapy drug converts to active form in body, shows cancer cell killing power."
+ },
+ {
+  "id": "p-133",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/ced.15118",
+  "query": "Using microscopes in doctor's offices to better diagnose and treat skin problems like fungi and scabies."
+ },
+ {
+  "id": "p-134",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1152/ajpheart.1997.273.2.h971",
+  "query": "How vasopressin increases cell signaling molecules in blood vessel walls through calcium and calmodulin."
+ },
+ {
+  "id": "p-135",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physreva.96.013833",
+  "query": "Convert microwave signals to light using cesium atoms and superconducting circuits, achieving megabit per second quantum communication rates."
+ },
+ {
+  "id": "p-136",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.fct.2017.12.063",
+  "query": "How to test if drugs block CYP4A11 using lauric acid byproducts."
+ },
+ {
+  "id": "p-137",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/jsap.12206",
+  "query": "Dog with neck pain and stiff legs had rare bone split in first neck bone linked to missing toes."
+ },
+ {
+  "id": "p-138",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/(sici)1097-0169(1997)37:4<378::aid-cm8>3.0.co;2-0",
+  "query": "How cardiac muscle cell components stretch unevenly and what that means for cell structure."
+ },
+ {
+  "id": "p-139",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1128/cdli.6.2.161-167.1999",
+  "query": "Rare immune system problem in a child caused by slow B cell maturation, which improved on its own."
+ },
+ {
+  "id": "p-140",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/ons/opab037",
+  "query": "Using bone from the hip for spine fusion, a study found that a blood supplied graft helps healing better than a plain bone piece."
+ },
+ {
+  "id": "p-141",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/j.1467-7652.2011.00615.x",
+  "query": "Plant cell factories for making cheaper vaccines against human sickness and what they found."
+ },
+ {
+  "id": "p-142",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.12659/ajcr.942083",
+  "query": "Robot surgery to remove a rare pelvic nerve tumor and its successful outcome."
+ },
+ {
+  "id": "p-143",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.jocn.2009.12.005",
+  "query": "Study on stroke drug doses in Chinese people showed higher benefit with a standard dose."
+ },
+ {
+  "id": "p-144",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1371/journal.pone.0233441",
+  "query": "How to make robot path planning faster using a smart obstacle avoidance method that processes information as needed."
+ },
+ {
+  "id": "p-145",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.phrs.2021.106022",
+  "query": "Probiotic yeast benefits liver conditions by improving immunity and fighting damage."
+ },
+ {
+  "id": "p-146",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.11646/zootaxa.4048.3.2",
+  "query": "Insect study: classifying and identifying three types of black beetles in North America and their relation to other species."
+ },
+ {
+  "id": "p-147",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2024.04.03.587755",
+  "query": "How different protein structural matching methods perform on protein interaction sites for protein docking and which tool is fastest."
+ },
+ {
+  "id": "p-148",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:11219938",
+  "query": "Radiology techniques for breast cancer diagnosis and treatment, improving accuracy and reducing surgery."
+ },
+ {
+  "id": "p-149",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.adolescence.2011.05.005",
+  "query": "Anxious kids understand friendships less well, impacting quality, study shows."
+ },
+ {
+  "id": "p-150",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1126/science.1240573",
+  "query": "How to create and remove individual magnetic whirls using electric current and magnetic fields for data storage."
+ },
+ {
+  "id": "p-151",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0378-4347(96)00178-8",
+  "query": "Assessing propofol drug levels using GC-AED versus GC-MS, finding GC-AED offered better precision and accuracy."
+ },
+ {
+  "id": "p-152",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/03079457.2015.1012046",
+  "query": "How well do foot bath disinfectants stop Salmonella contamination on poultry farms, and what percentage actually worked?"
+ },
+ {
+  "id": "p-153",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/bi052646f",
+  "query": "How specific parts of the C1q protein bind to antibodies and other molecules, and what charged areas are important for these connections."
+ },
+ {
+  "id": "p-154",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1364/oe.15.016316",
+  "query": "How to control a fiber laser's output color using two outside stable light beams and achieve very precise frequency."
+ },
+ {
+  "id": "p-155",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1371/journal.pone.0148858",
+  "query": "How heptanol stops heart rhythm problems in mouse atria by increasing electrical recovery time."
+ },
+ {
+  "id": "p-156",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.prevetmed.2017.02.010",
+  "query": "Mink disease study links individual sickness status to breeding success and litter size."
+ },
+ {
+  "id": "p-157",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1371/journal.pone.0149399",
+  "query": "How to tell how grown up human eye cells are using pictures and special image analysis techniques."
+ },
+ {
+  "id": "p-158",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/01241398-199211000-00001",
+  "query": "Surgery for severe spine slippage in kids to straighten the back and allow walking, showing good healing and stable results."
+ },
+ {
+  "id": "p-159",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/antiox12020358",
+  "query": "Novel nanoparticles deliver cerium to protect brain cells from damage and preserve energy by neutralizing harmful molecules."
+ },
+ {
+  "id": "p-160",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s00125-010-1907-5",
+  "query": "How genes and surroundings influence metabolic syndrome traits in Chinese twins."
+ },
+ {
+  "id": "p-161",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2024.01.27.577576",
+  "query": "How gene PCDH9 affects brain cell connections, leading to too many connections and altered signals in the hippocampus."
+ },
+ {
+  "id": "p-162",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:36568837",
+  "query": "Nocardia brain infection, higher risk in weak immune systems, found it's more dangerous than other bacterial brain abscesses."
+ },
+ {
+  "id": "p-163",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3389/fmolb.2015.00042",
+  "query": "How ammonium sulfate precipitation alters cyanobacteria phytochrome structure and chromophore chemical shifts using NMR."
+ },
+ {
+  "id": "p-164",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/acs.joc.0c00578",
+  "query": "Detecting spiroglycol's mirror images using a special chemical agent and chiral acids through NMR analysis."
+ },
+ {
+  "id": "p-165",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.5435/jaaos-d-14-00039",
+  "query": "Reattaching severed hand parts: when it works, how to preserve them, and what to expect after surgery."
+ },
+ {
+  "id": "p-166",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/jme/tjab222",
+  "query": "Mosquito variety in a Brazilian reserve, finding more kinds in altered areas and artificial containers."
+ },
+ {
+  "id": "p-167",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1371/journal.pone.0190893",
+  "query": "How retinal glial cells release acid when stimulated by ATP, affecting neuron communication."
+ },
+ {
+  "id": "p-168",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/0896-8411(91)90172-9",
+  "query": "Antibodies targeting a specific enzyme component in liver disease and a new method for detecting them."
+ },
+ {
+  "id": "p-169",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1186/1751-0147-54-48",
+  "query": "Finding out if sheep worms in Norway can survive common dewormers."
+ },
+ {
+  "id": "p-170",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/acs.nanolett.1c01789",
+  "query": "Fast, no-etch method to make twisted metal sheets, showing how they change shape."
+ },
+ {
+  "id": "p-171",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3233/ch-238111",
+  "query": "Investigating if a new leg wrap combined with tape reduces swelling and boosts blood flow better than regular stockings or tape alone."
+ },
+ {
+  "id": "p-172",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3928/01484834-20240614-04",
+  "query": "How nursing students feel during shared practice scenarios and its connection to their learning."
+ },
+ {
+  "id": "p-173",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/tera.1420480302",
+  "query": "Cadmium pollution's impact on dairy cows: less twins, more birth problems, and harder pregnancies found in study."
+ },
+ {
+  "id": "p-174",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:24851526",
+  "query": "Shigella strains causing diarrhea in Nigeria and their common types."
+ },
+ {
+  "id": "p-175",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/22799036241231544",
+  "query": "How terrorism harms health care in poorer nations and what can be done to help."
+ },
+ {
+  "id": "p-176",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.02.03.429557",
+  "query": "Brain cell vesicles in blood change size and content with antidepressant success, offering a biomarker for treatment effectiveness."
+ },
+ {
+  "id": "p-177",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physreva.66.023801",
+  "query": "How collisions affect light storage and delay in atom experiments and how to reduce them."
+ },
+ {
+  "id": "p-178",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1242/jcs.122234",
+  "query": "How potassium channels cluster and activate kinesin motors for transport in neurons, and what this means for cargo regulation."
+ },
+ {
+  "id": "p-179",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1364/oe.433067",
+  "query": "New system uses a single special lens and AI to capture sharp images over a wide range of distances."
+ },
+ {
+  "id": "p-180",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1023/a:1007389712487",
+  "query": "Study on smoking, hormones, and bone strength in women, finding bone density isn't lower due to estrogen, but possibly due to androgen levels and reduced conversion."
+ },
+ {
+  "id": "p-181",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3389/fimmu.2023.1298622",
+  "query": "Rare kidney problems after COVID shots, including ANCA and lupus nephritis, and a review of vaccine-related kidney damage."
+ },
+ {
+  "id": "p-182",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2023.05.15.540732",
+  "query": "How a drug affects the link between UBL3 protein and alpha-synuclein in brain cells."
+ },
+ {
+  "id": "p-183",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3978/j.issn.2072-1439.2015.08.21",
+  "query": "Comparing conscious sedation versus general anesthesia for heart valve replacement surgery and its outcomes."
+ },
+ {
+  "id": "p-184",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1186/s12936-023-04451-3",
+  "query": "Tracking Plasmodium vivax malaria trends in Nouakchott, Mauritania from 2015 to 2020 to inform control efforts."
+ },
+ {
+  "id": "p-185",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3171/2023.11.spine23127",
+  "query": "How social factors impact patient recovery and happiness after cervical myelopathy surgery."
+ },
+ {
+  "id": "p-186",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:11208312",
+  "query": "What causes fatty liver, how it looks, how to diagnose it, and its treatment options."
+ },
+ {
+  "id": "p-187",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.31083/j.fbe1404025",
+  "query": "Cameroonian plants fighting resistant germs in urinary infections and improving antibiotic effectiveness."
+ },
+ {
+  "id": "p-188",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.09.19.461001",
+  "query": "How bacterial sortases recognize specific protein targets and how changing their structure affects this ability."
+ },
+ {
+  "id": "p-189",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:4085312",
+  "query": "How lipids affect drug release from tiny sacs and leukemia treatment success."
+ },
+ {
+  "id": "p-190",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.chest.2022.03.034",
+  "query": "Patient with long lasting dry cough not helped by common asthma or reflux treatments, what was the cause and cure?"
+ },
+ {
+  "id": "p-191",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.01.11.21249276",
+  "query": "How deep RNA sequencing of ICU COVID-19 patients reveals host response, pathogen presence, and predicts death."
+ },
+ {
+  "id": "p-192",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1159/000040868",
+  "query": "Drug given before surgery for hip replacement to help anemic patients donate their own blood safely."
+ },
+ {
+  "id": "p-193",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1073/pnas.95.13.7445",
+  "query": "Human ATR protein, when its kinase activity is blocked, makes cells more vulnerable to radiation and disrupts cell cycle regulation."
+ },
+ {
+  "id": "p-194",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.55563/clinexprheumatol/1kr7bs",
+  "query": "How often are frail or almost frail found in rheumatoid arthritis patients, and does the testing method matter?"
+ },
+ {
+  "id": "p-195",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/0041-0101(94)00145-x",
+  "query": "Finding antibodies to jellyfish sting rash in people, showing it helps diagnose the condition."
+ },
+ {
+  "id": "p-196",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/26331055231159658",
+  "query": "How immune system genes affect how brain connections change with age and what protective or harmful effects they have."
+ },
+ {
+  "id": "p-197",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/bf00441138",
+  "query": "Children's anemia with iron buildup and ring cells, exploring treatment and genetic causes like X-linked forms."
+ },
+ {
+  "id": "p-198",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1128/aem.01811-10",
+  "query": "How a fungal enzyme's active site loop affects the creation of different terpene compounds."
+ },
+ {
+  "id": "p-199",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.ultras.2021.106650",
+  "query": "Ultrasound blood flow imaging filters to boost picture clarity and speed measurements, significantly reducing errors."
+ },
+ {
+  "id": "p-200",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0301-0511(98)00031-3",
+  "query": "Breathing exercises improve heart function and slow breathing in heart attack survivors after rehab."
+ },
+ {
+  "id": "p-201",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/jscr/rjab015",
+  "query": "Successful endovascular treatment for a large brain artery bulge after a flow diverter failed, involving vessel closure."
+ },
+ {
+  "id": "p-202",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.toxicon.2023.107204",
+  "query": "Treating ear pain with botulinum toxin shows promising results for a rare nerve condition."
+ },
+ {
+  "id": "p-203",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/299838a0",
+  "query": "How the X chromosome's inactive copy affects steroid enzyme production, showing it's not fully active."
+ },
+ {
+  "id": "p-204",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1161/circresaha.116.305510",
+  "query": "How a long RNA molecule impacts small blood vessel problems and disease development."
+ },
+ {
+  "id": "p-205",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s13238-010-0021-2",
+  "query": "How a specific protein slows nerve fiber breakdown and its implications for neurodegenerative diseases."
+ },
+ {
+  "id": "p-206",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0005-7967(98)00021-7",
+  "query": "How obsessive-compulsive washing develops, and if learned associations, especially during depression, are a key factor."
+ },
+ {
+  "id": "p-207",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/acsami.2c13368",
+  "query": "Self-resetting hydrogel robots mimic nature using chemical energy, automatically returning to rest after movement."
+ },
+ {
+  "id": "p-208",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.dci.2022.104625",
+  "query": "How insect sugar genes help a virus multiply and affect cell signaling."
+ },
+ {
+  "id": "p-209",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1159/000395289",
+  "query": "What causes inflammation in head salivary glands and how it develops, leading to a need for better treatments."
+ },
+ {
+  "id": "p-210",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.03.21.21253999",
+  "query": "Finding face points in 3D head scans using computers, improving accuracy with a step-by-step method."
+ },
+ {
+  "id": "p-211",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2020.09.10.286252",
+  "query": "High testosterone levels trigger cell death and immune responses in prostate cancer by activating internal defense mechanisms."
+ },
+ {
+  "id": "p-212",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1177/070674379403908s05",
+  "query": "Community mental health services for older adults: review of program types, patient needs, and effective strategies."
+ },
+ {
+  "id": "p-213",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physrevlett.79.5178",
+  "query": "How to fix quantum computer errors for communication and universal two-bit gates using atom and light interactions."
+ },
+ {
+  "id": "p-214",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.01.11.21249596",
+  "query": "Brain scan patterns predict how well kids with PTSD will respond to therapy."
+ },
+ {
+  "id": "p-215",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/jz501891y",
+  "query": "Modeling fuel cell reactions and interface damage at high temperatures using advanced simulations."
+ },
+ {
+  "id": "p-216",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.therap.2016.09.004",
+  "query": "How to boost doctors reporting drug side effects with research assistant help, study shows significant increase."
+ },
+ {
+  "id": "p-217",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3389/fneur.2015.00018",
+  "query": "How natalizumab affects fatigue, mood, and sleepiness in multiple sclerosis patients."
+ },
+ {
+  "id": "p-218",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1024/0301-1526.32.1.31",
+  "query": "Microscopic examination of a long-term infected artery graft reveals biodegradation and bacterial presence."
+ },
+ {
+  "id": "p-219",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/am5057322",
+  "query": "New tiny gold and zinc oxide balls improve acetone detection by being hollow with a special shell."
+ },
+ {
+  "id": "p-220",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/ogx.0b013e31821288a4",
+  "query": "Simplifying fertility testing, new guidelines remove outdated checks for infertile couples."
+ },
+ {
+  "id": "p-221",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/ijerph182111535",
+  "query": "Digital tools help elderly with memory problems improve thinking skills, study shows."
+ },
+ {
+  "id": "p-222",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1364/ao.42.001417",
+  "query": "How blue green light creates durable holographic patterns in a new plastic material."
+ },
+ {
+  "id": "p-223",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s10517-010-0876-5",
+  "query": "How plant antioxidant nanoparticles helped heal burn wounds by reducing inflammation and improving skin regrowth."
+ },
+ {
+  "id": "p-224",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.csbj.2024.10.043",
+  "query": "How disordered proteins relate to brain diseases like autism and ADHD, and what key cellular processes they affect."
+ },
+ {
+  "id": "p-225",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:9187119",
+  "query": "How a vitamin D protein fragment activates immune cells to fight a specific type of abdominal cancer and extend mouse survival."
+ },
+ {
+  "id": "p-226",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1109/embc48229.2022.9871032",
+  "query": "New method to make efficient wireless power coils for implants using a special plastic and hand winding."
+ },
+ {
+  "id": "p-227",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1067/mai.2003.180",
+  "query": "Asthma genetics: CC16 gene variation linked to how sensitive children's airways are."
+ },
+ {
+  "id": "p-228",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.ymeth.2023.06.007",
+  "query": "New software speeds up checking sequencing data quality, handling large compressed files and finding errors better."
+ },
+ {
+  "id": "p-229",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.29271/jcpsp.2021.09.1099",
+  "query": "How to test for levothyroxine absorption issues in people with hypothyroidism and what a new short test found."
+ },
+ {
+  "id": "p-230",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/1756-185x.12181",
+  "query": "Study links vitamin D in blood to how bad new rheumatoid arthritis is and measures the illness's effects."
+ },
+ {
+  "id": "p-231",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/adma.202210989",
+  "query": "How to grow tiny oxide crystals and wires from thin sheets using heat and membranes."
+ },
+ {
+  "id": "p-232",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1161/01.hyp.7.6_pt_2.ii118",
+  "query": "How hypertension affects heart problems in diabetic dialysis patients and what was found about death rates."
+ },
+ {
+  "id": "p-233",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2020.07.28.20163329",
+  "query": "Machine learning for distinguishing bacterial vs viral infections using gene expression with high accuracy, identifying key indicator genes."
+ },
+ {
+  "id": "p-234",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1128/mcb.15.12.7143",
+  "query": "Protein kinase found to be active during cell division, interacting with a motor protein during chromosome separation and cell splitting."
+ },
+ {
+  "id": "p-235",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s10620-015-3665-1",
+  "query": "Detecting esophageal dysfunction symptoms when eosinophils are few but proteins from them are present."
+ },
+ {
+  "id": "p-236",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s00216-012-6315-x",
+  "query": "New mass spectrometry technique enhances protein measurement, showing better accuracy for transferrin, a health indicator."
+ },
+ {
+  "id": "p-237",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:9803349",
+  "query": "Study compared solutions for rinsing artificial liver devices to protect pig liver cells, finding hemofiltration solution better for 3D cultures."
+ },
+ {
+  "id": "p-238",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.2174/157489009789152212",
+  "query": "Heparin coatings on heart surgery machines reduce bleeding and inflammation by allowing less systemic medication."
+ },
+ {
+  "id": "p-239",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:8955181",
+  "query": "Oxidative stress blocks a cellular process that normally lowers CD4 levels on T cells, suggesting impact on T cell function and HIV infection."
+ },
+ {
+  "id": "p-240",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.10.01.21264405",
+  "query": "How quickly frailty worsens predicts death in very old people better than how frail they are now."
+ },
+ {
+  "id": "p-241",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.jhazmat.2023.133370",
+  "query": "Correcting errors in a review about using algae to remove water pollutants, focusing on specific chemical models."
+ },
+ {
+  "id": "p-242",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/227165",
+  "query": "Study on voice features and physical strength, finding no link between grip strength and masculine voice qualities."
+ },
+ {
+  "id": "p-243",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/00221309.2021.1913398",
+  "query": "Study checks if loneliness questionnaire works well for elderly people in Peru, finding it's mostly okay but with some issues on certain questions."
+ },
+ {
+  "id": "p-244",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1039/d2an01523d",
+  "query": "Detecting fires early in cotton harvesters using a new carbon monoxide sensor that is very sensitive and works in tough conditions."
+ },
+ {
+  "id": "p-245",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.str.2022.06.003",
+  "query": "How oxysterol receptor EBI2 works to control immune cells and potential for autoimmune illness therapy."
+ },
+ {
+  "id": "p-246",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2022.08.15.504004",
+  "query": "How cadmium harms inner ear cells and what pathways are involved in this damage."
+ },
+ {
+  "id": "p-247",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.jaac.2023.01.025",
+  "query": "How to use QR codes in crisis planning for young people to remember coping tools."
+ },
+ {
+  "id": "p-248",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:281553",
+  "query": "Goldfish skin tumors: study finds cancerous cells with red pigment likely from normal pigment makers."
+ },
+ {
+  "id": "p-249",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/978-1-0716-2663-4_16",
+  "query": "How protein modifications affect RNA protein clumps in liquid or solid forms, using lab tests."
+ },
+ {
+  "id": "p-250",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.jep.2014.03.018",
+  "query": "How skullcap herb extract stops food allergy symptoms like itching and severe reactions in mice."
+ },
+ {
+  "id": "p-251",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1085/jgp.97.3.413",
+  "query": "Rabbit eye cells react to light by measuring electrical signals, showing how they adjust to varying brightness levels."
+ },
+ {
+  "id": "p-252",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1039/c3nr00989k",
+  "query": "Coating mesoporous cobalt oxide with iron cobalt oxide to create new magnetic materials with adjustable properties."
+ },
+ {
+  "id": "p-253",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/nar/gkw1359",
+  "query": "How PiggyMac protein works to remove DNA during reproduction in Paramecium, showing multiple units are needed for it to function."
+ },
+ {
+  "id": "p-254",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/ja0284456",
+  "query": "New drug designs for sepsis by creating soluble lipid A compounds and studying how they connect with antibiotics."
+ },
+ {
+  "id": "p-255",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:10120463",
+  "query": "How to effectively lead and organize enthusiastic people helping non-profits and find fulfillment."
+ },
+ {
+  "id": "p-256",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1186/s41239-021-00253-2",
+  "query": "How live chat in college helps students learn to ask for academic assistance online and in mixed settings."
+ },
+ {
+  "id": "p-257",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1113/jphysiol.1974.sp010434",
+  "query": "Rat eye muscle speed and force in contractions compared to leg muscles."
+ },
+ {
+  "id": "p-258",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/aja.2011.145",
+  "query": "Prostate cancer gene fusions and their link to disease aggressiveness and potential treatments."
+ },
+ {
+  "id": "p-259",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/jb/mvs092",
+  "query": "How fats help stop inflammation and heal tissue damage, and the role of eosinophils."
+ },
+ {
+  "id": "p-260",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/02699931.2018.1535427",
+  "query": "How emotion impacts logical thinking and if it uses up mental energy or just makes people more keyed up."
+ },
+ {
+  "id": "p-261",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/0049-3848(86)90076-9",
+  "query": "Warfarin therapy makes factor VIII more stable, not due to protein C."
+ },
+ {
+  "id": "p-262",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2023.09.14.557672",
+  "query": "Endometrial cancer cells lacking EIF4G2 become more aggressive and resistant to treatment, leading to worse outcomes for patients."
+ },
+ {
+  "id": "p-263",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:8180515",
+  "query": "How blood vessel lining influences clotting and preventing clots, and new ways to stop harmful blood clots."
+ },
+ {
+  "id": "p-264",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3390/children10020328",
+  "query": "Does blood sugar stress predict how long infants need intensive care after heart surgery?"
+ },
+ {
+  "id": "p-265",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2023.05.26.23290615",
+  "query": "Predicting drug harms using a biology based network model that also shows why it makes those predictions."
+ },
+ {
+  "id": "p-266",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/ptr.3009",
+  "query": "How captopril and garlic together protect rat hearts from damage, and effects of high garlic doses."
+ },
+ {
+  "id": "p-267",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1097/rli.0000000000000593",
+  "query": "Study compares a new manganese MRI agent to existing ones for cancer detection and tracks its body removal."
+ },
+ {
+  "id": "p-268",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1159/000145725",
+  "query": "Study of cow eye blood vessel arrangement and flow patterns using specialized casting and microscopy techniques."
+ },
+ {
+  "id": "p-269",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1080/19472498.2022.2050025",
+  "query": "South Asian household work history: how service changed and impacted society over time."
+ },
+ {
+  "id": "p-270",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.apergo.2015.10.004",
+  "query": "Study on how people decide to cross train tracks and what factors influence their safety decisions."
+ },
+ {
+  "id": "p-271",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1001/jama.289.8.996",
+  "query": "How quality initiatives affected racial and gender differences in kidney dialysis care and if they lessened those inequalities."
+ },
+ {
+  "id": "p-272",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s00405-011-1604-0",
+  "query": "Using sound tests on sedated babies to guess their hearing ability later in life."
+ },
+ {
+  "id": "p-273",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.3389/fmicb.2018.01417",
+  "query": "New method to count gut bacteria, even rare ones, reveals age and country differences in microbial populations."
+ },
+ {
+  "id": "p-274",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physrevapplied.16.034003",
+  "query": "How to use symmetries to improve quantum computer calculations for molecules, even with errors."
+ },
+ {
+  "id": "p-275",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1093/ndt/gfac307",
+  "query": "Effect of a second booster shot for COVID-19 vaccines on antibody levels in people with kidney problems."
+ },
+ {
+  "id": "p-276",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1172/jci108958",
+  "query": "How blocking insulin and glucagon affects blood potassium and sodium, finding insulin helps regulate potassium."
+ },
+ {
+  "id": "p-277",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.bbmt.2009.10.005",
+  "query": "Bone marrow transplant for sickle cell improves brain and lung health but harms reproductive organs."
+ },
+ {
+  "id": "p-278",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2021.02.10.430563",
+  "query": "New standard for organizing health research data to make it discoverable and usable by others."
+ },
+ {
+  "id": "p-279",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1111/mmi.13885",
+  "query": "Protein affecting parasite's cellular structure, environmental uptake, and growth."
+ },
+ {
+  "id": "p-280",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1186/1471-2202-5-33",
+  "query": "How bone marrow stem cells influence brain cell development by producing BMP4 for potential injury repair."
+ },
+ {
+  "id": "p-281",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0378-1119(96)00461-1",
+  "query": "Lactobacillus plantarum gene order for making pyrimidines and a new way to sequence DNA without cloning."
+ },
+ {
+  "id": "p-282",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0024-3205(99)00340-9",
+  "query": "How urethane and a drug named PRL-2903 affect stomach acid production and gastrin levels in rats, and what the drug found."
+ },
+ {
+  "id": "p-283",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1164/arrd.1978.117.1.63",
+  "query": "New way to estimate blood carbon dioxide without needles, using breathing tests and calculations."
+ },
+ {
+  "id": "p-284",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1289/ehp.99107s5811",
+  "query": "How environmental factors connect to autoimmune illnesses and what studies should be done next."
+ },
+ {
+  "id": "p-285",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2024.09.13.612991",
+  "query": "How to best raise predatory mites in a lab for pest control, finding a food mix increases their reproduction and is safer."
+ },
+ {
+  "id": "p-286",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/cpp.1856",
+  "query": "European study on aging factors affecting health and disability, finding new ways to gather comparable data."
+ },
+ {
+  "id": "p-287",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.forsciint.2024.112047",
+  "query": "How Phoenix police reduced fingerprint request delays and backlogs using a new AFIS strategy."
+ },
+ {
+  "id": "p-288",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1101/2020.09.16.298810",
+  "query": "New material helps grow human stem cells long term without animal products, improving cell therapy production."
+ },
+ {
+  "id": "p-289",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:7804568",
+  "query": "Detecting gynecologic cancers with a virus immune response, but it might not be useful for tracking illness progression."
+ },
+ {
+  "id": "p-290",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.7759/cureus.58302",
+  "query": "Review of blood thinners for stroke recovery, covering their types, uses, and patient safety."
+ },
+ {
+  "id": "p-291",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.bbamem.2015.02.027",
+  "query": "How DHA influences lipid structures in membranes, finding it creates larger ordered regions than oleic acid."
+ },
+ {
+  "id": "p-292",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1038/s41598-023-28158-2",
+  "query": "How breathing patterns influence feeling a hand belongs to you in a perception experiment."
+ },
+ {
+  "id": "p-293",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "pmid:23007818",
+  "query": "How a specialized surgery unit improves treatment and outcomes for severe pelvic injuries."
+ },
+ {
+  "id": "p-294",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1103/physrevresearch.3.033203",
+  "query": "How to simulate quantum tunneling and correlations using classical particles in wells."
+ },
+ {
+  "id": "p-295",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1021/la801735c",
+  "query": "How crystal flaws in bone mineral cause uneven pits and affect bone repair."
+ },
+ {
+  "id": "p-296",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/s0960-894x(99)00540-5",
+  "query": "New drug molecules that interact with dopamine D4 receptors were made and tested for effectiveness."
+ },
+ {
+  "id": "p-297",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.rvsc.2022.08.009",
+  "query": "Genetic test for inherited cattle disorder causing calf deformities found carriers in Chinese breeds, tracing back to one German bull."
+ },
+ {
+  "id": "p-298",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1007/s10773-008-9794-y",
+  "query": "This paper explores a special type of Dirac equation that can be broken down into parts and shows how to recover standard energy values."
+ },
+ {
+  "id": "p-299",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1002/hep.24580",
+  "query": "How Hepatitis C virus triggers antiviral responses in liver cells and what it found about inhibiting the virus."
+ },
+ {
+  "id": "p-300",
+  "kind": "paraphrase",
+  "stratum": "paraphrase",
+  "gold": "doi:10.1016/j.schres.2022.12.012",
+  "query": "Newspaper language for schizophrenia vs. psychosis in UK media and how it affects public perception."
+ }
+]
