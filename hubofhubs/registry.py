@@ -12,6 +12,8 @@ REGISTERED = ("builds_on", "compared", "no_hub_exists")
 CALLS = ("adopt", "coexist", "keep", "watch", "avoid")   # the machine-readable call of an area's recommendation (hubs.csv ``call``)
 CONNECT_CALLS = ("adopt", "coexist", "")                  # areas a consumer SHOULD be connected to; a blank call counts as coexist
 CONNECTION_KINDS = ("by_config", "seam", "selectable", "fake_hub")   # checks that can only hold once a consumer has connected the area
+AREA_KINDS = ("registered", "fresh", "no_reinvented")                              # facts of the research itself: checked once per area
+SEAT_KINDS = ("by_config", "seam", "selectable", "core_clean", "fake_hub")           # facts of a consumer's code: checked once per seat
 CONFIG_SHARE_BAR = 0.5       # an area is "by configuration" when at least this share of its wired hub connections need no code
 
 
@@ -52,6 +54,17 @@ def should_connect(row):
     return (row.get("call") or "").strip().lower() in CONNECT_CALLS
 
 
+def seat_ids(hubs):
+    """The seats that own at least one area, in order of first appearance in ``hubs.csv`` (the ``seat`` column is the mapping
+    from each area to the hub seat that owns it; an area is an arm or tool inside its seat)."""
+    return list(dict.fromkeys(r["seat"] for r in hubs))
+
+
+def seat_should_connect(hubs, seat):
+    """A seat should be connected when at least one of its areas should be (adopt, coexist or blank)."""
+    return any(should_connect(r) for r in hubs if r["seat"] == seat)
+
+
 def findings_of(row, findings):
     """The researched candidates of one area. ``hubs.csv`` holds the area's id prefix in ``finding_id``; each row of
     ``hub_findings.csv`` carries ``<prefix>-<n>``, so every finding id is unique and the join stays one value per area."""
@@ -72,8 +85,13 @@ def reinvented_of(area, integrations, consumer):
             and i["covered_by"].strip() and i["status"] != "waived"]
 
 
-def combine(facts, connections):
-    """Coverage, integration by configuration, freshness, code structure, reinvented integrations, and the score."""
+def combine(facts, connections, seats=None):
+    """Coverage, integration by configuration, freshness, code structure, reinvented integrations, and the score.
+
+    ``facts`` are per area. With ``seats`` (per-seat facts) the code-structure terms are read once per seat: the seam and
+    selectable shares are over the seats that should be connected (a seat with an adopt or coexist area), the vendor-branch share
+    is over all seats, and an adopt or coexist area that no arm of the consumer covers is an ARM GAP (``arm_gaps``), not a
+    missing binding. Without ``seats`` they are read per area, as before."""
     n = len(facts) or 1
     days = [f["days"] for f in facts if f["days"] is not None]
     coverage = sum(1 for f in facts if f["registered"]) / n
@@ -85,15 +103,24 @@ def combine(facts, connections):
     seam_share = sum(1 for f in wanted if f["seam"]) / len(wanted) if wanted else 1.0
     selectable_share = sum(1 for f in wanted if f["selectable"]) / len(wanted) if wanted else 1.0
     clean_share = sum(1 for f in facts if not f["vendor_branches"]) / n
+    out_seats = {}
+    if seats is not None:
+        wanted_seats = [f for f in seats if f.get("expected", True)]
+        seam_share = sum(1 for f in wanted_seats if f["seam"]) / len(wanted_seats) if wanted_seats else 1.0
+        selectable_share = sum(1 for f in wanted_seats if f["selectable"]) / len(wanted_seats) if wanted_seats else 1.0
+        clean_share = sum(1 for f in seats if not f["vendor_branches"]) / len(seats) if seats else 1.0
+        out_seats = dict(seats_to_connect=len(wanted_seats), unconnected_seats=sorted(f["seat"] for f in wanted_seats if not f["seam"]),
+                         arm_gaps=sorted(f.get("area", "") for f in wanted if not f.get("covered")))
     reinvented_free_share = sum(1 for f in facts if not f.get("reinvented")) / n
     code = (seam_share + selectable_share + clean_share) / 3
     out = dict(coverage=coverage, config_share=config_share, fresh_share=fresh_share,
                days_max=max(days) if days else None, days_mean=(sum(days) / len(days)) if days else None,
                seam_share=seam_share, selectable_share=selectable_share, clean_share=clean_share, to_connect=len(wanted),
                unconnected=sorted(f.get("area", "") for f in wanted if not f["seam"]),
-               vendor_branches=sum(len(f["vendor_branches"]) for f in facts), code=code,
+               vendor_branches=sum(len(f["vendor_branches"]) for f in (seats if seats is not None else facts)), code=code,
                reinvented=sum(len(f.get("reinvented", [])) for f in facts), waived=sum(f.get("waived", 0) for f in facts),
                reinvented_free_share=reinvented_free_share)
+    out.update(out_seats)
     out["score"] = (coverage + config_share + fresh_share + code + reinvented_free_share) / 5
     return out
 

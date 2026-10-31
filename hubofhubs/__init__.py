@@ -8,8 +8,8 @@ environment read.
     from hubofhubs import Binding, evaluate, AssemblyConfig, assemble, register, resolve
 """
 from .binding import Binding
-from .measure import evaluate, check, metrics
+from .measure import evaluate, evaluate_seats, check, metrics
 from esoi.assemble import Assembly, AssemblyConfig, AssemblyError
 from .resolution import assemble, choice, names, register, resolve
 
-__all__ = ["Binding", "evaluate", "check", "metrics", "AssemblyConfig", "AssemblyError", "choice", "names", "resolve", "register", "assemble", "Assembly"]
+__all__ = ["Binding", "evaluate", "evaluate_seats", "check", "metrics", "AssemblyConfig", "AssemblyError", "choice", "names", "resolve", "register", "assemble", "Assembly"]

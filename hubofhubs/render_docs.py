@@ -71,19 +71,44 @@ def area_detail(folder=None, seats=None):
     return "\n".join(out).rstrip()
 
 
+def seat_reading(seat_facts):
+    """One row per seat for a consumer: how many areas the seat owns, how many of them its arms cover, the arm gaps (adopt or
+    coexist areas no arm covers), and the four seat-level checks (seam, selectable, by configuration, fake hub)."""
+    mark = lambda ok: "yes" if ok else "no"  # noqa: E731
+    lines = ["| Seat | Areas | Should connect | Arms cover | Arm gaps | Seam | Selectable | By config | Fake hub |", "|---|---|---|---|---|---|---|---|---|"]
+    for f in seat_facts.values():
+        if f["expected"]:
+            cells = [mark(f["seam"]), mark(f["selectable"]), mark(f["config_ok"]), mark(f["probe"] is not None)]
+        else:
+            cells = ["-"] * 4
+        lines.append("| " + " | ".join([f["seat"], str(len(f["areas"])), str(len(f["to_connect"])), str(len(f["covered"])),
+                                        str(len(f["arm_gaps"]))] + cells) + " |")
+    return "\n".join(lines)
+
+
 def metric_lines(m, facts):
     stale = [a for a, f in facts.items() if not f["fresh"]]
-    return "\n".join([
+    seats = "seats_to_connect" in m
+    lines = [
         f"- coverage (areas with a hub or a recorded decision): {m['coverage']:.2f}",
         f"- integration by configuration (share of wired hub connections that need no code): {m['config_share']:.2f}",
         f"- research freshness: share of areas researched within {registry.STALENESS_DAYS} days {m['fresh_share']:.2f}; "
         f"stale: {', '.join(stale) or 'none'}",
         f"- reinvented integrations (single services hand-wired where a hub covers them, no waiver): {m['reinvented']} "
-        f"({m['waived']} more waived with a reason); areas free of them {m['reinvented_free_share']:.2f}",
-        f"- code: of the {m.get('to_connect', len(facts))} areas whose call is adopt or coexist, share with one seam {m['seam_share']:.2f} "
-        f"and selectable by metric {m['selectable_share']:.2f}; vendor branches in core {m['vendor_branches']}",
-        f"- real gaps (call adopt or coexist, no seam): {', '.join(m.get('unconnected') or []) or 'none'}",
-        f"- score: {m['score']:.3f}"])
+        f"({m['waived']} more waived with a reason); areas free of them {m['reinvented_free_share']:.2f}"]
+    if seats:
+        lines += [
+            f"- code, once per seat: of the {m['seats_to_connect']} seats with an adopt or coexist area, share with one seam {m['seam_share']:.2f} "
+            f"and selectable by metric {m['selectable_share']:.2f}; vendor branches in core {m['vendor_branches']}",
+            f"- seats with no seam: {', '.join(m['unconnected_seats']) or 'none'}",
+            f"- arm gaps (adopt or coexist areas no arm covers; research to build or connect, not missing bindings): "
+            f"{len(m['arm_gaps'])} of {m['to_connect']}"]
+    else:
+        lines += [
+            f"- code: of the {m.get('to_connect', len(facts))} areas whose call is adopt or coexist, share with one seam {m['seam_share']:.2f} "
+            f"and selectable by metric {m['selectable_share']:.2f}; vendor branches in core {m['vendor_branches']}",
+            f"- real gaps (call adopt or coexist, no seam): {', '.join(m.get('unconnected') or []) or 'none'}"]
+    return "\n".join(lines + [f"- score: {m['score']:.3f}"])
 
 
 def rewrite(text, begin, end, block):

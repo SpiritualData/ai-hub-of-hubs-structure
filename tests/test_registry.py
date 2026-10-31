@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs import Binding, cases, evaluate, registry, render_docs, scan  # noqa: E402
+from hubofhubs import Binding, cases, evaluate, evaluate_seats, registry, render_docs, scan  # noqa: E402
 from hubofhubs.measure import KINDS, check  # noqa: E402
 
 
@@ -34,7 +34,7 @@ def consumer(tmp_path):
                    names_of=lambda sid: ["x", "y"] if sid == "seam-a" else [], probes={"model_providers": lambda: (True, "ok")})
 
 
-def test_a_consumer_is_read_per_area(consumer):
+def test_a_consumer_is_read_per_area_and_per_seat(consumer):
     facts, connections, numbers = evaluate(consumer)
     mp = facts["model_providers"]
     assert mp["seam"] and mp["selectable"] and mp["vendor_branches"] and check(mp, "fake_hub")["holds"]
@@ -44,10 +44,14 @@ def test_a_consumer_is_read_per_area(consumer):
     assert 0 <= numbers["score"] <= 1
 
 
-def test_every_area_gets_every_check_that_applies_to_it():
-    got = {(c["args"]["area"], c["kind"]) for c in cases.cases()}
-    assert got == {(r["area"], k) for r in registry.read("hubs.csv") for k in KINDS
-                   if k not in registry.CONNECTION_KINDS or registry.should_connect(r)}
+def test_every_area_and_every_seat_gets_the_checks_that_apply_to_it():
+    got = {(c["args"].get("area") or c["args"]["seat"], c["kind"]) for c in cases.cases()}
+    hubs = registry.read("hubs.csv")
+    want = {(r["area"], k) for r in hubs for k in registry.AREA_KINDS}
+    want |= {(s, k) for s in registry.seat_ids(hubs) for k in registry.SEAT_KINDS
+             if k not in registry.CONNECTION_KINDS or registry.seat_should_connect(hubs, s)}
+    assert got == want
+    assert set(KINDS) == set(registry.AREA_KINDS) | set(registry.SEAT_KINDS), "every kind is checked either per area or per seat"
 
 
 def test_freshness_ages_with_the_calendar(consumer):
@@ -171,11 +175,57 @@ def test_seam_and_selectable_shares_are_over_the_areas_that_should_be_connected(
     assert none_wanted["seam_share"] == 1.0 and none_wanted["to_connect"] == 0
 
 
-def test_connection_checks_are_cases_only_for_areas_that_should_be_connected():
+def test_connection_checks_are_cases_only_for_seats_with_an_area_that_should_be_connected():
     from hubofhubs import cases
-    from hubofhubs.measure import KINDS
-    have = {(c["args"]["area"], c["kind"]) for c in cases.cases()}
-    for row in registry.read("hubs.csv"):
-        for kind in KINDS:
-            expected = kind not in registry.CONNECTION_KINDS or registry.should_connect(row)
-            assert ((row["area"], kind) in have) is expected, (row["area"], kind)
+    hubs = registry.read("hubs.csv")
+    have = {(c["args"]["seat"], c["kind"]) for c in cases.cases() if "seat" in c["args"]}
+    for seat in registry.seat_ids(hubs):
+        for kind in registry.SEAT_KINDS:
+            expected = kind not in registry.CONNECTION_KINDS or registry.seat_should_connect(hubs, seat)
+            assert ((seat, kind) in have) is expected, (seat, kind)
+    assert not {c["args"]["area"] for c in cases.cases() if "area" in c["args"] and c["kind"] in registry.CONNECTION_KINDS}, \
+        "no connection check is made per area"
+
+
+def test_every_area_maps_to_a_seat_of_the_mind():
+    from esoi.tables import read_csv
+    root = Path(__file__).resolve().parent.parent
+    solutions = {r["solution_id"] for r in read_csv(root / "esoi" / "solutions.csv")}
+    hubs = registry.read("hubs.csv")
+    assert all(r["seat"] in solutions for r in hubs), [r["area"] for r in hubs if r["seat"] not in solutions]
+    assert len(registry.seat_ids(hubs)) <= 12
+
+
+def test_one_row_per_seat_binds_every_area_that_seat_owns_and_the_rest_are_arm_gaps(tmp_path, consumer):
+    hubs = registry.read("hubs.csv")
+    by_seat = {}
+    for r in hubs:
+        by_seat.setdefault(r["seat"], []).append(r["area"])
+    one_row = [dict(seat="reason-and-answer", areas="model_providers", seam_solution_id="seam-a", vendor_terms="acmevendor", code_paths="")]
+    seat_consumer = Binding(consumer="quest-ai-runner", root=consumer.root, seats=one_row, core_dir=consumer.core_dir,
+                            records_dir=consumer.records_dir, names_of=consumer.names_of, probes={"model_providers": lambda: (True, "ok")})
+    facts, seat_facts, _, numbers = evaluate_seats(seat_consumer)
+    mine = seat_facts["reason-and-answer"]
+    assert mine["seam"] and mine["selectable"] and mine["probe"] is not None and mine["vendor_branches"]
+    assert mine["covered"] == ["model_providers"] and "structured_output" in mine["arm_gaps"], "an uncovered adopt area is an arm gap"
+    assert not seat_facts["know-the-world"]["seam"] and not seat_facts["know-the-world"]["bound"]
+    assert "reason-and-answer" not in numbers["unconnected_seats"] and "know-the-world" in numbers["unconnected_seats"]
+    assert facts["structured_output"]["seam"] is False and facts["model_providers"]["seam"] is True, "per-area data stays in the facts"
+    assert numbers["seam_share"] == pytest.approx(1 / numbers["seats_to_connect"])
+    assert {a for a in numbers["arm_gaps"]} == {a for a, f in facts.items() if f["expected"] and not f["covered"]}
+
+
+def test_a_row_that_puts_an_area_under_the_wrong_seat_is_refused(consumer):
+    bad = Binding(consumer="quest-ai-runner", root=consumer.root, seats=[dict(seat="know-the-world", areas="model_providers")],
+                  core_dir=consumer.core_dir, records_dir=consumer.records_dir, names_of=consumer.names_of)
+    with pytest.raises(ValueError, match="belongs to seat"):
+        evaluate(bad)
+
+
+def test_a_seat_with_no_probe_is_unproven_and_probes_of_its_arms_must_all_hold(consumer):
+    mixed = Binding(consumer="quest-ai-runner", root=consumer.root, core_dir=consumer.core_dir, records_dir=consumer.records_dir,
+                    names_of=consumer.names_of, seats=[dict(seat="take-in-the-world", areas="channels;integration_aggregators")],
+                    probes={"channels": lambda: (True, "a"), "integration_aggregators": lambda: (False, "b")})
+    _, seat_facts, _, _ = evaluate_seats(mixed)
+    assert not check(seat_facts["take-in-the-world"], "fake_hub")["holds"]
+    assert not check(seat_facts["act-in-the-world"], "fake_hub")["holds"]
