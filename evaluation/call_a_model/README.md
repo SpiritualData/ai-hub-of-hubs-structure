@@ -14,7 +14,7 @@ Quality per dollar of each vendor arm at its cheapest current model, on exact-an
   `deepseek-flash` ($0.30, $1.20, the peak-hours rate, so cost is never understated; thinking off, the arm's default). Cost is the
   metered tokens (thinking tokens included) times that price.
 - **Anthropic**: not measured. Its API account is capped until 2026-11-01, so no call was made (`--impl anthropic` refuses).
-  Public evidence for it is in `hubofhubs/registry/hub_evidence.csv`.
+  No public evidence row is entered for it yet (the evidence registry has no model area).
 - **Not ranked**: see `invariant.txt`. The vendors are evidence for per-tier choice, not rivals for the seat.
 - **Free check**: `PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run call_a_model --impl no_answer` (a baseline, no model).
 - **Staged paid run** (per vendor, stop a vendor that errors): `esoi run call_a_model --impl gemini --sample 3 --record`, then `--sample 10`,
