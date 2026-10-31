@@ -16,7 +16,7 @@ from .openalex import OpenAlexWorks
 
 SEMANTIC_PARAM = "search.semantic"
 MAX_QUERY_CHARS = 2000
-MIN_INTERVAL_SECONDS = 1.0   # the documented rate limit of the semantic endpoint
+MIN_INTERVAL_SECONDS = 2.0   # documented limit is 1 request a second; a 40-case run at 1 s was answered with HTTP 429 for 11 cases, so the arm waits 2 s
 
 
 @implementation("know-the-world", "openalex_semantic")

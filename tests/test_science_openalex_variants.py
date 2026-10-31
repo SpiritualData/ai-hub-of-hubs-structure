@@ -41,7 +41,7 @@ class Model:
 def test_the_semantic_arm_sends_the_whole_question_in_the_semantic_parameter_and_no_other_search():
     transport = Transport()
     arm = OpenAlexSemantic(transport=transport, min_interval=0)
-    assert arm.min_interval == 0 and OpenAlexSemantic().min_interval == 1.0
+    assert arm.min_interval == 0 and OpenAlexSemantic().min_interval == 2.0
     assert arm.search(QUESTION).kind == "query"
     sent = transport.calls[0]
     assert sent["search.semantic"] == QUESTION and "search.title_abstract_keywords" not in sent and "search" not in sent
