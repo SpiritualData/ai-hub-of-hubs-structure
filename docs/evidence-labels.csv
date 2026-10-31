@@ -1,33 +1,33 @@
-kind,key,seat,check,cases,research,anchor,reason
-check,card_store,remember-and-recall,"A stored card is found again by its words, and adding the same id twice loses nothing.",{n} written add-and-search cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,
-check,context_assembler,remember-and-recall,A document that answers the query is among the top five results.,"{n} test queries of BEIR NFCorpus, the whole public test split",hybrid fusion then rerank favoured (grade B),context-assembler-find-the-passage-a-request-needs,
-check,context_assembler_papers,remember-and-recall,The research paper a query was made from is among the top five results (an easy known-item check: it shows whether an arm fails, not which is cleverer).,"{n} title and sentence queries over a sample of research papers (private corpus, method only)",hybrid fusion then rerank favoured (grade B),context-assembler-find-the-passage-a-request-needs,
-check,reason_and_answer,reason-and-answer,The model picked for each tier is the one with the most passing work per dollar.,{n} written tier cases with the prices on file (this repo),routing cuts cost per its authors (grade D),choose-a-model-tier-tier-selection,
-check,model_call,reason-and-answer,A question asked at a tier is answered by the model that tier names.,{n} written tier cases with a fake provider (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,
-check,provider_failover,reason-and-answer,"When the first provider fails, a healthy one answers; a bad request is not hidden.",{n} written failure cases with fake providers (this repo),no independent study found,call-a-model-vendor-models-router-failover,
-check,call_a_model,reason-and-answer,Each vendor's cheapest model gets the right final answer on school maths word problems.,{n} problems sampled from GSM8K test (public),vendor indexes shortlist only,call-a-model-vendor-models-router-failover,"The vendor arms are evidence for choosing a model per tier, not rivals for one seat."
-check,search_backend,take-in-the-world,A top-five search hit comes from a page or site that holds the answer.,{n} questions sampled from SimpleQA (public),no engine shown best; a close independent test (grade C),search-backend-web-search-hits-containing-the-source,
-check,know_the_world,know-the-world,The paper that answers a research question is among what the arm returns.,{n} questions sampled from LitSearch (public),meaning-based search over papers beats keywords (grade B to C),know-the-world-find-papers-for-a-research-question,
-check,file_edit_goals,act-in-the-world,A small coding task counts as done only when its own tests pass afterwards.,{n} tasks sampled from HumanEval (public),thin pipelines can match agents on small edits (grade D),act-in-the-world-coding-and-file-edit-goals,
-check,watch_for_risk,watch-for-risk,Steps a person should authorize are stopped and ordinary steps are let through.,"{n} written step digests, plainly worded (this repo)",monitors miss ambiguous cases (grade B),watch-for-risk-overseer-versus-none,
-check,watch_for_risk_ambiguous,watch-for-risk,"Risky steps described indirectly are stopped, and ordinary steps that only sound risky pass.",{n} written step digests with indirect wording (this repo),monitors miss ambiguous cases (grade B),watch-for-risk-overseer-versus-none,
-check,stay_current,stay-current,A research date is read as the right number of days old and stale areas are named.,{n} written date cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,
-check,connect_any_integration,connect-any-integration,A fake integration added by configuration alone counts as needing zero code.,{n} written binding cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,
-check,assemble_the_whole,assemble-the-whole,"Every seat builds, or says exactly what to pass, and no arm fails to build.",{n} written assembly cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,
-gap,hold-the-intents,,,,,,"No public task represents a hierarchy of intents, and no cases are written yet."
-gap,think-critically,,,,,,Code exists (hubofhubs/critique) but no arm is recorded and no check is written. The research page names a public candidate.
-gap,keep-it-generic,,,,,,"Enforced by a text scan in the tests, not by a recorded run, and no arm is recorded."
-gap,take-in-the-world:rest,,,,,,"Only web search is measured; agent harnesses, tools and MCP servers have no check yet."
-gap,reason-and-answer:rest,,,,,,"Only tier choice, provider failover and vendor answers are measured; planning and answering live in Quest AI Runner and have no check here yet."
-gap,remember-and-recall:rest,,,,,,"Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet."
-gap,stay-current:rest,,,,,,The freshness reading is measured; the weekly research itself is run by the consumer's autopilot and is not an arm here.
-gap,connect-any-integration:rest,,,,,,Connection scoring is measured; the zero-code connect flow for a real integration is not run end to end here.
-gap,assemble-the-whole:rest,,,,,,"One scenario, with no rival, so there is no lead to test."
-gap,act-in-the-world:rest,,,,,,Only file-editing goals are measured; writing through MCP operations has no check.
-gap,know_the_world,,,,,,"OpenAlex's keyless allowance is about 100 searches a day, so runs are split across days."
-gap,file_edit_goals:acp_deep_runner,,,,,,The agent binary it needs is not installed where we measure.
-gap,call_a_model:anthropic,,,,,,"The Anthropic account is capped until 2026-11-01, so no call was made."
-gap,context_assembler:hybrid,,,,,,Embedding the corpus was not authorized for the public stage.
-gap,context_assembler:composite,,,,,,Embedding the corpus was not authorized for the public stage.
-gap,search_backend,,,,,,The arm needs a key or a self-hosted instance that is not set where we measure.
-gap,context_assembler_papers:composite,,,,,,"Not run yet; bm25, vector and hybrid were run."
+kind,key,seat,check,cases,research,anchor,reason,area
+check,card_store,remember-and-recall,"A stored card is found again by its words, and adding the same id twice loses nothing.",{n} written add-and-search cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,Memory store
+check,context_assembler,remember-and-recall,A document that answers the query is among the top five results.,"{n} test queries of BEIR NFCorpus, the whole public test split",hybrid fusion then rerank favoured (grade B),context-assembler-find-the-passage-a-request-needs,,RAG retrieval
+check,context_assembler_papers,remember-and-recall,The research paper a query was made from is among the top five results (an easy known-item check: it shows whether an arm fails, not which is cleverer).,"{n} title and sentence queries over a sample of research papers (private corpus, method only)",hybrid fusion then rerank favoured (grade B),,RAG retrieval
+check,reason_and_answer,reason-and-answer,The model picked for each tier is the one with the most passing work per dollar.,{n} written tier cases with the prices on file (this repo),routing cuts cost per its authors (grade D),choose-a-model-tier-tier-selection,,LLM routing and failover
+check,model_call,reason-and-answer,A question asked at a tier is answered by the model that tier names.,{n} written tier cases with a fake provider (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
+check,provider_failover,reason-and-answer,"When the first provider fails, a healthy one answers; a bad request is not hidden.",{n} written failure cases with fake providers (this repo),no independent study found,call-a-model-vendor-models-router-failover,,LLM routing and failover
+check,call_a_model,reason-and-answer,Each vendor's cheapest model gets the right final answer on school maths word problems.,{n} problems sampled from GSM8K test (public),vendor indexes shortlist only,call-a-model-vendor-models-router-failover,"The vendor arms are evidence for choosing a model per tier, not rivals for one seat.",LLMs (model quality and cost)
+check,search_backend,take-in-the-world,A top-five search hit comes from a page or site that holds the answer.,{n} questions sampled from SimpleQA (public),no engine shown best; a close independent test (grade C),search-backend-web-search-hits-containing-the-source,,Web search APIs
+check,know_the_world,know-the-world,The paper that answers a research question is among what the arm returns.,{n} questions sampled from LitSearch (public),meaning-based search over papers beats keywords (grade B to C),know-the-world-find-papers-for-a-research-question,,Scholarly search
+check,file_edit_goals,act-in-the-world,A small coding task counts as done only when its own tests pass afterwards.,{n} tasks sampled from HumanEval (public),thin pipelines can match agents on small edits (grade D),act-in-the-world-coding-and-file-edit-goals,,Coding agents
+check,watch_for_risk,watch-for-risk,Steps a person should authorize are stopped and ordinary steps are let through.,"{n} written step digests, plainly worded (this repo)",monitors miss ambiguous cases (grade B),watch-for-risk-overseer-versus-none,,Guardrails and oversight
+check,watch_for_risk_ambiguous,watch-for-risk,"Risky steps described indirectly are stopped, and ordinary steps that only sound risky pass.",{n} written step digests with indirect wording (this repo),monitors miss ambiguous cases (grade B),watch-for-risk-overseer-versus-none,,Guardrails and oversight
+check,stay_current,stay-current,A research date is read as the right number of days old and stale areas are named.,{n} written date cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
+check,connect_any_integration,connect-any-integration,A fake integration added by configuration alone counts as needing zero code.,{n} written binding cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
+check,assemble_the_whole,assemble-the-whole,"Every seat builds, or says exactly what to pass, and no arm fails to build.",{n} written assembly cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
+gap,hold-the-intents,,,,,,"No public task represents a hierarchy of intents, and no cases are written yet.",
+gap,think-critically,,,,,,Code exists (hubofhubs/critique) but no arm is recorded and no check is written. The research page names a public candidate.,
+gap,keep-it-generic,,,,,,"Enforced by a text scan in the tests, not by a recorded run, and no arm is recorded.",
+gap,take-in-the-world:rest,,,,,,"Only web search is measured; agent harnesses, tools and MCP servers have no check yet.",
+gap,reason-and-answer:rest,,,,,,"Only tier choice, provider failover and vendor answers are measured; planning and answering live in Quest AI Runner and have no check here yet.",
+gap,remember-and-recall:rest,,,,,,"Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet.",
+gap,stay-current:rest,,,,,,The freshness reading is measured; the weekly research itself is run by the consumer's autopilot and is not an arm here.,
+gap,connect-any-integration:rest,,,,,,Connection scoring is measured; the zero-code connect flow for a real integration is not run end to end here.,
+gap,assemble-the-whole:rest,,,,,,"One scenario, with no rival, so there is no lead to test.",
+gap,act-in-the-world:rest,,,,,,Only file-editing goals are measured; writing through MCP operations has no check.,
+gap,know_the_world,,,,,,"OpenAlex's keyless allowance is about 100 searches a day, so runs are split across days.",
+gap,file_edit_goals:acp_deep_runner,,,,,,The agent binary it needs is not installed where we measure.,
+gap,call_a_model:anthropic,,,,,,"The Anthropic account is capped until 2026-11-01, so no call was made.",
+gap,context_assembler:hybrid,,,,,,Embedding the corpus was not authorized for the public stage.,
+gap,context_assembler:composite,,,,,,Embedding the corpus was not authorized for the public stage.,
+gap,search_backend,,,,,,The arm needs a key or a self-hosted instance that is not set where we measure.,
+gap,context_assembler_papers:composite,,,,,,"Not run yet; bm25, vector and hybrid were run.",

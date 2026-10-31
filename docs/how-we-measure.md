@@ -51,6 +51,15 @@ The best arm can depend on the model and the harness. Each run records both, and
 circumstance when the results show it (`esoi.circumstances`). "No add-on" is always an arm of an additive seat, so an
 add-on has to earn its place over the model and harness as they are.
 
+## What counts as an alternative
+
+The README headline counts distinct arms (an arm that appears in two stages of one area counts once) that have a recorded whole run
+in `esoi/results.csv`, grouped by the area label of their check in `docs/evidence-labels.csv`. Not counted: baselines and floors
+(an arm whose module opens with BASELINE, FLOOR, ABLATION or VALIDITY, such as `none` and `single_provider`), and checks with no area
+label, which are mechanics of this repository (the single-scenario assembly, the freshness reading, the connection scorer, the
+one-call model wrapper). A partial sample run does not count on its own. Arms named by a metric but not yet run are listed under
+"What is not measured yet", not counted.
+
 ## Reproduce
 
 Every number on the evidence page comes from `esoi/results.csv` and `esoi/per_case.csv`, each row with its commit and

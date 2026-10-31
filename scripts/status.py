@@ -17,6 +17,9 @@ from hubofhubs import evidence_summary, render_docs  # noqa: E402
 
 TARGETS = (("README.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("docs/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
+           ("README.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
+           ("docs/announcement-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
+           ("docs/medium-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
            ("README.md", evidence_summary.EVIDENCE_BEGIN, evidence_summary.EVIDENCE_END),
            ("README.md", evidence_summary.UNMEASURED_BEGIN, evidence_summary.UNMEASURED_END),
            ("docs/evidence-by-arm.md", evidence_summary.ARMS_BEGIN, evidence_summary.ARMS_END))
@@ -53,6 +56,8 @@ def records():
 def blocks():
     config, registry = records()
     return {render_docs.STATUS_BEGIN: build(), render_docs.DETAIL_BEGIN: build_detail(),
+            evidence_summary.HEADLINE_BEGIN: evidence_summary.headline_block(config, registry, ROOT),
+            evidence_summary.COMPACT_BEGIN: evidence_summary.compact_headline(config, ROOT),
             evidence_summary.EVIDENCE_BEGIN: evidence_summary.evidence_block(config, registry, ROOT),
             evidence_summary.UNMEASURED_BEGIN: evidence_summary.unmeasured_block(config, registry, ROOT),
             evidence_summary.ARMS_BEGIN: evidence_summary.arms_block(config, registry)}

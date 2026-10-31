@@ -17,6 +17,8 @@ from esoi.tables import read_csv
 EVIDENCE_BEGIN, EVIDENCE_END = "<!-- evidence:start -->", "<!-- evidence:end -->"
 UNMEASURED_BEGIN, UNMEASURED_END = "<!-- unmeasured:start -->", "<!-- unmeasured:end -->"
 ARMS_BEGIN, ARMS_END = "<!-- arms:start -->", "<!-- arms:end -->"
+HEADLINE_BEGIN, HEADLINE_END = "<!-- headline:start -->", "<!-- headline:end -->"
+COMPACT_BEGIN, COMPACT_END = "<!-- headline-compact:start -->", "<!-- headline-compact:end -->"
 RESEARCH = "docs/what-public-research-says.md"
 HEADER = ["Check (solution, part of the mind)", "What it does", "Common-sense check", "Cases and source", "Selected arm", "Pass rate (95% interval)",
           "Cost per passing case", "Is the lead real?", "What public research says"]
@@ -204,3 +206,42 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
     for (sid, why), arms in grouped.items():
         lines.append(f"- **`{sid}`**, arms with no run: {', '.join(dict.fromkeys(arms))}. {why}")
     return "\n".join(lines) or "Every named seat and arm has a recorded run."
+
+
+def counted_arms(config: Config, root: Path) -> Dict[str, List[str]]:
+    """``{area: [arm, ...]}``: the distinct real alternatives with a recorded whole run, by the area label of their check
+    (``docs/evidence-labels.csv``). Left out: a check with no area label (mechanics such as the single-scenario assembly), and any arm
+    that marks itself a baseline, floor, ablation or validity reference in its module docstring (``none``, ``single_provider``)."""
+    history = leaderboard.all_results(config.results_path)
+    out: Dict[str, List[str]] = {}
+    for label in labels(root):
+        area = label.get("area", "")
+        if label["kind"] != "check" or not area or label["key"] not in history:
+            continue
+        for impl, row in latest_whole(history[label["key"]]).items():
+            if leaderboard.arm_kind(row, config.evaluation) in ("", "alternative") and impl not in out.setdefault(area, []):
+                out[area].append(impl)
+    return {area: sorted(arms) for area, arms in out.items() if arms}
+
+
+def headline_block(config: Config, registry: Registry, root: Path) -> str:
+    """The README headline and the per-area count table, computed from the results log and the registry."""
+    areas = counted_arms(config, root)
+    total = sum(len(arms) for arms in areas.values())
+    candidates = len(read_csv(root / "hubofhubs" / "registry" / "hub_findings.csv"))
+    lines = [f"**{total} alternatives measured across {len(areas)} areas, from {candidates} researched candidates.**", "",
+             "| Area | Alternatives measured | Which |", "|---|---|---|"]
+    order = [x.get("area", "") for x in labels(root) if x["kind"] == "check"]
+    for area in sorted(areas, key=lambda a: order.index(a)):
+        lines.append(f"| {area} | {len(areas[area])} | {', '.join('`' + a + '`' for a in areas[area])} |")
+    lines += ["", "Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors "
+              "(such as `none` and `single_provider`) and single-scenario mechanics checks ([how we measure](docs/how-we-measure.md#what-counts-as-an-alternative))."]
+    return "\n".join(lines)
+
+
+def compact_headline(config: Config, root: Path) -> str:
+    """The headline as one paragraph for a post or an article: the totals, then the count per area."""
+    areas = counted_arms(config, root)
+    candidates = len(read_csv(root / "hubofhubs" / "registry" / "hub_findings.csv"))
+    per_area = ", ".join(f"{area} {len(arms)}" for area, arms in areas.items())
+    return f"{sum(len(a) for a in areas.values())} alternatives measured across {len(areas)} areas, from {candidates} researched candidates. By area: {per_area}."

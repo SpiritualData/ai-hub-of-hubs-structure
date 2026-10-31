@@ -27,7 +27,7 @@ the verdict against the selected arm and the graded public numbers beside (never
 | know_the_world | openalex | 40 | 5.0% (1.4% to 16.5%), 2/40 | $0 | 0.3 (median) | not separated from openalex (McNemar p=1, 6 of 40 cases differ) | none recorded |
 | know_the_world | openalex_keywords | 40 | 7.5% (2.6% to 19.9%), 3/40 | $0 | 0.4 (median) | not separated from openalex_keywords (McNemar p=1, 7 of 40 cases differ) | none recorded |
 | know_the_world | openalex_keywords_model | 40 | 7.5% (2.6% to 19.9%), 3/40 | $0.0001667 | 0.7 (median) | not separated from openalex_keywords_model (McNemar p=1, 7 of 40 cases differ) | none recorded |
-| know_the_world | openalex_semantic | 40 | 20.0% (10.5% to 34.8%), 8/40 | $0 | 1 (median) | not separated from openalex_semantic (McNemar p=1, 6 of 40 cases differ) | none recorded |
+| know_the_world | openalex_semantic | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0 | 2 (median) | not separated from openalex_semantic (McNemar p=0.219, 10 of 40 cases differ) | none recorded |
 | model_call | via_call_a_model (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | provider_failover | multi_provider (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | provider_failover | single_provider | 30 | 40.0% (24.6% to 57.7%), 12/30 | $0 | 0 (median) | ahead of single_provider (McNemar p=3.81e-06) | none recorded |

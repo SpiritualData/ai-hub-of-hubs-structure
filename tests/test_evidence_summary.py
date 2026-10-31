@@ -53,3 +53,14 @@ def test_the_labels_name_only_real_pages_and_anchors():
         if row["anchor"]:
             heading = row["anchor"].replace("-", " ").split()[0]
             assert heading in page, row["key"]
+
+
+def test_the_headline_counts_real_alternatives_only():
+    config, registry = status.records()
+    areas = evidence_summary.counted_arms(config, ROOT)
+    every = [arm for arms in areas.values() for arm in arms]
+    for floor in ("none", "single_provider", "zero_config"):
+        assert floor not in every
+    headline = evidence_summary.headline_block(config, registry, ROOT)
+    assert headline.startswith(f"**{len(every)} alternatives measured across {len(areas)} areas, from ")
+    assert evidence_summary.compact_headline(config, ROOT).startswith(f"{len(every)} alternatives measured")

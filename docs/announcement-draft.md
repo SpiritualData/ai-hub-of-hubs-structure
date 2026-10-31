@@ -1,21 +1,24 @@
 # Announcement draft (not published)
 
-A draft LinkedIn post for the owner to edit. Every number comes from the README evidence table or its seats table as generated on
-2026-10-31; check each against the README before posting, because the table regenerates when new results are recorded.
+A draft LinkedIn post for the owner to edit. The first paragraph between the markers is generated from `esoi/results.csv` by
+`python3 scripts/status.py`; do not edit it by hand. Items marked FILL take their number from the README evidence table on the day
+of posting. The post body (below the line) must stay under 1,300 characters once filled.
 
 ---
 
-Lists of "best AI tools" say what exists, not which part works best or whether the difference is real.
+<!-- headline-compact:start -->
+22 alternatives measured across 8 areas, from 443 researched candidates. By area: Memory store 1, RAG retrieval 3, LLM routing and failover 2, LLMs (model quality and cost) 3, Web search APIs 2, Scholarly search 5, Coding agents 3, Guardrails and oversight 3.
+<!-- headline-compact:end -->
 
-We built ai-hub-of-hubs-structure to answer that. It is an open repository with one seat for each part of an AI mind (memory, models, search, risk, acting) and several open-source arms competing for each seat on the same cases. A seat keeps the arm that measures best, and a challenger only wins when a paired test says so.
+Lists of "best AI tools" say what exists, not which one works best or whether the difference is real. This open repository puts alternatives in the same seat and runs them on the same cases, with a paired test before any challenger replaces the incumbent. Public research is graded and shown beside our numbers, never mixed into them.
 
-What the 15 recorded checks show so far:
-- Provider failover: 30 of 30 cases answered, against 12 of 30 for a single provider (McNemar p=3.81e-06).
-- Web search for a source: Gemini grounding 30 of 40, a provider-native search 12 of 40 (p=2e-05).
-- Finding a paper for a research question: 6 of 40 against 2 of 40, which the test does not separate. We say so.
+Three findings so far:
+- Provider failover: [FILL: passing cases of the router vs a single provider, and p] (README row: call-a-model, failover).
+- Web search for a source: [FILL: gemini vs provider-native search, and p] (README row: search-backend).
+- Finding a paper for a research question: [FILL: web_research vs openalex, and the verdict]. Where the test does not separate two arms, we say so.
 
-What is not measured yet is listed in the README with the reason: the higher mind (hold-the-intents), critical thinking and the planning loop have no check. Public research is graded and shown beside our numbers, never mixed into them.
+What is not measured yet is listed in the README with the reason.
 
-One line gets you started: hubofhubs.assemble(environ=os.environ). It builds the seats that need nothing more from you and says exactly what to pass for the rest.
+One line to start: hubofhubs.assemble(environ=os.environ)
 
 Repo: github.com/SpiritualData/ai-hub-of-hubs-structure
