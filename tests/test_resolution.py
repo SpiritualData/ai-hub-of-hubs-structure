@@ -51,3 +51,16 @@ def test_assemble_overrides_name_only_what_differs():
     assert assemble(provided={"card-store": mine})["card-store"] is mine
     with pytest.raises(TypeError):
         assemble(AssemblyConfig(), arms={"card-store": "x"})
+
+
+def test_a_child_assembler_builds_on_the_hub_and_the_hub_is_unchanged_by_it(tmp_path):
+    from esoi.assemble import Assembler
+    from hubofhubs import assembler
+    child = Assembler("childpkg", tmp_path, parent=assembler())
+    assert child.choice("card-store").layer == "hubofhubs default" and assembler().choice("card-store").name == "local_card_store"
+    child.register("card-store", "child-store", type("ChildStore", (), {}))
+    system = child.assemble(AssemblyConfig(solutions=("card-store",), selections={"card-store": "child-store"},
+                                           reasons={"card-store": ["unconfirmed: a test."]}))
+    assert type(system["card-store"]).__name__ == "ChildStore" and "child-store" not in names("card-store")
+    assert child.overrides(AssemblyConfig(selections={"card-store": "child-store"}))[0].parent_default == "local_card_store"
+    assert assemble(AssemblyConfig(solutions=("card-store",)))["card-store"] is not None

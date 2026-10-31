@@ -11,6 +11,12 @@ HUB = Assembler(SCOPE, Path(__file__).resolve().parent, modules=(f"{SCOPE}.seats
 choice, names, register, resolve = HUB.choice, HUB.names, HUB.register, HUB.resolve
 
 
+def assembler() -> Assembler:
+    """The hub's own ``Assembler``, for a package that builds on the hub: ``Assembler(scope, dir, parent=hubofhubs.assembler())``
+    inherits every seat and default, and states only the arms and choices that differ. ``assemble()`` below is unchanged."""
+    return HUB
+
+
 def assemble(config=None, provided=None, *, arms=None, options=None):
     """The hub's one-line assembly.
 
