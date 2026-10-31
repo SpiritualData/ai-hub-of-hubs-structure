@@ -162,11 +162,12 @@ class MultiProvider(ModelProvider):
         except Exception:  # noqa: BLE001 - a capability probe must never raise
             return False
 
-    def web_search(self, query: str, *, model: str, max_results: int = 5) -> Dict[str, Any]:
+    def web_search(self, query: str, *, model: str, max_results: int = 5, instruction: Optional[str] = None) -> Dict[str, Any]:
         if self.over_limit():
             return {"answer": self.limit_message(), "results": []}
         self.call_count += 1
-        return self.routed(model, lambda p, m: p.web_search(query, model=m, max_results=max_results))
+        return self.routed(model, lambda p, m: p.web_search(query, model=m, max_results=max_results,
+                                                                    **({"instruction": instruction} if instruction else {})))
 
     def list_models(self) -> List[str]:
         """Every model from the primary and all registered providers, deduplicated."""

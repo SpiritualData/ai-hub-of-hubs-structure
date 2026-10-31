@@ -105,9 +105,16 @@ def fill(value: Any, key: str, query: str, max_results: int) -> Any:
     return value
 
 
+def snippet_hit(title: str, url: str, snippet: str, date: str = "") -> SearchHit:
+    """A hit from a snippet API: the API's excerpt as returned is the one passage, kind ``snippet``."""
+    return SearchHit(title=title, url=url, snippet=snippet, date=date, passages=(snippet,) if snippet else (),
+                     passage_kind="snippet" if snippet else "")
+
+
 class ConfiguredJsonBackend:
     """Searches any JSON search API from a description (see ``apis.py``). Behaviour matches the hand-written
-    Serper, Brave and Tavily backends this replaced: same request, same hit fields, same errors."""
+    Serper, Brave and Tavily backends this replaced: same request, same hit fields, same errors.
+    ``instruction`` is accepted and ignored: a search API takes a query, not an instruction."""
     spec: Dict[str, Any] = {}
     ENVIRON_REQUIRED = ("api_key",)
 
@@ -126,7 +133,7 @@ class ConfiguredJsonBackend:
         key = next((env[n] for n in cls.spec.get("key_env", []) if env.get(n)), "")
         return cls(key) if key else None
 
-    def search(self, query: str, *, max_results: int = 5) -> SearchResponse:
+    def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse:
         spec, name = self.spec, self.spec["name"]
         payload = {k: fill(v, self.api_key, query, max_results) for k, v in spec.get("payload", {}).items()}
         headers = {k: fill(v, self.api_key, query, max_results) for k, v in spec.get("headers", {}).items()}
@@ -144,8 +151,7 @@ class ConfiguredJsonBackend:
             text = next((item.get(k) for k in spec["fields"].get(label, []) if item.get(k)), "") or ""
             return remove_tags(text) if label in spec.get("strip_tags", []) else text
 
-        hits = [SearchHit(title=field_of(item, "title"), url=field_of(item, "url"), snippet=field_of(item, "snippet"),
-                          date=field_of(item, "date"))
+        hits = [snippet_hit(field_of(item, "title"), field_of(item, "url"), field_of(item, "snippet"), field_of(item, "date"))
                 for item in (dotted(data, spec["results_path"]) or [])[:max_results]]
         answer = next((dotted(data, p) for p in spec.get("answer_paths", []) if dotted(data, p)), "") or ""
         if not hits and not answer:
@@ -204,6 +210,7 @@ def load_file_specs(path: str) -> Dict[str, type]:
 
 @implementation("search-backend", "searxng")
 class SearxngBackend:
+    """A self-hosted SearXNG instance. ``instruction`` is accepted and ignored (not model-backed)."""
     name = "searxng"
     ENVIRON = {"base_url": "SEARXNG_URL"}       # option <- variable (esoi.assemble)
     ENVIRON_REQUIRED = ("base_url",)
@@ -212,7 +219,7 @@ class SearxngBackend:
         self.base_url = (base_url or "").rstrip("/")
         self.http = http
 
-    def search(self, query: str, *, max_results: int = 5) -> SearchResponse:
+    def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse:
         try:
             resp = self.http(
                 "GET",
@@ -227,12 +234,8 @@ class SearxngBackend:
         data = parse_json(resp, "searxng")
 
         hits = [
-            SearchHit(
-                title=item.get("title", "") or "",
-                url=item.get("url", "") or "",
-                snippet=item.get("content", "") or "",
-                date=item.get("publishedDate", "") or "",
-            )
+            snippet_hit(item.get("title", "") or "", item.get("url", "") or "", item.get("content", "") or "",
+                        item.get("publishedDate", "") or "")
             for item in (data.get("results") or [])[:max_results]
         ]
         if not hits:
@@ -245,9 +248,22 @@ class SearxngBackend:
 # ---------------------------------------------------------------------------
 
 
+def provider_hit(row: Dict[str, Any]) -> SearchHit:
+    """A hit from a provider's result row (``title``, ``url``, ``snippet``, optional ``passages``, ``passage_kind``, ``date``)."""
+    passages = tuple(p for p in (row.get("passages") or ()) if p)
+    snippet = row.get("snippet", "") or (passages[0] if passages else "")
+    kind = (row.get("passage_kind", "") or "") if (passages or snippet) else ""
+    return SearchHit(title=row.get("title", "") or "", url=row.get("url", "") or "", snippet=snippet,
+                     date=row.get("date", "") or "", passages=passages, passage_kind=kind)
+
+
 @implementation("search-backend", "provider")
 class ProviderNativeBackend:
-    """Wraps any ``ModelProvider`` exposing ``web_search(query, model=, max_results=)``."""
+    """Wraps any ``ModelProvider`` exposing ``web_search(query, model=, max_results=)``.
+
+    A provider's result row may carry ``passages`` (a list), ``passage_kind`` and ``date``; they pass through. A row with only
+    ``snippet`` keeps ``snippet`` and no kind (the provider does not say what it is). ``instruction`` is handed to the provider
+    as ``instruction=`` only when the caller gives one, so a provider written before it existed keeps working."""
 
     name = "provider-native"
 
@@ -255,18 +271,15 @@ class ProviderNativeBackend:
         self.provider = provider
         self.model = model
 
-    def search(self, query: str, *, max_results: int = 5) -> SearchResponse:
+    def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse:
         try:
-            result = self.provider.web_search(query, model=self.model, max_results=max_results)
+            extra = {"instruction": instruction} if instruction else {}
+            result = self.provider.web_search(query, model=self.model, max_results=max_results, **extra)
         except Exception as exc:  # noqa: BLE001
             raise SearchBackendError(f"provider-native: {exc}") from exc
 
         hits = [
-            SearchHit(
-                title=r.get("title", "") or "",
-                url=r.get("url", "") or "",
-                snippet=r.get("snippet", "") or "",
-            )
+            provider_hit(r)
             for r in (result.get("results") or [])
         ]
         answer = result.get("answer", "") or ""
@@ -296,7 +309,7 @@ class FallbackSearchBackend:
         self._cooldown_until: Dict[str, float] = {}
         self._lock = threading.Lock()
 
-    def search(self, query: str, *, max_results: int = 5) -> SearchResponse:
+    def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse:
         errors: List[str] = []
         now = time.time()
         for backend in self.backends:
@@ -306,7 +319,7 @@ class FallbackSearchBackend:
                 errors.append(f"{backend.name}: in cooldown after a recent failure")
                 continue
             try:
-                resp = backend.search(query, max_results=max_results)
+                resp = backend.search(query, max_results=max_results, **({"instruction": instruction} if instruction else {}))
             except SearchBackendError as exc:
                 errors.append(str(exc))
                 if exc.status_code in (401, 403, 429):

@@ -118,18 +118,31 @@ class AnthropicProvider(ModelProviderBase):
         return bool(self.api_key)
 
     @retry_transient(max_retries=3, base_delay=1.0)
-    def web_search(self, query: str, *, model: str, max_results: int = 5) -> Dict[str, Any]:
-        """Search through Claude's native web_search server tool (no extra key): ``{"answer", "results": [{title, url, snippet}]}``.
-        ``max_results`` also caps the server-side searches (``max_uses``, 1 to 5)."""
+    def web_search(self, query: str, *, model: str, max_results: int = 5, instruction: Optional[str] = None) -> Dict[str, Any]:
+        """Search through Claude's native web_search server tool (no extra key):
+        ``{"answer", "results": [{title, url, snippet, passages, passage_kind, date}]}``. ``passages`` are each page's distinct
+        ``cited_text`` (verbatim from the page, ``passage_kind`` "verbatim"); ``snippet`` is the first; ``date`` is the result's
+        ``page_age`` when the tool gives one. ``max_results`` also caps the server-side searches (``max_uses``, 1 to 5).
+        ``instruction`` is put before the query."""
         resp = self.create(model=self.resolve_model(model), max_tokens=self.max_answer_tokens,
                            tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": max(1, min(int(max_results), 5))}],
-                           messages=[{"role": "user", "content": query}])
+                           messages=[{"role": "user", "content": f"{instruction.strip()}\n\n{query}" if instruction and instruction.strip() else query}])
         parts: List[str] = []
-        results: List[Dict[str, str]] = []
+        results: List[Dict[str, Any]] = []
 
-        def add(title: str, url: str, snippet: str = "") -> None:
-            if url and all(r["url"] != url for r in results):
-                results.append({"title": title or "", "url": url, "snippet": snippet or ""})
+        def add(title: str, url: str, snippet: str = "", date: str = "") -> None:
+            if not url:
+                return
+            row = next((r for r in results if r["url"] == url), None)
+            if row is None:
+                row = {"title": title or "", "url": url, "snippet": "", "passages": [], "passage_kind": "", "date": ""}
+                results.append(row)
+            row["title"] = row["title"] or title or ""
+            row["date"] = row["date"] or date or ""
+            if snippet and snippet not in row["passages"]:
+                row["passages"].append(snippet)
+                row["snippet"] = row["passages"][0]
+                row["passage_kind"] = "verbatim"
 
         for block in resp.content:
             kind = getattr(block, "type", None)
@@ -140,7 +153,7 @@ class AnthropicProvider(ModelProviderBase):
             elif kind == "web_search_tool_result":
                 for r in (getattr(block, "content", None) or []):
                     if getattr(r, "type", None) == "web_search_result":
-                        add(getattr(r, "title", ""), getattr(r, "url", ""))
+                        add(getattr(r, "title", ""), getattr(r, "url", ""), "", getattr(r, "page_age", "") or "")
         return {"answer": "".join(parts), "results": results[:max_results]}
 
     @retry_transient(max_retries=2, base_delay=1.0)

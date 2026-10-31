@@ -161,10 +161,11 @@ class ModelProvider(typing.Protocol):
         True when their LLM key is configured; others return False.
         """
 
-    def web_search(self, query: str, *, model: str, max_results: int = 5) -> Dict[str, Any]:
+    def web_search(self, query: str, *, model: str, max_results: int = 5, instruction: Optional[str] = None) -> Dict[str, Any]:
         """Search the live web via the provider's NATIVE tool and return a result dict.
 
-        Returns ``{"answer": <synthesized text>, "results": [{"title","url","snippet"}, ...]}``.
+        Returns ``{"answer": <synthesized text>, "results": [{"title","url","snippet"}, ...]}``; a row may also carry
+        ``passages`` (list), ``passage_kind`` ("verbatim" or "attributed") and ``date``. ``instruction`` is the caller's own wording.
         Uses the same LLM API key the provider already has (no separate web-search key).
         Callers should gate on ``supports_web_search(model)`` first.
         """
@@ -192,5 +193,5 @@ class ModelProviderBase(abc.ABC):
     def supports_web_search(self, model: Optional[str] = None) -> bool:
         return False
 
-    def web_search(self, query: str, *, model: str, max_results: int = 5) -> Dict[str, Any]:
+    def web_search(self, query: str, *, model: str, max_results: int = 5, instruction: Optional[str] = None) -> Dict[str, Any]:
         raise NotImplementedError("web search not supported by this provider")

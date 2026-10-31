@@ -129,17 +129,31 @@ class GeminiProvider(ModelProviderBase):
         return bool(self.api_key)
 
     @retry_transient(max_retries=3, base_delay=1.0)
-    def web_search(self, query: str, *, model: str, max_results: int = 5) -> Dict[str, Any]:
-        """Search through Google Search grounding (no extra key): ``{"answer", "results": [{title, url, snippet}]}``."""
+    def web_search(self, query: str, *, model: str, max_results: int = 5, instruction: Optional[str] = None) -> Dict[str, Any]:
+        """Search through Google Search grounding (no extra key):
+        ``{"answer", "results": [{title, url, snippet, passages, passage_kind, date}]}``. ``passages`` are the grounding supports
+        tied to the page (sentences the model wrote, ``passage_kind`` "attributed"); ``snippet`` is the first. The API gives no
+        page date, so ``date`` is empty. ``instruction`` is put before the query."""
         from google.genai import types
         config = types.GenerateContentConfig(tools=[types.Tool(google_search=types.GoogleSearch())])
-        response = self.request(self.resolve_model(model), query, config)
-        results: List[Dict[str, str]] = []
+        ask = f"{instruction.strip()}\n\n{query}" if instruction and instruction.strip() else query
+        response = self.request(self.resolve_model(model), ask, config)
+        results: List[Dict[str, Any]] = []
         for cand in (getattr(response, "candidates", None) or []):
-            for chunk in (getattr(getattr(cand, "grounding_metadata", None), "grounding_chunks", None) or []):
+            meta = getattr(cand, "grounding_metadata", None)
+            supports = list(getattr(meta, "grounding_supports", None) or [])
+            for index, chunk in enumerate(getattr(meta, "grounding_chunks", None) or []):
                 web = getattr(chunk, "web", None)
-                if web is not None and len(results) < max_results:
-                    results.append({"title": getattr(web, "title", "") or "", "url": getattr(web, "uri", "") or "", "snippet": ""})
+                if web is None or len(results) >= max_results:
+                    continue
+                passages: List[str] = []
+                for support in supports:
+                    text = getattr(getattr(support, "segment", None), "text", "") or ""
+                    if text and index in (getattr(support, "grounding_chunk_indices", None) or []) and text not in passages:
+                        passages.append(text)
+                results.append({"title": getattr(web, "title", "") or "", "url": getattr(web, "uri", "") or "",
+                                "snippet": passages[0] if passages else "", "passages": passages,
+                                "passage_kind": "attributed" if passages else "", "date": ""})
         return {"answer": getattr(response, "text", "") or "", "results": results}
 
     def supports_url_fetch(self, model=None) -> bool:

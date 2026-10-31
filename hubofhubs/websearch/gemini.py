@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import concurrent.futures
 import threading
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from esoi import implementation
 
@@ -40,6 +40,11 @@ class GeminiGroundingBackend:
     is running the planner/answer calls. Resolves the ``vertexaisearch`` redirect URLs Gemini
     returns to their real destinations (concurrent HEAD, falling back to GET, 3s timeout each,
     per-instance cache) so citations point at the actual source page.
+
+    Each page's ``passages`` are the separate grounding supports tied to it (sentences the model wrote and attributed to the
+    page, so ``passage_kind`` is ``attributed``, never a quote); ``snippet`` stays those joined and capped at 300 characters.
+    The grounding API exposes no page date (a chunk has only ``uri``, ``title`` and ``domain``), so ``date`` is empty.
+    ``instruction`` is added to the search prompt.
     """
     ENVIRON = {"api_key": ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY")}     # option <- variable (esoi.assemble)
     ENVIRON_REQUIRED = ("api_key",)
@@ -75,7 +80,7 @@ class GeminiGroundingBackend:
         self._client = genai.Client(api_key=self.api_key)
         return self._client
 
-    def search(self, query: str, *, max_results: int = 5) -> SearchResponse:
+    def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse:
         client = self._get_client()
         try:
             from google.genai import types
@@ -85,6 +90,8 @@ class GeminiGroundingBackend:
                 "Search the web and answer concisely in at most 120 words with the key facts, "
                 f"numbers and dates. Query: {query}"
             )
+            if instruction and instruction.strip():
+                prompt += f"\n\nAdditional instruction from the caller: {instruction.strip()}"
             response = self._generate(client, types, tool, prompt)
         except SearchBackendError:
             raise
@@ -146,7 +153,7 @@ class GeminiGroundingBackend:
                 if text not in bucket:
                     bucket.append(text)
 
-        raw_hits: List[Dict[str, str]] = []
+        raw_hits: List[Dict[str, Any]] = []
         urls_to_resolve: List[str] = []
         for i, chunk in enumerate(chunks[:max_results]):
             web = getattr(chunk, "web", None)
@@ -157,13 +164,14 @@ class GeminiGroundingBackend:
             snippet = " ".join(snippets_by_index.get(i, [])).strip()
             if len(snippet) > 300:
                 snippet = snippet[:300].rsplit(" ", 1)[0] + "..."
-            raw_hits.append({"title": title, "url": uri, "snippet": snippet})
+            raw_hits.append({"title": title, "url": uri, "snippet": snippet, "passages": tuple(snippets_by_index.get(i, []))})
             if uri:
                 urls_to_resolve.append(uri)
 
         resolved = self._resolve_redirects(urls_to_resolve)
         hits = [
-            SearchHit(title=h["title"], url=resolved.get(h["url"], h["url"]), snippet=h["snippet"])
+            SearchHit(title=h["title"], url=resolved.get(h["url"], h["url"]), snippet=h["snippet"], passages=h["passages"],
+                      passage_kind="attributed" if h["passages"] else "")
             for h in raw_hits
         ]
         return hits, queries_issued

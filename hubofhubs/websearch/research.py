@@ -283,7 +283,8 @@ class WebResearchAdapter:
             cache_key,
             {
                 "hits": [
-                    {"title": h.title, "url": h.url, "snippet": h.snippet, "date": h.date}
+                    {"title": h.title, "url": h.url, "snippet": h.snippet, "date": h.date,
+                     "passages": list(h.passages), "passage_kind": h.passage_kind}
                     for h in resp.hits
                 ],
                 "answer": resp.answer,
