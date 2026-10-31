@@ -441,3 +441,24 @@ def test_gemini_fetch_url_and_web_search_count_their_calls_and_tokens(monkeypatc
     searcher = gemini("found", candidates=[Obj(grounding_metadata=Obj(grounding_chunks=[chunk, chunk]))])
     assert searcher.web_search("q", model="m", max_results=1) == {"answer": "found", "results": [{"title": "T", "url": "https://example.org/r", "snippet": ""}]}
     assert (searcher.call_count, searcher.tokens_in) == (1, 5)
+
+
+# ---- prompt specs (collaborators injected) ----------------------------------------------------------------------------
+
+def test_prompt_spec_renders_with_injected_tiers_and_hook_and_the_no_em_dash_rule():
+    from hubofhubs.models.prompt_spec import NO_EM_DASH_RULE, PromptRegistry, bind_spec_class
+    seen = []
+    spec_class = bind_spec_class(("fast", "best"), seen.append)
+    registry = PromptRegistry(spec_class)
+    spec = registry.declare("t.demo", solution="s", metric="m", tier="fast", cache_layer="none", template="Say hi to {name}.")
+    assert spec.inputs == ("name",) and registry.get("t.demo") is spec
+    text = registry.render("t.demo", name="Ann")
+    assert text.endswith(NO_EM_DASH_RULE) and text.count(NO_EM_DASH_RULE) == 1 and seen == ["t.demo"]
+    with pytest.raises(ValueError):
+        spec.render()
+    with pytest.raises(ValueError):
+        spec_class(id="t.bad", solution="s", metric="m", tier="huge", cache_layer="none", template="x")
+    with pytest.raises(ValueError):
+        registry.register(spec_class(id="t.demo", solution="s", metric="m", tier="best", cache_layer="none", template="y"))
+    with pytest.raises(KeyError):
+        registry.get("t.none")
