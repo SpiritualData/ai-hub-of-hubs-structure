@@ -7,7 +7,7 @@ of posting. The post body (below the line) must stay under 1,300 characters once
 ---
 
 <!-- headline-compact:start -->
-22 alternatives measured across 8 areas, from 443 researched candidates. By area: Memory store 1, RAG retrieval 3, LLM routing and failover 2, LLMs (model quality and cost) 3, Web search APIs 2, Scholarly search 5, Coding agents 3, Guardrails and oversight 3.
+31 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 2, LLM routing and failover 2, LLMs (model quality and cost) 12, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
 <!-- headline-compact:end -->
 
 Lists of "best AI tools" say what exists, not which one works best or whether the difference is real. This open repository puts alternatives in the same seat and runs them on the same cases, with a paired test before any challenger replaces the incumbent. Public research is graded and shown beside our numbers, never mixed into them.

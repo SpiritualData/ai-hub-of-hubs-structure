@@ -52,6 +52,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | model_providers | Calling any model vendor with tier fallback | compared | coexist | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 10 | 2 | 2026-10-30 |
 | deep_run_cost | Keeping a long agent run small and cached | compared | keep | none | Claude Code prompt caching; PreToolUse output-filter hooks; observation masking; context editing; OpenHands condenser; CliffCompaction | 7 | 3 | 2026-10-30 |
 | prompt_cache | Reusing prompt prefixes to cut cost and time | compared | keep | QAR stable render order | Anthropic prompt caching; LMCache | 3 | 0 | 2026-10-30 |
+| model_quality | Knowing how well each model does hard exact-answer maths, to choose a model per tier | compared | keep | none | GPT-5-nano; GPT-5-mini; Gemini 2.5 Flash; DeepSeek-v3.2 (Think); Claude-Sonnet-4.5 (Think) | 5 | 6 | 2026-10-31 |
 
 ### know-the-world (Science)
 

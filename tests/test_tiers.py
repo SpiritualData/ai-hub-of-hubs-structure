@@ -147,12 +147,20 @@ def test_choose_offers_only_configured_providers(tmp_path):
     import shutil
     for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv", "tier_measurements.csv"):
         shutil.copy(registry.DATA / name, tmp_path / name)
+    (tmp_path / "tier_measurements.csv").write_text("tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n")   # none measured
     got = tiers.choose(tmp_path, available={"gemini"})
-    assert got["cheap"]["arm"] == ("gemini", "gemini-3.1-flash-lite") and "cheapest priced available" in got["cheap"]["reason"]
-    assert got["mid"]["arm"] == ("gemini", "gemini-3.6-flash") and got["strong"]["arm"] is None
+    assert got["cheap"]["arm"] == ("gemini", "gemini-2.5-flash-lite") and "cheapest priced available" in got["cheap"]["reason"]
+    assert got["mid"]["arm"] == ("gemini", "gemini-2.5-flash") and got["strong"]["arm"] is None
     (tmp_path / "tier_measurements.csv").write_text(
         "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
         "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n"
         "cheap,gemini,gemini-3.1-flash-lite,10,9,1000000,200000,test,2026-10-30\n")
     both = tiers.choose(tmp_path)
     assert both["cheap"]["arm"] == ("anthropic", "claude-haiku-5-5")          # same passing work, the cheaper arm wins
+
+
+def test_the_shipped_aime_measurements_decide_when_only_other_providers_are_configured():
+    """The recorded model_quality_aime rows are used: without Anthropic the cheap tier goes to the arm with the most passing work per cost."""
+    got = tiers.choose(available={"openai", "gemini", "deepseek"})
+    assert got["cheap"]["arm"] == ("openai", "gpt-5-nano") and "passing cases per cost" in got["cheap"]["reason"]
+    assert got["mid"]["arm"] == ("gemini", "gemini-2.5-flash")

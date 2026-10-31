@@ -6,6 +6,7 @@ check,reason_and_answer,reason-and-answer,The model picked for each tier is the 
 check,model_call,reason-and-answer,A question asked at a tier is answered by the model that tier names.,{n} written tier cases with a fake provider (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
 check,provider_failover,reason-and-answer,"When the first provider fails, a healthy one answers; a bad request is not hidden.",{n} written failure cases with fake providers (this repo),no independent study found,call-a-model-vendor-models-router-failover,,LLM routing and failover
 check,call_a_model,reason-and-answer,Each vendor's cheapest model gets the right final answer on school maths word problems.,{n} problems sampled from GSM8K test (public),vendor indexes shortlist only,call-a-model-vendor-models-router-failover,"The vendor arms are evidence for choosing a model per tier, not rivals for one seat.",LLMs (model quality and cost)
+check,model_quality_aime,reason-and-answer,"Each model gets the exact final integer on hard competition maths, with one prompt for every model.","{n} problems of AIME 2025 I and II (public, published by the MAA)",MathArena runs the same problems independently (see the public rows),call-a-model-vendor-models-router-failover,"The models are evidence for choosing a model per tier, not rivals for one seat.",LLMs (model quality and cost)
 check,search_backend,take-in-the-world,A top-five search hit comes from a page or site that holds the answer.,{n} questions sampled from SimpleQA (public),no engine shown best; a close independent test (grade C),search-backend-web-search-hits-containing-the-source,,Web search APIs
 check,know_the_world,know-the-world,The paper that answers a research question is among what the arm returns.,{n} questions sampled from LitSearch (public),meaning-based search over papers beats keywords (grade B to C),know-the-world-find-papers-for-a-research-question,,Scholarly search
 check,know_the_world_150,know-the-world,The paper that answers a research question is among what the arm returns.,"{n} questions sampled from LitSearch (public), the 40 of the first stage and 110 more",meaning-based search over papers beats keywords (grade B to C),know-the-world-find-papers-for-a-research-question,,Scholarly search
@@ -19,7 +20,7 @@ gap,hold-the-intents,,,,,,"No public task represents a hierarchy of intents, and
 gap,think-critically,,,,,,Code exists (hubofhubs/critique) but no arm is recorded and no check is written. The research page names a public candidate.,
 gap,keep-it-generic,,,,,,"Enforced by a text scan in the tests, not by a recorded run, and no arm is recorded.",
 gap,take-in-the-world:rest,,,,,,"Only web search is measured; agent harnesses, tools and MCP servers have no check yet.",
-gap,reason-and-answer:rest,,,,,,"Only tier choice, provider failover and vendor answers are measured; planning and answering live in Quest AI Runner and have no check here yet.",
+gap,reason-and-answer:rest,,,,,,"Only tier choice, provider failover, vendor answers and hard maths (AIME 2025) are measured; planning and answering live in Quest AI Runner and have no check here yet.",
 gap,remember-and-recall:rest,,,,,,"Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet.",
 gap,stay-current:rest,,,,,,The freshness reading is measured; the weekly research itself is run by the consumer's autopilot and is not an arm here.,
 gap,connect-any-integration:rest,,,,,,Connection scoring is measured; the zero-code connect flow for a real integration is not run end to end here.,
@@ -32,3 +33,4 @@ gap,context_assembler:hybrid,,,,,,Embedding the corpus was not authorized for th
 gap,context_assembler:composite,,,,,,Embedding the corpus was not authorized for the public stage.,
 gap,search_backend,,,,,,The arm needs a key or a self-hosted instance that is not set where we measure.,
 gap,context_assembler_papers:composite,,,,,,"Not run yet; bm25, vector and hybrid were run.",
+gap,model_quality_aime:deepseek_v4_pro,,,,,,"Stopped after 3 problems: its estimated full run would have broken the USD 2.50 cap.",

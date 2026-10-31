@@ -1,1 +1,9 @@
 tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on
+mid,anthropic,claude-sonnet-5-5,30,27,96275,100909,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on; run on a subscription through claude -p, so tokens include the CLI's fixed prompt and are priced at list for comparison only",2026-10-31
+cheap,anthropic,claude-haiku-5-5,30,30,112640,156941,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on; run on a subscription through claude -p, so tokens include the CLI's fixed prompt and are priced at list for comparison only",2026-10-31
+strong,anthropic,claude-opus-5-5,30,29,93612,90926,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on; run on a subscription through claude -p, so tokens include the CLI's fixed prompt and are priced at list for comparison only",2026-10-31
+cheap,deepseek,deepseek-flash,30,28,5494,179013,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on",2026-10-31
+cheap,openai,gpt-5-nano,30,20,4885,306137,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on",2026-10-31
+cheap,gemini,gemini-2.5-flash-lite,30,17,4896,674997,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on",2026-10-31
+mid,gemini,gemini-2.5-flash,30,20,4896,484924,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on",2026-10-31
+cheap,openai,gpt-5-mini,30,27,4885,196200,"evaluation/model_quality_aime, 30 AIME 2025 problems, one prompt, reasoning on",2026-10-31
