@@ -90,6 +90,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `know-the-world:openalex_semantic` | OpenAlex semantic search | hubofhubs/science/openalex_semantic.py |  |
 | `know-the-world:openalex_keywords` | OpenAlex keywords, rule rewrite | hubofhubs/science/openalex_keywords.py |  |
 | `know-the-world:openalex_keywords_model` | OpenAlex keywords, model rewrite | hubofhubs/science/openalex_keywords.py |  |
+| `know-the-world:openalex_semantic_and_web` | unconfirmed: for Joshua to confirm. | hubofhubs/science/openalex_semantic_and_web.py |  |
 | `context-assembler:bm25` | BM25 over file text | hubofhubs/recall/bm25_store.py |  |
 | `context-assembler:hybrid` | Hybrid fusion | hubofhubs/recall/hybrid_assembler.py |  |
 | `context-assembler:vector` | Vector search | hubofhubs/recall/vector_assembler.py |  |
