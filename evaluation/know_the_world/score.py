@@ -38,16 +38,24 @@ class GeminiQueryWriter:
         return self.provider.answer([{"role": "user", "content": prompt}], model=MODEL)
 
 
+def optional_settings(arm_class):
+    """The options the arm's ``ENVIRON`` declares and the process environment supplies, filled the way esoi's consumer environ fills
+    them (``environ_fill``); an option with no variable set is left out, so the arm runs keyless. Values are never printed."""
+    import os
+    from esoi.assemble import environ_fill
+    return {option: os.environ[name] for option, name in environ_fill(arm_class, {}, os.environ).items()}
+
+
 def adapt(implementation, meter):
     """Build the arm. ``web_research`` runs over the Gemini grounding backend (the seat's search need); the others take what
-    their ``ENVIRON`` declares (OpenAlex declares none, so it runs on its keyless allowance with no contact address)."""
+    their ``ENVIRON`` declares (OpenAlex's key is optional: without one it runs on its keyless allowance; no contact address is ever sent)."""
     if getattr(implementation, "__name__", "") == "WebResearchAdapter":
         from hubofhubs.websearch.gemini import GeminiGroundingBackend
         arm = implementation(priced(GeminiGroundingBackend(**settings_for(GeminiGroundingBackend)), meter))
     elif getattr(implementation, "__name__", "") == "OpenAlexKeywordsModel":
-        arm = implementation(model=GeminiQueryWriter(meter), **settings_for(implementation))
+        arm = implementation(model=GeminiQueryWriter(meter), **optional_settings(implementation))
     else:
-        arm = implementation(**settings_for(implementation))   # no model is called, so nothing is counted or priced
+        arm = implementation(**optional_settings(implementation))   # no model is called, so nothing is counted or priced; OpenAlex takes a key when one is set
     return lambda kind, args: arm.search(args["question"], max_results=5)
 
 

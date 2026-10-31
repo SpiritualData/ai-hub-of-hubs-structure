@@ -169,6 +169,10 @@ class OpenAlexWorks:
     in one ``DailyLimiter`` it keeps, so the day's count survives the rebuild; without it each arm counts for itself.
     """
 
+    #: option <- variable (esoi.assemble). Optional: with no key the arm still works on the small keyless allowance. The key is sent
+    #: in the ``Authorization: Bearer`` header, which the authentication page lists as identical to ``?api_key=`` and which keeps it out of logged URLs.
+    ENVIRON = {"api_key": "OPENALEX_API_KEY"}
+
     def __init__(self, *, api_key: str = "", mailto: str = "", transport: Optional[Transport] = None, timeout: float = 10.0,
                  min_interval: float = 0.1, daily_limit: Optional[int] = None, max_results: int = 5,
                  abstract_chars: int = 700, cache_ttl: float = 86400.0, year_from: Optional[int] = None,

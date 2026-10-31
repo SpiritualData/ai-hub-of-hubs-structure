@@ -72,3 +72,12 @@ def test_the_model_arm_sends_what_the_model_wrote_and_falls_back_to_the_rewrite_
         transport, model = Transport(), Model(reply)
         OpenAlexKeywordsModel(model, transport=transport, min_interval=0).search(QUESTION)
         assert transport.calls[0]["search.title_abstract_keywords"] == expected and QUESTION in model.asked[0]
+
+
+def test_the_key_is_an_optional_environ_option_every_openalex_arm_inherits():
+    from esoi.assemble import environ_fill, environ_lacking
+    from hubofhubs.science.openalex import OpenAlexWorks
+    for arm in (OpenAlexWorks, OpenAlexSemantic, OpenAlexKeywords, OpenAlexKeywordsModel):
+        assert arm.ENVIRON == {"api_key": "OPENALEX_API_KEY"} and not getattr(arm, "ENVIRON_REQUIRED", ())
+        assert environ_fill(arm, {}, {"OPENALEX_API_KEY": "k"}) == {"api_key": "OPENALEX_API_KEY"} and environ_fill(arm, {}, {}) == {}
+        assert environ_lacking(arm, {}, {}) == {}
