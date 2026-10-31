@@ -2,7 +2,8 @@
 
 Matching rule (fixed before any run, also written in README.md). A title is lower-cased and reduced to its letters and digits
 separated by single spaces. The case passes when the gold paper's reduced title is contained in the reduced text of the
-observation the arm returned (its rendered text, plus the title of each hit). The dataset (LitSearch) carries titles and not DOIs,
+observation the arm returned (its rendered text, plus the title of each hit), after the question itself is removed from that text: an arm echoes the
+question in its rendering and a question can name the paper. The dataset (LitSearch) carries titles and not DOIs,
 so the check is by exact title. An observation of kind ``error`` has no text and so fails.
 """
 import re
@@ -28,8 +29,7 @@ def adapt(implementation, meter):
         from hubofhubs.websearch.gemini import GeminiGroundingBackend
         arm = implementation(priced(GeminiGroundingBackend(**settings_for(GeminiGroundingBackend)), meter))
     else:
-        arm = implementation(**settings_for(implementation))
-        meter.wrap(arm, ("search",))
+        arm = implementation(**settings_for(implementation))   # no model is called, so nothing is counted or priced
     return lambda kind, args: arm.search(args["question"], max_results=5)
 
 
@@ -37,6 +37,7 @@ def score_case(fn, case):
     observation = fn("search", {"question": case["question"]})
     if observation.kind == "error":
         raise RuntimeError(observation.error)
-    found = reduced(case["gold_title"]) in reduced(observed_text(observation))
+    text = reduced(observed_text(observation)).replace(reduced(case["question"]), " ")   # the arm echoes the question, which can name the paper
+    found = reduced(case["gold_title"]) in text
     return dict(ok=found, got=(observation.hits[0].get("title", "") if observation.hits else "no hits")[:60],
                 note="" if found else f"{len(observation.hits)} hits, gold paper not among them")

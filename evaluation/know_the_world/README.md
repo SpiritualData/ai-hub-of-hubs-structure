@@ -18,7 +18,8 @@ questions and passes an arm when the gold paper is among the observations it ret
 ## Matching rule (written before any run)
 
 A title is lower-cased and reduced to its letters and digits separated by single spaces. A case passes when the gold paper's reduced
-title is contained in the reduced text of the observation the arm returned: its rendered text plus the title of each hit. An
+title is contained in the reduced text of the observation the arm returned: its rendered text plus the title of each hit, after
+the question itself is removed from that text (an arm echoes the question in its rendering, and some questions name the paper). An
 observation of kind `error` fails the case. Each arm is asked for five results.
 
 What this does not see: a paper whose title is printed differently (a subtitle dropped, an abbreviation), and a web arm whose
@@ -29,7 +30,7 @@ summary mentions the title without the paper being one of its hits (counted as f
 | Arm | Runs on | Cost counted |
 |---|---|---|
 | web_research | the search-backend seat's `gemini` arm (Gemini 2.5 Flash-Lite with Google Search grounding); page fetching is not used | tokens at $0.10 in, $0.40 out per million; grounded prompts are free up to 1,500 a day (Google pricing page, read 2026-10-31) |
-| openalex | OpenAlex works search, no key and no contact address | $0 to us: OpenAlex bills a search about $0.001 against its small keyless daily allowance |
+| openalex | OpenAlex works search, no key and no contact address | $0 to us: no model is called; OpenAlex bills a search about $0.001 against its small keyless daily allowance (its documentation, read 2026-10-30, per `docs/science-search.md`) |
 
 ## Run
 
