@@ -81,3 +81,31 @@ def test_the_key_is_an_optional_environ_option_every_openalex_arm_inherits():
         assert arm.ENVIRON == {"api_key": "OPENALEX_API_KEY"} and not getattr(arm, "ENVIRON_REQUIRED", ())
         assert environ_fill(arm, {}, {"OPENALEX_API_KEY": "k"}) == {"api_key": "OPENALEX_API_KEY"} and environ_fill(arm, {}, {}) == {}
         assert environ_lacking(arm, {}, {}) == {}
+
+
+def test_the_combined_arm_interleaves_drops_duplicates_by_doi_or_title_and_keeps_the_limit():
+    from hubofhubs.science.openalex_semantic_and_web import interleave
+    scholarly = [{"title": "A Paper", "doi": "10.1000/a"}, {"title": "B Paper", "doi": "10.1000/b"}, {"title": "C Paper"}]
+    web = [{"title": "a  paper!"}, {"title": "W2"}, {"title": "10.1000/b is dup", "doi": "https://doi.org/10.1000/b"}, {"title": "W4"}]
+    assert [h["title"] for h in interleave(scholarly, web, 5)] == ["A Paper", "B Paper", "W2", "C Paper", "W4"]
+    assert len(interleave(scholarly, web, 2)) == 2 and interleave([], [], 5) == []
+
+
+def test_the_combined_arm_survives_one_failing_arm_and_fails_when_both_fail():
+    from hubofhubs.ports.retrieval import Observation
+    from hubofhubs.science.openalex_semantic_and_web import SemanticAndWeb
+
+    class Arm:
+        def __init__(self, obs):
+            self.obs = obs
+
+        def describe(self):
+            return "arm"
+
+        def search(self, queries, *, max_results=None, fresh=False):
+            return self.obs
+    ok = Observation(kind="query", text="summary", hits=[{"title": "T", "doi": "10.1000/t", "source": "openalex"}])
+    bad = Observation(kind="error", error="down")
+    assert SemanticAndWeb(None, scholarly=Arm(ok), web=Arm(bad)).search("q").hits[0]["title"] == "T"
+    assert "summary" in SemanticAndWeb(None, scholarly=Arm(bad), web=Arm(ok)).search("q").text
+    assert SemanticAndWeb(None, scholarly=Arm(bad), web=Arm(bad)).search("q").kind == "error"

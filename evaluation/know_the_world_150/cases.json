@@ -1,0 +1,1052 @@
+[
+ {
+  "id": "litsearch-027",
+  "area": "inline_acl",
+  "question": "Could you direct me towards a study that explores the potential to predict a reader's native language based on their eye movement patterns while reading English texts?",
+  "gold_title": "Predicting Native Language from Gaze",
+  "gold_corpusid": 14515265
+ },
+ {
+  "id": "litsearch-033",
+  "area": "inline_acl",
+  "question": "Could you recommend datasets that include SQL annotations over WikiTQ?",
+  "gold_title": "On the Potential of Lexico-logical Alignments for Semantic Parsing to SQL Queries",
+  "gold_corpusid": 225039884
+ },
+ {
+  "id": "litsearch-034",
+  "area": "inline_acl",
+  "question": "Could you recommend studies that provide a baseline for experiments using supervised constituency parsers with a focus on few-shot learning settings and have also reported on the use of pre-training and data augmentation techniques for parser performance improvement?",
+  "gold_title": "On the Role of Supervision in Unsupervised Constituency Parsing",
+  "gold_corpusid": 222140735
+ },
+ {
+  "id": "litsearch-035",
+  "area": "inline_acl",
+  "question": "Could you suggest a paper that introduces an approach to relation extraction that involves learning syntax dependency structures using a tree LSTM model?",
+  "gold_title": "Improved Semantic Representations From Tree-Structured Long Short-Term Memory Networks",
+  "gold_corpusid": 3033526
+ },
+ {
+  "id": "litsearch-058",
+  "area": "inline_acl",
+  "question": "In the context of Named Entity Recognition tasks across multiple languages, which work highlights the necessity of retrieving related knowledge to aid in the annotation of ambiguous named entities?",
+  "gold_title": "CrossWeigh: Training Named Entity Tagger from Imperfect Annotations",
+  "gold_corpusid": 202540591
+ },
+ {
+  "id": "litsearch-060",
+  "area": "inline_acl",
+  "question": "In the context of natural language processing, I am looking for research that explores the relationship between a model's prediction entropy and its tendencies to copy existing text versus generating novel content. Can you recommend a paper?",
+  "gold_title": "Understanding Neural Abstractive Summarization Models via Uncertainty",
+  "gold_corpusid": 222378161
+ },
+ {
+  "id": "litsearch-062",
+  "area": "inline_acl",
+  "question": "In the field of reinforcement learning models for multi-hop reasoning, what issue involves an agent erroneously correlating a successful outcome with irrelevant or coincidental actions, and are there any papers discussing this phenomenon?",
+  "gold_title": "From Language to Programs: Bridging Reinforcement Learning and Maximum Marginal Likelihood",
+  "gold_corpusid": 9268430
+ },
+ {
+  "id": "litsearch-085",
+  "area": "inline_acl",
+  "question": "Where can I find a paper that discusses annotating events in text with degrees of factuality, including categories such as certain, probable, and underspecified?",
+  "gold_title": "Are You Sure That This Happened? Assessing the Factuality Degree of Events in Text",
+  "gold_corpusid": 2239324
+ },
+ {
+  "id": "litsearch-089",
+  "area": "inline_acl",
+  "question": "Where can I find multilingual datasets used for the task of intended sarcasm detection, particularly involving English and Arabic?",
+  "gold_title": "SemEval-2022 Task 6: iSarcasmEval, Intended Sarcasm Detection in English and Arabic",
+  "gold_corpusid": 250391089
+ },
+ {
+  "id": "litsearch-103",
+  "area": "inline_nonacl",
+  "question": "Are there any studies investigating sentiment analysis through text-to-graph conversion models that incorporate contextual embeddings?",
+  "gold_title": "Direct parsing to sentiment graphs",
+  "gold_corpusid": 247628083
+ },
+ {
+  "id": "litsearch-145",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that uses feedback-driven decoding for producing mathematical proofs using language models?",
+  "gold_title": "Generating Natural Language Proofs with Verifier-Guided Search",
+  "gold_corpusid": 249062748
+ },
+ {
+  "id": "litsearch-174",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that investigates techniques for creating counterfactual examples to enhance question-answering systems, such as training a T5 model augmented with retrieval?",
+  "gold_title": "Retrieval-guided Counterfactual Generation for QA",
+  "gold_corpusid": 238856938
+ },
+ {
+  "id": "litsearch-184",
+  "area": "inline_nonacl",
+  "question": "Could you recommend studies that tackle the issue of popularity bias within news recommendation engines and offer techniques to distinguish between user interests and the popularity of news items?",
+  "gold_title": "PP-Rec: News Recommendation with Personalized User Interest and Time-aware News Popularity",
+  "gold_corpusid": 235294032
+ },
+ {
+  "id": "litsearch-209",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that examines a system for multimodal annotation intended to assist people in analyzing dialogues within video content?",
+  "gold_title": "MONAH: Multi-Modal Narratives for Humans to analyze conversations",
+  "gold_corpusid": 231639161
+ },
+ {
+  "id": "litsearch-225",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that explores the drawbacks of dense retrieval systems especially with large-scale indices?",
+  "gold_title": "The Curse of Dense Low-Dimensional Information Retrieval for Large Index Sizes",
+  "gold_corpusid": 229680000
+ },
+ {
+  "id": "litsearch-238",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that investigates how cross-attention mechanisms improve the interplay between token and syntax data within automated program repair systems?",
+  "gold_title": "",
+  "gold_corpusid": 236478113
+ },
+ {
+  "id": "litsearch-252",
+  "area": "inline_nonacl",
+  "question": "Has any research explored using other off-the-shelf summarization techniques to improve neural abstractive summarization?",
+  "gold_title": "GSum: A General Framework for Guided Neural Abstractive Summarization",
+  "gold_corpusid": 223953416
+ },
+ {
+  "id": "litsearch-253",
+  "area": "inline_nonacl",
+  "question": "Has any research tried to mitigate overfitting in weakly-supervised settings by introducing an adversarial framework where the influence of the labeling function is a hyperparameter for the feature representation?",
+  "gold_title": "KnowMAN: Weakly Supervised Multinomial Adversarial Networks",
+  "gold_corpusid": 237532398
+ },
+ {
+  "id": "litsearch-258",
+  "area": "inline_nonacl",
+  "question": "Have any papers tried to address the background-shift problem in named entity recognition by identifying non-entity type tokens belonging to old entity types through knowledge distillation from an old model?",
+  "gold_title": "Distilling Causal Effect from Miscellaneous Other-Class for Continual Named Entity Recognition",
+  "gold_corpusid": 252780822
+ },
+ {
+  "id": "litsearch-260",
+  "area": "inline_nonacl",
+  "question": "Have any research efforts been made to gather dialogue data via crowdworkers to enhance conversational information retrieval systems?",
+  "gold_title": "DuRecDial 2.0: A Bilingual Parallel Corpus for Conversational Recommendation",
+  "gold_corpusid": 237571370
+ },
+ {
+  "id": "litsearch-276",
+  "area": "inline_nonacl",
+  "question": "How can SQL-to-text be utilized to improve text-to-SQL parsing through data augmentation techniques?",
+  "gold_title": "Data Augmentation with Hierarchical SQL-to-Question Generation for Cross-domain Text-to-SQL Parsing",
+  "gold_corpusid": 232104941
+ },
+ {
+  "id": "litsearch-290",
+  "area": "inline_nonacl",
+  "question": "Is there research examining if multilingual pre-trained models utilize identical sets of neural units to encode morphosyntactic features in various languages?",
+  "gold_title": "Same Neurons, Different Languages: Probing Morphosyntax in Multilingual Pre-trained Models",
+  "gold_corpusid": 248512463
+ },
+ {
+  "id": "litsearch-305",
+  "area": "inline_nonacl",
+  "question": "What methods exist for tailoring news suggestions that consider a user's preferences as well as the current popularity of news stories?",
+  "gold_title": "PP-Rec: News Recommendation with Personalized User Interest and Time-aware News Popularity",
+  "gold_corpusid": 235294032
+ },
+ {
+  "id": "litsearch-353",
+  "area": "manual_acl",
+  "question": "Are there any papers that build dense retrievers with mixture-of-experts architecture where each expert is responsible for different types of queries?",
+  "gold_title": "Chain-of-Skills: A Configurable Model for Open-Domain Question Answering",
+  "gold_corpusid": 258546861
+ },
+ {
+  "id": "litsearch-385",
+  "area": "manual_acl",
+  "question": "Is there any paper about style transfer for stories?",
+  "gold_title": "StoryTrans: Non-Parallel Story Author-Style Transfer with Discourse Representations and Content Enhancing",
+  "gold_corpusid": 251903643
+ },
+ {
+  "id": "litsearch-387",
+  "area": "manual_acl",
+  "question": "Is there any paper leverages knowledge distillation of language models for textual out-of-distribution detection or anomaly detection?",
+  "gold_title": "Multi-Level Knowledge Distillation for Out-of-Distribution Detection in Text",
+  "gold_corpusid": 253734483
+ },
+ {
+  "id": "litsearch-392",
+  "area": "manual_acl",
+  "question": "Is there any paper that attempts to evaluate the similarity of meaning representations without using annotated data?",
+  "gold_title": "Evaluate AMR Graph Similarity via Self-supervised Learning",
+  "gold_corpusid": 259370579
+ },
+ {
+  "id": "litsearch-397",
+  "area": "manual_acl",
+  "question": "Is there any paper that explores and annotates the effectiveness of using testimonials or anecdotes in discussions?",
+  "gold_title": "StoryARG: a corpus of narratives and personal experiences in argumentative texts",
+  "gold_corpusid": 259370693
+ },
+ {
+  "id": "litsearch-398",
+  "area": "manual_acl",
+  "question": "Is there any paper that explores using only an encoder-only masked language model for open-ended long text generation (such as story generation)?",
+  "gold_title": "Open-ended Long Text Generation via Masked Language Modeling",
+  "gold_corpusid": 259370630
+ },
+ {
+  "id": "litsearch-402",
+  "area": "manual_acl",
+  "question": "Is there any paper that performs adversarial training on frame level for audio-visual representation learning?",
+  "gold_title": "MIR-GAN: Refining Frame-Level Modality-Invariant Representations with Adversarial Network for Audio-Visual Speech Recognition",
+  "gold_corpusid": 259203396
+ },
+ {
+  "id": "litsearch-415",
+  "area": "manual_acl",
+  "question": "Is there any work that allows large numbers of model outputs to be encoded and compared by causal language models in a single forward pass?",
+  "gold_title": "EEL: Efficiently Encoding Lattices for Reranking",
+  "gold_corpusid": 258999673
+ },
+ {
+  "id": "litsearch-420",
+  "area": "manual_acl",
+  "question": "Is there such a reading comprehension dataset in understanding a snippet from a long story book, while it requires to integrate the necessary long history texts before the snippet to full understand it?",
+  "gold_title": "Personality Understanding of Fictional Characters during Book Reading",
+  "gold_corpusid": 258740758
+ },
+ {
+  "id": "litsearch-440",
+  "area": "manual_acl",
+  "question": "Which paper employs a two-stage approach in generative models to tackle ABSA tasks across various domains?",
+  "gold_title": "Bidirectional Generative Framework for Cross-domain Aspect-based Sentiment Analysis",
+  "gold_corpusid": 258714602
+ },
+ {
+  "id": "litsearch-451",
+  "area": "manual_acl",
+  "question": "Which paper first constructed a structured knowledge base to interconnect different human social roles and attributes?",
+  "gold_title": "PEACOK: Persona Commonsense Knowledge for Consistent and Engaging Narratives",
+  "gold_corpusid": 258480238
+ },
+ {
+  "id": "litsearch-469",
+  "area": "manual_acl",
+  "question": "Which paper introduce a DRO (distribution robust optimization) like training objective for doing adversarial training without constructing adversarial samples.",
+  "gold_title": "DSRM: Boost Textual Adversarial Training with Distribution Shift Risk Minimization",
+  "gold_corpusid": 259262427
+ },
+ {
+  "id": "litsearch-491",
+  "area": "manual_acl",
+  "question": "Which paper surveyed the datasets and tasks of asking clarification questions in conversational systems??",
+  "gold_title": "A Survey on Asking Clarification Questions Datasets in Conversational Systems",
+  "gold_corpusid": 258887719
+ },
+ {
+  "id": "litsearch-510",
+  "area": "manual_iclr",
+  "question": "Are there any papers that use a world model for planning to ensure that decisions meet constraints?",
+  "gold_title": "SAFEDREAMER: SAFE REINFORCEMENT LEARNING WITH WORLD MODELS",
+  "gold_corpusid": 259924554
+ },
+ {
+  "id": "litsearch-524",
+  "area": "manual_iclr",
+  "question": "Is there a theory paper that explains why sometimes tuning momentum does not boost performance for training a neural network?",
+  "gold_title": "The Marginal Value of Momentum for Small Learning Rate SGD",
+  "gold_corpusid": 260316137
+ },
+ {
+  "id": "litsearch-549",
+  "area": "manual_iclr",
+  "question": "What paper first proposes that simply reversing the output can significantly enhance the sample efficiency and the performance of the arithmetic capability of a decoder-only Transformer model?",
+  "gold_title": "Teaching Arithmetic to Small Transformers",
+  "gold_corpusid": 259375870
+ },
+ {
+  "id": "litsearch-586",
+  "area": "manual_iclr",
+  "question": "Which paper found that using common character encodings and ciphers, or even just convincing the model that it is not communicating in natural language, can bypass the safety guardrails of large models?",
+  "gold_title": "GPT-4 IS TOO SMART TO BE SAFE: STEALTHY CHAT WITH LLMS VIA CIPHER",
+  "gold_corpusid": 260887189
+ },
+ {
+  "id": "litsearch-000",
+  "area": "inline_acl",
+  "question": "Are there any research papers on methods to compress large-scale language models using task-agnostic knowledge distillation techniques?",
+  "gold_title": "TinyBERT: Distilling BERT for Natural Language Understanding",
+  "gold_corpusid": 202719327
+ },
+ {
+  "id": "litsearch-004",
+  "area": "inline_acl",
+  "question": "Are there papers that propose contextualized calibration for the probability of answers in language models?",
+  "gold_title": "Surface Form Competition: Why the Highest Probability Answer Isn't Always Right",
+  "gold_corpusid": 233296182
+ },
+ {
+  "id": "litsearch-007",
+  "area": "inline_acl",
+  "question": "Can you direct me to studies that explore techniques like question answering and passage retrieval for mitigating the effects of clickbait headlines?",
+  "gold_title": "Clickbait Spoiling via Question Answering and Passage Retrieval",
+  "gold_corpusid": 247593812
+ },
+ {
+  "id": "litsearch-015",
+  "area": "inline_acl",
+  "question": "Can you recommend a conversational QA dataset where the human questioner does not have access to the evidence passage to simulate a more real-world information-seeking environment?",
+  "gold_title": "QuAC : Question Answering in Context",
+  "gold_corpusid": 52057510
+ },
+ {
+  "id": "litsearch-016",
+  "area": "inline_acl",
+  "question": "Can you recommend a foundational paper that provides a scalable framework for generating English sentences with controllable semantic and syntactic attributes for the purpose of augmenting datasets in NLP tasks?",
+  "gold_title": "Control, Generate, Augment: A Scalable Framework for Multi-Attribute Text Generation",
+  "gold_corpusid": 216914087
+ },
+ {
+  "id": "litsearch-017",
+  "area": "inline_acl",
+  "question": "Can you recommend a paper that uses an NLI model for sentence-level relation extraction using hypothesis generation and verification with entity-type constraints?",
+  "gold_title": "Label Verbalization and Entailment for Effective Zero-and Few-Shot Relation Extraction",
+  "gold_corpusid": 237442211
+ },
+ {
+  "id": "litsearch-019",
+  "area": "inline_acl",
+  "question": "Can you refer me to research that adapts the concept of Word Mover's Distance to sentences, addressing the limitations of bag-of-words approaches and considering the order of words for text similarity?",
+  "gold_title": "Sentence Mover's Similarity: Automatic Evaluation for Multi-Sentence Texts",
+  "gold_corpusid": 192530110
+ },
+ {
+  "id": "litsearch-020",
+  "area": "inline_acl",
+  "question": "Can you suggest a corpus that contains French encyclopedia documents with semantic annotations and includes a test set of manually written question/answer triplets that align with the constraints of FrameNet semantic analysis?",
+  "gold_title": "Semantic Frame Parsing for Information Extraction : the CALOR corpus",
+  "gold_corpusid": 21725691
+ },
+ {
+  "id": "litsearch-029",
+  "area": "inline_acl",
+  "question": "Could you point me to studies that discuss the development of open information extraction systems with lexical and syntactic constraints to ensure the extraction is coherent and informative?",
+  "gold_title": "Identifying Relations for Open Information Extraction",
+  "gold_corpusid": 10318045
+ },
+ {
+  "id": "litsearch-039",
+  "area": "inline_acl",
+  "question": "I am looking for research that has explored topic and frame conditioning in transformer language models to enhance the quality of generated argument claims. Is there a paper discussing this approach?",
+  "gold_title": "Aspect-Controlled Neural Argument Generation",
+  "gold_corpusid": 218470025
+ },
+ {
+  "id": "litsearch-040",
+  "area": "inline_acl",
+  "question": "I am looking to understand more about sequence-to-sequence pre-training and its applications in natural language tasks. Can you suggest a significant paper that describes the denoising process for such models?",
+  "gold_title": "BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension",
+  "gold_corpusid": 204960716
+ },
+ {
+  "id": "litsearch-046",
+  "area": "inline_acl",
+  "question": "I'm interested in understanding how perplexity is utilized in identifying misinformation or fact-checking. Are there studies discussing this application of perplexity?",
+  "gold_title": "Towards Few-Shot Fact-Checking via Perplexity",
+  "gold_corpusid": 232258000
+ },
+ {
+  "id": "litsearch-050",
+  "area": "inline_acl",
+  "question": "I'm looking into morphological embedding algorithms that build upon the word2vec model by utilizing character n-grams. Which papers should I read to learn more about this approach?",
+  "gold_title": "Enriching Word Vectors with Subword Information",
+  "gold_corpusid": 207556454
+ },
+ {
+  "id": "litsearch-051",
+  "area": "inline_acl",
+  "question": "I'm looking into the distillation process of language models and would like to examine studies that specifically discuss the attention mechanism alignment in the teacher-student model architecture. Are there any papers you can suggest?",
+  "gold_title": "MINILMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers",
+  "gold_corpusid": 229923069
+ },
+ {
+  "id": "litsearch-055",
+  "area": "inline_acl",
+  "question": "In discourse parsing literature, which works have explored parser performance by adopting the original Parseval procedure and reporting micro-averaged F1 scores?",
+  "gold_title": "A Top-Down Neural Architecture towards Text-Level Parsing of Discourse Rhetorical Structure",
+  "gold_corpusid": 218516743
+ },
+ {
+  "id": "litsearch-067",
+  "area": "inline_acl",
+  "question": "What are some recent advancements in training systems to parse complex multi-hop questions into a sequence of simpler query steps for improved question answering?",
+  "gold_title": "BREAK It Down: A Question Understanding Benchmark",
+  "gold_corpusid": 211003735
+ },
+ {
+  "id": "litsearch-069",
+  "area": "inline_acl",
+  "question": "What are some studies that leverage statistical machine translation methodologies, like GIZA++, to improve the alignment process between words and grammar rules in the context of semantic parsing and generation of meaning representations?",
+  "gold_title": "Learning for Semantic Parsing with Statistical Machine Translation",
+  "gold_corpusid": 7785983
+ },
+ {
+  "id": "litsearch-070",
+  "area": "inline_acl",
+  "question": "What are some techniques or tools used in machine learning for matching and grounding annotated data to an existing knowledge base, particularly using sentence embedding-based cosine similarity or clustering algorithms?",
+  "gold_title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+  "gold_corpusid": 201646309
+ },
+ {
+  "id": "litsearch-071",
+  "area": "inline_acl",
+  "question": "What are the recent developments in evaluating the flow or 'streaming degree' of the translation processes in simultaneous machine translation (SiMT), and which metric has proven useful for this purpose?",
+  "gold_title": "Learning to Translate in Real-time with Neural Machine Translation",
+  "gold_corpusid": 2782776
+ },
+ {
+  "id": "litsearch-073",
+  "area": "inline_acl",
+  "question": "What papers should I refer to if I want to explore datasets and shared tasks designed for the purpose of fact verification using evidence from Wikipedia?",
+  "gold_title": "FEVER: a large-scale dataset for Fact Extraction and VERification",
+  "gold_corpusid": 4711425
+ },
+ {
+  "id": "litsearch-076",
+  "area": "inline_acl",
+  "question": "What research has been done on annotating user comments with claim verifiability",
+  "gold_title": "Identifying Appropriate Support for Propositions in Online User Comments",
+  "gold_corpusid": 14764893
+ },
+ {
+  "id": "litsearch-083",
+  "area": "inline_acl",
+  "question": "Where can I find a large corpus of annotated social media posts concerning a variety of health conditions?",
+  "gold_title": "RedHOT: A Corpus of Annotated Medical Questions, Experiences, and Claims on Social Media",
+  "gold_corpusid": 252846763
+ },
+ {
+  "id": "litsearch-084",
+  "area": "inline_acl",
+  "question": "Where can I find a multilingual corpus that includes reviews on DVDs, music, and books for the purposes of cross-language sentiment classification research?",
+  "gold_title": "Cross-Language Text Classification using Structural Correspondence Learning",
+  "gold_corpusid": 12360898
+ },
+ {
+  "id": "litsearch-094",
+  "area": "inline_acl",
+  "question": "Which paper specifies the typical configurations used in fine-tuning deep bidirectional transformers like BERT and RoBERTa for language understanding tasks?",
+  "gold_title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+  "gold_corpusid": 52967399
+ },
+ {
+  "id": "litsearch-109",
+  "area": "inline_nonacl",
+  "question": "Can you recommend research that uses an LLM to generate better prompts/tempates given task input/output?",
+  "gold_title": "Making Pre-trained Language Models Better Few-shot Learners",
+  "gold_corpusid": 229923710
+ },
+ {
+  "id": "litsearch-112",
+  "area": "inline_nonacl",
+  "question": "Could you direct me to research that evaluates few-shot slot tagging model performance by averaging micro-F1 scores across different test episodes?",
+  "gold_title": "Inverse is Better! Fast and Accurate Prompt for Few-shot Slot Tagging",
+  "gold_corpusid": 247939641
+ },
+ {
+  "id": "litsearch-115",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a contemporary research paper that has advanced natural language watermarking quality through algorithmic methods?",
+  "gold_title": "Robust Multi-bit Natural Language Watermarking through Invariant Features",
+  "gold_corpusid": 259129912
+ },
+ {
+  "id": "litsearch-117",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that does data-augmentation for biomedical named-entity recognition by replacing entities in the original sentence with entities of the same type from semantically similar sentences?",
+  "gold_title": "Simple Semantic-based Data Augmentation for Named Entity Recognition in Biomedical Texts",
+  "gold_corpusid": 248780437
+ },
+ {
+  "id": "litsearch-121",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that explores a pre-trained multilingual text-to-text transformer applicable to text summarization tasks?",
+  "gold_title": "mT5: A massively multilingual pre-trained text-to-text transformer",
+  "gold_corpusid": 225040574
+ },
+ {
+  "id": "litsearch-124",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that explores mitigating bias in natural language understanding via example reweighting?",
+  "gold_title": "End-to-End Self-Debiasing Framework for Robust NLU Training",
+  "gold_corpusid": 236477370
+ },
+ {
+  "id": "litsearch-128",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that initializes embeddings in multilingual transformer for subwords common with original vocabulary with original embeddings?",
+  "gold_title": "Lifting the Curse of Multilinguality by Pre-training Modular Transformers",
+  "gold_corpusid": 248721770
+ },
+ {
+  "id": "litsearch-129",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that investigates employing graph neural networks to produce replies within multi-party conversational contexts?",
+  "gold_title": "HETERMPC: A Heterogeneous Graph Neural Network for Response Generation in Multi-Party Conversations",
+  "gold_corpusid": 247476252
+ },
+ {
+  "id": "litsearch-132",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that investigates enhancing token alignment in speech processing by employing inverse document frequency (idf)?",
+  "gold_title": "SPLAT: Speech-Language Joint Pre-Training for Spoken Language Understanding",
+  "gold_corpusid": 235097520
+ },
+ {
+  "id": "litsearch-136",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that investigates how contrastive learning enhances sentence-level embeddings in natural language processing, especially for subsequent applications?",
+  "gold_title": "Fast, Effective, and Self-Supervised: Transforming Masked Language Models into Universal Lexical and Sentence Encoders",
+  "gold_corpusid": 233289620
+ },
+ {
+  "id": "litsearch-140",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that investigates representing entities in knowledge graphs with intricate geometric shapes, emphasizing probabilistic analysis and uncertainty modeling?",
+  "gold_title": "Probabilistic Box Embeddings for Uncertain Knowledge Graph Reasoning",
+  "gold_corpusid": 233210621
+ },
+ {
+  "id": "litsearch-141",
+  "area": "inline_nonacl",
+  "question": "Could you recommend a study that investigates text generation from tabular data, considering elements such as titles, column headings, and cell content, while also integrating numerical reasoning?",
+  "gold_title": "Towards Table-to-Text Generation with Numerical Reasoning",
+  "gold_corpusid": 236460018
+ },
+ {
+  "id": "litsearch-152",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that assesses how well large language models, such as GPT-3, perform at coreference resolution when tested in a few-shot learning context?",
+  "gold_title": "Large Language Models are Few-Shot Clinical Information Extractors",
+  "gold_corpusid": 249062918
+ },
+ {
+  "id": "litsearch-159",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that examines how optimized continuous prompts perform against discrete prompts in relational tasks?",
+  "gold_title": "Factual Probing Is [MASK]: Learning vs. Learning to Recall",
+  "gold_corpusid": 233210199
+ },
+ {
+  "id": "litsearch-161",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that examines the challenges faced by pre-trained language models in learning inferential commonsense knowledge when the context is sparse?",
+  "gold_title": "Are Rotten Apples Edible? Challenging Commonsense Inference Ability with Exceptions",
+  "gold_corpusid": 236478307
+ },
+ {
+  "id": "litsearch-163",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that explores how the loss of spatial information impacts the effectiveness of global features in visual tasks?",
+  "gold_title": "ReCLIP: A Strong Zero-Shot Baseline for Referring Expression Comprehension",
+  "gold_corpusid": 248118561
+ },
+ {
+  "id": "litsearch-164",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that explores identifying excess and insufficient translations in evaluating machine translation, especially regarding resolving label discrepancies in cases of omitted content?",
+  "gold_title": "Detecting Over-and Undertranslations with Contrastive Conditioning",
+  "gold_corpusid": 247223093
+ },
+ {
+  "id": "litsearch-166",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that improves knowledge base generation using non-differentiable evaluation metrics like BLEU, METEOR, and chrF++?",
+  "gold_title": "ReGen: Reinforcement Learning for Text and Knowledge Base Generation using Pretrained Language Models",
+  "gold_corpusid": 237353321
+ },
+ {
+  "id": "litsearch-178",
+  "area": "inline_nonacl",
+  "question": "Could you recommend research that investigates using autoencoder architectures to generate e-commerce product descriptions by integrating product titles, features, and supplementary descriptions crafted by marketers?",
+  "gold_title": "Interactive Latent Knowledge Selection for E-commerce Product Copywriting Generation",
+  "gold_corpusid": 248780467
+ },
+ {
+  "id": "litsearch-186",
+  "area": "inline_nonacl",
+  "question": "Could you suggest a dataset containing diverse, intricate natural language queries that necessitate multi-step reasoning, comparing attributes, and performing set operations for answering questions from a knowledge base, without depending on entity linking?",
+  "gold_title": "KQA Pro: A Dataset with Explicit Compositional Programs for Complex Question Answering over Knowledge Base",
+  "gold_corpusid": 247362971
+ },
+ {
+  "id": "litsearch-189",
+  "area": "inline_nonacl",
+  "question": "Could you suggest a study examining how transformer models utilize feed-forward neural networks (FFNs) to encode factual information?",
+  "gold_title": "Transformer Feed-Forward Layers Are Key-Value Memories",
+  "gold_corpusid": 229923720
+ },
+ {
+  "id": "litsearch-193",
+  "area": "inline_nonacl",
+  "question": "Could you suggest a study that explores a compression method that merges product quantization with integer quantization for token-level retrieval?",
+  "gold_title": "ColBERTv2: Effective and Efficient Retrieval via Lightweight Late Interaction",
+  "gold_corpusid": 244799249
+ },
+ {
+  "id": "litsearch-203",
+  "area": "inline_nonacl",
+  "question": "Could you suggest an article that leverages the spatial information available in documents for multi-modal LMs by using a spatially-aware attention mechanism?",
+  "gold_title": "LayoutLMv2: Multi-modal Pre-training for Visually-rich Document Understanding",
+  "gold_corpusid": 229923949
+ },
+ {
+  "id": "litsearch-216",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that examines how well prompt tuning using soft embeddings works for utilizing pretrained language models in downstream applications with minimal finetuning?",
+  "gold_title": "The Power of Scale for Parameter-Efficient Prompt Tuning",
+  "gold_corpusid": 233296808
+ },
+ {
+  "id": "litsearch-222",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that explores a pre-trained encoder-decoder architecture aimed at comprehending and generating code, potentially beneficial for enhancing automated code repair systems?",
+  "gold_title": "CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation",
+  "gold_corpusid": 237386541
+ },
+ {
+  "id": "litsearch-224",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that explores generating synthetic labels for sentences within a vast text collection to pre-train models for few-shot learning applications?",
+  "gold_title": "PPT: Pre-trained Prompt Tuning for Few-shot Learning",
+  "gold_corpusid": 237452236
+ },
+ {
+  "id": "litsearch-226",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that explores the idea of training soft prompts rather than identifying fixed ones within the realm of prompt tuning?",
+  "gold_title": "Factual Probing Is [MASK]: Learning vs. Learning to Recall",
+  "gold_corpusid": 233210199
+ },
+ {
+  "id": "litsearch-229",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that investigates a clustering-based efficient attention mechanism within Transformer models?",
+  "gold_title": "Efficient Content-Based Sparse Attention with Routing Transformers",
+  "gold_corpusid": 212718077
+ },
+ {
+  "id": "litsearch-242",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that investigates how undetectable backdoor attacks are in NLP models?",
+  "gold_title": "Rethinking Stealthiness of Backdoor Attack against NLP Models",
+  "gold_corpusid": 236459933
+ },
+ {
+  "id": "litsearch-243",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that investigates improving retrieval-based conversational systems using by combining masked language modeling and relevance classification objectives?",
+  "gold_title": "Fine-grained Post-training for Improving Retrieval-based Dialogue Systems",
+  "gold_corpusid": 235097662
+ },
+ {
+  "id": "litsearch-247",
+  "area": "inline_nonacl",
+  "question": "Could you suggest research that shows multilingual language models can understand plural/singular verb agreement across multiple languages?",
+  "gold_title": "Data-driven Cross-lingual Syntax: An Agreement Study with Massively Multilingual Models",
+  "gold_corpusid": 255894238
+ },
+ {
+  "id": "litsearch-269",
+  "area": "inline_nonacl",
+  "question": "Have any research papers investigated the creation of datasets through model-generated data for annotators to identify hallucinations in the results, specifically for developing diagnostic evaluation datasets?",
+  "gold_title": "Q 2 : Evaluating Factual Consistency in Knowledge-Grounded Dialogues via Question Generation and Question Answering",
+  "gold_corpusid": 233289483
+ },
+ {
+  "id": "litsearch-272",
+  "area": "inline_nonacl",
+  "question": "Have any research papers tried to create conversational agents with inner states represented by a knowledge graph that can be continually updated based on the agent’s environment?",
+  "gold_title": "Towards Socially Intelligent Agents with Mental State Transition and Human Value",
+  "gold_corpusid": 252847559
+ },
+ {
+  "id": "litsearch-274",
+  "area": "inline_nonacl",
+  "question": "Have there been any advancements in language models that operate without tokenization and emphasize encoding at the character level, and what benefits might they have compared to conventional methods using subword tokenization?",
+  "gold_title": "CANINE: Pre-training an Efficient Tokenization-Free Encoder for Language Representation",
+  "gold_corpusid": 232185112
+ },
+ {
+  "id": "litsearch-278",
+  "area": "inline_nonacl",
+  "question": "I know about prompt tuning, but have any works tried learning embeddings that are inputted to every transformer layer in a language model?",
+  "gold_title": "Prefix-Tuning: Optimizing Continuous Prompts for Generation",
+  "gold_corpusid": 230433941
+ },
+ {
+  "id": "litsearch-279",
+  "area": "inline_nonacl",
+  "question": "In multi-hop question answering, is there a paper that explores \"per-hop\" retrieval evaluation that treats each hop of retrieval independently?",
+  "gold_title": "Combining Lexical and Dense Retrieval for Computationally Efficient Multi-hop Question Answering",
+  "gold_corpusid": 237592852
+ },
+ {
+  "id": "litsearch-280",
+  "area": "inline_nonacl",
+  "question": "Is it possible to adatp named entity recognition systems to learn new entities by combining knowledge distillation and synthetic data augmentation by using a two-stage training approach?",
+  "gold_title": "Learn and Review: Enhancing Continual Named Entity Recognition via Reviewing Synthetic Samples",
+  "gold_corpusid": 248779939
+ },
+ {
+  "id": "litsearch-287",
+  "area": "inline_nonacl",
+  "question": "Is there a study that investigates if large language models can assist with generating ideas pertinent to scientific concepts during the scientific writing ideation stage?",
+  "gold_title": "Sparks: Inspiration for Science Writing using Language Models",
+  "gold_corpusid": 239009871
+ },
+ {
+  "id": "litsearch-288",
+  "area": "inline_nonacl",
+  "question": "Is there any paper that tried fine-tuning mBERT to enhance word-level alignment in a multilingual setting?",
+  "gold_title": "Word Alignment by Fine-tuning Embeddings on Parallel Corpora",
+  "gold_corpusid": 231648372
+ },
+ {
+  "id": "litsearch-294",
+  "area": "inline_nonacl",
+  "question": "Is there work on text classification that explores using BERT for the text and using GNN for the label hierarchy?",
+  "gold_title": "Hierarchy-aware Label Semantics Matching Network for Hierarchical Text Classification",
+  "gold_corpusid": 236460056
+ },
+ {
+  "id": "litsearch-297",
+  "area": "inline_nonacl",
+  "question": "What are some scholarly articles that explore the enhancement of dense retrieval in student models through the application of prediction distributions from teacher models?",
+  "gold_title": "ColBERTv2: Effective and Efficient Retrieval via Lightweight Late Interaction",
+  "gold_corpusid": 244799249
+ },
+ {
+  "id": "litsearch-307",
+  "area": "inline_nonacl",
+  "question": "What papers explore replacing schema linking with human annotations to study the maximum potential benefit of schema linking for text-to-SQL tasks?",
+  "gold_title": "Awakening Latent Grounding from Pretrained Language Models for Semantic Parsing",
+  "gold_corpusid": 236478283
+ },
+ {
+  "id": "litsearch-324",
+  "area": "inline_nonacl",
+  "question": "What research has been conducted on the impact of intervening at intermediate layers in pretrained language models to alter the resulting text?",
+  "gold_title": "Extracting Latent Steering Vectors from Pretrained Language Models",
+  "gold_corpusid": 248693452
+ },
+ {
+  "id": "litsearch-326",
+  "area": "inline_nonacl",
+  "question": "What research is available on hybrid approaches that combine extractive and abstractive methods for summarizing extensive texts?",
+  "gold_title": "Long Document Summarization in a Low Resource Setting using Pretrained Language Models",
+  "gold_corpusid": 232075836
+ },
+ {
+  "id": "litsearch-329",
+  "area": "inline_nonacl",
+  "question": "What resources or toolkits are available to facilitate prompt-based learning model development in PyTorch?",
+  "gold_title": "OpenPrompt: An Open-source Framework for Prompt-learning",
+  "gold_corpusid": 241033259
+ },
+ {
+  "id": "litsearch-338",
+  "area": "inline_nonacl",
+  "question": "Which method involves training additional prompt tokens for every layer during the fine-tuning of language models, specifically evaluating their performance on generation tasks?",
+  "gold_title": "Prefix-Tuning: Optimizing Continuous Prompts for Generation",
+  "gold_corpusid": 230433941
+ },
+ {
+  "id": "litsearch-339",
+  "area": "inline_nonacl",
+  "question": "Which paper has conducted a thorough analysis of how language models of different architectures generate text that either aligns with or deviates from the properties of natural human language?",
+  "gold_title": "Language Model Evaluation Beyond Perplexity",
+  "gold_corpusid": 235265909
+ },
+ {
+  "id": "litsearch-340",
+  "area": "inline_nonacl",
+  "question": "Which paper introduced the task of creating extended, coherent dialogues from brief summaries?",
+  "gold_title": "Summary Grounded Conversation Generation",
+  "gold_corpusid": 235359080
+ },
+ {
+  "id": "litsearch-347",
+  "area": "inline_nonacl",
+  "question": "Which work shows that reducing the number of training epochs effectively limits the impact of backdoor attack, but the method decreases the prediction accuracy?",
+  "gold_title": "Concealed Data Poisoning Attacks on NLP Models",
+  "gold_corpusid": 233230124
+ },
+ {
+  "id": "litsearch-350",
+  "area": "inline_nonacl",
+  "question": "ould you direct me to research that shows that the transfer of specialized knowledge between various ABSA tasks if trained under the same paradigm?",
+  "gold_title": "Aspect Sentiment Quad Prediction as Paraphrase Generation *",
+  "gold_corpusid": 238259938
+ },
+ {
+  "id": "litsearch-360",
+  "area": "manual_acl",
+  "question": "If one would like to train (or evaluate) a helpful assistant agent that can converse with humans while the humans traverse an environment, which work has the most suitable resource?",
+  "gold_title": "SIMMC-VR: A Task-oriented Multimodal Dialog Dataset with Situated and Immersive VR Streams",
+  "gold_corpusid": 259370710
+ },
+ {
+  "id": "litsearch-364",
+  "area": "manual_acl",
+  "question": "Is there a decoder-only language model that does not use a tokenizer and operates on raw text bytes?",
+  "gold_title": "ByGPT5: End-to-End Style-conditioned Poetry Generation with Token-free Language Models",
+  "gold_corpusid": 254877406
+ },
+ {
+  "id": "litsearch-366",
+  "area": "manual_acl",
+  "question": "Is there a method for measuring the critical errors that a dialogue system makes in its responses?",
+  "gold_title": "Chat-Oriented Dialogue Systems",
+  "gold_corpusid": 254854340
+ },
+ {
+  "id": "litsearch-367",
+  "area": "manual_acl",
+  "question": "Is there a method that measures the information provided in a (model generated) rationale beyond what the original context provided?",
+  "gold_title": "REV: Information-Theoretic Evaluation of Free-Text Rationales",
+  "gold_corpusid": 252816010
+ },
+ {
+  "id": "litsearch-372",
+  "area": "manual_acl",
+  "question": "Is there a paper that links exposure bias to distillation?",
+  "gold_title": "A Systematic Study of Knowledge Distillation for Natural Language Generation with Pseudo-Target Training",
+  "gold_corpusid": 258461336
+ },
+ {
+  "id": "litsearch-375",
+  "area": "manual_acl",
+  "question": "Is there a paper that uses Explainable AI techniques to investigate how language models represent the expression of morality?",
+  "gold_title": "What does a Text Classifier Learn about Morality? An Explainable Method for Cross-Domain Comparison of Moral Rhetoric",
+  "gold_corpusid": 259370854
+ },
+ {
+  "id": "litsearch-386",
+  "area": "manual_acl",
+  "question": "Is there any paper exploring real speakers and thus performing multimodal emotion recognition task?",
+  "gold_title": "A Facial Expression-Aware Multimodal Multi-task Learning Framework for Emotion Recognition in Multi-party Conversations",
+  "gold_corpusid": 259370790
+ },
+ {
+  "id": "litsearch-393",
+  "area": "manual_acl",
+  "question": "Is there any paper that automatically creates a dataset for summarizing text from one language to another for a large collection of languages?",
+  "gold_title": "CrossSum: Beyond English-Centric Cross-Lingual Summarization for 1,500+ Language Pairs",
+  "gold_corpusid": 258947845
+ },
+ {
+  "id": "litsearch-407",
+  "area": "manual_acl",
+  "question": "Is there any paper that tries to investigate LLMs’ capabilities in solving elliptical constructions by using a test-dataset based on the psycolinguistic notion of Thematic Fit?",
+  "gold_title": "We Understand Elliptical Sentences, and Language Models Should Too: A New Dataset for Studying Ellipsis and its Interaction with Thematic Fit",
+  "gold_corpusid": 259370867
+ },
+ {
+  "id": "litsearch-410",
+  "area": "manual_acl",
+  "question": "Is there any paper that uses token-level loss to enhance sentence-level embedding learning?",
+  "gold_title": "Dual-Alignment Pre-training for Cross-lingual Sentence Embedding",
+  "gold_corpusid": 258715255
+ },
+ {
+  "id": "litsearch-422",
+  "area": "manual_acl",
+  "question": "What are some data-efficient ways to learn text embeddings thru contrastive learning?",
+  "gold_title": "Composition-contrastive Learning for Sentence Embeddings",
+  "gold_corpusid": 259370776
+ },
+ {
+  "id": "litsearch-427",
+  "area": "manual_acl",
+  "question": "What limitations do large language models have in evaluating information-seeking question answering?",
+  "gold_title": "Evaluating Open-Domain Question Answering in the Era of Large Language Models",
+  "gold_corpusid": 258615193
+ },
+ {
+  "id": "litsearch-428",
+  "area": "manual_acl",
+  "question": "What paper compares humans' and language models' non-literal interpretations of utterances featuring phenomena like deceit, irony, and humor?",
+  "gold_title": "A fine-grained comparison of pragmatic language understanding in humans and language models",
+  "gold_corpusid": 254591475
+ },
+ {
+  "id": "litsearch-444",
+  "area": "manual_acl",
+  "question": "Which paper first applied the chain-of-thought technique in the text summarization field?",
+  "gold_title": "Element-aware Summarization with Large Language Models: Expert-aligned Evaluation and Chain-of-Thought Method",
+  "gold_corpusid": 258841145
+ },
+ {
+  "id": "litsearch-445",
+  "area": "manual_acl",
+  "question": "Which paper first apply mixture of experts idea to large language models for domain adaptation?",
+  "gold_title": "Mixture-of-Domain-Adapters: Decoupling and Injecting Domain Knowledge to Pre-trained Language Models' Memories",
+  "gold_corpusid": 259108831
+ },
+ {
+  "id": "litsearch-465",
+  "area": "manual_acl",
+  "question": "Which paper first use the attention weights to guide the simultaneous inference of speech translation models?",
+  "gold_title": "Attention as a Guide for Simultaneous Speech Translation",
+  "gold_corpusid": 254685574
+ },
+ {
+  "id": "litsearch-477",
+  "area": "manual_acl",
+  "question": "Which paper presents an easy to implement and high performing method for OOD detection with language models?",
+  "gold_title": "Is Fine-tuning Needed? Pre-trained Language Models Are Near Perfect for Out-of-Domain Detection",
+  "gold_corpusid": 258832820
+ },
+ {
+  "id": "litsearch-478",
+  "area": "manual_acl",
+  "question": "Which paper produces a dataset for text simplification in over 12 languages and evaluates both finetuning and in context learning approaches to text simplification in those languages?",
+  "gold_title": "Revisiting non-English Text Simplification: A Unified Multilingual Benchmark",
+  "gold_corpusid": 258887622
+ },
+ {
+  "id": "litsearch-479",
+  "area": "manual_acl",
+  "question": "Which paper proposed a learning-based data augmentation method for improving compositional generalization of language models?",
+  "gold_title": "Learning to Substitute Spans towards Improving Compositional Generalization",
+  "gold_corpusid": 259076194
+ },
+ {
+  "id": "litsearch-480",
+  "area": "manual_acl",
+  "question": "Which paper proposed decomposing the logit update of each of the attention blocks’ inputs to analyze how the context influences the prediction?",
+  "gold_title": "Explaining How Transformers Use Context to Build Predictions",
+  "gold_corpusid": 258832652
+ },
+ {
+  "id": "litsearch-489",
+  "area": "manual_acl",
+  "question": "Which paper studies how current retrieval systems handle queries which contain multiple constraints?",
+  "gold_title": "QUEST: A Retrieval Dataset of Entity-Seeking Queries with Implicit Set Operations",
+  "gold_corpusid": 258822815
+ },
+ {
+  "id": "litsearch-493",
+  "area": "manual_acl",
+  "question": "Which paper utilizes language models to generate singable lyrics that can go well with a predefined melody?",
+  "gold_title": "Unsupervised Melody-to-Lyric Generation",
+  "gold_corpusid": 259370722
+ },
+ {
+  "id": "litsearch-498",
+  "area": "manual_acl",
+  "question": "Which research paper leverages event structure information from Abstract Meaning Representation (AMR) graphs to aid in recognizing causal relations between events?",
+  "gold_title": "Semantic Structure Enhanced Event Causality Identification",
+  "gold_corpusid": 258833194
+ },
+ {
+  "id": "litsearch-500",
+  "area": "manual_acl",
+  "question": "Which vision-language model paper in 2023 developed techniques that reduce input tokens to improve model inference speed?",
+  "gold_title": "PuMer: Pruning and Merging Tokens for Efficient Vision Language Models",
+  "gold_corpusid": 258959382
+ },
+ {
+  "id": "litsearch-508",
+  "area": "manual_iclr",
+  "question": "Are there any papers that construct convolutional networks which are equivariant with respect to non-compact/non-abelian Lie groups?",
+  "gold_title": "LIE GROUP DECOMPOSITIONS FOR EQUIVARIANT NEURAL NETWORKS",
+  "gold_corpusid": 264172845
+ },
+ {
+  "id": "litsearch-512",
+  "area": "manual_iclr",
+  "question": "Are there sequential learning guarantees for configuring a linear system solver under a distributional assumption on the systems' target vectors?",
+  "gold_title": "LEARNING TO RELAX: SETTING SOLVER PARAMETERS ACROSS A SEQUENCE OF LINEAR SYSTEM INSTANCES",
+  "gold_corpusid": 263609239
+ },
+ {
+  "id": "litsearch-522",
+  "area": "manual_iclr",
+  "question": "Is there a parameter-efficient fine-tuning method (PEFT) that allows adjusting the number of optimized parameters to any value, irrespective of the model's architecture or choice of the adapter?",
+  "gold_title": "NOLA: NETWORKS AS LINEAR COMBINATION OF LOW RANK RANDOM BASIS",
+  "gold_corpusid": 263620510
+ },
+ {
+  "id": "litsearch-532",
+  "area": "manual_iclr",
+  "question": "Is there any paper that theoretically explains why in-context reinforcement learning works?",
+  "gold_title": "Transformers as Decision Makers: Provable In-Context Reinforcement Learning via Supervised Pretraining",
+  "gold_corpusid": 263909278
+ },
+ {
+  "id": "litsearch-533",
+  "area": "manual_iclr",
+  "question": "Is there any paper that uses Lipschitz continuity in learning a dynamics model?",
+  "gold_title": "CCIL: CONTINUITY-BASED DATA AUGMENTATION FOR CORRECTIVE IMITATION LEARNING",
+  "gold_corpusid": 264306002
+ },
+ {
+  "id": "litsearch-547",
+  "area": "manual_iclr",
+  "question": "What paper first extends rotary positional encoding (RoPE) for camera-geometry encoding in multi-view transformers?",
+  "gold_title": "GTA: A GEOMETRY-AWARE ATTENTION MECHANISM FOR MULTI-VIEW TRANSFORMERS",
+  "gold_corpusid": 264147054
+ },
+ {
+  "id": "litsearch-553",
+  "area": "manual_iclr",
+  "question": "What paper investigated the effect of the relative position (closer or further away) of the most pertinent retrieved code snippets on repository-level code completion performance?",
+  "gold_title": "RepoBench: Benchmarking Repository-Level Code Auto-Completion Systems",
+  "gold_corpusid": 259075246
+ },
+ {
+  "id": "litsearch-574",
+  "area": "manual_iclr",
+  "question": "Which paper first derived online occupany estimation technique to get sqrt(T) bound for reinforcement learning in adversarial linear MDP?",
+  "gold_title": "Towards Optimal Regret in Adversarial Linear MDPs with Bandit Feedback",
+  "gold_corpusid": 264288929
+ },
+ {
+  "id": "litsearch-577",
+  "area": "manual_iclr",
+  "question": "Which paper first investigates the knowledge preferences of LLMs when there are conflicts between the context and the parametric memory?",
+  "gold_title": "Adaptive Chameleon or Stubborn Sloth: REVEALING THE BEHAVIOR OF LARGE LANGUAGE MODELS IN KNOWLEDGE CONFLICTS",
+  "gold_corpusid": 263610128
+ },
+ {
+  "id": "litsearch-584",
+  "area": "manual_iclr",
+  "question": "Which paper first used language models to emulate tool executions for studying the risks of language model agents?",
+  "gold_title": "Identifying the Risks of LM Agents with an LM-Emulated Sandbox",
+  "gold_corpusid": 262944419
+ },
+ {
+  "id": "litsearch-588",
+  "area": "manual_iclr",
+  "question": "Which paper is the first to model the helpfulness and harmlessness alignment of LLMs as a Constrained MDP problem?",
+  "gold_title": "SAFE RLHF: SAFE REINFORCEMENT LEARNING FROM HUMAN FEEDBACK",
+  "gold_corpusid": 264306078
+ },
+ {
+  "id": "litsearch-595",
+  "area": "manual_iclr",
+  "question": "What paper provides generalization bounds for self supervised learning models eg. CLIP",
+  "gold_title": "Understanding prompt engineering may not require rethinking generalization",
+  "gold_corpusid": 263830433
+ }
+]

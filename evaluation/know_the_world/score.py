@@ -52,6 +52,9 @@ def adapt(implementation, meter):
     if getattr(implementation, "__name__", "") == "WebResearchAdapter":
         from hubofhubs.websearch.gemini import GeminiGroundingBackend
         arm = implementation(priced(GeminiGroundingBackend(**settings_for(GeminiGroundingBackend)), meter))
+    elif getattr(implementation, "__name__", "") == "SemanticAndWeb":
+        from hubofhubs.websearch.gemini import GeminiGroundingBackend
+        arm = implementation(priced(GeminiGroundingBackend(**settings_for(GeminiGroundingBackend)), meter), **optional_settings(implementation))
     elif getattr(implementation, "__name__", "") == "OpenAlexKeywordsModel":
         arm = implementation(model=GeminiQueryWriter(meter), **optional_settings(implementation))
     else:

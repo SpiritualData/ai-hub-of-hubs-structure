@@ -47,6 +47,7 @@
    "openalex_keywords": "hubofhubs.science.openalex_keywords",
    "openalex_keywords_model": "hubofhubs.science.openalex_keywords",
    "openalex_semantic": "hubofhubs.science.openalex_semantic",
+   "openalex_semantic_and_web": "hubofhubs.science.openalex_semantic_and_web",
    "web_research": "hubofhubs.websearch.research"
   }
  },
