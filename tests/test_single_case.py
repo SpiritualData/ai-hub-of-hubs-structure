@@ -25,7 +25,7 @@ def test_a_reply_with_the_digit_passes_with_reasons_and_cost():
     assert single_case.passed(record)
     assert record["arm"] == ["anthropic", "claude-haiku-5-5"]
     assert record["list_cost_usd"] > 0
-    assert [r.split(" -> ")[0] for r in record["reasons"]] == ["model-call", "reason-and-answer"]
+    assert sorted(r.split(" -> ")[0] for r in record["reasons"]) == ["choose-a-model-tier", "model-call"]
 
 
 def test_a_wrong_reply_fails():

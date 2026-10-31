@@ -158,7 +158,7 @@ No public task resembles a card store's job (correctness of store, merge and tid
 context-assembler above. Our `local_card_store` passes 35 of 35. **Recommendation:** no change from public research; do not
 chase vector store leaderboards without a cardinality that needs one.
 
-## reason-and-answer (tier selection)
+## choose-a-model-tier (tier selection)
 
 - **Routing and cascades cut cost, per their authors.** [RouteLLM](https://arxiv.org/abs/2406.18665) reports cost down by over 2
   times in certain cases without hurting quality; [FrugalGPT](https://arxiv.org/abs/2305.05176) reports matching GPT-4 at up to
@@ -169,8 +169,15 @@ chase vector store leaderboards without a cardinality that needs one.
   small paid calls). **Consider later:** a learned router like RouteLLM once logged outcomes exist (needs training data). **Keep:**
   `tier_selector`. **Drop:** nothing.
 
+## Seats where no public evidence applies
+
+- **model-call, read-registry-freshness, score-hub-connections, assemble-the-whole.** Each checks the hub's own mechanics (a tier is
+  answered, a date is read, a connection is counted, a seat builds). No public task resembles them, so there is nothing to compare;
+  the recorded results stand on our own cases alone.
+
 ## Mind seats with no arm yet
 
+- **reason-and-answer (the Mind itself).** Specified; implemented in Quest AI Runner, moving here. Only its tier choice is measured here.
 - **think-critically.** [MiniCheck](https://arxiv.org/abs/2404.10774) (EMNLP 2024) reports a 770M-parameter checker at GPT-4
   accuracy with about 400 times lower cost on LLM-AggreFact (`EV-minicheck-cost`; grade D, the authors' own model). **Add** a
   MiniCheck arm (or Vectara HHEM-2.1-Open, an existing candidate), a CPU-capable extra, about 60 lines, scored on a small

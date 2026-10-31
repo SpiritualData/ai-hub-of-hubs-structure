@@ -14,7 +14,7 @@ what differs from general practice; the `README.md` explains the idea.
   "unconfirmed: for Joshua to confirm". Do not invent implementations; a seat with none stays "no arm yet".
 - **Selection by metric only.** Set `selected` from the seat's metric result, never from preference.
 - **Generic, no consumer content.** The hub holds real executing code (seats as Protocols, arms in extras); its core is the standard library plus `esoi`. No consumer-specific prompts or settings here; those stay in the consumer (QAR for Quest).
-- **README seats table and `docs/registry.md`** are generated from the registry: run `python3 scripts/status.py`, never edit between their markers by hand. The README shows one row per seat (so it stays under 120 lines); the area detail lives in `docs/registry.md`.
+- **Generated blocks.** The README seats table, the evidence table, the not-measured list, `docs/registry.md` and `docs/evidence-by-arm.md` are generated: run `python3 scripts/status.py` (also after any new result is recorded), never edit between their markers or type a number into them. The plain words for each check are rows of `docs/evidence-labels.csv`. The README stays under 150 lines; the area detail lives in `docs/registry.md`.
 - **The registry** is `hubofhubs/registry/*.csv`. A capability is a hub connection (a class, counted once), never one service;
   a single service a consumer hand-wires goes in `hub_integrations.csv`. Facts need a dated source; see `docs/refresh.md`.
 - **Consumers** hand this package a `Binding`; the package never imports a consumer. Core imports stay stdlib, the package and `esoi` (`tests/test_import_boundary.py`); third-party libraries belong in per-arm extras.
@@ -25,8 +25,8 @@ what differs from general practice; the `README.md` explains the idea.
 
 ```bash
 PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi check
-python3 -m pytest tests/test_registry.py tests/test_status.py tests/test_import_boundary.py   # plus the hub's other small test files
+python3 -m pytest tests/test_registry.py tests/test_status.py tests/test_evidence_summary.py tests/test_import_boundary.py   # plus the hub's other small test files
 python3 scripts/sync_uses.py --check
 ```
 
-The ESOI library (`evolvable-structure`) is read-only from here: never edit or commit there.
+Generic mechanics belong in esoi (`evolvable-structure`) and are edited only on the owner's own prompt, never from here.

@@ -61,8 +61,8 @@ system = hubofhubs.assemble(environ=os.environ)      # every seat with a selecte
 system = hubofhubs.assemble(environ=os.environ, arms={"call-a-model": "anthropic"}, options={"card-store": {"path": "cards.db"}})   # only what differs
 ```
 
-`assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `card-store`, `reason-and-answer`,
-`stay-current` and `connect-any-integration`; the other seats are in `system.pending`, one line each saying what to pass:
+`assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `card-store`, `choose-a-model-tier`,
+`read-registry-freshness`, `score-hub-connections` and `watch-for-risk`; the other seats are in `system.pending`, one line each saying what to pass:
 `arms={seat: <arm>}` where no arm is selected yet (several arms await the measurement of their seat), `options={seat: {argument: ...}}`,
 `provided={seat: <your object>}`, or the variable to set (`set ANTHROPIC_API_KEY (option 'api_key')`).
 

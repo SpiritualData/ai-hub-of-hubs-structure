@@ -35,7 +35,7 @@ default arm or is consumer-provided.
 consumer and puts the rest in `result.pending`, one line per seat saying what to pass (`arms`, `options` or `provided`); it raises
 only for an unknown name or a cycle. A consumer names only what differs: `assemble(arms={seat: arm}, options={seat: {...}},
 provided={seat: object})`. Passing an `AssemblyConfig` stays the strict form. The mechanic is `esoi.assemble.Assembler.assemble_defaults`;
-the hub only supplies its scope. Today the seats with a selected arm are `card-store`, `reason-and-answer`, `stay-current`, `connect-any-integration` and `model-call`
+the hub only supplies its scope. Today the seats with a selected arm are `card-store`, `choose-a-model-tier`, `read-registry-freshness`, `score-hub-connections` and `model-call`
 (the last needs the `call-a-model` seat, which stays pending until its arm is named); every other seat is reported as pending until
 a metric selects an arm or the consumer provides an object. `assemble(environ=mapping)` fills the options an arm declares in its
 `ENVIRON` attribute from that mapping (`esoi.assemble`).

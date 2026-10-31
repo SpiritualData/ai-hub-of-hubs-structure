@@ -34,7 +34,7 @@
   "statements": 44,
   "percent": 100.0
  },
- "connect-any-integration:hub_of_hubs_scorer": {
+ "score-hub-connections:hub_of_hubs_scorer": {
   "executed": 53,
   "statements": 58,
   "percent": 91.4
@@ -49,7 +49,7 @@
   "statements": 272,
   "percent": 39.3
  },
- "reason-and-answer:tier_selector": {
+ "choose-a-model-tier:tier_selector": {
   "executed": 129,
   "statements": 132,
   "percent": 97.7
@@ -64,7 +64,7 @@
   "statements": 247,
   "percent": 26.3
  },
- "stay-current:registry_scan": {
+ "read-registry-freshness:registry_scan": {
   "executed": 49,
   "statements": 51,
   "percent": 96.1

@@ -16,8 +16,8 @@ from support import ROOT  # noqa: E402
 
 SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssembling, "model-call": seats.ModelCall,
          "call-a-model": seats.ModelCalling, "search-backend": seats.SearchBackend,
-         "reason-and-answer": seats.TierSelection, "stay-current": seats.FreshnessReading,
-         "connect-any-integration": seats.HubScoring, "watch-for-risk": seats.RiskWatching,
+         "choose-a-model-tier": seats.TierSelection, "read-registry-freshness": seats.FreshnessReading,
+         "score-hub-connections": seats.HubScoring, "watch-for-risk": seats.RiskWatching,
          "know-the-world": seats.WorldKnowing, "act-in-the-world": seats.Acting}
 SOLUTIONS = registry.read("solutions.csv", ROOT / "esoi")
 IMPLEMENTATIONS = registry.read("implementations.csv", ROOT / "esoi")
@@ -55,16 +55,17 @@ def test_uses_solution_ids_equals_the_constructor_parameters_and_the_graph_is_so
 
 def test_external_seats_are_consumer_provided_and_have_no_default():
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    assert {"external", "consumer-provided"} <= set(registry.split(by["search-backend"]["tags"])) and by["search-backend"]["selected"] == ""
+    # search-backend and call-a-model are external systems, but a metric selected a default arm for each (it still needs a key or an option)
+    assert "external" in registry.split(by["search-backend"]["tags"]) and by["search-backend"]["selected"] == "gemini"
     # model-call is external but the hub ships an arm over call-a-model, which is the consumer-provided seat it needs
     assert "external" in registry.split(by["model-call"]["tags"]) and by["model-call"]["selected"] == "via_call_a_model"
-    assert "consumer-provided" in registry.split(by["call-a-model"]["tags"])
+    assert "external" in registry.split(by["call-a-model"]["tags"]) and by["call-a-model"]["selected"] == "multi_provider"
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
-    system = assemble(AssemblyConfig(solutions=("card-store", "reason-and-answer", "stay-current", "connect-any-integration")))
-    assert system.solutions() == ["card-store", "reason-and-answer", "stay-current", "connect-any-integration"]
-    with pytest.raises(AssemblyError, match="model-call .via_call_a_model. needs call-a-model: no arm, not provided"):
+    system = assemble(AssemblyConfig(solutions=("card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections")))
+    assert system.solutions() == ["card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections"]
+    with pytest.raises(AssemblyError, match="call-a-model .multi_provider. needs option"):
         assemble(AssemblyConfig())      # the strict form refuses a selected arm whose need is unmet
     assert isinstance(system["card-store"], LocalCardStore)
 
@@ -86,9 +87,9 @@ def test_a_consumer_provided_card_store_wins():
 
 
 def test_external_seats_fail_at_startup_unless_provided():
-    for sid in ("call-a-model", "search-backend"):
-        with pytest.raises(AssemblyError, match=f"{sid}: no arm, not provided"):
-            assemble(AssemblyConfig(solutions=(sid,)))
+    with pytest.raises(AssemblyError, match="call-a-model .multi_provider. needs option"):
+        assemble(AssemblyConfig(solutions=("call-a-model",)))
+    assert "gemini" in assemble(AssemblyConfig(solutions=("search-backend",))).reasons[0]   # a default arm is built lazily; its key is read when it searches
 
 
 def test_sync_uses_check_passes_on_the_repository():
@@ -99,7 +100,7 @@ def test_sync_uses_check_passes_on_the_repository():
     assert (done.returncode, done.stdout) == (0, "")
 
 
-def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend_and_is_selected_by_no_record():
+def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend():
     from hubofhubs.ports.search import SearchHit, SearchResponse
 
     class Backend:
@@ -109,12 +110,11 @@ def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend_and_is_select
             return SearchResponse(hits=[SearchHit(title="A page", url="https://example.com/a", snippet="a fact", date="")])
 
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    assert by["know-the-world"]["selected"] == "" and by["know-the-world"]["implementations"] == "web_research;openalex"
+    assert by["know-the-world"]["selected"] == "web_research" and {"web_research", "openalex"} <= set(by["know-the-world"]["implementations"].split(";"))
     config = AssemblyConfig(solutions=("know-the-world",), selections={"know-the-world": "web_research"})
     system = assemble(config, provided={"search-backend": Backend()})
     arm = system["know-the-world"]
     assert isinstance(arm, seats.WorldKnowing) and arm.describe() == "web search via toy"
     observation = arm.search("a question")
     assert observation.kind != "error" and "https://example.com/a" in observation.text
-    with pytest.raises(AssemblyError):
-        assemble(config)   # the search need is the consumer's: with none provided the startup fails, naming the need
+    assert "gemini" in assemble(config)["know-the-world"].describe()   # with none provided the need falls to the hub's selected search arm

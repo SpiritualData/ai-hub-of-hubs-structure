@@ -27,11 +27,11 @@
   "expect": "ok"
  },
  {
-  "id": "seat-connect-any-integration",
+  "id": "seat-score-hub-connections",
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "connect-any-integration"
+   "seat": "score-hub-connections"
   },
   "expect": "ok"
  },
@@ -63,11 +63,11 @@
   "expect": "ok"
  },
  {
-  "id": "seat-reason-and-answer",
+  "id": "seat-choose-a-model-tier",
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "reason-and-answer"
+   "seat": "choose-a-model-tier"
   },
   "expect": "ok"
  },
@@ -81,11 +81,11 @@
   "expect": "ok"
  },
  {
-  "id": "seat-stay-current",
+  "id": "seat-read-registry-freshness",
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "stay-current"
+   "seat": "read-registry-freshness"
   },
   "expect": "ok"
  },
@@ -99,37 +99,37 @@
   "expect": "ok"
  },
  {
-  "id": "arm-stay-current-registry_scan",
+  "id": "arm-read-registry-freshness-registry_scan",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "stay-current",
+   "seat": "read-registry-freshness",
    "arms": {
-    "stay-current": "registry_scan"
+    "read-registry-freshness": "registry_scan"
    }
   },
   "expect": "ok"
  },
  {
-  "id": "arm-connect-any-integration-hub_of_hubs_scorer",
+  "id": "arm-score-hub-connections-hub_of_hubs_scorer",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "connect-any-integration",
+   "seat": "score-hub-connections",
    "arms": {
-    "connect-any-integration": "hub_of_hubs_scorer"
+    "score-hub-connections": "hub_of_hubs_scorer"
    }
   },
   "expect": "ok"
  },
  {
-  "id": "arm-reason-and-answer-tier_selector",
+  "id": "arm-choose-a-model-tier-tier_selector",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "reason-and-answer",
+   "seat": "choose-a-model-tier",
    "arms": {
-    "reason-and-answer": "tier_selector"
+    "choose-a-model-tier": "tier_selector"
    }
   },
   "expect": "ok"

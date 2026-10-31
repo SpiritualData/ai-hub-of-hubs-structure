@@ -23,4 +23,4 @@ def test_every_module_the_snapshot_names_is_one_of_the_hubs_own_files():
 @pytest.mark.parametrize("bad", ["os:system", "os.system", "../x.py", "a/b"])
 def test_a_hostile_name_is_refused_before_anything_is_imported(bad):
     with pytest.raises(AssemblyError, match="rejected"):
-        resolve("reason-and-answer", bad)
+        resolve("choose-a-model-tier", bad)

@@ -8,7 +8,7 @@ from typing import Any, Mapping, Sequence
 
 import hubofhubs
 
-SEAT = "reason-and-answer"
+SEAT = "choose-a-model-tier"
 
 
 class AcmeFlatTiers:

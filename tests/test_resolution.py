@@ -8,7 +8,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from hubofhubs import AssemblyConfig, AssemblyError, assemble, choice, names, register, resolve  # noqa: E402
 
-SEAT = "reason-and-answer"
+SEAT = "choose-a-model-tier"
 
 
 def test_replacing_or_shadowing_a_hub_declared_name_raises():
@@ -36,9 +36,9 @@ def test_the_hub_default_builds_without_a_consumer():
 
 def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
     system = assemble()
-    assert sorted(system.solutions()) == ["card-store", "connect-any-integration", "reason-and-answer", "stay-current"]
+    assert sorted(system.solutions()) == ["card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections", "watch-for-risk"]
     assert all(line.startswith(seat + ":") or line.startswith(seat + " (") for seat, line in system.pending.items())
-    assert "no selected arm; pass arms=" in system.pending["search-backend"]
+    assert "GEMINI_API_KEY" in system.pending["search-backend"] and "no selected arm; pass arms=" in system.pending["context-assembler"]
     assert system.pending["model-call"] == "model-call (via_call_a_model): needs call-a-model; see those lines"
 
 

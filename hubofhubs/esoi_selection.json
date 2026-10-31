@@ -25,10 +25,10 @@
    "local_card_store": "hubofhubs.cardstore"
   }
  },
- "connect-any-integration": {
-  "default": "hub_of_hubs_scorer",
+ "choose-a-model-tier": {
+  "default": "tier_selector",
   "modules": {
-   "hub_of_hubs_scorer": "hubofhubs.measure"
+   "tier_selector": "hubofhubs.tiers"
   }
  },
  "context-assembler": {
@@ -56,10 +56,16 @@
    "via_call_a_model": "hubofhubs.models.via_provider"
   }
  },
- "reason-and-answer": {
-  "default": "tier_selector",
+ "read-registry-freshness": {
+  "default": "registry_scan",
   "modules": {
-   "tier_selector": "hubofhubs.tiers"
+   "registry_scan": "hubofhubs.registry"
+  }
+ },
+ "score-hub-connections": {
+  "default": "hub_of_hubs_scorer",
+  "modules": {
+   "hub_of_hubs_scorer": "hubofhubs.measure"
   }
  },
  "search-backend": {
@@ -71,12 +77,6 @@
    "searxng": "hubofhubs.websearch.backends",
    "serper": "hubofhubs.websearch.backends",
    "tavily": "hubofhubs.websearch.backends"
-  }
- },
- "stay-current": {
-  "default": "registry_scan",
-  "modules": {
-   "registry_scan": "hubofhubs.registry"
   }
  },
  "watch-for-risk": {

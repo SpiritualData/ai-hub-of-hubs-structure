@@ -37,12 +37,12 @@ def test_generated_files_are_current():
     assert status.main(["--check"]) == 0
 
 
-# The README shows one row per seat, so its size does not grow with the registry (the earlier one-row-per-area table broke the
+# The README shows one row per seat, so its size does not grow with the registry (cap: 150 lines) (the earlier one-row-per-area table broke the
 # cap once research was broken into sub-solution areas). The area detail lives in docs/registry.md, which is generated, not capped.
 def test_readme_stays_small():
     readme = (status.ROOT / "README.md").read_text()
     assert status.rewrite(readme, status.build()) == readme
-    assert len(readme.splitlines()) <= 120
+    assert len(readme.splitlines()) <= 150
 
 
 def test_the_detail_file_shows_each_areas_call():

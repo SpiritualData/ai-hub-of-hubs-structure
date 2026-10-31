@@ -157,9 +157,9 @@ def metrics(facts, connections, seat_facts=None):
     return registry.combine(list(facts.values()), connections, None if seat_facts is None else list(seat_facts.values()))
 
 
-@implementation("connect-any-integration", "hub_of_hubs_scorer")
+@implementation("score-hub-connections", "hub_of_hubs_scorer")
 class HubScorer:
-    """The hub-of-hubs scorer as one registered implementation of the connect-any-integration seat."""
+    """The hub-of-hubs scorer as one registered implementation of the score-hub-connections solution."""
     evaluate = staticmethod(evaluate)
     evaluate_seats = staticmethod(evaluate_seats)
     check = staticmethod(check)

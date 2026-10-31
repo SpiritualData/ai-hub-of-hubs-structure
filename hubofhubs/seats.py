@@ -78,7 +78,7 @@ class WorldKnowing(typing.Protocol):
               part: Optional[int] = None) -> Observation: ...
 
 
-@solution("reason-and-answer")
+@solution("choose-a-model-tier")
 @runtime_checkable
 class TierSelection(typing.Protocol):
     """Per model tier, pick the (provider, model) arm with the most passing work per cost."""
@@ -87,7 +87,7 @@ class TierSelection(typing.Protocol):
                credits: Sequence[Mapping[str, str]] = (), defaults: Any = None, **bars: Any) -> Mapping[str, Any]: ...
 
 
-@solution("stay-current")
+@solution("read-registry-freshness")
 @runtime_checkable
 class FreshnessReading(typing.Protocol):
     """Reads the registry's recorded dates and reports how old each area's research is."""
@@ -96,7 +96,7 @@ class FreshnessReading(typing.Protocol):
     def combine(self, facts: Sequence[Mapping[str, Any]], connections: Sequence[Mapping[str, Any]]) -> Mapping[str, Any]: ...
 
 
-@solution("connect-any-integration")
+@solution("score-hub-connections")
 @runtime_checkable
 class HubScoring(typing.Protocol):
     """Scores, per area, whether a hub is registered and connected by configuration, given a consumer's binding."""
