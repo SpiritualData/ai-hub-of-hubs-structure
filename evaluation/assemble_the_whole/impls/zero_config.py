@@ -6,7 +6,7 @@ from pathlib import Path
 
 import hubofhubs
 
-PASS = re.compile(r"pass (arms|options|provided)=\{|\bset [A-Z][A-Z0-9_]+(?: or [A-Z][A-Z0-9_]+)* \(option|: cannot be loaded \(")
+PASS = re.compile(r"pass (arms|options|provided)=\{|\bset [A-Z][A-Z0-9_]+(?: or [A-Z][A-Z0-9_]+)*(?: \(|$)|: pip install '|: cannot be loaded \(")
 NEEDS = re.compile(r"needs ([a-z0-9-]+(?:, [a-z0-9-]+)*); see those lines")
 
 

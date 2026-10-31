@@ -1,6 +1,11 @@
 {
  "act-in-the-world": {
-  "default": "",
+  "default": "fast_edit",
+  "evidence": {
+   "detail": "beaten by stream_json_goal_runner, subprocess_goal_runner: fast_edit is better than none (exact McNemar test, Holm-adjusted p=5.59e-09, 29 of 30 cases disagree); best guess, not yet significant: stream_json_goal_runner leads fast_edit (stream_json_goal_runner 1 against fast_edit 0.967; exact McNemar test, Holm-adjusted p=1, 1 of 30 cases disagree); more cases would settle it; best guess, not yet significant: subprocess_goal_runner leads fast_edit (subprocess_goal_runner 1 against fast_edit 0.967; exact McNemar test, Holm-adjusted p=1, 1 of 30 cases disagree); more cases would settle it",
+   "p": 0.0,
+   "verdict": "LOSS"
+  },
   "modules": {
    "acp_deep_runner": "hubofhubs.deep.acp_runner",
    "fast_edit": "hubofhubs.act.fast_edit",
@@ -11,6 +16,11 @@
  },
  "call-a-model": {
   "default": "multi_provider",
+  "evidence": {
+   "detail": "multi_provider is better than single_provider (exact McNemar test, Holm-adjusted p=3.81e-06, 18 of 30 cases disagree)",
+   "p": 4e-06,
+   "verdict": "WIN"
+  },
   "modules": {
    "anthropic": "hubofhubs.models.anthropic",
    "deepseek": "hubofhubs.models.openai",
@@ -21,18 +31,33 @@
  },
  "card-store": {
   "default": "local_card_store",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "local_card_store": "hubofhubs.cardstore"
   }
  },
  "choose-a-model-tier": {
   "default": "tier_selector",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "tier_selector": "hubofhubs.tiers"
   }
  },
  "context-assembler": {
-  "default": "",
+  "default": "bm25",
+  "evidence": {
+   "detail": "beaten by bm25@analyzer=english, vector: best guess, not yet significant: bm25@analyzer=english leads bm25 (bm25@analyzer=english 0.644 against bm25 0.619; exact McNemar test, Holm-adjusted p=0.0768, 16 of 323 cases disagree); more cases would settle it; best guess, not yet significant: vector leads bm25 (vector 0.635 against bm25 0.619; exact McNemar test, Holm-adjusted p=0.288, 51 of 323 cases disagree); more cases would settle it",
+   "p": 1.0,
+   "verdict": "LOSS"
+  },
   "modules": {
    "bm25": "hubofhubs.recall.bm25_store",
    "composite": "hubofhubs.recall.composite_assembler",
@@ -41,7 +66,12 @@
   }
  },
  "know-the-world": {
-  "default": "web_research",
+  "default": "openalex_semantic_and_web",
+  "evidence": {
+   "detail": "beaten by openalex_semantic: best guess, not yet significant: openalex_semantic leads openalex_semantic_and_web (openalex_semantic 0.347 against openalex_semantic_and_web 0.327; exact McNemar test, Holm-adjusted p=0.664, 21 of 150 cases disagree); more cases would settle it; openalex_semantic_and_web is better than web_research (exact McNemar test, Holm-adjusted p=1.23e-07, 37 of 150 cases disagree)",
+   "p": 0.0,
+   "verdict": "LOSS"
+  },
   "modules": {
    "openalex": "hubofhubs.science.openalex",
    "openalex_keywords": "hubofhubs.science.openalex_keywords",
@@ -53,24 +83,44 @@
  },
  "model-call": {
   "default": "via_call_a_model",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "via_call_a_model": "hubofhubs.models.via_provider"
   }
  },
  "read-registry-freshness": {
   "default": "registry_scan",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "registry_scan": "hubofhubs.registry"
   }
  },
  "score-hub-connections": {
   "default": "hub_of_hubs_scorer",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "hub_of_hubs_scorer": "hubofhubs.measure"
   }
  },
  "search-backend": {
   "default": "gemini",
+  "evidence": {
+   "detail": "gemini is better than provider (exact McNemar test, Holm-adjusted p=5.48e-06, 22 of 40 cases disagree)",
+   "p": 5e-06,
+   "verdict": "WIN"
+  },
   "modules": {
    "brave": "hubofhubs.websearch.backends",
    "gemini": "hubofhubs.websearch.gemini",
@@ -82,6 +132,11 @@
  },
  "watch-for-risk": {
   "default": "overseer",
+  "evidence": {
+   "detail": "beaten by consent_gate, two_stage: best guess, not yet significant: consent_gate leads overseer (consent_gate 1 against overseer 0.917; exact McNemar test, Holm-adjusted p=0.375, 3 of 36 cases disagree); more cases would settle it; overseer is better than none (exact McNemar test, Holm-adjusted p=0.00223, 21 of 36 cases disagree); best guess, not yet significant: two_stage leads overseer (two_stage 0.944 against overseer 0.917; exact McNemar test, Holm-adjusted p=1, 1 of 36 cases disagree); more cases would settle it",
+   "p": 0.002234,
+   "verdict": "LOSS"
+  },
   "modules": {
    "consent_gate": "hubofhubs.consent_gate",
    "overseer": "hubofhubs.risk",
