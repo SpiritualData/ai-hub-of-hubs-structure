@@ -36,7 +36,7 @@ Code / Agent SDK auth is already active in the environment; there is no extra cr
     rather than dying inside the child process.
 
 Everything here follows this repo's standing contract for a ``DeepRunner``: it NEVER raises. Every
-failure, a missing package, a missing binary, an old Node, a protocol error, a wedged turn ,
+failure, a missing package, a missing binary, an old Node, a protocol error, a wedged turn,
 comes back as a ``DeepResult`` with ``met=False`` and a message a human can act on.
 """
 from __future__ import annotations

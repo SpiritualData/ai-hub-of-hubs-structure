@@ -656,7 +656,7 @@ class SubprocessGoalRunner(DeepRunner):
                 err = f"{err}\n\nLast output:\n{tail[-1500:]}"
             # A worker killed/crashed BEFORE printing its final JSON envelope leaves ``tail`` empty
             # (or trivially short), so the message above would carry nothing about a run that may
-            # have read, written and executed plenty. Its session record did capture all of that ,
+            # have read, written and executed plenty. Its session record did capture all of that,
             # surface the tail of it. Absent/unreadable record: the bare message stands, as today.
             if worker_output_is_thin(tail):
                 activity = describe_session_activity(effective_working_dir, session_id, config_dir,

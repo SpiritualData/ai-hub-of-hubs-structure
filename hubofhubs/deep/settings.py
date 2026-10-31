@@ -13,6 +13,7 @@ passes a zero-argument callable returning ``GoalSettings`` instead of a value; `
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple, Union
 
@@ -95,6 +96,10 @@ def keep_requester(env: Dict[str, str], user_id: Optional[str]) -> Dict[str, str
 
 
 def empty_environment() -> Mapping[str, str]:
+    """The default child environment is empty, which starts a worker with no HOME or PATH (its login and subscription fail), so a
+    consumer must pass ``GoalSettings.environment``; using this default says so in the log."""
+    logging.getLogger(__name__).warning(
+        "GoalSettings.environment was not set: the worker starts with an empty environment (no HOME or PATH).")
     return {}
 
 
