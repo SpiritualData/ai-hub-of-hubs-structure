@@ -1,0 +1,456 @@
+[
+ {
+  "id": "simpleqa-0267",
+  "area": "TV shows",
+  "question": "What was Conrad Schintz's dog's full name on Dimension 20's Mentopolis?",
+  "gold_urls": [
+   "https://dimension20.fandom.com/wiki/Justin_Fication",
+   "https://dimension20.fandom.com/wiki/Conrad_Schintz",
+   "https://tvtropes.org/pmwiki/pmwiki.php/Characters/Dimension20Mentopolis"
+  ],
+  "answer": "Justin Fication"
+ },
+ {
+  "id": "simpleqa-0336",
+  "area": "Art",
+  "question": "Which architect was tasked with finishing the chapel in the newly built Papal apartment when its construction remained incomplete after Pope Paul IV moved in, in October 1556?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Pirro_Ligorio",
+   "https://library.brown.edu/projects/rome/people/0139/"
+  ],
+  "answer": "Pirro Ligorio"
+ },
+ {
+  "id": "simpleqa-0346",
+  "area": "Other",
+  "question": "What was the name of the indoor scrambler ride themed around the Battle of Hastings that was an opening day attraction when Busch Gardens, The Old Country in Williamsburg, Virginia, first opened in 1975?",
+  "gold_urls": [
+   "https://www.themeparkbrochures.net/busch-gardens-the-old-country-map-and-brochure/\n\nhttps://enchantedlaboratory.com/history/\n\nhttps://coasterpedia.net/wiki/Le_Catapult",
+   "https://enchantedlaboratory.com/history/#:~:text=Busch%20Gardens%2C%20The%20Old%20Country,according%20to%20the%20park%20map.",
+   "https://coasterpedia.net/wiki/Le_Catapult",
+   "https://bgwmemories.com/tag/busch-gardens-history/"
+  ],
+  "answer": "The Catapult"
+ },
+ {
+  "id": "simpleqa-0360",
+  "area": "Sports",
+  "question": "Into which Hall of Fame was Zippo Pine Bar inducted in 1992?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Zippo_Pine_Bar",
+   "https://en.wikipedia.org/wiki/Zippo_Pine_Bar#:~:text=He%20was%20the%201972%20AQHA,Bit%20Association%20Hall%20of%20Fame.",
+   "http://www.barnmice.com/profiles/blogs/zippo-pine-bar-a-quarter-horse-history",
+   "https://www.aceofclubsquarterhorses.com/horses_d.asp?HiD=2541&id=refs"
+  ],
+  "answer": "National Snaffle Bit Association"
+ },
+ {
+  "id": "simpleqa-0599",
+  "area": "Other",
+  "question": "Who received an honorable mention at the 1996 Frank and Brennie Morgan Prize for Outstanding Research in Mathematics by an Undergraduate Student?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Morgan_Prize",
+   "https://news.mit.edu/1996/awards5-1120",
+   "https://maa.org/morgan-prize/"
+  ],
+  "answer": "Lenhard Ng"
+ },
+ {
+  "id": "simpleqa-0650",
+  "area": "Science and technology",
+  "question": "Who won the Kalinga Prize for the Popularization of Science in 1969?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Kalinga_Prize",
+   "https://www.unesco.org/en/prizes/popularization-science/laureates",
+   "http://www.kalingafoundationtrust.com/website/kalinga-prize-for-the-popularization-of-science.htm"
+  ],
+  "answer": "Konrad Lorenz"
+ },
+ {
+  "id": "simpleqa-0871",
+  "area": "Sports",
+  "question": "How many assists did Kostas Tsimikas have across all competitions in the 2021-2022 season?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/2021%E2%80%9322_Liverpool_F.C._season#Assists",
+   "https://www.transfermarkt.co.uk/konstantinos-tsimikas/leistungsdaten/spieler/338070/plus/0?saison=2021",
+   "https://lfchistory.net/Players/Player/Profile/1372",
+   "https://www.footballdatabase.eu/en/player/details/243380-konstantinos-tsimikas"
+  ],
+  "answer": "6"
+ },
+ {
+  "id": "simpleqa-0886",
+  "area": "Science and technology",
+  "question": "What is the surname of the individual who won the Gibson-Fawcett Award in 2018?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Gibson-Fawcett_Award#:~:text=2018,Silvia%20Vignolini",
+   "https://en.wikipedia.org/wiki/Gibson-Fawcett_Award",
+   "https://www.rsc.org/news-events/articles/2018/may/prizes-and-awards-2018/",
+   "https://www.ch.cam.ac.uk/news/royal-society-chemistry-honours-three-researchers"
+  ],
+  "answer": "Vignolini"
+ },
+ {
+  "id": "simpleqa-0961",
+  "area": "Science and technology",
+  "question": "What is the first name and surname of the food scientist who received the first IFT Industrial Scientist Award in 1994?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/IFT_Industrial_Scientist_Award",
+   "https://web.archive.org/web/20100102091005/http://members.ift.org:80/IFT/Awards/AchievmentAwards/AwardWinners/pastawardwinners.htm"
+  ],
+  "answer": "Aaron Brody"
+ },
+ {
+  "id": "simpleqa-1303",
+  "area": "Other",
+  "question": "In August 2012, what was the address of the First Church of Christ, Scientist that W. V. Grant purchased?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/W._V._Grant#Tax_evasion",
+   "https://en.wikipedia.org/wiki/W._V._Grant",
+   "https://www.dallasobserver.com/news/the-best-of-dallas-worst-televangelists-10367465",
+   "https://preservationdallas.org/location/first-church-of-christ-scientist-eagles-nest-1508-cadiz-st-downtown"
+  ],
+  "answer": "1508 Cadiz Street, Dallas, TX, 75201"
+ },
+ {
+  "id": "simpleqa-1310",
+  "area": "Art",
+  "question": "Adil Hussain was the artistic director and trainer of which organization from 2004 to 2007?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Adil_Hussain",
+   "https://in.bookmyshow.com/person/adil-hussain/30788#:",
+   "https://en.wikipedia.org/wiki/en:Adil_Hussain?variant=zh-tw",
+   "https://www.tring.co.in/popular-celebrities/adil-hussain"
+  ],
+  "answer": "Society for Artists and Performers"
+ },
+ {
+  "id": "simpleqa-1502",
+  "area": "Art",
+  "question": "In which year did Dina Nath Walli (an Indian watercolor artist and poet from Srinagar city) return to Srinagar, where he concentrated on landscape painting in watercolors?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Dina_Nath_Walli",
+   "https://en.wikipedia.org/wiki/Dina_Nath_Walli#:~:text=In%201936%2C%20he%20returned%20to,landscape%20painting%20in%20water%20colours.",
+   "http://m.koausa.org/dnwalli/index.html",
+   "https://en.wikipedia-on-ipfs.org/wiki/Dina_Nath_Walli"
+  ],
+  "answer": "1936"
+ },
+ {
+  "id": "simpleqa-1526",
+  "area": "Politics",
+  "question": "In 1992, with whom did Monica Lewinsky have a five-year affair?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Monica_Lewinsky",
+   "https://en.wikipedia.org/wiki/Monica_Lewinsky#:~:text=Following%20her%20high%20school%20graduation,former%20high%20school%20drama%20instructor.",
+   "https://kids.kiddle.co/Monica_Lewinsky",
+   "https://www.washingtonpost.com/wp-srv/politics/special/clinton/stories/drama012898.htm"
+  ],
+  "answer": " Andy Bleiler"
+ },
+ {
+  "id": "simpleqa-1717",
+  "area": "Other",
+  "question": "How many people were killed when a tractor-trolley returning from a temple fell into a pond in Kanpur on October 2, 2022?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/2022_in_India",
+   "https://en.wikipedia.org/wiki/2022_Kanpur_road_accident",
+   "https://www.indiatoday.in/india/story/kanpur-road-accident-cm-yogi-meets-survivors-uttar-pradesh-2007448-2022-10-02",
+   "https://www.newindianexpress.com/nation/2022/Oct/01/27devotees-returning-after-mundan-ceremony-killed-in-road-mishap-in-ups-kanpur-2503992.html"
+  ],
+  "answer": "27"
+ },
+ {
+  "id": "simpleqa-1819",
+  "area": "Science and technology",
+  "question": "What is the surname of the individual who won the Perkin Medal, an award given annually by the Society of Chemical Industry (American Section) to a scientist residing in America for an \"innovation in applied chemistry resulting in outstanding commercial development,\" in 1918?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Perkin_Medal#:~:text=1918%20Auguste%20J.%20Rossi",
+   "https://en.wikipedia.org/wiki/Perkin_Medal",
+   "https://www.soci.org/awards/past-recipients/perkin-medal"
+  ],
+  "answer": "Rossi"
+ },
+ {
+  "id": "simpleqa-1880",
+  "area": "Geography",
+  "question": "What year was the municipality of Paya, Boyacá, Colombia, founded?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Paya,_Boyac%C3%A1",
+   "https://en.wikipedia.org/wiki/Paya,_Boyac%C3%A1#:~:text=Before%20the%20Spanish%20conquest%20in,founded%20on%20September%2014%2C%201600.",
+   "https://www.wikidata.org/wiki/Q2022761"
+  ],
+  "answer": "1600"
+ },
+ {
+  "id": "simpleqa-1882",
+  "area": "Science and technology",
+  "question": "What is the name of the astronomer who discovered 86 Semele?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/86_Semele",
+   "https://thesolarsystem.fandom.com/wiki/86_Semele",
+   "https://www.minorplanetcenter.net/iau/lists/NumberedMPs000001.html"
+  ],
+  "answer": "Friedrich Tietjen"
+ },
+ {
+  "id": "simpleqa-1971",
+  "area": "Geography",
+  "question": "What is the list entry name for the National Heritage List entry number 1090695 in Stonehouse, Stroud, Gloucestershire?",
+  "gold_urls": [
+   "https://historicengland.org.uk/listing/the-list/list-entry/1090695?section=official-list-entry",
+   "https://historicengland.org.uk/listing/the-list/list-entry/1090695",
+   "https://britishlistedbuildings.co.uk/101090695-bede-cottage-stonehouse"
+  ],
+  "answer": "Bede Cottage"
+ },
+ {
+  "id": "simpleqa-1989",
+  "area": "History",
+  "question": "How many days was school out after the fire in 1961 at Tomball High School in Harris County, Texas?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Tomball_High_School",
+   "https://ths.tomballisd.net/our-school#:~:text=School%20was%20dismissed%20for%20four,could%20complete%20the%20school%20year.&text=By%201974%2C%20students%20began%20attending,which%20later%20became%20Quinn%20Road."
+  ],
+  "answer": "four days"
+ },
+ {
+  "id": "simpleqa-2032",
+  "area": "Science and technology",
+  "question": "Who was awarded the IEEE/RSE James Clerk Maxwell Medal in 2021?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/IEEE_Frank_Rosenblatt_Award",
+   "https://en.wikipedia.org/wiki/IEEE/RSE_James_Clerk_Maxwell_Medal",
+   "https://rse.org.uk/funding-collaboration/ieee-rse-james-clerk-maxwell-medal/",
+   "https://ias.hkust.edu.hk/news-media/news/prof-evelyn-hu-receives-the-2021-ieeerse-james-clerk-maxwell-medal"
+  ],
+  "answer": "Evelyn Lynn Hu"
+ },
+ {
+  "id": "simpleqa-2070",
+  "area": "History",
+  "question": "What did CSA Brigadier General James Lusk Alcorn denounce as \"a cancer upon the body of the nation\"?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/James_L._Alcorn",
+   "https://www.politico.com/story/2007/02/this-day-on-capitol-hill-february-23-002845",
+   "https://historybynicklin.wordpress.com/reconstruction-in-mississippi/"
+  ],
+  "answer": "slavery"
+ },
+ {
+  "id": "simpleqa-2225",
+  "area": "Sports",
+  "question": "Who was the first president of the Pakistan Cycling Federation?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Pakistan_Cycling_Federation",
+   "http://pcf.com.pk/",
+   "https://dastaangoi.substack.com/p/your-weekly-stories-from-pakistan-213"
+  ],
+  "answer": "Muhammad Ali Jinnah"
+ },
+ {
+  "id": "simpleqa-2516",
+  "area": "Art",
+  "question": "What was the first and last name of the Swiss painter who murdered his landlady, Anne King?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Th%C3%A9odore_Gardelle",
+   "https://en.wikipedia.org/wiki/Th%C3%A9odore_Gardelle#cite_note-2",
+   "https://books.google.sc/books?printsec=frontcover&dq=related:LCCN2006584856&id=DnY0AQAAMAAJ&output=text"
+  ],
+  "answer": "Théodore Gardelle"
+ },
+ {
+  "id": "simpleqa-2729",
+  "area": "Art",
+  "question": "Who was the first fashion designer to stream a runway show online?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Helmut_Lang_(artist)\n\n\nhttps://www.highsnobiety.com/tag/helmut-lang/",
+   "https://theaficionados.com/journal/makers/helmut-lang#:~:text=During%20his%20time%20in%20New,his%20revolutionary%20approach%20to%20fashion.",
+   "https://icon.ink/articles/helmut-lang-first-to-stream-runway-fall-winter-1998/",
+   "https://www.vogue.com/article/from-the-archives-helmut-lang-technology"
+  ],
+  "answer": "Helmut Lang"
+ },
+ {
+  "id": "simpleqa-2962",
+  "area": "Music",
+  "question": "In what year did conductor David Randolph marry Mildred Greenberg?",
+  "gold_urls": [
+   "https://archives.nypl.org/mus/18559",
+   "https://archives.nypl.org/mus/18559#overview",
+   "https://www.bach-cantatas.com/Bio/Randolph-David.htm",
+   "https://archives.nypl.org/admin/collections/1447#description"
+  ],
+  "answer": "1948"
+ },
+ {
+  "id": "simpleqa-2996",
+  "area": "Sports",
+  "question": "What team drafted Sonny Wade in 1969?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Emory_and_Henry_College",
+   "https://hof.ehc.edu/members/jesse-h-sonny-wade-jr/"
+  ],
+  "answer": "The Philadelphia Eagles"
+ },
+ {
+  "id": "simpleqa-3031",
+  "area": "Science and technology",
+  "question": "By which year was nitrous oxide the largest ozone-depleting substance (ODS) emitted through human activities?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Ozone_layer",
+   "https://www.sciencedaily.com/releases/2009/08/090827141344.htm",
+   "https://www.science.org/cms/asset/48f20a35-fe6d-4d0d-8bc4-fc605aea13b7/pap.pdf",
+   "https://pubmed.ncbi.nlm.nih.gov/19713491/"
+  ],
+  "answer": "2009"
+ },
+ {
+  "id": "simpleqa-3077",
+  "area": "Science and technology",
+  "question": "In what year did Dr. Paris Pismis found the astrophysics program at the National Autonomous University of Mexico?",
+  "gold_urls": [
+   "https://blogs.loc.gov/headlinesandheroes/2024/03/eclipsed-no-more-women-astronomers-you-should-know/",
+   "https://blogs.loc.gov/headlinesandheroes/2024/03/eclipsed-no-more-women-astronomers-you-should-know/#:~:text=Dr.,National%20Autonomous%20University%20of%20Mexico.",
+   "https://thisweekinarmenianhistory.blogspot.com/2017/01/birth-of-paris-marie-pishmish-january.html"
+  ],
+  "answer": "1955 "
+ },
+ {
+  "id": "simpleqa-3095",
+  "area": "Other",
+  "question": "How many spider monkeys escaped their enclosure at Orana Park in Christchurch, New Zealand, in November 2014?",
+  "gold_urls": [
+   "https://www.stuff.co.nz/the-press/10727195/Five-monkeys-escape-Orana-Park",
+   "https://www.stuff.co.nz/the-press/10727195/Five-monkeys-escape-Orana-Park#:~:text=Anderson%20said%20spider%20monkeys%20were,of%20them%20left%20the%20enclosure.",
+   "https://natlib.govt.nz/records/35326798?search%5Bil%5D%5Bsubject%5D=Orana+Park+Wildlife+Trust&search%5Bpath%5D=items",
+   "https://www.nzherald.co.nz/nz/child-climbed-barrier-to-pat-cheetah/JOI4ZAHOZLGH2QPRJBJMRA227M/"
+  ],
+  "answer": "5"
+ },
+ {
+  "id": "simpleqa-3114",
+  "area": "Science and technology",
+  "question": "What were the month and year when Telegram announced that the app had 60 million active users and delivered 12 billion daily messages?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Telegram_(software)",
+   "https://en.wikipedia.org/wiki/Telegram_(software)#:~:text=In%20September%202015%2C%20Telegram%20announced,delivering%2015%20billion%20messages%20daily.",
+   "https://sites.google.com/view/telegram-messenger--beldalls3",
+   "https://medium.com/@vaishnavmadhusoodanan/a-product-tear-down-on-telegram-b8869c3006f2"
+  ],
+  "answer": "September 2015."
+ },
+ {
+  "id": "simpleqa-3193",
+  "area": "Geography",
+  "question": "According to the 2011 census of India, after Hindi, which is the second fastest growing language of India, followed by Meitei (Manipuri) in third place and Bengali in fourth place?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Kashmiri_language",
+   "https://en.wikipedia.org/wiki/Languages_of_India#:~:text=Hindi%20is%20the%20fastest%20growing,the%202011%20census%20of%20India.",
+   "https://www.jagranjosh.com/general-knowledge/list-of-fastest-growing-languages-in-india-other-than-hindi-1708433736-1",
+   "https://commons.wikimedia.org/wiki/File:Fastest_growing_languages_of_India_%E2%80%94_Hindi_(first),_Kashmiri_(second),_Gujarati_%26_Meitei_alias_Manipuri_(third),_Bengali_(fourth)_%E2%80%94_based_on_2011_census_of_India.jpg"
+  ],
+  "answer": " Kashmiri"
+ },
+ {
+  "id": "simpleqa-3252",
+  "area": "Other",
+  "question": "What crime was Pedro López incarcerated for in 1969?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Pedro_L%C3%B3pez_(serial_killer)",
+   "https://www.yahoo.com/entertainment/pedro-lopez-did-monster-andes-082025408.html"
+  ],
+  "answer": "auto theft"
+ },
+ {
+  "id": "simpleqa-3419",
+  "area": "Geography",
+  "question": "What year was the municipality of San Andrés de Cuerquia, Antioquia, Colombia, founded?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/San_Andr%C3%A9s_de_Cuerquia",
+   "https://www.familysearch.org/es/wiki/San_Andr%C3%A9s_de_Cuerquia,_Norte,_Antioquia,_Colombia_-_Genealog%C3%ADa#:~:text=El%20municipio%20de%20San%20Andr%C3%A9s%20de%20Cuerquia%20fue%20creado%20a,13%20de%20junio%20de%201853.",
+   "https://www.colombiaturismoweb.com/DEPARTAMENTOS/ANTIOQUIA/MUNICIPIOS/SAN%20ANDRES%20DE%20CUERQUIA/SAN%20ANDRES%20DE%20CUERQUIA.htm"
+  ],
+  "answer": "1761"
+ },
+ {
+  "id": "simpleqa-3489",
+  "area": "Science and technology",
+  "question": "In what year was *Hemidactylus boavistensis* elevated from a subspecies of *Hemidactylus bouvieri* to a separate species?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Hemidactylus_boavistensis",
+   "https://kids.kiddle.co/Boa_Vista_leaf-toed_gecko#:~:text=It%20had%20long%20been%20considered%20a%20subspecies%20of%20Hemidactylus%20bouvieri%20but%20was%20re%2Delevated%20as%20a%20separate%20species%20in%202008."
+  ],
+  "answer": "2008"
+ },
+ {
+  "id": "simpleqa-3574",
+  "area": "TV shows",
+  "question": "What is the first name and surname of the actress who was the guest star that played the bride named Risa in Ally McBeal Season 3, Episode 1?",
+  "gold_urls": [
+   "https://allymcbeal.fandom.com/wiki/Car_Wash",
+   "https://www.imdb.com/title/tt0510281/?ref_=tt_ch",
+   "https://www.imdb.com/title/tt0510281/characters/nm0585429",
+   "https://allymcbeal.fandom.com/wiki/Risa_Helms"
+  ],
+  "answer": "Tracy Middendorf"
+ },
+ {
+  "id": "simpleqa-3750",
+  "area": "Music",
+  "question": "How many people won the Arab Creativity Oscar before Mishary Alafasy?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Mishari_bin_Rashid_Alafasy",
+   "https://en.wikipedia.org/wiki/Mishari_bin_Rashid_Alafasy#Awards_and_recognition",
+   "https://thecognate.com/shaikh-mishary-bin-rashid-alafasy/",
+   "https://www.tuko.co.ke/facts-lifehacks/celebrity-biographies/503354-who-mishary-rashid-alafasy-wife-children-mosque/"
+  ],
+  "answer": "0"
+ },
+ {
+  "id": "simpleqa-3915",
+  "area": "Sports",
+  "question": "Which team was the first non-European team to enter the Battle of the Nations tournament?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Battle_of_the_Nations_(Medieval_Tournament)",
+   "https://botn.info/botn-story/"
+  ],
+  "answer": "Team Quebec"
+ },
+ {
+  "id": "simpleqa-3922",
+  "area": "Politics",
+  "question": "In which year did Sheikh Abdul Rashid, popularly known as Engineer Rashid (a Kashmiri politician), obtain a Bachelor of Science degree?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Engineer_Rashid",
+   "https://en.wikipedia.org/wiki/Engineer_Rashid#:~:text=Rashid%20obtained%20a%20Bachelor%20of,civil%20engineering%20two%20years%20later.",
+   "https://timesofindia.indiatimes.com/india/tihar-to-parliament-baramulla-mp-rashid-engineers-a-new-identity/articleshow/111522790.cms",
+   "https://theprint.in/opinion/security-code/engineer-rashids-election-victory-shows-kashmiri-secessionism-is-far-from-spent/2117896/"
+  ],
+  "answer": "1988"
+ },
+ {
+  "id": "simpleqa-4032",
+  "area": "Politics",
+  "question": "On what date, month, and year was Babar Awan suspended by the PPP, leading to the eventual dismissal of Zulfiqar Ali Bhutto's murder case following a series of hearings at the Supreme Court?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Zulfikar_Ali_Bhutto#Trial_and_execution",
+   "https://en.wikipedia.org/wiki/Zulfikar_Ali_Bhutto",
+   "https://en.wikipedia.org/wiki/Babar_Awan#:~:text=In%202011%2C%20he%20resigned%20as,PPP%20for%20another%20five%20years.",
+   "https://tribune.com.pk/story/372788/sidelined-babar-awan-stripped-of-all-ppp-posts/"
+  ],
+  "answer": "2 May 2012"
+ },
+ {
+  "id": "simpleqa-4222",
+  "area": "Politics",
+  "question": "On what day, month, and year was Manuleleua Paletasala Tovale appointed Associate Minister for the Prime Minister and Cabinet?",
+  "gold_urls": [
+   "https://en.wikipedia.org/wiki/Manuleleua_Paletasala_Tovale",
+   "https://en.wikipedia.org/wiki/Manuleleua_Paletasala_Tovale#:~:text=On%2028%20July%202021%20he,the%20Prime%20Minister%20and%20Cabinet.",
+   "https://dbpedia.org/page/Manuleleua_Paletasala_Tovale",
+   "https://www.samoaobserver.ws/category/samoa/88195"
+  ],
+  "answer": "28 July 2021"
+ }
+]
