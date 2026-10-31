@@ -76,8 +76,8 @@ result source type:
    a public row (calls blank) would be taken for an offline `real=no` stage. `max-age-days` and a version change expire it as
    they do now. `decide` takes the best public stage into account only when its gate holds, so a public stage cannot outrank
    measured ones by position alone.
-3. **Sanity gate.** `gate=sanity`: the public ordering of arms is compared with the nearest earlier measured stage using the
-   existing `leaderboard.clearly_higher`; a contradiction drops the stage from `decide` and `esoi cascade` prints it.
+3. **Sanity gate.** `gate=sanity`: the public ordering of arms is compared with the nearest earlier measured stage using
+   `leaderboard.higher` (a screen on point estimates; it switches nothing, the significance rule does); a contradiction drops the stage from `decide` and `esoi cascade` prints it.
 4. **Triangulation report (`metric_results.reconcile`, `cascade.run_cli`).** Add `SOURCE_PUBLIC`; key public rows by source name so
    two sources are never folded into one; reuse `disagrees` for public against measured and public against public. The cascade
    prints per public stage: sources, independent sources, spread, and the flags `single-source`, `vendor-only`, `disagree`.
