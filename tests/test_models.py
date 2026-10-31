@@ -462,3 +462,26 @@ def test_prompt_spec_renders_with_injected_tiers_and_hook_and_the_no_em_dash_rul
         registry.register(spec_class(id="t.demo", solution="s", metric="m", tier="best", cache_layer="none", template="y"))
     with pytest.raises(KeyError):
         registry.get("t.none")
+
+
+# ---- failover beyond a quota: no credit, timeout, outage, and a fallback model of another provider -------------------------
+
+CREDIT = Exception("Error code: 400 - Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing.")
+
+
+def test_no_credit_timeout_and_outage_fail_over_to_a_configured_fallback_model_of_another_provider():
+    for failure in (CREDIT, TimeoutError("request timed out"), Exception("503 Service Unavailable"), QUOTA):
+        down, up = Flaky({"claude-x": failure}), Flaky()
+        mp = MultiProvider(down, {"anthropic": down, "gemini": up}, fallback_models=("gemini-y",))
+        assert mp.answer([], model="claude-x") == "answered by gemini-y" and down.calls == ["claude-x"] and up.calls == ["gemini-y"]
+
+
+def test_failover_stops_at_a_bad_request_and_raises_when_no_configured_model_is_healthy():
+    down, up = Flaky({"claude-x": ValueError("invalid request: messages")}), Flaky()
+    with pytest.raises(ValueError):
+        MultiProvider(down, {"anthropic": down, "gemini": up}, fallback_models=("gemini-y",)).answer([], model="claude-x")
+    assert not up.calls
+    both = Flaky({"claude-x": CREDIT, "gemini-y": Exception("503 overloaded")})
+    with pytest.raises(Exception, match="overloaded"):
+        MultiProvider(both, {"anthropic": both, "gemini": both}, fallback_models=("gemini-y",)).answer([], model="claude-x")
+    assert both.calls == ["claude-x", "gemini-y"]

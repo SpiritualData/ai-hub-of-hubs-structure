@@ -1,19 +1,21 @@
 """MultiProvider: one provider object that routes each call to the provider serving its model id (by prefix, ``family``), steps
-down a tier when a tier-resolved model hits a quota or rate limit, and keeps the calling thread's token totals.
+down a tier, or to a configured fallback model (``fallback_models``, any provider), when a model hits a quota or rate limit, has no
+credit (a billing error), times out or its provider is down, and keeps the calling thread's token totals.
 
 Everything specific to a consumer comes in through the constructor: the provider map, an optional tier registry for the step-down
 (``top_models()``, ``resolve_tier(tier)``, ``lower_tier(tier)``), an optional usage tracker (``over_limit()``, ``record(tokens_in,
-tokens_out, spec_id=, seconds=)``), the text shown when the tracker's limit is reached, and the id of the spec a call belongs to.
+tokens_out, spec_id=, seconds=)``), the text shown when the tracker's limit is reached, and the id of the spec a call belongs to, and the ordered ``fallback_models``.
 """
 import logging
 import threading
 import time
-from typing import Any, Callable, Dict, List, Mapping, Optional
+from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple
 
 from esoi import implementation
 
 from ..ports.model import ModelProvider, answer_with_reasoning, plan_with_step
 from ..ports.scope import ThreadLocalCounter
+from . import outage
 from .family import MODEL_PREFIX_PROVIDERS, provider_name_for_model
 
 log = logging.getLogger("hubofhubs.models.router")
@@ -24,6 +26,13 @@ def is_quota_or_rate_limit_error(exc: Exception) -> bool:
     """Whether ``exc`` reads as a quota or rate-limit failure; vendor SDKs share no exception type for it, so the text decides."""
     text = str(exc).lower()
     return any(marker in text for marker in ("429", "resource_exhausted", "quota", "rate limit", "rate_limit"))
+
+
+def is_failover_error(exc: Exception) -> bool:
+    """Whether ``exc`` says this model cannot answer now but another may: a quota or rate limit, no credit or billing (the
+    "credit balance is too low" of 2026-10-22), a timeout, or a provider outage. A bad request or a bug in the caller is not one:
+    asking another provider would only hide it."""
+    return is_quota_or_rate_limit_error(exc) or outage.is_billing_error(exc) or outage.is_outage(exc) or outage.is_timeout(exc)
 
 
 @implementation("call-a-model", "multi_provider")
@@ -37,8 +46,10 @@ class MultiProvider(ModelProvider):
     def __init__(self, primary: ModelProvider, providers: Optional[Dict[str, ModelProvider]] = None, usage_tracker: Any = None,
                  registry: Any = None, *, prefixes: Mapping[str, str] = MODEL_PREFIX_PROVIDERS,
                  limit_message: Callable[[], str] = lambda: "The usage limit is reached.",
-                 spec_of: Callable[[], str] = lambda: ""):
+                 spec_of: Callable[[], str] = lambda: "",
+                 fallback_models: Sequence[str] = ()):
         super().__init__()
+        self.fallback_models = tuple(fallback_models)   # ordered models to ask next (any provider) when no lower tier is left
         self.primary = primary
         self.providers = providers or {}
         self.usage_tracker = usage_tracker
@@ -58,34 +69,47 @@ class MultiProvider(ModelProvider):
             return None
 
     def lower_model(self, model: str, exc: Exception) -> Optional[str]:
-        """The model to retry with on a quota or rate-limit error, or None to re-raise (not such an error, a pinned model, the
-        cheapest tier, or a lower tier that resolves to the same model)."""
-        tier = self.tier_of(model) if is_quota_or_rate_limit_error(exc) else None
+        """The tier-registry model to retry with on a failover error, or None (not such an error, a pinned model, the cheapest
+        tier, or a lower tier that resolves to the same model)."""
+        tier = self.tier_of(model) if is_failover_error(exc) else None
         lower = self.registry.lower_tier(tier) if tier else None
         lower_model = self.registry.resolve_tier(lower) if lower else None
         return lower_model if lower_model and lower_model != model else None
 
-    def call_with_fallback(self, model: str, make_call: Callable[[str], Any]) -> Any:
-        """The one retry-and-step-down loop: ``make_call(m)`` performs one routed call for model ``m``; on a quota or rate-limit
-        error the next cheaper tier is tried, until a call succeeds or no lower tier is left (the original error is raised). A
-        model that failed is skipped for ``COOLDOWN_SECONDS``: a per-model daily quota does not recover in seconds."""
+    def next_model(self, model: str, exc: Exception, tried: Tuple[str, ...]) -> Optional[str]:
+        """The model to ask after ``model`` failed with ``exc``: the next cheaper tier, else the first configured fallback model
+        not yet tried, else None (the error is raised)."""
+        lower = self.lower_model(model, exc)
+        if lower is not None and lower not in tried:
+            return lower
+        if not is_failover_error(exc):
+            return None
+        return next((m for m in self.fallback_models if m not in tried), None)
+
+    def call_with_fallback(self, model: str, make_call: Callable[[str], Any], tried: Tuple[str, ...] = ()) -> Any:
+        """The one retry-and-step-down loop: ``make_call(m)`` performs one routed call for model ``m``; on a failover error (quota,
+        rate limit, no credit, timeout, outage) the next cheaper tier is tried, then each configured fallback model, until a call
+        succeeds or none is left (the last error is raised). A model that failed is skipped for ``COOLDOWN_SECONDS``: a per-model
+        daily quota or an empty balance does not recover in seconds."""
+        tried = tried + (model,)
         with self.cooldown_lock:
             cooling = self.cooldown_until.get(model, 0.0) > time.monotonic()
-        skip_to = self.lower_model(model, Exception("429 quota cooldown")) if cooling else None
+        skip_to = self.next_model(model, Exception("429 quota cooldown"), tried) if cooling else None
         if skip_to is not None:
-            return self.call_with_fallback(skip_to, make_call)
+            return self.call_with_fallback(skip_to, make_call, tried)
         try:
             return make_call(model)
         except Exception as exc:
-            lower = self.lower_model(model, exc)
-            if lower is None:
+            following = self.next_model(model, exc, tried)
+            if following is None:
                 raise
             with self.cooldown_lock:
                 first = self.cooldown_until.get(model, 0.0) <= time.monotonic()
                 self.cooldown_until[model] = time.monotonic() + COOLDOWN_SECONDS
             if first:
-                log.warning("%s hit a quota/rate limit; using %s for the next %d minutes", model, lower, int(COOLDOWN_SECONDS // 60))
-            return self.call_with_fallback(lower, make_call)
+                log.warning("%s cannot answer now (%s); using %s for the next %d minutes", model, type(exc).__name__, following,
+                            int(COOLDOWN_SECONDS // 60))
+            return self.call_with_fallback(following, make_call, tried)
 
     def provider_for(self, model: Optional[str]) -> ModelProvider:
         """The provider serving ``model`` by prefix, else the primary."""

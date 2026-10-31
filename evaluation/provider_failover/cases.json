@@ -1,0 +1,376 @@
+[
+ {
+  "id": "billing-0-secondary-healthy",
+  "area": "billing",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "BadRequestError",
+    "message": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}}"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "billing-1-secondary-healthy",
+  "area": "billing",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "APIStatusError",
+    "message": "Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error'}}"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "billing-2-secondary-healthy",
+  "area": "billing",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "RateLimitError",
+    "message": "Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details.', 'type': 'insufficient_quota'}}"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "billing-3-secondary-healthy",
+  "area": "billing",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ClientError",
+    "message": "403 PERMISSION_DENIED. Your project has been blocked for an overdue payment; check billing."
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "billing-4-secondary-healthy",
+  "area": "billing",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "Exception",
+    "message": "Payment required: add credits to continue"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "quota-0-secondary-healthy",
+  "area": "quota",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ClientError",
+    "message": "429 RESOURCE_EXHAUSTED. Quota exceeded for metric generate_content_requests_per_day"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "quota-1-secondary-healthy",
+  "area": "quota",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "RateLimitError",
+    "message": "Error code: 429 - rate_limit_error: This request would exceed your organization's rate limit"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "quota-2-secondary-healthy",
+  "area": "quota",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "Exception",
+    "message": "Rate limit reached for requests, retry after 20s"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "quota-3-secondary-healthy",
+  "area": "quota",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "Exception",
+    "message": "quota exceeded for this model"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "timeout-0-secondary-healthy",
+  "area": "timeout",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "TimeoutError",
+    "message": "request timed out"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "timeout-1-secondary-healthy",
+  "area": "timeout",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ReadTimeout",
+    "message": "The read operation timed out"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "timeout-2-secondary-healthy",
+  "area": "timeout",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "APITimeoutError",
+    "message": "Request timed out."
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "timeout-3-secondary-healthy",
+  "area": "timeout",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ConnectTimeout",
+    "message": "connection attempt timed out after 30s"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "outage-0-secondary-healthy",
+  "area": "outage",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable. The model is overloaded."
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "outage-1-secondary-healthy",
+  "area": "outage",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "APIStatusError",
+    "message": "Error code: 529 - overloaded_error: Overloaded"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "outage-2-secondary-healthy",
+  "area": "outage",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "HTTPStatusError",
+    "message": "502 Bad Gateway"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "outage-3-secondary-healthy",
+  "area": "outage",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "InternalServerError",
+    "message": "Error code: 500 - Internal server error"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "outage-4-secondary-healthy",
+  "area": "outage",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ServerError",
+    "message": "504 Gateway Timeout"
+   }
+  },
+  "expect": "secondary"
+ },
+ {
+  "id": "normal-0",
+  "area": "normal",
+  "kind": "answer",
+  "args": {},
+  "expect": "primary"
+ },
+ {
+  "id": "normal-1",
+  "area": "normal",
+  "kind": "answer",
+  "args": {},
+  "expect": "primary"
+ },
+ {
+  "id": "normal-2",
+  "area": "normal",
+  "kind": "answer",
+  "args": {
+   "secondary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable"
+   }
+  },
+  "expect": "primary"
+ },
+ {
+  "id": "normal-secondary-down-unused",
+  "area": "normal",
+  "kind": "answer",
+  "args": {
+   "secondary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable"
+   }
+  },
+  "expect": "primary"
+ },
+ {
+  "id": "billing-none-healthy",
+  "area": "none-healthy",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "BadRequestError",
+    "message": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}}"
+   },
+   "secondary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable. The model is overloaded."
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "quota-none-healthy",
+  "area": "none-healthy",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ClientError",
+    "message": "429 RESOURCE_EXHAUSTED. Quota exceeded for metric generate_content_requests_per_day"
+   },
+   "secondary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable. The model is overloaded."
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "timeout-none-healthy",
+  "area": "none-healthy",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "TimeoutError",
+    "message": "request timed out"
+   },
+   "secondary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable. The model is overloaded."
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "outage-none-healthy",
+  "area": "none-healthy",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable. The model is overloaded."
+   },
+   "secondary": {
+    "type": "ServerError",
+    "message": "503 Service Unavailable. The model is overloaded."
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "billing-then-billing-none-healthy",
+  "area": "none-healthy",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "BadRequestError",
+    "message": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}}"
+   },
+   "secondary": {
+    "type": "APIStatusError",
+    "message": "Error code: 402 - {'error': {'message': 'Insufficient Balance', 'type': 'unknown_error'}}"
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "timeout-then-quota-none-healthy",
+  "area": "none-healthy",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ReadTimeout",
+    "message": "The read operation timed out"
+   },
+   "secondary": {
+    "type": "RateLimitError",
+    "message": "Error code: 429 - rate_limit_error: This request would exceed your organization's rate limit"
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "bad-request-is-raised-not-masked",
+  "area": "bad-request",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "ValueError",
+    "message": "invalid request: messages must alternate user and assistant"
+   }
+  },
+  "expect": "error"
+ },
+ {
+  "id": "bad-auth-is-raised-not-masked",
+  "area": "bad-request",
+  "kind": "answer",
+  "args": {
+   "primary": {
+    "type": "AuthenticationError",
+    "message": "Error code: 401 - invalid x-api-key"
+   }
+  },
+  "expect": "error"
+ }
+]

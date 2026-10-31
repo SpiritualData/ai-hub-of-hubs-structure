@@ -19,6 +19,14 @@ OUTAGE_MARKERS = (
 )
 
 
+# A failed call that says the account cannot be served until someone pays or tops up: not a fault in the work, and not
+# recoverable by a retry, but another provider can answer. Wording from the vendors' own errors.
+BILLING_MARKERS = (
+    "credit balance is too low", "insufficient credit", "insufficient balance", "insufficient_quota", "insufficient funds",
+    "out of credits", "payment required", "error code: 402", "billing", "plans & billing",
+)
+
+
 @dataclass(frozen=True)
 class ProviderOutage:
     message: str
@@ -33,6 +41,18 @@ def is_outage(exc: BaseException) -> bool:
     """True when a failed model call says the provider is unavailable right now."""
     text = f"{type(exc).__name__} {exc}".lower()
     return any(marker in text for marker in OUTAGE_MARKERS)
+
+
+def is_billing_error(exc: BaseException) -> bool:
+    """True when a failed model call says the account has no credit, balance or billing to be served with."""
+    text = f"{type(exc).__name__} {exc}".lower()
+    return any(marker in text for marker in BILLING_MARKERS)
+
+
+def is_timeout(exc: BaseException) -> bool:
+    """True when a failed model call timed out (the provider did not answer in time). Not an outage marker: a timeout also
+    means a slow backend, so the retry helpers do not treat it as one; a router that has another provider to ask may."""
+    return isinstance(exc, TimeoutError) or "timeout" in type(exc).__name__.lower() or "timed out" in str(exc).lower()
 
 
 def from_exception(exc: BaseException) -> Optional[ProviderOutage]:

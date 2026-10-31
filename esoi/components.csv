@@ -12,4 +12,4 @@ hub-act,core,hubofhubs/act/*.py;tests/test_act_*.py;tests/act_support.py,unconfi
 hub-science,core,hubofhubs/science/*.py;tests/test_science_*.py;tests/fixtures/*,unconfirmed: for Joshua to confirm.,know-the-world
 hub-deep,core,hubofhubs/deep/*.py;tests/test_deep_*.py,unconfirmed: for Joshua to confirm.,act-in-the-world
 hub-orchestrate,core,hubofhubs/orchestrate/*.py;tests/test_orchestrate_*.py,unconfirmed: for Payal to confirm.,reason-and-answer
-hub-evaluation,evaluation,evaluation/*.md;evaluation/*.py;evaluation/*/*.py;evaluation/*/*.json;evaluation/*/impls/*.py;evaluation/*/broken/*.py;tests/test_evaluation_baselines.py,"unconfirmed: for Joshua to confirm. The per-seat cases, scorers and arm wrappers that esoi runs to record results.",assemble-the-whole
+hub-evaluation,evaluation,evaluation/*.md;evaluation/*.py;evaluation/*/*.py;evaluation/*/*.json;evaluation/*/*.md;evaluation/*/impls/*.py;evaluation/*/broken/*.py;tests/test_evaluation_baselines.py,"unconfirmed: for Joshua to confirm. The per-seat cases, scorers and arm wrappers that esoi runs to record results.",assemble-the-whole

@@ -8,7 +8,8 @@ import pytest
 
 EVALUATION = Path(__file__).resolve().parent.parent / "evaluation"
 sys.path.insert(0, str(EVALUATION))
-COMPONENTS = ["card_store", "stay_current", "connect_any_integration", "reason_and_answer", "model_call", "assemble_the_whole"]
+COMPONENTS = ["card_store", "stay_current", "connect_any_integration", "reason_and_answer", "model_call", "assemble_the_whole",
+              "provider_failover", "watch_for_risk"]
 
 
 def failures(component, build):
