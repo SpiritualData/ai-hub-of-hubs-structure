@@ -13,6 +13,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Refresh the registry](how-to/refresh-the-registry.md)
 - [Register a second consumer](how-to/register-a-second-consumer.md)
 - [Emit a work trace](how-to/emit-a-work-trace.md)
+- [Render a run in a terminal](how-to/render-a-run-in-a-terminal.md)
 
 ## Explanation
 
@@ -22,6 +23,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Choosing the model for each tier](explanation/tier-selection.md)
 - [Public evidence](explanation/public-evidence.md)
 - [What public research says about each seat](explanation/what-public-research-says.md)
+- [A terminal and harness experience for the hub](explanation/terminal-harness.md)
 
 ## Reference
 
@@ -31,5 +33,6 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Public benchmarks and standard reporting](reference/public-benchmarks.md)
 - [Search APIs described as data](reference/search-api-entries.md)
 - [Work trace event schema](reference/work-trace-event.schema.json)
+- [Terminal blocks](reference/terminal-blocks.md)
 
 Drafts of the announcement and article are in `drafts/` and are not part of the documentation.

@@ -19,3 +19,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | `hub-deep` | core | unconfirmed: for Joshua to confirm. | act-in-the-world |
 | `hub-orchestrate` | core | unconfirmed: for Payal to confirm. | reason-and-answer |
 | `hub-evaluation` | evaluation | unconfirmed: for Joshua to confirm. The per-seat cases, scorers and arm wrappers that esoi runs to record results. | assemble-the-whole |
+| `hub-terminal` | core | unconfirmed: for the owner to confirm: pure renderers from run events to framework-free blocks for any terminal frontend (work trace, interim folding, asks, stopped reason),  moved in from a consumer | take-in-the-world |
