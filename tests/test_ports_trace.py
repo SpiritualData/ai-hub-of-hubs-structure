@@ -42,7 +42,7 @@ def test_url_inside_a_label_becomes_a_domain():
 
 
 def test_paths_are_dropped_and_labels_trimmed():
-    event = project(raw(kind="records", items=[{"ref": "/home/x/file", "label": "f"}, {"ref": "r1", "label": "x" * 200, "kind": "quest"},
+    event = project(raw(kind="records", items=[{"ref": "/home/user/file", "label": "f"}, {"ref": "r1", "label": "x" * 200, "kind": "quest"},
                                               {"ref": "r2", "label": "line\nbreak"}]), trace_id="t1")
     assert len(event.items) == 2 and event.items[0]["ref"] == "r1"
     assert len(event.items[0]["label"]) == trace.MAX_LABEL and event.items[0]["kind"] == "quest"
