@@ -68,9 +68,11 @@ print(result.items[0]["id"], result.arms, [e.type for e in result.events])
 print(hubofhubs.needs("search", environ={}))
 ```
 
-`run(input, seat=None)` is the one function for a script, a terminal and a recorded replay. With no seat it asks the model of the
-`call-a-model` seat (the default arm runs `claude -p` on your subscription, so a first call needs no key); `"search"`, `"papers"` and
-`"recall"` name the part. The first line prints the card found, the arms used (none here, because you provided the store) and the
+`run(input, seat=None)` is the one function for a script, a terminal and a recorded replay. With no seat it answers from the live web
+through the selected `search-backend` arm and returns the sources (it needs that arm's key, and raises `Needs` naming it otherwise);
+`"model"` asks the `call-a-model` seat alone (the default arm runs `claude -p` on your subscription, so it needs no key, and the result's `note`
+says it has no sources); `"papers"` and `"recall"` name the other parts. A live run on 2026-11-01 of `hubofhubs.run("what is the latest Rust release?")` returned
+"The latest stable release of Rust is version 1.99.1" with four sources, and that version matches the stable line of the cited releases.rs page. The first line prints the card found, the arms used (none here, because you provided the store) and the
 events a terminal would draw (`on_event=` receives them live). The second prints what a seat still needs: for `search` the line names
 `GEMINI_API_KEY` with the signup link, and `run` itself raises `Needs` with the same words instead of failing later.
 

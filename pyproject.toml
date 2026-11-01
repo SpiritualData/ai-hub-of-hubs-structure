@@ -29,7 +29,7 @@ acp = ["agent-client-protocol"]      # act-in-the-world arm: the Agent Client Pr
 bm25 = ["bm25s", "PyStemmer"]                     # remember-and-recall: the BM25 content store
 
 [tool.setuptools]
-packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.deep", "hubofhubs.models", "hubofhubs.orchestrate", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.science", "hubofhubs.websearch"]
+packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.deep", "hubofhubs.models", "hubofhubs.orchestrate", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.science", "hubofhubs.terminal", "hubofhubs.websearch"]
 
 [tool.setuptools.package-data]
 hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]

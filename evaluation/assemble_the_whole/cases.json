@@ -831,7 +831,7 @@
   "args": {
    "seat": null
   },
-  "expect": "model-call"
+  "expect": "search-backend"
  },
  {
   "id": "alias-answer",
@@ -840,7 +840,7 @@
   "args": {
    "seat": "answer"
   },
-  "expect": "model-call"
+  "expect": "search-backend"
  },
  {
   "id": "alias-search",
@@ -896,6 +896,36 @@
   "args": {
    "seat": "search",
    "input": "anything",
+   "environ": {}
+  },
+  "expect": "raised Needs naming GEMINI_API_KEY"
+ },
+ {
+  "id": "alias-model",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": "model"
+  },
+  "expect": "model-call"
+ },
+ {
+  "id": "needs-ask-no-key",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": null,
+   "environ": {}
+  },
+  "expect": "needs GEMINI_API_KEY"
+ },
+ {
+  "id": "run-ask-no-key-raises-needs",
+  "area": "one-line",
+  "kind": "run",
+  "args": {
+   "seat": null,
+   "input": "what is the latest Rust release?",
    "environ": {}
   },
   "expect": "raised Needs naming GEMINI_API_KEY"

@@ -29,9 +29,11 @@ events (ProgressEvent) --> pure renderers --> blocks --> any frontend
 
 ### Layer 1: the hub CLI (`ahohs`, a console script)
 
-It delegates to the existing `esoi` commands and adds no new logic of its own. `ahohs select | lock | requirements | run | check
-| docs` call the same functions as `esoi ... --package hubofhubs`. Only two commands are new: `ahohs assemble` (shows what
-`hubofhubs.assemble()` built and what is in `system.pending`) and `ahohs term` (layer 2).
+`ahohs run "<input>"` is a thin wrapper over `hubofhubs.run`, the one function a script, a terminal and the CLI all call (built;
+`--json` prints each event as one line, then the result; exit 0 ran, 2 needs setup, 1 failed). Its generator form `hubofhubs.stream`
+is the engine of the interactive terminal. The other commands delegate to the existing `esoi` commands and add no new logic:
+`ahohs select | lock | requirements | check | docs` call the same functions as `esoi ... --package hubofhubs`. Two more are new:
+`ahohs assemble` (shows what `hubofhubs.assemble()` built and what is in `system.pending`) and `ahohs term` (layer 2).
 
 The contract for AIs, the same for every command:
 
@@ -227,7 +229,7 @@ cases.
 | Phase | Content | Proof | Cost |
 |---|---|---|---|
 | 0 (smallest first slice) | `Block` types, the pure renderers for the 18 event types, the plain text and NDJSON writers, `ahohs term replay LOG --json` and `--text`, and the JSON envelope with exit codes for `ahohs assemble`. Three recorded logs. No UI framework. | stage 1 and stage 4 pass on the three logs; free | small, stdlib only |
-| 1 | `ahohs select/lock/requirements/run/check` delegating to esoi; ask esoi for `--json` on `select` and `check` | the contract tests; a second AI-side script runs them | small |
+| 1 | `ahohs run` over `hubofhubs.run` (built); `ahohs select/lock/requirements/check` delegating to esoi; ask esoi for `--json` on `select` and `check` | the contract tests; a second AI-side script runs them | small |
 | 2 | Seat, metric and records proposed to the owner; build `plain_stream` and `repl_prompt_toolkit_rich`; scripted pty and SSH tests | stage 1 and 2 for both | medium |
 | 3 | Lift QAR's generic modules into `textual_generalized` behind `TerminalProfile`; QAR switches with re-exports | QAR's own terminal tests pass unchanged; stage 1 to 3 | medium |
 | 4 | `acp_wrap` against one agent that speaks ACP; map ACP session updates and permission requests to blocks | stage 1 and 2; only if phase 2 and 3 leave a gap an existing harness fills | medium |

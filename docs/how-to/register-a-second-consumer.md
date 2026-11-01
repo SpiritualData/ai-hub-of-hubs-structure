@@ -52,6 +52,11 @@ What to know:
 - A name is lower-case letters, digits, `_` and `-`. A value with `:` or `.` is refused before anything is imported.
 - Only the entry functions (`assemble`, `run`, `stream`, `needs`) read the process environment, and only when you give no `environ`. Settings (`options`, `selections`, `selection_environ`) are fields of `AssemblyConfig`.
 
+## Install
+
+By path or git: `pip install -e ../ai-hub-of-hubs-structure`, or `pip install "hubofhubs @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@main"`. Register any part you own with
+`hubofhubs.register`, then assemble. To score your own integration, build a `Binding` and call `evaluate`; the hub never imports the consumer.
+
 ## The one line
 
 ```python
@@ -61,8 +66,9 @@ system = hubofhubs.assemble()                                 # every seat with 
 system = hubofhubs.assemble(arms={"call-a-model": "anthropic"}, options={"card-store": {"path": "cards.db"}}, lock="esoi.lock.json")   # only what differs
 ```
 
-`run(input, seat=None, on_event=None, **overrides)` is the single entry point (the `ahohs run` command wraps it): `seat` is `"ask"` (default),
-`"search"`, `"papers"` or `"recall"`; `on_event` receives the hub's typed events live; `Result.events` keeps them. `stream(...)` is the same
+`run(input, seat=None, on_event=None, **overrides)` is the single entry point (the `ahohs run` command wraps it): `seat` is `"ask"` (default: the
+selected search arm answers from the live web and `Result.items` are its sources; with no search key it raises `Needs`, never answering from memory),
+`"model"` (the model alone; `Result.note` says it has no sources), `"papers"` or `"recall"`; `on_event` receives the hub's typed events live; `Result.events` keeps them. `stream(...)` is the same
 call as a generator. `needs(seat)` lists what the selected arms still need; `run` raises `Needs` with those lines when a key is missing.
 
 `assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `call-a-model`, `card-store`, `choose-a-model-tier`, `model-call`,

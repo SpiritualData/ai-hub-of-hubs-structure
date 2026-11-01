@@ -50,9 +50,19 @@ class FakeProvider:
         raise NotImplementedError
 
 
-def test_ask_uses_the_call_a_model_arm_and_reports_tokens():
+def test_ask_is_grounded_in_the_search_seat_and_carries_sources():
+    result = hubofhubs.run("what is the latest Rust release?", arms={"search-backend": "serper"},
+                           options={"search-backend": {"http": serper_http}}, environ={"SERPER_API_KEY": "k"})
+    assert result.seat == "search-backend" and result.answer == "1.90.0" and result.note == ""
+    assert result.items[0]["url"].startswith("https://blog.rust-lang.org/")
+    with pytest.raises(Needs, match="GEMINI_API_KEY"):      # no key: never a silent fall back to the model's memory
+        hubofhubs.run("what is the latest Rust release?", environ={})
+
+
+def test_model_seat_uses_the_call_a_model_arm_reports_tokens_and_says_it_has_no_sources():
     seen = []
-    result = hubofhubs.run("what is the latest Rust release?", provided={"call-a-model": FakeProvider()}, environ={}, on_event=seen.append)
+    result = hubofhubs.run("what is the latest Rust release?", "model", provided={"call-a-model": FakeProvider()}, environ={}, on_event=seen.append)
+    assert result.note.startswith("answered from the model only") and result.items == ()
     assert result.answer == "echo[None]: what is the latest Rust release?" and str(result) == result.answer
     assert result.seat == "model-call" and result.tokens == {"in": 12, "out": 5}
     assert [e.type for e in result.events] == [e.type for e in seen] and result.events[-1].type == EVENT_DONE
@@ -138,6 +148,12 @@ def test_unknown_seat_names_the_choices():
         hubofhubs.run("x", "nonsense")
 
 
-@pytest.mark.skipif(not os.environ.get("HUBOFHUBS_LIVE"), reason="live check: makes a real model call; not run by the suite")
-def test_live_ask_zero_config():
-    assert hubofhubs.run("Reply with the single word: ok").answer
+@pytest.mark.skipif(not os.environ.get("HUBOFHUBS_LIVE"), reason="live check: real search and model calls; not run by the suite")
+def test_live_grounded_ask_and_model_seat():
+    """RUN LIVE on 2026-11-01 (passed): the Gemini key from the environment, the search arm gemini; the model seat through the
+    Claude Code subscription (claude_cli, haiku), never the paid API. `run("what is the latest Rust release?")` answered
+    "The latest stable release of Rust is version 1.99.1" with four sources, and the version matched the stable line of releases.rs."""
+    grounded = hubofhubs.run("what is the latest Rust release?")
+    assert grounded.answer and grounded.items and grounded.arms["search-backend"] == "gemini" and not grounded.note
+    alone = hubofhubs.run("Reply with the single word: ok", "model", model="claude-haiku")
+    assert alone.answer and alone.note and alone.items == ()

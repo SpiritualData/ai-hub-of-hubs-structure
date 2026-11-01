@@ -17,7 +17,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     one = sub.add_parser("run", help="answer one input with the best-measured arm of a seat")
     one.add_argument("input")
-    one.add_argument("--seat", default=None, help="ask (default), search, papers or recall")
+    one.add_argument("--seat", default=None, help="ask (default, web-grounded), model, papers or recall")
     one.add_argument("--arm", action="append", default=[], metavar="SEAT=ARM", help="override one seat's arm")
     one.add_argument("--lock", default=None, help="an esoi.lock.json to keep the locked arms")
     one.add_argument("--model", default=None)
@@ -46,6 +46,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(json.dumps({"type": "run", **result.to_dict()}))
     else:
         print(result.answer)
+        if result.note:
+            print(f"({result.note})", file=sys.stderr)
         for item in result.items:
             print(f"- {item.get('title') or item.get('id', '')} {item.get('url') or item.get('doi') or ''}".rstrip())
         print(f"[{result.seat}: " + ", ".join(f"{s}={a}" for s, a in result.arms.items()) + "]", file=sys.stderr)

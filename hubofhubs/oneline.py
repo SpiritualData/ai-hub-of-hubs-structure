@@ -9,8 +9,10 @@ The selected arm of every seat comes from the records (the metric), so nothing i
 differs: ``arms``, ``options``, ``provided``, ``lock``, ``environ``. ``environ`` defaults to the process environment
 (``hubofhubs.resolution.process_environment``, the one place the hub reads it).
 
-Seats it can answer today, by name or alias: ``model-call`` (``ask``, the default for free text), ``search-backend`` (``search``),
-``know-the-world`` (``papers``) and ``card-store`` (``recall``). When the selected arm of the seat (or one it needs) lacks a key,
+Seats it can answer today, by name or alias: ``search-backend`` (``ask``, the default for free text: the selected search arm
+answers from the live web and the result carries its sources), ``model-call`` (``model``: the model's own words, no sources, and the
+result says so), ``know-the-world`` (``papers``) and ``card-store`` (``recall``). A free-text question is never answered from model
+memory unless ``seat="model"`` asks for it. When the selected arm of the seat (or one it needs) lacks a key,
 an install or a choice, nothing is attempted: a ``decision`` event and a ``Needs`` error say exactly what to set.
 """
 from __future__ import annotations
@@ -28,12 +30,13 @@ from .resolution import assemble, process_environment
 
 #: name or alias -> seat id
 SEATS: Dict[str, str] = {
-    "ask": "model-call", "answer": "model-call", "model-call": "model-call",
-    "search": "search-backend", "search-backend": "search-backend",
+    "ask": "search-backend", "answer": "search-backend", "search": "search-backend", "search-backend": "search-backend",
+    "model": "model-call", "model-call": "model-call",
     "papers": "know-the-world", "scholarly": "know-the-world", "know-the-world": "know-the-world",
     "recall": "card-store", "card-store": "card-store",
 }
 DEFAULT_SEAT = "ask"
+MODEL_ONLY_NOTE = "answered from the model only: no sources were consulted"
 NEEDS_DECISION = "needs-setup"
 
 
@@ -61,6 +64,7 @@ class Result:
     arms: Mapping[str, str] = field(default_factory=dict)   # seat -> arm used
     tokens: Optional[Mapping[str, int]] = None  # model tokens in and out, when the arm counts them
     seconds: float = 0.0
+    note: str = ""                              # set when the answer has no sources behind it (seat="model")
     events: Tuple[ProgressEvent, ...] = ()
 
     def __str__(self) -> str:
@@ -68,7 +72,7 @@ class Result:
 
     def to_dict(self) -> Dict[str, Any]:
         return {"input": self.input, "seat": self.seat, "answer": self.answer, "items": list(self.items), "trace": list(self.trace),
-                "arms": dict(self.arms), "tokens": dict(self.tokens) if self.tokens else None, "seconds": round(self.seconds, 3),
+                "arms": dict(self.arms), "tokens": dict(self.tokens) if self.tokens else None, "seconds": round(self.seconds, 3), "note": self.note,
                 "events": [e.to_dict() for e in self.events]}
 
 
@@ -133,7 +137,7 @@ def hit_items(hits: List[Any]) -> List[Dict[str, Any]]:
     out = []
     for hit in hits:
         row = hit if isinstance(hit, Mapping) else vars(hit)
-        out.append({k: row[k] for k in ("title", "url", "doi", "snippet", "date", "source") if row.get(k)})
+        out.append({k: row[k] for k in ("title", "url", "doi", "snippet", "date", "source", "passage_kind") if row.get(k)})
     return out
 
 
@@ -142,7 +146,7 @@ def stream(input: str, seat: Optional[str] = None, *, arms: Optional[Mapping[str
            model: Optional[str] = None, limit: int = 5) -> Iterator[ProgressEvent]:
     """The core: run ``input`` through ``seat`` and yield the events as they happen. The last event is always ``done``. A seat that
     cannot run yet yields one ``decision`` event (``decision_id`` ``needs-setup``, ``data["lines"]`` what to set) and then ``done``
-    with ``result_kind`` ``needs``; nothing else is attempted. ``model`` names the model for ``ask`` (the arm's own default when
+    with ``result_kind`` ``needs``; nothing else is attempted. ``model`` names the model for ``seat="model"`` (the arm's own default when
     omitted); ``limit`` is how many hits to keep."""
     began = time.monotonic()
     sid = seat_of(seat)
@@ -159,9 +163,10 @@ def stream(input: str, seat: Optional[str] = None, *, arms: Optional[Mapping[str
         return
     items: List[Dict[str, Any]] = []
     tokens: Optional[Dict[str, int]] = None
-    answer = ""
+    answer = note = ""
     if sid == "model-call":
-        yield event(EVENT_STATUS, "asking the model")
+        note = MODEL_ONLY_NOTE
+        yield event(EVENT_STATUS, "asking the model; " + MODEL_ONLY_NOTE)
         if "model-call" in (provided or {}):
             answer = system["model-call"].complete(input, model or "")
         else:
@@ -174,9 +179,15 @@ def stream(input: str, seat: Optional[str] = None, *, arms: Optional[Mapping[str
                 yield event(EVENT_TOKENS, f"{tokens['in']} in, {tokens['out']} out", **tokens)
     elif sid == "search-backend":
         yield trace_event(trace_id, sid, "sources", "workTrace.search", "running")
-        response = system[sid].search(input, max_results=limit)
+        backend = system[sid]
+        before = (getattr(backend, "tokens_in", 0) or 0, getattr(backend, "tokens_out", 0) or 0)
+        response = backend.search(input, max_results=limit)
         items = hit_items(response.hits)
-        answer = response.answer
+        answer = response.answer or "\n".join(f"{i.get('title', '')}: {i.get('snippet', '')}".strip(": ") for i in items)
+        after = (getattr(backend, "tokens_in", 0) or 0, getattr(backend, "tokens_out", 0) or 0)
+        if after != before:
+            tokens = {"in": after[0] - before[0], "out": after[1] - before[1]}
+            yield event(EVENT_TOKENS, f"{tokens['in']} in, {tokens['out']} out", **tokens)
         yield trace_event(trace_id, sid, "sources", "workTrace.search", "done", counts={"found": len(items)},
                           items=[{"url": i.get("url"), "label": i.get("title"), "kind": "found"} for i in items])
     elif sid == "know-the-world":
@@ -195,12 +206,12 @@ def stream(input: str, seat: Optional[str] = None, *, arms: Optional[Mapping[str
         items = [{"id": c.id, "text": c.text, **({"source": c.source} if c.source else {}), **({"tags": list(c.tags)} if c.tags else {})} for c in cards]
         answer = "\n".join(c["text"] for c in items)
     yield ProgressEvent(type=EVENT_RESULT, text=answer, result_kind="answer",
-                        data={"answer": answer, "items": items, "arms": used, "seat": sid, "tokens": tokens, "seconds": time.monotonic() - began})
+                        data={"answer": answer, "items": items, "arms": used, "seat": sid, "tokens": tokens, "seconds": time.monotonic() - began, "note": note})
     yield ProgressEvent(type=EVENT_DONE, result_kind="answer", data={"seat": sid})
 
 
 def run(input: str, seat: Optional[str] = None, *, on_event: Optional[Callable[[ProgressEvent], None]] = None, **overrides: Any) -> Result:
-    """Answer ``input`` with the best-measured arm of ``seat`` (default ``ask``) and return a ``Result``.
+    """Answer ``input`` with the best-measured arm of ``seat`` (default ``ask``: a web-grounded answer with its sources) and return a ``Result``.
 
     ``on_event`` receives every event as it happens (the same ones ``Result.events`` keeps). Keywords are those of ``stream``:
     ``arms={seat: arm}``, ``options``, ``provided={seat: object}``, ``lock``, ``environ``, ``model``, ``limit``. Raises ``Needs`` when
@@ -218,4 +229,4 @@ def run(input: str, seat: Optional[str] = None, *, on_event: Optional[Callable[[
     done = next(e for e in seen if e.type == EVENT_RESULT).data
     return Result(input=input, seat=sid, answer=done["answer"], items=tuple(done["items"]),
                   trace=tuple(e.data for e in seen if e.type == EVENT_WORK_TRACE), arms=done["arms"], tokens=done["tokens"],
-                  seconds=done["seconds"], events=tuple(seen))
+                  seconds=done["seconds"], note=done["note"], events=tuple(seen))
