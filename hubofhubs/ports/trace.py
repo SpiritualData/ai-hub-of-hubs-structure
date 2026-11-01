@@ -34,7 +34,7 @@ SCHEMA_VERSION = 1
 KINDS = ("sources", "papers", "records", "check", "action", "notice")
 STATES = ("running", "done", "failed")
 COUNT_KEYS = ("found", "read", "checked", "failed", "total")
-ITEM_KEYS = ("ref", "label", "sub", "kind")
+ITEM_KEYS = ("ref", "label", "sub", "kind", "visible_to_all")
 #: Kinds whose items are titles of the viewer's own things: kept as counts only for a viewer who may not see them.
 PRIVATE_KINDS = ("records", "action")
 MAX_ITEMS = 20
@@ -161,6 +161,9 @@ def project_item(raw: Any, kind: str) -> Optional[Dict[str, str]]:
     item_kind = str(raw.get("kind") or "")
     if SLUG.match(item_kind):
         out["kind"] = item_kind
+    # Set by the consumer that knows who is in the thread, never by an emitter: the item may be shown to EVERY participant.
+    if raw.get("visible_to_all") is True:
+        out["visible_to_all"] = True
     return out
 
 
@@ -184,8 +187,9 @@ def project_counts(raw: Any) -> Dict[str, int]:
 def project(raw: Mapping[str, Any], *, trace_id: Optional[str] = None, viewer_may_see_titles: bool = True) -> WorkTraceEvent:
     """Build the reader-safe event from a raw description, copying only the allowlisted fields.
 
-    ``viewer_may_see_titles=False`` (a shared thread, or anyone but the record's owner) keeps ``records`` and ``action`` as counts only:
-    the items are dropped and ``counts.found`` records how many there were. Raises ``WorkTraceError`` for a state outside
+    ``viewer_may_see_titles=False`` (a shared thread, or anyone but the record's owner) keeps ``records`` and ``action`` as counts only,
+    except for items the consumer marked ``visible_to_all`` (visible to every participant of the thread): those keep their title. The
+    other items are dropped and ``counts.found`` records how many there were. Raises ``WorkTraceError`` for a state outside
     ``STATES``, a missing or malformed id, or a ``label_key`` that is not a key.
     """
     if not isinstance(raw, Mapping):
@@ -208,15 +212,18 @@ def project(raw: Mapping[str, Any], *, trace_id: Optional[str] = None, viewer_ma
     counts = project_counts(raw.get("counts"))
     raw_items = raw.get("items") if isinstance(raw.get("items"), (list, tuple)) else []
     items: List[Dict[str, str]] = []
+    for entry in raw_items:
+        if kind in PRIVATE_KINDS and not viewer_may_see_titles:
+            # Only an item the consumer marked visible to every participant keeps its title; the rest are counted, never named.
+            if not (isinstance(entry, Mapping) and entry.get("visible_to_all") is True):
+                continue
+        item = project_item(entry, kind)
+        if item is not None:
+            items.append(item)
+        if len(items) >= MAX_ITEMS:
+            break
     if kind in PRIVATE_KINDS and not viewer_may_see_titles:
         counts.setdefault("found", len(raw_items))
-    else:
-        for entry in raw_items:
-            item = project_item(entry, kind)
-            if item is not None:
-                items.append(item)
-            if len(items) >= MAX_ITEMS:
-                break
     started = iso_utc(raw.get("started_at"), utc_now()) or utc_now()
     ended = None
     if state != "running":
@@ -267,7 +274,7 @@ def validate(event: Mapping[str, Any]) -> List[str]:
         problems.append(f"items has more than {MAX_ITEMS} entries")
     for item in items:
         if not isinstance(item, Mapping) or set(item) - set(ITEM_KEYS):
-            problems.append("an item has fields outside ref, label, sub, kind")
+            problems.append("an item has fields outside ref, label, sub, kind, visible_to_all")
             continue
         for key, value in item.items():
             text = str(value)

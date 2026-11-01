@@ -35,7 +35,8 @@
           "ref": {"type": "string", "maxLength": 80, "description": "A domain for sources, an id for other kinds. Never a full URL or a path."},
           "label": {"type": "string", "maxLength": 80},
           "sub": {"type": "string", "maxLength": 80},
-          "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,23}$"}
+          "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,23}$"},
+          "visible_to_all": {"const": true, "description": "Set by the consumer (never an emitter) on a records or action item every participant of a shared thread may see; only such an item keeps its title for a viewer who may not see titles."}
         }
       }
     },

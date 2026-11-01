@@ -136,3 +136,18 @@ def test_a_sources_item_keeps_whether_the_page_was_read_or_only_found():
     assert project_item({"ref": "https://a.example/x?q=1", "label": "A", "kind": "read"}, "sources") == {"ref": "a.example", "label": "A", "kind": "read"}
     assert project_item({"ref": "b.example", "kind": "found"}, "sources") == {"ref": "b.example", "label": "b.example", "kind": "found"}
     assert "kind" not in project_item({"ref": "c.example", "kind": "weird"}, "sources")
+
+
+def test_a_record_marked_visible_to_all_keeps_its_title_for_a_viewer_who_may_not_see_titles():
+    items = [{"ref": "team-quest", "label": "Team launch plan", "visible_to_all": True},
+             {"ref": "mine", "label": "My private goal", "visible_to_all": False},
+             {"ref": "mine2", "label": "My other private goal"},
+             {"ref": "mine3", "label": "Sneaky private goal", "visible_to_all": "true"}]
+    event = project(raw(kind="records", counts={"found": 4, "read": 4}, items=items), trace_id="t1", viewer_may_see_titles=False)
+    blob = json.dumps(event.to_dict())
+    assert event.items == [{"ref": "team-quest", "label": "Team launch plan", "visible_to_all": True}]
+    assert event.counts == {"found": 4, "read": 4}
+    assert "private" not in blob and validate(event.to_dict()) == []
+    # The owner sees every title; the flag survives only where it is exactly true.
+    full = project(raw(kind="records", counts={"found": 4, "read": 4}, items=items), trace_id="t1")
+    assert [i.get("visible_to_all") for i in full.items] == [True, None, None, None]
