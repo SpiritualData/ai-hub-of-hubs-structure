@@ -115,3 +115,17 @@ def test_running_step_left_out_of_summary_and_bad_event_never_raises():
     wt.update("a", solution_id="x", kind="check", label_key="workTrace.check")
     assert wt.update("b", solution_id="x", kind="check", label_key="not a key") is None
     assert wt.summary() == []
+
+
+def test_action_titles_are_also_counts_only_for_a_viewer_who_may_not_see_them():
+    event = project(raw(kind="action", counts={}, items=[{"ref": "q1", "label": "Private goal"}]), trace_id="t1",
+                    viewer_may_see_titles=False)
+    assert event.items == [] and event.counts == {"found": 1}
+
+
+def test_redacting_an_already_projected_event_is_stable():
+    full = project(raw(kind="records", counts={"found": 2, "read": 2}, items=[{"ref": "a", "label": "A"}, {"ref": "b", "label": "B"}]),
+                   trace_id="t1").to_dict()
+    again = project(full, viewer_may_see_titles=False).to_dict()
+    assert again["items"] == [] and again["counts"] == {"found": 2, "read": 2} and again["started_at"] == full["started_at"]
+    assert validate(again) == []
