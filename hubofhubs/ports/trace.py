@@ -132,7 +132,7 @@ def clean_text(value: Any, limit: int = MAX_LABEL) -> str:
 def project_item(raw: Any, kind: str) -> Optional[Dict[str, str]]:
     """One item built from named fields only, or None when nothing safe is left.
 
-    A ``sources`` item is its domain (from ``ref`` or ``url``) and a title; every other kind copies ``ref``, ``label``,
+    A ``sources`` item is its domain (from ``ref`` or ``url``), a title and whether the page was ``read`` or only ``found``; every other kind copies ``ref``, ``label``,
     ``sub`` and ``kind`` as clean text. An item whose ref or label is a filesystem path is dropped.
     """
     if not isinstance(raw, Mapping):
@@ -142,7 +142,11 @@ def project_item(raw: Any, kind: str) -> Optional[Dict[str, str]]:
         if not ref:
             return None
         label = clean_text(raw.get("label")) or ref
-        return {"ref": ref, "label": label}
+        out = {"ref": ref, "label": label}
+        # ``read`` (the page was opened) or ``found`` (a search only listed it): a screen must not show a listed site as read.
+        if str(raw.get("kind") or "") in ("read", "found"):
+            out["kind"] = str(raw["kind"])
+        return out
     ref = clean_text(raw.get("ref"))
     label = clean_text(raw.get("label"))
     for text in (str(raw.get("ref") or "").strip(), str(raw.get("label") or "").strip()):

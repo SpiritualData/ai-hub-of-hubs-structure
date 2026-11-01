@@ -129,3 +129,10 @@ def test_redacting_an_already_projected_event_is_stable():
     again = project(full, viewer_may_see_titles=False).to_dict()
     assert again["items"] == [] and again["counts"] == {"found": 2, "read": 2} and again["started_at"] == full["started_at"]
     assert validate(again) == []
+
+
+def test_a_sources_item_keeps_whether_the_page_was_read_or_only_found():
+    from hubofhubs.ports.trace import project_item
+    assert project_item({"ref": "https://a.example/x?q=1", "label": "A", "kind": "read"}, "sources") == {"ref": "a.example", "label": "A", "kind": "read"}
+    assert project_item({"ref": "b.example", "kind": "found"}, "sources") == {"ref": "b.example", "label": "b.example", "kind": "found"}
+    assert "kind" not in project_item({"ref": "c.example", "kind": "weird"}, "sources")
