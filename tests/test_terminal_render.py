@@ -65,10 +65,11 @@ def test_the_trail_expands_to_five_rows_then_all_then_closes():
     pages = [site(f"s{i}.org", f"Page {i}") for i in range(8)]
     render(trace("w", state="done", read=8, items=pages), s)
     opened = toggle_trail(s)[0]
-    assert opened.state == "expanded" and len([r for r in opened.rows if r.startswith("  s")]) == 5
+    assert opened.state == "expanded" and len([r for r in opened.rows if "Page" in r]) == 5
     assert any("Show all 8" in r for r in opened.rows)
     every = toggle_trail(s)[0]
-    assert len([r for r in every.rows if r.startswith("  s")]) == 8
+    assert len([r for r in every.rows if "Page" in r]) == 8
+    assert not any("s0.org" in r for r in every.rows[1:])                 # the line names s0.org, so its row is the title alone
     assert toggle_trail(s)[0].state == "settled"
 
 

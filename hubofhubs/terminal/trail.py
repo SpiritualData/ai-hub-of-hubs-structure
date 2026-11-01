@@ -207,18 +207,8 @@ def removed_link_count(steps: List[Event]) -> int:
 
 
 def has_expandable_detail(steps: List[Event], shared: bool = False) -> bool:
-    """True when opening the line shows something the line does not already say."""
-    for t in totals_by_kind(steps):
-        if t["kind"] == "records":
-            if visible_titles(t, shared) and not summary_names_all_records(t, shared):
-                return True
-        elif t["kind"] == "sources":
-            opened = read_items(t["items"])
-            if t["read"] > 0 and opened and (t["read"] > 2 or any(page_title_of(i) for i in opened)):
-                return True
-        elif t["kind"] == "papers" and t["items"]:
-            return True
-    return False
+    """True when opening the line shows something the line does not already say: derived from ``expanded_groups``."""
+    return len(expanded_groups(steps, shared)) > 0
 
 
 def has_visible_work(steps: List[Event], shared: bool = False) -> bool:
@@ -270,12 +260,22 @@ def _paper_names(steps: List[Event]) -> List[str]:
     return [i["sub"] for i in items] if items and all(i.get("sub") for i in items) else []
 
 
-def _named(base: str, names: List[str], total: int, ov) -> str:
+def said_names(names: List[str], total: int) -> List[str]:
+    """The names the summary sentence actually says, in order: empty when it is a bare count."""
     if not names or len(names) > total:
+        return []
+    if total == 1 or (total == 2 and len(names) == 2):
+        return names[:1] if len(names) == 1 else names[:2]
+    return names[:1]
+
+
+def _named(base: str, names: List[str], total: int, ov) -> str:
+    said = said_names(names, total)
+    if not said:
         return say(f"{NS}summary.{base}", ov, count=total)
     if total == 1 or (total == 2 and len(names) == 2):
-        return say(f"{NS}summary.{base}One", ov, a=names[0]) if len(names) == 1 else say(f"{NS}summary.{base}Two", ov, a=names[0], b=names[1])
-    return say(f"{NS}summary.{base}More", ov, a=names[0], count=max(1, total - 1))
+        return say(f"{NS}summary.{base}One", ov, a=said[0]) if len(said) == 1 else say(f"{NS}summary.{base}Two", ov, a=said[0], b=said[1])
+    return say(f"{NS}summary.{base}More", ov, a=said[0], count=max(1, total - 1))
 
 
 def _removed_links(removed: int, domains: List[str], ov) -> str:
@@ -330,6 +330,11 @@ def summary_text(steps: List[Event], shared: bool = False, overrides=None) -> st
     return ". ".join(summary_sentences(steps, shared, overrides))
 
 
+def live_line_speaks(steps: List[Event]) -> bool:
+    """True when the live line has words to show: some step is running (not an action) and a page has been opened."""
+    return any(x["state"] == "running" and x["kind"] != "action" for x in steps) and live_text(steps) is not None
+
+
 def live_text(steps: List[Event], overrides=None) -> Optional[str]:
     """The ONE live line: the newest page actually opened ("Opened blog.rust-lang.org"), or None. A count alone is not a line."""
     for step in reversed(steps):
@@ -347,23 +352,34 @@ def expanded_groups(steps: List[Event], shared: bool = False, overrides=None) ->
     groups: List[Dict[str, Any]] = []
     for tot in totals_by_kind(steps):
         if tot["kind"] == "records" and tot["read"] > 0 and not summary_names_all_records(tot, shared):
-            titled = visible_titles(tot, shared)
+            # The line names the first record; the rows are the records it did not name.
+            titled = visible_titles(tot, shared)[1:]
             if not titled:
                 continue
             rows = []
             for i in titled:
                 kind_word = say(f"{NS}recordKind.{i['kind']}", ov) if i.get("kind") and _has(f"{NS}recordKind.{i['kind']}") else ""
                 rows.append(f"{record_title_of(i)}  {kind_word}".rstrip() if kind_word else record_title_of(i))
-            notes = [say(NS + "recordsUntitled", ov, count=tot["read"] - len(titled))] if tot["read"] > len(titled) else []
+            untitled = tot["read"] - len(titled) - 1
+            notes = [say(NS + "recordsUntitled", ov, count=untitled)] if (not shared and tot["read"] > len(titled) + 1) else []
             groups.append({"id": "records", "title": say(NS + ("group.recordsShared" if shared else "group.records"), ov), "rows": rows, "notes": notes})
         elif tot["kind"] == "sources" and tot["read"] > 0:
-            opened = read_items(tot["items"])
-            if not opened:
+            # A page the line names shows only its title; a page the line did not name shows its domain and title.
+            said = said_names(_site_names(steps), tot["read"])
+            rows = []
+            for i in read_items(tot["items"]):
+                domain, title = domain_only(i["ref"]), page_title_of(i)
+                row = title if domain in said else domain + (f"  {title}" if title else "")
+                if row:
+                    rows.append(row)
+            if not rows:
                 continue
-            rows = [domain_only(i["ref"]) + (f"  {page_title_of(i)}" if page_title_of(i) else "") for i in opened]
             notes = [say(NS + "couldNotOpen", ov, count=tot["failed"])] if tot["failed"] > 0 else []
             groups.append({"id": "sources", "title": say(NS + "group.sources", ov), "rows": rows, "notes": notes})
         elif tot["kind"] == "papers" and tot["items"]:
-            rows = [f"{i['label']} ({i['sub']})" if i.get("sub") else i["label"] for i in tot["items"]]
+            # A paper the line names shows only its title; one the line did not name shows both.
+            clause = next((c for c in summary_clauses(steps) if c["key"] == "papersRead"), None)
+            said = len(said_names(_paper_names(steps), clause["count"])) if clause else 0
+            rows = [f"{i['label']} ({i['sub']})" if (i.get("sub") and idx >= said) else i["label"] for idx, i in enumerate(tot["items"])]
             groups.append({"id": "papers", "title": say(NS + "group.papers", ov), "rows": rows, "notes": []})
     return groups
