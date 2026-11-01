@@ -142,6 +142,16 @@ EVENT_CARD_THREAD = "card_thread"  # this turn's TOPIC assignment: which context
                                # and stamps its messages. ALWAYS surfaces (a consumer must be able to
                                # stamp the turn even on a BACKGROUND run).
 
+EVENT_WORK_TRACE = "work_trace"  # one unit of work the run did FOR THE READER (a search, a paper lookup, records
+
+
+                               # consulted, a link check), re-sent as it changes; the latest event for a
+                               # ``step_id`` replaces earlier ones. Carries ``data`` = a ``WorkTraceEvent``
+                               # dict (``hubofhubs.ports.trace``), already projected through the allowlist:
+                               # counts, domains and titles only, never queries, content or reasoning.
+                               # LIVE-only like ``exec``: it is NOT in SURFACING_EVENTS, so a BACKGROUND
+                               # run drops it.
+
 # The event types a BACKGROUND (MilestoneSink) run forwards. Everything else is dropped as
 # intermediate chatter. Encoded ONCE here so every consumer inherits the same policy.
 SURFACING_EVENTS = frozenset({EVENT_UNDERSTANDING, EVENT_CONTEXT, EVENT_INTENT, EVENT_RESULT, EVENT_DECISION, EVENT_MILESTONE, EVENT_DONE, EVENT_TOKENS, EVENT_OVERSEER, EVENT_MODE_SIGNAL, EVENT_CARD_THREAD, EVENT_EXPLANATION})

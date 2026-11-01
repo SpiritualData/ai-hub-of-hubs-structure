@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorkTraceEvent",
+  "description": "One unit of work a run did for the reader, re-sent as it changes. The latest event for a step_id replaces earlier ones. Built by hubofhubs.ports.trace.project from an allowlist.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "trace_id", "step_id", "solution_id", "kind", "label_key", "state", "counts", "items", "affects_user", "started_at"],
+  "properties": {
+    "v": {"const": 1},
+    "trace_id": {"type": "string", "pattern": "^[A-Za-z0-9_.:\\-]{1,64}$", "description": "The turn id; one trace per turn."},
+    "step_id": {"type": "string", "pattern": "^[A-Za-z0-9_.:\\-]{1,64}$", "description": "Stable per unit of work, so updates replace in place."},
+    "solution_id": {"type": "string", "pattern": "^[A-Za-z0-9_.:\\-]{1,64}$", "description": "The hub seat id. Never an arm name."},
+    "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,23}$", "description": "sources, papers, records, check, action or notice; an unknown kind renders as one generic row."},
+    "label_key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.\\-]{0,79}$", "description": "An i18n key, never display text."},
+    "state": {"enum": ["running", "done", "failed"]},
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "found": {"type": "integer", "minimum": 0},
+        "read": {"type": "integer", "minimum": 0},
+        "checked": {"type": "integer", "minimum": 0},
+        "failed": {"type": "integer", "minimum": 0},
+        "total": {"type": "integer", "minimum": 0}
+      }
+    },
+    "items": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref", "label"],
+        "properties": {
+          "ref": {"type": "string", "maxLength": 80, "description": "A domain for sources, an id for other kinds. Never a full URL or a path."},
+          "label": {"type": "string", "maxLength": 80},
+          "sub": {"type": "string", "maxLength": 80},
+          "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,23}$"}
+        }
+      }
+    },
+    "affects_user": {"type": "boolean", "description": "True only when the person's result or wait changed."},
+    "started_at": {"type": "string", "format": "date-time"},
+    "ended_at": {"type": "string", "format": "date-time", "description": "Present when state is done or failed."}
+  }
+}

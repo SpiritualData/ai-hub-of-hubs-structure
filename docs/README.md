@@ -12,6 +12,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Install what your seats need](how-to/install-what-your-seats-need.md)
 - [Refresh the registry](how-to/refresh-the-registry.md)
 - [Register a second consumer](how-to/register-a-second-consumer.md)
+- [Emit a work trace](how-to/emit-a-work-trace.md)
 
 ## Explanation
 
@@ -29,5 +30,6 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Requirements by arm](reference/requirements-by-arm.md) (generated)
 - [Public benchmarks and standard reporting](reference/public-benchmarks.md)
 - [Search APIs described as data](reference/search-api-entries.md)
+- [Work trace event schema](reference/work-trace-event.schema.json)
 
 Drafts of the announcement and article are in `drafts/` and are not part of the documentation.
