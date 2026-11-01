@@ -48,10 +48,15 @@ def standing(decision: "leaderboard.Decision", rows: Dict[str, Row]) -> str:
     if decision.outcome == "rival":
         row = rows[decision.rival]
         figures = f"{leaderboard.passes(row)}/{row.get('cases')}, {evidence_table.cost_label(row)} per pass"
-        return (f"{decision.rival} beats it ({name} p={p}; {figures})" if decision.switch
-                else f"{decision.rival} ahead but not significant ({name} p={p})")
+        if decision.significant:
+            return f"{decision.rival} beats it ({name} p={p}; {figures})"
+        return f"{decision.rival} is ahead, not significant ({name} p={p}; {figures})"
     if decision.outcome == "incumbent":
-        return f"ahead of {decision.rival} ({name} p={p})"
+        if decision.significant:
+            return f"ahead of {decision.rival} ({name} p={p})"
+        return f"ahead of {decision.rival}, not significant ({name} p={p})"
+    if not p:
+        return f"identical to {decision.rival} on all {decision.shared} cases"
     return f"not separated from {decision.rival} ({name} p={p}, {decision.disagree} of {decision.shared} cases differ)"
 
 
@@ -115,7 +120,7 @@ def check_rows(config: Config, registry: Registry, root: Path, today: Optional[d
             arm_cell = selected
             rate, cost = evidence_table.rate_label(row), evidence_table.cost_label(row)
             lead = "; ".join(standing(d, rows) for d in found) or "no rival measured on the same cases, so no lead to test"
-            significant = bool(found) and all(d.basis == "significance" and (d.outcome == "incumbent" or (d.outcome == "rival" and d.switch)) for d in found)
+            significant = bool(found) and all(d.significant for d in found)
             lead = (LEAD_SIGNIFICANT if significant else LEAD_GUESS) + lead
             if any(d.outcome == "rival" and d.switch for d in found):
                 lead += "; the selected arm is the floor and selection is pending"

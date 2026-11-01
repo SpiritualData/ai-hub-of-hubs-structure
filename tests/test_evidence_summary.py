@@ -36,7 +36,9 @@ def test_a_lead_is_labelled_significant_or_not_and_a_floor_is_shown_as_pending()
     config, registry = status.records()
     block = evidence_summary.evidence_block(config, registry, ROOT)
     assert "McNemar p=" in block
-    assert "not separated from" in block
+    assert "not significant (McNemar p=" in block      # a p above 0.05 is never called a win
+    assert "identical to" in block                      # arms that agree on every case show no empty p
+    assert "p=," not in block and "{n}" not in block and "private corpus" not in block
 
 
 def test_unmeasured_seats_and_arms_are_listed_with_a_reason():
