@@ -67,3 +67,16 @@ def test_with_no_prompt_there_is_no_policy_and_no_model_call():
     provider = Provider({"signal": "escalate_human"})
     got = risk.RunOverseer().oversee(provider, "m", "d")
     assert got.signal == "proceed" and got.degraded and provider.prompts == []
+
+
+def test_a_situation_standard_and_the_draft_measurements_ride_in_the_protected_tail_with_a_wider_glance_at_the_draft():
+    draft = "x" * 600
+    digest = risk.build_digest(user_message="u", step=1, max_steps=2, draft_answer=draft, situation_standard="ONE step only",
+                               draft_measurements="questions=2", draft_chars=700, char_budget=1900)
+    assert "SITUATION STANDARD: ONE step only" in digest and "DRAFT MEASUREMENTS: questions=2" in digest
+    assert "x" * 600 in digest and "first 700 chars" in digest
+
+
+def test_without_a_standard_the_digest_is_unchanged():
+    digest = risk.build_digest(user_message="u", step=1, max_steps=2, draft_answer="hello")
+    assert "SITUATION STANDARD" not in digest and "DRAFT MEASUREMENTS" not in digest and "first 200 chars" in digest

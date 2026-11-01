@@ -45,6 +45,10 @@ class PlanDecision:
     # their choices): the reply asks for them first and drafts nothing. A structured self-report on the planning call, so the reply
     # writer is told by a field, never by the wording of the planner's prose.
     asks_first: bool = False
+    # The SHAPE the reply to this message must take (a small enum the consumer defines, e.g. yes_no, one_step, brief, readback,
+    # default), self-reported by the planner on the planning call it already makes. None or an unknown value means no shape was
+    # named. The reply writer's situation standard is selected from this field, never from the wording of any model output.
+    reply_shape: Optional[str] = None
     # User clarification/input needed: when action="clarify"
     clarification: Optional[Dict[str, Any]] = None  # {"question": "...", "options": [...], "allow_free_input": bool}
     # EXPLICIT execution-mode signal the planner detected in the user's message (LLM judgment on

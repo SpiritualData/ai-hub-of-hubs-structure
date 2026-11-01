@@ -123,6 +123,9 @@ def build_digest(
     consecutive_reads: int = 0,
     draft_answer: Optional[str] = None,
     quality_standards: Optional[str] = None,
+    situation_standard: Optional[str] = None,
+    draft_measurements: Optional[str] = None,
+    draft_chars: int = 200,
     char_budget: int = 1600,
 ) -> str:
     """Build a compact, one-glance digest of the run for the overseer, capped at ``char_budget``.
@@ -145,6 +148,11 @@ def build_digest(
     ``quality_standards``, when present, is the written completion/quality bar the result must clear.
     The ``AGENT'S READ BUDGET`` line reports the MAIN AGENT's own cumulative raw-read volume against
     its read cap, which is unrelated to this digest's own (tiny) size.
+
+    ``situation_standard`` is the one-line standard written for a reviewer that applies to THIS reply's situation, and
+    ``draft_measurements`` the deterministic counts and data comparisons the caller computed on the draft (both are the
+    caller's data). They ride in the protected tail beside the draft, and ``draft_chars`` is how much of the draft is shown
+    (a standard about the whole reply needs more than the default glance).
 
     TRUNCATION ORDER : the fields that actually drive a decision -- CURRENT USER REQUEST,
     RESOLVED AS, QUALITY BAR, PASS, CURRENT PLAN, RATIONALE, SPEND, TIME, AGENT'S READ BUDGET, and
@@ -226,7 +234,12 @@ def build_digest(
                 f"so far (the agent's own cumulative reads, NOT this digest's size)"
             )
         if draft_answer:
-            tail.append(f"DRAFT ANSWER (first 200 chars): {oneline(draft_answer, 200)}")
+            shown = max(200, int(draft_chars or 200))
+            tail.append(f"DRAFT ANSWER (first {shown} chars): {oneline(draft_answer, shown)}")
+            if situation_standard:
+                tail.append(f"SITUATION STANDARD: {oneline(situation_standard, 400)}")
+            if draft_measurements:
+                tail.append(f"DRAFT MEASUREMENTS: {oneline(draft_measurements, 500)}")
 
         budget = max(1, int(char_budget))
         full_text = "\n".join(head + sheddable + tail)

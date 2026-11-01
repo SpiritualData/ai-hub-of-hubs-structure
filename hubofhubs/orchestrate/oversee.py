@@ -80,13 +80,18 @@ class OverseeMixin:
                              draft_answer: Optional[str] = None,
                              quality_standards: Optional[str] = None,
                              recent_conversation: Optional[List[str]] = None,
-                             prior_escalations: Optional[List[str]] = None) -> str:
+                             prior_escalations: Optional[List[str]] = None,
+                             situation_standard: Optional[str] = None,
+                             draft_measurements: Optional[str] = None,
+                             draft_chars: int = 200) -> str:
         """The cheap, capped overseer digest for the current run state. Pure and synchronous (no network): it only
         summarizes what is already in hand, so it is safe to run inline right before submitting the ONE provider call to a
         background thread. Never raises."""
         cfg = self.cfg
         gathered_chars, consecutive_reads, elapsed_seconds = self.spend_metrics(gathered, started)
         operations, operations_total = self.operation_lines(gathered)
+        # A situation standard widens the glance at the draft, so the protected tail gets that room on top of the base budget.
+        extra_budget = (500 + 400 + max(0, int(draft_chars or 0) - 200)) if situation_standard else 0
         tokens_in = getattr(self.provider, "tokens_in", 0) or 0
         tokens_out = getattr(self.provider, "tokens_out", 0) or 0
         return self.oversee_digest(
@@ -110,7 +115,10 @@ class OverseeMixin:
             consecutive_reads=consecutive_reads,
             draft_answer=draft_answer,
             quality_standards=quality_standards,
-            char_budget=cfg.overseer_digest_char_budget,
+            situation_standard=situation_standard,
+            draft_measurements=draft_measurements,
+            draft_chars=draft_chars,
+            char_budget=cfg.overseer_digest_char_budget + extra_budget,
         )
 
     def submit_oversee(self, executor: ThreadPoolExecutor, *, user_message: str, step: int,
@@ -121,6 +129,9 @@ class OverseeMixin:
                        recent_conversation: Optional[List[str]] = None,
                        prior_escalations: Optional[List[str]] = None,
                        prev_plan_signature: Optional[Any] = None,
+                       situation_standard: Optional[str] = None,
+                       draft_measurements: Optional[str] = None,
+                       draft_chars: int = 200,
                        gate: bool = True) -> Optional[Dict[str, Any]]:
         """FIRE-AND-FORGET consult: build the cheap digest synchronously, then submit the ONE overseer provider call to a
         BACKGROUND thread and return a pending-consultation record WITHOUT waiting. Recording and emitting happen later in
@@ -152,7 +163,8 @@ class OverseeMixin:
                 user_message=user_message, goal_condition=goal_condition, step=step, plan=plan,
                 gathered=gathered, started=started, draft_answer=draft_answer,
                 quality_standards=quality_standards, recent_conversation=recent_conversation,
-                prior_escalations=prior_escalations)
+                prior_escalations=prior_escalations, situation_standard=situation_standard,
+                draft_measurements=draft_measurements, draft_chars=draft_chars)
             model = self.registry.resolve_tier(self.cfg.overseer_tier)
             provider = self.get_provider_for_model(model)
             # FALLBACK: a consult that comes back DEGRADED (provider error or unusable response, not a real verdict) retries
