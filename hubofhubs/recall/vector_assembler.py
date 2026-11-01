@@ -1085,6 +1085,9 @@ class VectorContextAssembler(ContextAssemblerBase):
             card_metadata.append({
                 "id": h.id,
                 "title": h.text[:100] if h.text else "(no text)",  # first 100 chars as title
+                # The card's own short name (its summary or name as stored), apart from ``title`` above, which is a slice of the
+                # embedded text and so can be a card's body. A consumer that shows a record to a person uses this, never the slice.
+                "name": str(payload.get("summary") or "")[:100],
                 "relevance_score": min(1.0, h.score),  # normalize vector scores
                 # The specificity x recency x raw-similarity score that decided SELECTION and
                 # truncation above. The card_metadata LIST ITSELF is ordered by card id, not by
