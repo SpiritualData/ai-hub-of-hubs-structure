@@ -5992,3 +5992,6 @@ assemble_the_whole,zero_config,bf347765,,,absent-search-backend-searxng,,1,0,0,0
 assemble_the_whole,zero_config,bf347765,,,present-search-backend-searxng,,1,0,0,0,0.0,,
 assemble_the_whole,zero_config,bf347765,,,absent-search-backend-gemini,,1,0,0,0,0.0,,
 assemble_the_whole,zero_config,bf347765,,,present-search-backend-gemini,,1,0,0,0,0.0,,
+call_a_model,claude_cli,cf643a64,,sample:3,gsm8k-test-0083,,1,1,673,129,2.6,,
+call_a_model,claude_cli,cf643a64,,sample:3,gsm8k-test-0764,,1,1,746,185,2.6,,
+call_a_model,claude_cli,cf643a64,,sample:3,gsm8k-test-1153,,1,1,727,226,2.3,,

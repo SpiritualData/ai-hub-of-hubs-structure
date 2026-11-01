@@ -8,7 +8,7 @@ A draft article for the owner to edit, about 900 words. The line between the mar
 # Which AI part is actually best? We measure the alternatives on the same cases
 
 <!-- headline-compact:start -->
-35 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 12, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
+36 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
 <!-- headline-compact:end -->
 
 ## The problem with lists
@@ -40,7 +40,7 @@ Baselines and floors, such as "no overseer at all", are run so that a real arm h
 The numbers below are generated from the results file each time the README is rebuilt.
 
 <!-- headline-compact:start -->
-35 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 12, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
+36 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
 <!-- headline-compact:end -->
 
 Areas in the list are the ones people building agents tend to ask about: retrieval for RAG, the models themselves, routing and failover between providers, web search APIs, scholarly search, coding agents, guardrails and a memory store. The README has the full table, with the cases and their source for each check.

@@ -4,6 +4,7 @@ Cases are a fixed-seed sample of the GSM8K test split (see README.md). The model
 ``Final answer: <number>``; pass = that number equals the gold answer exactly. Tokens, thinking tokens included, are metered from the
 provider and priced from ``hubofhubs/registry/tier_prices.csv``. Anthropic is not run: its API account is capped until 2026-11-01.
 """
+import os
 import re
 import sys
 from pathlib import Path
@@ -23,6 +24,9 @@ VENDORS = {
 }
 
 
+CLAUDE_MODEL = "claude-haiku"   # the cheapest Claude family; the CLI maps it to the latest Haiku
+
+
 def final_number(text):
     """The number after the last ``Final answer:`` as a float, or None."""
     found = re.findall(r"final answer:\s*\$?\s*(-?[\d,]*\.?\d+)", text or "", flags=re.IGNORECASE)
@@ -32,6 +36,15 @@ def final_number(text):
 def adapt(implementation, meter):
     from esoi.harness import RunError
     name = implementation.__name__
+    if name == "ClaudeCliProvider":
+        # Runs on the Claude Code subscription: no key, no per-token price. Tokens are those the CLI reports; cost is the CLI's own list-price figure.
+        provider = implementation(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
+        meter.model = CLAUDE_MODEL
+        meter.wrap(provider, ("answer",))
+
+        def run_cli(kind, args):
+            return provider.answer([{"role": "user", "content": PROMPT.format(question=args["question"])}], model=CLAUDE_MODEL)
+        return run_cli
     if name not in VENDORS:
         raise RunError(f"{name} is not run here: the Anthropic API account is capped until 2026-11-01, so it is recorded as not measured")
     vendor, model, variables = VENDORS[name]

@@ -29,8 +29,7 @@ print(sorted(system.pending))
 
 `assemble()` builds every seat whose selected arm needs nothing more from you and leaves the others in `system.pending`, one
 line each saying what to pass. The hub reads no environment itself: to use your keys, hand the mapping over with
-`hubofhubs.assemble(environ=os.environ)`. The seats printed are the ones still waiting for you, for example `call-a-model`
-(a provider object), `search-backend` (a key such as `GEMINI_API_KEY`) and `act-in-the-world` (no arm is selected yet).
+`hubofhubs.assemble(environ=os.environ)`. The seats printed are the ones still waiting for you, for example `search-backend` (a key such as `GEMINI_API_KEY`) and `act-in-the-world` (no arm is selected yet). `call-a-model` is already built: its default arm is `claude_cli`, which runs `claude -p` on your Claude Code subscription and needs no key.
 
 ## 3. Use the first seat
 

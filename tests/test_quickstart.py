@@ -26,6 +26,6 @@ def test_the_one_line_section_is_true():
     text = (ROOT / "docs" / "how-to" / "register-a-second-consumer.md").read_text()
     assert "hubofhubs.assemble(environ=os.environ)" in text and "arms=" in text
     system = hubofhubs.assemble()
-    assert "card-store" in system and "model-call" in system.pending
+    assert "card-store" in system and "call-a-model" in system and "model-call" in system
     keyed = hubofhubs.assemble(arms={"call-a-model": "anthropic"}, environ={"ANTHROPIC_API_KEY": "not-a-real-key"})
     assert "model-call" in keyed and "ANTHROPIC_API_KEY" in hubofhubs.assemble(arms={"call-a-model": "anthropic"}).pending["call-a-model"]

@@ -36,10 +36,11 @@ def test_the_hub_default_builds_without_a_consumer():
 
 def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
     system = assemble()
-    assert sorted(system.solutions()) == ["card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections", "watch-for-risk"]
+    assert sorted(system.solutions()) == ["call-a-model", "card-store", "choose-a-model-tier", "model-call", "read-registry-freshness", "score-hub-connections", "watch-for-risk"]
     assert all(line.startswith(seat + ":") or line.startswith(seat + " (") for seat, line in system.pending.items())
-    assert "GEMINI_API_KEY" in system.pending["search-backend"] and "no selected arm; pass arms=" in system.pending["context-assembler"]
-    assert system.pending["model-call"] == "model-call (via_call_a_model): needs call-a-model; see those lines"
+    assert "GEMINI_API_KEY" in system.pending["search-backend"] and "context-assembler (bm25)" in system.pending["context-assembler"]
+    assert "call-a-model" not in system.pending and "model-call" not in system.pending     # the default call-a-model arm is claude -p on the subscription
+    assert "call-a-model (multi_provider)" in assemble(arms={"call-a-model": "multi_provider"}).pending["call-a-model"]
 
 
 def test_assemble_overrides_name_only_what_differs():

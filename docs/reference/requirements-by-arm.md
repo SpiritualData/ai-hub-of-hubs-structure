@@ -20,6 +20,7 @@ at the repository root.
 | `act-in-the-world:stream_json_goal_runner` | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | `act-in-the-world:subprocess_goal_runner` | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | `call-a-model:anthropic` | none | Anthropic (`ANTHROPIC_API_KEY`) | `anthropic` via extra `anthropic` | none | no |
+| `call-a-model:claude_cli` | none | none | none | program `claude` | no |
 | `call-a-model:deepseek` | `DEEPSEEK_BASE_URL` (optional) | DeepSeek (`DEEPSEEK_API_KEY`) | `openai` via extra `openai` | none | no |
 | `call-a-model:gemini` | none | Gemini (`GOOGLE_API_KEY` or `GEMINI_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini` | none | no |
 | `call-a-model:multi_provider` | none | none | none | none | no |

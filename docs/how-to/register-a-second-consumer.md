@@ -61,7 +61,7 @@ system = hubofhubs.assemble(environ=os.environ)      # every seat with a selecte
 system = hubofhubs.assemble(environ=os.environ, arms={"call-a-model": "anthropic"}, options={"card-store": {"path": "cards.db"}})   # only what differs
 ```
 
-`assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `card-store`, `choose-a-model-tier`,
+`assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `call-a-model`, `card-store`, `choose-a-model-tier`, `model-call`,
 `read-registry-freshness`, `score-hub-connections` and `watch-for-risk`; the other seats are in `system.pending`, one line each saying what to pass:
 `arms={seat: <arm>}` where no arm is selected yet (several arms await the measurement of their seat), `options={seat: {argument: ...}}`,
 `provided={seat: <your object>}`, or the variable to set (`set ANTHROPIC_API_KEY (option 'api_key')`).
@@ -70,3 +70,8 @@ system = hubofhubs.assemble(environ=os.environ, arms={"call-a-model": "anthropic
 which variable (`ENVIRON = {"api_key": "ANTHROPIC_API_KEY"}` on the arm), `options` always win over it, and the reason line names
 the variables used, never their values. `model-call` has the arm `via_call_a_model`, selected by its metric: it asks whichever
 `call-a-model` arm you choose, so `arms={"call-a-model": "anthropic"}` plus `ANTHROPIC_API_KEY` in `environ` gives both.
+
+`call-a-model` defaults to `claude_cli`: it runs `claude -p` (Claude Code) on your subscription login, with no API key, and needs only
+the `claude` executable on PATH. Every other vendor stays selectable with one argument: `hubofhubs.assemble(arms={"call-a-model": "gemini"})`
+(or `anthropic`, `openai`, `deepseek`), and `arms={"call-a-model": "multi_provider"}` with `options={"call-a-model": {"primary": ...}}` routes
+among several. A consumer's own default (a `Binding` selection) sits between the hub's and a per-call `arms=`.

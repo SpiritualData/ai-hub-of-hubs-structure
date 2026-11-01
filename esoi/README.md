@@ -57,7 +57,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `card-store` | card-store: a place to keep and find cards | local_card_store | Cards found again, none lost |
 | `model-call` | model-call: ask a model one question | via_call_a_model | Model call answers for the tier |
 | `search-backend` | search-backend: run one web search | gemini | Search finds the source |
-| `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | multi_provider | Provider failover and vendor answers |
+| `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | claude_cli | Provider failover and vendor answers |
 | `context-assembler` | context-assembler: pick the context a task needs | bm25 | Relevant passage in the top five |
 
 ## Implementations
@@ -98,6 +98,7 @@ unconfirmed: for Joshua to confirm. Anyone building AI intelligence can assemble
 | `act-in-the-world:stream_json_goal_runner` | Claude Code, steerable session | hubofhubs/deep/stream_runner.py |  |
 | `act-in-the-world:acp_deep_runner` | Agent Client Protocol runner | hubofhubs/deep/acp_runner.py |  |
 | `model-call:via_call_a_model` | Via call-a-model | hubofhubs/models/via_provider.py |  |
+| `call-a-model:claude_cli` | Claude cli | hubofhubs/models/claude_cli.py |  |
 
 ## Metrics
 

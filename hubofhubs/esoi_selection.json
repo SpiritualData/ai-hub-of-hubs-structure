@@ -15,7 +15,7 @@
   }
  },
  "call-a-model": {
-  "default": "multi_provider",
+  "default": "claude_cli",
   "evidence": {
    "detail": "multi_provider is better than single_provider (exact McNemar test, Holm-adjusted p=3.81e-06, 18 of 30 cases disagree)",
    "p": 4e-06,
@@ -23,6 +23,7 @@
   },
   "modules": {
    "anthropic": "hubofhubs.models.anthropic",
+   "claude_cli": "hubofhubs.models.claude_cli",
    "deepseek": "hubofhubs.models.openai",
    "gemini": "hubofhubs.models.gemini",
    "multi_provider": "hubofhubs.models.router",

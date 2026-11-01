@@ -10,6 +10,7 @@ the verdict against the selected arm and the graded public numbers beside (never
 |---|---|---|---|---|---|---|---|
 | assemble_the_whole | zero_config | 57 | 100.0% (93.7% to 100.0%), 57/57 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | call_a_model | gemini (selected) | 50 | 100.0% (92.9% to 100.0%), 50/50 | $0.000158 | 0.85 (median) | complementary arm, not ranked | none recorded |
+| call_a_model | claude_cli | 3 | 100.0% (43.9% to 100.0%), 3/3 | $0.0002333 | 2.6 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | deepseek | 50 | 94.0% (83.8% to 97.9%), 47/50 | $0.0001638 | 1.2 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | openai | 50 | 92.0% (81.2% to 96.8%), 46/50 | $0.0002848 | 2.55 (median) | complementary arm, not ranked | none recorded |
 | card_store | local_card_store (selected) | 35 | 100.0% (90.1% to 100.0%), 35/35 | $0 | 0 (median) | selected | none recorded |

@@ -59,13 +59,13 @@ def test_external_seats_are_consumer_provided_and_have_no_default():
     assert "external" in registry.split(by["search-backend"]["tags"]) and by["search-backend"]["selected"] == "gemini"
     # model-call is external but the hub ships an arm over call-a-model, which is the consumer-provided seat it needs
     assert "external" in registry.split(by["model-call"]["tags"]) and by["model-call"]["selected"] == "via_call_a_model"
-    assert "external" in registry.split(by["call-a-model"]["tags"]) and by["call-a-model"]["selected"] == "multi_provider"
+    assert "external" in registry.split(by["call-a-model"]["tags"]) and by["call-a-model"]["selected"] == "claude_cli"
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
     system = assemble(AssemblyConfig(solutions=("card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections")))
     assert system.solutions() == ["card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections"]
-    with pytest.raises(AssemblyError, match="call-a-model .multi_provider. needs option"):
+    with pytest.raises(AssemblyError, match="search-backend|know-the-world|context-assembler|act-in-the-world"):
         assemble(AssemblyConfig())      # the strict form refuses a selected arm whose need is unmet
     assert isinstance(system["card-store"], LocalCardStore)
 
@@ -87,8 +87,9 @@ def test_a_consumer_provided_card_store_wins():
 
 
 def test_external_seats_fail_at_startup_unless_provided():
+    assert type(assemble(AssemblyConfig(solutions=("call-a-model",)))["call-a-model"]).__name__ == "ClaudeCliProvider"   # the default arm needs only the claude executable
     with pytest.raises(AssemblyError, match="call-a-model .multi_provider. needs option"):
-        assemble(AssemblyConfig(solutions=("call-a-model",)))
+        assemble(AssemblyConfig(solutions=("call-a-model",), selections={"call-a-model": "multi_provider"}))
     assert "gemini" in assemble(AssemblyConfig(solutions=("search-backend",))).reasons[0]   # a default arm is built lazily; its key is read when it searches
 
 

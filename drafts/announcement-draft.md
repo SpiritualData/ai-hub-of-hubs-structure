@@ -6,7 +6,7 @@ A draft LinkedIn post for the owner to edit. The first paragraph between the mar
 ---
 
 <!-- headline-compact:start -->
-35 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 12, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
+36 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
 <!-- headline-compact:end -->
 
 Lists of "best AI tools" say what exists, not which one works best or whether the difference is real. This open repository puts alternatives in the same seat and runs them on the same cases, and each lead is labelled significant (a paired test) or a best guess. Public research is graded and shown beside our numbers, never mixed in.
