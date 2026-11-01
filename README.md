@@ -24,13 +24,18 @@ Counted: distinct arms with a recorded run on the same cases as their rivals. No
 ## Use it in one line
 
 ```python
-import os, hubofhubs
-system = hubofhubs.assemble(environ=os.environ)   # every seat whose selected arm needs nothing more from you
+import hubofhubs
+result = hubofhubs.run("what is the latest Rust release?")   # a question in, a Result out; nothing to wire
+print(result.answer, result.arms)                             # the text, and which arm answered
 ```
 
-Today this builds `card-store`, `choose-a-model-tier`, `read-registry-freshness`, `score-hub-connections` and `watch-for-risk`.
-Every other seat lands in `system.pending` with one line saying what to pass: `arms={seat: <arm>}` where none is selected yet,
-`options={seat: {...}}` or a key variable, or `provided={seat: <your object>}` ([quickstart](docs/how-to/register-a-second-consumer.md); the hub reads no environment itself).
+You get the best-scoring implementation for every part of an AI system, chosen by measured results, with no wiring. The `Result` holds
+`answer`, `items` (sources, papers, cards), `trace` (the work done), `arms`, `tokens` and `events` (a terminal draws them live via `on_event=`).
+`seat="search"`, `"papers"` or `"recall"` names the part; `ahohs run "<input>" --json` is the same call from a shell. What next:
+1. See what your setup still needs: `hubofhubs.needs("search")` lists the missing key or install per selected arm (`run` stops with a `Needs` error naming the same).
+2. Override just one part: `hubofhubs.run(text, "search", arms={"search-backend": "serper"})`.
+3. Pin the choice with `lock="esoi.lock.json"` (from `esoi lock`) so production changes when you decide.
+[Tutorial](docs/tutorials/assemble-and-run-your-first-seat.md); `hubofhubs.assemble()` builds every part that needs nothing more from you.
 
 ## Evidence
 
@@ -64,10 +69,7 @@ The arm with the highest result at the latest comparable stage is used. A lead i
 
 ## How we measure
 
-Every arm of a check runs on the same cases with the same budget, and we record pass rate with its 95% Wilson interval, cost per
-passing case and seconds per case. The arm with the highest result at the latest comparable stage is used by default, and its lead
-is labelled significant (one-sided exact paired test, p below 0.05 after Holm's correction) or a best guess, not yet significant.
-Others' measurements are graded and shown beside ours, never inside them ([how we measure](docs/explanation/how-we-measure.md), [public evidence](docs/explanation/public-evidence.md)). All documentation: [docs/README.md](docs/README.md).
+Every arm of a check runs on the same cases with the same budget; the arm with the highest result at the latest comparable stage is used by default ([how we measure](docs/explanation/how-we-measure.md), [public evidence](docs/explanation/public-evidence.md)). All documentation: [docs/README.md](docs/README.md).
 
 ## What is not measured yet
 
@@ -139,12 +141,9 @@ candidate has a dated source in [docs/reference/registry.md](docs/reference/regi
 <!-- seats:end -->
 
 ## For a consumer
-
 Install by path or git (`pip install -e ../ai-hub-of-hubs-structure`, or `pip install "hubofhubs @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@main"`),
 register any part you own (`hubofhubs.register`), then assemble. To score your own integration, build a `Binding` and call
 `evaluate`; the hub never imports the consumer. Record and registry checks are in [CLAUDE.md](CLAUDE.md#checks).
-Pin selections: `esoi lock` holds the arms you use until you choose to move ([how to](https://github.com/JoshuaMathias/evolvable-structure/blob/main/docs/how-to/pin-selections-for-production.md)); the hub itself follows the latest selection.
 
 ## License
-
-Apache-2.0, matching Quest AI Runner. See `LICENSE`.
+Apache-2.0, matching Quest AI Runner (`LICENSE`).

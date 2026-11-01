@@ -10,6 +10,9 @@ requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 dependencies = ["esoi"]
 
+[project.scripts]
+ahohs = "hubofhubs.cli:main"
+
 [project.optional-dependencies]
 # One extra per arm that needs a third-party library; the library is imported lazily, only when that arm runs.
 web = ["httpx"]                      # search-backend arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching

@@ -13,5 +13,5 @@ def score_case(fn, case):
 def aggregate(rows):
     """The share of the zero-configuration seats that are built, by counting the seat cases that report ``built``."""
     import hubofhubs
-    system = hubofhubs.assemble()
+    system = hubofhubs.assemble(environ={})
     return f"zero-config builds {len(system.solutions())} of {len(system.solutions()) + len(system.pending)} seats: {', '.join(system.solutions())}"

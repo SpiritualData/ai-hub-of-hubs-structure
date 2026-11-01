@@ -740,5 +740,164 @@
    ]
   },
   "expect": "built"
+ },
+ {
+  "id": "needs-search-no-key",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "search",
+   "environ": {}
+  },
+  "expect": "needs GEMINI_API_KEY"
+ },
+ {
+  "id": "needs-search-serper-absent",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "search",
+   "arms": {
+    "search-backend": "serper"
+   },
+   "environ": {}
+  },
+  "expect": "needs SERPER_API_KEY"
+ },
+ {
+  "id": "ready-search-serper-present",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "search",
+   "arms": {
+    "search-backend": "serper"
+   },
+   "environ": {
+    "SERPER_API_KEY": "value-not-logged"
+   }
+  },
+  "expect": "ready"
+ },
+ {
+  "id": "needs-search-gemini-present-by-second-name",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "search",
+   "environ": {
+    "GOOGLE_API_KEY": "value-not-logged"
+   }
+  },
+  "expect": "ready"
+ },
+ {
+  "id": "needs-papers-no-key",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "papers",
+   "environ": {}
+  },
+  "expect": "needs GEMINI_API_KEY"
+ },
+ {
+  "id": "ready-papers-openalex",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "papers",
+   "arms": {
+    "know-the-world": "openalex"
+   },
+   "environ": {}
+  },
+  "expect": "ready"
+ },
+ {
+  "id": "ready-recall-zero-config",
+  "area": "one-line",
+  "kind": "needs",
+  "args": {
+   "seat": "recall",
+   "environ": {}
+  },
+  "expect": "ready"
+ },
+ {
+  "id": "alias-ask",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": null
+  },
+  "expect": "model-call"
+ },
+ {
+  "id": "alias-answer",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": "answer"
+  },
+  "expect": "model-call"
+ },
+ {
+  "id": "alias-search",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": "search"
+  },
+  "expect": "search-backend"
+ },
+ {
+  "id": "alias-scholarly",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": "scholarly"
+  },
+  "expect": "know-the-world"
+ },
+ {
+  "id": "alias-recall",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": "recall"
+  },
+  "expect": "card-store"
+ },
+ {
+  "id": "alias-unknown-refused",
+  "area": "one-line",
+  "kind": "alias",
+  "args": {
+   "seat": "nonsense"
+  },
+  "expect": "refused"
+ },
+ {
+  "id": "run-recall-empty-store",
+  "area": "one-line",
+  "kind": "run",
+  "args": {
+   "seat": "recall",
+   "input": "anything",
+   "environ": {}
+  },
+  "expect": "answer '' with 0 items, 4 events"
+ },
+ {
+  "id": "run-search-no-key-raises-needs",
+  "area": "one-line",
+  "kind": "run",
+  "args": {
+   "seat": "search",
+   "input": "anything",
+   "environ": {}
+  },
+  "expect": "raised Needs naming GEMINI_API_KEY"
  }
 ]

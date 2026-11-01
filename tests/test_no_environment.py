@@ -1,4 +1,4 @@
-"""The hub reads no environment, and where it is run from or installed changes nothing (design doc R2, R5)."""
+"""Only one function reads the process environment (resolution.process_environment, behind the user-facing entry functions); where it is run from or installed changes nothing (design doc R2, R5)."""
 import ast
 import json
 import sys
@@ -19,15 +19,17 @@ SEAT = "choose-a-model-tier"
 HOSTILE = '[selection]\nchoose-a-model-tier = "evil"\n'
 
 
-def test_no_module_reads_the_environment():
+def test_no_module_reads_the_environment_except_the_one_entry_point():
     bad = []
     for path in (ROOT / "hubofhubs").rglob("*.py"):
         for node in ast.walk(ast.parse(path.read_text())):
             if isinstance(node, ast.Attribute) and node.attr in ("environ", "getenv", "putenv"):
-                bad.append(f"{path.name}:{node.lineno}")
+                bad.append(f"{path.relative_to(ROOT)}:{node.lineno}")
             if isinstance(node, ast.ImportFrom) and node.module == "os" and {a.name for a in node.names} & {"environ", "getenv"}:
                 bad.append(f"{path.name}:{node.lineno}")
-    assert not bad, f"environment reads in the hub: {bad}"
+    assert len(bad) == 1 and bad[0].startswith("hubofhubs/resolution.py:"), f"environment reads in the hub: {bad}"
+    source = (ROOT / "hubofhubs" / "resolution.py").read_text()
+    assert source.count("os.environ") == 1 and "def process_environment" in source
 
 
 def test_the_hub_default_resolves_and_names_its_layer():
