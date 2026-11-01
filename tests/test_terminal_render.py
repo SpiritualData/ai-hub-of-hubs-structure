@@ -176,6 +176,8 @@ def test_an_ask_for_someone_else_says_who_it_waits_on_and_hides_the_question_fro
 
 def test_no_decision_id_is_not_an_ask():
     assert render(ProgressEvent(type=EVENT_DECISION, text="Which file?", data={}), state()) == []
+    # a decision with an id but no question in its data is a parked approval or a clarifying question, not an ask
+    assert render(ProgressEvent(type=EVENT_DECISION, text="Which file?", decision_id="d9", data={}), state()) == []
 
 
 # -- a stopped reply -----------------------------------------------------------------------------------------------------------------

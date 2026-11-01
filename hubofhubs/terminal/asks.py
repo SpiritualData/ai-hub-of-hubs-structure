@@ -37,14 +37,15 @@ class AskAnswer:
 
 
 def ask_from_event(decision_id: str, data: Optional[Mapping[str, Any]], text: str = "") -> Optional[Ask]:
-    """An ask from a decision event (``decision_id`` and its ``data``). None when there is no decision id, so no ask exists."""
+    """An ask from a decision event (``decision_id`` and its ``data``). None when there is no decision id or the data holds no
+    ``question``: a decision that is only text (a parked approval, a clarifying question) is not an ask and keeps its own handling."""
     data = data or {}
     did = str(decision_id or data.get("decision_id") or "").strip()
     question = str(data.get("question") or "").strip()
-    if not did or not (question or text):
+    if not did or not question:
         return None
     options = tuple(str(o).strip() for o in (data.get("options") or []) if str(o).strip())
-    return Ask(did, question or str(text).strip(), str(data.get("why_only_you") or "").strip(), str(data.get("done") or "").strip(), options,
+    return Ask(did, question, str(data.get("why_only_you") or "").strip(), str(data.get("done") or "").strip(), options,
                str(data.get("assigned_to") or "").strip(), str(data.get("assigned_to_name") or "").strip(),
                str(data.get("asker_user_id") or "").strip())
 
