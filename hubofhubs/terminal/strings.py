@@ -110,6 +110,7 @@ EN: dict = {
     'replyUpdates.stopped.stalled': 'I stopped here because my last few tries were not getting anywhere.',
     'replyUpdates.stopped.attempt_cap': 'I stopped here after the most tries I can make on one reply.',
     'replyUpdates.stopped.tool_fault': 'I stopped here because something I needed to use failed.',
+    'replyUpdates.stopped.unverified': 'Some of this I could not confirm.',
     'replyUpdates.stopped.continue': 'Continue',
     'replyUpdates.stopped.continueA11y': 'Continue from where this stopped',
     'questAIScreen.continueAnalysis.message': 'Continue',

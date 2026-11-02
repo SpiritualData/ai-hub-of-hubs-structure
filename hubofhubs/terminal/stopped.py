@@ -6,7 +6,7 @@ from typing import Optional
 from .blocks import Block
 from .strings import say
 
-STOP_REASONS = ("budget", "stalled", "attempt_cap", "tool_fault")
+STOP_REASONS = ("budget", "stalled", "attempt_cap", "tool_fault", "unverified")
 #: What "Continue" sends as the next message (the Quest app sends the same word).
 CONTINUE_MESSAGE_KEY = "questAIScreen.continueAnalysis.message"
 
