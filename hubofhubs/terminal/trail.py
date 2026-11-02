@@ -367,6 +367,9 @@ def live_text(steps: List[Event], overrides=None) -> Optional[str]:
     # The link check is running: it fetches each address, so the line stays up until it settles.
     if any(step["state"] == "running" and step["kind"] == "check" for step in steps):
         return say(NS + "checkingLinks", overrides)
+    # The answer is being written: a pure liveness step of an unknown kind, so the summary never counts it.
+    if any(step["state"] == "running" and step["kind"] == "answer" for step in steps):
+        return say(NS + "composingAnswer", overrides)
     return None
 
 

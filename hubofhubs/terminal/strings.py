@@ -58,6 +58,7 @@ EN: dict = {
     'workTrace.lookingRecords': 'Looking through records',
     'workTrace.searchingWeb': 'Searching the web',
     'workTrace.checkingLinks': 'Checking the links',
+    'workTrace.composingAnswer': 'Putting the answer together',
     'workTrace.recordKind.quest': 'Quest',
     'workTrace.recordKind.reflection': 'Reflection',
     'workTrace.recordKind.goal': 'Goal',

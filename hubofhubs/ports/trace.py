@@ -31,7 +31,7 @@ from .events import EVENT_WORK_TRACE
 SCHEMA_VERSION = 1
 #: The presentation families a consumer has a treatment for. An unknown (but well-formed) kind is kept, and a consumer
 #: renders it as one generic row.
-KINDS = ("sources", "papers", "records", "check", "action", "notice")
+KINDS = ("sources", "papers", "records", "check", "action", "notice", "answer")
 STATES = ("running", "done", "failed")
 COUNT_KEYS = ("found", "read", "checked", "failed", "total")
 ITEM_KEYS = ("ref", "label", "sub", "kind", "visible_to_all")
