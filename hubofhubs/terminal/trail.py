@@ -364,6 +364,9 @@ def live_text(steps: List[Event], overrides=None) -> Optional[str]:
     # A web search that is running and has opened nothing yet: the step is running, which is all this line says.
     if any(step["state"] == "running" and step["kind"] == "sources" for step in steps):
         return say(NS + "searchingWeb", overrides)
+    # The link check is running: it fetches each address, so the line stays up until it settles.
+    if any(step["state"] == "running" and step["kind"] == "check" for step in steps):
+        return say(NS + "checkingLinks", overrides)
     return None
 
 
