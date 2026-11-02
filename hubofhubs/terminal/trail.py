@@ -141,6 +141,11 @@ def read_items(items: List[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
     return [i for i in items if i.get("kind") != "found"]
 
 
+def found_only_items(items: List[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
+    """The sites a search only listed (marked ``found``), as domains."""
+    return [i for i in items if i.get("kind") == "found" and domain_only(i.get("ref") or "")]
+
+
 # -- totals and clauses -----------------------------------------------------------------------------------------------------------
 
 def redact_for_shared(steps: List[Event]) -> List[Event]:
@@ -378,6 +383,14 @@ def expanded_groups(steps: List[Event], shared: bool = False, overrides=None) ->
                 continue
             notes = [say(NS + "couldNotOpen", ov, count=tot["failed"])] if tot["failed"] > 0 else []
             groups.append({"id": "sources", "title": say(NS + "group.sources", ov), "rows": rows, "notes": notes})
+        elif tot["kind"] == "sources" and tot["read"] == 0 and found_only_items(tot["items"]):
+            # A search that found results and opened no page: the sites it listed, by domain, each said as found and never as read.
+            listed = found_only_items(tot["items"])
+            rows = []
+            for i in listed:
+                title = page_title_of(i)
+                rows.append(say(NS + "foundRow", ov, domain=domain_only(i["ref"])) + (f"  {title}" if title else ""))
+            groups.append({"id": "found", "title": say(NS + "group.found", ov), "rows": rows, "notes": []})
         elif tot["kind"] == "papers" and tot["items"]:
             # A paper the line names shows only its title; one the line did not name shows both.
             clause = next((c for c in summary_clauses(steps) if c["key"] == "papersRead"), None)
