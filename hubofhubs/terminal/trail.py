@@ -173,7 +173,8 @@ def summary_clauses(steps: List[Event]) -> List[Dict[str, Any]]:
         elif t["kind"] == "sources":
             if t["read"] > 0:
                 out.append({"key": "sources", "count": t["read"]})
-            elif t["found"] > 0:
+            elif t["found"] > 0 and t["items"]:
+                # Results found, no page opened: a settled line only when the reply cited one of them (the emitter keeps only cited sites).
                 out.append({"key": "sourcesSearched", "count": t["found"]})
         elif t["kind"] == "papers":
             if t["read"] > 0:
