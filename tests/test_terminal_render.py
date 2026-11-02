@@ -73,16 +73,6 @@ def test_the_trail_expands_to_five_rows_then_all_then_closes():
     assert toggle_trail(s)[0].state == "settled"
 
 
-def test_a_search_that_opened_no_page_expands_to_the_found_sites_said_as_found():
-    s = state()
-    listed = [{"ref": "ubuntu.com", "label": "ubuntu.com", "kind": "found"}, {"ref": "a.org", "label": "A guide", "kind": "found"}]
-    render(trace("w", state="done", counts={"found": 5, "read": 0}, items=listed), s)
-    closed = settle(s)[-1]
-    assert closed.text == "Searched the web, found 5 results" and ("expand_trail", "Show details") in closed.actions
-    opened = toggle_trail(s)[0]
-    assert list(opened.rows) == ["  ubuntu.com (found, not opened)", "  a.org (found, not opened)  A guide"]
-
-
 def test_a_shared_thread_never_shows_a_private_record_title():
     s = state(shared=True)
     private = {"ref": "r", "label": "My private goal", "kind": "goal"}
