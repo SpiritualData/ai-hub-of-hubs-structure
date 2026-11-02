@@ -219,3 +219,10 @@ def test_the_renderers_import_no_ui_library_and_no_consumer():
                  for n in ([a.name for a in node.names] if isinstance(node, ast.Import) else [node.module or ""])}
         assert not names & {"textual", "rich", "prompt_toolkit", "quest_ai_runner"}, (path, names)
         assert "Quest AI Runner" not in text and "quest_ai_runner" not in text
+
+
+def test_an_unverified_reply_shows_its_words_and_no_continue_while_a_real_stop_keeps_continue():
+    from hubofhubs.terminal.stopped import stopped_block
+    done = stopped_block("stopped", "unverified")
+    assert done.text == "Some of this I could not confirm." and done.actions == ()
+    assert stopped_block("stopped", "attempt_cap").actions

@@ -20,6 +20,8 @@ def stopped_block(outcome: str, stop_reason: str, overrides=None, can_continue: 
     reason = stopped_reason(outcome, stop_reason)
     if reason is None:
         return None
+    # An unverified reply is complete, so no Continue (it would read as a failed turn); the Quest app does the same.
+    can_continue = can_continue and reason != "unverified"
     actions = (("continue", say("replyUpdates.stopped.continue", overrides)),) if can_continue else ()
     return Block(kind="stopped", text=say(f"replyUpdates.stopped.{reason}", overrides), state="stopped", fold_key="stopped",
                  style="muted", actions=actions)
