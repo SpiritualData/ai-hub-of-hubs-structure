@@ -11,7 +11,8 @@ import re
 from typing import Any, Mapping, Optional
 
 EN: dict = {
-    'workTrace.summarySearched': 'Searched the web, no page opened',
+    'workTrace.summarySearched_one': 'Searched the web, found {{count}} result',
+    'workTrace.summarySearched_other': 'Searched the web, found {{count}} results',
     'workTrace.summaryFoundPapers_one': 'Found {{count}} paper',
     'workTrace.summaryFoundPapers_other': 'Found {{count}} papers',
     'workTrace.summary.recordsOne': 'Used your record: {{a}}',
@@ -27,8 +28,8 @@ EN: dict = {
     'workTrace.summary.papersMore': 'Checked abstracts of papers by {{a}} and {{count}} more',
     'workTrace.summary.papers_one': 'Checked the abstract of {{count}} paper',
     'workTrace.summary.papers_other': 'Checked abstracts of {{count}} papers',
-    'workTrace.summary.records_one': 'Used {{count}} of your records',
-    'workTrace.summary.records_other': 'Used {{count}} of your records',
+    'workTrace.summary.records_one': 'Used {{count}} record',
+    'workTrace.summary.records_other': 'Used {{count}} records',
     'workTrace.summary.recordsTeamOne': "Used the team's record: {{a}}",
     'workTrace.summary.recordsTeamTwo': "Used the team's records: {{a}} and {{b}}",
     'workTrace.summary.recordsTeamMore_one': 'Used the team\'s record "{{a}}" and {{count}} more record',
@@ -53,6 +54,7 @@ EN: dict = {
     'workTrace.recordsUntitled_other': 'and {{count}} more without a title',
     'workTrace.showAll': 'Show all {{count}}',
     'workTrace.newestSite': 'Opened {{value}}',
+    'workTrace.lookingRecords': 'Looking through records',
     'workTrace.recordKind.quest': 'Quest',
     'workTrace.recordKind.reflection': 'Reflection',
     'workTrace.recordKind.goal': 'Goal',

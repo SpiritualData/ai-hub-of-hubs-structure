@@ -212,9 +212,8 @@ def has_expandable_detail(steps: List[Event], shared: bool = False) -> bool:
 
 
 def has_visible_work(steps: List[Event], shared: bool = False) -> bool:
-    records = next((k for k in totals_by_kind(steps) if k["kind"] == "records"), None)
-    records_speak = (not shared) or (records is not None and len(visible_titles(records, True)) > 0)
-    if any(c["key"] != "records" or records_speak for c in summary_clauses(steps)):
+    # A records count speaks for every viewer: counts-only, title-free.
+    if summary_clauses(steps):
         return True
     return bool(notice_steps(steps)) or removed_link_count(steps) > 0
 
@@ -235,7 +234,7 @@ def _records_sentence(steps: List[Event], shared: bool, ov) -> str:
     titles = [record_title_of(i) for i in visible_titles(tot, shared)]
     if shared:
         if not titles:
-            return ""
+            return say(NS + "summary.records", ov, count=tot["read"])
         if tot["read"] <= 2 and len(titles) == tot["read"]:
             return say(NS + "summary.recordsTeamOne", ov, a=titles[0]) if len(titles) == 1 else say(NS + "summary.recordsTeamTwo", ov, a=titles[0], b=titles[1])
         return say(NS + "summary.recordsTeamMore", ov, a=titles[0], count=max(1, tot["read"] - 1))
@@ -315,7 +314,7 @@ def summary_sentences(steps: List[Event], shared: bool = False, overrides=None) 
     if papers:
         out.append(_named("papers", _paper_names(steps), papers["count"], ov))
     if searched:
-        out.append(say(NS + "summarySearched", ov))
+        out.append(say(NS + "summarySearched", ov, count=searched["count"]))
     if found:
         out.append(say(NS + "summaryFoundPapers", ov, count=found["count"]))
     removed = removed_link_count(steps)
@@ -331,7 +330,7 @@ def summary_text(steps: List[Event], shared: bool = False, overrides=None) -> st
 
 
 def live_line_speaks(steps: List[Event]) -> bool:
-    """True when the live line has words to show: some step is running (not an action) and a page has been opened."""
+    """True when the live line has words to show: some step is running (not an action) and a page has been opened or records are being looked through."""
     return any(x["state"] == "running" and x["kind"] != "action" for x in steps) and live_text(steps) is not None
 
 
@@ -343,6 +342,9 @@ def live_text(steps: List[Event], overrides=None) -> Optional[str]:
         opened = read_items(step["items"]) if (step["counts"]["read"] or 0) > 0 else []
         if opened:
             return say(NS + "newestSite", overrides, value=domain_only(opened[-1]["ref"]))
+    # Records being looked through: title-free and number-free, for every viewer.
+    if any(step["state"] == "running" and step["kind"] == "records" for step in steps):
+        return say(NS + "lookingRecords", overrides)
     return None
 
 
