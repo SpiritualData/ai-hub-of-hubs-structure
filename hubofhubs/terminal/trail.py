@@ -361,6 +361,9 @@ def live_text(steps: List[Event], overrides=None) -> Optional[str]:
     # Records being looked through: title-free and number-free, for every viewer.
     if any(step["state"] == "running" and step["kind"] == "records" for step in steps):
         return say(NS + "lookingRecords", overrides)
+    # A web search that is running and has opened nothing yet: the step is running, which is all this line says.
+    if any(step["state"] == "running" and step["kind"] == "sources" for step in steps):
+        return say(NS + "searchingWeb", overrides)
     return None
 
 

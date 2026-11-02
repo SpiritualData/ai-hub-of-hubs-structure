@@ -56,6 +56,7 @@ EN: dict = {
     'workTrace.showAll': 'Show all {{count}}',
     'workTrace.newestSite': 'Opened {{value}}',
     'workTrace.lookingRecords': 'Looking through records',
+    'workTrace.searchingWeb': 'Searching the web',
     'workTrace.recordKind.quest': 'Quest',
     'workTrace.recordKind.reflection': 'Reflection',
     'workTrace.recordKind.goal': 'Goal',
