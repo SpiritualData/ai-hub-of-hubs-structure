@@ -34,7 +34,8 @@ def interim(done, why="", nxt=""):
 
 def test_the_live_line_is_the_newest_page_and_replaces_in_place():
     s = state()
-    assert render(trace("w", items=[]), s) == []                       # nothing opened: nothing shown
+    nothing_opened = render(trace("w", items=[]), s)                   # nothing opened: it only says it is searching
+    assert [(b.kind, b.text, b.fold_key) for b in nothing_opened] == [("trail_live", "Searching the web", "trail")]
     first = render(trace("w", items=[site("a.org")]), s)
     assert [(b.kind, b.text, b.fold_key) for b in first] == [("trail_live", "Opened a.org", "trail")]
     second = render(trace("w", items=[site("a.org"), site("https://www.b.org/x?q=1")], read=2), s)
