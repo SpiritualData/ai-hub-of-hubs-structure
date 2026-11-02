@@ -255,6 +255,15 @@ def _site_names(steps: List[Event]) -> List[str]:
     return seen
 
 
+def _cited_names(steps: List[Event]) -> List[str]:
+    seen: List[str] = []
+    for item in _items_of(steps, "sources"):
+        d = domain_only(item["ref"]) if item.get("kind") == "found" else ""
+        if d and d not in seen:
+            seen.append(d)
+    return seen
+
+
 def _paper_names(steps: List[Event]) -> List[str]:
     items = _items_of(steps, "papers")
     return [i["sub"] for i in items] if items and all(i.get("sub") for i in items) else []
@@ -315,7 +324,13 @@ def summary_sentences(steps: List[Event], shared: bool = False, overrides=None) 
     if papers:
         out.append(_named("papers", _paper_names(steps), papers["count"], ov))
     if searched:
-        out.append(say(NS + "summarySearched", ov, count=searched["count"]))
+        cited = _cited_names(steps)
+        if len(cited) == 1:
+            out.append(say(NS + "summary.citedOne", ov, a=cited[0]))
+        elif len(cited) == 2:
+            out.append(say(NS + "summary.citedTwo", ov, a=cited[0], b=cited[1]))
+        elif cited:
+            out.append(say(NS + "summary.citedMore", ov, a=cited[0], count=len(cited) - 1))
     if found:
         out.append(say(NS + "summaryFoundPapers", ov, count=found["count"]))
     removed = removed_link_count(steps)

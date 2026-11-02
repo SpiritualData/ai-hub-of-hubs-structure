@@ -11,8 +11,6 @@ import re
 from typing import Any, Mapping, Optional
 
 EN: dict = {
-    'workTrace.summarySearched_one': 'Searched the web, found {{count}} result',
-    'workTrace.summarySearched_other': 'Searched the web, found {{count}} results',
     'workTrace.summaryFoundPapers_one': 'Found {{count}} paper',
     'workTrace.summaryFoundPapers_other': 'Found {{count}} papers',
     'workTrace.summary.recordsOne': 'Used your record: {{a}}',
@@ -21,6 +19,9 @@ EN: dict = {
     'workTrace.summary.sitesOne': 'Read {{a}}',
     'workTrace.summary.sitesTwo': 'Read {{a}} and {{b}}',
     'workTrace.summary.sitesMore': 'Read {{a}} and {{count}} more sites',
+    'workTrace.summary.citedOne': 'Searched the web and cited {{a}}',
+    'workTrace.summary.citedTwo': 'Searched the web and cited {{a}} and {{b}}',
+    'workTrace.summary.citedMore': 'Searched the web and cited {{a}} and {{count}} more sites',
     'workTrace.summary.sites_one': 'Read {{count}} site',
     'workTrace.summary.sites_other': 'Read {{count}} sites',
     'workTrace.summary.papersOne': 'Checked the abstract of a paper by {{a}}',

@@ -77,6 +77,7 @@ FIXTURES = [
     ("four sites titled", [ev("w", "sources", counts={"read": 4, "failed": 1}, items=[site("a.org", "A page"), site("b.org"), site("c.org"), site("d.org")])], False),
     ("sites no names", [ev("w", "sources", counts={"read": 2})], False),
     ("searched only, cited", [ev("w", "sources", counts={"found": 4, "read": 0}, items=[site("a.org", kind="found")])], False),
+    ("searched only, cited four", [ev("w", "sources", counts={"found": 9, "read": 0}, items=[site(f"{c}.org", kind="found") for c in "abcd"])], False),
     ("searched only, uncited", [ev("w", "sources", counts={"found": 4, "read": 0}, items=[])], False),
     ("papers named", [ev("p", "papers", counts={"found": 30, "read": 2}, items=[paper("One", "Lee et al., 2021"), paper("Two", "Ng, 2019")])], False),
     ("papers many", [ev("p", "papers", counts={"found": 9, "read": 5}, items=[paper(str(i), f"Au{i}, 2020") for i in range(5)])], False),
