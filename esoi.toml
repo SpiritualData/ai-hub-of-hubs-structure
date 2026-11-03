@@ -15,7 +15,7 @@ shared_eval_dirs = ["__pycache__", "assemble_the_whole"]
 code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md"]
 
 [records]
-template_version = 1
+template_version = 3
 
 # Public evidence: others' measurements, shown beside our own results and never counted as one. The registry
 # hubofhubs/registry/hub_evidence.csv is the one source of truth; esoi/evidence.csv is derived from it by
