@@ -27,16 +27,16 @@ The table below is generated from the records.
 | Seat | Part of the mind | Areas | Built on now | Candidates researched | Oldest research |
 |---|---|---|---|---|---|
 | take-in-the-world | World | 7 | 1 | 36 | 2026-10-30 |
-| remember-and-recall | Subconscious, Intuition | 10 | 8 | 69 | 2026-10-30 |
 | reason-and-answer | Mind | 8 | 1 | 55 | 2026-10-30 |
 | know-the-world | Science | 10 | 2 | 73 | 2026-10-30 |
-| think-critically | Critical thinking | 4 | 4 | 18 | 2026-10-30 |
 | act-in-the-world | Body | 20 | 5 | 133 | 2026-10-30 |
 | watch-for-risk | Overseer | 5 | 5 | 29 | 2026-10-30 |
 | assemble-the-whole | The whole being | 3 | 1 | 6 | 2026-10-30 |
 | stay-current | Learning | 3 | 2 | 17 | 2026-10-30 |
 | keep-it-generic | Character | 3 | 2 | 12 | 2026-10-30 |
 | connect-any-integration | Hands | 0 | 0 | 0 | none |
+| think-critically | Critical thinking | 4 | 4 | 18 | 2026-10-30 |
+| remember-and-recall | Subconscious, Intuition | 10 | 8 | 69 | 2026-10-30 |
 
 73 areas and 448 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

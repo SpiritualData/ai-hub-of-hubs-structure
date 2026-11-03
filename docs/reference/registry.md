@@ -21,21 +21,6 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | vendor_mcp | First-party hosted MCP servers of the apps SD already uses | compared | coexist | none | Google Workspace MCP servers; Notion hosted MCP server; makenotion notion-mcp-server | 3 | 0 | 2026-10-30 |
 | inbound_events | Being told when something happens in an app instead of polling | compared | watch | none | Nango webhooks; Composio triggers; Pipedream triggers; Claude Code channels; MCP Tasks extension; Svix | 6 | 0 | 2026-10-30 |
 
-### remember-and-recall (Subconscious, Intuition)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| vector_store | Storing and searching scoped cards and chunks | builds_on | keep | Qdrant | LanceDB; Chroma; pgvector; Weaviate; Vespa; turbopuffer; sqlite-vec; MongoDB Community Search | 9 | 0 | 2026-10-30 |
-| embeddings | Turning text into vectors for the dense arm | builds_on | coexist | fastembed, Voyage embeddings | Qwen3-Embedding-0.6B; EmbeddingGemma-300m; BGE-M3; Gemini embedding | 4 | 2 | 2026-10-30 |
-| context_assembly | Choosing the context a turn sees | compared | coexist | bm25s, Qdrant and fastembed, bge-small-en-v1.5 | Qdrant native weighted RRF hybrid; Qwen3-Embedding-0.6B; EmbeddingGemma-300m; contextual retrieval prefix; LanceDB; PyLate; Haystack; LlamaIndex | 16 | 18 | 2026-10-30 |
-| code_context | Choosing files and symbols for a code task | compared | coexist | Agentic glob and grep inside Claude Code, QAR context cards | Aider repository map; Serena; Augment Context Engine; Cursor semantic search; tree-sitter repository map | 6 | 4 | 2026-10-30 |
-| reranking | Ordering a shortlist of candidate context | compared | coexist | cheap-model batched judge (QAR spec_selection) | Qwen3-Reranker; bge-reranker-v2-m3; Qdrant multivector rescoring; Cohere Rerank; Voyage rerank | 7 | 7 | 2026-10-30 |
-| memory | Remembering what a person taught over time | compared | coexist | QAR card store and conversation recall | Graphiti; Mem0; Hindsight; Cognee; Letta; Supermemory; LangMem; A-MEM | 9 | 0 | 2026-10-30 |
-| background_memory | Precomputing and whispering context while idle | compared | coexist | QAR anticipation engine and context updates feed | Letta sleep-time compute; claude-subconscious; Anthropic memory tool; LangMem background manager | 3 | 0 | 2026-10-30 |
-| context_compression | Keeping long runs inside the window | compared | keep | QAR prompt budget and recency window | Anthropic compaction and context editing patterns; Factory structured summarization; LLMLingua-2 | 3 | 0 | 2026-10-30 |
-| graph_rag | Answering cross-document and global questions over huge corpora | compared | keep | none | LightRAG; Microsoft LazyGraphRAG; HippoRAG 2; RAPTOR | 5 | 0 | 2026-10-30 |
-| science_provenance | Making a result re-derivable and shareable | compared | adopt | none | RO-Crate (rocrate); prov; MLflow; DVC; OpenLineage; nanopub; Snakemake | 7 | 0 | 2026-10-30 |
-
 ### reason-and-answer (Mind)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
@@ -63,15 +48,6 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | science_statistics | Pooling evidence and quantifying uncertainty | compared | coexist | none | PyMC; bambi; ArviZ; statsmodels; SciPy; PyMARE; DoWhy; EconML; pingouin | 9 | 0 | 2026-10-30 |
 | science_graph | Representing papers, constructs and theories as a graph | compared | adopt | none | SemOpenAlex; ORKG; Microsoft GraphRAG; LightRAG; Graphiti; Cognee; rdflib and pySHACL | 7 | 0 | 2026-10-30 |
 | science_estimate_truth | Estimating how likely a hypothesis is to hold | compared | keep | none | BrainBench; Co-Scientist tournament pattern; automated multi-model review of AI scientists | 3 | 0 | 2026-10-30 |
-
-### think-critically (Critical thinking)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| answer_verification | Checking an answer against the evidence it was built from | compared | coexist | none: no groundedness detector today, claim-vs-execution judge in core/orchestrator_judges.py and the structural sufficiency gate in hubofhubs/critique/sufficiency.py are the nearest | Vectara HHEM-2.1-Open; MiniCheck; Granite Guardian 4.1; Anthropic Citations; Amazon Bedrock contextual grounding; NeMo Guardrails fact-check rails | 9 | 1 | 2026-10-30 |
-| link_checking | No reply carries a link nobody checked | builds_on | keep | hubofhubs/critique/link_guard.py (803 lines) and link_detect.py | lychee | 1 | 0 | 2026-10-30 |
-| judging | Model-graded judging of answers and decisions | compared | coexist | QAR runtime judges (core/orchestrator_judges.py, quest_judge.py, reach_judge.py) and evaluation/components/claude_judge.py | DeepEval; Inspect AI; TruLens; promptfoo; Patronus Glider | 5 | 0 | 2026-10-30 |
-| metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 3 | 0 | 2026-10-30 |
 
 ### act-in-the-world (Body)
 
@@ -131,4 +107,28 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | prompts | Prompts as versioned, editable data with no consumer wording | compared | coexist | PromptSpec registry | Langfuse; MLflow Prompt Registry; Braintrust; BAML | 7 | 0 | 2026-10-30 |
 | observability | Seeing what a run did, what it cost and why | compared | adopt | none | OpenTelemetry GenAI conventions; Langfuse; Arize Phoenix | 3 | 0 | 2026-10-30 |
 | config | Typed, validated configuration per deployment | compared | coexist | QAR config modules | pydantic-settings; Hydra | 2 | 0 | 2026-10-30 |
+
+### think-critically (Critical thinking)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| answer_verification | Checking an answer against the evidence it was built from | compared | coexist | none: no groundedness detector today, claim-vs-execution judge in core/orchestrator_judges.py and the structural sufficiency gate in hubofhubs/critique/sufficiency.py are the nearest | Vectara HHEM-2.1-Open; MiniCheck; Granite Guardian 4.1; Anthropic Citations; Amazon Bedrock contextual grounding; NeMo Guardrails fact-check rails | 9 | 1 | 2026-10-30 |
+| link_checking | No reply carries a link nobody checked | builds_on | keep | hubofhubs/critique/link_guard.py (803 lines) and link_detect.py | lychee | 1 | 0 | 2026-10-30 |
+| judging | Model-graded judging of answers and decisions | compared | coexist | QAR runtime judges (core/orchestrator_judges.py, quest_judge.py, reach_judge.py) and evaluation/components/claude_judge.py | DeepEval; Inspect AI; TruLens; promptfoo; Patronus Glider | 5 | 0 | 2026-10-30 |
+| metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 3 | 0 | 2026-10-30 |
+
+### remember-and-recall (Subconscious, Intuition)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| vector_store | Storing and searching scoped cards and chunks | builds_on | keep | Qdrant | LanceDB; Chroma; pgvector; Weaviate; Vespa; turbopuffer; sqlite-vec; MongoDB Community Search | 9 | 0 | 2026-10-30 |
+| embeddings | Turning text into vectors for the dense arm | builds_on | coexist | fastembed, Voyage embeddings | Qwen3-Embedding-0.6B; EmbeddingGemma-300m; BGE-M3; Gemini embedding | 4 | 2 | 2026-10-30 |
+| context_assembly | Choosing the context a turn sees | compared | coexist | bm25s, Qdrant and fastembed, bge-small-en-v1.5 | Qdrant native weighted RRF hybrid; Qwen3-Embedding-0.6B; EmbeddingGemma-300m; contextual retrieval prefix; LanceDB; PyLate; Haystack; LlamaIndex | 16 | 18 | 2026-10-30 |
+| code_context | Choosing files and symbols for a code task | compared | coexist | Agentic glob and grep inside Claude Code, QAR context cards | Aider repository map; Serena; Augment Context Engine; Cursor semantic search; tree-sitter repository map | 6 | 4 | 2026-10-30 |
+| reranking | Ordering a shortlist of candidate context | compared | coexist | cheap-model batched judge (QAR spec_selection) | Qwen3-Reranker; bge-reranker-v2-m3; Qdrant multivector rescoring; Cohere Rerank; Voyage rerank | 7 | 7 | 2026-10-30 |
+| memory | Remembering what a person taught over time | compared | coexist | QAR card store and conversation recall | Graphiti; Mem0; Hindsight; Cognee; Letta; Supermemory; LangMem; A-MEM | 9 | 0 | 2026-10-30 |
+| background_memory | Precomputing and whispering context while idle | compared | coexist | QAR anticipation engine and context updates feed | Letta sleep-time compute; claude-subconscious; Anthropic memory tool; LangMem background manager | 3 | 0 | 2026-10-30 |
+| context_compression | Keeping long runs inside the window | compared | keep | QAR prompt budget and recency window | Anthropic compaction and context editing patterns; Factory structured summarization; LLMLingua-2 | 3 | 0 | 2026-10-30 |
+| graph_rag | Answering cross-document and global questions over huge corpora | compared | keep | none | LightRAG; Microsoft LazyGraphRAG; HippoRAG 2; RAPTOR | 5 | 0 | 2026-10-30 |
+| science_provenance | Making a result re-derivable and shareable | compared | adopt | none | RO-Crate (rocrate); prov; MLflow; DVC; OpenLineage; nanopub; Snakemake | 7 | 0 | 2026-10-30 |
 <!-- registry:end -->

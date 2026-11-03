@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from hubofhubs import AssemblyConfig, AssemblyError, assemble, registry, resolve  # noqa: E402
 from hubofhubs.resolution import HUB  # noqa: E402
+from esoi.intents import read_tree  # noqa: E402
 from hubofhubs import seats  # noqa: E402
 from hubofhubs.card import Card  # noqa: E402
 from hubofhubs.cardstore import LocalCardStore  # noqa: E402
@@ -19,8 +20,8 @@ SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssemb
          "choose-a-model-tier": seats.TierSelection, "read-registry-freshness": seats.FreshnessReading,
          "score-hub-connections": seats.HubScoring, "watch-for-risk": seats.RiskWatching,
          "know-the-world": seats.WorldKnowing, "act-in-the-world": seats.Acting}
-SOLUTIONS = registry.read("solutions.csv", ROOT / "esoi")
-IMPLEMENTATIONS = registry.read("implementations.csv", ROOT / "esoi")
+SOLUTIONS = read_tree(ROOT / "esoi", "solutions.csv")
+IMPLEMENTATIONS = read_tree(ROOT / "esoi", "implementations.csv")
 
 
 def test_the_seats_module_holds_only_protocol_classes_and_imports():

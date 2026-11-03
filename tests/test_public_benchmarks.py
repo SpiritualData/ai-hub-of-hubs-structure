@@ -4,6 +4,8 @@ import re
 from datetime import date
 from pathlib import Path
 
+from esoi.intents import read_tree
+
 ROOT = Path(__file__).resolve().parent.parent
 REGISTRY = ROOT / "hubofhubs" / "registry"
 
@@ -29,7 +31,7 @@ def read(path):
 
 
 def solution_ids():
-    return {row["solution_id"] for row in read(ROOT / "esoi" / "solutions.csv")}
+    return {row["solution_id"] for row in read_tree(ROOT / "esoi", "solutions.csv")}
 
 
 def is_link(value):

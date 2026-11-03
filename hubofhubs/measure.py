@@ -1,9 +1,7 @@
 """Reads the registry together with one consumer's code (a ``Binding``) and answers, per area, whether the hub-of-hubs idea
 holds. ``evaluate`` returns the per-area facts and the combined numbers; ``check`` answers one case."""
-import csv
-from pathlib import Path
-
 from esoi import implementation
+from esoi.intents import read_tree
 
 from . import registry, scan
 from .binding import Binding
@@ -15,10 +13,8 @@ KINDS = ("registered", "by_config", "fresh", "seam", "selectable", "core_clean",
 
 def solution_facts(records_dir, solution_id):
     """(authoritative metric id, implementation count, known) for a solution, from the consumer's ESOI records."""
-    with open(Path(records_dir) / "solutions.csv", newline="", encoding="utf-8") as handle:
-        solutions = {r["solution_id"]: r for r in csv.DictReader(handle)}
-    with open(Path(records_dir) / "implementations.csv", newline="", encoding="utf-8") as handle:
-        count = sum(1 for r in csv.DictReader(handle) if r["solution_id"] == solution_id)
+    solutions = {r["solution_id"]: r for r in read_tree(records_dir, "solutions.csv")}
+    count = sum(1 for r in read_tree(records_dir, "implementations.csv") if r["solution_id"] == solution_id)
     row = solutions.get(solution_id)
     return (row or {}).get("authoritative_metric_id", ""), count, row is not None
 

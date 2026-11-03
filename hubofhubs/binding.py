@@ -11,6 +11,6 @@ class Binding:
     root: Path                            # the consumer repository: evidence paths in the registry are relative to it
     seats: List[Dict[str, str]]           # per area: area, seam_solution_id (";" separated), vendor_terms, code_paths
     core_dir: Path                        # the code scanned for vendor-specific branches
-    records_dir: Path                     # the consumer's ESOI records (solutions.csv, implementations.csv)
+    records_dir: Path                     # the folder of the consumer's ESOI records: read as the whole tree (esoi.intents.read_tree)
     names_of: Callable[[str], List[str]]  # solution id -> the implementation names its code declares
     probes: Dict[str, Callable[[], Tuple[bool, str]]] = field(default_factory=dict)   # area -> prove a fake hub by config

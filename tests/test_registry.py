@@ -188,9 +188,9 @@ def test_connection_checks_are_cases_only_for_seats_with_an_area_that_should_be_
 
 
 def test_every_area_maps_to_a_seat_of_the_mind():
-    from esoi.tables import read_csv
+    from esoi.intents import read_tree
     root = Path(__file__).resolve().parent.parent
-    solutions = {r["solution_id"] for r in read_csv(root / "esoi" / "solutions.csv")}
+    solutions = {r["solution_id"] for r in read_tree(root / "esoi", "solutions.csv")}
     hubs = registry.read("hubs.csv")
     assert all(r["seat"] in solutions for r in hubs), [r["area"] for r in hubs if r["seat"] not in solutions]
     assert len(registry.seat_ids(hubs)) <= 12

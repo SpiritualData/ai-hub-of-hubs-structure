@@ -9,7 +9,7 @@ what differs from general practice; the `README.md` explains the idea.
 - **Public hygiene.** No real person names, email addresses, ids, organization-private details or absolute machine paths.
   The organization name SpiritualData and this repo's name are fine.
 - **No em dashes** in any text, record or prompt.
-- **Records are the source.** `esoi/*.csv` define the intent, problems, ideals, solutions and metrics. Descriptive
+- **Records are the source, kept beside the code.** `esoi/intent.csv` is the top intent; each solution's problems, ideals, solutions, implementations and metrics live once, in the folder that holds its code (`hubofhubs/<area>/*.csv`, rows that span areas in `hubofhubs/*.csv`), with a generated `README.md` in each; `esoi.toml` lists them under `[records] beside_code`, and `esoi records place --apply` puts a new row where it belongs (standard: `docs/reference/records-beside-code.md` in the esoi repository). Read them as one tree (`esoi.intents.read_tree`), never one file. Descriptive
   wording belongs to the owner: an AI adds only ids, links, paths and commands, and flags new prose
   "unconfirmed: for Joshua to confirm". Do not invent implementations; a seat with none stays "no arm yet".
 - **Selection by metric only.** Set `selected` from the seat's metric result, never from preference.

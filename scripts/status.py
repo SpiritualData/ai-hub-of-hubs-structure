@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT))
 
 from esoi import config as esoi_config  # noqa: E402
 from esoi import registry as esoi_registry  # noqa: E402
+from esoi.intents import read_tree  # noqa: E402
 from esoi.tables import read_csv  # noqa: E402
 from hubofhubs import evidence_summary, render_docs, requirements_doc  # noqa: E402
 
@@ -28,10 +29,10 @@ TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render
 
 
 def seats():
-    """``(seat id, part of the mind)`` for each mind seat in ``esoi/solutions.csv``, in the file's order. A mind seat is named
+    """``(seat id, part of the mind)`` for each mind seat in the records tree (``esoi.intents.read_tree``), in reading order. A mind seat is named
     ``<id>: the <part> seat``; a seat with no researched area still appears, with 0."""
     out = []
-    for row in read_csv(ROOT / "esoi" / "solutions.csv"):
+    for row in read_tree(ROOT / "esoi", "solutions.csv"):
         found = re.fullmatch(r"[a-z-]+: the (.+) seat", row["name"])
         if found:
             out.append((row["solution_id"], found.group(1)))

@@ -87,20 +87,20 @@ Named areas and implementations with no recorded run, and why. `esoi leaderboard
 
 <!-- unmeasured:start -->
 - **`take-in-the-world`** (World): measured in part. Only web search is measured; agent harnesses, tools and MCP servers have no check yet.
-- **`remember-and-recall`** (Subconscious, Intuition): measured in part. Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet.
 - **`reason-and-answer`** (Mind): measured in part. Only tier choice, provider failover, vendor answers and hard maths (AIME 2025) are measured; planning and answering live in Quest AI Runner and have no check here yet.
-- **`think-critically`** (Critical thinking): not measured. One arm exists (links held to their evidence): no run of it is recorded and no cases are written yet. The research page names a public candidate.
 - **`act-in-the-world`** (Body): measured in part. Only file-editing goals are measured; writing through MCP operations has no check.
 - **`assemble-the-whole`** (The whole being): measured in part. One scenario, with no rival, so there is no lead to test.
 - **`stay-current`** (Learning): measured in part. The freshness reading is measured; the weekly research itself is run by the consumer's autopilot and is not an arm here.
 - **`keep-it-generic`** (Character): not measured. The audit of vendor wording runs as a scan in the tests, and no run of it is recorded.
 - **`connect-any-integration`** (Hands): measured in part. Connection scoring is measured; the zero-code connect flow for a real integration is not run end to end here.
+- **`think-critically`** (Critical thinking): not measured. One arm exists (links held to their evidence): no run of it is recorded and no cases are written yet. The research page names a public candidate.
+- **`remember-and-recall`** (Subconscious, Intuition): measured in part. Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet.
 - **`act-in-the-world`**, arms with no run: `acp_deep_runner` (file_edit_goals). The agent binary it needs is not installed where we measure.
-- **`search-backend`**, arms with no run: `searxng`, `brave`, `serper`, `tavily`. The arm needs a key or a self-hosted instance that is not set where we measure.
 - **`context-assembler`**, arms with no run: `hybrid`, `composite`. Embedding the corpus was not authorized for the public stage.
 - **`context-assembler`**, arms with no run: `composite` (context_assembler_papers). Not run yet; bm25, vector and hybrid were run.
 - **`cards-from-files`**, arms with no run: `llm_topic_cards`. No run is recorded yet.
 - **`cards-from-files`**, arms with no run: `per_file_symbols`, `graphify_files`. Not built yet: recorded in step 5b with the component.
+- **`search-backend`**, arms with no run: `searxng`, `brave`, `serper`, `tavily`. The arm needs a key or a self-hosted instance that is not set where we measure.
 <!-- unmeasured:end -->
 
 ## For a consumer

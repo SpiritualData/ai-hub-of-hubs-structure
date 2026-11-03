@@ -12,6 +12,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+from esoi.intents import read_tree
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "reference" / "baseline.json"
 TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py", "tests/test_no_environment.py",
@@ -42,9 +44,8 @@ def measure() -> dict:
         cov = coverage.Coverage(data_file=data)
         cov.load()
         owner = {}
-        with open(ROOT / "esoi" / "implementations.csv", newline="") as handle:
-            for row in csv.DictReader(handle):
-                owner[(ROOT / row["filepath"]).resolve()] = row["implementation_id"]
+        for row in read_tree(ROOT / "esoi", "implementations.csv"):
+            owner[(ROOT / row["filepath"]).resolve()] = row["implementation_id"]
         totals: dict = {}
         for name in cov.get_data().measured_files():
             path = Path(name).resolve()

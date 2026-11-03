@@ -14,10 +14,16 @@ results = "esoi/results.csv"
 # The coverage of the whole assembly is recorded by `esoi run assemble_the_whole --impl zero_config --record`; the solution has no arm to select, so it is a shared
 # evaluation folder and not the command of a metric.
 shared_eval_dirs = ["__pycache__", "assemble_the_whole"]
-code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md"]
+# The records beside the code (see [records] beside_code) are not measured code either.
+code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md", ":(exclude,glob)hubofhubs/**/problems.csv",
+              ":(exclude,glob)hubofhubs/**/ideals.csv", ":(exclude,glob)hubofhubs/**/solutions.csv", ":(exclude,glob)hubofhubs/**/implementations.csv",
+              ":(exclude,glob)hubofhubs/**/metrics.csv"]
 
 [records]
 template_version = 4
+# Each solution's records live once, in the folder that holds its code (docs/reference/records-beside-code.md in the esoi repository).
+# The top intent stays in esoi/; `esoi records place --apply` moves records here, `esoi readmes` writes the page of each folder.
+beside_code = ["hubofhubs", "hubofhubs/*"]
 
 # Public evidence: others' measurements, shown beside our own results and never counted as one. The registry
 # hubofhubs/registry/hub_evidence.csv is the one source of truth; esoi/evidence.csv is derived from it by

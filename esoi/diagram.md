@@ -9,48 +9,48 @@ An arrow runs from the solution that provides to the solution that builds on it;
 ```mermaid
 flowchart LR
     s0["take-in-the-world: the World seat<br/>take-in-the-world"]
-    s1["remember-and-recall: the Subconscious...<br/>remember-and-recall"]
-    s2["reason-and-answer: the Mind seat<br/>reason-and-answer"]
-    s3["choose-a-model-tier: pick the model for...<br/>choose-a-model-tier"]
-    s4["know-the-world: the Science seat<br/>know-the-world"]
-    s5["think-critically: the Critical thinking...<br/>think-critically"]
-    s6["act-in-the-world: the Body seat<br/>act-in-the-world"]
-    s7["watch-for-risk: the Overseer seat<br/>watch-for-risk"]
-    s8["assemble-the-whole: the The whole being...<br/>assemble-the-whole"]
-    s9["stay-current: the Learning seat<br/>stay-current"]
-    s10["read-registry-freshness: how old is...<br/>read-registry-freshness"]
-    s11["keep-it-generic: the Character seat<br/>keep-it-generic"]
-    s12["connect-any-integration: the Hands seat<br/>connect-any-integration"]
-    s13["score-hub-connections: how much of an...<br/>score-hub-connections"]
-    s14["card-store: a place to keep and find...<br/>card-store"]
-    s15["model-call: ask a model one question<br/>model-call"]
-    s16["search-backend: run one web search<br/>search-backend"]
-    s17["call-a-model: ask a vendor's model to...<br/>call-a-model"]
-    s18["context-assembler: pick the context a...<br/>context-assembler"]
-    s19["cards-from-files: cards for a folder<br/>cards-from-files"]
-    s0 -->|"Outside material for a task, from the search backends"| s8
-    s1 -->|"The cards a task needs, in one rendered view with their ids"| s8
-    s2 -->|"An answer worked out through measured model calls"| s8
-    s3 -->|"A mapping from each tier to the chosen provider and model"| s2
-    s3 -->|"A mapping from each tier to the chosen provider and model"| s6
-    s4 -->|"Observations about the world a reader can cite"| s0
-    s5 -->|"The findings, one per claim the evidence does not support..."| s8
-    s6 -->|"A DeepResult that says whether the goal was met, with the..."| s8
-    s7 -->|"One signal: proceed, redirect, answer_now, escalate_deep or..."| s8
-    s9 -->|"Each seat's candidates, researched and dated this week"| s11
-    s10 -->|"Days since the date, or the combined freshness reading with..."| s9
-    s11 -->|"Seats whose wording is data, whose arms are current and..."| s8
-    s12 -->|"An integration as a catalog entry, with its connection..."| s11
-    s13 -->|"Per-area checks and a combined score"| s12
-    s14 -->|"The stored cards, and the cards matching a query or a tag"| s1
-    s15 -->|"The text a model answers to one prompt at a tier"| s2
-    s15 -->|"The text a model answers to one prompt at a tier"| s4
-    s16 -->|"Hits for a query: title, link and snippet per hit"| s0
-    s16 -->|"Hits for a query: title, link and snippet per hit"| s4
-    s17 -->|"Text, a plan or a list of models"| s6
-    s17 -->|"Text, a plan or a list of models"| s7
-    s17 -->|"Text, a plan or a list of models"| s15
-    s17 -->|"Text, a plan or a list of models"| s19
-    s18 -->|"An assembled context view and the ids of the cards it drew..."| s1
-    s19 -->|"Cards in the card-store record shape (grouping, summary..."| s1
+    s1["reason-and-answer: the Mind seat<br/>reason-and-answer"]
+    s2["choose-a-model-tier: pick the model for...<br/>choose-a-model-tier"]
+    s3["know-the-world: the Science seat<br/>know-the-world"]
+    s4["act-in-the-world: the Body seat<br/>act-in-the-world"]
+    s5["watch-for-risk: the Overseer seat<br/>watch-for-risk"]
+    s6["assemble-the-whole: the The whole being...<br/>assemble-the-whole"]
+    s7["stay-current: the Learning seat<br/>stay-current"]
+    s8["read-registry-freshness: how old is...<br/>read-registry-freshness"]
+    s9["keep-it-generic: the Character seat<br/>keep-it-generic"]
+    s10["connect-any-integration: the Hands seat<br/>connect-any-integration"]
+    s11["score-hub-connections: how much of an...<br/>score-hub-connections"]
+    s12["card-store: a place to keep and find...<br/>card-store"]
+    s13["think-critically: the Critical thinking...<br/>think-critically"]
+    s14["model-call: ask a model one question<br/>model-call"]
+    s15["call-a-model: ask a vendor's model to...<br/>call-a-model"]
+    s16["remember-and-recall: the Subconscious...<br/>remember-and-recall"]
+    s17["context-assembler: pick the context a...<br/>context-assembler"]
+    s18["cards-from-files: cards for a folder<br/>cards-from-files"]
+    s19["search-backend: run one web search<br/>search-backend"]
+    s0 -->|"Outside material for a task, from the search backends"| s6
+    s1 -->|"An answer worked out through measured model calls"| s6
+    s2 -->|"A mapping from each tier to the chosen provider and model"| s1
+    s2 -->|"A mapping from each tier to the chosen provider and model"| s4
+    s3 -->|"Observations about the world a reader can cite"| s0
+    s4 -->|"A DeepResult that says whether the goal was met, with the..."| s6
+    s5 -->|"One signal: proceed, redirect, answer_now, escalate_deep or..."| s6
+    s7 -->|"Each seat's candidates, researched and dated this week"| s9
+    s8 -->|"Days since the date, or the combined freshness reading with..."| s7
+    s9 -->|"Seats whose wording is data, whose arms are current and..."| s6
+    s10 -->|"An integration as a catalog entry, with its connection..."| s9
+    s11 -->|"Per-area checks and a combined score"| s10
+    s12 -->|"The stored cards, and the cards matching a query or a tag"| s16
+    s13 -->|"The findings, one per claim the evidence does not support..."| s6
+    s14 -->|"The text a model answers to one prompt at a tier"| s1
+    s14 -->|"The text a model answers to one prompt at a tier"| s3
+    s15 -->|"Text, a plan or a list of models"| s4
+    s15 -->|"Text, a plan or a list of models"| s5
+    s15 -->|"Text, a plan or a list of models"| s14
+    s15 -->|"Text, a plan or a list of models"| s18
+    s16 -->|"The cards a task needs, in one rendered view with their ids"| s6
+    s17 -->|"An assembled context view and the ids of the cards it drew..."| s16
+    s18 -->|"Cards in the card-store record shape (grouping, summary..."| s16
+    s19 -->|"Hits for a query: title, link and snippet per hit"| s0
+    s19 -->|"Hits for a query: title, link and snippet per hit"| s3
 ```
