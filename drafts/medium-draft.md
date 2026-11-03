@@ -8,7 +8,7 @@ A draft article for the owner to edit, about 900 words. The line between the mar
 # Which AI part is actually best? We measure the alternatives on the same cases
 
 <!-- headline-compact:start -->
-36 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
+34 alternatives measured across 7 areas, from 448 researched candidates. By area: RAG retrieval 6, LLM routing and failover 1, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
 <!-- headline-compact:end -->
 
 ## The problem with lists
@@ -29,7 +29,7 @@ Three rules do most of the work.
 
 First, every arm of a seat runs on exactly the same cases with the same budget. We record the pass rate with its 95% interval, the cost per passing case and the seconds per case.
 
-Second, a challenger replaces the selected arm only when a one-sided exact paired test on the shared cases gives p below 0.05, with a correction when there are several rivals. If the test cannot show the challenger is better, the incumbent stays and the page says how many cases the two arms disagree on. More cases settle it, never a hand-picked margin.
+Second, a challenger replaces the selected arm only when a two-sided exact paired test on the held-out cases gives p below 0.05, with a correction when there are several rivals. If the test cannot show the challenger is better, the incumbent stays and the page says how many cases the two arms disagree on. More cases settle it, never a hand-picked margin.
 
 Third, what other people measured sits beside our results and never inside them. Each public number keeps its source, who ran it, whether the method is disclosed, how many cases it used and its known confounds, and is graded A to D. A vendor reporting its own product is never above D. Public evidence helps decide which arms are worth building and acts as a check when it disagrees with us; it does not move our numbers.
 
@@ -40,7 +40,7 @@ Baselines and floors, such as "no overseer at all", are run so that a real arm h
 The numbers below are generated from the results file each time the README is rebuilt.
 
 <!-- headline-compact:start -->
-36 alternatives measured across 8 areas, from 448 researched candidates. By area: Memory store 1, RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
+34 alternatives measured across 7 areas, from 448 researched candidates. By area: RAG retrieval 6, LLM routing and failover 1, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 3, Guardrails and oversight 3.
 <!-- headline-compact:end -->
 
 Areas in the list are the ones people building agents tend to ask about: retrieval for RAG, the models themselves, routing and failover between providers, web search APIs, scholarly search, coding agents, guardrails and a memory store. The README has the full table, with the cases and their source for each check.

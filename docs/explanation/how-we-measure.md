@@ -22,21 +22,25 @@ The rule is the same for every seat, and pragmatic for each one:
 
 1. **The arm with the highest result on the seat's one authoritative metric, at the latest comparable stage, is used by
    default.** Arms are compared only on identical cases (the same case file hash and the same sample).
-2. **The page says how firm the lead is.** A lead is labelled *significant* when a one-sided exact paired test on the shared
-   cases gives p below 0.05 (exact McNemar for pass or fail per case, an exact sign test for a per-case score, Fisher's exact
-   test on aggregates), with Holm's correction across the rivals of the seat. Otherwise it is labelled *best guess, not yet
-   significant*. The README evidence table uses these same two labels in its lead column.
-3. **An exact tie keeps the current arm.**
-4. **A seat or project that serves production users may require significance before switching.** No seat in this repository
+2. **A project may keep reporting cases out of the choice.** `[selection] holdout = 0.3` in `esoi.toml` is opt-in: it splits every case
+   set by a hash of the case id, the leader is chosen on one part and every rate, interval and test is computed on the other. This
+   repository does not set it, so its claims are in-sample and say so.
+3. **The page says how firm the lead is.** A lead is labelled *significant* when a two-sided exact test on the shared cases gives
+   p below 0.05 (exact McNemar for pass or fail per case, an exact sign test for a per-case score, Fisher's exact test on
+   aggregates), with Holm's correction across the rivals of the seat and alpha divided by the number of stages the pair was run at
+   (3, 10, 30 cases and the full set are four looks). The test is two-sided because the direction of a lead is read from the data.
+   Otherwise it is labelled *best guess, not yet significant*. The README evidence table states the test and p for every rival.
+4. **An exact tie keeps the current arm.**
+5. **A seat or project that serves production users may require significance before switching.** No seat in this repository
    does, so a better arm is used right away and its label says how firm the lead is.
-5. **Cost and speed count only through the metric.** The selection rule adds nothing of its own: the seat's metric (which may
+6. **Cost and speed count only through the metric.** The selection rule adds nothing of its own: the seat's metric (which may
    combine pass rate, cost per case and seconds per case with stated weights and a reason) already weighs what matters for
    that seat.
-6. **The highest stage is sized so a real difference can reach significance.** The page shows p and the number of cases the two
+7. **The highest stage is sized so a real difference can reach significance.** The page shows p and the number of cases the two
    arms disagree on, so a reader sees when a stage is too small to settle a question; running the next, larger stage is how it
    is settled, never a hand-picked margin.
-7. **Consumers can pin selections** with `esoi lock` and update on their own schedule ([pin selections for production](https://github.com/JoshuaMathias/evolvable-structure/blob/main/docs/how-to/pin-selections-for-production.md)).
-8. The selected arm is set from these results by the tool (`esoi select`), never by preference.
+8. **Consumers can pin selections** with `esoi lock` and update on their own schedule ([pin selections for production](https://github.com/JoshuaMathias/evolvable-structure/blob/main/docs/how-to/pin-selections-for-production.md)).
+9. The selected arm is set from these results by the tool (`esoi select`), never by preference.
 
 ## Public evaluations
 
@@ -59,12 +63,12 @@ add-on has to earn its place over the model and harness as they are.
 
 The README headline counts distinct arms (an arm that appears in two stages of one area counts once) that have a recorded whole run
 in `esoi/results.csv`, grouped by the area label of their check in `docs/reference/evidence-labels.csv`. Not counted: baselines and floors
-(an arm whose module opens with BASELINE, FLOOR, ABLATION or VALIDITY, such as `none` and `single_provider`), and checks with no area
-label, which are mechanics of this repository (the single-scenario assembly, the freshness reading, the connection scorer, the
-one-call model wrapper). A partial sample run does not count on its own. Arms named by a metric but not yet run are listed under
+(an arm whose module opens with BASELINE, FLOOR, ABLATION or VALIDITY, such as `none` and `single_provider`), and conformance tests: checks whose cases are
+written in this repository and that have no rival arm (the card store, the tier choice, the one-call model wrapper, the freshness reading,
+the connection scorer). They are listed apart in the README and in [the leaderboard](../reference/leaderboard.md) and never counted. A partial sample run does not count on its own. Arms named by a metric but not yet run are listed under
 "What is not measured yet", not counted.
 
 ## Reproduce
 
-Every number on the evidence page comes from `esoi/results.csv` and `esoi/per_case.csv`, each row with its commit and
+Every number on the evidence page and in the [leaderboard](../reference/leaderboard.md) comes from `esoi/results.csv` and `esoi/per_case.csv`, each row with its commit and
 case hash. `esoi run <component> --impl <arm> --record` re-runs one arm; the cases are in `evaluation/<component>/`.

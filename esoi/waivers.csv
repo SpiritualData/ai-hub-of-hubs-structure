@@ -1,26 +1,18 @@
 rule,path,reason
-S26,card-store,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,stay-current,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,connect-any-integration,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,reason-and-answer,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,model-call,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,card-store,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,stay-current,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,connect-any-integration,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,reason-and-answer,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,model-call,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
 S24,search-backend:searxng,Not measured: no credential (SEARXNG_URL is not set and public instances are not used). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,search-backend:brave,Not measured: no credential (no Brave key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,search-backend:serper,Not measured: no credential (no Serper key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,search-backend:tavily,Not measured: no credential (no Tavily key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
-S26,know-the-world,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,search-backend,"unconfirmed: for Joshua to confirm. The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,know-the-world,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
+S26,search-backend,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
 S24,context-assembler:hybrid,"Not measured: embedding budget not authorized. The arm shares the vector arm's embedded index, and embedding a corpus needs a person's authorization. Wired in evaluation/context_assembler/score.py."
 S24,context-assembler:composite,"Not measured: embedding budget not authorized. The arm shares the vector arm's embedded index, and embedding a corpus needs a person's authorization. Wired in evaluation/context_assembler/score.py."
-S33,watch-for-risk,"Best guess, not significant: taken over the explicit and the ambiguous risk cases together the overseer has the highest total and is clearly ahead on the ambiguous set; consent_gate leads only on the explicit set. The two sets are separate comparisons in the cascade, so the seat keeps the arm that is highest overall."
 S24,act-in-the-world:acp_deep_runner,Not measured: its agent binary (claude-agent-acp) is not installed on the measuring machine and no global tool is installed for a measurement. The arm needs a model-backed agent binary to attempt the file-edit goals.
-S33,context-assembler,"Best guess, not significant: the English analyzer is an option of the bm25 arm (a setting for prose, off for code and identifiers), and the paired test does not show it better on the shared queries; vector leads on the paraphrase queries but needs embeddings that are not authorized, so the seat keeps the zero-service arm until they are."
-S10,know-the-world:openalex_semantic,"Pending decision, not significant: on the larger paper stage the semantic arm alone is slightly ahead of the combined arm, but the paired test does not show it better, and the combined arm leads the fact-and-web stage and serves both studies and facts, so the seat keeps the combined arm."
-S10,"act-in-the-world:stream_json_goal_runner,subprocess_goal_runner","The balanced score is this seat's metric (accuracy, cost and time, weights in the configuration): the Claude Code runners edit as accurately but cost and take far more, so fast_edit leads on the metric even though they match or pass it on raw pass rate."
-S33,act-in-the-world,"The cascade reads the raw pass rate; the seat's authoritative metric is the balanced score (accuracy, cost, time), on which fast_edit leads. The cascade will follow once it ranks by the balanced column."
-S10,"watch-for-risk:consent_gate,two_stage",See the S33 waiver: the overseer is the highest arm taken over both risk sets; the arms that beat it do so on one set only.
-S10,"context-assembler:bm25@analyzer=english,vector","See the S33 waiver: the English analyzer is a setting of the bm25 arm, and vector needs embeddings that are not authorized."
 S24,cards-from-files:per_file_symbols,Not built yet: recorded in step 5b with the component.
 S24,cards-from-files:graphify_files,Not built yet: recorded in step 5b with the component.
 S10,cards-from-files:unmeasured,Pending decision: llm_topic_cards is what production runs today and has no recorded row yet; its one and whole stages run under the metric run policy in step 5b.
-S33,know-the-world,"Pending decision, not significant: on the larger paper stage openalex_semantic alone is slightly ahead of the combined arm; the selection commit that follows switches the seat to it under the standing rule on all cases."

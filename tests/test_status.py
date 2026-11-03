@@ -41,8 +41,9 @@ def test_generated_files_are_current():
 # cap once research was broken into sub-solution areas). The area detail lives in docs/reference/registry.md, which is generated, not capped.
 def test_readme_stays_small():
     readme = (status.ROOT / "README.md").read_text()
-    assert status.rewrite(readme, status.build()) == readme
     assert len(readme.splitlines()) <= 150
+    page = (status.ROOT / "docs" / "explanation" / "the-mind-map.md").read_text()   # the seats table lives on the mind map page
+    assert status.rewrite(page, status.build()) == page
 
 
 def test_the_detail_file_shows_each_areas_call():

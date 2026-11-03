@@ -15,7 +15,7 @@ from esoi import registry as esoi_registry  # noqa: E402
 from esoi.tables import read_csv  # noqa: E402
 from hubofhubs import evidence_summary, render_docs, requirements_doc  # noqa: E402
 
-TARGETS = (("README.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
+TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("docs/reference/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
            ("README.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
            ("drafts/announcement-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
@@ -23,6 +23,7 @@ TARGETS = (("README.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("README.md", evidence_summary.EVIDENCE_BEGIN, evidence_summary.EVIDENCE_END),
            ("README.md", evidence_summary.UNMEASURED_BEGIN, evidence_summary.UNMEASURED_END),
            ("docs/reference/evidence-by-arm.md", evidence_summary.ARMS_BEGIN, evidence_summary.ARMS_END),
+           ("docs/reference/leaderboard.md", evidence_summary.LEADERBOARD_BEGIN, evidence_summary.LEADERBOARD_END),
            ("docs/reference/requirements-by-arm.md", requirements_doc.BEGIN, requirements_doc.END))
 
 
@@ -62,6 +63,7 @@ def blocks():
             evidence_summary.EVIDENCE_BEGIN: evidence_summary.evidence_block(config, registry, ROOT),
             evidence_summary.UNMEASURED_BEGIN: evidence_summary.unmeasured_block(config, registry, ROOT),
             evidence_summary.ARMS_BEGIN: evidence_summary.arms_block(config, registry),
+            evidence_summary.LEADERBOARD_BEGIN: evidence_summary.leaderboard_block(config, registry, ROOT),
             requirements_doc.BEGIN: requirements_doc.requirements_block()}
 
 

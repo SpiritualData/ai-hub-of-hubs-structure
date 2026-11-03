@@ -15,18 +15,37 @@ def recorded_components():
     return {row["component"] for row in csv.DictReader(open(ROOT / "esoi" / "results.csv"))}
 
 
-def test_every_recorded_component_appears_in_the_evidence_table_and_by_arm():
+def test_every_recorded_component_appears_in_the_leaderboard_and_by_arm():
     config, registry = status.records()
-    block = evidence_summary.evidence_block(config, registry, ROOT)
+    board = evidence_summary.leaderboard_block(config, registry, ROOT)
     by_arm = evidence_summary.arms_block(config, registry)
     for component in recorded_components():
         assert component in by_arm, component
-    assert len([line for line in block.splitlines() if line.startswith("| `")]) == len(recorded_components())
+    records = evidence_summary.claims(config, registry, ROOT)
+    assert {r["component"] for r in records} == recorded_components()
+    rival_rows = [line for line in board.split("### Conformance tests")[0].splitlines() if line.startswith("| `")]
+    assert len(rival_rows) == len([r for r in records if not r["conformance"]])
+
+
+def test_the_readme_table_has_one_row_per_seat_and_conformance_checks_are_listed_apart():
+    config, registry = status.records()
+    block = evidence_summary.evidence_block(config, registry, ROOT)
+    rows = [line for line in block.splitlines() if line.startswith("| `")]
+    assert len(rows) == len({line.split("`")[1] for line in rows})
+    assert "Conformance tests (cases written in this repo, no rival, not counted as alternatives)" in block
+    assert "`card-store` 35/35" in block.split("Conformance tests")[1] and not any(line.startswith("| `card-store`") for line in rows)
+
+
+def test_every_selected_arm_is_the_leader_on_the_cases_that_chose_it_or_says_why_not():
+    config, registry = status.records()
+    for record in evidence_summary.claims(config, registry, ROOT):
+        if record["deciding"] and not record["apart"] and not record["conformance"] and record["decisions"]:
+            assert record["leader"] == record["selected"] or record["pending"] == record["leader"], record["component"]
 
 
 def test_the_figures_are_the_recorded_ones_not_typed():
     config, registry = status.records()
-    block = evidence_summary.evidence_block(config, registry, ROOT)
+    block = evidence_summary.leaderboard_block(config, registry, ROOT)
     rows = [r for r in csv.DictReader(open(ROOT / "esoi" / "results.csv")) if r["component"] == "card_store" and not r["sample"]]
     last = rows[-1]
     assert f"{last['passed']}/{last['cases']}" in block
@@ -34,9 +53,9 @@ def test_the_figures_are_the_recorded_ones_not_typed():
 
 def test_a_lead_is_labelled_significant_or_not_and_a_floor_is_shown_as_pending():
     config, registry = status.records()
-    block = evidence_summary.evidence_block(config, registry, ROOT)
-    assert "McNemar p=" in block
-    assert "not significant (McNemar p=" in block      # a p above 0.05 is never called a win
+    block = evidence_summary.leaderboard_block(config, registry, ROOT)
+    assert "two-sided McNemar p=" in block and "one-sided" not in block
+    assert "not significant (two-sided McNemar p=" in block      # a p above 0.05 is never called a win
     assert "identical to" in block                      # arms that agree on every case show no empty p
     assert "p=," not in block and "{n}" not in block and "private corpus" not in block
 

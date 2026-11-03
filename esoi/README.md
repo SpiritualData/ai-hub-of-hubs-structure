@@ -49,10 +49,10 @@ hub-of-hubs gives anyone a working AI assembled from measured open-source parts,
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat | card_recall | remember-and-recall metric (draft) |
 | `reason-and-answer` | reason-and-answer: the Mind seat | model_calls | reason-and-answer metric (draft) |
 | `choose-a-model-tier` | choose-a-model-tier: pick the model for each tier | tier_selector | Tier choice by passing work per cost;Tier passing work per cost |
-| `know-the-world` | know-the-world: the Science seat | openalex_semantic_and_web | Research question finds its paper |
+| `know-the-world` | know-the-world: the Science seat | openalex_semantic | Research question finds its paper |
 | `think-critically` | think-critically: the Critical thinking seat | evidence_check | think-critically metric (draft) |
 | `act-in-the-world` | act-in-the-world: the Body seat | fast_edit | Goal met by its own tests;Harness, context, sub-agents and recursion ranked |
-| `watch-for-risk` | watch-for-risk: the Overseer seat | overseer | Risky steps stopped, ordinary steps let through;Guard marginal value |
+| `watch-for-risk` | watch-for-risk: the Overseer seat | consent_gate | Risky steps stopped, ordinary steps let through;Guard marginal value |
 | `assemble-the-whole` | assemble-the-whole: the The whole being seat | zero_config | Whole assembly;Capability of the whole from the user's seat;Consent floor;Honesty floor |
 | `stay-current` | stay-current: the Learning seat | registry_research | stay-current metric (draft);Public stage sourced and triangulated;Best in circumstance with variants |
 | `read-registry-freshness` | read-registry-freshness: how old is each seat's research | registry_scan | Registry freshness reading |
@@ -63,7 +63,7 @@ hub-of-hubs gives anyone a working AI assembled from measured open-source parts,
 | `model-call` | model-call: ask a model one question | via_call_a_model | Model call answers for the tier |
 | `search-backend` | search-backend: run one web search | gemini | Search finds the source |
 | `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | claude_cli | Provider failover and vendor answers |
-| `context-assembler` | context-assembler: pick the context a task needs | bm25 | Relevant passage in the top five |
+| `context-assembler` | context-assembler: pick the context a task needs | bm25@analyzer=english | Relevant passage in the top five |
 | `cards-from-files` | cards-from-files: cards for a folder | llm_topic_cards | Needed file among the first three files a builder's cards show |
 
 ## Implementations
