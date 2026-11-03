@@ -251,7 +251,7 @@ def leaderboard_block(config: Config, registry: Registry, root: Path, today: Opt
     for r in conformance:
         lines.append("| " + " | ".join(evidence_table.cell(c) for c in [f"`{r['solution']}`: {r['label']['check']}", r["label"]["cases"].replace("{n}", str(r["shown"].get("cases", ""))),
                                                                               r["selected"], evidence_table.rate_label(r["shown"]), evidence_table.cost_label(r["shown"])]) + " |")
-    return "\n".join(lines)
+    return "\n".join(lines).replace("](docs/", "](../")   # the page lives in docs/reference/, so root-relative links become relative to it
 
 
 def arms_block(config: Config, registry: Registry, today: Optional[datetime.date] = None) -> str:

@@ -85,3 +85,9 @@ def test_the_headline_counts_real_alternatives_only():
     headline = evidence_summary.headline_block(config, registry, ROOT)
     assert headline.startswith(f"**{len(every)} alternatives measured across {len(areas)} areas, from ")
     assert evidence_summary.compact_headline(config, ROOT).startswith(f"{len(every)} alternatives measured")
+
+
+def test_the_leaderboard_links_resolve_from_its_own_folder():
+    config, registry = status.records()
+    board = evidence_summary.leaderboard_block(config, registry, ROOT)
+    assert "](docs/" not in board and "](../explanation/" in board
