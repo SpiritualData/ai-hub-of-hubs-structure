@@ -15,7 +15,7 @@ SNAPSHOT = json.loads((Path(__file__).resolve().parent.parent / "hubofhubs" / "e
 
 
 def test_every_module_the_snapshot_names_is_one_of_the_hubs_own_files():
-    for entry in SNAPSHOT.values():
+    for entry in (one for key, one in SNAPSHOT.items() if not key.startswith("@")):
         for module in entry["modules"].values():
             assert HUB.safe_module(module) == module
 

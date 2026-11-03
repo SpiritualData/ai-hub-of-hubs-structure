@@ -69,6 +69,7 @@ BOOTSTRAP_MAX_BYTES = 512 * 1024
 
 # Maximum number of files to index (safety bound).
 _MAX_FILES = 10_000
+NO_CORPUS = "/nonexistent/hubofhubs-no-corpus"   # the default root: a folder that is not there, so the index is empty
 
 # Maximum number of parallel search workers for multi-query.
 _MAX_SEARCH_WORKERS = 8
@@ -171,7 +172,8 @@ class BM25ContentStore(ContextAssemblerBase):
     Parameters
     ----------
     root:
-        Corpus root directory.  All source files under this tree are indexed.
+        Corpus root directory.  All source files under this tree are indexed.  The default is no corpus: a folder that does not
+        exist, so every assembly is empty until a root is given.
     index_dir:
         Optional path to store/cache the BM25 index on disk.  If ``None`` the
         index is held in memory only and rebuilt after each process restart.
@@ -212,7 +214,7 @@ class BM25ContentStore(ContextAssemblerBase):
     def __init__(
         self,
         *,
-        root: str,
+        root: str = "",
         index_dir: Optional[str] = None,
         provider: Any = None,
         query_model: str = "fast",
@@ -247,7 +249,7 @@ class BM25ContentStore(ContextAssemblerBase):
                 ) from exc
             self._analysis = dict(stopwords="en", stemmer=Stemmer.Stemmer("english"))
 
-        self._root = Path(root).resolve()
+        self._root = Path(root or NO_CORPUS).resolve()
         self._index_dir = Path(index_dir).resolve() if index_dir else None
         self._provider = provider
         self._query_model = query_model

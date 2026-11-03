@@ -34,7 +34,7 @@ def seat_table(folder=None, facts=None, areas=None):
     return "\n".join(lines)
 
 
-def seat_summary(folder=None, seats=None, link="docs/reference/registry.md"):
+def seat_summary(folder=None, seats=None, link="../reference/registry.md"):
     """One row per seat with its area count, so the table stays the size of the mind and not of the registry. ``seats`` is the
     ordered list of ``(seat id, part of the mind)``; a seat with no researched area shows 0. Without it, the seats of the
     registry in order of first appearance."""

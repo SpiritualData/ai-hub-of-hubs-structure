@@ -426,7 +426,7 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
     tools, timeouts, grace for a stop). The extra per-call argument is ``control``, a
     ``hubofhubs.ports.control.RunControl``; without one the run is the same single prompt, only over a
     session that is closed when the model finishes."""
-    REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY)
+    REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY, needs.WRITE_ROOT)
 
     config_class = SubprocessConfig
 

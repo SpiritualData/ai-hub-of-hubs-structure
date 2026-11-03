@@ -15,7 +15,7 @@ USES = {"metric-input", "run-subset", "run-full", "prior-only", "not-useful"}
 INDEPENDENT = {"yes", "no", "vendor"}
 COVERS = {"yes", "partly", "no"}
 USABLE_PREFIXES = ("yes:", "prior-only:", "no:")
-SEATS_THAT_MUST_APPEAR = ["hold-the-intents", "take-in-the-world", "remember-and-recall", "reason-and-answer", "know-the-world",
+SEATS_THAT_MUST_APPEAR = ["take-in-the-world", "remember-and-recall", "reason-and-answer", "know-the-world",
                           "think-critically", "act-in-the-world", "watch-for-risk", "assemble-the-whole", "stay-current",
                           "keep-it-generic", "connect-any-integration"]
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")

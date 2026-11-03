@@ -117,6 +117,11 @@ VOYAGE_API = api(
     pricing_url="https://docs.voyageai.com/docs/pricing",
     free_tier="new accounts get 200 million free tokens on the voyage-4 family; older models get none", as_of=AS_OF)
 
+# --- acting -----------------------------------------------------------------------------------------------------------------
+
+WRITE_ROOT = env("HUBOFHUBS_WRITE_ROOT", option="root",
+                 note="the one folder the file-editing runner may write in; nothing is writable until you name it")
+
 # --- the Claude Code runners ------------------------------------------------------------------------------------------------
 
 CLAUDE_BINARY = binary("claude", "install Claude Code: https://code.claude.com/docs/en/setup", version_args=("--version",))

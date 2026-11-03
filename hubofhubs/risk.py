@@ -23,6 +23,7 @@ from esoi import implementation
 
 from .ports.model import STEP_JUDGE, plan_with_step
 from . import arm_needs as needs
+from .seats import ModelCalling
 
 
 @dataclass
@@ -300,10 +301,14 @@ class RunOverseer:
     consumer's consent rules and wording enter; the hub carries none.
     With no ``render`` there is no policy to apply, so every consultation is a degraded ``proceed`` and makes no model call.
     """
-    REQUIRES = ()     # the model comes from the provider handed to oversee()
+    REQUIRES = ()     # the model comes from the provider handed to oversee(), or the arm's own
 
-    def __init__(self, render: Optional[Callable[[str], str]] = None):
+    def __init__(self, render: Optional[Callable[[str], str]] = None, *, provider: ModelCalling = None):
         self.render = render
+        self.provider = provider
+
+    def watch(self, digest: str, model: str = "") -> OverseerSignal:
+        return self.oversee(self.provider, model, digest)
 
     def digest(self, **fields: Any) -> str:
         return build_digest(**fields)

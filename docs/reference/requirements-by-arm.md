@@ -15,10 +15,11 @@ at the repository root.
 | Seat and arm | Environment variables | Accounts and APIs | Python (extra of `hubofhubs`) | Programs, services, downloads | Can run out of process |
 |---|---|---|---|---|---|
 | `act-in-the-world:acp_deep_runner` | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
-| `act-in-the-world:fast_edit` | none | none | none | none | no |
+| `act-in-the-world:fast_edit` | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
 | `act-in-the-world:mcp_operations` | none | none | `mcp` via extra `mcp` | none | no |
-| `act-in-the-world:stream_json_goal_runner` | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
-| `act-in-the-world:subprocess_goal_runner` | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| `act-in-the-world:stream_json_goal_runner` | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| `act-in-the-world:subprocess_goal_runner` | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| `assemble-the-whole:zero_config` | none | none | none | none | no |
 | `call-a-model:anthropic` | none | Anthropic (`ANTHROPIC_API_KEY`) | `anthropic` via extra `anthropic` | none | no |
 | `call-a-model:claude_cli` | none | none | none | program `claude` | no |
 | `call-a-model:deepseek` | `DEEPSEEK_BASE_URL` (optional) | DeepSeek (`DEEPSEEK_API_KEY`) | `openai` via extra `openai` | none | no |
@@ -26,11 +27,16 @@ at the repository root.
 | `call-a-model:multi_provider` | none | none | none | none | no |
 | `call-a-model:openai` | `OPENAI_API_KEY` (secret)<br>`OPENAI_BASE_URL` | OpenAI | `openai` via extra `openai` | none | no |
 | `card-store:local_card_store` | none | none | none | none | no |
+| `cards-from-files:graphify_files` | none | none | none | none | no |
+| `cards-from-files:llm_topic_cards` | none | none | none | none | no |
+| `cards-from-files:per_file_symbols` | none | none | none | none | no |
 | `choose-a-model-tier:tier_selector` | none | none | none | none | no |
+| `connect-any-integration:catalog_entries` | none | none | none | none | no |
 | `context-assembler:bm25` | none | none | `bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | none | no |
 | `context-assembler:composite` | none | none | none | none | no |
 | `context-assembler:hybrid` | none | none | `qdrant_client` via extra `qdrant` (optional)<br>`fastembed` via extra `qdrant` (optional)<br>`bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional)<br>service Qdrant (`QDRANT_URL`, default http://localhost:6333) (optional) | no |
 | `context-assembler:vector` | none | Voyage AI (`VOYAGE_API_KEY`) (optional) | `qdrant_client` via extra `qdrant` (optional)<br>`fastembed` via extra `qdrant` (optional)<br>`voyageai` via extra `voyage` (optional) | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional)<br>service Qdrant (`QDRANT_URL`, default http://localhost:6333) (optional) | no |
+| `keep-it-generic:prompts_as_data` | none | none | none | none | no |
 | `know-the-world:openalex` | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
 | `know-the-world:openalex_keywords` | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
 | `know-the-world:openalex_keywords_model` | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
@@ -39,6 +45,8 @@ at the repository root.
 | `know-the-world:web_research` | none | none | `httpx` via extra `web`<br>`trafilatura` via extra `pages` (optional)<br>`pypdf` via extra `pages` (optional) | none | no |
 | `model-call:via_call_a_model` | none | none | none | none | no |
 | `read-registry-freshness:registry_scan` | none | none | none | none | no |
+| `reason-and-answer:model_calls` | none | none | none | none | no |
+| `remember-and-recall:card_recall` | none | none | none | none | no |
 | `score-hub-connections:hub_of_hubs_scorer` | none | none | none | none | no |
 | `search-backend:brave` | none | Brave Search (`BRAVE_SEARCH_API_KEY` or `BRAVE_API_KEY`) | `httpx` via extra `web` | none | no |
 | `search-backend:gemini` | none | Gemini (`GEMINI_API_KEY` or `GOOGLE_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional) | none | no |
@@ -46,6 +54,9 @@ at the repository root.
 | `search-backend:searxng` | `SEARXNG_URL` | none | `httpx` via extra `web` | service SearXNG (`SEARXNG_URL`) | no |
 | `search-backend:serper` | none | Serper (`SERPER_API_KEY`) | `httpx` via extra `web` | none | no |
 | `search-backend:tavily` | none | Tavily (`TAVILY_API_KEY` or `WEB_SEARCH_API_KEY`) | `httpx` via extra `web` | none | no |
+| `stay-current:registry_research` | none | none | none | none | no |
+| `take-in-the-world:search_backends` | none | none | none | none | no |
+| `think-critically:evidence_check` | none | none | none | none | no |
 | `watch-for-risk:consent_gate` | none | none | none | none | no |
 | `watch-for-risk:overseer` | none | none | none | none | no |
 | `watch-for-risk:two_stage` | none | none | none | none | no |

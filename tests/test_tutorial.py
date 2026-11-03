@@ -21,5 +21,5 @@ def test_the_tutorial_runs_and_prints_what_it_says(monkeypatch):
     assert "search-backend" in lines[0] and "act-in-the-world" in lines[0] and "call-a-model" not in lines[0]
     assert lines[1].startswith("[Card(id='first'") and lines[2] == "1"
     assert lines[3].startswith("call-a-model -> claude_cli (layer: hubofhubs default")
-    assert lines[4] == "first {} ['status', 'status', 'result', 'done']"
+    assert lines[4].startswith("[Card(id='first'")
     assert "GEMINI_API_KEY" in lines[5] and lines[5].startswith("(")

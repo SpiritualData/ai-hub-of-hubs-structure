@@ -7,6 +7,8 @@ max_lines = 1500
 # Evaluation: one component folder per seat under evaluation/ (cases.json, score.py, impls/), results and per-case logs beside the records.
 # The measured code is the package without the critique module (no seat measured here uses it), so an unrelated edit there does not
 # make a result stale; docs are not code.
+# Arms that may spend money: never run by `esoi run --stale` without --include-paid (esoi harness.paid_reason).
+paid_arms = ["cards_from_files/llm_topic_cards"]
 evaluation_dir = "evaluation"
 results = "esoi/results.csv"
 # The coverage of the whole assembly is recorded by `esoi run assemble_the_whole --impl zero_config --record`; the solution has no arm to select, so it is a shared
@@ -15,7 +17,7 @@ shared_eval_dirs = ["__pycache__", "assemble_the_whole"]
 code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md"]
 
 [records]
-template_version = 3
+template_version = 4
 
 # Public evidence: others' measurements, shown beside our own results and never counted as one. The registry
 # hubofhubs/registry/hub_evidence.csv is the one source of truth; esoi/evidence.csv is derived from it by
@@ -38,3 +40,30 @@ file = "esoi/evidence.csv"
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.10
 seconds_per_case = 60
+
+# The balanced score of cards-from-files (esoi/balance.py). One case is finding the file one task needs, which is part of a
+# small file edit (worth at most ten cents and a minute, [balance.file_edit_goals]) and what a worker without cards spends a
+# few tool calls on, so a case is worth at most a fifth of an edit. One build serves every case of a run, so a card build of
+# this corpus is worth at most the 63 cases' budget. Set by value before any arm ran, never from one arm's own spend.
+[balance.cards_from_files]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.02
+seconds_per_case = 12
+
+# Opt-in rules (esoi/docs): S36 the overall network on the root solution, S37 every id has an interface and a one-line entry,
+# S38 the paragraph and diagram match the code, S39 the ratchet against the base commit. S38 floors are per intent, set at the measured values.
+[rules.S36]
+enabled = true
+
+[rules.S37]
+enabled = true
+
+[rules.S38]
+enabled = true
+
+[rules.S38.floors.hub-of-hubs]
+precision = 1.0
+coverage = 1.0
+
+[rules.S39]
+enabled = true

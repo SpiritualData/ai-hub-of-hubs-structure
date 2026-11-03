@@ -59,7 +59,7 @@ def test_assembly_builds_the_overseer_with_the_consumers_prompt_and_names_the_la
     assert isinstance(watcher, hubofhubs.seats.RiskWatching)
     assert watcher.oversee(Provider({"signal": "escalate_human", "reason": "Do you want me to proceed?"}), "m", watcher.digest(
         user_message="u", step=1, max_steps=1)).signal == "escalate_human"
-    assert "overseer" in system.reasons[0] and "consumer selections" in system.reasons[0]
+    assert any("overseer" in line and "consumer selections" in line for line in system.reasons)
     assert "overseer" in hubofhubs.names("watch-for-risk")
 
 

@@ -20,3 +20,7 @@ S10,"act-in-the-world:stream_json_goal_runner,subprocess_goal_runner","The balan
 S33,act-in-the-world,"The cascade reads the raw pass rate; the seat's authoritative metric is the balanced score (accuracy, cost, time), on which fast_edit leads. The cascade will follow once it ranks by the balanced column."
 S10,"watch-for-risk:consent_gate,two_stage",See the S33 waiver: the overseer is the highest arm taken over both risk sets; the arms that beat it do so on one set only.
 S10,"context-assembler:bm25@analyzer=english,vector","See the S33 waiver: the English analyzer is a setting of the bm25 arm, and vector needs embeddings that are not authorized."
+S24,cards-from-files:per_file_symbols,Not built yet: recorded in step 5b with the component.
+S24,cards-from-files:graphify_files,Not built yet: recorded in step 5b with the component.
+S10,cards-from-files:unmeasured,Pending decision: llm_topic_cards is what production runs today and has no recorded row yet; its one and whole stages run under the metric run policy in step 5b.
+S33,know-the-world,"Pending decision, not significant: on the larger paper stage openalex_semantic alone is slightly ahead of the combined arm; the selection commit that follows switches the seat to it under the standing rule on all cases."

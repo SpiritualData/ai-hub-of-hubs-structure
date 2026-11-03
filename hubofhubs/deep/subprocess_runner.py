@@ -76,15 +76,19 @@ class SubprocessGoalRunner(DeepRunner):
     When an emit callback is provided, streams live Claude Code session updates to the
     caller so they see what Claude is doing in real-time.
     """
-    REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY)
+    REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY, needs.WRITE_ROOT)
 
     config_class = SubprocessConfig   # the dataclass this runner is built from (core.resolve.resolve_config)
     model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None
     settings_source: Optional[GoalSettingsSource] = None
 
-    def __init__(self, config: SubprocessConfig, *,
+    def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "",
                  model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None,
                  settings: Optional[GoalSettingsSource] = None):
+        if config is None:
+            if not root:
+                raise ValueError("no config: pass config=, or root= (or set HUBOFHUBS_WRITE_ROOT), the one folder the worker runs in")
+            config = SubprocessConfig(working_dir=root)
         self.cfg = config
         # Maps a model id to what ``claude --model`` can invoke (see ``cli_safe_model``). The consumer owns the adapter that
         # knows the real labels, so it passes the translator.

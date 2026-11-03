@@ -44,7 +44,7 @@ def test_a_lead_is_labelled_significant_or_not_and_a_floor_is_shown_as_pending()
 def test_unmeasured_seats_and_arms_are_listed_with_a_reason():
     config, registry = status.records()
     text = evidence_summary.unmeasured_block(config, registry, ROOT)
-    for seat in ("hold-the-intents", "think-critically", "keep-it-generic"):
+    for seat in ("think-critically", "keep-it-generic"):
         assert f"`{seat}`" in text
     assert all(len(line) > 40 for line in text.splitlines())
 

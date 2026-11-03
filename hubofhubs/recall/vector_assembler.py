@@ -73,7 +73,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
 from esoi import implementation
-from hubofhubs.ports.context import AssembledContext, ContextAssemblerBase, VectorHit, VectorStore
+from hubofhubs.ports.context import AssembledContext, ContextAssemblerBase, VectorHit, VectorStore, VectorStoreBase
 from hubofhubs.ports.model import STEP_SELECT, STEP_SUMMARIZE, answer_with_reasoning
 from hubofhubs.recall.card_content_render import (
     render_card_content,
@@ -231,6 +231,20 @@ class VectorPrompts:
     excerpt: Callable[[str], str] = keep_whole_task
 
 
+class NoVectors(VectorStoreBase):
+    """The default vector store: nothing is indexed, so a search finds nothing and a sync keeps nothing. The assembler built over it
+    answers with an empty context until a real store (Qdrant, or your own) is given as ``vector_store``."""
+
+    def search(self, query, *, scope=None, top_k=8):
+        return []
+
+    def upsert(self, items, *, scope=None):
+        return None
+
+    def sync(self, items, *, scope=None):
+        return 0
+
+
 @implementation("context-assembler", "vector")
 class VectorContextAssembler(ContextAssemblerBase):
     """ContextAssembler that retrieves context via vector (semantic) search.
@@ -238,7 +252,7 @@ class VectorContextAssembler(ContextAssemblerBase):
     Parameters
     ----------
     vector_store:
-        Any object satisfying the ``VectorStore`` Protocol.
+        Any object satisfying the ``VectorStore`` Protocol. The default is ``NoVectors``: nothing indexed, so an empty context.
     provider:
         Optional ``ModelProvider`` used for:
         - LLM query generation (generate diverse queries for better recall)
@@ -314,7 +328,7 @@ class VectorContextAssembler(ContextAssemblerBase):
 
     def __init__(
         self,
-        vector_store: VectorStore,
+        vector_store: Optional[VectorStore] = None,
         *,
         provider: Any = None,
         query_model: str = "fast",
@@ -336,7 +350,7 @@ class VectorContextAssembler(ContextAssemblerBase):
         prompts: Optional[VectorPrompts] = None,
         seed_thread_name: str = "vector-seed",
     ) -> None:
-        self._store = vector_store
+        self._store = vector_store if vector_store is not None else NoVectors()
         self._provider = provider
         self._query_model = query_model
         # In-arm LLM relevance review of the search hits (step c). False DELEGATES that judgment

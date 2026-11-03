@@ -36,9 +36,13 @@ def test_the_hub_default_builds_without_a_consumer():
 
 def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
     system = assemble(environ={})
-    assert sorted(system.solutions()) == ["call-a-model", "card-store", "choose-a-model-tier", "model-call", "read-registry-freshness", "score-hub-connections", "watch-for-risk"]
+    built = set(system.solutions())
+    assert {"call-a-model", "card-store", "cards-from-files", "choose-a-model-tier", "context-assembler", "model-call", "read-registry-freshness",
+            "reason-and-answer", "remember-and-recall", "think-critically"} <= built
+    assert built.isdisjoint(system.pending)
     assert all(line.startswith(seat + ":") or line.startswith(seat + " (") for seat, line in system.pending.items())
-    assert "GEMINI_API_KEY" in system.pending["search-backend"] and "context-assembler (bm25)" in system.pending["context-assembler"]
+    assert "GEMINI_API_KEY" in system.pending["search-backend"] and "HUBOFHUBS_WRITE_ROOT" in system.pending["act-in-the-world"]
+    assert "context-assembler" not in system.pending     # the default context assembler has no corpus: it answers with an empty context
     assert "call-a-model" not in system.pending and "model-call" not in system.pending     # the default call-a-model arm is claude -p on the subscription
     assert "call-a-model (multi_provider)" in assemble(arms={"call-a-model": "multi_provider"}, environ={}).pending["call-a-model"]
 

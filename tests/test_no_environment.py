@@ -92,12 +92,14 @@ def test_sys_path_is_unchanged_by_resolve():
 
 
 def test_the_hubs_own_esoi_toml_has_no_selection_table():
-    assert "selection" not in tomllib.loads((ROOT / "esoi.toml").read_text())
+    assert "arms" not in tomllib.loads((ROOT / "esoi.toml").read_text()).get("selection", {})
 
 
 def test_the_packaged_snapshot_equals_the_records():
     packaged = json.loads((ROOT / "hubofhubs" / "esoi_selection.json").read_text())
+    intents = packaged.pop("@intents")      # the one-line entry's map of intents to their root solutions, beside the arm defaults
     assert packaged == runtime.snapshot(esoi_config.load(ROOT))
+    assert intents["intents"]["hub-of-hubs"]["root"] == "assemble-the-whole"
 
 
 def test_the_snapshot_ships_as_package_data():

@@ -126,6 +126,9 @@ class ConsentGate:
         verdict, reason = self.verdict(digest)
         return OverseerSignal("escalate_human", reason=reason) if verdict == FLAG else OverseerSignal("proceed", reason="")
 
+    def watch(self, digest: str, model: str = "") -> OverseerSignal:
+        return self.oversee(None, model, digest)
+
 
 @implementation("watch-for-risk", "two_stage")
 class TwoStage:
@@ -133,8 +136,12 @@ class TwoStage:
     is ``proceed``, both with no model call."""
     REQUIRES = ()     # the gate, then the overseer's provider only when the gate is unsure
 
-    def __init__(self, render: Optional[Callable[[str], str]] = None, rules: Optional[ConsentRules] = None) -> None:
-        self.gate, self.overseer = ConsentGate(rules=rules), RunOverseer(render)
+    def __init__(self, render: Optional[Callable[[str], str]] = None, rules: Optional[ConsentRules] = None, *, provider: Any = None) -> None:
+        self.gate, self.overseer = ConsentGate(rules=rules), RunOverseer(render, provider=provider)
+        self.provider = provider
+
+    def watch(self, digest: str, model: str = "") -> OverseerSignal:
+        return self.oversee(self.provider, model, digest)
 
     def digest(self, **fields: Any) -> str:
         return build_digest(**fields)

@@ -71,6 +71,9 @@ from .editblock import (
     find_whole_file_blocks,
 )
 from .. import arm_needs as needs
+from ..seats import ModelCalling, TierSelection
+from .folder_writer import FolderWriter
+from .tier_registry import TierRegistry
 
 _log = logging.getLogger("hubofhubs.act.fast_edit")
 
@@ -207,13 +210,13 @@ class FastEditRunner(DeepRunnerBase):
 
     Args:
         provider: the model provider. MUST be the routing provider (the router in ``hubofhubs.models``, or the consumer's equivalent), so the model id
-            routes to whichever backend owns it.
-        writer: the ``FileWriter`` granting write access. Required, there is no default and none
-            is constructed implicitly. No writer, no runner.
+            routes to whichever backend owns it. The hub fills it from the call-a-model seat.
+        writer: the ``FileWriter`` granting write access. Nothing is writable until you grant it: pass a writer, or name the one folder
+            with ``root`` (``HUBOFHUBS_WRITE_ROOT``) and the hub builds a ``FolderWriter`` confined to it. No writer and no root, no runner.
         registry: resolves ``config.tier`` to a model id when the caller does not pin a model (anything
-            with ``resolve_tier(tier)``). Required: this package holds no tier table of its own here.
+            with ``resolve_tier(tier)``). Without one, the hub's ``TierRegistry`` over the choose-a-model-tier seat (``chooser``).
     """
-    REQUIRES = ()     # one model call through the provider it is handed, and a writer
+    REQUIRES = (needs.WRITE_ROOT,)     # one model call through the provider it is handed, and a writer in the folder you name
 
     # Its output is a mechanical edit report rather than composed prose, and it knows the reusable
     # facts (which files changed) exactly and for free, so it fills ``future_context`` itself
@@ -223,9 +226,16 @@ class FastEditRunner(DeepRunnerBase):
     # This rung can only change files on disk -- it can never satisfy a change made through governed operations.
     write_surface = WRITE_SURFACE_FILES
 
-    def __init__(self, *, provider: ModelProvider, writer: FileWriter,
-                 registry: TierResolving,
-                 config: Optional[FastEditConfig] = None):
+    def __init__(self, *, provider: ModelCalling, writer: Optional[FileWriter] = None, registry: Optional[TierResolving] = None,
+                 chooser: TierSelection = None, root: str = "", config: Optional[FastEditConfig] = None):
+        if writer is None:
+            if not root:
+                raise ValueError("no writer: pass writer=, or root= (or set HUBOFHUBS_WRITE_ROOT), the one folder the runner may write in")
+            writer = FolderWriter(root)
+        if registry is None:
+            if chooser is None:
+                raise ValueError("no registry: pass registry=, or let the hub fill chooser= from the choose-a-model-tier seat")
+            registry = TierRegistry(chooser)
         self.provider = provider
         self.writer = writer
         self.registry = registry

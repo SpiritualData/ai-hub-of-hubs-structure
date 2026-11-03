@@ -746,7 +746,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search",
+   "seat": "search-backend",
    "environ": {}
   },
   "expect": "needs GEMINI_API_KEY"
@@ -756,7 +756,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search",
+   "seat": "search-backend",
    "arms": {
     "search-backend": "serper"
    },
@@ -769,7 +769,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search",
+   "seat": "search-backend",
    "arms": {
     "search-backend": "serper"
    },
@@ -784,7 +784,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search",
+   "seat": "search-backend",
    "environ": {
     "GOOGLE_API_KEY": "value-not-logged"
    }
@@ -796,7 +796,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "papers",
+   "seat": "know-the-world",
    "environ": {}
   },
   "expect": "needs GEMINI_API_KEY"
@@ -806,7 +806,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "papers",
+   "seat": "know-the-world",
    "arms": {
     "know-the-world": "openalex"
    },
@@ -815,119 +815,58 @@
   "expect": "ready"
  },
  {
-  "id": "ready-recall-zero-config",
+  "id": "ready-recall-with-a-model-provided",
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "recall",
-   "environ": {}
+   "seat": "remember-and-recall",
+   "environ": {},
+   "provided_model": true
   },
   "expect": "ready"
- },
- {
-  "id": "alias-ask",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": null
-  },
-  "expect": "search-backend"
- },
- {
-  "id": "alias-answer",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": "answer"
-  },
-  "expect": "search-backend"
- },
- {
-  "id": "alias-search",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": "search"
-  },
-  "expect": "search-backend"
- },
- {
-  "id": "alias-scholarly",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": "scholarly"
-  },
-  "expect": "know-the-world"
- },
- {
-  "id": "alias-recall",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": "recall"
-  },
-  "expect": "card-store"
- },
- {
-  "id": "alias-unknown-refused",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": "nonsense"
-  },
-  "expect": "refused"
  },
  {
   "id": "run-recall-empty-store",
   "area": "one-line",
   "kind": "run",
   "args": {
-   "seat": "recall",
+   "seat": "remember-and-recall",
    "input": "anything",
-   "environ": {}
+   "environ": {},
+   "provided_model": true
   },
-  "expect": "answer '' with 0 items, 4 events"
+  "expect": "0 cards"
  },
  {
-  "id": "run-search-no-key-raises-needs",
+  "id": "run-search-no-key-raises-pending",
   "area": "one-line",
   "kind": "run",
   "args": {
-   "seat": "search",
+   "seat": "search-backend",
    "input": "anything",
    "environ": {}
   },
-  "expect": "raised Needs naming GEMINI_API_KEY"
- },
- {
-  "id": "alias-model",
-  "area": "one-line",
-  "kind": "alias",
-  "args": {
-   "seat": "model"
-  },
-  "expect": "model-call"
+  "expect": "raised Pending naming GEMINI_API_KEY"
  },
  {
   "id": "needs-ask-no-key",
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": null,
+   "seat": "hub-of-hubs",
    "environ": {}
   },
   "expect": "needs GEMINI_API_KEY"
  },
  {
-  "id": "run-ask-no-key-raises-needs",
+  "id": "run-whole-hub-no-key-raises-pending",
   "area": "one-line",
   "kind": "run",
   "args": {
-   "seat": null,
+   "seat": "hub-of-hubs",
    "input": "what is the latest Rust release?",
    "environ": {}
   },
-  "expect": "raised Needs naming GEMINI_API_KEY"
+  "expect": "raised Pending naming GEMINI_API_KEY"
  }
 ]

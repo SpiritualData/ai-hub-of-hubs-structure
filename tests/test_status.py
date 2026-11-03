@@ -9,7 +9,7 @@ def test_readme_table_lists_every_seat_with_its_area_count():
     from hubofhubs import registry
     block = status.build()
     hubs = registry.read("hubs.csv")
-    assert len(status.seats()) == 12, "the twelve seats of the mind"
+    assert len(status.seats()) == 11, "the eleven seats of the mind"
     for seat, part in status.seats():
         count = sum(1 for r in hubs if r["seat"] == seat)
         assert f"| {seat} | {part} | {count} |" in block

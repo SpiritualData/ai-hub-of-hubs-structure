@@ -9,12 +9,6 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 [the weekly refresh](../how-to/refresh-the-registry.md); how the files join is in [connect a hub](../how-to/connect-a-hub.md).
 
 <!-- registry:start -->
-### hold-the-intents (Higher mind)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| intents | Keeping the intent hierarchy and choosing which representative acts | compared | coexist | none | Agent Skills specification; A2A protocol; OpenAI Agents SDK; Claude Agent SDK; semantic-router | 10 | 0 | 2026-10-30 |
-
 ### take-in-the-world (World)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
@@ -46,6 +40,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
+| intents | Keeping the intent hierarchy and choosing which representative acts | compared | coexist | none | Agent Skills specification; A2A protocol; OpenAI Agents SDK; Claude Agent SDK; semantic-router | 10 | 0 | 2026-10-30 |
 | agent_orchestration | Planning, gathering and answering a request in a bounded loop | compared | coexist | none | Pydantic AI; LangGraph; OpenAI Agents SDK; Google ADK; Microsoft Agent Framework; Claude Agent SDK | 14 | 0 | 2026-10-30 |
 | structured_output | Getting a model's decision back as valid structured data | compared | adopt | none | Anthropic structured outputs; Instructor; Outlines; BAML | 4 | 0 | 2026-10-30 |
 | prompt_optimization | Improving prompts by measured metric | compared | coexist | none | GEPA; DSPy | 2 | 0 | 2026-10-30 |

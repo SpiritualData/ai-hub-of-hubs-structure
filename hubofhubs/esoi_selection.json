@@ -1,8 +1,38 @@
 {
+ "@intents": {
+  "intents": {
+   "hub-of-hubs": {
+    "arm": "",
+    "root": "assemble-the-whole"
+   }
+  },
+  "scopes": {
+   "act-in-the-world": "hubofhubs",
+   "assemble-the-whole": "hubofhubs",
+   "call-a-model": "hubofhubs",
+   "card-store": "hubofhubs",
+   "cards-from-files": "hubofhubs",
+   "choose-a-model-tier": "hubofhubs",
+   "connect-any-integration": "hubofhubs",
+   "context-assembler": "hubofhubs",
+   "keep-it-generic": "hubofhubs",
+   "know-the-world": "hubofhubs",
+   "model-call": "hubofhubs",
+   "read-registry-freshness": "hubofhubs",
+   "reason-and-answer": "hubofhubs",
+   "remember-and-recall": "hubofhubs",
+   "score-hub-connections": "hubofhubs",
+   "search-backend": "hubofhubs",
+   "stay-current": "hubofhubs",
+   "take-in-the-world": "hubofhubs",
+   "think-critically": "hubofhubs",
+   "watch-for-risk": "hubofhubs"
+  }
+ },
  "act-in-the-world": {
   "default": "fast_edit",
   "evidence": {
-   "detail": "beaten by stream_json_goal_runner, subprocess_goal_runner: fast_edit is better than none (exact McNemar test, Holm-adjusted p=5.59e-09, 29 of 30 cases disagree); best guess, not yet significant: stream_json_goal_runner leads fast_edit (stream_json_goal_runner 1 against fast_edit 0.967; exact McNemar test, Holm-adjusted p=1, 1 of 30 cases disagree); more cases would settle it; best guess, not yet significant: subprocess_goal_runner leads fast_edit (subprocess_goal_runner 1 against fast_edit 0.967; exact McNemar test, Holm-adjusted p=1, 1 of 30 cases disagree); more cases would settle it",
+   "detail": "beaten by stream_json_goal_runner, subprocess_goal_runner: fast_edit is better than none (two-sided exact McNemar test, Holm-adjusted p=1.12e-08, 29 of 30 cases disagree); best guess, not yet significant: stream_json_goal_runner leads fast_edit (stream_json_goal_runner 1 against fast_edit 0.967; two-sided exact McNemar test, Holm-adjusted p=1, 1 of 30 cases disagree; one of 3 looks, alpha 0.0167); more cases would settle it; best guess, not yet significant: subprocess_goal_runner leads fast_edit (subprocess_goal_runner 1 against fast_edit 0.967; two-sided exact McNemar test, Holm-adjusted p=1, 1 of 30 cases disagree; one of 3 looks, alpha 0.0167); more cases would settle it",
    "p": 0.0,
    "verdict": "LOSS"
   },
@@ -14,11 +44,17 @@
    "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
   }
  },
+ "assemble-the-whole": {
+  "default": "zero_config",
+  "modules": {
+   "zero_config": "hubofhubs.whole"
+  }
+ },
  "call-a-model": {
   "default": "claude_cli",
   "evidence": {
-   "detail": "multi_provider is better than single_provider (exact McNemar test, Holm-adjusted p=3.81e-06, 18 of 30 cases disagree)",
-   "p": 4e-06,
+   "detail": "multi_provider is better than single_provider (two-sided exact McNemar test, Holm-adjusted p=7.63e-06, 18 of 30 cases disagree)",
+   "p": 8e-06,
    "verdict": "WIN"
   },
   "modules": {
@@ -41,6 +77,19 @@
    "local_card_store": "hubofhubs.cardstore"
   }
  },
+ "cards-from-files": {
+  "default": "llm_topic_cards",
+  "evidence": {
+   "detail": "the selected implementation has no recorded row",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "graphify_files": "hubofhubs.recall.cards_from_graphify",
+   "llm_topic_cards": "hubofhubs.recall.cards_from_files",
+   "per_file_symbols": "hubofhubs.recall.cards_from_files"
+  }
+ },
  "choose-a-model-tier": {
   "default": "tier_selector",
   "evidence": {
@@ -52,11 +101,17 @@
    "tier_selector": "hubofhubs.tiers"
   }
  },
+ "connect-any-integration": {
+  "default": "catalog_entries",
+  "modules": {
+   "catalog_entries": "hubofhubs.areas"
+  }
+ },
  "context-assembler": {
   "default": "bm25",
   "evidence": {
-   "detail": "beaten by bm25@analyzer=english, vector: best guess, not yet significant: bm25@analyzer=english leads bm25 (bm25@analyzer=english 0.644 against bm25 0.619; exact McNemar test, Holm-adjusted p=0.0768, 16 of 323 cases disagree); more cases would settle it; best guess, not yet significant: vector leads bm25 (vector 0.635 against bm25 0.619; exact McNemar test, Holm-adjusted p=0.288, 51 of 323 cases disagree); more cases would settle it",
-   "p": 1.0,
+   "detail": "beaten by bm25@analyzer=english, vector: best guess, not yet significant: bm25@analyzer=english leads bm25 (bm25@analyzer=english 0.644 against bm25 0.619; two-sided exact McNemar test, Holm-adjusted p=0.154, 16 of 323 cases disagree); more cases would settle it; best guess, not yet significant: vector leads bm25 (vector 0.635 against bm25 0.619; two-sided exact McNemar test, Holm-adjusted p=0.576, 51 of 323 cases disagree); more cases would settle it",
+   "p": 0.153625,
    "verdict": "LOSS"
   },
   "modules": {
@@ -66,10 +121,16 @@
    "vector": "hubofhubs.recall.vector_assembler"
   }
  },
+ "keep-it-generic": {
+  "default": "prompts_as_data",
+  "modules": {
+   "prompts_as_data": "hubofhubs.areas"
+  }
+ },
  "know-the-world": {
   "default": "openalex_semantic_and_web",
   "evidence": {
-   "detail": "beaten by openalex_semantic: best guess, not yet significant: openalex_semantic leads openalex_semantic_and_web (openalex_semantic 0.347 against openalex_semantic_and_web 0.327; exact McNemar test, Holm-adjusted p=0.664, 21 of 150 cases disagree); more cases would settle it; openalex_semantic_and_web is better than web_research (exact McNemar test, Holm-adjusted p=1.23e-07, 37 of 150 cases disagree)",
+   "detail": "beaten by openalex_semantic: best guess, not yet significant: openalex_semantic leads openalex_semantic_and_web (openalex_semantic 0.347 against openalex_semantic_and_web 0.327; two-sided exact McNemar test, Holm-adjusted p=0.664, 21 of 150 cases disagree); more cases would settle it; openalex_semantic_and_web is better than web_research (two-sided exact McNemar test, Holm-adjusted p=2.47e-07, 37 of 150 cases disagree)",
    "p": 0.0,
    "verdict": "LOSS"
   },
@@ -104,6 +165,18 @@
    "registry_scan": "hubofhubs.registry"
   }
  },
+ "reason-and-answer": {
+  "default": "model_calls",
+  "modules": {
+   "model_calls": "hubofhubs.areas"
+  }
+ },
+ "remember-and-recall": {
+  "default": "card_recall",
+  "modules": {
+   "card_recall": "hubofhubs.recall.card_recall"
+  }
+ },
  "score-hub-connections": {
   "default": "hub_of_hubs_scorer",
   "evidence": {
@@ -118,8 +191,8 @@
  "search-backend": {
   "default": "gemini",
   "evidence": {
-   "detail": "gemini is better than provider (exact McNemar test, Holm-adjusted p=5.48e-06, 22 of 40 cases disagree)",
-   "p": 5e-06,
+   "detail": "gemini is better than provider (two-sided exact McNemar test, Holm-adjusted p=1.1e-05, 22 of 40 cases disagree)",
+   "p": 1.1e-05,
    "verdict": "WIN"
   },
   "modules": {
@@ -131,11 +204,29 @@
    "tavily": "hubofhubs.websearch.backends"
   }
  },
+ "stay-current": {
+  "default": "registry_research",
+  "modules": {
+   "registry_research": "hubofhubs.areas"
+  }
+ },
+ "take-in-the-world": {
+  "default": "search_backends",
+  "modules": {
+   "search_backends": "hubofhubs.areas"
+  }
+ },
+ "think-critically": {
+  "default": "evidence_check",
+  "modules": {
+   "evidence_check": "hubofhubs.critique.evidence_check"
+  }
+ },
  "watch-for-risk": {
   "default": "overseer",
   "evidence": {
-   "detail": "beaten by consent_gate, two_stage: best guess, not yet significant: consent_gate leads overseer (consent_gate 1 against overseer 0.917; exact McNemar test, Holm-adjusted p=0.375, 3 of 36 cases disagree); more cases would settle it; overseer is better than none (exact McNemar test, Holm-adjusted p=0.00223, 21 of 36 cases disagree); best guess, not yet significant: two_stage leads overseer (two_stage 0.944 against overseer 0.917; exact McNemar test, Holm-adjusted p=1, 1 of 36 cases disagree); more cases would settle it",
-   "p": 0.002234,
+   "detail": "beaten by consent_gate, two_stage: best guess, not yet significant: consent_gate leads overseer (consent_gate 1 against overseer 0.917; two-sided exact McNemar test, Holm-adjusted p=0.5, 3 of 36 cases disagree); more cases would settle it; overseer is better than none (two-sided exact McNemar test, Holm-adjusted p=0.00447, 21 of 36 cases disagree; one of 3 looks, alpha 0.0167); best guess, not yet significant: two_stage leads overseer (two_stage 0.944 against overseer 0.917; two-sided exact McNemar test, Holm-adjusted p=1, 1 of 36 cases disagree); more cases would settle it",
+   "p": 0.004469,
    "verdict": "LOSS"
   },
   "modules": {

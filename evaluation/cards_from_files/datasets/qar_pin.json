@@ -1,0 +1,7 @@
+{
+ "qar_repository": "https://github.com/SpiritualData/quest-ai-runner",
+ "qar_commit": "0cf161e5",
+ "hub_commit": "70ccf91",
+ "cases_sha256": "<sha256 of evaluation/components/context_selection/cases.json at qar_commit>",
+ "files_sha256": "<sha256 of the sorted file list of the corpus walk>"
+}
