@@ -4,29 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hubofhubs"
-version = "0.1.0"
+version = "0.2.0"
 description = "A registry of the best AI-intelligence hubs and the scorer that reads it with a consumer's code"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
-dependencies = ["esoi"]
+dependencies = ["esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@v0.3.0#subdirectory=implementations/python"]
 
 [project.scripts]
 ahohs = "hubofhubs.cli:main"
 
 [project.optional-dependencies]
 # One extra per arm that needs a third-party library; the library is imported lazily, only when that arm runs.
-web = ["httpx"]                      # search-backend arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching
-gemini = ["google-genai", "httpx"]   # search-backend arm: gemini; call-a-model arm: gemini
-locks = ["filelock"]                 # search-backend arm: the daily limiter shares one spend across processes (degrades to per-process without it)
-anthropic = ["anthropic"]               # call-a-model arm: anthropic
-openai = ["openai"]                   # call-a-model arms: openai, deepseek (an OpenAI-compatible endpoint)
+web = ["httpx>=0.28"]                      # search-backend arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching
+gemini = ["google-genai>=2.8", "httpx>=0.28"]   # search-backend arm: gemini; call-a-model arm: gemini
+locks = ["filelock>=3.20"]                 # search-backend arm: the daily limiter shares one spend across processes (degrades to per-process without it)
+anthropic = ["anthropic>=0.84"]               # call-a-model arm: anthropic
+openai = ["openai>=2.7"]                   # call-a-model arms: openai, deepseek (an OpenAI-compatible endpoint)
 mcp = ["mcp==2.0.0"]                # act-in-the-world helper: the MCP protocol client (the arms over it live in the consumer)
-science = ["httpx"]                 # know-the-world arm: openalex (scholarly works search); the Crossref DOI helper
-pages = ["trafilatura", "pypdf"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
-qdrant = ["qdrant-client", "fastembed"]   # remember-and-recall: the Qdrant vector store (embedded or server) and its local default embedder
-voyage = ["voyageai"]                # remember-and-recall: the Voyage AI embedder factory
-acp = ["agent-client-protocol"]      # act-in-the-world arm: the Agent Client Protocol deep runner (imported inside one function)
-bm25 = ["bm25s", "PyStemmer"]                     # remember-and-recall: the BM25 content store
+science = ["httpx>=0.28"]                 # know-the-world arm: openalex (scholarly works search); the Crossref DOI helper
+pages = ["trafilatura>=2.0", "pypdf>=6.0"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
+qdrant = ["qdrant-client>=1.16", "fastembed>=0.8"]   # remember-and-recall: the Qdrant vector store (embedded or server) and its local default embedder
+voyage = ["voyageai>=0.3"]                # remember-and-recall: the Voyage AI embedder factory
+acp = ["agent-client-protocol>=0.4"]      # act-in-the-world arm: the Agent Client Protocol deep runner (imported inside one function)
+bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # remember-and-recall: the BM25 content store
 
 [tool.setuptools]
 packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.deep", "hubofhubs.models", "hubofhubs.orchestrate", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.science", "hubofhubs.terminal", "hubofhubs.websearch"]

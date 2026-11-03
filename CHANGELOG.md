@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- **Install pins esoi to tag v0.3.0**; the core and the extras are pinned (lower bounds on every extra), and `tests/test_pins.py` forbids a bare unpinned dependency name.
+
 ## Unreleased
 
 - **`hubofhubs.recall.record_assembler`: a person's own records found by what the message names, with no tool call (2026-11-01; offline, no model call).** A consumer DECLARES a source of free-text records (a `lister` returning `id`, `text`, optional `title`, `when`, `scope_tags`); `RecordContextAssembler` ranks them against the message by distinctive shared words (inverse document frequency over the listed records, so a word most records share cannot admit one), renders the best few and honors `scope_tags` like every other arm. It reads the user's words and the stored records only and never raises. Tests: `tests/test_recall_record_assembler.py`.
