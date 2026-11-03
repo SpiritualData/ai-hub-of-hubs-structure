@@ -1,5 +1,7 @@
 # Documentation
 
+To add an implementation, see [CONTRIBUTING.md](../CONTRIBUTING.md).
+
 The pages are in four folders by what they are for. Start with the tutorial.
 
 ## Tutorials
@@ -18,6 +20,9 @@ The pages are in four folders by what they are for. Start with the tutorial.
 ## Explanation
 
 - [How we measure](explanation/how-we-measure.md)
+- [Compared with other projects](explanation/compared.md)
+- [Glossary](explanation/glossary.md)
+- [The mind map](explanation/the-mind-map.md)
 - [Resolution design](explanation/resolution-design.md)
 - [Scholarly search](explanation/science-search.md)
 - [Choosing the model for each tier](explanation/tier-selection.md)

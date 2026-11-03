@@ -165,3 +165,13 @@ def test_live_grounded_run_and_model_alone():
     assert grounded.answer and grounded.items and not grounded.note
     alone = hubofhubs.run(WholeAnswering).model_only("Reply with the single word: ok", "cheap")
     assert alone.answer and alone.note and alone.items == ()
+
+
+def test_the_readme_blocks_run_as_written():
+    """The first block pends on its key and the second runs offline as written: the README's one function, proven here."""
+    import re
+    from esoi import entry
+    text = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
+    blocks = [b for b in re.findall(r"```pycon\n(.*?)```", text, flags=re.S) if "hubofhubs.run(" in b]
+    first, second = entry.run_block(blocks[0], guard=False), entry.run_block(blocks[1], guard=False)
+    assert not first["problems"] and not second["problems"] and not second["pending"], (first, second)

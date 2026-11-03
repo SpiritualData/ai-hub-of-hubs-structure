@@ -182,8 +182,6 @@ chase vector store leaderboards without a cardinality that needs one.
   accuracy with about 400 times lower cost on LLM-AggreFact (`EV-minicheck-cost`; grade D, the authors' own model). **Add** a
   MiniCheck arm (or Vectara HHEM-2.1-Open, an existing candidate), a CPU-capable extra, about 60 lines, scored on a small
   LLM-AggreFact subset. The model download is large, not an embedding run.
-- **hold-the-intents.** No public task represents a hierarchy of life intents (`docs/reference/public-benchmarks.md`). No recommendation;
-  an honest gap.
 - **keep-it-generic.** The check is a scan of our own files; no outside evidence applies.
 - **take-in-the-world.** Evidence gathered so far is vendor-run (search-engine BrowseComp tables); nothing graded above D, so no arm
   recommendation from public research this round.

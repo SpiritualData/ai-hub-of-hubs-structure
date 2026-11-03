@@ -1,8 +1,51 @@
-# ai-hub-of-hubs-structure
+# hubofhubs
 
-**One structure for assembling the best open-source AI hubs, one seat per part of a mind. Each seat holds the arm that measures
-best on shared cases, and every number below is a recorded row, not a claim.** Built for and used by
-[Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner); the arms, cases and results are here to check.
+Interchangeable components for an LLM application (model calls, web search, retrieval, memory, coding agents, guardrails), whose defaults
+are picked by recorded evals on shared cases. Built for and used by [Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner).
+
+```bash
+pip install "hubofhubs[web,gemini] @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@v0.2.0"
+```
+
+```pycon
+>>> import hubofhubs
+>>> print(hubofhubs.run("hub-of-hubs", "what is the latest Rust release?"))   # the whole hub; with GEMINI_API_KEY set
+The latest stable release of Rust is version 1.99.1
+```
+
+The defaults are chosen by recorded evals, and a lockfile pins them. When a better implementation wins, the selection changes and every
+caller written like this stays the same. The live answer cites its sources (https://blog.rust-lang.org/releases/latest/ and https://releases.rs/).
+
+Next:
+1. Call any id the same way, `hubofhubs.run("card-store", "rust release")`. `hubofhubs.needs("hub-of-hubs")` lists what your setup lacks.
+2. Override only what differs: `arms={"search-backend": "serper"}`, `options={...}` or `provided={"card-store": obj}`.
+3. Pin the defaults with `lock="esoi.lock.json"`, made by `esoi lock`.
+
+The whole hub needs a free Gemini key (`GEMINI_API_KEY`, from https://aistudio.google.com/apikey), the `claude` program installed (the default
+model implementation runs `claude -p` on a Claude Code subscription) and `HUBOFHUBS_WRITE_ROOT`, the one folder the file-editing
+implementation may write in. A call that cannot run yet raises `esoi.entry.Pending` naming the exact key or install.
+
+Compared with LangChain, LlamaIndex and others: [compared](docs/explanation/compared.md). Terms: [glossary](docs/explanation/glossary.md).
+
+## Every id the same way
+
+```pycon
+>>> import hubofhubs
+>>> from hubofhubs.seats import CardStore
+>>> from hubofhubs.card import Card
+>>> store = hubofhubs.run(CardStore)          # the typed, ready handle
+>>> store.add(Card("rust-1-91", "Rust 1.91 was released on 2025-10-30."))
+'rust-1-91'
+>>> hubofhubs.run("card-store", "rust", provided={"card-store": store})
+[Card(id='rust-1-91', text='Rust 1.91 was released on 2025-10-30.', source='', tags=())]
+>>> hubofhubs.run("think-critically", {"answer": "See https://example.org/a", "evidence": "https://example.org/b"})
+['link not in the evidence: https://example.org/a']
+>>> hubofhubs.run("read-registry-freshness", "2026-10-01") > 0
+True
+```
+
+Each id is reached through a declared interface. The call builds the implementation its metric selected and passes your input to it.
+Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/assemble-and-run-your-first-seat.md).
 
 <!-- headline:start -->
 **34 alternatives measured across 7 areas, from 448 researched candidates.**
@@ -20,30 +63,12 @@ best on shared cases, and every number below is a recorded row, not a claim.** B
 Of 6 seats with rival arms on the same cases, 6 hold the arm with the highest result on all cases at the deciding stage. The claims are in-sample (the same cases chose the arm and report it): 0 of 6 selected arms are significantly ahead of every rival, two-sided. Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors (such as `none` and `single_provider`) and conformance tests, which have no rival ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative)).
 <!-- headline:end -->
 
-## Use it in one line
-
-```python
-import hubofhubs
-result = hubofhubs.run("what is the latest Rust release?")         # a question in, a Result out; nothing to wire
-print(result.answer[:52], "...")                                     # live run, 2026-11-01:
-# The latest stable release of Rust is version 1.99.1 ...
-print(result.arms, [i["url"] for i in result.items[:2]])
-# {'search-backend': 'gemini'} ['https://blog.rust-lang.org/releases/latest/', 'https://releases.rs/']
-```
-
-You get the best-scoring implementation for every part of an AI system, chosen by measured results, with no wiring. The question was
-answered from the live web by the selected search arm, and the version matches the stable line of the cited releases.rs page. The `Result` holds `answer`, `items` (the sources),
-`trace` (the work done), `arms`, `tokens`, `note` and `events` (a terminal draws them live via `on_event=`). `seat="model"` asks the model alone (the result says it has no sources),
-`"papers"` and `"recall"` name other parts, and `ahohs run "<input>" --json` is the same call from a shell. What next:
-1. See what your setup still needs: `hubofhubs.needs()` lists the missing key or install per selected arm (`run` stops with a `Needs` error naming the same).
-2. Override just one part: `hubofhubs.run(text, arms={"search-backend": "serper"})`.
-3. Pin the choice with `lock="esoi.lock.json"` (from `esoi lock`) so production changes when you decide.
-[Tutorial](docs/tutorials/assemble-and-run-your-first-seat.md); `hubofhubs.assemble()` builds every part that needs nothing more from you.
-
 ## Evidence
 
-One row per recorded check, generated by `python3 scripts/status.py` from the recorded results. The lead column says whether the selected
-arm's lead is significant (test and p-value) or a best guess, not yet significant. Public research ([what it says](docs/explanation/what-public-research-says.md)) is shown beside our numbers, never added into them. How the cases and tests work: [how we measure](docs/explanation/how-we-measure.md).
+Defaults are chosen by the highest result on the cases that chose them, and every row below is a recorded result. One row per recorded
+check, generated by `python3 scripts/status.py`. The lead column says whether the selected arm's lead is significant (test and p-value)
+or a best guess, not yet significant. Public research ([what it says](docs/explanation/what-public-research-says.md)) is shown beside our
+numbers, never added into them. How the cases and tests work: [how we measure](docs/explanation/how-we-measure.md).
 
 <!-- evidence:start -->
 | Seat | Deciding check, stage | Selected arm | Pass rate on all cases (95% interval) | n | Cost per passing case | Median seconds | Two-sided result against each rival |
@@ -58,9 +83,9 @@ arm's lead is significant (test and p-value) or a best guess, not yet significan
 Conformance tests (cases written in this repo, no rival, not counted as alternatives): `card-store` 35/35, `choose-a-model-tier` 36/36, `model-call` 30/30, `read-registry-freshness` 41/41, `score-hub-connections` 33/33, `assemble-the-whole` 68/68. The arm with the highest result at the deciding stage on all cases is selected (an exact tie keeps the incumbent), and the same cases give the rate, interval and test, so each claim is in-sample. A lead is significant when the two-sided exact McNemar test gives p below 0.05 after Holm's correction across rivals, with alpha divided by the number of stages the pair was run at; otherwise it is a best guess, not yet significant. Where a seat's metric is a balanced score, arms are ranked by that score. Cost per passing case is the whole run's recorded spend over its passes. Every check and every arm: [leaderboard](docs/reference/leaderboard.md), [evidence by arm](docs/reference/evidence-by-arm.md).
 <!-- evidence:end -->
 
-## What is not measured yet
+## What has no recorded run
 
-Named seats and arms with no recorded run, and why. `esoi leaderboard` flags rows recorded before later edits to the measured code.
+Named areas and implementations with no recorded run, and why. `esoi leaderboard` flags rows recorded before later edits to the measured code.
 
 <!-- unmeasured:start -->
 - **`take-in-the-world`** (World): measured in part. Only web search is measured; agent harnesses, tools and MCP servers have no check yet.
@@ -80,55 +105,11 @@ Named seats and arms with no recorded run, and why. `esoi leaderboard` flags row
 - **`cards-from-files`**, arms with no run: `per_file_symbols`, `graphify_files`. Not built yet: recorded in step 5b with the component.
 <!-- unmeasured:end -->
 
-## The idea, as a mind
-
-A request enters from the world, the subconscious admits what bears on the goal, and the mind works on it, asking science for
-evidence. Critical thinking holds the result to its metric, the overseer checks the risk, and the body acts; the higher mind
-chooses whose long view grounds the work.
-
-```mermaid
-flowchart TB
-  HM["Higher mind<br/>hold-the-intents"]
-  WI["World in<br/>take-in-the-world"]
-  SUB["Subconscious, Intuition<br/>remember-and-recall"]
-  MIND["Mind<br/>reason-and-answer"]
-  SCI["Science<br/>know-the-world"]
-  CT["Critical thinking<br/>think-critically"]
-  OV["Overseer<br/>watch-for-risk"]
-  ACT["Body and world out<br/>act-in-the-world"]
-  WI --> SUB --> MIND --> CT --> OV --> ACT
-  MIND <--> SCI
-  CT -. "regression: retry" .-> MIND
-  HM -. "rep and intents" .-> SUB
-  HM -. "rep and intents" .-> MIND
-```
-
-## The seats
-
-A seat is a narrow interface (a `typing.Protocol`); an arm is an open-source hub, a combination or a plain fallback that fills it. A
-broad seat is broken into narrower solutions with their own metric, such as `choose-a-model-tier` under the Mind. Every area and
-candidate has a dated source in [docs/reference/registry.md](docs/reference/registry.md) and is researched again within 90 days ([refresh](docs/how-to/refresh-the-registry.md)).
-
-<!-- seats:start -->
-| Seat | Part of the mind | Areas | Built on now | Candidates researched | Oldest research |
-|---|---|---|---|---|---|
-| take-in-the-world | World | 7 | 1 | 36 | 2026-10-30 |
-| remember-and-recall | Subconscious, Intuition | 10 | 8 | 69 | 2026-10-30 |
-| reason-and-answer | Mind | 8 | 1 | 55 | 2026-10-30 |
-| know-the-world | Science | 10 | 2 | 73 | 2026-10-30 |
-| think-critically | Critical thinking | 4 | 4 | 18 | 2026-10-30 |
-| act-in-the-world | Body | 20 | 5 | 133 | 2026-10-30 |
-| watch-for-risk | Overseer | 5 | 5 | 29 | 2026-10-30 |
-| assemble-the-whole | The whole being | 3 | 1 | 6 | 2026-10-30 |
-| stay-current | Learning | 3 | 2 | 17 | 2026-10-30 |
-| keep-it-generic | Character | 3 | 2 | 12 | 2026-10-30 |
-| connect-any-integration | Hands | 0 | 0 | 0 | none |
-
-73 areas and 448 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
-<!-- seats:end -->
-
 ## For a consumer
-Install, register a part you own and score your integration: [register a second consumer](docs/how-to/register-a-second-consumer.md); checks are in [CLAUDE.md](CLAUDE.md#checks). All documentation: [docs/README.md](docs/README.md).
+
+Install, register a part you own and score your integration: [register a second consumer](docs/how-to/register-a-second-consumer.md).
+To add an implementation, see [CONTRIBUTING.md](CONTRIBUTING.md). All documentation: [docs/README.md](docs/README.md).
 
 ## License
+
 Apache-2.0, matching Quest AI Runner (`LICENSE`).

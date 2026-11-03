@@ -29,7 +29,7 @@ the hub grows, not when the consumer gains code.
 
 `call` is the recommendation as one word: `adopt`, `coexist` (only if measured), `keep`, `watch` or `avoid`; blank means unclassified and counts as `coexist`. The
 `seat` column maps every area to the hub seat (a `solution_id` in `esoi/solutions.csv`) that owns it: an area is a research category, mostly an arm or
-tool inside its seat, and the hub has 12 seats at the top level (11 own areas today; `docs/reference/registry.md` lists them). A scorer reads the checks that need a
+tool inside its seat, and the hub has 11 seats at the top level (11 own areas today; `docs/reference/registry.md` lists them). A scorer reads the checks that need a
 connection (by configuration, one seam, selectable, a fake hub) once per SEAT, and only for seats with at least one area whose call is `adopt` or
 `coexist`, so a consumer is not behind on a seat the research says to keep, watch or avoid.
 

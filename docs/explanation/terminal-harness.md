@@ -30,8 +30,8 @@ events (ProgressEvent) --> pure renderers --> blocks --> any frontend
 ### Layer 1: the hub CLI (`ahohs`, a console script)
 
 `ahohs run "<input>"` is a thin wrapper over `hubofhubs.run`, the one function a script, a terminal and the CLI all call (built;
-`--json` prints each event as one line, then the result; exit 0 ran, 2 needs setup, 1 failed). Its generator form `hubofhubs.stream`
-is the engine of the interactive terminal. The other commands delegate to the existing `esoi` commands and add no new logic:
+`--json` prints each event as one line, then the result; exit 0 ran, 2 needs setup, 1 failed). The `events` a `Result` carries
+are what the interactive terminal draws. The other commands delegate to the existing `esoi` commands and add no new logic:
 `ahohs select | lock | requirements | check | docs` call the same functions as `esoi ... --package hubofhubs`. Two more are new:
 `ahohs assemble` (shows what `hubofhubs.assemble()` built and what is in `system.pending`) and `ahohs term` (layer 2).
 

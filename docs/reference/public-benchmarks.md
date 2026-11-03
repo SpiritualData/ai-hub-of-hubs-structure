@@ -46,7 +46,6 @@ honest result of this survey.
 | card-store | none | BEIR (generic lexical versus dense) |
 | think-critically | LLM-AggreFact subset scored by a CPU checker | Vectara board (vendor evaluator, private set), FACTS Grounding (unread), judge-reliability sets |
 | watch-for-risk | AgentDojo and InjecAgent strings as offline injection cases | garak and content-harm suites not useful (content, not irreversible actions); OWASP list as a checklist |
-| hold-the-intents | none | intent label sets and RouterBench: nothing public represents a life-intent hierarchy |
 | stay-current | Epoch hub rows (internal versus external, source cited) as the weekly feed | Papers with Code closed |
 | keep-it-generic | none | IFEval: the seat's rule is a scan of our own files |
 

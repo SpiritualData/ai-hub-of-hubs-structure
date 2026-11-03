@@ -1,6 +1,6 @@
 # Terminal blocks
 
-`hubofhubs.terminal` turns a run's progress events into `Block` values. It imports no UI library; its core is the standard library and this package.
+`hubofhubs.terminal` turns a run's progress events into `Block` values. It imports no UI library; its core is the standard library and this package. A `Result` from `hubofhubs.run` carries `events`, and the terminal renderers draw them.
 
 ## Block
 

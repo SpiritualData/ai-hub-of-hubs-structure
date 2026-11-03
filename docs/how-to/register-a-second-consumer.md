@@ -61,17 +61,17 @@ By path or git: `pip install -e ../ai-hub-of-hubs-structure`, or `pip install "h
 
 ```python
 import hubofhubs
-result = hubofhubs.run("what is the latest Rust release?")   # one input in, one Result out; the best-measured arm of every part
+answer = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")   # one input in, one Result out; the best-measured implementation of every part
 system = hubofhubs.assemble()                                 # every seat with a selected arm; system.pending says what the rest need
 system = hubofhubs.assemble(arms={"call-a-model": "anthropic"}, options={"card-store": {"path": "cards.db"}}, lock="esoi.lock.json")   # only what differs
 ```
 
-`run(input, seat=None, on_event=None, **overrides)` is the single entry point (the `ahohs run` command wraps it): `seat` is `"ask"` (default: the
-selected search arm answers from the live web and `Result.items` are its sources; with no search key it raises `Needs`, never answering from memory),
-`"model"` (the model alone; `Result.note` says it has no sources), `"papers"` or `"recall"`; `on_event` receives the hub's typed events live; `Result.events` keeps them. `stream(...)` is the same
-call as a generator. `needs(seat)` lists what the selected arms still need; `run` raises `Needs` with those lines when a key is missing.
+`run(id, input, **overrides)` is the single entry point (the `ahohs run` command wraps it). The id is a solution id or `hub-of-hubs` for the whole hub, which
+answers from the live web and returns a `Result` whose items are its sources. `hubofhubs.run(CardStore)` (a Protocol from `hubofhubs.seats`) returns the typed ready handle.
+Keywords override only what differs: `arms=`, `options=`, `provided=`, `lock=`, `environ=`. `hubofhubs.needs(id)` lists what your setup still lacks, and a call that cannot run
+raises `esoi.entry.Pending` with those lines.
 
-`assemble()` builds each seat whose selected arm needs nothing more from you. Today that is `call-a-model`, `card-store`, `choose-a-model-tier`, `model-call`,
+ whose selected arm needs nothing more from you. Today that is `call-a-model`, `card-store`, `choose-a-model-tier`, `model-call`,
 `read-registry-freshness`, `score-hub-connections` and `watch-for-risk`; the other seats are in `system.pending`, one line each saying what to pass:
 `arms={seat: <arm>}` where no arm is selected yet (several arms await the measurement of their seat), `options={seat: {argument: ...}}`,
 `provided={seat: <your object>}`, or the variable to set (`set ANTHROPIC_API_KEY (option 'api_key')`).
