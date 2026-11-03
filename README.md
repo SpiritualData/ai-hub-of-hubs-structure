@@ -1,4 +1,4 @@
-# hubofhubs
+# AI Hub of Hubs Structure
 
 Interchangeable components for an LLM application (model calls, web search, retrieval, memory, coding agents, guardrails), whose defaults
 are picked by recorded evals on shared cases. Built for and used by [Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner).
