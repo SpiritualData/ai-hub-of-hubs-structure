@@ -5,6 +5,7 @@
 - **One function, `hubofhubs.run(id, input)`, replaces `ask` (2026-11-02).** The id is a solution id (`card-store`, `search-backend`, `know-the-world`, `remember-and-recall`, `think-critically`) or `hub-of-hubs` for the whole hub, which returns a `Result` (answer, items with sources, trace, arms, note, events). `ask` and `stream` no longer exist, and the CLI is `ahohs run "<input>" [--id ID] [--arm ID=ARM] [--lock FILE] [--json]` (no `--seat`). `hubofhubs.run(CardStore)` returns the typed ready handle. `hubofhubs.needs(id)` lists what a setup lacks; a call that cannot run raises `esoi.entry.Pending` naming the key or install. Keywords override only what differs: `arms=`, `options=`, `provided=`, `lock=`, `environ=`.
 - **Composition arms in code** for take-in-the-world, remember-and-recall, reason-and-answer, keep-it-generic and assemble-the-whole, plus implementations for stay-current, connect-any-integration and think-critically (links held to their evidence).
 - **hold-the-intents is dissolved**: its research area now sits under reason-and-answer.
+- **Composites build a member on first use**: the whole-hub question needs only the search key, and `remember-and-recall` runs offline; the model, the risk watch, the acting seat and the audit are built when first used.
 - **Install pins esoi to tag v0.3.0**; the core and the extras are pinned.
 - New pages: glossary, the mind map, compared, and `CONTRIBUTING.md`.
 

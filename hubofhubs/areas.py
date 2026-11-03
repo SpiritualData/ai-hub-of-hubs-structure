@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
+from esoi.assemble import Lazy
 
 from . import registry, scan
 from .oneline import hit_items
@@ -19,10 +20,10 @@ from .seats import (Connecting, FreshnessReading, HubScoring, ModelCall, Staying
 @implementation("take-in-the-world", "search_backends")
 class SearchBackends:
     """The outside world for a query: the selected search arm's answer and sources, and with ``scholarly=True`` the papers of the
-    selected world-knowing arm as well."""
+    selected world-knowing arm as well (built on first use, so a plain search never asks for it)."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, search: SearchBackend, papers: WorldKnowing):
+    def __init__(self, search: SearchBackend, papers: Lazy[WorldKnowing]):
         self.search = search
         self.papers = papers
 
@@ -39,10 +40,10 @@ class SearchBackends:
 @implementation("reason-and-answer", "model_calls")
 class ModelCalls:
     """A prompt asked of the model the tier chooser measured best for the tier; a name the chooser does not list is passed on as the
-    model name itself."""
+    model name itself. The chooser is built on first use, so a prompt with no tier never asks for it."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, model: ModelCall, chooser: TierSelection):
+    def __init__(self, model: ModelCall, chooser: Lazy[TierSelection]):
         self.model = model
         self.chooser = chooser
 

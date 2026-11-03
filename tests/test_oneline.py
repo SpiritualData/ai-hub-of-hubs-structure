@@ -74,7 +74,7 @@ def test_the_whole_hub_without_a_key_says_exactly_what_to_set():
     with pytest.raises(Pending) as raised:
         hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", environ={})
     text = str(raised.value)
-    assert "GEMINI_API_KEY" in text and "HUBOFHUBS_WRITE_ROOT" in text      # nothing is attempted; each line says what to set
+    assert "GEMINI_API_KEY" in text and "HUBOFHUBS_WRITE_ROOT" not in text      # nothing is attempted; the acting seat is built on first use
     assert {r.kind for r in raised.value.reasons} <= {"key", "install", "needs"}      # keys, installs and the seats waiting on them: no option to pass
 
 

@@ -1,8 +1,10 @@
 """The composition arm of ``remember-and-recall``: recall is the cards the context assembler drew on for the query, then the cards of
-the selected store that match it; ``learn`` fills the store from a folder's files through the selected card builder."""
+the selected store that match it; ``learn`` fills the store from a folder's files through the selected card builder, which is built
+on first use, so recall alone never asks for what building cards needs (a model)."""
 from typing import List, Sequence
 
 from esoi import implementation
+from esoi.assemble import Lazy
 
 from ..card import Card
 from ..seats import CardsFromFiles, CardStore, ContextAssembling
@@ -14,7 +16,7 @@ class CardRecall:
     selected store finds by the query's words, each card once."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, store: CardStore, assembler: ContextAssembling, builder: CardsFromFiles):
+    def __init__(self, store: CardStore, assembler: ContextAssembling, builder: Lazy[CardsFromFiles]):
         self.store = store
         self.assembler = assembler
         self.builder = builder

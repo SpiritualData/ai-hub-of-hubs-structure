@@ -4,6 +4,7 @@ import time
 from typing import Any, Dict, List, Mapping
 
 from esoi import implementation
+from esoi.assemble import Lazy
 
 from .oneline import Result, event, trace_event
 from .ports.events import EVENT_DONE, EVENT_RESULT, EVENT_STATUS, EVENT_WORK_TRACE
@@ -16,11 +17,12 @@ MODEL_ONLY_NOTE = "answered from the model only: no sources were consulted"
 @implementation("assemble-the-whole", "zero_config")
 class ZeroConfig:
     """Every seat from its selected arm: what is remembered and what the web says answer the text, the critic holds the answer to
-    its sources, and a goal is acted on only when the risk watch lets it through."""
+    its sources, and a goal is acted on only when the risk watch lets it through. The answer path needs the world, recall and the critic;
+    the model, the risk watch, the acting seat and the audit are built on first use, so a question never asks for what only they need."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, take_in: TakingIn, recall: Remembering, critic: Critiquing, reason: Reasoning, watch: RiskWatching,
-                 act: Acting, generic: Genericity):
+    def __init__(self, take_in: TakingIn, recall: Remembering, critic: Critiquing, reason: Lazy[Reasoning], watch: Lazy[RiskWatching],
+                 act: Lazy[Acting], generic: Lazy[Genericity]):
         self.take_in, self.recall, self.critic = take_in, recall, critic
         self.reason, self.watch, self.act_arm, self.generic = reason, watch, act, generic
 
