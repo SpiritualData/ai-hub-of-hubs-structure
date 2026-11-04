@@ -86,7 +86,10 @@ def needs(implementation, meter):
         return {}
     from esoi import runtime
     from hubofhubs import seats  # noqa: F401  (declares the seats)
-    return dict(provider=meter.wrap(runtime.resolve("call-a-model", scope="hubofhubs")))
+    import os
+    provider_class = runtime.resolve("call-a-model", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
+    provider = provider_class(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
+    return dict(provider=meter.wrap(provider, ("answer",)))
 
 
 def score_case(fn, case):
