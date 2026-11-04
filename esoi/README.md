@@ -90,7 +90,7 @@ flowchart LR
 | Subconscious, Intuition | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | Subconscious, Intuition measure (draft) |
 | Context assembler | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
 | Cards from files | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `import_graph_topic_cards` | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Context retriever | `retrieve-context` | `hubofhubs.run("retrieve-context", ...)` | `abstaining_hybrid` | Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size |
+| Context retriever | `retrieve-context` | `hubofhubs.run("retrieve-context", ...)` | `abstaining_hybrid` | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
 | Web search | `search-backend` | `hubofhubs.run("search-backend", 'latest Rust release')` | `gemini` | Search finds the source |
 
 ## Problems and ideals
@@ -206,7 +206,7 @@ flowchart LR
 | Subconscious, Intuition | `remember-and-recall` | card_recall | Subconscious, Intuition measure (draft) |
 | Context assembler | `context-assembler` | bm25@analyzer=english | Relevant passage in the top five |
 | Cards from files | `cards-from-files` | import_graph_topic_cards | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Context retriever | `retrieve-context` | abstaining_hybrid | Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size |
+| Context retriever | `retrieve-context` | abstaining_hybrid | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
 | Web search | `search-backend` | gemini | Search finds the source |
 
 ### Implementations
@@ -265,6 +265,11 @@ flowchart LR
 | Hybrid that can say nothing | `retrieve-context:abstaining_hybrid` | [hubofhubs/retrieval/abstain.py](../hubofhubs/retrieval/abstain.py) |  |
 | Learned reranker that can say nothing | `retrieve-context:abstaining_learned` | [hubofhubs/retrieval/abstain.py](../hubofhubs/retrieval/abstain.py) |  |
 | Model reranker | `retrieve-context:llm_rerank` | [hubofhubs/retrieval/abstain.py](../hubofhubs/retrieval/abstain.py) |  |
+| Hybrid that prefers newer items | `retrieve-context:abstaining_recency` | [hubofhubs/retrieval/aware.py](../hubofhubs/retrieval/aware.py) |  |
+| Hybrid with soft affinity to the request's focus | `retrieve-context:abstaining_affinity` | [hubofhubs/retrieval/aware.py](../hubofhubs/retrieval/aware.py) |  |
+| Hybrid with recency, affinity and supersession | `retrieve-context:abstaining_aware` | [hubofhubs/retrieval/aware.py](../hubofhubs/retrieval/aware.py) |  |
+| Hybrid behind a hard focus fence | `retrieve-context:abstaining_fenced` | [hubofhubs/retrieval/aware.py](../hubofhubs/retrieval/aware.py) |  |
+| Scan of the live sources | `retrieve-context:live_scan` | [hubofhubs/retrieval/aware.py](../hubofhubs/retrieval/aware.py) |  |
 | OpenAlex keyword search | `know-the-world:openalex` | [hubofhubs/science/openalex.py](../hubofhubs/science/openalex.py) |  |
 | OpenAlex semantic search | `know-the-world:openalex_semantic` | [hubofhubs/science/openalex_semantic.py](../hubofhubs/science/openalex_semantic.py) |  |
 | OpenAlex keywords, rule rewrite | `know-the-world:openalex_keywords` | [hubofhubs/science/openalex_keywords.py](../hubofhubs/science/openalex_keywords.py) |  |
@@ -313,5 +318,5 @@ flowchart LR
 - Subconscious, Intuition measure (draft) (`metric-remember-and-recall`): `none`
 - Relevant passage in the top five (`metric-context-assembler`): `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite`
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
-- Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size (`metric-retrieve-context`): `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl llm_rerank`
+- Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-retrieve-context`): `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl abstaining_recency; esoi run context_retrieval --impl abstaining_affinity; esoi run context_retrieval --impl abstaining_aware; esoi run context_retrieval --impl abstaining_fenced; esoi run context_retrieval --impl live_scan; esoi run context_retrieval --impl llm_rerank`
 - Search finds the source (`metric-search-backend`): `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`

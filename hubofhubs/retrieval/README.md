@@ -8,8 +8,8 @@ Show a task the context it needs and little else, for any consumer that keeps it
 
 - Entry call: `hubofhubs.run("retrieve-context", ...)`
 - Selected implementation: `abstaining_hybrid`
-- Metric: Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size
-- Implemented by: [`hubofhubs/retrieval/__init__.py`](__init__.py), [`hubofhubs/retrieval/abstain.py`](abstain.py), [`hubofhubs/retrieval/base.py`](base.py), [`hubofhubs/retrieval/dense.py`](dense.py), [`hubofhubs/retrieval/fusion.py`](fusion.py), [`hubofhubs/retrieval/learned.py`](learned.py), [`hubofhubs/retrieval/lexical.py`](lexical.py), [`hubofhubs/retrieval/units.py`](units.py) and 1 more
+- Metric: Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources
+- Implemented by: [`hubofhubs/retrieval/__init__.py`](__init__.py), [`hubofhubs/retrieval/abstain.py`](abstain.py), [`hubofhubs/retrieval/aware.py`](aware.py), [`hubofhubs/retrieval/base.py`](base.py), [`hubofhubs/retrieval/dense.py`](dense.py), [`hubofhubs/retrieval/fusion.py`](fusion.py), [`hubofhubs/retrieval/learned.py`](learned.py), [`hubofhubs/retrieval/lexical.py`](lexical.py) and 3 more
 
 ## Implementations
 
@@ -27,10 +27,15 @@ Show a task the context it needs and little else, for any consumer that keeps it
 | Hybrid that can say nothing | `retrieve-context:abstaining_hybrid` | [`hubofhubs/retrieval/abstain.py`](abstain.py) | selected |
 | Learned reranker that can say nothing | `retrieve-context:abstaining_learned` | [`hubofhubs/retrieval/abstain.py`](abstain.py) |  |
 | Model reranker | `retrieve-context:llm_rerank` | [`hubofhubs/retrieval/abstain.py`](abstain.py) |  |
+| Hybrid that prefers newer items | `retrieve-context:abstaining_recency` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
+| Hybrid with soft affinity to the request's focus | `retrieve-context:abstaining_affinity` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
+| Hybrid with recency, affinity and supersession | `retrieve-context:abstaining_aware` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
+| Hybrid behind a hard focus fence | `retrieve-context:abstaining_fenced` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
+| Scan of the live sources | `retrieve-context:live_scan` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
 
 ## Metrics
 
-- Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size (`metric-retrieve-context`): leader `abstaining_hybrid`, 127 of 253 cases
+- Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-retrieve-context`): leader `bm25_body`, 203 of 395 cases
 
 ## Problems
 
