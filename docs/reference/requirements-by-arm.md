@@ -27,7 +27,7 @@ at the repository root.
 | `call-a-model:multi_provider` | none | none | none | none | no |
 | `call-a-model:openai` | `OPENAI_API_KEY` (secret)<br>`OPENAI_BASE_URL` | OpenAI | `openai` via extra `openai` | none | no |
 | `card-store:local_card_store` | none | none | none | none | no |
-| `cards-from-files:graphify_files` | none | none | none | none | no |
+| `cards-from-files:graphify_files` | none | none | `graphify` via extra `graphify` | none | no |
 | `cards-from-files:llm_topic_cards` | none | none | none | none | no |
 | `cards-from-files:per_file_symbols` | none | none | none | none | no |
 | `choose-a-model-tier:tier_selector` | none | none | none | none | no |

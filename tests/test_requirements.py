@@ -14,7 +14,7 @@ from esoi.installer import assembly_plan  # noqa: E402
 from hubofhubs import assembler, requirements_doc  # noqa: E402
 
 # the distribution that provides an importable module, where the two names differ
-DISTRIBUTION_OF = {"google.genai": "google-genai", "qdrant_client": "qdrant-client", "Stemmer": "PyStemmer", "acp": "agent-client-protocol"}
+DISTRIBUTION_OF = {"google.genai": "google-genai", "qdrant_client": "qdrant-client", "Stemmer": "PyStemmer", "acp": "agent-client-protocol", "graphify": "graphifyy"}
 
 
 def declared_arms():

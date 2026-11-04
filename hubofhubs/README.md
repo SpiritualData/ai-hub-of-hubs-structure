@@ -63,7 +63,7 @@ Give any consumer a working system from one line of configuration.
 - Entry call: `hubofhubs.run("assemble-the-whole", 'what is the latest Rust release?')`
 - Selected implementation: `zero_config`
 - Metric: Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor
-- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 141 more
+- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 151 more
 
 ## stay-current: the Learning seat (`stay-current`)
 

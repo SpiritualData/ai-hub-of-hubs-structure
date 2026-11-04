@@ -29,6 +29,7 @@ VOYAGE_SDK = python("voyageai", "hubofhubs", extra="voyage", required=False)
 ACP_SDK = python("acp", "hubofhubs", extra="acp")
 BM25S = python("bm25s", "hubofhubs", extra="bm25")
 STEMMER = python("Stemmer", "hubofhubs", extra="bm25")
+GRAPHIFY = python("graphify", "hubofhubs", extra="graphify")
 
 # --- model vendors ----------------------------------------------------------------------------------------------------------
 

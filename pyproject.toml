@@ -27,6 +27,7 @@ qdrant = ["qdrant-client>=1.16", "fastembed>=0.8"]   # remember-and-recall: the 
 voyage = ["voyageai>=0.3"]                # remember-and-recall: the Voyage AI embedder factory
 acp = ["agent-client-protocol>=0.4"]      # act-in-the-world arm: the Agent Client Protocol deep runner (imported inside one function)
 bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # remember-and-recall: the BM25 content store
+graphify = ["graphifyy==0.9.102"]                           # cards-from-files: the graphify_files builder (code-only extraction, no model)
 
 [tool.setuptools]
 packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.deep", "hubofhubs.models", "hubofhubs.orchestrate", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.science", "hubofhubs.terminal", "hubofhubs.websearch"]

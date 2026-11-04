@@ -1,5 +1,7 @@
-"""Naive baseline: every file in one card, in walk order. The cases must make it lose to the per-file floor."""
+"""BASELINE: every file in one card, in walk order. The rule must give it no pass: the first three files of the view are the first three files walked."""
+from cards_from_files.baselines import grouped
+from cards_from_files.score import view_function
 
 
 def build(meter):
-    return lambda kind, args: []
+    return view_function(lambda root, files, existing: grouped(root, [list(files)]), meter)
