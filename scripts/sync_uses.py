@@ -11,25 +11,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from esoi import intents  # noqa: E402
 from hubofhubs.resolution import HUB  # noqa: E402
-
-NO_CODE = set()
-
-
-def recorded_without_code():
-    """Ids of recorded alternatives that name no code (`filepath` empty: a described option, "no arm yet"). They have no
-    constructor to read, so there is nothing to compare their `uses_solution_ids` with."""
-    rows = intents.read_tree(ROOT / "esoi", "implementations.csv")
-    return {row["implementation_id"] for row in rows if not row.get("filepath", "").strip()}
 
 
 def main(argv):
-    global NO_CODE
-    NO_CODE = recorded_without_code()
     if "--check" in argv:
         bad = HUB.uses_problems(ROOT / "esoi")
-        bad = [line for line in bad if line.split(":", 2)[0] + ":" + line.split(":", 2)[1] not in NO_CODE]
         if bad:
             print("\n".join(bad))
         return 1 if bad else 0
