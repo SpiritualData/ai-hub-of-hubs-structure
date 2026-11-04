@@ -18,6 +18,7 @@ from hubofhubs import evidence_summary, render_docs, requirements_doc  # noqa: E
 
 TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("docs/reference/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
+           ("README.md", render_docs.CONTAINERS_BEGIN, render_docs.CONTAINERS_END),
            ("README.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
            ("drafts/announcement-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
            ("drafts/medium-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
@@ -28,19 +29,43 @@ TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render
            ("docs/reference/requirements-by-arm.md", requirements_doc.BEGIN, requirements_doc.END))
 
 
+#: What each container evolves, in Joshua's words as approved on 2026-11-04.
+EVOLVES = {
+    "the-self": "The integration, coherence and role understanding of all the parts.",
+    "the-body": "The AI system's form and its internal context.",
+    "the-intelligence": "How information is processed for one request.",
+    "take-in-the-world": "Awareness of the outside and interaction with it.",
+    "the-consciousness": "The humans who interact with the system.",
+}
+
+
+def names_by_id():
+    return {row["solution_id"]: row["name"] for row in read_tree(ROOT / "esoi", "solutions.csv")}
+
+
 def seats():
-    """``(seat id, part of the mind)`` for each mind seat in the records tree (``esoi.intents.read_tree``), in reading order. A mind seat is named
-    a solution in ``evidence_summary.MIND_SEATS``, whose name is the part; a seat with no researched area still appears, with 0."""
-    out = []
-    for row in read_tree(ROOT / "esoi", "solutions.csv"):
-        part = evidence_summary.mind_part(row)
-        if part:
-            out.append((row["solution_id"], part))
-    return out
+    """``(seat id, part of the mind, the part it is inside)`` for each part in ``evidence_summary.MIND_TREE``, in the order of the tree, named by
+    the records tree (``esoi.intents.read_tree``). A part with no researched area still appears, with 0."""
+    names = names_by_id()
+    return [(sid, names[sid], names[inside] if inside else "") for sid, inside in evidence_summary.MIND_TREE if sid in names]
+
+
+def containers():
+    """``(name, id, what it evolves, names of the parts it holds)`` for each container, in order."""
+    names = names_by_id()
+    held = {}
+    for sid, inside in evidence_summary.MIND_TREE:
+        if inside:
+            held.setdefault(inside, []).append(sid)
+    return [(names[sid], sid, EVOLVES[sid], [names[x] for x in held.get(sid, ())]) for sid, inside in evidence_summary.MIND_TREE if not inside]
 
 
 def build():
     return render_docs.seat_summary(seats=seats())
+
+
+def build_containers():
+    return render_docs.container_summary(containers())
 
 
 def build_detail():
@@ -58,7 +83,7 @@ def records():
 
 def blocks():
     config, registry = records()
-    return {render_docs.STATUS_BEGIN: build(), render_docs.DETAIL_BEGIN: build_detail(),
+    return {render_docs.STATUS_BEGIN: build(), render_docs.CONTAINERS_BEGIN: build_containers(), render_docs.DETAIL_BEGIN: build_detail(),
             evidence_summary.HEADLINE_BEGIN: evidence_summary.headline_block(config, registry, ROOT),
             evidence_summary.COMPACT_BEGIN: evidence_summary.compact_headline(config, ROOT),
             evidence_summary.EVIDENCE_BEGIN: evidence_summary.evidence_block(config, registry, ROOT),

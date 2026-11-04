@@ -8,7 +8,8 @@ from esoi.assemble import Lazy
 
 from .oneline import Result, event, trace_event
 from .ports.events import EVENT_DONE, EVENT_RESULT, EVENT_STATUS, EVENT_WORK_TRACE
-from .seats import Acting, ContextRetrieval, Critiquing, Genericity, Reasoning, Remembering, RiskWatching, TakingIn
+from .seats import (Acting, ContextRetrieval, Critiquing, FormAndContext, Genericity, HumanAdapting, InformationProcessing, Reasoning,
+                    Remembering, RiskWatching, TakingIn, WholeAnswering)
 
 
 MODEL_ONLY_NOTE = "answered from the model only: no sources were consulted"
@@ -75,3 +76,35 @@ class ZeroConfig:
     def health(self) -> Mapping[str, Any]:
         """Whether the hub stays generic and current: the audit of the generic seat for no vendor terms."""
         return self.generic.audit(())
+
+
+@implementation("the-self", "composition")
+class SelfComposition:
+    """The Self answers through the Assembler and reaches the outside through World: each operation of the whole is the Assembler's, so the whole
+    hub is reached the same way through its top solution as through ``assemble-the-whole``. The seats of Body, Intelligence and Consciousness are
+    built on first use, so a request never asks for what only they would need."""
+    REQUIRES = ()     # the seats it is handed
+
+    def __init__(self, whole: WholeAnswering, world: TakingIn, body: Lazy[FormAndContext], intelligence: Lazy[InformationProcessing],
+                 consciousness: Lazy[HumanAdapting]):
+        self.whole, self.world = whole, world
+        self.body, self.intelligence, self.consciousness = body, intelligence, consciousness
+
+    def answer(self, text: str) -> Result:
+        return self.whole.answer(text)
+
+    def model_only(self, prompt: str, tier: str = "") -> Result:
+        return self.whole.model_only(prompt, tier)
+
+    def context_for(self, task: str, files: Mapping[str, str], budget_tokens: int = 4000) -> List[Any]:
+        return self.whole.context_for(task, files, budget_tokens)
+
+    def act(self, goal: str, brief: str = "") -> Any:
+        return self.whole.act(goal, brief)
+
+    def health(self) -> Mapping[str, Any]:
+        return self.whole.health()
+
+    def take_in(self, query: str, scholarly: bool = False) -> Mapping[str, Any]:
+        """What the outside world says for ``query``, through World (a web search and, with ``scholarly=True``, papers)."""
+        return self.world.take_in(query, scholarly)

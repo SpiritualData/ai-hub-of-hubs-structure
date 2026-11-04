@@ -1,2 +1,0 @@
-implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids
-think-critically:evidence_check,think-critically,Links held to their evidence,Finds every link in an answer and reports each one the evidence text does not contain.,"Deterministic and free: no model call, no network.","It checks links only, not whether a claim without a link is true.",hubofhubs/critique/evidence_check.py,

@@ -9,12 +9,29 @@ def test_readme_table_lists_every_seat_with_its_area_count():
     from hubofhubs import registry
     block = status.build()
     hubs = registry.read("hubs.csv")
-    assert len(status.seats()) == 11, "the eleven seats of the mind"
-    for seat, part in status.seats():
+    from hubofhubs import evidence_summary
+    assert len(status.seats()) == len(evidence_summary.MIND_TREE), "every part of the tree is a solution of the records"
+    assert len([1 for _sid, inside in evidence_summary.MIND_TREE if not inside]) == 5, "five containers at the top"
+    for seat, part, inside in status.seats():
         count = sum(1 for r in hubs if r["seat"] == seat)
-        assert f"| {seat} | {part} | {count} |" in block
-    assert {r["seat"] for r in hubs} <= {s for s, _ in status.seats()}, "every area serves a known seat"
+        assert f"| {part} | {inside or 'the hub'} | {count} |" in block
+    assert {r["seat"] for r in hubs} <= {s for s, _, _ in status.seats()}, "every area serves a known seat"
     assert f"{len(hubs)} areas" in block
+
+
+def test_every_solution_of_the_records_has_one_place_in_the_tree():
+    from esoi.intents import read_tree
+    from hubofhubs import evidence_summary
+    placed = [sid for sid, _inside in evidence_summary.MIND_TREE]
+    recorded = {r["solution_id"] for r in read_tree(status.ROOT / "esoi", "solutions.csv")}
+    assert len(placed) == len(set(placed)) and set(placed) == recorded
+    assert all(inside in placed for _sid, inside in evidence_summary.MIND_TREE if inside)
+
+
+def test_the_containers_table_names_each_container_with_its_parts():
+    block = status.build_containers()
+    for name, sid, evolves, parts in status.containers():
+        assert f"| {name} | {evolves} |" in block and f"`{sid}`" in block and parts
 
 
 def test_the_detail_file_lists_every_area():

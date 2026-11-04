@@ -180,6 +180,42 @@ class WholeAnswering(typing.Protocol):
     def health(self) -> Mapping[str, Any]: ...
 
 
+@solution("the-body")
+@runtime_checkable
+class FormAndContext(typing.Protocol):
+    """A seat defined and empty: the AI system's form and internal context, which a system provides by adapters or by declaring its internal
+    APIs, databases and local files. Its parts have their own seats; this one names what holds them."""
+
+
+@solution("the-intelligence")
+@runtime_checkable
+class InformationProcessing(typing.Protocol):
+    """A seat defined and empty: how information is processed for one request, from what the Mind sees to the long view the Higher Mind keeps.
+    Its parts have their own seats; this one names what holds them."""
+
+
+@solution("the-consciousness")
+@runtime_checkable
+class HumanAdapting(typing.Protocol):
+    """A seat defined and empty: how the system adapts to the humans it works with, when to ask each person and how that person wants the work
+    done. Its parts are specifications; this one names what holds them."""
+
+
+@solution("the-self", kind="event", entry="answer", example="what is the latest Rust release?")
+@runtime_checkable
+class SelfAnswering(typing.Protocol):
+    """The Self answers as the assembled hub does: it hands the request to the Assembler, which builds every part from its selected arm, and
+    reaches the outside through World. The operations are those of ``WholeAnswering`` and ``TakingIn``, so a caller that reaches the whole
+    through its top intent gets the same answer."""
+
+    def answer(self, text: str) -> Any: ...
+    def model_only(self, prompt: str, tier: str = "") -> Any: ...
+    def context_for(self, task: str, files: Mapping[str, str], budget_tokens: int = 4000) -> Any: ...
+    def act(self, goal: str, brief: str = "") -> Any: ...
+    def health(self) -> Mapping[str, Any]: ...
+    def take_in(self, query: str, scholarly: bool = False) -> Mapping[str, Any]: ...
+
+
 @solution("take-in-the-world", kind="event", entry="take_in", example="latest Rust release")
 @runtime_checkable
 class TakingIn(typing.Protocol):

@@ -2,59 +2,19 @@ These are ESOI records rendered as a diagram (evolvable structure that optimizes
 
 # Solution diagram: The best parts for AI intelligence, assembled and proven
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The whole being is the one call that holds the mind together. It answers a question through World in and Subconscious, Intuition, holds that answer to its sources through Critical thinking, asks a model at a measured tier through the Mind, shows a task the pieces of a folder's files it needs, within a token budget or not at all, through the context retriever, carries a goal out through the Body only after the Overseer lets the step pass, and checks that the hub stays generic through Character. World in brings outside material in by running a web search through web search and, for research questions, a paper lookup through Science. Subconscious, Intuition keeps cards in the card store, draws the cards a query needs by relevance through the context assembler, and fills the store from a folder's files through cards from files. Cards from files groups a folder's files into topic cards by which files import each other, so it writes them without asking a model. The Mind sends a question to the model that the model tier chooser measured best for the tier, through the model call, which is built on the vendor model caller. The Body makes each file edit with a single request through the vendor model caller, at the tier that the model tier chooser picks. Character audits the hub for consumer wording and learns how stale its research is through Learning. Character also learns how much of the hub connects by configuration through Hands. Learning lists the areas whose research is older than ninety days by reading their dates through the research freshness reader. Hands reports the share of connections that need no code by scoring them through the connection scorer.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. It gives the system a form and its own context through Body. It finds, prepares and answers for one request through Intelligence. It reaches what is outside the system through World. It learns when to ask the people it works for through Consciousness.
 
 An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
 
 ```mermaid
 flowchart LR
-    s0["World in<br/><i>take-in-the-world</i>"]
-    s1["Mind<br/><i>reason-and-answer</i>"]
-    s2["Model tier chooser<br/><i>choose-a-model-tier</i>"]
-    s3["Science<br/><i>know-the-world</i>"]
-    s4["Body<br/><i>act-in-the-world</i>"]
-    s5["Overseer<br/><i>watch-for-risk</i>"]
-    s6["The whole being<br/><i>assemble-the-whole</i>"]
-    s7["Learning<br/><i>stay-current</i>"]
-    s8["Research freshness reader<br/><i>read-registry-freshness</i>"]
-    s9["Character<br/><i>keep-it-generic</i>"]
-    s10["Hands<br/><i>connect-any-integration</i>"]
-    s11["Connection scorer<br/><i>score-hub-connections</i>"]
-    s12["Card store<br/><i>card-store</i>"]
-    s13["Critical thinking<br/><i>think-critically</i>"]
-    s14["Model call<br/><i>model-call</i>"]
-    s15["Vendor model caller<br/><i>call-a-model</i>"]
-    s16["Subconscious, Intuition<br/><i>remember-and-recall</i>"]
-    s17["Context assembler<br/><i>context-assembler</i>"]
-    s18["Cards from files<br/><i>cards-from-files</i>"]
-    s19["Context retriever<br/><i>retrieve-context</i>"]
-    s20["Web search<br/><i>search-backend</i>"]
-    s0 -->|"Outside material for a task, from the search backends"| s6
-    s1 -->|"The text a model answers to the prompt at that tier"| s6
-    s2 -->|"A mapping from each tier to the chosen provider and model"| s1
-    s2 -->|"A mapping from each tier to the chosen provider and model"| s4
-    s3 -->|"One observation: title, link and snippet per hit, or the..."| s0
-    s4 -->|"A DeepResult that says whether the goal was met, with the..."| s6
-    s5 -->|"One signal: proceed, redirect, answer_now, escalate_deep or..."| s6
-    s7 -->|"The names of the registry's areas whose research is older..."| s9
-    s8 -->|"Days since the date, or the combined freshness reading with..."| s7
-    s9 -->|"Seats whose wording is data, whose arms are current and..."| s6
-    s10 -->|"The share, from 0 to 1, of the area's hub connections that..."| s9
-    s11 -->|"Per-area checks and a combined score"| s10
-    s12 -->|"The id of an added card, a card or nothing for an id, the..."| s16
-    s13 -->|"The findings, one per claim the evidence does not support..."| s6
-    s14 -->|"The text a model answers to the prompt"| s1
-    s14 -->|"The text a model answers to the prompt"| s3
-    s15 -->|"Text, a plan or a list of models"| s4
-    s15 -->|"Text, a plan or a list of models"| s5
-    s15 -->|"Text, a plan or a list of models"| s14
-    s15 -->|"Text, a plan or a list of models"| s18
-    s15 -->|"Text, a plan or a list of models"| s19
-    s16 -->|"The cards a task needs, in one rendered view with their ids"| s6
-    s17 -->|"An assembled context view and the ids of the cards it drew..."| s16
-    s18 -->|"Cards in the card-store record shape (grouping, summary..."| s16
-    s19 -->|"Hits: unit id, file, first line, score, tokens and text..."| s6
-    s19 -->|"Hits: unit id, file, first line, score, tokens and text..."| s17
-    s20 -->|"A response of hits (title, link, snippet, date, passages..."| s0
-    s20 -->|"A response of hits (title, link, snippet, date, passages..."| s3
+    s0["World<br/><i>take-in-the-world</i>"]
+    s1["The Self<br/><i>the-self</i>"]
+    s2["Body<br/><i>the-body</i>"]
+    s3["Intelligence<br/><i>the-intelligence</i>"]
+    s4["Consciousness<br/><i>the-consciousness</i>"]
+    s0 -->|"Outside material for a task, from the search backends"| s1
+    s2 -->|"A system's own context, risk signal, integrations and..."| s1
+    s3 -->|"An answer, plan or communication for one request, held to..."| s1
+    s4 -->|"A decision to ask, proceed or decline for one person, and..."| s1
 ```

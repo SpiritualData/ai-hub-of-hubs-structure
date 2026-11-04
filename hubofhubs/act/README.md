@@ -1,8 +1,6 @@
-# act
+# Arms in act
 
-*ESOI records kept beside the code in `hubofhubs/act`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
-
-## Implementations
+*ESOI arms kept in `hubofhubs/act`, generated from the records of the intents that own them by `esoi readmes`. Edit those records, not this page.*
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
@@ -11,6 +9,5 @@
 
 ## Where to go next
 
-- Up: [hubofhubs](../README.md)
-- Intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
+- Owning intent: [The form and internal context of a system](../the_body/README.md)
 - Repository: [top README](../../README.md)

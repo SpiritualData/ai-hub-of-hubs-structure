@@ -303,9 +303,31 @@ def first_cell(row: Row) -> str:
     return f"{shown} ({handle})" if shown else handle
 
 
-#: The parts of the mind, in the order a request meets them. A solution with one of these ids is a mind seat, and its name is the part's name.
-MIND_SEATS = ("take-in-the-world", "remember-and-recall", "reason-and-answer", "know-the-world", "think-critically", "watch-for-risk",
-              "act-in-the-world", "stay-current", "connect-any-integration", "keep-it-generic", "assemble-the-whole")
+#: The parts of the mind as Joshua approved them: five containers, each holding its second-level parts, with the parts nested under them. Each
+#: entry is ``(solution id, the id of the part it is inside, or "" for a container)``. Names, counts and descriptions come from the records.
+MIND_TREE = (
+    ("the-self", ""),
+    ("keep-it-generic", "the-self"), ("role-understanding", "the-self"), ("assemble-the-whole", "the-self"), ("model-plumbing", "the-self"),
+    ("choose-a-model-tier", "model-plumbing"), ("model-call", "model-plumbing"), ("call-a-model", "model-plumbing"),
+    ("the-body", ""),
+    ("internal-context", "the-body"), ("card-store", "internal-context"), ("cards-from-files", "internal-context"),
+    ("stay-current", "the-body"), ("read-registry-freshness", "stay-current"),
+    ("watch-for-risk", "the-body"),
+    ("connect-any-integration", "the-body"), ("score-hub-connections", "connect-any-integration"),
+    ("act-in-the-world", "the-body"),
+    ("the-intelligence", ""),
+    ("reason-and-answer", "the-intelligence"),
+    ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("long-term-context", "higher-mind"), ("hold-objectives", "higher-mind"),
+    ("remember-and-recall", "the-intelligence"), ("offer-intuition", "remember-and-recall"), ("context-assembler", "remember-and-recall"),
+    ("retrieve-context", "remember-and-recall"),
+    ("think-critically", "the-intelligence"),
+    ("take-in-the-world", ""),
+    ("know-the-world", "take-in-the-world"), ("use-tools", "take-in-the-world"), ("search-backend", "use-tools"), ("personal-data-locations", "use-tools"),
+    ("the-consciousness", ""),
+    ("ai-representatives", "the-consciousness"), ("asking-judgment", "the-consciousness"), ("feedback-learning", "the-consciousness"),
+)
+#: A solution with one of these ids is a mind seat, and its name is the part's name.
+MIND_SEATS = tuple(sid for sid, _inside in MIND_TREE)
 
 
 def arm_name(registry: Registry, solution_id: str, arm: str) -> str:
@@ -328,13 +350,27 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
     waived = {w["path"]: w["reason"] for w in registry.waivers if w.get("rule") == "S24"}   # a waiver already says why an arm has no run
     measured_seats = {x["seat"] for x in labels(root) if x["kind"] == "check" and x["key"] in history}
     lines = []
-    for sol in registry.every_solution():
-        part = mind_part(sol)
-        if part and sol["solution_id"] not in measured_seats:
-            why = reasons.get(sol["solution_id"], "no check is written yet")
-            lines.append(f"- **{part}** (`{sol['solution_id']}`): not measured. {why}")
-        elif part and f"{sol['solution_id']}:rest" in reasons:
-            lines.append(f"- **{part}** (`{sol['solution_id']}`): measured in part. {reasons[sol['solution_id'] + ':rest']}")
+    seats = {sol["solution_id"]: sol for sol in registry.every_solution()}
+    empty = []
+    tree = dict(MIND_TREE)
+    for sid in MIND_SEATS:
+        sol = seats.get(sid)
+        part = mind_part(sol) if sol else ""
+        if not part:
+            continue
+        if not sol.get("interface_name"):
+            empty.append(part)      # a seat defined and empty: it has no interface, no arm and no check yet
+            continue
+        top = not tree[sid] or not tree[tree[sid]]      # a container or a second-level part; the parts nested under them are listed through their arms
+        if not top or (not tree[sid] and sid not in reasons and f"{sid}:rest" not in reasons):
+            continue
+        if sid not in measured_seats:
+            why = reasons.get(sid, "no check is written yet")
+            lines.append(f"- **{part}** (`{sid}`): not measured. {why}")
+        elif f"{sid}:rest" in reasons:
+            lines.append(f"- **{part}** (`{sid}`): measured in part. {reasons[sid + ':rest']}")
+    if empty:
+        lines.append(f"- **Seats defined and empty**, with no arm and no check yet: {', '.join(empty)}.")
     grouped: Dict[tuple, List[str]] = {}
     for sol in registry.solutions:
         for component, impl in harness_arms(config, sol.get("metric_command", "")):

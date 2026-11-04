@@ -8,6 +8,7 @@ import re
 from . import registry
 
 STATUS_BEGIN, STATUS_END = "<!-- seats:start -->", "<!-- seats:end -->"
+CONTAINERS_BEGIN, CONTAINERS_END = "<!-- containers:start -->", "<!-- containers:end -->"
 DETAIL_BEGIN, DETAIL_END = "<!-- registry:start -->", "<!-- registry:end -->"
 
 
@@ -40,15 +41,24 @@ def seat_summary(folder=None, seats=None, link="../reference/registry.md"):
     registry in order of first appearance."""
     hubs = registry.read("hubs.csv", folder)
     findings = registry.read("hub_findings.csv", folder)
-    seats = seats or [(s, s) for s in dict.fromkeys(r["seat"] for r in hubs)]
-    lines = ["| Seat | Part of the mind | Areas | Built on now | Candidates researched | Oldest research |", "|---|---|---|---|---|---|"]
-    for seat, part in seats:
+    seats = seats or [(s, s, "") for s in dict.fromkeys(r["seat"] for r in hubs)]
+    lines = ["| Part of the mind | Inside | Areas | Built on now | Candidates researched | Oldest research | Call with |", "|---|---|---|---|---|---|---|"]
+    for seat, part, inside in (tuple(s) + ("",) * (3 - len(s)) for s in seats):
         mine = [r for r in hubs if r["seat"] == seat]
         found = sum(len(registry.findings_of(r, findings)) for r in mine)
         built = sum(1 for r in mine if registry.parse_hubs(r["current_hubs"]))
         oldest = min((r["last_researched"] for r in mine), default="none")
-        lines.append(f"| {seat} | {part} | {len(mine)} | {built} | {found} | {oldest} |")
+        lines.append(f"| {part} | {inside or 'the hub'} | {len(mine)} | {built} | {found} | {oldest} | `{seat}` |")
     lines.append(f"\n{len(hubs)} areas and {len(findings)} researched candidates in all; every area is listed in [{link}]({link}).")
+    return "\n".join(lines)
+
+
+def container_summary(containers):
+    """One row per container, name first: what kind of evolution it holds, the parts it holds and the id that calls it. ``containers`` is
+    an ordered list of ``(container name, id, kind of evolution, [names of the parts it holds])``."""
+    lines = ["| Container | What it evolves | Parts | Call with |", "|---|---|---|---|"]
+    for name, sid, evolves, parts in containers:
+        lines.append(f"| {name} | {evolves} | {', '.join(parts)} | `{sid}` |")
     return "\n".join(lines)
 
 
@@ -57,13 +67,13 @@ def area_detail(folder=None, seats=None):
     hubs = registry.read("hubs.csv", folder)
     findings = registry.read("hub_findings.csv", folder)
     evidence = registry.read("hub_evidence.csv", folder)
-    seats = seats or [(s, s) for s in dict.fromkeys(r["seat"] for r in hubs)]
+    seats = seats or [(s, s, "") for s in dict.fromkeys(r["seat"] for r in hubs)]
     out = []
-    for seat, part in seats:
+    for seat, part, _inside in (tuple(s) + ("",) * (3 - len(s)) for s in seats):
         mine = [r for r in hubs if r["seat"] == seat]
         if not mine:
             continue
-        out += [f"### {seat} ({part})", "", "| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |", "|---|---|---|---|---|---|---|---|---|"]
+        out += [f"### {part} (`{seat}`)", "", "| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |", "|---|---|---|---|---|---|---|---|---|"]
         for r in mine:
             out.append("| " + " | ".join([r["area"], r["serves"], r["status"], r.get("call") or "-", names(r["current_hubs"]),
                                           "; ".join(registry.split(r["candidate_hubs"])) or "none",

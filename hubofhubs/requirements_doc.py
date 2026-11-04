@@ -5,6 +5,7 @@ and one row per external service, between the markers of ``docs/reference/requir
 variable's value is never read or printed. ``env_example`` renders the ``.env.example`` of the default assembly the way
 ``esoi requirements --package hubofhubs --env-template .env.example`` does.
 """
+from pathlib import Path
 from typing import Dict, List
 
 from esoi import requirements as needs
@@ -52,13 +53,26 @@ def arm_cells(items) -> Dict[str, List[str]]:
     return cells
 
 
+def arm_names() -> Dict[str, str]:
+    """``{solution id:arm: "Part name, Arm name"}`` from the records of a checkout, so the table is read by names; empty in an installed package."""
+    from esoi.intents import read_tree
+    root = Path(__file__).resolve().parent.parent / "esoi"
+    try:
+        parts = {r["solution_id"]: r["name"] for r in read_tree(root, "solutions.csv")}
+        arms = read_tree(root, "implementations.csv")
+    except (OSError, KeyError, ValueError):
+        return {}
+    return {r["implementation_id"]: ", ".join(x for x in (parts.get(r["solution_id"], ""), r.get("name", "")) if x) for r in arms}
+
+
 def arm_table() -> str:
-    head = ["Seat and arm", "Environment variables", "Accounts and APIs", "Python (extra of `hubofhubs`)", "Programs, services, downloads", "Can run out of process"]
+    names = arm_names()
+    head = ["Part and arm", "Environment variables", "Accounts and APIs", "Python (extra of `hubofhubs`)", "Programs, services, downloads", "Can run out of process"]
     lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
     for member in sorted(members(), key=lambda m: m.label):
         own = [item for item in needs.declared(member.target)]
         cells = arm_cells(own)
-        row = [f"`{member.label}`"] + ["<br>".join(cells[key]) or "none" for key in ("env", "api", "python", "other")] + [", ".join(cells["out"]) or "no"]
+        row = [f"{names[member.label]} (`{member.label}`)" if names.get(member.label) else f"`{member.label}`"] + ["<br>".join(cells[key]) or "none" for key in ("env", "api", "python", "other")] + [", ".join(cells["out"]) or "no"]
         lines.append("| " + " | ".join(row) + " |")
     return "\n".join(lines)
 

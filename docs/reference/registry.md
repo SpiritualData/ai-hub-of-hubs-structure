@@ -9,47 +9,41 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 [the weekly refresh](../how-to/refresh-the-registry.md); how the files join is in [connect a hub](../how-to/connect-a-hub.md).
 
 <!-- registry:start -->
-### take-in-the-world (World in)
+### Integrity (`keep-it-generic`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| channels | Two-way chat channels | builds_on | keep | OpenClaw | none | 1 | 0 | 2026-10-30 |
-| inbound_mail | Turning real people's mail into asks | compared | coexist | none | Google Gmail remote MCP; workspace-mcp; AgentMail; Postmark inbound; Nylas | 4 | 0 | 2026-10-30 |
-| voice | Spoken conversation with the brain | compared | keep | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 7 | 0 | 2026-10-30 |
-| integration_aggregators | One connection to the long tail of apps with managed auth | compared | coexist | none | Composio; Activepieces; Pipedream Connect; Nango; Arcade; Klavis AI; n8n; Zapier MCP | 10 | 0 | 2026-10-30 |
-| agent_auth | Acting as a person on an app without the model seeing the secret | compared | keep | none | Nango; Arcade; Composio managed auth; Pipedream Connect; Paragon ActionKit | 5 | 0 | 2026-10-30 |
-| vendor_mcp | First-party hosted MCP servers of the apps SD already uses | compared | coexist | none | Google Workspace MCP servers; Notion hosted MCP server; makenotion notion-mcp-server | 3 | 0 | 2026-10-30 |
-| inbound_events | Being told when something happens in an app instead of polling | compared | watch | none | Nango webhooks; Composio triggers; Pipedream triggers; Claude Code channels; MCP Tasks extension; Svix | 6 | 0 | 2026-10-30 |
+| prompts | Prompts as versioned, editable data with no consumer wording | compared | coexist | PromptSpec registry | Langfuse; MLflow Prompt Registry; Braintrust; BAML | 7 | 0 | 2026-10-30 |
+| observability | Seeing what a run did, what it cost and why | compared | adopt | none | OpenTelemetry GenAI conventions; Langfuse; Arize Phoenix | 3 | 0 | 2026-10-30 |
+| config | Typed, validated configuration per deployment | compared | coexist | QAR config modules | pydantic-settings; Hydra | 2 | 0 | 2026-10-30 |
 
-### reason-and-answer (Mind)
+### Assembler (`assemble-the-whole`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| intents | Keeping the intent hierarchy and choosing which representative acts | compared | coexist | none | Agent Skills specification; A2A protocol; OpenAI Agents SDK; Claude Agent SDK; semantic-router | 10 | 0 | 2026-10-30 |
-| agent_orchestration | Planning, gathering and answering a request in a bounded loop | compared | coexist | none | Pydantic AI; LangGraph; OpenAI Agents SDK; Google ADK; Microsoft Agent Framework; Claude Agent SDK | 14 | 0 | 2026-10-30 |
-| structured_output | Getting a model's decision back as valid structured data | compared | adopt | none | Anthropic structured outputs; Instructor; Outlines; BAML | 4 | 0 | 2026-10-30 |
-| prompt_optimization | Improving prompts by measured metric | compared | coexist | none | GEPA; DSPy | 2 | 0 | 2026-10-30 |
-| model_providers | Calling any model vendor with tier fallback | compared | coexist | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 10 | 2 | 2026-10-30 |
-| deep_run_cost | Keeping a long agent run small and cached | compared | keep | none | Claude Code prompt caching; PreToolUse output-filter hooks; observation masking; context editing; OpenHands condenser; CliffCompaction | 7 | 3 | 2026-10-30 |
-| prompt_cache | Reusing prompt prefixes to cut cost and time | compared | keep | QAR stable render order | Anthropic prompt caching; LMCache | 3 | 0 | 2026-10-30 |
-| model_quality | Knowing how well each model does hard exact-answer maths, to choose a model per tier | compared | keep | none | GPT-5-nano; GPT-5-mini; Gemini 2.5 Flash; DeepSeek-v3.2 (Think); Claude-Sonnet-4.5 (Think) | 5 | 6 | 2026-10-31 |
+| assembly_runtime | Resuming a run after a crash or restart | compared | watch | none | DBOS Transact | 1 | 0 | 2026-10-30 |
+| assembly_observability | Seeing what each step of a turn did and cost | compared | adopt | none | OpenTelemetry GenAI semantic conventions; Langfuse | 2 | 0 | 2026-10-30 |
+| assembly_protocols | Standard edges of the whole: tools, agents, UI events, model API shape | compared | watch | Model Context Protocol servers (already wired) | AG-UI; Agent2Agent (A2A) protocol; Open Responses | 3 | 0 | 2026-10-30 |
 
-### know-the-world (Science)
+### Learning (`stay-current`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| web_search | Grounding answers on the live web | builds_on | adopt | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Exa; Parallel; Perplexity Search API; Brave LLM Context; Anthropic web search server tool | 8 | 11 | 2026-10-30 |
-| page_extraction | Turning a fetched page or file into clean text | builds_on | adopt | trafilatura (optional), own stdlib extractor and BM25 | Crawl4AI; Firecrawl; Jina Reader; Docling; MarkItDown | 7 | 0 | 2026-10-30 |
-| deep_research | Multi-step open-web research reports | compared | coexist | none | GPT Researcher; Exa deep search and agent; STORM | 5 | 0 | 2026-10-30 |
-| science_find_evidence | Finding papers and sources for a question | compared | adopt | none | OpenAlex API; cyanheads/openalex-mcp-server; Asta Scientific Corpus MCP; Semantic Scholar API; PubMed MCP server; Europe PMC REST API; Crossref REST API; Elicit API v2; Undermind; Consensus hosted MCP; SYNERGY screening datasets | 16 | 5 | 2026-10-30 |
-| science_read_papers | Cited answers and extraction from full-text papers | compared | adopt | none | PaperQA2; Ai2 Scholar QA library; OpenScholar; Edison literature agent client; Docling; marker; unstructured | 7 | 0 | 2026-10-30 |
-| science_verify_claims | Checking that a source supports a claim and grading evidence | compared | adopt | none | scite MCP; PaperQA2 contradiction detection; DeepSciVerify; Inspect AI | 4 | 0 | 2026-10-30 |
-| science_hypotheses | Proposing and ranking candidate explanations | compared | keep | none | Google Co-Scientist; Kosmos; Robin; AI Scientist v2; Agent Laboratory; AI-Researcher; BioVerge | 7 | 0 | 2026-10-30 |
-| science_statistics | Pooling evidence and quantifying uncertainty | compared | coexist | none | PyMC; bambi; ArviZ; statsmodels; SciPy; PyMARE; DoWhy; EconML; pingouin | 9 | 0 | 2026-10-30 |
-| science_graph | Representing papers, constructs and theories as a graph | compared | adopt | none | SemOpenAlex; ORKG; Microsoft GraphRAG; LightRAG; Graphiti; Cognee; rdflib and pySHACL | 7 | 0 | 2026-10-30 |
-| science_estimate_truth | Estimating how likely a hypothesis is to hold | compared | keep | none | BrainBench; Co-Scientist tournament pattern; automated multi-model review of AI scientists | 3 | 0 | 2026-10-30 |
+| evals | Measuring and selecting between implementations | compared | coexist | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; DSPy and GEPA | 6 | 0 | 2026-10-30 |
+| model_pricing | Knowing current model prices, limits and capabilities | compared | adopt | tier_prices.csv (hand-kept, sourced) | models.dev; LiteLLM price list; Artificial Analysis API | 5 | 0 | 2026-10-30 |
+| context_benchmarks | Public case sets for judging context arms | compared | keep | none | LongMemEval; DolphinBench; MemoryBench; CORE-Bench; ContextBench; GraphRAG-Bench | 6 | 0 | 2026-10-30 |
 
-### act-in-the-world (Body)
+### Nervous System (`watch-for-risk`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| injection_defense | Untrusted text and tool output must not steer the agent or leak data | compared | coexist | untrusted-content framing in adapters/remote_files_adapter.py and planner prompt rules (core/planner_context.py), no classifier, no data-flow control | ProtectAI deberta-v3-base-prompt-injection-v2; Llama Prompt Guard 2; PIGuard; LlamaFirewall; Azure Prompt Shields; Google Model Armor; OpenAI Guardrails; Microsoft Agent Framework FIDES; CaMeL | 16 | 1 | 2026-10-30 |
+| guardrails | Policy rails around inputs, outputs and actions | compared | keep | reply guards (hubofhubs/critique, evaluation/components/reply_guards) are product checks, not safety rails | NeMo Guardrails; Guardrails AI; gpt-oss-safeguard; Llama Guard 4; Qwen3Guard | 4 | 0 | 2026-10-30 |
+| consent_gating | Stopping irreversible or human-only steps and asking the right person | builds_on | keep | core/orchestrator_decisions.py and orchestrator_decide_tool.py (1,288 lines), adapters/acp_deep_runner_session.py answers ACP session/request_permission | MCP elicitation and input_required (spec 2026-07-28); Claude Agent SDK canUseTool and hooks; LangGraph interrupt | 4 | 0 | 2026-10-30 |
+| run_supervision | Watching a run and sending at most one small signal | compared | keep | hubofhubs/risk.py (297 lines) engine plus core/overseer.py and orchestrator_oversee.py (425 lines), five signals | Claude Code auto mode classifier; LlamaFirewall AlignmentCheck; Patronus Percival | 4 | 5 | 2026-10-30 |
+| secrets_hygiene | Keeping secrets and real identifiers out of public code | compared | coexist | esoi.hygiene scanner in the esoi library, 35-case keep_secrets_out set | Gitleaks | 1 | 0 | 2026-10-30 |
+
+### Acting (`act-in-the-world`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -74,50 +68,20 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | tool_permissions | Deciding whether a tool call may run and who must approve it | compared | keep | none | MCP specification security principles; agentgateway CEL policies; LiteLLM MCP access groups; Cedar; Open Policy Agent; Claude Code managed MCP | 7 | 0 | 2026-10-30 |
 | tool_observability | Recording what every tool call did | compared | adopt | none | OpenTelemetry GenAI semantic conventions; Langfuse; Arize Phoenix; Pydantic Logfire; ContextForge tracing | 5 | 0 | 2026-10-30 |
 
-### watch-for-risk (Overseer)
+### Mind (`reason-and-answer`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| injection_defense | Untrusted text and tool output must not steer the agent or leak data | compared | coexist | untrusted-content framing in adapters/remote_files_adapter.py and planner prompt rules (core/planner_context.py), no classifier, no data-flow control | ProtectAI deberta-v3-base-prompt-injection-v2; Llama Prompt Guard 2; PIGuard; LlamaFirewall; Azure Prompt Shields; Google Model Armor; OpenAI Guardrails; Microsoft Agent Framework FIDES; CaMeL | 16 | 1 | 2026-10-30 |
-| guardrails | Policy rails around inputs, outputs and actions | compared | keep | reply guards (hubofhubs/critique, evaluation/components/reply_guards) are product checks, not safety rails | NeMo Guardrails; Guardrails AI; gpt-oss-safeguard; Llama Guard 4; Qwen3Guard | 4 | 0 | 2026-10-30 |
-| consent_gating | Stopping irreversible or human-only steps and asking the right person | builds_on | keep | core/orchestrator_decisions.py and orchestrator_decide_tool.py (1,288 lines), adapters/acp_deep_runner_session.py answers ACP session/request_permission | MCP elicitation and input_required (spec 2026-07-28); Claude Agent SDK canUseTool and hooks; LangGraph interrupt | 4 | 0 | 2026-10-30 |
-| run_supervision | Watching a run and sending at most one small signal | compared | keep | hubofhubs/risk.py (297 lines) engine plus core/overseer.py and orchestrator_oversee.py (425 lines), five signals | Claude Code auto mode classifier; LlamaFirewall AlignmentCheck; Patronus Percival | 4 | 5 | 2026-10-30 |
-| secrets_hygiene | Keeping secrets and real identifiers out of public code | compared | coexist | esoi.hygiene scanner in the esoi library, 35-case keep_secrets_out set | Gitleaks | 1 | 0 | 2026-10-30 |
+| intents | Keeping the intent hierarchy and choosing which representative acts | compared | coexist | none | Agent Skills specification; A2A protocol; OpenAI Agents SDK; Claude Agent SDK; semantic-router | 10 | 0 | 2026-10-30 |
+| agent_orchestration | Planning, gathering and answering a request in a bounded loop | compared | coexist | none | Pydantic AI; LangGraph; OpenAI Agents SDK; Google ADK; Microsoft Agent Framework; Claude Agent SDK | 14 | 0 | 2026-10-30 |
+| structured_output | Getting a model's decision back as valid structured data | compared | adopt | none | Anthropic structured outputs; Instructor; Outlines; BAML | 4 | 0 | 2026-10-30 |
+| prompt_optimization | Improving prompts by measured metric | compared | coexist | none | GEPA; DSPy | 2 | 0 | 2026-10-30 |
+| model_providers | Calling any model vendor with tier fallback | compared | coexist | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 10 | 2 | 2026-10-30 |
+| deep_run_cost | Keeping a long agent run small and cached | compared | keep | none | Claude Code prompt caching; PreToolUse output-filter hooks; observation masking; context editing; OpenHands condenser; CliffCompaction | 7 | 3 | 2026-10-30 |
+| prompt_cache | Reusing prompt prefixes to cut cost and time | compared | keep | QAR stable render order | Anthropic prompt caching; LMCache | 3 | 0 | 2026-10-30 |
+| model_quality | Knowing how well each model does hard exact-answer maths, to choose a model per tier | compared | keep | none | GPT-5-nano; GPT-5-mini; Gemini 2.5 Flash; DeepSeek-v3.2 (Think); Claude-Sonnet-4.5 (Think) | 5 | 6 | 2026-10-31 |
 
-### assemble-the-whole (The whole being)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| assembly_runtime | Resuming a run after a crash or restart | compared | watch | none | DBOS Transact | 1 | 0 | 2026-10-30 |
-| assembly_observability | Seeing what each step of a turn did and cost | compared | adopt | none | OpenTelemetry GenAI semantic conventions; Langfuse | 2 | 0 | 2026-10-30 |
-| assembly_protocols | Standard edges of the whole: tools, agents, UI events, model API shape | compared | watch | Model Context Protocol servers (already wired) | AG-UI; Agent2Agent (A2A) protocol; Open Responses | 3 | 0 | 2026-10-30 |
-
-### stay-current (Learning)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| evals | Measuring and selecting between implementations | compared | coexist | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; DSPy and GEPA | 6 | 0 | 2026-10-30 |
-| model_pricing | Knowing current model prices, limits and capabilities | compared | adopt | tier_prices.csv (hand-kept, sourced) | models.dev; LiteLLM price list; Artificial Analysis API | 5 | 0 | 2026-10-30 |
-| context_benchmarks | Public case sets for judging context arms | compared | keep | none | LongMemEval; DolphinBench; MemoryBench; CORE-Bench; ContextBench; GraphRAG-Bench | 6 | 0 | 2026-10-30 |
-
-### keep-it-generic (Character)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| prompts | Prompts as versioned, editable data with no consumer wording | compared | coexist | PromptSpec registry | Langfuse; MLflow Prompt Registry; Braintrust; BAML | 7 | 0 | 2026-10-30 |
-| observability | Seeing what a run did, what it cost and why | compared | adopt | none | OpenTelemetry GenAI conventions; Langfuse; Arize Phoenix | 3 | 0 | 2026-10-30 |
-| config | Typed, validated configuration per deployment | compared | coexist | QAR config modules | pydantic-settings; Hydra | 2 | 0 | 2026-10-30 |
-
-### think-critically (Critical thinking)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| answer_verification | Checking an answer against the evidence it was built from | compared | coexist | none: no groundedness detector today, claim-vs-execution judge in core/orchestrator_judges.py and the structural sufficiency gate in hubofhubs/critique/sufficiency.py are the nearest | Vectara HHEM-2.1-Open; MiniCheck; Granite Guardian 4.1; Anthropic Citations; Amazon Bedrock contextual grounding; NeMo Guardrails fact-check rails | 9 | 1 | 2026-10-30 |
-| link_checking | No reply carries a link nobody checked | builds_on | keep | hubofhubs/critique/link_guard.py (803 lines) and link_detect.py | lychee | 1 | 0 | 2026-10-30 |
-| judging | Model-graded judging of answers and decisions | compared | coexist | QAR runtime judges (core/orchestrator_judges.py, quest_judge.py, reach_judge.py) and evaluation/components/claude_judge.py | DeepEval; Inspect AI; TruLens; promptfoo; Patronus Glider | 5 | 0 | 2026-10-30 |
-| metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 3 | 0 | 2026-10-30 |
-
-### remember-and-recall (Subconscious, Intuition)
+### Subconscious (`remember-and-recall`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -131,4 +95,40 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | context_compression | Keeping long runs inside the window | compared | keep | QAR prompt budget and recency window | Anthropic compaction and context editing patterns; Factory structured summarization; LLMLingua-2 | 3 | 0 | 2026-10-30 |
 | graph_rag | Answering cross-document and global questions over huge corpora | compared | keep | none | LightRAG; Microsoft LazyGraphRAG; HippoRAG 2; RAPTOR | 5 | 0 | 2026-10-30 |
 | science_provenance | Making a result re-derivable and shareable | compared | adopt | none | RO-Crate (rocrate); prov; MLflow; DVC; OpenLineage; nanopub; Snakemake | 7 | 0 | 2026-10-30 |
+
+### Critical Thinking (`think-critically`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| answer_verification | Checking an answer against the evidence it was built from | compared | coexist | none: no groundedness detector today, claim-vs-execution judge in core/orchestrator_judges.py and the structural sufficiency gate in hubofhubs/critique/sufficiency.py are the nearest | Vectara HHEM-2.1-Open; MiniCheck; Granite Guardian 4.1; Anthropic Citations; Amazon Bedrock contextual grounding; NeMo Guardrails fact-check rails | 9 | 1 | 2026-10-30 |
+| link_checking | No reply carries a link nobody checked | builds_on | keep | hubofhubs/critique/link_guard.py (803 lines) and link_detect.py | lychee | 1 | 0 | 2026-10-30 |
+| judging | Model-graded judging of answers and decisions | compared | coexist | QAR runtime judges (core/orchestrator_judges.py, quest_judge.py, reach_judge.py) and evaluation/components/claude_judge.py | DeepEval; Inspect AI; TruLens; promptfoo; Patronus Glider | 5 | 0 | 2026-10-30 |
+| metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 3 | 0 | 2026-10-30 |
+
+### World (`take-in-the-world`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| channels | Two-way chat channels | builds_on | keep | OpenClaw | none | 1 | 0 | 2026-10-30 |
+| inbound_mail | Turning real people's mail into asks | compared | coexist | none | Google Gmail remote MCP; workspace-mcp; AgentMail; Postmark inbound; Nylas | 4 | 0 | 2026-10-30 |
+| voice | Spoken conversation with the brain | compared | keep | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 7 | 0 | 2026-10-30 |
+| integration_aggregators | One connection to the long tail of apps with managed auth | compared | coexist | none | Composio; Activepieces; Pipedream Connect; Nango; Arcade; Klavis AI; n8n; Zapier MCP | 10 | 0 | 2026-10-30 |
+| agent_auth | Acting as a person on an app without the model seeing the secret | compared | keep | none | Nango; Arcade; Composio managed auth; Pipedream Connect; Paragon ActionKit | 5 | 0 | 2026-10-30 |
+| vendor_mcp | First-party hosted MCP servers of the apps SD already uses | compared | coexist | none | Google Workspace MCP servers; Notion hosted MCP server; makenotion notion-mcp-server | 3 | 0 | 2026-10-30 |
+| inbound_events | Being told when something happens in an app instead of polling | compared | watch | none | Nango webhooks; Composio triggers; Pipedream triggers; Claude Code channels; MCP Tasks extension; Svix | 6 | 0 | 2026-10-30 |
+
+### Science (`know-the-world`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| web_search | Grounding answers on the live web | builds_on | adopt | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Exa; Parallel; Perplexity Search API; Brave LLM Context; Anthropic web search server tool | 8 | 11 | 2026-10-30 |
+| page_extraction | Turning a fetched page or file into clean text | builds_on | adopt | trafilatura (optional), own stdlib extractor and BM25 | Crawl4AI; Firecrawl; Jina Reader; Docling; MarkItDown | 7 | 0 | 2026-10-30 |
+| deep_research | Multi-step open-web research reports | compared | coexist | none | GPT Researcher; Exa deep search and agent; STORM | 5 | 0 | 2026-10-30 |
+| science_find_evidence | Finding papers and sources for a question | compared | adopt | none | OpenAlex API; cyanheads/openalex-mcp-server; Asta Scientific Corpus MCP; Semantic Scholar API; PubMed MCP server; Europe PMC REST API; Crossref REST API; Elicit API v2; Undermind; Consensus hosted MCP; SYNERGY screening datasets | 16 | 5 | 2026-10-30 |
+| science_read_papers | Cited answers and extraction from full-text papers | compared | adopt | none | PaperQA2; Ai2 Scholar QA library; OpenScholar; Edison literature agent client; Docling; marker; unstructured | 7 | 0 | 2026-10-30 |
+| science_verify_claims | Checking that a source supports a claim and grading evidence | compared | adopt | none | scite MCP; PaperQA2 contradiction detection; DeepSciVerify; Inspect AI | 4 | 0 | 2026-10-30 |
+| science_hypotheses | Proposing and ranking candidate explanations | compared | keep | none | Google Co-Scientist; Kosmos; Robin; AI Scientist v2; Agent Laboratory; AI-Researcher; BioVerge | 7 | 0 | 2026-10-30 |
+| science_statistics | Pooling evidence and quantifying uncertainty | compared | coexist | none | PyMC; bambi; ArviZ; statsmodels; SciPy; PyMARE; DoWhy; EconML; pingouin | 9 | 0 | 2026-10-30 |
+| science_graph | Representing papers, constructs and theories as a graph | compared | adopt | none | SemOpenAlex; ORKG; Microsoft GraphRAG; LightRAG; Graphiti; Cognee; rdflib and pySHACL | 7 | 0 | 2026-10-30 |
+| science_estimate_truth | Estimating how likely a hypothesis is to hold | compared | keep | none | BrainBench; Co-Scientist tournament pattern; automated multi-model review of AI scientists | 3 | 0 | 2026-10-30 |
 <!-- registry:end -->

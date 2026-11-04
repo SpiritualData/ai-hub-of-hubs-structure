@@ -124,6 +124,13 @@ def test_every_hub_id_answers_or_names_what_to_set():
     done = subprocess.run([sys.executable, "-m", "esoi.entry", "--json", str(root)], capture_output=True, text=True)
     rows = json.loads(done.stdout.strip().splitlines()[-1])      # the check blocks the network and programs for its own process, so it runs in one
     strict = ("ok", "pending-key", "pending-install", "pending-network")
+    from esoi.intents import read_tree
+    from esoi.tables import read_csv
+    code = {r["implementation_id"] for r in read_tree(root / "esoi", "implementations.csv") if r.get("filepath")}
+    specifications = {r["solution_id"] for r in read_tree(root / "esoi", "solutions.csv")
+                      if not r.get("interface_name") or f"{r['solution_id']}:{r.get('selected')}" not in code}   # a seat defined and empty has no call yet
+    waived = {w["path"] for w in read_csv(root / "esoi" / "waivers.csv") if w["rule"] == "S37"}      # an intent that arises from a record with no code has no entry
+    rows = [r for r in rows if r["id"] not in specifications | waived]
     assert rows and not [r for r in rows if r["outcome"] not in strict], [r for r in rows if r["outcome"] not in strict]
     assert [r["outcome"] for r in rows if r["id"] == "know-the-world"] == ["pending-network"]
 
