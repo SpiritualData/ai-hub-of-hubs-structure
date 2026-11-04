@@ -9,7 +9,7 @@ Give an AI the context a task needs and nothing from another person's scope.
 - Entry call: `hubofhubs.run("remember-and-recall", 'rust release')`
 - Selected implementation: `card_recall`
 - Metric: remember-and-recall metric (draft)
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../docs/reference/work-trace-event.schema.json), [`hubofhubs/ports/__init__.py`](../ports/__init__.py), [`hubofhubs/ports/context.py`](../ports/context.py), [`hubofhubs/ports/control.py`](../ports/control.py), [`hubofhubs/ports/deep.py`](../ports/deep.py), [`hubofhubs/ports/events.py`](../ports/events.py), [`hubofhubs/ports/model.py`](../ports/model.py), [`hubofhubs/ports/retrieval.py`](../ports/retrieval.py) and 80 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../docs/reference/work-trace-event.schema.json), [`hubofhubs/ports/__init__.py`](../ports/__init__.py), [`hubofhubs/ports/context.py`](../ports/context.py), [`hubofhubs/ports/control.py`](../ports/control.py), [`hubofhubs/ports/deep.py`](../ports/deep.py), [`hubofhubs/ports/events.py`](../ports/events.py), [`hubofhubs/ports/model.py`](../ports/model.py), [`hubofhubs/ports/retrieval.py`](../ports/retrieval.py) and 82 more
 
 ## context-assembler: pick the context a task needs (`context-assembler`)
 
@@ -18,16 +18,16 @@ Find the passages that bear on a request, for any consumer that keeps knowledge 
 - Entry call: `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')`
 - Selected implementation: `bm25@analyzer=english`
 - Metric: Relevant passage in the top five
-- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 65 more
+- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 67 more
 
 ## cards-from-files: cards for a folder (`cards-from-files`)
 
 Give any consumer cards for the knowledge it already keeps in files, so recall starts from what is there instead of an empty store.
 
 - Entry call: `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})`
-- Selected implementation: `per_file_symbols`
-- Metric: Needed file among the first three files a builder's cards show
-- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 65 more
+- Selected implementation: `llm_topic_cards`
+- Metric: Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size
+- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 67 more
 
 ## Diagram
 
@@ -50,18 +50,20 @@ flowchart LR
 | `context-assembler:bm25` | BM25 over file text | [`hubofhubs/recall/bm25_store.py`](bm25_store.py) |  |
 | `context-assembler:hybrid` | Hybrid fusion | [`hubofhubs/recall/hybrid_assembler.py`](hybrid_assembler.py) |  |
 | `context-assembler:vector` | Vector search | [`hubofhubs/recall/vector_assembler.py`](vector_assembler.py) |  |
-| `cards-from-files:llm_topic_cards` | Model-written topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
-| `cards-from-files:per_file_symbols` | One card per file | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) | selected |
+| `cards-from-files:llm_topic_cards` | Model-written topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) | selected |
+| `cards-from-files:per_file_symbols` | One card per file | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
 | `cards-from-files:graphify_files` | Graphify file groups | [`hubofhubs/recall/cards_from_graphify.py`](cards_from_graphify.py) |  |
 | `remember-and-recall:card_recall` | Cards drawn by relevance from a store | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
 | `cards-from-files:file_plus_topic_cards` | File plus topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
 | `cards-from-files:topic_cards_replay` | Topic cards replay | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| `cards-from-files:cochange_topic_cards` | Cochange topic cards | [`hubofhubs/recall/cards_from_topics.py`](cards_from_topics.py) |  |
+| `cards-from-files:import_graph_topic_cards` | Import graph topic cards | [`hubofhubs/recall/cards_from_topics.py`](cards_from_topics.py) |  |
 
 ## Metrics
 
 - `metric-remember-and-recall`, remember-and-recall metric (draft)
 - `metric-context-assembler`, Relevant passage in the top five: leader `bm25@analyzer=english`, 208 of 323 cases
-- `metric-cards-from-files`, Needed file among the first three files a builder's cards show: leader `per_file_symbols`, 43 of 63 cases
+- `metric-cards-from-files`, Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size: leader `import_graph_topic_cards`, 112 of 252 cases
 
 ## Problems
 

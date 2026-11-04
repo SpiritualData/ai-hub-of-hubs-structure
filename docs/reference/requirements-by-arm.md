@@ -27,9 +27,13 @@ at the repository root.
 | `call-a-model:multi_provider` | none | none | none | none | no |
 | `call-a-model:openai` | `OPENAI_API_KEY` (secret)<br>`OPENAI_BASE_URL` | OpenAI | `openai` via extra `openai` | none | no |
 | `card-store:local_card_store` | none | none | none | none | no |
+| `cards-from-files:cochange_topic_cards` | none | none | none | none | no |
+| `cards-from-files:file_plus_topic_cards` | none | none | none | none | no |
 | `cards-from-files:graphify_files` | none | none | `graphify` via extra `graphify` | none | no |
+| `cards-from-files:import_graph_topic_cards` | none | none | none | none | no |
 | `cards-from-files:llm_topic_cards` | none | none | none | none | no |
 | `cards-from-files:per_file_symbols` | none | none | none | none | no |
+| `cards-from-files:topic_cards_replay` | none | none | none | none | no |
 | `choose-a-model-tier:tier_selector` | none | none | none | none | no |
 | `connect-any-integration:catalog_entries` | none | none | none | none | no |
 | `context-assembler:bm25` | none | none | `bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | none | no |

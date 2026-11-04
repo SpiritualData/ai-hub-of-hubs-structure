@@ -63,7 +63,7 @@ Give any consumer a working system from one line of configuration.
 - Entry call: `hubofhubs.run("assemble-the-whole", 'what is the latest Rust release?')`
 - Selected implementation: `zero_config`
 - Metric: Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor
-- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 152 more
+- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 161 more
 
 ## stay-current: the Learning seat (`stay-current`)
 
@@ -81,7 +81,7 @@ Show maintainers which parts of the hub have gone stale.
 - Entry call: `hubofhubs.run("read-registry-freshness", '2026-10-01')`
 - Selected implementation: `registry_scan`
 - Metric: Registry freshness reading
-- Implemented by: [`.env.example`](../.env.example), [`docs/explanation/compared.md`](../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../docs/explanation/how-we-measure.md), [`docs/explanation/public-evidence.md`](../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../docs/explanation/terminal-harness.md) and 94 more
+- Implemented by: [`.env.example`](../.env.example), [`docs/explanation/compared.md`](../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../docs/explanation/how-we-measure.md), [`docs/explanation/public-evidence.md`](../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../docs/explanation/terminal-harness.md) and 95 more
 
 ## keep-it-generic: the Character seat (`keep-it-generic`)
 
@@ -108,7 +108,7 @@ Show a consumer how much of its integration is a hub connection and how much is 
 - Entry call: `hubofhubs.run("score-hub-connections", {'facts': {}, 'connections': []})`
 - Selected implementation: `hub_of_hubs_scorer`
 - Metric: Hub connection scoring
-- Implemented by: [`.env.example`](../.env.example), [`docs/explanation/compared.md`](../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../docs/explanation/how-we-measure.md), [`docs/explanation/public-evidence.md`](../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../docs/explanation/terminal-harness.md) and 86 more
+- Implemented by: [`.env.example`](../.env.example), [`docs/explanation/compared.md`](../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../docs/explanation/how-we-measure.md), [`docs/explanation/public-evidence.md`](../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../docs/explanation/terminal-harness.md) and 87 more
 
 ## card-store: a place to keep and find cards (`card-store`)
 

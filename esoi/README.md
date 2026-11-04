@@ -85,7 +85,7 @@ flowchart LR
 | `call-a-model` | `hubofhubs.run("call-a-model", ...)` | `claude_cli` | Provider failover and vendor answers |
 | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | remember-and-recall metric (draft) |
 | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
-| `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `per_file_symbols` | Needed file among the first three files a builder's cards show |
+| `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `llm_topic_cards` | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
 | `search-backend` | `hubofhubs.run("search-backend", 'latest Rust release')` | `gemini` | Search finds the source |
 
 ## Problems and ideals
@@ -198,7 +198,7 @@ flowchart LR
 | `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | claude_cli | Provider failover and vendor answers |
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat | card_recall | remember-and-recall metric (draft) |
 | `context-assembler` | context-assembler: pick the context a task needs | bm25@analyzer=english | Relevant passage in the top five |
-| `cards-from-files` | cards-from-files: cards for a folder | per_file_symbols | Needed file among the first three files a builder's cards show |
+| `cards-from-files` | cards-from-files: cards for a folder | llm_topic_cards | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
 | `search-backend` | search-backend: run one web search | gemini | Search finds the source |
 
 ### Implementations
@@ -242,6 +242,8 @@ flowchart LR
 | `remember-and-recall:card_recall` | Cards drawn by relevance from a store | [hubofhubs/recall/card_recall.py](../hubofhubs/recall/card_recall.py) |  |
 | `cards-from-files:file_plus_topic_cards` | File plus topic cards | [hubofhubs/recall/cards_from_files.py](../hubofhubs/recall/cards_from_files.py) |  |
 | `cards-from-files:topic_cards_replay` | Topic cards replay | [hubofhubs/recall/cards_from_files.py](../hubofhubs/recall/cards_from_files.py) |  |
+| `cards-from-files:cochange_topic_cards` | Cochange topic cards | [hubofhubs/recall/cards_from_topics.py](../hubofhubs/recall/cards_from_topics.py) |  |
+| `cards-from-files:import_graph_topic_cards` | Import graph topic cards | [hubofhubs/recall/cards_from_topics.py](../hubofhubs/recall/cards_from_topics.py) |  |
 | `know-the-world:openalex` | OpenAlex keyword search | [hubofhubs/science/openalex.py](../hubofhubs/science/openalex.py) |  |
 | `know-the-world:openalex_semantic` | OpenAlex semantic search | [hubofhubs/science/openalex_semantic.py](../hubofhubs/science/openalex_semantic.py) |  |
 | `know-the-world:openalex_keywords` | OpenAlex keywords, rule rewrite | [hubofhubs/science/openalex_keywords.py](../hubofhubs/science/openalex_keywords.py) |  |
@@ -287,5 +289,5 @@ flowchart LR
 - `metric-call-a-model`, Provider failover and vendor answers: `esoi run provider_failover --impl multi_provider; esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
 - `metric-remember-and-recall`, remember-and-recall metric (draft): `none`
 - `metric-context-assembler`, Relevant passage in the top five: `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite; esoi run context_assembler_papers --impl bm25; esoi run context_assembler_papers --impl vector; esoi run context_assembler_papers --impl hybrid; esoi run context_assembler_papers --impl composite; esoi run context_assembler_paraphrase --impl bm25; esoi run context_assembler_paraphrase --impl vector; esoi run context_assembler_paraphrase --impl hybrid; esoi run context_assembler_paraphrase --impl composite`
-- `metric-cards-from-files`, Needed file among the first three files a builder's cards show: `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl file_plus_topic_cards`
+- `metric-cards-from-files`, Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size: `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
 - `metric-search-backend`, Search finds the source: `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`
