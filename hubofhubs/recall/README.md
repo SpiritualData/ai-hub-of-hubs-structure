@@ -46,7 +46,7 @@ flowchart LR
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| Composite | `context-assembler:composite` | [`hubofhubs/recall/composite_assembler.py`](composite_assembler.py) |  |
+| Composite retrieval | `context-assembler:composite` | [`hubofhubs/recall/composite_assembler.py`](composite_assembler.py) |  |
 | BM25 over file text | `context-assembler:bm25` | [`hubofhubs/recall/bm25_store.py`](bm25_store.py) |  |
 | Hybrid fusion | `context-assembler:hybrid` | [`hubofhubs/recall/hybrid_assembler.py`](hybrid_assembler.py) |  |
 | Vector search | `context-assembler:vector` | [`hubofhubs/recall/vector_assembler.py`](vector_assembler.py) |  |

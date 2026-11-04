@@ -240,7 +240,7 @@ flowchart LR
 | OpenAI provider | `call-a-model:openai` | [hubofhubs/models/openai.py](../hubofhubs/models/openai.py) |  |
 | Built on the vendor model caller | `model-call:via_call_a_model` | [hubofhubs/models/via_provider.py](../hubofhubs/models/via_provider.py) |  |
 | Claude Code CLI | `call-a-model:claude_cli` | [hubofhubs/models/claude_cli.py](../hubofhubs/models/claude_cli.py) |  |
-| Composite | `context-assembler:composite` | [hubofhubs/recall/composite_assembler.py](../hubofhubs/recall/composite_assembler.py) |  |
+| Composite retrieval | `context-assembler:composite` | [hubofhubs/recall/composite_assembler.py](../hubofhubs/recall/composite_assembler.py) |  |
 | BM25 over file text | `context-assembler:bm25` | [hubofhubs/recall/bm25_store.py](../hubofhubs/recall/bm25_store.py) |  |
 | Hybrid fusion | `context-assembler:hybrid` | [hubofhubs/recall/hybrid_assembler.py](../hubofhubs/recall/hybrid_assembler.py) |  |
 | Vector search | `context-assembler:vector` | [hubofhubs/recall/vector_assembler.py](../hubofhubs/recall/vector_assembler.py) |  |
@@ -273,9 +273,9 @@ flowchart LR
 | Brave Search API | `search-backend:brave` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
 | Gemini grounding | `search-backend:gemini` | [hubofhubs/websearch/gemini.py](../hubofhubs/websearch/gemini.py) |  |
 | Provider-native search | `search-backend:provider` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
-| SearXNG | `search-backend:searxng` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
-| Serper | `search-backend:serper` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
-| Tavily | `search-backend:tavily` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
+| SearXNG metasearch | `search-backend:searxng` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
+| Serper Google search | `search-backend:serper` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
+| Tavily search API | `search-backend:tavily` | [hubofhubs/websearch/backends.py](../hubofhubs/websearch/backends.py) |  |
 | Web research | `know-the-world:web_research` | [hubofhubs/websearch/research.py](../hubofhubs/websearch/research.py) |  |
 
 ### Metrics
