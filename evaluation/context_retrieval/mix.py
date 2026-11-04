@@ -32,3 +32,17 @@ STORE_EXPONENT = 2.0
 def counts(pools):
     unit = pools["file"] / MIX["file"]
     return {kind: min(pools[kind], round(unit * MIX[kind])) for kind in MIX if kind in pools}
+
+
+# ---- source access: cost and risk of reading the sources at request time (fixed before any arm was scored on it) ------------------------------
+# An arm answers from the index it built beforehand; reading the live sources while answering (scanning a server, many API calls) costs money, time
+# and exposure even when it is accurate. The corpus hands every arm a ``SourceMeter`` (hubofhubs.retrieval.base) that counts, per request, the source
+# calls, the records and the bytes read; an arm that reads only its prebuilt index counts 0. The count is folded into the case's cost at these prices
+# (the balanced weights do not change):
+SOURCE_CALL_USD = 0.0005      # one round trip to a source (an API request, a file open on a remote share): a tenth of the half-cent request budget
+SOURCE_RECORD_USD = 0.00001   # one record read (a file, a message, a row), the per-item charge of a metered API
+SOURCE_MB_USD = 0.0005        # one megabyte transferred from a source
+# Risk gates (conditions a stage checks with evaluation/context_retrieval/gate.py, not weights):
+MAX_SOURCE_CALLS = 20         # source calls in any one request (a handful of lookups is a retrieval, hundreds is a scan)
+MAX_SCAN_SHARE = 0.05         # a request that reads more than this share of the records of the corpus is a full scan
+MAX_OUT_OF_SCOPE = 0          # records read, or returned, outside the scope the request is allowed (scope_tags fence)
