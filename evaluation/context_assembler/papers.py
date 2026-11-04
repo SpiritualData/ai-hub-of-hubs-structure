@@ -1,4 +1,4 @@
-"""Scores a context-assembler arm on a known-item check over an existing, already embedded paper collection (a private stage).
+"""The paper-sample source of the context-assembler component (its corpus and pass rule): a known-item check over an existing, already embedded paper collection (a private stage).
 
 The corpus is a fixed sample of ``SAMPLE`` papers read (never written) from a production Qdrant collection together with the vectors it
 already stores, so no document is embedded. The arms see the same corpus: the vector arm searches a local Qdrant folder rebuilt from
@@ -28,7 +28,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from context_assembler import score as public  # noqa: E402
+from context_assembler import nfcorpus as public  # noqa: E402
 
 SAMPLE = 3000
 SEED = 20261031
@@ -120,7 +120,7 @@ def query_vectors(queries):
 
 
 def load_cases():
-    return json.loads((Path(__file__).with_name("cases.json")).read_text(encoding="utf-8"))
+    return json.loads((Path(__file__).with_name("datasets") / "papers.json").read_text(encoding="utf-8"))
 
 
 def sample_digest(papers=None):

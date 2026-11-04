@@ -49,7 +49,7 @@ def interleave(first: List[dict], second: List[dict], limit: int) -> List[dict]:
 @implementation("know-the-world", "openalex_semantic_and_web")
 class SemanticAndWeb:
     """Merges a scholarly semantic search and a web search into one observation."""
-    REQUIRES = (needs.OPENALEX_API, needs.HTTPX_SCIENCE, needs.HTTPX, needs.FILELOCK, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the web search
+    REQUIRES = (needs.OPENALEX_NETWORK, needs.OPENALEX_API, needs.HTTPX_SCIENCE, needs.HTTPX, needs.FILELOCK, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the web search
 
     def __init__(self, backend: SearchBackend, *, api_key: str = "", mailto: str = "", max_results: int = MAX_RESULTS,
                  scholarly=None, web=None) -> None:

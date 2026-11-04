@@ -9,12 +9,20 @@ import pytest
 EVALUATION = Path(__file__).resolve().parent.parent / "evaluation"
 sys.path.insert(0, str(EVALUATION))
 COMPONENTS = ["card_store", "stay_current", "connect_any_integration", "reason_and_answer", "model_call", "assemble_the_whole",
-              "provider_failover", "watch_for_risk", "watch_for_risk_ambiguous", "call_a_model"]
+              "provider_failover", "watch_for_risk", "call_a_model"]
+
+
+def cases_of(component):
+    """The component's pooled cases when its score module pools several sources, else its cases.json."""
+    score = importlib.import_module(f"{component}.score")
+    if hasattr(score, "load_cases"):
+        return score.load_cases()
+    return json.loads((EVALUATION / component / "cases.json").read_text())
 
 
 def failures(component, build):
     score = importlib.import_module(f"{component}.score")
-    cases = json.loads((EVALUATION / component / "cases.json").read_text())
+    cases = cases_of(component)
     fn = build(None)
     failed = 0
     for case in cases:
@@ -37,5 +45,5 @@ def test_every_baseline_fails_some_case(component):
 
 @pytest.mark.parametrize("component", COMPONENTS)
 def test_the_component_has_enough_cases_and_unique_ids(component):
-    cases = json.loads((EVALUATION / component / "cases.json").read_text())
-    assert len(cases) >= (20 if component == "watch_for_risk_ambiguous" else 30) and len({c["id"] for c in cases}) == len(cases)
+    cases = cases_of(component)
+    assert len(cases) >= 30 and len({c["id"] for c in cases}) == len(cases)

@@ -1,6 +1,6 @@
 """Rebuild the 3,000-paper corpus from public sources, for anyone who does not have our collection.
 
-    python3 evaluation/context_assembler_papers/rebuild_corpus.py [--out FILE] [--limit N] [--embed]
+    python3 evaluation/context_assembler/rebuild_corpus.py [--out FILE] [--limit N] [--embed]
 
 Reads ``corpus_ids.json`` and fetches each paper's title and abstract from PubMed (E-utilities ``efetch``, by PubMed id) or from OpenAlex
 (by DOI, for papers without a PubMed id), in batches. Writes the JSON lines file the stage reads (default: the stage's cache), one paper
@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import score  # noqa: E402
+import papers as score  # noqa: E402
 
 PUBMED = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
 OPENALEX = "https://api.openalex.org/works"

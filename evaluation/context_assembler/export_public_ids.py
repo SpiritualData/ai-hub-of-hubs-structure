@@ -1,6 +1,6 @@
 """Write ``corpus_ids.json``: the public identifier of each paper of the 3,000-paper sample, in sample order. Maintainers only (reads the collection).
 
-    python3 evaluation/context_assembler_papers/export_public_ids.py
+    python3 evaluation/context_assembler/export_public_ids.py
 
 Each entry is ``{"id", "doi", "pmid"}``: ``id`` is the DOI when the paper has one (``doi:10.xxxx/...``), else its PubMed id
 (``pmid:...``), else the arXiv, bioRxiv or medRxiv identifier the collection holds. Nothing internal (point ids, internal fields, server
@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import score  # noqa: E402
+import papers as score  # noqa: E402
 
 
 def identifiers(metadata, source):

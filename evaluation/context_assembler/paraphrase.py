@@ -1,6 +1,6 @@
-"""Scores a context-assembler arm on a harder known-item check: the query describes the paper in other words (a private stage).
+"""The paraphrase source of the context-assembler component: a harder known-item check, the query describes the paper in other words (a private stage).
 
-Same 3,000-paper sample, same stored vectors, same arms and wiring, same pass rule as ``context_assembler_papers`` (the paper is among
+Same 3,000-paper sample, same stored vectors, same arms and wiring, same pass rule as ``papers.py`` (the paper is among
 the first 5 ids ranked); only the query differs, and the paper is named by its public identifier. For each of the 300 papers of that stage the query is one short paraphrase of the
 abstract's claim, as a person who had not read the paper might type it, written once by the cheapest Gemini text model
 (``gemini-2.5-flash-lite``) and kept in the private cache so every arm and every rerun sees the same text. A paraphrase is refused and
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from context_assembler_papers import score as papers  # noqa: E402
+from context_assembler import papers  # noqa: E402
 from priced import first_env, price_of, priced  # noqa: E402
 
 MODEL = "gemini-2.5-flash-lite"
@@ -68,7 +68,7 @@ def paraphrases(positions, sample):
 
 
 def load_cases():
-    return json.loads((Path(__file__).with_name("cases.json")).read_text(encoding="utf-8"))
+    return json.loads((Path(__file__).with_name("datasets") / "paraphrase.json").read_text(encoding="utf-8"))
 
 
 def adapt(implementation, meter):

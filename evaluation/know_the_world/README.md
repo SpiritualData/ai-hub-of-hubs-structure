@@ -1,7 +1,9 @@
 # know-the-world: is the paper that answers a research question among what the arm returns?
 
-The seat looks up what the world says and returns observations a reader can cite. This component asks 40 literature-search
-questions and passes an arm when the gold paper is among the observations it returns.
+The seat looks up what the world says and returns observations a reader can cite. This component asks 150 literature-search
+questions and passes an arm when the gold paper is among the observations it returns. It is one component with one number: accuracy,
+cost and time are folded by `[balance.know_the_world]` in `esoi.toml`, and the stages of its cascade (a sample of 3, of 10, the whole set)
+are that same number at rising fidelity, not separate components. The 40 questions of the first stage are the first 40 of the 150.
 
 ## Cases
 
@@ -10,9 +12,9 @@ questions and passes an arm when the gold paper is among the observations it ret
   revision as served on 2026-10-31). The Hugging Face dataset card states no license of its own; the license is the repository's.
 - Gold: the paper's title, read from the dataset's `corpus_clean` table by its corpus id. That table carries titles and not DOIs, so
   the check is by exact title (below).
-- Sample: `build_cases.py`, seed 20261031, 40 questions drawn at random from the 280 with quality 2 (the dataset's top rating) and
-  exactly one gold paper. `cases.json` (sha256 `7be47b7452a1c41b930f2a2386d2dcad16fcabf25cbb32037283857f70d281a4`) is that sample and
-  nothing else is committed. The `area` of a case is the dataset's query set; `--sample N` spreads N cases over them.
+- Sample: `build_cases.py` (seed 20261031) draws 40 questions and `extend_cases.py` (seed 20261032) adds 110 more from the remaining
+  LitSearch questions of quality 2 with exactly one gold paper. The 40 questions of the first stage were drawn at random from the 280 with quality 2 (the dataset's top rating) and
+  exactly one gold paper. `cases.json` is the 150 and nothing else is committed. The `area` of a case is the dataset's query set; `--sample N` spreads N cases over them.
 - The question is given to the arm as written (a full sentence). The two original arms do not rewrite it; the `openalex_keywords*` arms rewrite it themselves, inside the arm, and the `openalex_semantic` arm sends it whole.
 
 ## Matching rule (written before any run)

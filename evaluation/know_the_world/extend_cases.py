@@ -1,8 +1,8 @@
-"""Rebuild cases.json for the 150-question stage of the know-the-world seat.
+"""Rebuild cases.json for the 150 questions of the know-the-world seat (the 40 of ``build_cases.py`` and 110 more).
 
-    python3 evaluation/know_the_world_150/build_cases.py
+    python3 evaluation/know_the_world/extend_cases.py
 
-The first 40 cases are exactly the cases of ``evaluation/know_the_world`` (read from its cases.json, so the old rows stay a subset),
+The first 40 cases are exactly the cases ``build_cases.py`` draws (the first ``FIRST`` of cases.json),
 and the other 110 are drawn from the remaining LitSearch questions that have quality 2 and exactly one gold paper, with the fixed seed
 20261031 + 1 (``random.Random(seed).sample`` of the remaining usable questions in index order). Same source, same matching rule and
 same gold-title lookup as the 40-case stage. Standard library only.
@@ -12,15 +12,16 @@ import random
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "know_the_world"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_cases as base  # noqa: E402
 
 SEED = base.SEED + 1
 TOTAL = 150
+FIRST = 40
 
 
 def main():
-    first = json.loads((Path(base.__file__).with_name("cases.json")).read_text(encoding="utf-8"))
+    first = json.loads((Path(base.__file__).with_name("cases.json")).read_text(encoding="utf-8"))[:FIRST]
     taken = {c["id"] for c in first}
     queries = []
     for offset in range(0, 600, 100):
@@ -34,7 +35,7 @@ def main():
         rows = base.get("filter", config="corpus_clean", where=f'"corpusid"={corpusid}', length=1)["rows"]
         more.append(dict(id=f"litsearch-{q['index']:03d}", area=q["query_set"], question=q["query"],
                          gold_title=rows[0]["row"]["title"], gold_corpusid=corpusid))
-    out = Path(__file__).with_name("cases.json")
+    out = Path(base.__file__).with_name("cases.json")
     out.write_text(json.dumps(first + more, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"{len(first)} + {len(more)} cases from {len(usable)} remaining usable -> {out.name}")
 

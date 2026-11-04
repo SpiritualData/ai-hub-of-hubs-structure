@@ -6,7 +6,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "evaluation" / "context_assembler"))
-import score  # noqa: E402
+import nfcorpus as score  # noqa: E402
 
 
 def test_ndcg_uses_grade_as_gain_and_log2_discount():

@@ -1,4 +1,4 @@
-"""Scores a know-the-world arm: one research question, passed when the gold paper is among the observations returned.
+"""Scores a know-the-world arm over the 150 LitSearch questions of ``cases.json`` (one source, one number): one research question, passed when the gold paper is among the observations returned.
 
 Matching rule (fixed before any run, also written in README.md). A title is lower-cased and reduced to its letters and digits
 separated by single spaces. The case passes when the gold paper's reduced title is contained in the reduced text of the

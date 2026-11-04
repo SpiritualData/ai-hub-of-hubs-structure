@@ -2,13 +2,12 @@
 
     python3 evaluation/context_assembler/results_table.py [component] --write
 
-The component defaults to ``context_assembler``; ``context_assembler_papers`` and ``context_assembler_paraphrase`` are read the same way.
+The component defaults to ``context_assembler``, the one pooled component. A row counts only on the current case files (``cases_sha``).
 
 Reads ``esoi/results.csv`` (pass count, details with nDCG@10 and recall@10, written by ``esoi run --record`` from ``aggregate``) and
 ``esoi/per_case.csv`` (the median seconds per query), for the latest full-set row of each arm on the current case file. Runs nothing.
 """
 import csv
-import hashlib
 import math
 import statistics
 import sys
@@ -34,9 +33,15 @@ def read(name):
 
 
 def table():
-    cases_sha = hashlib.sha256((HERE / "cases.json").read_bytes()).hexdigest()[:8]
+    sys.path.insert(0, str(ROOT.parent / "evolvable-structure" / "implementations" / "python"))
+    from esoi.leaderboard import cases_digest
+    cases_sha = cases_digest(COMPONENT, ROOT / "evaluation")
     results = [r for r in read("results.csv") if r["component"] == COMPONENT and not r["sample"] and r["cases_sha"] == cases_sha]
     per_case = read("per_case.csv")
+    if not results:
+        return ("No arm is recorded on the pooled case set yet: its papers and paraphrase sources read a private collection, so a run needs "
+                "that collection's settings. Rows recorded earlier on the public benchmark alone sit in `esoi/results.csv` under their own "
+                "case hash and are not comparable with the pooled number.")
     lines = ["| arm | pass (relevant in top 5) | 95% Wilson | nDCG@10 | recall@10 | median s/query | cost |", "|---|---|---|---|---|---|---|"]
     for arm in ARMS:
         rows = [r for r in results if r["impl"] == arm]

@@ -1,6 +1,6 @@
-"""Rebuild cases.json for the context-assembler seat from the public BEIR NFCorpus test split.
+"""Rebuild datasets/nfcorpus.json for the context-assembler seat from the public BEIR NFCorpus test split.
 
-    python3 evaluation/context_assembler/build_cases.py
+    python3 evaluation/context_assembler/build_nfcorpus_cases.py
 
 Only ids and the relevance grades are written (query id, and the corpus document ids with their grade 1 or 2), never the query or
 document text: NFCorpus is free for academic use but states no redistribution license, so the text is downloaded at run time from
@@ -10,7 +10,7 @@ relevant document is a case (the whole split, so the figures are comparable with
 import json
 from pathlib import Path
 
-import score
+import nfcorpus as score
 
 SPLIT = "test"
 
@@ -23,7 +23,7 @@ def main():
         if int(grade) > 0:
             grades.setdefault(query, {})[doc] = int(grade)
     cases = [dict(id=q, relevant=dict(sorted(g.items()))) for q, g in sorted(grades.items())]
-    out = Path(__file__).with_name("cases.json")
+    out = Path(__file__).with_name("datasets") / "nfcorpus.json"
     out.write_text(json.dumps(cases, indent=1) + "\n", encoding="utf-8")
     print(f"{len(cases)} cases, {len(data['corpus'])} documents in the corpus -> {out.name}")
 

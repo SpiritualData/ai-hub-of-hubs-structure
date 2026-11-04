@@ -1,6 +1,7 @@
 """Rebuild cases.json for the know-the-world seat from LitSearch (MIT, github.com/princeton-nlp/LitSearch; data on Hugging Face).
 
-    python3 evaluation/know_the_world/build_cases.py
+    python3 evaluation/know_the_world/build_cases.py     # writes the first 40 cases to cases.json
+    python3 evaluation/know_the_world/extend_cases.py    # then extends cases.json to the 150 the component scores
 
 LitSearch has 597 literature-search questions about recent ML and NLP papers, each with the corpus id of its gold paper(s).
 The sample is fixed: seed 20261031, 40 questions that have quality 2 (the dataset's top rating) and exactly one gold paper,

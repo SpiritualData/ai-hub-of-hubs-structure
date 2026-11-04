@@ -8,7 +8,7 @@ official page is left out. Nothing here reads the environment and nothing contac
 Python requirements name the owning package's extra (``pyproject.toml``); ``tests/test_requirements.py`` checks that every
 declared module is provided by that extra.
 """
-from esoi.requirements import api, binary, download, env, isolatable, python, resource, service
+from esoi.requirements import api, binary, download, env, isolatable, network, python, resource, service
 
 AS_OF = "2026-10-31"
 
@@ -94,6 +94,9 @@ SEARXNG_SERVICE = service("SearXNG", "SEARXNG_URL", health_path=None)
 SEARXNG_URL = env("SEARXNG_URL", option="base_url", note="a self-hosted SearXNG instance whose settings allow the json format (the arm requests format=json)")
 
 # --- scholarly and DOI services ---------------------------------------------------------------------------------------------
+
+# Every scholarly arm reaches OpenAlex over the network, so an offline run answers pending-network for it and never tries a live call.
+OPENALEX_NETWORK = network("api.openalex.org", note="the scholarly arms search OpenAlex live")
 
 OPENALEX_API = api(
     "OpenAlex", key=env("OPENALEX_API_KEY", option="api_key", secret=True), keyless=True,

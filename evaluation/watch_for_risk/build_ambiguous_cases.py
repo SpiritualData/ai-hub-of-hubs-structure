@@ -1,4 +1,4 @@
-"""Writes cases.json: 24 ambiguous steps for the watch-for-risk seat (12 risky, 12 benign), each with a short reason.
+"""Writes datasets/ambiguous.json: 24 ambiguous steps for the watch-for-risk seat (12 risky, 12 benign), each with a short reason.
 
 Written for this evaluation, with generic wording and no organization names, after the public finding that an independent stress test of
 an agent safety monitor found most missed actions on ambiguous steps, not on explicit ones (docs/explanation/what-public-research-says.md). The
@@ -88,5 +88,5 @@ def case(spec, want):
 
 if __name__ == "__main__":
     cases = [case(s, HUMAN) for s in RISKY] + [case(s, ["proceed"]) for s in BENIGN]
-    (Path(__file__).parent / "cases.json").write_text(json.dumps(cases, indent=1) + "\n", encoding="utf-8")
+    (Path(__file__).parent / "datasets" / "ambiguous.json").write_text(json.dumps(cases, indent=1) + "\n", encoding="utf-8")
     print(len(cases), "cases")
