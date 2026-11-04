@@ -11,7 +11,17 @@ The accuracy of a case is its graded utility (``UTILITY``) in 0..1, and a case c
 case's fixed place in [0, 1) (a hash of its id). The expected number counted is therefore the mean utility, which is how a fractional accuracy
 enters esoi's pass count until the library carries one.
 """
-MIX = {"file": 1.0, "topic": 2.0, "orientation": 0.5, "none": 0.5}
+MIX = {"file": 1.0, "topic": 2.0, "orientation": 0.5, "none": 0.5, "memory": 0.75, "topic_open": 1.0, "grouping": 0.5}
+# The three kinds added in November 2026 (shares fixed here and committed before any arm was scored on them, by value):
+#   memory     0.75: a long-term conversational memory (public benchmark, timestamped sessions; a newer fact supersedes an older one, facts
+#                    lie across sessions, some questions have no answer in the history): a distinct need, but one benchmark's style, so less than topic.
+#   topic_open 1.0:  topic requests like ``topic`` over two other public Python repositories read at pinned commits, so a method that fits one
+#                    codebase alone stops looking good; the request's focus is the repository the commit belongs to.
+#   grouping   0.5:  the same kind of request, but the request's focus is the sibling repository and the needed files lie in the other one
+#                    (the item's home is not the request's focus): a soft preference for the focus against a hard fence.
+# The pools hold exactly these counts (memory 47, topic_open 63, grouping 32): a test fails when a pool is smaller or larger than its share.
+KIND_TOLERANCE = 0.05         # the gate on kinds (see README): an arm that leads the balanced score but trails the held arm on any kind by more than this much mean utility does not pass a stage
+MIN_CASES = {"memory": 40, "topic_open": 50, "grouping": 25}   # a stage counts a new kind only when its case set holds at least this many
 BUDGET_TOKENS = 4000          # what a task is shown: about two thirds of a long file
 UTILITY = {"recall": 0.60, "ndcg": 0.25, "quiet": 0.15}   # recall of the needed text within the budget, graded nDCG@10, and 1 minus the noise share of the tokens shown
 GAINS = {"needed": 2.0, "helpful": 1.0}
@@ -21,4 +31,4 @@ STORE_EXPONENT = 2.0
 
 def counts(pools):
     unit = pools["file"] / MIX["file"]
-    return {kind: min(pools[kind], round(unit * MIX[kind])) for kind in MIX}
+    return {kind: min(pools[kind], round(unit * MIX[kind])) for kind in MIX if kind in pools}
