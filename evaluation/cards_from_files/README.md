@@ -37,7 +37,18 @@ on the real corpus.
 | `per_file_symbols` | one card per file, from its docstrings and symbols | none |
 | `graphify_files` | one card per community of Graphify's file graph, files ordered by connection (code-only extraction, no model) | none |
 | `llm_topic_cards` | topic cards a model writes from sampled files, duplicates merged | model calls on every build; listed in `paid_arms` |
+| `topic_cards_replay` | the 103 topic cards of the one paid `llm_topic_cards` build (id 75f9da90), replayed from `datasets/replays/` | none |
+| `file_plus_topic_cards` | `per_file_symbols` cards plus those topic cards (ids prefixed `topic-`) | none |
 | `one_card`, `two_cards`, `one_card_per_folder` | baselines, see above | none |
+
+The paid build is persisted once, so it is never bought again for the same code: `datasets/replays/llm_topic_cards_75f9da90.json`
+holds the cards, the pin they were built on (a replay on any other corpus is refused), the build's calls, tokens and cost
+(52 calls, 93,660 tokens, $0.9967), and a sha256 of the cards that is checked on every load. The cards name 140 file entries over 102
+distinct files of the 892. The build's id was 75f9da90 when the harness computed it in the paid run; the card order of that run was not
+kept, so the stored cards in their recovered order have id b5107a67, and that is the id a replay records. Each card's local
+`origin` field was dropped. A replay's row carries the original build's calls and cost in its details as "replayed from build
+75f9da90"; its own cost is zero. It scores what the paid build scored: `topic_cards_replay` 5 of 63 (the paid run's 5 of 63,
+reproduced exactly), `file_plus_topic_cards` 40 of 63, below the per-file floor's 43, so the topic cards do not help the floor here.
 
 `graphify_files` needs the `graphify` extra (`pip install "hubofhubs[graphify]"`), so it runs in an environment that has it:
 

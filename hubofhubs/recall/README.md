@@ -9,7 +9,7 @@ Give an AI the context a task needs and nothing from another person's scope.
 - Entry call: `hubofhubs.run("remember-and-recall", 'rust release')`
 - Selected implementation: `card_recall`
 - Metric: remember-and-recall metric (draft)
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../docs/reference/work-trace-event.schema.json), [`hubofhubs/ports/__init__.py`](../ports/__init__.py), [`hubofhubs/ports/context.py`](../ports/context.py), [`hubofhubs/ports/control.py`](../ports/control.py), [`hubofhubs/ports/deep.py`](../ports/deep.py), [`hubofhubs/ports/events.py`](../ports/events.py), [`hubofhubs/ports/model.py`](../ports/model.py), [`hubofhubs/ports/retrieval.py`](../ports/retrieval.py) and 79 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../docs/reference/work-trace-event.schema.json), [`hubofhubs/ports/__init__.py`](../ports/__init__.py), [`hubofhubs/ports/context.py`](../ports/context.py), [`hubofhubs/ports/control.py`](../ports/control.py), [`hubofhubs/ports/deep.py`](../ports/deep.py), [`hubofhubs/ports/events.py`](../ports/events.py), [`hubofhubs/ports/model.py`](../ports/model.py), [`hubofhubs/ports/retrieval.py`](../ports/retrieval.py) and 80 more
 
 ## context-assembler: pick the context a task needs (`context-assembler`)
 
@@ -18,7 +18,7 @@ Find the passages that bear on a request, for any consumer that keeps knowledge 
 - Entry call: `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')`
 - Selected implementation: `bm25@analyzer=english`
 - Metric: Relevant passage in the top five
-- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 64 more
+- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 65 more
 
 ## cards-from-files: cards for a folder (`cards-from-files`)
 
@@ -27,7 +27,7 @@ Give any consumer cards for the knowledge it already keeps in files, so recall s
 - Entry call: `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})`
 - Selected implementation: `per_file_symbols`
 - Metric: Needed file among the first three files a builder's cards show
-- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 64 more
+- Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 65 more
 
 ## Diagram
 
@@ -54,6 +54,8 @@ flowchart LR
 | `cards-from-files:per_file_symbols` | One card per file | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) | selected |
 | `cards-from-files:graphify_files` | Graphify file groups | [`hubofhubs/recall/cards_from_graphify.py`](cards_from_graphify.py) |  |
 | `remember-and-recall:card_recall` | Cards drawn by relevance from a store | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
+| `cards-from-files:file_plus_topic_cards` | File plus topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| `cards-from-files:topic_cards_replay` | Topic cards replay | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
 
 ## Metrics
 
