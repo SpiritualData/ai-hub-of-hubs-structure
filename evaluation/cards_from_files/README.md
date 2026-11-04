@@ -59,13 +59,13 @@ proves it on the real corpus, and proves that a card per file, right on many cas
 
 | Arm | What it is | Cost |
 |---|---|---|
-| `per_file_symbols` | BASELINE (a floor for finding a file, never a card builder): one card per file, from its docstrings and symbols | none |
-| `graphify_files` | one card per community of Graphify's file graph, files ordered by connection (code-only extraction, no model) | none |
-| `llm_topic_cards` | topic cards a model writes from sampled files, duplicates merged | model calls on every build; listed in `paid_arms` |
-| `topic_cards_replay` | the 103 topic cards of the one paid `llm_topic_cards` build (id 75f9da90), replayed from `datasets/replays/` | none |
-| `file_plus_topic_cards` | `per_file_symbols` cards plus those topic cards (ids prefixed `topic-`); keeps a card per file, so the store term takes its score | none |
-| `cochange_topic_cards`, `import_graph_topic_cards` | topic cards grouped from the co-change history or the import graph, no model (`hubofhubs/recall/cards_from_topics.py`) | none |
-| `one_card`, `two_cards`, `one_card_per_folder` | baselines, see above | none |
+| One card per file (`per_file_symbols`) | BASELINE (a floor for finding a file, never a card builder): one card per file, from its docstrings and symbols | none |
+| Graphify file groups (`graphify_files`) | one card per community of Graphify's file graph, files ordered by connection (code-only extraction, no model) | none |
+| Model-written topic cards (`llm_topic_cards`) | topic cards a model writes from sampled files, duplicates merged | model calls on every build; listed in `paid_arms` |
+| Topic cards replay (`topic_cards_replay`) | the 103 topic cards of the one paid `llm_topic_cards` build (id 75f9da90), replayed from `datasets/replays/` | none |
+| File plus topic cards (`file_plus_topic_cards`) | `per_file_symbols` cards plus those topic cards (ids prefixed `topic-`); keeps a card per file, so the store term takes its score | none |
+| Cochange topic cards (`cochange_topic_cards`), import graph topic cards (`import_graph_topic_cards`) | topic cards grouped from the co-change history or the import graph, no model (`hubofhubs/recall/cards_from_topics.py`) | none |
+| One card (`one_card`), two cards (`two_cards`), one card per folder (`one_card_per_folder`) | baselines, see above | none |
 
 The paid build is persisted once, so it is never bought again for the same code: `datasets/replays/llm_topic_cards_75f9da90.json`
 holds the cards, the pin they were built on (a replay on any other corpus is refused), the build's calls, tokens and cost

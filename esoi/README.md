@@ -71,23 +71,23 @@ flowchart LR
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| World in | `take-in-the-world` | `hubofhubs.run("take-in-the-world", 'latest Rust release')` | `search_backends` | World in measure (draft) |
-| Mind | `reason-and-answer` | `hubofhubs.run("reason-and-answer", ...)` | `model_calls` | Mind measure (draft) |
+| World in | `take-in-the-world` | `hubofhubs.run("take-in-the-world", 'latest Rust release')` | `search_backends` | Task pass rate and cost per passing task |
+| Mind | `reason-and-answer` | `hubofhubs.run("reason-and-answer", ...)` | `model_calls` | Answer quality per dollar and per second |
 | Model tier chooser | `choose-a-model-tier` | `hubofhubs.run("choose-a-model-tier", {'available': ['anthropic']})` | `tier_selector` | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
 | Science | `know-the-world` | `hubofhubs.run("know-the-world", 'meditation and attention')` | `openalex_semantic` | Research question finds its paper |
 | Body | `act-in-the-world` | `hubofhubs.run("act-in-the-world", ...)` | `fast_edit` | Goal met by its own tests, Harness, context, sub-agents and recursion ranked |
 | Overseer | `watch-for-risk` | `hubofhubs.run("watch-for-risk", 'delete the old backup folder')` | `consent_gate` | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | The whole being | `assemble-the-whole` | `hubofhubs.run("assemble-the-whole", 'what is the latest Rust release?')` | `zero_config` | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
-| Learning | `stay-current` | `hubofhubs.run("stay-current", '2026-11-03')` | `registry_research` | Learning measure (draft), Public stage sourced and triangulated, Best in circumstance with variants |
+| Learning | `stay-current` | `hubofhubs.run("stay-current", '2026-11-03')` | `registry_research` | Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants |
 | Research freshness reader | `read-registry-freshness` | `hubofhubs.run("read-registry-freshness", '2026-10-01')` | `registry_scan` | Registry freshness reading |
-| Character | `keep-it-generic` | `hubofhubs.run("keep-it-generic", ['examplevendor'])` | `prompts_as_data` | Character measure (draft), Intents whose solutions one paragraph and one diagram explain as the code builds them |
-| Hands | `connect-any-integration` | `hubofhubs.run("connect-any-integration", 'web_search')` | `catalog_entries` | Integration added with zero code (draft), Integration served by combined hubs |
+| Character | `keep-it-generic` | `hubofhubs.run("keep-it-generic", ['examplevendor'])` | `prompts_as_data` | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
+| Hands | `connect-any-integration` | `hubofhubs.run("connect-any-integration", 'web_search')` | `catalog_entries` | Integration added with zero code, Integration served by combined hubs |
 | Connection scorer | `score-hub-connections` | `hubofhubs.run("score-hub-connections", {'facts': {}, 'connections': []})` | `hub_of_hubs_scorer` | Hub connection scoring |
 | Card store | `card-store` | `hubofhubs.run("card-store", 'rust release')` | `local_card_store` | Cards found again, none lost |
-| Critical thinking | `think-critically` | `hubofhubs.run("think-critically", ...)` | `evidence_check` | Critical thinking measure (draft) |
+| Critical thinking | `think-critically` | `hubofhubs.run("think-critically", ...)` | `evidence_check` | Requests with a named problem, ideal and metric |
 | Model call | `model-call` | `hubofhubs.run("model-call", ...)` | `via_call_a_model` | Model call answers for the tier |
 | Vendor model caller | `call-a-model` | `hubofhubs.run("call-a-model", ...)` | `claude_cli` | Provider failover |
-| Subconscious, Intuition | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | Subconscious, Intuition measure (draft) |
+| Subconscious, Intuition | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | Right context admitted, none from another scope |
 | Context assembler | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
 | Cards from files | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `import_graph_topic_cards` | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
 | Context retriever | `retrieve-context` | `hubofhubs.run("retrieve-context", ...)` | `abstaining_hybrid` | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
@@ -125,16 +125,16 @@ flowchart LR
 
 ## Metrics and their leaders
 
-- World in measure (draft) (`metric-take-in-the-world`)
-- Mind measure (draft) (`metric-reason-and-answer`)
+- Task pass rate and cost per passing task (`metric-take-in-the-world`)
+- Answer quality per dollar and per second (`metric-reason-and-answer`)
 - Tier choice by passing work per cost (`metric-choose-a-model-tier`): leader `tier_selector`, 36 of 36 cases
 - Research question finds its paper (`metric-know-the-world`): leader `openalex_semantic`, 52 of 150 cases
 - Goal met by its own tests (`metric-act-in-the-world`): leader `fast_edit`, 29 of 30 cases
 - Risky steps stopped, ordinary steps let through (`metric-watch-for-risk`): leader `two_stage`, 34 of 36 cases
 - Whole assembly (`metric-assemble-the-whole`)
-- Learning measure (draft) (`metric-stay-current`)
+- Days since each seat was researched (`metric-stay-current`)
 - Registry freshness reading (`metric-read-registry-freshness`): leader `registry_scan`, 41 of 41 cases
-- Character measure (draft) (`metric-keep-it-generic`)
+- Consumer-specific strings found by scan (`metric-keep-it-generic`)
 - and 25 more: all 35 are in [metrics](#metrics) of the full record below
 
 ## Where to go next
@@ -187,23 +187,23 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| World in | `take-in-the-world` | search_backends | World in measure (draft) |
-| Mind | `reason-and-answer` | model_calls | Mind measure (draft) |
+| World in | `take-in-the-world` | search_backends | Task pass rate and cost per passing task |
+| Mind | `reason-and-answer` | model_calls | Answer quality per dollar and per second |
 | Model tier chooser | `choose-a-model-tier` | tier_selector | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
 | Science | `know-the-world` | openalex_semantic | Research question finds its paper |
 | Body | `act-in-the-world` | fast_edit | Goal met by its own tests, Harness, context, sub-agents and recursion ranked |
 | Overseer | `watch-for-risk` | consent_gate | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | The whole being | `assemble-the-whole` | zero_config | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
-| Learning | `stay-current` | registry_research | Learning measure (draft), Public stage sourced and triangulated, Best in circumstance with variants |
+| Learning | `stay-current` | registry_research | Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants |
 | Research freshness reader | `read-registry-freshness` | registry_scan | Registry freshness reading |
-| Character | `keep-it-generic` | prompts_as_data | Character measure (draft), Intents whose solutions one paragraph and one diagram explain as the code builds them |
-| Hands | `connect-any-integration` | catalog_entries | Integration added with zero code (draft), Integration served by combined hubs |
+| Character | `keep-it-generic` | prompts_as_data | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
+| Hands | `connect-any-integration` | catalog_entries | Integration added with zero code, Integration served by combined hubs |
 | Connection scorer | `score-hub-connections` | hub_of_hubs_scorer | Hub connection scoring |
 | Card store | `card-store` | local_card_store | Cards found again, none lost |
-| Critical thinking | `think-critically` | evidence_check | Critical thinking measure (draft) |
+| Critical thinking | `think-critically` | evidence_check | Requests with a named problem, ideal and metric |
 | Model call | `model-call` | via_call_a_model | Model call answers for the tier |
 | Vendor model caller | `call-a-model` | claude_cli | Provider failover |
-| Subconscious, Intuition | `remember-and-recall` | card_recall | Subconscious, Intuition measure (draft) |
+| Subconscious, Intuition | `remember-and-recall` | card_recall | Right context admitted, none from another scope |
 | Context assembler | `context-assembler` | bm25@analyzer=english | Relevant passage in the top five |
 | Cards from files | `cards-from-files` | import_graph_topic_cards | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
 | Context retriever | `retrieve-context` | abstaining_hybrid | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
@@ -285,20 +285,20 @@ flowchart LR
 
 ### Metrics
 
-- World in measure (draft) (`metric-take-in-the-world`): `none`
-- Mind measure (draft) (`metric-reason-and-answer`): `none`
+- Task pass rate and cost per passing task (`metric-take-in-the-world`): `none`
+- Answer quality per dollar and per second (`metric-reason-and-answer`): `none`
 - Tier choice by passing work per cost (`metric-choose-a-model-tier`): `esoi run reason_and_answer --impl tier_selector`
 - Research question finds its paper (`metric-know-the-world`): `esoi run know_the_world --impl openalex_semantic_and_web; esoi run know_the_world --impl openalex_semantic; esoi run know_the_world --impl web_research; esoi run know_the_world --impl openalex; esoi run know_the_world --impl openalex_keywords; esoi run know_the_world --impl openalex_keywords_model`
 - Goal met by its own tests (`metric-act-in-the-world`): `esoi run file_edit_goals --impl fast_edit; esoi run file_edit_goals --impl subprocess_goal_runner; esoi run file_edit_goals --impl stream_json_goal_runner; esoi run file_edit_goals --impl acp_deep_runner; esoi run file_edit_goals --impl none`
 - Risky steps stopped, ordinary steps let through (`metric-watch-for-risk`): `esoi run watch_for_risk --impl overseer; esoi run watch_for_risk --impl none; esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl two_stage`
 - Whole assembly (`metric-assemble-the-whole`): `none`
-- Learning measure (draft) (`metric-stay-current`): `none`
+- Days since each seat was researched (`metric-stay-current`): `none`
 - Registry freshness reading (`metric-read-registry-freshness`): `esoi run stay_current --impl registry_scan`
-- Character measure (draft) (`metric-keep-it-generic`): `none`
-- Integration added with zero code (draft) (`metric-integration-added-with-zero-code`): `none`
+- Consumer-specific strings found by scan (`metric-keep-it-generic`): `none`
+- Integration added with zero code (`metric-integration-added-with-zero-code`): `none`
 - Hub connection scoring (`metric-score-hub-connections`): `esoi run connect_any_integration --impl hub_of_hubs_scorer`
-- integration-availability-lag (draft) (`metric-integration-availability-lag`): `none`
-- integration-credential-isolation (draft) (`metric-integration-credential-isolation`): `none`
+- Integration available within the weekly refresh (`metric-integration-availability-lag`): `none`
+- Integration credentials stay with their user (`metric-integration-credential-isolation`): `none`
 - Tier passing work per cost (`metric-tier-passing-work-per-cost`): `python3 -m pytest tests/test_tiers.py`
 - Cards found again, none lost (`metric-card-store`): `esoi run card_store --impl local_card_store`
 - Capability of the whole from the user's seat (`metric-hub-jarvis-ness`): `none`
@@ -312,10 +312,10 @@ flowchart LR
 - Intents whose solutions one paragraph and one diagram explain as the code builds them (`metric-solution-coherence`): `python3 -m esoi.coherence --gate`
 - Model quality on hard maths (`metric-model-quality`): `esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
 - Vendor arms answer (`metric-vendor-answers`): `esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run call_a_model --impl claude_cli`
-- Critical thinking measure (draft) (`metric-think-critically`): `none`
+- Requests with a named problem, ideal and metric (`metric-think-critically`): `none`
 - Model call answers for the tier (`metric-model-call`): `esoi run model_call --impl via_call_a_model`
 - Provider failover (`metric-call-a-model`): `esoi run provider_failover --impl multi_provider`
-- Subconscious, Intuition measure (draft) (`metric-remember-and-recall`): `none`
+- Right context admitted, none from another scope (`metric-remember-and-recall`): `none`
 - Relevant passage in the top five (`metric-context-assembler`): `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite`
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-retrieve-context`): `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl abstaining_recency; esoi run context_retrieval --impl abstaining_affinity; esoi run context_retrieval --impl abstaining_aware; esoi run context_retrieval --impl abstaining_fenced; esoi run context_retrieval --impl live_scan; esoi run context_retrieval --impl llm_rerank`

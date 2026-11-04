@@ -8,7 +8,7 @@ Connect any AI to tools, search and data sources without writing code for each o
 
 - Entry call: `hubofhubs.run("take-in-the-world", 'latest Rust release')`
 - Selected implementation: `search_backends`
-- Metric: World in measure (draft)
+- Metric: Task pass rate and cost per passing task
 - Implemented by: [`hubofhubs/areas.py`](areas.py), [`hubofhubs/terminal/__init__.py`](terminal/__init__.py), [`hubofhubs/terminal/asks.py`](terminal/asks.py), [`hubofhubs/terminal/blocks.py`](terminal/blocks.py), [`hubofhubs/terminal/render.py`](terminal/render.py), [`hubofhubs/terminal/stopped.py`](terminal/stopped.py), [`hubofhubs/terminal/strings.py`](terminal/strings.py), [`hubofhubs/terminal/trail.py`](terminal/trail.py) and 3 more
 
 ## Mind (`reason-and-answer`)
@@ -17,7 +17,7 @@ Reason to a good answer at the lowest cost that still passes, for any product th
 
 - Entry call: `hubofhubs.run("reason-and-answer", ...)`
 - Selected implementation: `model_calls`
-- Metric: Mind measure (draft)
+- Metric: Answer quality per dollar and per second
 - Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/models/__init__.py`](models/__init__.py), [`hubofhubs/models/anthropic.py`](models/anthropic.py), [`hubofhubs/models/claude_cli.py`](models/claude_cli.py), [`hubofhubs/models/family.py`](models/family.py), [`hubofhubs/models/gemini.py`](models/gemini.py), [`hubofhubs/models/layers.py`](models/layers.py) and 46 more
 
 ## Model tier chooser (`choose-a-model-tier`)
@@ -71,7 +71,7 @@ Keep every seat's candidates current for anyone who relies on the hub.
 
 - Entry call: `hubofhubs.run("stay-current", '2026-11-03')`
 - Selected implementation: `registry_research`
-- Metric: Learning measure (draft), Public stage sourced and triangulated, Best in circumstance with variants
+- Metric: Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants
 - Implemented by: [`hubofhubs/areas.py`](areas.py)
 
 ## Research freshness reader (`read-registry-freshness`)
@@ -89,7 +89,7 @@ Keep the hub usable by any consumer, with no wording or settings of one product 
 
 - Entry call: `hubofhubs.run("keep-it-generic", ['examplevendor'])`
 - Selected implementation: `prompts_as_data`
-- Metric: Character measure (draft), Intents whose solutions one paragraph and one diagram explain as the code builds them
+- Metric: Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them
 - Implemented by: [`hubofhubs/areas.py`](areas.py)
 
 ## Hands (`connect-any-integration`)
@@ -98,7 +98,7 @@ Let users connect the apps they use with zero code per integration, for any prod
 
 - Entry call: `hubofhubs.run("connect-any-integration", 'web_search')`
 - Selected implementation: `catalog_entries`
-- Metric: Integration added with zero code (draft), Integration served by combined hubs
+- Metric: Integration added with zero code, Integration served by combined hubs
 - Implemented by: [`hubofhubs/areas.py`](areas.py)
 
 ## Connection scorer (`score-hub-connections`)
@@ -196,20 +196,20 @@ flowchart LR
 
 ## Metrics
 
-- World in measure (draft) (`metric-take-in-the-world`)
-- Mind measure (draft) (`metric-reason-and-answer`)
+- Task pass rate and cost per passing task (`metric-take-in-the-world`)
+- Answer quality per dollar and per second (`metric-reason-and-answer`)
 - Tier choice by passing work per cost (`metric-choose-a-model-tier`): leader `tier_selector`, 36 of 36 cases
 - Research question finds its paper (`metric-know-the-world`): leader `openalex_semantic`, 52 of 150 cases
 - Goal met by its own tests (`metric-act-in-the-world`): leader `fast_edit`, 29 of 30 cases
 - Risky steps stopped, ordinary steps let through (`metric-watch-for-risk`): leader `two_stage`, 34 of 36 cases
 - Whole assembly (`metric-assemble-the-whole`)
-- Learning measure (draft) (`metric-stay-current`)
+- Days since each seat was researched (`metric-stay-current`)
 - Registry freshness reading (`metric-read-registry-freshness`): leader `registry_scan`, 41 of 41 cases
-- Character measure (draft) (`metric-keep-it-generic`)
-- Integration added with zero code (draft) (`metric-integration-added-with-zero-code`)
+- Consumer-specific strings found by scan (`metric-keep-it-generic`)
+- Integration added with zero code (`metric-integration-added-with-zero-code`)
 - Hub connection scoring (`metric-score-hub-connections`): leader `hub_of_hubs_scorer`, 33 of 33 cases
-- integration-availability-lag (draft) (`metric-integration-availability-lag`)
-- integration-credential-isolation (draft) (`metric-integration-credential-isolation`)
+- Integration available within the weekly refresh (`metric-integration-availability-lag`)
+- Integration credentials stay with their user (`metric-integration-credential-isolation`)
 - Tier passing work per cost (`metric-tier-passing-work-per-cost`)
 - Cards found again, none lost (`metric-card-store`): leader `local_card_store`, 35 of 35 cases
 - Capability of the whole from the user's seat (`metric-hub-jarvis-ness`)

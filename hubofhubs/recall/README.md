@@ -8,7 +8,7 @@ Give an AI the context a task needs and nothing from another person's scope.
 
 - Entry call: `hubofhubs.run("remember-and-recall", 'rust release')`
 - Selected implementation: `card_recall`
-- Metric: Subconscious, Intuition measure (draft)
+- Metric: Right context admitted, none from another scope
 - Implemented by: [`docs/reference/work-trace-event.schema.json`](../../docs/reference/work-trace-event.schema.json), [`hubofhubs/ports/__init__.py`](../ports/__init__.py), [`hubofhubs/ports/context.py`](../ports/context.py), [`hubofhubs/ports/control.py`](../ports/control.py), [`hubofhubs/ports/deep.py`](../ports/deep.py), [`hubofhubs/ports/events.py`](../ports/events.py), [`hubofhubs/ports/model.py`](../ports/model.py), [`hubofhubs/ports/retrieval.py`](../ports/retrieval.py) and 85 more
 
 ## Context assembler (`context-assembler`)
@@ -62,7 +62,7 @@ flowchart LR
 
 ## Metrics
 
-- Subconscious, Intuition measure (draft) (`metric-remember-and-recall`)
+- Right context admitted, none from another scope (`metric-remember-and-recall`)
 - Relevant passage in the top five (`metric-context-assembler`): leader `bm25@analyzer=english`, 208 of 323 cases
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): leader `import_graph_topic_cards`, 112 of 252 cases
 

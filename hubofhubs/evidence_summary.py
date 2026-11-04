@@ -220,7 +220,7 @@ def conformance_line(config: Config, registry: Registry, root: Path) -> str:
     for r in claims(config, registry, root):
         if r["conformance"]:
             row = r["shown"]
-            done.append(f"`{r['solution']}` {leaderboard.passes(row)}/{row.get('cases')}")
+            done.append(f"{first_cell(r)} {leaderboard.passes(row)}/{row.get('cases')}")
     return "Conformance tests (cases written in this repo, no rival, not counted as alternatives): " + ", ".join(done) + "."
 
 
@@ -249,8 +249,8 @@ def leaderboard_block(config: Config, registry: Registry, root: Path, today: Opt
              "Cases written in this repository and no rival arm: they show that an arm does its job, and they are not counted as alternatives.", "",
              "| Check | Cases and source | Arm | Pass rate (95% interval) | Cost per passing case |", "|---|---|---|---|---|"]
     for r in conformance:
-        lines.append("| " + " | ".join(evidence_table.cell(c) for c in [f"`{r['solution']}`: {r['label']['check']}", r["label"]["cases"].replace("{n}", str(r["shown"].get("cases", ""))),
-                                                                              r["selected"], evidence_table.rate_label(r["shown"]), evidence_table.cost_label(r["shown"])]) + " |")
+        lines.append("| " + " | ".join(evidence_table.cell(c) for c in [f"{first_cell(r)}: {r['label']['check']}", r["label"]["cases"].replace("{n}", str(r["shown"].get("cases", ""))),
+                                                                              arm_name(registry, r["solution"], r["selected"]), evidence_table.rate_label(r["shown"]), evidence_table.cost_label(r["shown"])]) + " |")
     return "\n".join(lines).replace("](docs/", "](../")   # the page lives in docs/reference/, so root-relative links become relative to it
 
 
@@ -308,6 +308,14 @@ MIND_SEATS = ("take-in-the-world", "remember-and-recall", "reason-and-answer", "
               "act-in-the-world", "stay-current", "connect-any-integration", "keep-it-generic", "assemble-the-whole")
 
 
+def arm_name(registry: Registry, solution_id: str, arm: str) -> str:
+    """An arm's human name with its id as the handle, from the implementation records; the id alone when no record names it."""
+    for row in registry.implementations:
+        if row.get("solution_id") == solution_id and row.get("implementation_id", "").split(":")[-1] == arm and row.get("name"):
+            return f"{row['name']} (`{arm}`)"
+    return f"`{arm}`" if arm else ""
+
+
 def mind_part(sol: Dict[str, str]) -> str:
     """The part of the mind a solution is, which is its display name, or "" when it is not a mind seat."""
     return sol.get("name", "") if sol.get("solution_id") in MIND_SEATS else ""
@@ -332,9 +340,10 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
         for component, impl in harness_arms(config, sol.get("metric_command", "")):
             if impl not in history.get(component, {}):
                 why = reasons.get(f"{component}:{impl}") or reasons.get(component) or waived.get(f"{sol['solution_id']}:{impl}") or "No run is recorded yet."
-                grouped.setdefault((sol["solution_id"], why), []).append(f"`{impl}`" + (f" ({component})" if component != sol["solution_id"].replace("-", "_") else ""))
+                grouped.setdefault((sol["solution_id"], why), []).append(arm_name(registry, sol["solution_id"], impl) + (f" ({component})" if component != sol["solution_id"].replace("-", "_") else ""))
+    named = {x["solution_id"]: x.get("name", "") for x in registry.every_solution()}
     for (sid, why), arms in grouped.items():
-        lines.append(f"- **`{sid}`**, arms with no run: {', '.join(dict.fromkeys(arms))}. {why}")
+        lines.append(f"- **{named.get(sid) or sid}** (`{sid}`), arms with no run: {', '.join(dict.fromkeys(arms))}. {why}")
     return "\n".join(lines) or "Every named seat and arm has a recorded run."
 
 
