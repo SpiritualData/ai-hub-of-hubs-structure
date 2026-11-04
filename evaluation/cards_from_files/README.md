@@ -1,5 +1,10 @@
 # cards-from-files: does the needed file appear among the first three files a builder's cards show?
 
+This component finds a file. Its cases have one needed file each, so a card per file wins it by construction: `per_file_symbols` and
+the three degenerate groupings are baselines, floors for file finding, never card builders to ship (a card per file is an index of files
+and must not be what a store keeps). What topic cards are for is judged by `evaluation/needed_set` (the needed set of a piece of work,
+the store's size as a gate) and `evaluation/orientation` (the neighbourhood of a file).
+
 A builder proposes cards for the files of a folder. This component judges the cards by what they do for a reader: a fixed selector
 ranks them for a task, shows the best ten, and the case passes when the file the task needs is among the first three files of what
 is shown.
@@ -34,11 +39,12 @@ on the real corpus.
 
 | Arm | What it is | Cost |
 |---|---|---|
-| `per_file_symbols` | one card per file, from its docstrings and symbols | none |
+| `per_file_symbols` | BASELINE: one card per file, from its docstrings and symbols | none |
 | `graphify_files` | one card per community of Graphify's file graph, files ordered by connection (code-only extraction, no model) | none |
 | `llm_topic_cards` | topic cards a model writes from sampled files, duplicates merged | model calls on every build; listed in `paid_arms` |
 | `topic_cards_replay` | the 103 topic cards of the one paid `llm_topic_cards` build (id 75f9da90), replayed from `datasets/replays/` | none |
 | `file_plus_topic_cards` | `per_file_symbols` cards plus those topic cards (ids prefixed `topic-`) | none |
+| `cochange_topic_cards`, `import_graph_topic_cards` | topic cards grouped from the co-change history or the import graph, no model (`hubofhubs/recall/cards_from_topics.py`) | none |
 | `one_card`, `two_cards`, `one_card_per_folder` | baselines, see above | none |
 
 The paid build is persisted once, so it is never bought again for the same code: `datasets/replays/llm_topic_cards_75f9da90.json`

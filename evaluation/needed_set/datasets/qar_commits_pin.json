@@ -1,0 +1,11 @@
+{
+ "qar_commit": "0cf161e5",
+ "cases_file": "datasets/qar_commits.json",
+ "cases_sha256": "5acf2fe0fe6c3898a754566783c3d440c6ae0435cee063e077bf8a6fb6dafce9",
+ "cases": 150,
+ "history_file": "datasets/cochange_history.json",
+ "history_sha256": "a91ef332911c71ccfaf8286220c789029fce7865b4724f3ffd664c80485bcbc5",
+ "history_commits": 480,
+ "oldest_test_commit": "71c4cf06fd4af2b33d918ce5f40491f8a595b565",
+ "sample": "the 150 most recent topic-only qualifying commits with at least 2 files in the corpus"
+}

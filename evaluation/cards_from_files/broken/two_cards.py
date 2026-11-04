@@ -4,7 +4,10 @@ from cards_from_files.score import view_function
 from hubofhubs.recall.context_card_extraction import is_test_path
 
 
+def cards(root, files, existing):
+    """The grouping, for every component that scores these baselines."""
+    return grouped(root, [[f for f in files if is_test_path(f)], [f for f in files if not is_test_path(f)]])
+
+
 def build(meter):
-    def cards(root, files, existing):
-        return grouped(root, [[f for f in files if is_test_path(f)], [f for f in files if not is_test_path(f)]])
     return view_function(cards, meter)

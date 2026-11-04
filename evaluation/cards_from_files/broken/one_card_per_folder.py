@@ -5,10 +5,13 @@ from cards_from_files.baselines import grouped
 from cards_from_files.score import view_function
 
 
+def cards(root, files, existing):
+    """The grouping, for every component that scores these baselines."""
+    folders = {}
+    for f in files:
+        folders.setdefault(os.path.dirname(f), []).append(f)
+    return grouped(root, list(folders.values()))
+
+
 def build(meter):
-    def cards(root, files, existing):
-        folders = {}
-        for f in files:
-            folders.setdefault(os.path.dirname(f), []).append(f)
-        return grouped(root, list(folders.values()))
     return view_function(cards, meter)

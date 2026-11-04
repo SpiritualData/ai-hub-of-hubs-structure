@@ -35,6 +35,16 @@ def build_id(cards) -> str:
     return hashlib.sha256(text.encode()).hexdigest()[:8]
 
 
+def distinct(view):
+    """The files of a view in view order, each once (a file two cards both list counts at its first place)."""
+    seen, out = set(), []
+    for path in view:
+        if path not in seen:
+            seen.add(path)
+            out.append(path)
+    return out
+
+
 def check_cards(cards, files) -> None:
     """A builder must return cards with unique ids that name only files of the corpus; anything else is the builder's defect."""
     known = set(files)
@@ -71,7 +81,8 @@ def view_function(builder, meter, replayed=None):
                          cost=round(after[3] - before[3], 4), seconds=round(seconds, 1))
             if replayed:
                 build["replayed"] = dict(replayed)
-        return dict(view=state["selector"].view(args["task"]), build=build)
+        picked = state["selector"].picked(args["task"])
+        return dict(view=[path for card in picked for path in card], cards=picked, build=build)
     return fn
 
 
@@ -113,9 +124,17 @@ def aggregate(rows):
     n = len(rows)
     count = lambda key: sum(bool(r.get(key)) for r in rows)
     sizes = sorted(r["view"] for r in rows)
-    build = next((r["build"] for r in rows if r.get("build")), None)
     out = dict(top1=f"{count('top1')}/{n}", top10=f"{count('top10')}/{n}", anywhere=f"{count('anywhere')}/{n}",
                view_median=int(statistics.median(sizes)) if sizes else 0, view_max=sizes[-1] if sizes else 0)
+    out.update(build_headline(rows))
+    return out
+
+
+def build_headline(rows):
+    """The build facts every component of this family reports: cards built, the build's id, its calls, tokens, cost and seconds
+    (charged to the first scored case) and, for a replay, the recorded build it came from."""
+    build = next((r["build"] for r in rows if r.get("build")), None)
+    out = {}
     if build:
         out.update(cards=build["cards"], build=build["id"], build_calls=build["calls"], build_tokens=build["tokens"],
                    build_cost=build["cost"], build_seconds=build["seconds"])

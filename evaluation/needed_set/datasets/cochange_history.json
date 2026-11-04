@@ -1,0 +1,5224 @@
+{
+ "qar_commit": "0cf161e5",
+ "rule": "every commit older than the oldest test commit: its subject and the corpus files it changed; no test commit is here",
+ "commits": [
+  {
+   "commit": "2040a0b78f77680d87c0196166ae9099d38619bb",
+   "date": "2026-10-06",
+   "subject": "Reach-judge tests: pin against pre-change behavior, fix WEB note framing",
+   "files": [
+    "quest_ai_runner/core/reach_judge.py",
+    "tests/test_planner_cascade.py",
+    "tests/test_reach_judge.py"
+   ]
+  },
+  {
+   "commit": "c9da0e48639105072ed4dd9c476fc14aec08c85e",
+   "date": "2026-10-06",
+   "subject": "Fix _DailyLimiter web-search cap to enforce across processes",
+   "files": [
+    "quest_ai_runner/adapters/web_research.py",
+    "tests/test_web_research.py"
+   ]
+  },
+  {
+   "commit": "e57af43cdd658fc8e0b013efdccf32757af643c3",
+   "date": "2026-10-06",
+   "subject": "Verifier web evidence: web reads only, capped, framed as untrusted",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_verify_web_evidence.py"
+   ]
+  },
+  {
+   "commit": "3fba7efa352aafd76e0318593c4506e1a0a7013f",
+   "date": "2026-10-06",
+   "subject": "Verifier sees this turn's web evidence and trusts it; citations survive the voice rule",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_verify_web_evidence.py"
+   ]
+  },
+  {
+   "commit": "bf609a897c743537af8cd415640ddcf86463c4fd",
+   "date": "2026-10-06",
+   "subject": "Web search critic follow-ups: web-aware judge prompt, HEAD-timeout redirect fix, fallback counted",
+   "files": [
+    "quest_ai_runner/adapters/web_research.py",
+    "quest_ai_runner/adapters/web_search_backends.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/planner_cascade.py",
+    "quest_ai_runner/core/reach_judge.py",
+    "tests/test_planner_cascade.py",
+    "tests/test_reach_judge.py",
+    "tests/test_web_research.py",
+    "tests/test_web_search_backends.py"
+   ]
+  },
+  {
+   "commit": "6ef8e6bff65876d294d7c199b7c96dd21dcd29bd",
+   "date": "2026-10-06",
+   "subject": "Request resolver: a short message that names its own subject is never a clarifying question",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_resolve_request_self_named_subject.py"
+   ]
+  },
+  {
+   "commit": "3a3f97ec5bdc141478239cfef0d460a0073bd40f",
+   "date": "2026-10-06",
+   "subject": "Web search review pass: SSRF across redirects, charset, blanked pages, duplicated snippets",
+   "files": [
+    "quest_ai_runner/adapters/web_research.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_web_cache.py",
+    "tests/test_web_page_extract.py",
+    "tests/test_web_reads.py",
+    "tests/test_web_research.py"
+   ]
+  },
+  {
+   "commit": "3519c14f1d95ec876c30f5b3466ceef02e8c2168",
+   "date": "2026-10-06",
+   "subject": "Repeated reads review fixes; planner-only refusals; reach summary for CLI lanes; whole-turn docs",
+   "files": [
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_composite_retrieval.py",
+    "tests/test_planner_model_pin.py",
+    "tests/test_repeated_reads.py"
+   ]
+  },
+  {
+   "commit": "36acb40538eb04699e6782fed2b0c75a429bb9fb",
+   "date": "2026-10-06",
+   "subject": "Add web_search_bench.py: latency/size/cost measurement for WebResearchAdapter",
+   "files": [
+    "scripts/web_search_bench.py",
+    "tests/test_web_search_bench.py"
+   ]
+  },
+  {
+   "commit": "a7019b968a5c7e51a25f454725bfb1188b7abc49",
+   "date": "2026-10-06",
+   "subject": "Fast web reads: wire cfg.web_research instead of broadcasting search through retrieval",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/reach_judge.py",
+    "tests/conftest.py",
+    "tests/test_native_web_search_wiring.py",
+    "tests/test_web_reads.py"
+   ]
+  },
+  {
+   "commit": "e96c4d0a76c45351cf3c96cebc9714fe7966fc5f",
+   "date": "2026-10-06",
+   "subject": "Repeated reads are not run again; composite query reports refusals",
+   "files": [
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_composite_retrieval.py",
+    "tests/test_repeated_reads.py"
+   ]
+  },
+  {
+   "commit": "4effc5381b767dbfe98ad781205080f18fcfcdf7",
+   "date": "2026-10-06",
+   "subject": "Add fast, token-efficient web search (WebResearchAdapter)",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/web_research.py",
+    "quest_ai_runner/adapters/web_search_backends.py",
+    "tests/test_web_cache.py",
+    "tests/test_web_page_extract.py",
+    "tests/test_web_research.py",
+    "tests/test_web_search_backends.py"
+   ]
+  },
+  {
+   "commit": "3ca804b527a8ce9456818fbf44d3a052bf82620e",
+   "date": "2026-10-06",
+   "subject": "Judges get the gist of a request; a thread never retrieves its own run record",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/turn_context_store.py",
+    "quest_ai_runner/runner/personas.py",
+    "tests/test_prompt_budget.py"
+   ]
+  },
+  {
+   "commit": "db86b380a6eb0a63de961fdf68309dd69e8ac8b6",
+   "date": "2026-10-06",
+   "subject": "Deep prompt: one prioritized token budget, nothing that accumulates across passes",
+   "files": [
+    "quest_ai_runner/core/card_filter.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/prompt_budget.py",
+    "quest_ai_runner/core/turn_context_store.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/feedback_ledger.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_prompt_budget.py"
+   ]
+  },
+  {
+   "commit": "0d6bd215af4929f0088b5d16c5d756f716435be1",
+   "date": "2026-10-06",
+   "subject": "Planner model pin: OrchestratorConfig.planner_model / QAR_PLANNER_MODEL for the decide call alone",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_planner_model_pin.py"
+   ]
+  },
+  {
+   "commit": "6301c07de75f5eb43789927abe09757adbd44cb5",
+   "date": "2026-10-06",
+   "subject": "Reach judge settles after a timeout; settled routing results and haiku numbers in the docs",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_reach_judge.py"
+   ]
+  },
+  {
+   "commit": "0e57069d433c92bb7983d67a6a13b65c6fff3052",
+   "date": "2026-10-06",
+   "subject": "claude_cli: optional thinking cap for routing decisions (QAR_CLI_PLAN_THINKING_TOKENS)",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_claude_cli_provider.py"
+   ]
+  },
+  {
+   "commit": "a535b5d0927e5aff3b02b4697b6753e84d107b5c",
+   "date": "2026-10-06",
+   "subject": "Compact planner: a hand-off is the deferred_deep field, not the words",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_planner_prompt_profiles.py"
+   ]
+  },
+  {
+   "commit": "f6a18b171eccda23f590c24914c99ce63c6de589",
+   "date": "2026-10-06",
+   "subject": "Reach judge overlaps the turn instead of sitting in front of the first plan",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_reach_judge.py"
+   ]
+  },
+  {
+   "commit": "9a82e3d2a4e2c10516e03fd779b659e3ade94566",
+   "date": "2026-10-06",
+   "subject": "Integrate bootstrap reporter with Quest API email sending",
+   "files": [
+    "quest_ai_runner/adapters/bootstrap_reporter.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_bootstrap_reporter.py"
+   ]
+  },
+  {
+   "commit": "265aec14358a03d3394aca75d49ab1f1e4dfb5ef",
+   "date": "2026-10-06",
+   "subject": "Add Callable import and update tests for enhanced bootstrap reporter",
+   "files": [
+    "quest_ai_runner/adapters/bootstrap_reporter.py",
+    "tests/test_bootstrap_reporter.py"
+   ]
+  },
+  {
+   "commit": "97972fe13b0e666afc8e726db5ea2761de3f0153",
+   "date": "2026-10-06",
+   "subject": "Improve bootstrap reporter: professional email formatting and comprehensive tests",
+   "files": [
+    "quest_ai_runner/adapters/bootstrap_reporter.py",
+    "tests/test_bootstrap_reporter.py"
+   ]
+  },
+  {
+   "commit": "124d346677cd1636457bbbd31e5b554be4e3715a",
+   "date": "2026-10-06",
+   "subject": "Improve bootstrap context index messages for clarity",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_earlier_run_block.py",
+    "tests/test_liveness_subagent_guard.py"
+   ]
+  },
+  {
+   "commit": "9bb870c2701db0d75df3a25e8e5078c8746eb789",
+   "date": "2026-10-06",
+   "subject": "Reduce QAR bootstrap warning noise and implement monthly email reporting",
+   "files": [
+    "quest_ai_runner/adapters/bootstrap_reporter.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/tools/send_bootstrap_report.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "9419f1c782a179d7072583d1b1e6e6e6bcd756b7",
+   "date": "2026-10-06",
+   "subject": "Implement monthly email reporting after QAR bootstrap completion",
+   "files": [
+    "quest_ai_runner/bootstrap_email.py",
+    "quest_ai_runner/cli.py"
+   ]
+  },
+  {
+   "commit": "5d72c66555ba4807f067fe80ab1d3c1b1c14a0a4",
+   "date": "2026-10-06",
+   "subject": "Dispatch: cool down tasks whose claim fails so unclaimable old tasks cannot starve autopilot passes",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_single_dispatch_path.py"
+   ]
+  },
+  {
+   "commit": "e46f7110216158d1f327d61806f242dce974f017",
+   "date": "2026-10-06",
+   "subject": "start_quest: report a held creation instead of a created quest",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_quest_creation.py"
+   ]
+  },
+  {
+   "commit": "1136e7696230f2964fb8f77c7cd31f7040d069cc",
+   "date": "2026-10-06",
+   "subject": "Autopilot brief matches the stricter progress rules; update_outcome_progress reports a pending approval",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_outcome_progress.py"
+   ]
+  },
+  {
+   "commit": "345b07d44892251c7df74792e1b18a5292d85939",
+   "date": "2026-10-05",
+   "subject": "QuestClient.update_outcome_progress: the AI-actor outcome progress write for the quest CLI",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_outcome_progress.py"
+   ]
+  },
+  {
+   "commit": "85921b975fb2950675cf95c6a26c6c4d3076a386",
+   "date": "2026-10-05",
+   "subject": "Deep run status lines say what really happened",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_run_status_honesty.py"
+   ]
+  },
+  {
+   "commit": "afa4c589e6ce4858bf4cf2bbb64628a6d8d6e876",
+   "date": "2026-10-05",
+   "subject": "Make routing reliable on a cheap model, at half the input tokens",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/planner_cascade.py",
+    "quest_ai_runner/core/reach_judge.py",
+    "tests/test_planner_cascade.py",
+    "tests/test_planner_prompt_profiles.py",
+    "tests/test_reach_judge.py"
+   ]
+  },
+  {
+   "commit": "fbd6fb1e27e4ec832fa244f97da5ca22f9d5499c",
+   "date": "2026-10-05",
+   "subject": "Runner: one dispatch path on a seconds cadence; the long scan is housekeeping only",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_context_request_fast_lane.py",
+    "tests/test_single_dispatch_path.py"
+   ]
+  },
+  {
+   "commit": "e1488a3d54cb6c29e679c366a6b43fd0412b3c28",
+   "date": "2026-10-05",
+   "subject": "Add DeepSeek as an opt-in OpenAI-compatible provider",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deepseek_provider.py"
+   ]
+  },
+  {
+   "commit": "c69946528b711ec3359a06ddf08d3284c45abe6a",
+   "date": "2026-10-05",
+   "subject": "fix(context): one startup refresh per folder across processes",
+   "files": [
+    "quest_ai_runner/config.py",
+    "tests/test_turn_start_cost.py"
+   ]
+  },
+  {
+   "commit": "1ed01a259aff9e64c27e8c5bc497edfa66192f39",
+   "date": "2026-10-05",
+   "subject": "Folder review accepts a verdict only for a folder it actually asked about",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_card_inflation.py"
+   ]
+  },
+  {
+   "commit": "69cee1b1fbf3adb9ee92a3acc19ae5693c68a450",
+   "date": "2026-10-05",
+   "subject": "No arbitrary card budget: a folder gets a card, and the corpus sets the number",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_card_inflation.py"
+   ]
+  },
+  {
+   "commit": "a1f628c12f8f344927d61e08229fb71c5074bea4",
+   "date": "2026-10-05",
+   "subject": "A corpus of tens of thousands of files makes hundreds of cards, not thousands",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/vector_scopes.py",
+    "scripts/quarantine_cards.py",
+    "tests/test_card_inflation.py",
+    "tests/test_context_assembler.py",
+    "tests/test_quarantine_cards.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "ef1520a095550c48b0d538bb396ce48e8cf6c9cf",
+   "date": "2026-10-05",
+   "subject": "fix(context): regenerating a stale card replaces it, never adds cards",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "b83cf24274c56e9dd27fc2deef2e5274d2a47352",
+   "date": "2026-10-05",
+   "subject": "fix(context): stop ancestor and nested stores re-importing each other's imports",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "fcc821eccb7a4d03547a92d56e79d57cbe099057",
+   "date": "2026-10-05",
+   "subject": "Deep runs show live again: find the worker's session under every Claude config base, show the dashboard on a run's first event",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_session_file_lookup.py"
+   ]
+  },
+  {
+   "commit": "38b9e3f091a27bc6b21404412da99eb607183438",
+   "date": "2026-10-05",
+   "subject": "perf(context): seed the vector arm in the background, not inside the first turn",
+   "files": [
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/config.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "ff655b1888380f5b6916ae3833c3fa7c1c7314c3",
+   "date": "2026-10-05",
+   "subject": "Autopilot assignee judging: JSON preferences, humans only",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/goal_handoff.py",
+    "tests/test_autopilot_goal_assignment.py"
+   ]
+  },
+  {
+   "commit": "85c23f2f588add6aedf3ae5777d8bc41a0f8af80",
+   "date": "2026-10-05",
+   "subject": "Autopilot assignee and AI-handoff judges get quest outcome, state, preferences and member roles",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/goal_handoff.py",
+    "tests/test_autopilot_goal_assignment.py"
+   ]
+  },
+  {
+   "commit": "46de9607f266d4e157fae6a4fa724d67cce74b55",
+   "date": "2026-10-04",
+   "subject": "Chat reply scope: proactive when relevant, useful and consistent with past guidance",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_reader_first_standard.py"
+   ]
+  },
+  {
+   "commit": "ef06a9fc1ed1a425fd06a49f289cd3d679a6f0d5",
+   "date": "2026-10-04",
+   "subject": "Add Scope block to chat reply voice: no volunteering, no scope blending",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_reader_first_standard.py"
+   ]
+  },
+  {
+   "commit": "e1577bd5cb7624931b312c78fff5847b439c6128",
+   "date": "2026-10-04",
+   "subject": "Add shared reader-first writing standard to chat replies and task results",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/reader_first.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_reader_first_standard.py"
+   ]
+  },
+  {
+   "commit": "73701efdf8cc13b0b8026bc08189779aa3967959",
+   "date": "2026-10-04",
+   "subject": "Every quest selection is one LLM judgment, defaulting to the quest of the folder you are in",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/quest_folder_index.py",
+    "tests/test_quest_folder_index.py"
+   ]
+  },
+  {
+   "commit": "1331d8e8d51451ab17992a329e60fdfd39a96289",
+   "date": "2026-10-04",
+   "subject": "Bound grep (time budget, file cap, focus dir, QAR_SKIP_DIRS) and default turns to the quest of the folder you are in",
+   "files": [
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py",
+    "quest_ai_runner/adapters/files_adapter.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/quest_folder_index.py",
+    "tests/test_files_adapter_grep_budget.py",
+    "tests/test_quest_folder_index.py"
+   ]
+  },
+  {
+   "commit": "a8fb433fb17f4b4f2bd433e1b12d998b322db032",
+   "date": "2026-10-04",
+   "subject": "AI task status: \"incomplete\" for ran-but-goal-not-met, kept distinct from \"failed\"",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "eb7d78e61bc8da75e3d228fe56f524ee4013ff3a",
+   "date": "2026-10-03",
+   "subject": "CLI lanes pass the newest live Claude id, not the CLI's lagging alias",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/adapters/claude_live_models.py",
+    "tests/conftest.py",
+    "tests/test_claude_live_models.py"
+   ]
+  },
+  {
+   "commit": "b8438f210694cdcb1ce4372b40fa504365e055f4",
+   "date": "2026-10-03",
+   "subject": "Add file_email_draft standard tool: file drafts into the Quest Approval Queue",
+   "files": [
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_tools.py"
+   ]
+  },
+  {
+   "commit": "7f7ae061b2627487a589237b4d4e7e2d439fcd23",
+   "date": "2026-10-02",
+   "subject": "A quest field update is a tool call: update_quest_fields, and the planner prefers the latest message",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_orchestrator.py",
+    "tests/test_quest_data_ladder_guard.py",
+    "tests/test_tools.py"
+   ]
+  },
+  {
+   "commit": "a772b19ad5ae703f6b16a450897d1329970fa1d8",
+   "date": "2026-10-02",
+   "subject": "Extract quest-data ladder guard into a helper and test it",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_quest_data_ladder_guard.py"
+   ]
+  },
+  {
+   "commit": "7e5888e271701424703d348ab9c74f831c7be3e3",
+   "date": "2026-10-02",
+   "subject": "Quest-data ladder guard: planner deep_target, runner write_surface, keep file-editing rungs off quest field changes",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "112753ba5d1f6bd6d1ab8cb88e57e53f946f1a8c",
+   "date": "2026-10-01",
+   "subject": "Asks carry a review link, and the planner hands off files instead of asking you to paste",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_confirm_escalation_fields.py",
+    "tests/test_planner_reach_doctrine.py"
+   ]
+  },
+  {
+   "commit": "8ea12b3bb554b7f7e08e0ffd4d24cac444760bb5",
+   "date": "2026-09-30",
+   "subject": "Show resolved model id per deep run and the reply tier",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_resolved_model.py"
+   ]
+  },
+  {
+   "commit": "6694375e95eef9c75a5c9111c277f283043571eb",
+   "date": "2026-09-30",
+   "subject": "Keep-end truncation for file paths/URLs, and surface mid-run queued pickups",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_failure_session_diagnostics.py",
+    "tests/test_input_queue_ui.py"
+   ]
+  },
+  {
+   "commit": "0f207b8d3da2fb411f4c68e90c0bdfb72173892b",
+   "date": "2026-09-30",
+   "subject": "Fix liveness review false positive on long/repetitive cd commands",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_deep_failure_session_diagnostics.py"
+   ]
+  },
+  {
+   "commit": "d37da1b0e3aefcf015072d7c377f88429ca38d5a",
+   "date": "2026-09-30",
+   "subject": "Run one deep pass before giving up on a not-met answer",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_before_giving_up.py"
+   ]
+  },
+  {
+   "commit": "2ba9c3e98a2349a2a721f50d852f04e346b9257a",
+   "date": "2026-09-30",
+   "subject": "Autopilot chooses a goal's assignee and hands AI-doable assigned goals to the rep",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/goal_handoff.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot_goal_assignment.py"
+   ]
+  },
+  {
+   "commit": "6bd64e339aa7c2fe121e6d878a1fe2c24248beaf",
+   "date": "2026-09-30",
+   "subject": "Silence huggingface_hub's unauthenticated-request warning on CLI startup",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/lane.py"
+   ]
+  },
+  {
+   "commit": "652a5d87ab7218cb8694379a3b7d33d5dc219618",
+   "date": "2026-09-30",
+   "subject": "Add opt-in unrestricted Google Chat (all_spaces = true)",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/google_chat_adapter.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "tests/test_google_chat_all_spaces.py"
+   ]
+  },
+  {
+   "commit": "b08177c98df7e81f8e5cf1bfd0898132c8e2d848",
+   "date": "2026-09-30",
+   "subject": "Notion and Google Chat as generic, opt-in, read-only context channels",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/google_chat_adapter.py",
+    "quest_ai_runner/adapters/notion_adapter.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "tests/notion_fake.py",
+    "tests/test_config_notion_google_chat.py",
+    "tests/test_notion_adapter.py",
+    "tests/test_notion_chat_context_sources.py"
+   ]
+  },
+  {
+   "commit": "6ed6118ea3817d760d4036b19ab567e2ce9a6db0",
+   "date": "2026-09-30",
+   "subject": "Family names resolve to the newest live model for Claude, Gemini and OpenAI",
+   "files": [
+    "quest_ai_runner/core/model_registry.py",
+    "tests/test_model_registry.py"
+   ]
+  },
+  {
+   "commit": "cd0ef26e1b0d8931fa61358284bc6189d7575f8f",
+   "date": "2026-09-30",
+   "subject": "Verifier: show up to 40k chars of output and say a view gap is not a cut-off",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_verify_output_view.py"
+   ]
+  },
+  {
+   "commit": "7c76ed41c4e93d488586318cf2e242940d8334fd",
+   "date": "2026-09-30",
+   "subject": "Model families always mean the latest release: no pinned versions in fallbacks, pricing, or API calls",
+   "files": [
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/pricing.py",
+    "tests/test_prompt_cache_layers.py"
+   ]
+  },
+  {
+   "commit": "321522ffb73fa42e77acf880d2ea6a6dfad66b7b",
+   "date": "2026-09-30",
+   "subject": "Replace fixed deep-run kill with an LLM liveness review of the live session log",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "cecc8cd83e6a9674e65a0104abb0679339cc3628",
+   "date": "2026-09-29",
+   "subject": "Self-heal the CLI provider's neutral scratch dir instead of caching it forever",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "tests/test_claude_cli_provider.py"
+   ]
+  },
+  {
+   "commit": "8928fa672f79ac6ac30d0260e711f0efdf2d5c9a",
+   "date": "2026-09-29",
+   "subject": "Fix real driver of inflated AI-task token counts: CLI harness bloat, not cache reads",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "tests/test_claude_cli_provider.py"
+   ]
+  },
+  {
+   "commit": "687c9d052989dbb98265d5b343f6453b850e2ee4",
+   "date": "2026-09-29",
+   "subject": "Stop double-counting cache reads and dropping pooled-worker usage in token totals",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_claude_cli_provider.py",
+    "tests/test_provider_token_counters_thread_safety.py"
+   ]
+  },
+  {
+   "commit": "e670a430fd53411e232abc46329736ab1875db02",
+   "date": "2026-09-29",
+   "subject": "Fix inflated AI-task token counts: make provider usage counters thread-local",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_provider_token_counters_thread_safety.py"
+   ]
+  },
+  {
+   "commit": "1db00b30cf40af5432dfb726543b96fca383333f",
+   "date": "2026-09-28",
+   "subject": "Stop broadcasting the daily reflection's free text into every quest's context",
+   "files": [
+    "quest_ai_runner/adapters/quest_retrieval_adapter.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "tests/test_autopilot_reflection.py",
+    "tests/test_reflections.py"
+   ]
+  },
+  {
+   "commit": "420ee358d02f9fc557e807236c4ced841cbba9ff",
+   "date": "2026-09-28",
+   "subject": "Name the model used on the queued-task chat/result path too",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "e5426a91c0005ef6465e045f50e697e770b041aa",
+   "date": "2026-09-28",
+   "subject": "Show the model used on deep-run completion, capitalize terminal status labels",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "b6b255ae06b8a864285f21a5ee4056082b2313dc",
+   "date": "2026-09-28",
+   "subject": "Deep runs pick their starting model by difficulty",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/deep_model_selection.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_difficulty_model_selection.py",
+    "tests/test_deep_turn_budget_continuation.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "6e02761c870c764355d68e8182fd6f253e57e7a1",
+   "date": "2026-09-28",
+   "subject": "Direct tools get the task id they run in, as docs/tools.md promises",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_tools.py"
+   ]
+  },
+  {
+   "commit": "bccceabd4f205566e0fb16330ff8871dffc9b710",
+   "date": "2026-09-28",
+   "subject": "Verify every link in a reply before it is sent, strip the rest",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_link_guard.py"
+   ]
+  },
+  {
+   "commit": "39f44bc2ebeb2ccb2eeab48ccacbaa7f9fcbdd33",
+   "date": "2026-09-28",
+   "subject": "Add assigned_to_user_id to create_goal so a goal can be assigned to a human at creation",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_cli_create_goal.py",
+    "tests/test_quest_client_create_goal.py"
+   ]
+  },
+  {
+   "commit": "7e6c80299f53ba005130d5adbb6f8175a733692a",
+   "date": "2026-09-27",
+   "subject": "Flush queued terminal messages at turn end, combined; add peek + busy indicator",
+   "files": [
+    "quest_ai_runner/core/inbox.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_input_queue_ui.py"
+   ]
+  },
+  {
+   "commit": "4671b30a049bf761b2efff0b5efbc18aceb670f2",
+   "date": "2026-09-27",
+   "subject": "Fix transcript text cropping instead of wrapping on narrow terminals",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_textual_transcript_wrap.py"
+   ]
+  },
+  {
+   "commit": "5bc22f57dfdeeeafd440e4750f61b0b4ed5fe187",
+   "date": "2026-09-27",
+   "subject": "Direct tools: act in one planner step, no deep run",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/tools/__main__.py",
+    "quest_ai_runner/tools/send_quest_email.py",
+    "tests/conftest.py",
+    "tests/test_tools.py"
+   ]
+  },
+  {
+   "commit": "1cef937d5f3fa83a132f05dd39548b7822907371",
+   "date": "2026-09-27",
+   "subject": "Reported bugs on a fix thread start the fix; interim updates stay off the chat",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_read_budget_escalation.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "f984f3baabb0bc871a8699ffad304f6c6a853f0d",
+   "date": "2026-09-27",
+   "subject": "Add QuestClient.list_teams for the org-level quest walk",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_list_teams.py"
+   ]
+  },
+  {
+   "commit": "665f93e1a16c7c750716ed98d801b986c40443b9",
+   "date": "2026-09-27",
+   "subject": "Usage-limit requeue degrades to a plain requeue on a backend without start_at",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_usage_limit.py"
+   ]
+  },
+  {
+   "commit": "7d467b06000981cd3f8ebfc1fb1e702d60a18f90",
+   "date": "2026-09-27",
+   "subject": "Treat the Claude subscription usage limit as a wait: requeue, pause the lane, resume",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/usage_limit.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_usage_limit.py"
+   ]
+  },
+  {
+   "commit": "03b622981ae53e43c05f48bf924adf86073662f9",
+   "date": "2026-09-26",
+   "subject": "docs: document the terminal chat (resume, / commands, quest selection) and advertise it",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_quest_folder_index.py"
+   ]
+  },
+  {
+   "commit": "fc2432e0927e00f41ecab5fd85614b05d804c9aa",
+   "date": "2026-09-26",
+   "subject": "chat: /quest selects a quest for the conversation; pickers become choosers",
+   "files": [
+    "quest_ai_runner/command_menu.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/quest_folder_index.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_command_menu.py",
+    "tests/test_quest_folder_index.py"
+   ]
+  },
+  {
+   "commit": "3647f2461ee114a870c7742a45d094aab0cfe6ae",
+   "date": "2026-09-26",
+   "subject": "Raise turn-start budgets: context assembly 30s, guidance selection 15s",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_guidance_selection_timeout.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "507dc09ac5e1268ce2b7b9c1566c06e102dd87eb",
+   "date": "2026-09-26",
+   "subject": "Keep the card scoring index warm across turns and processes",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "tests/test_turn_start_cost.py"
+   ]
+  },
+  {
+   "commit": "abebc4665fae8b0ba0963d2ea47f972495c1d507",
+   "date": "2026-09-26",
+   "subject": "Stop each chat turn and session start from redoing finished work",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/card_filter.py",
+    "tests/test_turn_start_cost.py"
+   ]
+  },
+  {
+   "commit": "b9ec87a0670a52db17c05c4c2a6beb5614c8b618",
+   "date": "2026-09-26",
+   "subject": "chat: ground turns through quest cards; add the / command menu and /quest picker",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/command_menu.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/quest_folder_index.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_command_menu.py",
+    "tests/test_hybrid_context_assembler_recent_hint.py",
+    "tests/test_quest_folder_index.py"
+   ]
+  },
+  {
+   "commit": "f48df7367c35e5b4bad1adfbf9524dacdd565f7a",
+   "date": "2026-09-26",
+   "subject": "chat: ground each turn in the synced quest it is about; fix 0600 card files",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/anticipation.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recent_context.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/quest_folder_index.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_quest_folder_index.py"
+   ]
+  },
+  {
+   "commit": "20db9a4dd41d873ff5be1d628294c2a564d5f33c",
+   "date": "2026-09-26",
+   "subject": "Terminal prompt: drop /dev/input Shift probe; make Alt+Enter a real newline",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_prompt_multiline.py"
+   ]
+  },
+  {
+   "commit": "e327146451f17f1137a49170bb637e12badaf030",
+   "date": "2026-09-26",
+   "subject": "chat: print the resume command on exit, like Claude Code",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/textual_session.py",
+    "tests/test_chat_resume.py"
+   ]
+  },
+  {
+   "commit": "0e924503ab64880f5e0d42be262f3159cc2faa1a",
+   "date": "2026-09-26",
+   "subject": "Terminal prompt: Shift+Enter makes a newline in GNOME Terminal",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_prompt_multiline.py"
+   ]
+  },
+  {
+   "commit": "da0a7bf019fd2207aae27a03a423fa7a502829d4",
+   "date": "2026-09-26",
+   "subject": "chat --resume: show history immediately, not after session build",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_chat_resume.py"
+   ]
+  },
+  {
+   "commit": "cdd5cab7108a5636cb729672ac0e4d99a59729e7",
+   "date": "2026-09-26",
+   "subject": "chat: bare --resume opens a conversation picker, like Claude Code",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/conversation_picker.py",
+    "tests/test_chat_resume.py"
+   ]
+  },
+  {
+   "commit": "098e11187fe2b4cf46975112c90ee83f49e5148b",
+   "date": "2026-09-26",
+   "subject": "Terminal prompt: show every wrapped row, and newline keys that work in any terminal",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_prompt_multiline.py"
+   ]
+  },
+  {
+   "commit": "74e0e2739946f1a7e7beab77ec34c6d3ba22c3be",
+   "date": "2026-09-26",
+   "subject": "Autopilot: one pass per quest, one delivery per brief",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_pass_task.py",
+    "tests/test_autopilot_run_time.py",
+    "tests/test_single_delivery.py"
+   ]
+  },
+  {
+   "commit": "5417933781502274b2806d0eca9286f3d0b90e05",
+   "date": "2026-09-26",
+   "subject": "chat: add --resume [ID] and --list-conversations",
+   "files": [
+    "quest_ai_runner/chat_conversations.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_chat_resume.py"
+   ]
+  },
+  {
+   "commit": "0cbff80d064ae5df4ffc0d0ca28cd0ff4e803c55",
+   "date": "2026-09-26",
+   "subject": "Fix: declare the real embedder dimension for the auto-built Qdrant arm",
+   "files": [
+    "quest_ai_runner/config.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "dd2c972d8e29e245d7cf2021ac27c9eaebc55d66",
+   "date": "2026-09-26",
+   "subject": "Fix deep-run dashboard arrow not tracking detail panel state",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "94f87e0f0148e5b30bbc1a8517edab9a297b3705",
+   "date": "2026-09-26",
+   "subject": "Fix: refuse reads/writes of Claude Code's own .claude.json by exact path",
+   "files": [
+    "quest_ai_runner/adapters/files_adapter.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_file_write_containment.py"
+   ]
+  },
+  {
+   "commit": "95b92741edaabc45ff63677021eb7ebf283a29aa",
+   "date": "2026-09-26",
+   "subject": "Fix deep-worker escalation ladder: keep Opus 5.5 pinned as best, not Fable",
+   "files": [
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_escalation_ladder.py"
+   ]
+  },
+  {
+   "commit": "854d2408db044ad7a3b449221ae253bbf7e3ddde",
+   "date": "2026-09-26",
+   "subject": "Fix: never index Claude Code's own .claude.json state as corpus content",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_dead_card_pruning.py"
+   ]
+  },
+  {
+   "commit": "7873a2f56ff3b633b2ef845196c1bab200757405",
+   "date": "2026-09-23",
+   "subject": "Planner hands off work its reads cannot reach instead of searching for it",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_planner_reach_doctrine.py"
+   ]
+  },
+  {
+   "commit": "413dd2d22b6cb9ff1a511d8e1bacce97bf984766",
+   "date": "2026-09-23",
+   "subject": "Goal loop stops when a deep runner reports it is out of moves (DeepResult.exhausted)",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_goal_loop_no_progress.py"
+   ]
+  },
+  {
+   "commit": "feb2a00d9a374eafcb92250ca21630c6a1db139e",
+   "date": "2026-09-23",
+   "subject": "Continue turn-exhausted deep runs and honor literal per-task model pins",
+   "files": [
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_escalation_ladder.py",
+    "tests/test_deep_model_pin.py",
+    "tests/test_deep_turn_budget_continuation.py"
+   ]
+  },
+  {
+   "commit": "551a6cdf41708602a9f3b16a07057f7a445924fb",
+   "date": "2026-09-23",
+   "subject": "Fix autopilot literal model override 400ing every pass",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_deep_model_pin.py",
+    "tests/test_quest_client_create_task.py"
+   ]
+  },
+  {
+   "commit": "1e825422323c68bc573b7689a6280677c1b4b3d4",
+   "date": "2026-09-22",
+   "subject": "Honor a task's deep_run_model for the deep run, not just model",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "eeee2df0d17ee8d3b5e81274a4d82a818cbd6596",
+   "date": "2026-09-22",
+   "subject": "One \"Run now\" is one pass, and the day rule reads the quest's own clock",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_day_authority.py",
+    "tests/test_autopilot_pass_task.py"
+   ]
+  },
+  {
+   "commit": "7abbb293d4611ae9bc3dcbf947fe9d692b142a70",
+   "date": "2026-09-21",
+   "subject": "Off-subject context leaves no trace; notes render with their date",
+   "files": [
+    "quest_ai_runner/core/context_doctrine.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "047b5040512bdc3eb55270a2c7f16de61c9a5866",
+   "date": "2026-09-20",
+   "subject": "Bound the per-goal goal-updates fan-out so it cannot rate-limit a pass to death",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_goal_updates.py"
+   ]
+  },
+  {
+   "commit": "1e0df5b6876606cd78e5287721a47c63632ceaeb",
+   "date": "2026-09-20",
+   "subject": "Stamp the lane account on the work an autopilot pass creates",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "fcef4911eb99212e797bb58c8e6904c6825ae6b0",
+   "date": "2026-09-20",
+   "subject": "Fix duplicate autopilot pass series on multi-owner quests",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_pass_task.py"
+   ]
+  },
+  {
+   "commit": "1d5d25c4ea9abb44d1d32bdcd98b27ecdbfa4523",
+   "date": "2026-09-19",
+   "subject": "Only accept an ID-SHAPED QAR-ESCALATED token, not the marker quoted in prose",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "b98f051256ec9b9d63a462d65f7c18318b7c6cc6",
+   "date": "2026-09-19",
+   "subject": "Give decision-requests a deadline, a validated kind, a guaranteed assignee, and quest context",
+   "files": [
+    "quest_ai_runner/adapters/quest_retrieval_adapter.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_confirm_escalation_fields.py",
+    "tests/test_escalation_deadline.py",
+    "tests/test_orchestrator_decision_recovery.py",
+    "tests/test_quest_client_truncation.py",
+    "tests/test_quest_decision_sink.py",
+    "tests/test_quest_retrieval_decisions.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "f61d133b86635434020645a736dfc776fce46f70",
+   "date": "2026-09-19",
+   "subject": "Add multi-team discovery: one lane can poll several Quest teams",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_pass_task.py",
+    "tests/test_config_env_vars.py",
+    "tests/test_config_from_file.py",
+    "tests/test_multi_team_discovery.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "dd14fe7fab6ebf09d83009cbd07c3d11f91ff5d0",
+   "date": "2026-09-19",
+   "subject": "Autopilot's default assistant is a roster entry, so days and a brief are sayable",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "6e11511e758b215e17b82ecfdd51157308850a08",
+   "date": "2026-09-19",
+   "subject": "fix(anticipation): fence precomputed bundles by scope tags",
+   "files": [
+    "quest_ai_runner/core/anticipation.py",
+    "quest_ai_runner/core/recent_context.py",
+    "quest_ai_runner/core/scope_tags.py",
+    "tests/test_anticipation.py"
+   ]
+  },
+  {
+   "commit": "63b53e220f1823bcd33898c4c793227e8973d9de",
+   "date": "2026-09-19",
+   "subject": "feat(context): scope tags fence every retrieval arm by quest",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_card_repository.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recent_context.py",
+    "quest_ai_runner/core/scope_tags.py",
+    "tests/test_context_assembler.py",
+    "tests/test_orchestrator_recent_context.py",
+    "tests/test_recent_context.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "1652fc6e9d086b2a1e7265ef591a8ca5576f9b67",
+   "date": "2026-09-19",
+   "subject": "fix(orchestrator): declined proposals reach the planner, not only the overseer digest",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_declined_proposals.py"
+   ]
+  },
+  {
+   "commit": "d51c5ae219e8de222c8ec708e7f32e48580b9824",
+   "date": "2026-09-18",
+   "subject": "Carry a deep session across runs, so one thread keeps its context",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_session_continuity_across_runs.py"
+   ]
+  },
+  {
+   "commit": "a79a58f9c83216c06ea41b84cf6d2b650fb36d15",
+   "date": "2026-09-18",
+   "subject": "A foreign-owned autopilot pass is inert, so it must not stand in for the series",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_pass_task.py"
+   ]
+  },
+  {
+   "commit": "3b42b1b35b989aaaaa6319a37c202c672ef8a47d",
+   "date": "2026-09-18",
+   "subject": "Add GeminiProvider.fetch_url, keep merged discovery lines verbatim",
+   "files": [
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py",
+    "tests/test_composite_retrieval_verbatim_lines.py"
+   ]
+  },
+  {
+   "commit": "119173739a7c22e19caf142939606c3a349dc066",
+   "date": "2026-09-17",
+   "subject": "Autopilot: create the pass into the lane that will run it",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot_pass_task.py",
+    "tests/test_autopilot_run_time.py",
+    "tests/test_config_env_vars.py",
+    "tests/test_quest_client_create_task.py"
+   ]
+  },
+  {
+   "commit": "23c3431ebe6d5d3f3f35b0034789ca3d213f01b1",
+   "date": "2026-09-17",
+   "subject": "Autopilot: see a quest's pass whoever owns it, and never create on a failed read",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot_pass_task.py"
+   ]
+  },
+  {
+   "commit": "bddbc8b957b43fea86de2a9998f4918527509b76",
+   "date": "2026-09-16",
+   "subject": "Tell a run what the person changed on the quest since it last looked",
+   "files": [
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_context_updates_quest_events.py"
+   ]
+  },
+  {
+   "commit": "e0cae9228c5ed501616813449c6d3098234f5936",
+   "date": "2026-09-16",
+   "subject": "Make a refused proposal visible so it stops being re-asked",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_overseer.py"
+   ]
+  },
+  {
+   "commit": "f8237e0e765fbe2c55c731e6ac068e82a927c847",
+   "date": "2026-09-16",
+   "subject": "Give the overseer's answer checkpoint its authority back",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_overseer.py"
+   ]
+  },
+  {
+   "commit": "254110f739d5facfb0c35e5f95bf000e327eb59e",
+   "date": "2026-09-16",
+   "subject": "Overseer ON by default, and pin what that costs",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "quest_ai_runner/adapters/quest_retrieval_adapter.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_goal_sync.py",
+    "quest_ai_runner/runner/state_store.py",
+    "tests/test_bootstrap_limits.py",
+    "tests/test_bootstrap_token_savings.py",
+    "tests/test_brainstorm_mode.py",
+    "tests/test_card_thread.py",
+    "tests/test_claude_cli_provider.py",
+    "tests/test_context_updates_goal_updates.py",
+    "tests/test_context_updates_person_words.py",
+    "tests/test_crash_recovery.py",
+    "tests/test_dead_card_pruning.py",
+    "tests/test_executor_goal_updates_context.py",
+    "tests/test_folder_review.py",
+    "tests/test_load_client_and_quest_cli.py",
+    "tests/test_orchestrator.py",
+    "tests/test_quest_client_goal_updates.py",
+    "tests/test_quest_goal_sync_details.py",
+    "tests/test_turn_call_budget.py",
+    "tests/test_vector_upsert_batching.py",
+    "tests/test_verify_tier.py"
+   ]
+  },
+  {
+   "commit": "640bca9d8c22fbcc3398f6d1ca6ca16613a1880d",
+   "date": "2026-09-16",
+   "subject": "Let an autopilot pass see what its own last run produced",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "tests/test_autopilot_last_run_output.py"
+   ]
+  },
+  {
+   "commit": "330edbce953b261baa9e70f9486728e0cd6ad9c1",
+   "date": "2026-09-14",
+   "subject": "Retry a timed-out read once before reporting it as a failed operation",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "25384644f38e8dafca826707b7d801790b636a16",
+   "date": "2026-09-14",
+   "subject": "Add a generic inbound-mail context source, an admission judge, and quest relay",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/inbound_mail.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_inbound_mail.py"
+   ]
+  },
+  {
+   "commit": "1b665ad381e64b60c56a32ff690de0f48a55da9c",
+   "date": "2026-09-14",
+   "subject": "edit_quest_field declares the AI as the author of the value",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_quest_creation.py"
+   ]
+  },
+  {
+   "commit": "5f1a670e569bf1f7247daefcc49117c5e1494f78",
+   "date": "2026-09-14",
+   "subject": "Post a task's closing chat message BEFORE reporting its terminal status",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "f0d9a7b78cce6f4755c4b00ec2bf18aefedfa9ff",
+   "date": "2026-09-13",
+   "subject": "Fix edit_quest_field's no-op bug, add start_quest/attach_quest_to_team",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_quest_creation.py"
+   ]
+  },
+  {
+   "commit": "576f4814b1ea6a65ac11abab40ebabb1743ce291",
+   "date": "2026-09-13",
+   "subject": "Add QuestClient.archive_quest/unarchive_quest generic wrappers",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_planning_and_reps.py"
+   ]
+  },
+  {
+   "commit": "0b467e00a9fd3021377a507ff3a164b274eb2040",
+   "date": "2026-09-13",
+   "subject": "Fix REACTIVE gate reading a failed asks read as \"nothing new\"",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_quest_client_list_asks.py"
+   ]
+  },
+  {
+   "commit": "ad5a98c03e6945775e17cecd2516c971a3fa4dad",
+   "date": "2026-09-13",
+   "subject": "Default quest instructions: iterate on existing documents, don't fragment into one-offs",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "e5ece56c680e56cf3f6db134021d4da6dfce0298",
+   "date": "2026-09-13",
+   "subject": "Add ai_driven/source_of_truth/: the current answer, not another dated snapshot",
+   "files": [
+    "quest_ai_runner/runner/quest_folder_zones.py",
+    "tests/test_quest_folder_zones.py"
+   ]
+  },
+  {
+   "commit": "ecc4ed886b785dcde944d332bc85fed5113cb3f1",
+   "date": "2026-09-13",
+   "subject": "Add generic Quest planning + AI-rep-registry methods to QuestClient",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_planning_and_reps.py"
+   ]
+  },
+  {
+   "commit": "95408457733d75479aee5d7ece43adb1712dbc73",
+   "date": "2026-09-13",
+   "subject": "Add autopilot REACTIVE mode: check in on schedule, act only on a new ask",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_quest_client_list_asks.py"
+   ]
+  },
+  {
+   "commit": "49d4ca3e79ace410cd9d0afa7ea3a0da254c35da",
+   "date": "2026-09-12",
+   "subject": "Give the feedback ledger a pluggable store and a claim-vs-acceptance gate",
+   "files": [
+    "quest_ai_runner/runner/feedback_ledger.py",
+    "tests/test_feedback_ledger_store.py"
+   ]
+  },
+  {
+   "commit": "6c36672b40218abc1ace4f90e834004ed5579191",
+   "date": "2026-09-12",
+   "subject": "A status for every ask, so replying stops counting as doing",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/feedback_ledger.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_context_updates.py",
+    "tests/test_feedback_ledger.py",
+    "tests/test_feedback_ledger_acceptance.py"
+   ]
+  },
+  {
+   "commit": "d60ffbdf0d0b0bb03df4a1602d5a6fa8276bac4b",
+   "date": "2026-09-11",
+   "subject": "Add EVIDENCE_GATE: ground answer claims in named instances, not labels",
+   "files": [
+    "quest_ai_runner/core/context_doctrine.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py",
+    "tests/test_reply_voice_separation.py"
+   ]
+  },
+  {
+   "commit": "05f0a961699d70ecf95be83efbc02b88c02dd110",
+   "date": "2026-09-10",
+   "subject": "Key context-collection and receipt decisions on task_kind, not text matching",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_autopilot_context_updates.py"
+   ]
+  },
+  {
+   "commit": "9f302ab9c0b0504719a372f0f0a7271f5714717b",
+   "date": "2026-09-10",
+   "subject": "Judge and account for each capture, on every path",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/insights.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_context_updates.py",
+    "tests/test_config_declarative_lane.py",
+    "tests/test_context_updates.py"
+   ]
+  },
+  {
+   "commit": "a4b237953255a042877f3f5f097caeec4751e383",
+   "date": "2026-09-10",
+   "subject": "The last consumer-only machinery moves into the library",
+   "files": [
+    "quest_ai_runner/adapters/rep_context_assembler.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/personas.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ]
+  },
+  {
+   "commit": "e69bb6720253d75c3ea01731c9ca1778cbaed9a8",
+   "date": "2026-09-10",
+   "subject": "Relevance is the engine's job, not the run's",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot_context_updates.py",
+    "tests/test_context_updates.py"
+   ]
+  },
+  {
+   "commit": "f5b0033d6f13f02c273da5beb171deb2cd8e25bb",
+   "date": "2026-09-10",
+   "subject": "A lane is a config file, not a program",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "tests/test_config_declarative_lane.py",
+    "tests/test_context_updates.py"
+   ]
+  },
+  {
+   "commit": "29b6ce7867c652d23420547cbaa05a6a3a7efa7d",
+   "date": "2026-09-10",
+   "subject": "Reach a person's comments where their documents actually live",
+   "files": [
+    "quest_ai_runner/adapters/drive_comments.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "tests/test_context_updates.py",
+    "tests/test_drive_comments.py"
+   ]
+  },
+  {
+   "commit": "bbbb65c218718535e25221efa496e6319b7061cf",
+   "date": "2026-09-09",
+   "subject": "Cap how far a continuation can grow its turn budget",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_turn_budget_continuation.py"
+   ]
+  },
+  {
+   "commit": "a95301d7a07f90691667f13907fa6c5aa8981e33",
+   "date": "2026-09-09",
+   "subject": "A run that runs out of turns is continued, not started over",
+   "files": [
+    "quest_ai_runner/adapters/acp_deep_runner.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_deep_turn_budget_continuation.py"
+   ]
+  },
+  {
+   "commit": "affc5197c9419033dc695a3bf687ed823fe6b3e1",
+   "date": "2026-09-09",
+   "subject": "Automated context updates: one engine, per-source watermarks, and a receipt",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/drive_comments.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/context_updates.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_context_updates.py",
+    "tests/test_context_updates.py",
+    "tests/test_drive_comments.py"
+   ]
+  },
+  {
+   "commit": "4e2e629683836220ac81f8981046c20d52929876",
+   "date": "2026-09-05",
+   "subject": "Consumers stop hand-rolling what the library should own",
+   "files": [
+    "examples/minimal_lane.py",
+    "examples/run_lane.py",
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/__init__.py",
+    "quest_ai_runner/runner/lane.py",
+    "quest_ai_runner/runner/personas.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_cli_chat_rep_positional.py",
+    "tests/test_cli_chat_requires_textual.py",
+    "tests/test_cli_persona_explicit_flag.py",
+    "tests/test_config_env_vars.py",
+    "tests/test_config_from_file.py",
+    "tests/test_examples.py",
+    "tests/test_lane.py",
+    "tests/test_personas.py",
+    "tests/test_personas_config_wiring.py"
+   ]
+  },
+  {
+   "commit": "0126a41d5c48c56baa278a7520cc27370666a0a1",
+   "date": "2026-09-05",
+   "subject": "A quest can choose which model runs its autopilot work",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_claude_cli_provider.py",
+    "tests/test_model_registry.py"
+   ]
+  },
+  {
+   "commit": "02abc6e8cbccb3d6eefe055229c94b072d4a59be",
+   "date": "2026-09-05",
+   "subject": "Run now works on a day the quest already ran",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_pass_task.py",
+    "tests/test_autopilot_run_time.py"
+   ]
+  },
+  {
+   "commit": "f3b47c161d69f5cf1af506a73610516db927195a",
+   "date": "2026-09-05",
+   "subject": "Split the built-in brief in two: how to work, and what to work on",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_adopt_recurring.py",
+    "tests/test_autopilot_goal_ladder.py",
+    "tests/test_autopilot_instructions.py"
+   ]
+  },
+  {
+   "commit": "2493a6bab26665fb850201c116a3f3cfc06947bf",
+   "date": "2026-09-05",
+   "subject": "Goals are context, never work: the brief is what a run produces",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_adopt_recurring.py",
+    "tests/test_autopilot_day_authority.py",
+    "tests/test_autopilot_goal_ladder.py",
+    "tests/test_autopilot_insights.py",
+    "tests/test_autopilot_instructions.py",
+    "tests/test_autopilot_persona_instructions.py",
+    "tests/test_autopilot_reflection.py"
+   ]
+  },
+  {
+   "commit": "5d30302dcd78c70d6df0b3aecdfe25805b4b60d5",
+   "date": "2026-09-05",
+   "subject": "Put the person's current goals at every horizon into the prompt",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_day_authority.py",
+    "tests/test_autopilot_goal_ladder.py"
+   ]
+  },
+  {
+   "commit": "c68171d3068cf456df26e5554f2d7a41f30f6577",
+   "date": "2026-09-05",
+   "subject": "A character works a quest only on the days they are rostered for",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_day_authority.py",
+    "tests/test_autopilot_persona_instructions.py"
+   ]
+  },
+  {
+   "commit": "8feb24ca259ff84aff24752dcb3812065b031c2f",
+   "date": "2026-09-05",
+   "subject": "Raise context-assembly timeout default from 5s to 15s",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "ac2126867cefca4c8b68b710b83316e202ec9ca6",
+   "date": "2026-09-04",
+   "subject": "Name owning_team_for, discovery_team_id and instructions_source without underscore prefixes",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ]
+  },
+  {
+   "commit": "2bca2a9f0d922288809181e78479c57d6477f312",
+   "date": "2026-09-04",
+   "subject": "Forget a quest's cached owning team the moment it stops serving the quest",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_goal_sync.py"
+   ]
+  },
+  {
+   "commit": "f18006023d27b7de35107e09f514c9955d8b6193",
+   "date": "2026-09-04",
+   "subject": "Work each persona's own standing instructions on a quest",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot_instructions.py",
+    "tests/test_autopilot_persona_instructions.py"
+   ]
+  },
+  {
+   "commit": "201a30b140e4c3a9862a9c82fa1ddbbcf2b2016a",
+   "date": "2026-09-03",
+   "subject": "A quest's goals live on the quest's team, not the lane's team",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_goal_sync.py"
+   ]
+  },
+  {
+   "commit": "d9e0008b3ba8ab26d0a220ed16b9e757ec1b7a50",
+   "date": "2026-09-03",
+   "subject": "The fast lane must use the same discovery scope as the background scan",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_context_request_fast_lane.py"
+   ]
+  },
+  {
+   "commit": "dc9566208105733eecf1e16fae43732051213a76",
+   "date": "2026-09-03",
+   "subject": "Fix the UTC-day cadence gate that skipped a brief, and add \"Run now\"",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/conftest.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_run_time.py"
+   ]
+  },
+  {
+   "commit": "a7ae888adf9d0a42dd8168b0e30aaaacef549475",
+   "date": "2026-09-02",
+   "subject": "The no-zone fallback must be the runner's clock, not the UTC instant it was handed",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/local_time.py",
+    "tests/test_local_time.py"
+   ]
+  },
+  {
+   "commit": "14a62f27ea3eab9aec9b9ee8f80ad6e4c21f92bf",
+   "date": "2026-09-02",
+   "subject": "A queued task's brief is not the user vetoing action",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_task_brief_is_not_a_user_veto.py"
+   ]
+  },
+  {
+   "commit": "3b7d5924a30201e872db27d99918b0973ce1b918",
+   "date": "2026-09-02",
+   "subject": "One kind of autopilot pass: a missing run time is a default, not a branch",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_pass_task.py",
+    "tests/test_autopilot_run_time.py"
+   ]
+  },
+  {
+   "commit": "7154381d4a0460d99866e252f3d219b7be902cfb",
+   "date": "2026-09-02",
+   "subject": "Add per-quest autopilot run time and standing instructions (runner half)",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/local_time.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_instructions.py",
+    "tests/test_autopilot_pass_task.py",
+    "tests/test_autopilot_run_time.py",
+    "tests/test_local_time.py",
+    "tests/test_local_time_schedule.py"
+   ]
+  },
+  {
+   "commit": "527b0c21e6a555f8b05e298eb6d27a1cf552fb28",
+   "date": "2026-09-02",
+   "subject": "Fetch goal context by related_goal_id, resolving quest id from goal_id",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_related_goal_context.py"
+   ]
+  },
+  {
+   "commit": "1cc3e1ab6d0e90d8e6c781487cef20a0c8fd2cd3",
+   "date": "2026-09-02",
+   "subject": "Fix bare hold-off phrases false-vetoing mixed directive messages",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_question_not_task.py"
+   ]
+  },
+  {
+   "commit": "6221973bfa19de7189e9f61de89b3b1247f71edd",
+   "date": "2026-08-28",
+   "subject": "Stop plain questions from becoming tasks; let the user veto one",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_question_not_task.py"
+   ]
+  },
+  {
+   "commit": "0bfc817e5a4d7ce2d644e481dbaaaeaeff2f3489",
+   "date": "2026-08-26",
+   "subject": "Tell the read-budget wrap-up reply it ends the turn, and add proposable field-edit decisions",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_brainstorm_mode.py"
+   ]
+  },
+  {
+   "commit": "416433375af3da07205633849614a0973abba4dc",
+   "date": "2026-08-25",
+   "subject": "Correct the current_state claim, and add the owner-scoped field write",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/quest_folder_sync.py"
+   ]
+  },
+  {
+   "commit": "f2d39f85abf6c9ea40d4c9b667bf3940ac7d4464",
+   "date": "2026-08-25",
+   "subject": "Add GOALS.md two-way goal sync, and make the quest state block pushable",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "quest_ai_runner/runner/quest_goal_sync.py",
+    "tests/test_quest_folder_sync.py",
+    "tests/test_quest_goal_sync.py"
+   ]
+  },
+  {
+   "commit": "76cf3ce56ee4a27b0e37a6bea7055edb0e96670c",
+   "date": "2026-08-25",
+   "subject": "Add three-zone provenance convention for synced quest folders",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "quest_ai_runner/runner/quest_folder_zones.py",
+    "tests/test_quest_folder_zones.py"
+   ]
+  },
+  {
+   "commit": "304c588d05933bb16bd0132d256fd9166a19eebc",
+   "date": "2026-08-23",
+   "subject": "Raise the bar a message must clear before it becomes a task",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_escalation_threshold.py"
+   ]
+  },
+  {
+   "commit": "288df5575d742b4ad02ef58749ba9ab97cbec4df",
+   "date": "2026-08-22",
+   "subject": "Autopilot: ask a proposal once, and call it what it is",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "11a1e662d09b98a332748c1fe12e0d4799a1ce93",
+   "date": "2026-08-22",
+   "subject": "A run can read the message an emailed reply is answering",
+   "files": [
+    "quest_ai_runner/adapters/quest_retrieval_adapter.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "6ee5c53fe8e3e7661cb6733395045cd1b8defb22",
+   "date": "2026-08-21",
+   "subject": "Ask the card API for the quest cards a runner exists to read",
+   "files": [
+    "quest_ai_runner/adapters/quest_api_card_repository.py",
+    "tests/test_quest_api_card_repository.py"
+   ]
+  },
+  {
+   "commit": "33398f9459149b389927602c41c61942d89f7086",
+   "date": "2026-08-20",
+   "subject": "Cards can declare what their writer owns, and their own vector floor",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "tests/test_managed_cards.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "d7baf26b8d79ad4e2aa5be48c376c849bf0e1d7b",
+   "date": "2026-08-20",
+   "subject": "Fix QuestApiCardRepository: it could never read a single card",
+   "files": [
+    "quest_ai_runner/adapters/quest_api_card_repository.py",
+    "tests/test_quest_api_card_repository.py"
+   ]
+  },
+  {
+   "commit": "e25d1eb227420832f971d47ceb0582a2741db43e",
+   "date": "2026-08-20",
+   "subject": "Report what autopilot DID, not that it created a task with an id",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "7b66b8d3a741bd1dabb3acbd9ad225eca2aedc95",
+   "date": "2026-08-19",
+   "subject": "Let a pass see which of its runs the person cleared away",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "86af4b773c61ab39595f1bab8ba987637a0073e9",
+   "date": "2026-08-19",
+   "subject": "Stop treating an unresolved decision as a stop sign either",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "bdf5e0c4453505d39126946f747e63fb70c88b9b",
+   "date": "2026-08-19",
+   "subject": "Say who confirms work is done, so a pass stops reissuing untouched work",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "a71954295befc9aeef9db94027280f305df09afe",
+   "date": "2026-08-19",
+   "subject": "Tell a run email is on when its quest id arrives in goal_id",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "99e255f37eb1405f7fd617b6ac6b099c2122662b",
+   "date": "2026-08-17",
+   "subject": "Ask again, file once, and hold the person to what is still outstanding",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "02ba2decdc4c83683971c67ce72bdcbe4bb9cf31",
+   "date": "2026-08-17",
+   "subject": "Stop treating an unanswered question as a stop sign",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "2bd10140df6434a379d9f56226b03b8c5329b1f8",
+   "date": "2026-08-17",
+   "subject": "Doubt assumed progress only where there was a previous ask",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "e304e718ff68849029246c754292a755f9f46f38",
+   "date": "2026-08-17",
+   "subject": "Let every run see what earlier runs did, including the ones that failed",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "b4ed65903f71df3522cd26a9737bdaafff8ba21f",
+   "date": "2026-08-17",
+   "subject": "Dual-heartbeat team AND org scope instead of picking one",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "3e791b903d5e7b8c5d074e5627b1631fd22e7a39",
+   "date": "2026-08-17",
+   "subject": "Add org-scoped environment heartbeat registration",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_heartbeat.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "781c03f04019f35da0bdde03d1f2059d6bedd87f",
+   "date": "2026-08-14",
+   "subject": "Add live, two-way messaging channels: a hub-to-hub bridge to OpenClaw over MCP",
+   "files": [
+    "quest_ai_runner/adapters/openclaw_channel.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/channel_runner.py",
+    "quest_ai_runner/runner/channel_session.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/state_store.py",
+    "tests/test_channel_runner.py",
+    "tests/test_openclaw_channel.py",
+    "tests/test_state_store_extraction.py"
+   ]
+  },
+  {
+   "commit": "eb9ea0401e9cb8bcb3ab02263c8a598a8491fbe3",
+   "date": "2026-08-14",
+   "subject": "Add generic MCP write support (Phase 2), gated behind the deep-runner ladder",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/mcp_write_adapter.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_mcp_write_adapter.py",
+    "tests/test_mcp_write_ladder.py"
+   ]
+  },
+  {
+   "commit": "6fb93afe8023f9d34a1549420d4371116b375691",
+   "date": "2026-08-14",
+   "subject": "Add generic MCP client support (Phase 1, read-only foundation)",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/acp_deep_runner.py",
+    "quest_ai_runner/adapters/mcp_retrieval_adapter.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_deep_runner_mcp_passthrough.py",
+    "tests/test_mcp_retrieval_adapter.py"
+   ]
+  },
+  {
+   "commit": "9931177c0aa9b6be788f9f9b0c7e3b3c0083c1ff",
+   "date": "2026-08-14",
+   "subject": "Let a run send a quest's mail without leaving Quest",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/tools/__init__.py",
+    "quest_ai_runner/tools/send_quest_email.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "11ec90ed4f7dbc03808af5036f97503113705aaa",
+   "date": "2026-08-14",
+   "subject": "Fix BM25ContentStore returning zero hits: numpy.float32 isinstance bug",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "tests/test_bm25_content.py"
+   ]
+  },
+  {
+   "commit": "16df95abdfbc45b9fb577276a58bcee9188b4307",
+   "date": "2026-08-14",
+   "subject": "Widen fast-loop read budget; make `qar <name>` persona shorthand work",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_cli_chat_rep_positional.py"
+   ]
+  },
+  {
+   "commit": "259c4b2e348ecaf177e0ae4de29f993823b071f3",
+   "date": "2026-08-14",
+   "subject": "Let a person answer their AI, and let the next run know they did",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "tests/test_person_reply_channel.py"
+   ]
+  },
+  {
+   "commit": "5dbd0f8fc18eb0a89631b7b34e75975ffc035cb6",
+   "date": "2026-08-14",
+   "subject": "Say a deep run ran out of turns, instead of guessing at why it failed",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_deep_max_turns_diagnosis.py"
+   ]
+  },
+  {
+   "commit": "31a499c260ac0c17cbfd45b80944f72e833e8de0",
+   "date": "2026-08-14",
+   "subject": "Let a chat session standing in a quest's folder hold that folder's answer",
+   "files": [
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "quest_ai_runner/runner/session_next_steps.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py",
+    "tests/test_future_context_ui.py",
+    "tests/test_session_next_steps.py"
+   ]
+  },
+  {
+   "commit": "5101d510e71f1a27c823897521cdd41e38e62492",
+   "date": "2026-08-14",
+   "subject": "Keep one chat UI, and delete the one we stopped maintaining",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_bootstrap_log_suppression.py",
+    "tests/test_cli_chat_requires_textual.py",
+    "tests/test_cli_persona_explicit_flag.py",
+    "tests/test_deep_output_ui.py",
+    "tests/test_future_context_ui.py",
+    "tests/test_no_deep_executor_honesty.py",
+    "tests/test_orchestrator.py",
+    "tests/test_persona_resolution.py",
+    "tests/test_tui_first_run.py",
+    "tests/test_understanding_event_ui.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "22649fe7a01d3847fb813470c9d6bfd38e9ce80f",
+   "date": "2026-08-14",
+   "subject": "Fire a scheduled task at its local time, not at UTC midnight",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_local_time_schedule.py"
+   ]
+  },
+  {
+   "commit": "46100bf8af39b299ec0496d7396c6e1443d83fb7",
+   "date": "2026-08-14",
+   "subject": "Stop spawning the deep worker with a model it cannot run",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_escalation_ladder.py",
+    "tests/test_deep_failure_session_diagnostics.py",
+    "tests/test_deep_output_ui.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "d1bbc41ebff80ab5fa1bf188ae9bdb2a06d5a3fe",
+   "date": "2026-08-14",
+   "subject": "Tell the human what a failed deep run actually did",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_deep_failure_session_diagnostics.py"
+   ]
+  },
+  {
+   "commit": "d91c02159fb5ecf50c5c7ce6b4ac9d2315e01eb8",
+   "date": "2026-08-14",
+   "subject": "Let an autopilot pass see what the person captured since it last ran",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/insights.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot_insights.py",
+    "tests/test_insights.py"
+   ]
+  },
+  {
+   "commit": "012956226af23328e9e28ef7cfb6c5643e269e0e",
+   "date": "2026-08-14",
+   "subject": "fix(autopilot): give the recurring pass task a real title",
+   "files": [
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_pass_task.py"
+   ]
+  },
+  {
+   "commit": "43dd7313ddb4654b9ed84502b5054ef2d4883509",
+   "date": "2026-08-13",
+   "subject": "Land a small edit in one model call, and open the write boundary carefully",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/files_adapter.py",
+    "quest_ai_runner/adapters/files_writer.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_fast_edit_ladder.py",
+    "tests/test_file_write_containment.py"
+   ]
+  },
+  {
+   "commit": "c1627939122ac1e2f141f31f3594ed9a5bd6fdcf",
+   "date": "2026-08-13",
+   "subject": "Never report work as underway when nothing can execute it",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/conftest.py",
+    "tests/test_deep_output_ui.py",
+    "tests/test_deep_runner_default.py",
+    "tests/test_native_web_search_wiring.py",
+    "tests/test_no_deep_executor_honesty.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "890a10b3b259626c0ed1934056a50e8dcdef4fca",
+   "date": "2026-08-13",
+   "subject": "Let QAR read the person's own reflections, and act on them",
+   "files": [
+    "quest_ai_runner/adapters/quest_retrieval_adapter.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/reflections.py",
+    "tests/test_autopilot_reflection.py",
+    "tests/test_reflections.py"
+   ]
+  },
+  {
+   "commit": "0306bc7da3a67e2426a51f125c287446f0950b95",
+   "date": "2026-08-12",
+   "subject": "Add an opt-in ACP deep runner, so a run can be steered while it runs",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/acp_deep_runner.py",
+    "quest_ai_runner/config.py",
+    "tests/test_acp_deep_runner.py"
+   ]
+  },
+  {
+   "commit": "7825918399a0ae3f1051d3135ecce55a34e9850a",
+   "date": "2026-08-12",
+   "subject": "fix(textual): suppress bootstrap log noise, dock the prompt, auto-resolve persona, bound guidance selection, fix dangling Sources header",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_cli_persona_explicit_flag.py",
+    "tests/test_context_sources_header.py",
+    "tests/test_guidance_selection_timeout.py",
+    "tests/test_persona_resolution.py",
+    "tests/test_prompt_docked_bottom.py"
+   ]
+  },
+  {
+   "commit": "ed9e06fe588eff633feda29281b9623871078cdc",
+   "date": "2026-08-12",
+   "subject": "Enforce the sufficiency gate structurally, and pin what a \"1 step\" turn costs",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_sufficiency_gate.py",
+    "tests/test_turn_call_budget.py"
+   ]
+  },
+  {
+   "commit": "dec2abf84c7a872c80b59cb3d3bca206a568c671",
+   "date": "2026-08-12",
+   "subject": "Give a quest folder one canonical \"what to do next\", shared by both readers",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "tests/test_autopilot.py",
+    "tests/test_quest_folder_sync.py"
+   ]
+  },
+  {
+   "commit": "1193216546972b67b19839e5bb68d4ab0b370c38",
+   "date": "2026-08-12",
+   "subject": "Reuse an already-indexed ancestor corpus during bootstrap, not just descendants",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "00e5c9481a1a57b780a9bd1b96e6f0989d2ae8cd",
+   "date": "2026-08-12",
+   "subject": "Make autopilot tasks readable, and resolve persona from the quest folder",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_adopt_recurring.py",
+    "tests/test_quest_context_persona.py"
+   ]
+  },
+  {
+   "commit": "4e9c984943b4e96c86dfe93e006c1e9a566290b5",
+   "date": "2026-08-12",
+   "subject": "Stop a human-only day from shadowing the week's AI work",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot_adopt_recurring.py"
+   ]
+  },
+  {
+   "commit": "2aad817718b442f246c07bece94304e1a8bf5dae",
+   "date": "2026-08-12",
+   "subject": "Fix cadence losing days, and report adopted tasks in the summary",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_adopt_recurring.py"
+   ]
+  },
+  {
+   "commit": "e277397f1a1be75319ceac3a3423b8da7012e1cb",
+   "date": "2026-08-12",
+   "subject": "Add a consumer-level default for recurring-task adoption",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_autopilot_adopt_recurring.py"
+   ]
+  },
+  {
+   "commit": "5d6017c0cc3fb67ff73c0104962d9074c373a30d",
+   "date": "2026-08-12",
+   "subject": "Autopilot: adopt a quest's recurring tasks, and carry period context",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_adopt_recurring.py"
+   ]
+  },
+  {
+   "commit": "cdbecb04d0c43ab54f5ae8f104ae24c394e2eb8b",
+   "date": "2026-08-12",
+   "subject": "Make autopilot actually run: create the pass task, fix the quest link",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_autopilot_pass_task.py"
+   ]
+  },
+  {
+   "commit": "2788ced4b4772a3c4bb01e38063b683c0f294315",
+   "date": "2026-08-11",
+   "subject": "Add QuestClient.create_goal + `create-goal` CLI subcommand",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_cli_create_goal.py",
+    "tests/test_quest_client_create_goal.py"
+   ]
+  },
+  {
+   "commit": "1ed1507f4e6db1cf84338159ec194e9c0f9893cb",
+   "date": "2026-08-07",
+   "subject": "Terminal UI: show a one-line \"Explain how I got this\" trace summary",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_future_context_ui.py"
+   ]
+  },
+  {
+   "commit": "bc1b148a80d80900dee8bd5a5a2a4b7934e894dc",
+   "date": "2026-08-06",
+   "subject": "Add personal lexicon: rank one person's distinctive vocabulary by TF-DF-IDF",
+   "files": [
+    "quest_ai_runner/adapters/english_word_bands.py",
+    "quest_ai_runner/adapters/personal_lexicon.py",
+    "tests/test_personal_lexicon.py"
+   ]
+  },
+  {
+   "commit": "1b38436541f83ab3c5b77efd929018ae1d4d9ecf",
+   "date": "2026-08-05",
+   "subject": "Add the opt-in, user-facing \"Explain how I got this\" panel",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/answer_explanation.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_answer_explanation.py"
+   ]
+  },
+  {
+   "commit": "d568aa9d91bfc8df3dff862ad97b0b6ee1b3d5dd",
+   "date": "2026-08-05",
+   "subject": "Reuse a nested corpus's bootstrapped cards instead of re-discovering them",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "7e946a6da439154455b5df84c1cb57a9330270c6",
+   "date": "2026-07-31",
+   "subject": "Fix message-intent regex missing casual question phrasings",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "48e58395f4fae077fca8c9a5dbbd7f82bdb12fea",
+   "date": "2026-07-26",
+   "subject": "Fix duplicate deep-turn output in terminal UI",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "9ea143e93e0b6c2ab72c3ac783dcbbe8515c3737",
+   "date": "2026-07-25",
+   "subject": "Advertise Claude families from ClaudeCliProvider.list_models",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "tests/test_claude_cli_provider.py"
+   ]
+  },
+  {
+   "commit": "72c3c526189d54714ed2756d80cda3598f7b513d",
+   "date": "2026-07-25",
+   "subject": "Fold mid-task user messages into a running task's next prompt",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_orchestrator.py",
+    "tests/test_pending_messages.py",
+    "tests/test_quest_client_messages_claim.py"
+   ]
+  },
+  {
+   "commit": "7e29aeae3d3814b66a1a6e3679e67e0f7eb9af62",
+   "date": "2026-07-24",
+   "subject": "runner: rename fast-lane wire flag interactive -> real_time",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_context_request_fast_lane.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "d1c229740b9266f706fa48d3becbb22fd6e19195",
+   "date": "2026-07-24",
+   "subject": "fix(runner/executor): stop tagging failed/needs_you chat posts as kind=\"done\"",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "35e402e27ba19f86054fa7df7ec9257134f3adac",
+   "date": "2026-07-23",
+   "subject": "fix(core/card_filter): make the selection-memo key order-sensitive",
+   "files": [
+    "quest_ai_runner/core/card_filter.py",
+    "tests/test_card_filter_selection.py"
+   ]
+  },
+  {
+   "commit": "124ca8a23b9bbcc6de7014400b473ebd1cbe20b3",
+   "date": "2026-07-23",
+   "subject": "Contain a non-numeric file score in the batched card ranking",
+   "files": [
+    "quest_ai_runner/core/card_filter.py",
+    "tests/test_card_filter_selection.py"
+   ]
+  },
+  {
+   "commit": "a0f533de111a09bdf19c305c1cdfd25487c4fe27",
+   "date": "2026-07-23",
+   "subject": "Deep workers: headless-run contract in prompt + verifier treats pending subagents as not met",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "654ab5a730ed29f3cb9083f6f3ca16682eb526fe",
+   "date": "2026-07-23",
+   "subject": "perf(core/card_filter): batch within-card file ranking, memoize selection verdicts (#2462)",
+   "files": [
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/card_filter.py",
+    "tests/test_card_filter_selection.py"
+   ]
+  },
+  {
+   "commit": "9db1bfbab662604e6ed629caa5d642bd0a6ce4fd",
+   "date": "2026-07-23",
+   "subject": "feat(core): anticipation v2 - durable patterns, read-time chips, optional refresh",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/anticipation.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_anticipation.py"
+   ]
+  },
+  {
+   "commit": "b87b5d47b0c2ea45d6121b26c5db011f6b62e2fb",
+   "date": "2026-07-23",
+   "subject": "feat(core): anticipation engine — learn ask patterns, precompute context, score every prediction",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/anticipation.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_anticipation.py"
+   ]
+  },
+  {
+   "commit": "6c217e67fbeb341a5d677dee5f3e8f7499d7a7e6",
+   "date": "2026-07-22",
+   "subject": "fix(orchestrator): remove keyword-gated confirm-redundancy; never decide on words in AI output",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "56d53e1670ab0a21162284818612631bfa2e576e",
+   "date": "2026-07-19",
+   "subject": "fix(qdrant-vector-store): key the shared collection on the embedder's true dimension",
+   "files": [
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "tests/test_qdrant_vector_store_scoping.py"
+   ]
+  },
+  {
+   "commit": "69b362f9c22643473f6d0b16b844d7423c8f260c",
+   "date": "2026-07-19",
+   "subject": "fix(qdrant-vector-store): single collection with payload-filtered scoping, no collection-per-scope sprawl",
+   "files": [
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "tests/test_qdrant_vector_store_scoping.py"
+   ]
+  },
+  {
+   "commit": "ecbdb2993c21a664a393dc69ce7e6a2d1e796a6c",
+   "date": "2026-07-19",
+   "subject": "fix(orchestrator): redundant confirms execute instead of asking; quiet expected ai-profile 404s",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "812e77b6fb8e89cc9aa57b844820c16926a2b8a1",
+   "date": "2026-07-19",
+   "subject": "fix(cli): select_card_ids_for_text no longer defaults to an LLM call",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "tests/test_cli_card_selection.py"
+   ]
+  },
+  {
+   "commit": "7385f791e45334e971bd260c5b17ad642d31d12b",
+   "date": "2026-07-19",
+   "subject": "fix(orchestrator): budget-capped change requests escalate to deep, never wrap up with words",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_brainstorm_mode.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "4a57e0ddf805923c1129c42a484689d17f454046",
+   "date": "2026-07-19",
+   "subject": "fix(quest_client): wrap raw socket TimeoutError/OSError into QuestApiError",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_transport_errors.py"
+   ]
+  },
+  {
+   "commit": "c93cea94dac2cf8648ad028fcfc8b129b8b90e4c",
+   "date": "2026-07-19",
+   "subject": "fix(claude_cli): never pass a non-Claude model id to claude --model; surface stdout envelope errors",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "tests/test_claude_cli_provider.py"
+   ]
+  },
+  {
+   "commit": "a049a4e9aa63cb391f23d8142982e0d035e89a2a",
+   "date": "2026-07-18",
+   "subject": "Make user-facing replies respond in the language the user is writing in",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/prompt_layers.py"
+   ]
+  },
+  {
+   "commit": "46b4bbf05a288f46551970634adf2e0db20e4795",
+   "date": "2026-07-17",
+   "subject": "Attach context cards to created assistant tasks",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_create_task.py"
+   ]
+  },
+  {
+   "commit": "c3aef0c724f87f2e0b85835b09fefab3dcc60431",
+   "date": "2026-07-15",
+   "subject": "Resolve pasted Drive/Docs/Sheets URLs in GoogleDriveAdapter.query()",
+   "files": [
+    "quest_ai_runner/adapters/google_drive_adapter.py",
+    "tests/test_google_drive_adapter.py"
+   ]
+  },
+  {
+   "commit": "605f6ea7d86ac2be12ed6a17bd2a36325b79d4a8",
+   "date": "2026-07-14",
+   "subject": "Cap Google Drive folder listings to prevent unbounded prompt context",
+   "files": [
+    "quest_ai_runner/adapters/google_drive_adapter.py",
+    "tests/test_google_drive_adapter.py"
+   ]
+  },
+  {
+   "commit": "829c951a867fac291fe2d566739843b0abdca82e",
+   "date": "2026-07-14",
+   "subject": "Add GoogleDriveAdapter: generic RetrievalAdapter over Drive files/folders",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/google_drive_adapter.py",
+    "tests/test_google_drive_adapter.py"
+   ]
+  },
+  {
+   "commit": "e37565dc2f18f236240475c1951c264093bdfd4e",
+   "date": "2026-07-14",
+   "subject": "Wire Google Chat as a resolvable source (chat_thread), not blocked",
+   "files": [
+    "quest_ai_runner/adapters/google_chat_adapter.py",
+    "quest_ai_runner/config.py",
+    "tests/test_card_scoped_learning.py",
+    "tests/test_google_chat_card_learning.py"
+   ]
+  },
+  {
+   "commit": "ef7a7ce447f4766e74efc6d900e96fe4d727611c",
+   "date": "2026-07-14",
+   "subject": "Make \"can be a learned reference\" a formal RetrievalAdapter capability",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_reference_resolvable.py"
+   ]
+  },
+  {
+   "commit": "8ead4f223716b5e2812fa56a257d898ccb335d49",
+   "date": "2026-07-14",
+   "subject": "MultiProvider: step down a tier on quota/rate-limit errors instead of failing",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/model_registry.py"
+   ]
+  },
+  {
+   "commit": "9c04749066e40c4b82b07d949dadcbb97481c468",
+   "date": "2026-07-14",
+   "subject": "Give the narrator cross-turn memory so voice mode stops repeating generic filler",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "1b731d379b11816c44edb70c0dfc926d5cb1ec78",
+   "date": "2026-07-14",
+   "subject": "Make card-scoped learning a shared, adapter-agnostic module",
+   "files": [
+    "quest_ai_runner/adapters/card_scoped_learning.py",
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/google_chat_adapter.py",
+    "tests/test_card_scoped_learning.py"
+   ]
+  },
+  {
+   "commit": "2bd53a029f5f65ed9fa6a0b744b528f7f9b602c9",
+   "date": "2026-07-14",
+   "subject": "Learn cross-session recall hits as usage-tracked card references",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "tests/test_conversation_card_learning.py"
+   ]
+  },
+  {
+   "commit": "00432b15286e40199131425573df09bee6e4b166",
+   "date": "2026-07-14",
+   "subject": "Replace vague \"match on meaning\" in CARD_THREAD_GATE with an independent-recall test",
+   "files": [
+    "quest_ai_runner/core/context_doctrine.py",
+    "tests/test_card_thread.py"
+   ]
+  },
+  {
+   "commit": "d435ed7aec488c2517ed0656119c48770a7b94e9",
+   "date": "2026-07-13",
+   "subject": "A run's findings are useless if the next run never gets them",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_reference_reuse_loop.py"
+   ]
+  },
+  {
+   "commit": "29bdc65242c3dc36acadafb362e3947facb1fdf8",
+   "date": "2026-07-13",
+   "subject": "Per-idea threading: the idea IS the card",
+   "files": [
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/context_doctrine.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_card_thread.py",
+    "tests/test_context_assembler.py",
+    "tests/test_unified_card_context.py"
+   ]
+  },
+  {
+   "commit": "f110a3c3e6391306286b4020a2527ebcfe9fb578",
+   "date": "2026-07-13",
+   "subject": "Future context comes back out of band, so it can never corrupt a payload",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/conftest.py",
+    "tests/test_async_card_update.py",
+    "tests/test_background_index_shutdown.py"
+   ]
+  },
+  {
+   "commit": "a2caacdedfe0d7c9161d3784d8c2137e3c467c46",
+   "date": "2026-07-13",
+   "subject": "Brainstorm latch: a held turn escalates nothing and says so on every reply",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_brainstorm_mode.py"
+   ]
+  },
+  {
+   "commit": "6e40919818cdce6dcb4ec2782dd8a5657946782d",
+   "date": "2026-07-13",
+   "subject": "Brainstorm latch: the exit is judged, not guessed by the cheap planner",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_brainstorm_mode.py"
+   ]
+  },
+  {
+   "commit": "a565e02a703d9223ff5ac2a55b7ff4d021d10146",
+   "date": "2026-07-13",
+   "subject": "A task can supply its own rep preamble (persona) as a fallback",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_rep_run.py"
+   ]
+  },
+  {
+   "commit": "7da797c5d08dcd16d6256ae7cbe77de191ed04c4",
+   "date": "2026-07-12",
+   "subject": "Autopilot: route on persistent task_kind; correct the client to the real Quest API",
+   "files": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py"
+   ]
+  },
+  {
+   "commit": "e19c93cfbd07189bb1a7c9003cbed8e9ca2fdb23",
+   "date": "2026-07-12",
+   "subject": "Autopilot pass (runner/autopilot.py) + per-task deep-run working directory",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_autopilot.py",
+    "tests/test_working_dir_override.py"
+   ]
+  },
+  {
+   "commit": "a7b8b14daba0b51a4ce5764b920759c9f54b1611",
+   "date": "2026-07-12",
+   "subject": "Deferred hand-off honesty: never deny work that really ran, validate the receipt",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/conftest.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "8ef5584aabbbf06a91e2a73f1f548ad4fe2768a6",
+   "date": "2026-07-12",
+   "subject": "Async deferred deep work: queued semantics, honest hand-off, executor fold-back",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/conftest.py",
+    "tests/test_context_assembler.py",
+    "tests/test_orchestrator.py",
+    "tests/test_runner.py",
+    "tests/test_unified_card_context.py"
+   ]
+  },
+  {
+   "commit": "24e681ce120a114ab980743c51c0d2c72363aa46",
+   "date": "2026-07-12",
+   "subject": "Truthful deferred_deep wording; brainstorm no-action acknowledgment steer",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_brainstorm_mode.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "da74e24aef79a41f472495c77aabb91534eb10d6",
+   "date": "2026-07-12",
+   "subject": "QAR_VECTOR_BACKEND: explicit switch for the auto-built context vector store",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "c9c93ef8591450da069ed2fec903a4224ed78e75",
+   "date": "2026-07-12",
+   "subject": "Review fixes: opt-in mode signals, brainstorm-safe late overseer, tighter note-floor freshness, better gate stemmer",
+   "files": [
+    "quest_ai_runner/core/note_context_store.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/conftest.py",
+    "tests/test_brainstorm_mode.py",
+    "tests/test_context_assembler.py",
+    "tests/test_note_context_store.py",
+    "tests/test_overseer.py",
+    "tests/test_unified_card_context.py"
+   ]
+  },
+  {
+   "commit": "95a48ee2f0aca21ee261f4244b73925c1849eafa",
+   "date": "2026-07-12",
+   "subject": "Partial-assembly contract fixes: no cache poisoning, honest note-floor gate",
+   "files": [
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/core/note_context_store.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_hybrid_deadline_partial.py",
+    "tests/test_note_context_store.py",
+    "tests/test_orchestrator.py",
+    "tests/test_unified_card_context.py"
+   ]
+  },
+  {
+   "commit": "f0bbcc08f09568fc7e38ea335f3bdd948653b724",
+   "date": "2026-07-12",
+   "subject": "Brainstorm execution mode: consumer-owned no-action latch with planner-detected mode signals",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_brainstorm_mode.py"
+   ]
+  },
+  {
+   "commit": "706d12da62b7d759c4bbeca10577ef3f61bf3472",
+   "date": "2026-07-12",
+   "subject": "Context reliability: partial-result assembly on timeout; relevance-gate the note floor",
+   "files": [
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/note_context_store.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_hybrid_deadline_partial.py",
+    "tests/test_note_context_store.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "ee03730a97f3e67f704f3d26fda864420785eb6e",
+   "date": "2026-07-12",
+   "subject": "Remove internal working docs and personal references from the public repo",
+   "files": [
+    "examples/composite_retrieval_example.py",
+    "quest_ai_runner/adapters/quest_api_card_repository.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/overseer.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_deep_gathered.py",
+    "tests/test_orchestrator.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "5086d881fce8c65a23772b428744f57197896a47",
+   "date": "2026-07-11",
+   "subject": "Verification sees the worker's own context: same L2 layer threaded into verify at both call sites",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_verify_context_layer.py"
+   ]
+  },
+  {
+   "commit": "a774727070b68ea58301e9b3d1eddd312c210250",
+   "date": "2026-07-11",
+   "subject": "cli send: never ack a task that was not enqueued; create_task source=chat and raises on failure",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_create_task.py"
+   ]
+  },
+  {
+   "commit": "6bd40911fa63528c78428931997d17e8183dfbfe",
+   "date": "2026-07-11",
+   "subject": "rep_sync: refuse to render an empty profile so a failed GET never blanks a skill file",
+   "files": [
+    "quest_ai_runner/runner/rep_sync.py",
+    "tests/test_rep_sync.py"
+   ]
+  },
+  {
+   "commit": "5aa97a112fab8683375312d02a3edc8df0ce0632",
+   "date": "2026-07-11",
+   "subject": "Shared prompt layers: one cached prefix across plan/replan/answer/verify, wired to provider caches",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/adapters/dryrun_provider.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/prompt_layers.py",
+    "tests/test_prompt_cache_layers.py"
+   ]
+  },
+  {
+   "commit": "af55320822c9f5c2eee302f73ce1e9395a24e221",
+   "date": "2026-07-11",
+   "subject": "Real deep-worker escalation ladder; intent directive judged by a structured LLM call",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_escalation_ladder.py",
+    "tests/test_intent_directive_judge.py"
+   ]
+  },
+  {
+   "commit": "ea12ab3f80cf1208ec69bafb937daf96f312b4c8",
+   "date": "2026-07-11",
+   "subject": "Unified context primitive: card context reachable at every loop step",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_unified_card_context.py"
+   ]
+  },
+  {
+   "commit": "0316934ca322bfaf030177346595a7c99a30378e",
+   "date": "2026-07-11",
+   "subject": "Verifier failure is never trusted success; mid-loop reads and context assembly time out loudly",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_modes.py",
+    "tests/test_orchestrator.py",
+    "tests/test_orchestrator_named_runner_registry.py",
+    "tests/test_orchestrator_recent_context.py",
+    "tests/test_overseer.py",
+    "tests/test_rep_run.py",
+    "tests/test_runner.py",
+    "tests/test_verify_tier.py"
+   ]
+  },
+  {
+   "commit": "144a7edbaf06e275772c6477a85983dbc3ff7382",
+   "date": "2026-07-11",
+   "subject": "Stable card render order: selection by relevance, presentation by card id",
+   "files": [
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/card_filter.py",
+    "tests/test_consolidate_context.py",
+    "tests/test_specificity.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "12d4477e271ddbf0fe3e087b9ab33248ae52777d",
+   "date": "2026-07-11",
+   "subject": "Deep run reliability: wall-clock timeout, lifetime heartbeat, deterministic session binding",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "60968fc6960f8d60f5760804b9451cce4a7b2cb2",
+   "date": "2026-07-11",
+   "subject": "Stop the understanding channel inventing a reply, and the context event quoting the chat",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_internal_channel_leaks.py"
+   ]
+  },
+  {
+   "commit": "82050a87c765088061f6f1f7d5793ca2f7c9465f",
+   "date": "2026-07-11",
+   "subject": "Separate the reply channel from the run's internal channel",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/conftest.py",
+    "tests/test_reply_voice_separation.py"
+   ]
+  },
+  {
+   "commit": "b06089703bc89b1ec02e1d3d2e92b3a5f95ca6f5",
+   "date": "2026-07-10",
+   "subject": "Sync every mapped quest folder on each poll scan, not just around tasks",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_quest_folder_sync.py"
+   ]
+  },
+  {
+   "commit": "41272ecbc322b9151cdc507794d40bd36225fb8a",
+   "date": "2026-07-10",
+   "subject": "Rename goal_folder_sync to quest_folder_sync; expose it on the CLI",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/_managed_sections.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "56b322d439864e1b55a40695b72e22e0a0f269c6",
+   "date": "2026-07-09",
+   "subject": "Fix planner semantic-search dispatch: flatten nested query params before retrieval.query()",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_query_aware_retrieval.py"
+   ]
+  },
+  {
+   "commit": "15b5e5b8b9bf11175e74065652f81758a4230f45",
+   "date": "2026-07-09",
+   "subject": "Item-level time-range filtering in card stores",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recent_context.py",
+    "tests/test_query_aware_retrieval.py"
+   ]
+  },
+  {
+   "commit": "c189dab9c68691d1f3ecc1b34cd2f1f11debd62b",
+   "date": "2026-07-09",
+   "subject": "Interactive fast lane: long-poll wait channel + context-request handler + env-aware claiming",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_context_request_fast_lane.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "04fa9f5cb8f2000a012fba9b8ef6ed05692e93ae",
+   "date": "2026-07-09",
+   "subject": "Query-aware retrieval routing: time and entity constraints, filters-first search",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/session_file_conversation_store.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_goal_condition_derivation.py",
+    "tests/test_query_aware_retrieval.py"
+   ]
+  },
+  {
+   "commit": "d5013634572cd7554a09fb2286da50d24e71aed7",
+   "date": "2026-07-09",
+   "subject": "Full-horizon, relevance-first conversation recall with bounded cost",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/session_file_conversation_store.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_conversation_horizon.py"
+   ]
+  },
+  {
+   "commit": "f2546608aabe37a27dcb3a6844ac04f1ef855799",
+   "date": "2026-07-09",
+   "subject": "Recent-context v2: conversation, quest, and global scopes with item-level usage ranking",
+   "files": [
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/card_filter.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recent_context.py",
+    "tests/test_hybrid_context_assembler_recent_hint.py",
+    "tests/test_orchestrator_recent_context.py",
+    "tests/test_recent_context.py"
+   ]
+  },
+  {
+   "commit": "acc7934258c8fe4178d03c848878baaffe0b5120",
+   "date": "2026-07-09",
+   "subject": "Warm recent-context fallback: persist and reuse each conversation's selected cards",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recent_context.py",
+    "tests/test_orchestrator_recent_context.py",
+    "tests/test_recent_context.py"
+   ]
+  },
+  {
+   "commit": "254a0bf8617beca959d83d02018f7f9bb678855d",
+   "date": "2026-07-09",
+   "subject": "Cooperative mid-run task cancellation",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_orchestrator.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "b9cb1704f2550e934b1e3ba0485e49bc10c46ea2",
+   "date": "2026-07-09",
+   "subject": "Add goal <-> local folder sync (QUEST_SYNC.md) for account-wide quests",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/_managed_sections.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/rep_sync.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "8cceb42bbca726d51da1f9a7fb28c5c2bb0a64fd",
+   "date": "2026-07-06",
+   "subject": "Risk management: best-tier goal/claims judge + overseer env wiring, fallback, and labeled eval",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_examples.py",
+    "tests/test_orchestrator.py",
+    "tests/test_overseer.py",
+    "tests/test_verify_tier.py"
+   ]
+  },
+  {
+   "commit": "a16ab65024852ff02e22c66cdf4919e1981f1b41",
+   "date": "2026-07-06",
+   "subject": "refactor(guard): judge claim honesty in the goal verification, drop the regex gate",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_guard.py",
+    "tests/test_orchestrator_named_runner_registry.py"
+   ]
+  },
+  {
+   "commit": "0832d78f169d682f3a5e4d045e869cab68f37af6",
+   "date": "2026-07-06",
+   "subject": "fix(guard): stop the brain claiming file changes it cannot make",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_guard.py"
+   ]
+  },
+  {
+   "commit": "39a711ffd9560d5bfd0c667c120e056ea268c58e",
+   "date": "2026-07-03",
+   "subject": "fix(overseer): don't escalate plain questions to a deep task",
+   "files": [
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_overseer.py"
+   ]
+  },
+  {
+   "commit": "4635b9b681d7cb9968cee988698945609b54d262",
+   "date": "2026-07-01",
+   "subject": "Add native, key-free web search (default-on) + fix web-search spec parsing",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/provider_web_search_adapter.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_native_web_search_wiring.py",
+    "tests/test_provider_web_search_adapter.py",
+    "tests/test_web_query_spec.py"
+   ]
+  },
+  {
+   "commit": "1d54ea742687d80e2e7397a36abacd63503b0baa",
+   "date": "2026-07-01",
+   "subject": "Overseer round 2: escalate_deep/human split, richer digest, non-blocking hook B, hook-A gate; always-on goal-condition derivation",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_context_assembler.py",
+    "tests/test_conversation_understanding.py",
+    "tests/test_goal_condition_derivation.py",
+    "tests/test_orchestrator.py",
+    "tests/test_overseer.py",
+    "tests/test_runner.py",
+    "tests/test_understanding_event_ui.py"
+   ]
+  },
+  {
+   "commit": "16eaea65e6d800c29170470e2d01ed7746f07602",
+   "date": "2026-07-01",
+   "subject": "feat(tui): real drag-to-select + copy in the transcript",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_transcript_selection.py"
+   ]
+  },
+  {
+   "commit": "a42376e024e323ade259235f08cfbaf78552ff88",
+   "date": "2026-07-01",
+   "subject": "Overseer: non-blocking hook A + grounded digest (goal_condition, quality bar, relabeled read line)",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_overseer.py"
+   ]
+  },
+  {
+   "commit": "640ff4d09b75676d8d8f954023a167fc218108c3",
+   "date": "2026-07-01",
+   "subject": "fix(deep-runs): stop duplicate dashboard entries on retry, fix Tab/click agent selection",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py",
+    "tests/test_future_context_ui.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "7e296f2229154a76725dc4e59f96ed11276afd5e",
+   "date": "2026-07-01",
+   "subject": "fix(guidance): add tags field to GuidanceCard; pass through in _to_core_card",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/guidance_provider.py"
+   ]
+  },
+  {
+   "commit": "2641a00361f4ffb285a7b3367ee8a30d6e7aeead",
+   "date": "2026-07-01",
+   "subject": "fix(tui): click anywhere in the terminal to type in the message box",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_click_focus.py"
+   ]
+  },
+  {
+   "commit": "d11e726a2a51e6cb532192fab0377d813a087fe4",
+   "date": "2026-07-01",
+   "subject": "Overseer: escalate action requests + promised-not-done drafts",
+   "files": [
+    "quest_ai_runner/core/overseer.py",
+    "tests/test_overseer.py"
+   ]
+  },
+  {
+   "commit": "94b2fd8be0e4320aa141bc5b93f75728a74f741e",
+   "date": "2026-07-01",
+   "subject": "Add minimal-intervention overseer + terminal UI robustness fixes",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/textual_ui.py",
+    "quest_ai_runner/usage.py",
+    "tests/test_deep_output_ui.py",
+    "tests/test_future_context_ui.py",
+    "tests/test_overseer.py",
+    "tests/test_runner.py",
+    "tests/test_statestore_edge_cases.py",
+    "tests/test_tui_first_run.py",
+    "tests/test_usage.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "a35e787ea38e5dd1e6b981cdacd6d0084dbdbd84",
+   "date": "2026-06-30",
+   "subject": "Add GoogleChatAdapter: RetrievalAdapter over Google Chat spaces/threads",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/google_chat_adapter.py"
+   ]
+  },
+  {
+   "commit": "2abb939236f07044f74736171f17ea7967e99dd2",
+   "date": "2026-06-30",
+   "subject": "Add model-free specificity signal to retrieval ranking",
+   "files": [
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "tests/test_specificity.py"
+   ]
+  },
+  {
+   "commit": "29dfd017c597c37cd7ebf23f795bd35a38ca203f",
+   "date": "2026-06-30",
+   "subject": "Add specificity gate: answer the exact subject asked, not a sibling topic",
+   "files": [
+    "quest_ai_runner/core/context_doctrine.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "7684ce62471c944fa1271f01e5000e9a69956bad",
+   "date": "2026-06-30",
+   "subject": "Terminal UI: stream AI reasoning beats into the main transcript feed",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_future_context_ui.py"
+   ]
+  },
+  {
+   "commit": "d0bd1b67b9b1b414dacc13072e6abc63fecadc2f",
+   "date": "2026-06-29",
+   "subject": "fix(tui): restore mouse-wheel scroll + no-Shift text selection in chat",
+   "files": [
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_copy_or_quit.py"
+   ]
+  },
+  {
+   "commit": "a758258ace41878cf64f31abb63ca7483842a32e",
+   "date": "2026-06-29",
+   "subject": "fix(tui): render deep worker result through console.markdown() for consistent markdown handling",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "c247d76991dbfdced5df4a5ebe9c7b1649f2b5da",
+   "date": "2026-06-29",
+   "subject": "feat(chat): wire Stage 1 anaphora resolution with iterative context expansion",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_conversation_understanding.py"
+   ]
+  },
+  {
+   "commit": "35adb5f78fe020ae2e7863f5f37129e17f843cb5",
+   "date": "2026-06-28",
+   "subject": "Add exit_reason + goal_verdict to OrchestratorResult; surface reasoning to user",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py"
+   ]
+  },
+  {
+   "commit": "ce12049c9f8f08215ce758ff5dcbcf9202ab8b8d",
+   "date": "2026-06-28",
+   "subject": "feat(context): replace /api/quest-context/resolve with streaming /api/cards/assemble",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/quest_context_adapter.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_quest_context_adapter.py"
+   ]
+  },
+  {
+   "commit": "8344be091d91fc473cd9406c1efb26fb0a3f80c8",
+   "date": "2026-06-28",
+   "subject": "refactor(chat): context-engine-driven conversation history via InMemoryConversationStore",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "bf0fd7edd46cfa88afffe141b99079f7766a95f8",
+   "date": "2026-06-28",
+   "subject": "Add QuestApiCardRepository: wire durable context cards to quest-backend API",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/quest_api_card_repository.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "2173c5a13420b56d13a4631325de0f937e16ea17",
+   "date": "2026-06-28",
+   "subject": "feat(context): ClaudeConversationsAdapter.assemble() + shared keywords_from_text",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/turn_context_store.py",
+    "tests/test_context_sources_multilingual.py"
+   ]
+  },
+  {
+   "commit": "a3ff0adeef97bc680d72a300308a37fbd5242ad5",
+   "date": "2026-06-28",
+   "subject": "perf(tui): show banner immediately; live progress during session init; quiet Qdrant lock errors",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "91f133beba7921ef86fe61f2e256891ee82e80f8",
+   "date": "2026-06-28",
+   "subject": "perf: lazy-load ClaudeConversationsAdapter + allow typing before session ready",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_composite_retrieval.py"
+   ]
+  },
+  {
+   "commit": "82c3716812fcf1f380f36d2e30ef9b41fde63d2b",
+   "date": "2026-06-28",
+   "subject": "perf(tui): defer InteractiveSession init to show UI immediately on start",
+   "files": [
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "1b94229c276695f2f7dce9cf462d742b4c20c824",
+   "date": "2026-06-28",
+   "subject": "Capitalize all QAR status messages",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "3ca5946480204d9e9754d8fc9ff9b8ddd50c9ea6",
+   "date": "2026-06-28",
+   "subject": "feat(tui): Alt+D detail panel works after a deep run finishes",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "c396c356cd062e0894b83984bbe04ac81d83bd95",
+   "date": "2026-06-28",
+   "subject": "fix(tui): move 'expand agent' toggle from bare d to Alt+D (typing conflict)",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_future_context_ui.py"
+   ]
+  },
+  {
+   "commit": "db725e2a930276f36f78044dab3a7ae11a9ba11b",
+   "date": "2026-06-28",
+   "subject": "fix(tui): reframe future-context panel as 'Context it used', toggle on Alt+C",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_future_context_ui.py"
+   ]
+  },
+  {
+   "commit": "09fd0f4bb578c3bd3cbad69a3cbd70693c87b62a",
+   "date": "2026-06-28",
+   "subject": "feat(tui): subgoal header live, summarize deep-task record",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "cf4a1ecdfdb453a29cdfcd7fb387d0bde9d71db5",
+   "date": "2026-06-28",
+   "subject": "feat: QuestContextAdapter — resolve Quest context through the hub endpoint",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/quest_context_adapter.py",
+    "tests/test_quest_context_adapter.py"
+   ]
+  },
+  {
+   "commit": "58a0d45dcbd879eaa774bb3122c8c855c934a942",
+   "date": "2026-06-28",
+   "subject": "feat(tui): show deep-task subgoal + final result, style the trace",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "debc395a3111c0b29bae0b92b71af1f5e8b05f5f",
+   "date": "2026-06-28",
+   "subject": "feat(cards): semantic dedup/merge in post-deep card updater",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_card_repository.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_async_card_update.py",
+    "tests/test_qdrant_card_repository.py"
+   ]
+  },
+  {
+   "commit": "de28b5f8f3989bbd0e85076d4d2fc48621ab5c4c",
+   "date": "2026-06-28",
+   "subject": "feat(cards): bounded recency/usage boost in keyword retrieval ranking",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_card_content.py"
+   ]
+  },
+  {
+   "commit": "050c27a3995769e23e313f9071409cc7be76ee54",
+   "date": "2026-06-28",
+   "subject": "feat(cards): dedupe content references on write (merge, do not accumulate)",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_card_content.py"
+   ]
+  },
+  {
+   "commit": "cd06e8bbeda5538ce54de555c0073464134deaeb",
+   "date": "2026-06-28",
+   "subject": "fix(narration): keep thinking-out-loud beats honest about ungrounded findings",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "8f25c3da61accb352ceca9630fc69a3ec61169ba",
+   "date": "2026-06-28",
+   "subject": "feat(tui): expandable future-context panel after deep runs",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_future_context_ui.py"
+   ]
+  },
+  {
+   "commit": "b1e4f972021e4ec9234a210989769b5961cfbc63",
+   "date": "2026-06-28",
+   "subject": "feat: consolidating holistic context filter over the merged card set",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/card_filter.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_consolidate_context.py",
+    "tests/test_per_goal_context_iteration.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "af0fb09e7195af2cf9cc8aa41a6ac03d3b75898e",
+   "date": "2026-06-28",
+   "subject": "feat(narration): emit the instant response the moment it's ready, decoupled from context search",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "fd6966e921b433b572df54df61c73f805dec889c",
+   "date": "2026-06-28",
+   "subject": "feat(deep): surface FUTURE-CONTEXT bullets as data.future_context on the deep result event",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_async_card_update.py"
+   ]
+  },
+  {
+   "commit": "51690859ad589ae0553ccab885e32141923e3084",
+   "date": "2026-06-28",
+   "subject": "test: align discovery/guidance tests with capability-menu contract; add async TUI test deps",
+   "files": [
+    "tests/test_discovery.py",
+    "tests/test_guidance.py"
+   ]
+  },
+  {
+   "commit": "e6cbb528bcbaec6d0037e42014311897d8c81d51",
+   "date": "2026-06-28",
+   "subject": "fix(deep): strip internal FUTURE-CONTEXT section from user-facing deep output",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_async_card_update.py"
+   ]
+  },
+  {
+   "commit": "44102bf2a23a7c60d671ebd10ea525649de6f94a",
+   "date": "2026-06-28",
+   "subject": "fix(terminal): show the instant 'thinking out loud' line while context is searched",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "0386709beb50394c14acca1ca0b54a018b30d4c6",
+   "date": "2026-06-28",
+   "subject": "fix(planner): answer direct follow-ups from the transcript instead of re-searching the corpus",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "e01cb93882e82565e66901acb783f7e74a18915c",
+   "date": "2026-06-28",
+   "subject": "Terminal UI: bigger live deep output, scrollable expand, persist each task's full output",
+   "files": [
+    "quest_ai_runner/textual_ui.py",
+    "tests/test_deep_output_ui.py"
+   ]
+  },
+  {
+   "commit": "abd71f593c5ec4fae91491b40987c06db1fe21d1",
+   "date": "2026-06-28",
+   "subject": "fix: keep capability menus out of the answer; ground on real context",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "e8799152eb5e9d9f593966e74736268e37c810ae",
+   "date": "2026-06-28",
+   "subject": "fix: enable terminal text selection + add Ctrl+Y copy",
+   "files": [
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "ee73f4be619d71f29c33bf182f91be1d60262d57",
+   "date": "2026-06-28",
+   "subject": "fix: fold a deferred deep run's output into the final answer",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "9fef41b7a5d4d00b64e2d6aa5a54e1ff201298be",
+   "date": "2026-06-26",
+   "subject": "fix: make daily token limit default-on (2M/day) not opt-in",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/usage.py",
+    "tests/test_usage.py"
+   ]
+  },
+  {
+   "commit": "aa74428329f0d9d33cf62080a0ad50f4ded97923",
+   "date": "2026-06-26",
+   "subject": "feat: daily token budget to cap API costs from indexing and context",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/usage.py",
+    "tests/test_usage.py"
+   ]
+  },
+  {
+   "commit": "fec8cdd08492dd9e09bdf94fab2fe77ec1d7af8b",
+   "date": "2026-06-22",
+   "subject": "fix(narration): stop repeating \"looking up\" on every read step",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "24ed9b06426602af2de1d8c542f0fbec6736d0a2",
+   "date": "2026-06-21",
+   "subject": "Planner distinguishes questions from commands (don't execute a question as a task)",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "bf4d9f9fc2136cc2cedeeb19d82d72dff2f6795e",
+   "date": "2026-06-20",
+   "subject": "Fix runaway relaunch loop for async hand-off deep runners",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_per_goal_context_iteration.py"
+   ]
+  },
+  {
+   "commit": "35d66fafc4633962afb45b2f92ae1341f8644d43",
+   "date": "2026-06-19",
+   "subject": "Resolve context-card references in the vector arm + add a relevance cutoff",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_card_repository.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "31bb3f50167731257c740f76c097eb93ebdd6663",
+   "date": "2026-06-19",
+   "subject": "narrate: per-step beats are the planner's own conversational rationale (Approach B)",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_context_assembler.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "767c475672534d0b2173f13411cb0cc5cce028c4",
+   "date": "2026-06-19",
+   "subject": "Cards: ship a generic QdrantCardRepository in qar (so consumers wire, not reimplement)",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_card_repository.py",
+    "quest_ai_runner/config.py",
+    "tests/test_qdrant_card_repository.py"
+   ]
+  },
+  {
+   "commit": "43654232254ae0bf2c54d1c3b26fed7d46a8e340",
+   "date": "2026-06-18",
+   "subject": "core: narrate the turn as one continuous train of thought (supersedes instant_ack)",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "9a2f747f65e6b84b8e115549d73c0e02adf29a5d",
+   "date": "2026-06-18",
+   "subject": "Context cards: pluggable CardRepository persistence + optional text-search hook",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_card_repository.py"
+   ]
+  },
+  {
+   "commit": "cb85bed594d8b9a0fb173c3ef264fe370ab8ac79",
+   "date": "2026-06-18",
+   "subject": "Quest AI cards: fix async updater dropping real-model edits (live-tested 0/5 -> 5/5)",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_async_card_update.py"
+   ]
+  },
+  {
+   "commit": "ebea71d1c1adf124174ddf60a49e01bc34a0e26a",
+   "date": "2026-06-18",
+   "subject": "Context cards: async post-deep updater learns for the user's future (Stage A-updater)",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_async_card_update.py"
+   ]
+  },
+  {
+   "commit": "f92ef0e341a7e1864b46e5128eced12a36185d69",
+   "date": "2026-06-18",
+   "subject": "Context cards: generalize to source-agnostic, reference-based topic cards (Stage A-core)",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "tests/test_card_content.py",
+    "tests/test_card_reembed.py"
+   ]
+  },
+  {
+   "commit": "531792a66aa0f41396e37b37135cc5714e6415c1",
+   "date": "2026-06-18",
+   "subject": "fix: restore all test suite green after recent orchestrator/runner changes",
+   "files": [
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_discovery.py",
+    "tests/test_orchestrator.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "bf12f7afbdf5d3f908f0a4fcf611e1bbe302de6e",
+   "date": "2026-06-18",
+   "subject": "fix: answer loop keeps searching when goal not met instead of stopping early",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "b2d07c079536dde10acf6015327964561c866bce",
+   "date": "2026-06-18",
+   "subject": "feat: per-feature version tracking for incremental bootstrap migration",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "142407fe72904632d25340b12dbdbf3e898e7d9f",
+   "date": "2026-06-18",
+   "subject": "Conversation history as context: User Input Understanding + ConversationStore",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/session_file_conversation_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_conversation_understanding.py",
+    "tests/test_per_goal_context_iteration.py"
+   ]
+  },
+  {
+   "commit": "b601d9daf790dfe8b8b7783b3a19478177d100dd",
+   "date": "2026-06-18",
+   "subject": "Remove all hardcoded model names from library code",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/card_metadata_generator.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/cli.py"
+   ]
+  },
+  {
+   "commit": "014899dda6221f11545d7531195536dbab5736f1",
+   "date": "2026-06-18",
+   "subject": "Improve context retrieval: camelCase tokenizer, fallback grep, LLM punt detection",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "69fb3872fb0d5a0ce51e5639eab32ed23d6597b0",
+   "date": "2026-06-18",
+   "subject": "Rename tfidf_sampling → tfdfidf_sampling; fix algorithm and field names",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/file_context_store.py"
+   ]
+  },
+  {
+   "commit": "d76509dc2fcd9ca1b8f5f909c1eccdb90d400141",
+   "date": "2026-06-18",
+   "subject": "feat: add deep_runners registry + deep_runner_classifier to RunnerConfig and Orchestrator",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "810086c36653297c23e2a8a3d5f0f7d0076b82c0",
+   "date": "2026-06-18",
+   "subject": "Improve TF-DF-IDF scoring: max field weights, higher threshold, sibling files",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_bootstrap_token_savings.py",
+    "tests/test_context_assembler.py",
+    "tests/test_model_registry.py"
+   ]
+  },
+  {
+   "commit": "60252de2dd42c3c5bb67b6920f9185b61b93f5ed",
+   "date": "2026-06-18",
+   "subject": "Wire LLM relevance filter into TurnContextStore and GuidanceProvider",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/guidance_provider.py",
+    "quest_ai_runner/core/turn_context_store.py"
+   ]
+  },
+  {
+   "commit": "875641b22427a216eeab2622bee2a10a62300b6d",
+   "date": "2026-06-18",
+   "subject": "Fix LLM card filter: wrong import path, wrong provider, no JSON fence handling",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/card_filter.py"
+   ]
+  },
+  {
+   "commit": "77cadb73c4046db053fc33d73efc340d0343856e",
+   "date": "2026-06-18",
+   "subject": "Use normalized IDF score in card metadata; fix CLI colon spacing",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py"
+   ]
+  },
+  {
+   "commit": "bdad8ba5ae5e991c24b763089c1825eaacd911f7",
+   "date": "2026-06-18",
+   "subject": "Fix self._request error by adding safe-checks and error handling for API existence",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ]
+  },
+  {
+   "commit": "aa9ae3d834ab31b0c471d02b6fa9668b56f87158",
+   "date": "2026-06-18",
+   "subject": "Fix: new inputs no longer re-execute the previous completed task",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "ba793ca45cb4537ec91ba6d3d57e01f7234e95c9",
+   "date": "2026-06-18",
+   "subject": "feat: add debug logging level with -vv flag",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "519fdc15d0e62ac7aeaad94036895dbe789745a3",
+   "date": "2026-06-18",
+   "subject": "fix: reduce log verbosity in terminal UI by default",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "74dc5add84ef8d12049e4fab0518f0f32ffb52d5",
+   "date": "2026-06-18",
+   "subject": "Improve error logging: add exc_info=True and exception type to diagnostics",
+   "files": [
+    "quest_ai_runner/adapters/context_card_updater.py",
+    "quest_ai_runner/adapters/quest_guidance_loader.py"
+   ]
+  },
+  {
+   "commit": "3c3b85eb87f2f0e25d13192b4f1ef65c9f8df191",
+   "date": "2026-06-18",
+   "subject": "Rewrite Textual chat UI as a working REPL with full interactive.py parity",
+   "files": [
+    "quest_ai_runner/textual_session.py",
+    "quest_ai_runner/textual_ui.py"
+   ]
+  },
+  {
+   "commit": "a84800d908d21229a43fd283c8ac2b8d69b63167",
+   "date": "2026-06-17",
+   "subject": "Integrate Textual UI into chat command",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/textual_session.py"
+   ]
+  },
+  {
+   "commit": "8120722c9e2c85d2fda1b70bf97a950e9c0a3d64",
+   "date": "2026-06-17",
+   "subject": "Fix QAR task input confusion: resolve conversation ID lookup mismatch",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_composite_retrieval.py"
+   ]
+  },
+  {
+   "commit": "de2244da30d08ac27565536430208f7b2cdb15c1",
+   "date": "2026-06-17",
+   "subject": "Fix monitor timeout + restore task UUID for session matching",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "d4a6222f16692d2f09244c6b9acf96813cc70eac",
+   "date": "2026-06-17",
+   "subject": "Revert to simpler task identification: use file UUID only",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "9bfdff27f77ad33dcd1c568151222337e9ca3e70",
+   "date": "2026-06-17",
+   "subject": "Generate task UUID for reliable output identification",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "9532e8ba23d876519c04886e9037c7e622c3ba84",
+   "date": "2026-06-17",
+   "subject": "Debug logging: trace live output streaming path",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "f325cb38124f37ad67ccf0232cad7b9fedc8da30",
+   "date": "2026-06-17",
+   "subject": "Fix three UX issues: goal display, noisy logs, and skip-plan logic",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "d8433c7922b6e5ad5c8faa7bcd41b4a70aeddd19",
+   "date": "2026-06-17",
+   "subject": "feat: add WebSearchAdapter for live web grounding in the shallow orchestrator",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "e20a047b517d006ae1d04e0e522c6d94d15d0345",
+   "date": "2026-06-17",
+   "subject": "Planner: coerce non-dict provider output instead of crashing the replan",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "aac4240f392faf57716d94c276fe4275f3cbbf35",
+   "date": "2026-06-17",
+   "subject": "Generic conversation inbox so mid-run messages fold in for ANY interface",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/inbox.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "ef0738f02b5e58d8270e4046c6e0d7b22ea5a178",
+   "date": "2026-06-17",
+   "subject": "Auto-select deep model (fast->escalate) and bound the loop by a token budget",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "eef89b64c844019ca32529356bb52dfb235e242a",
+   "date": "2026-06-17",
+   "subject": "Never pass a non-Claude model to the Claude Code deep worker",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "9a03090906c184f139646de859e3a7fd56f56c9b",
+   "date": "2026-06-17",
+   "subject": "Fold new mid-run user messages into deep processes and answer retries",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "c77dcd488e0e93f4aed7bf4d1a555380e337b687",
+   "date": "2026-06-17",
+   "subject": "Apply the goal loop to ANSWERS too, and give every deep process the top-level goal",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "b247f0f95cff2725be3f2e9dac0b72408b074894",
+   "date": "2026-06-17",
+   "subject": "Replace Claude Code /goal with our own goal-verification loop",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "89db55c9e508fa4093281e42459e4b4963c027ce",
+   "date": "2026-06-17",
+   "subject": "Generate a concise goal CONDITION for decisions, never dump raw text",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "78a7e9ac87f8d1b65ce43acbb26648febc437bb8",
+   "date": "2026-06-17",
+   "subject": "Run Claude Code deep worker headless with -p (it was a silent no-op)",
+   "files": [
+    "quest_ai_runner/core/goal_runner.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "74b8f9726ccefdf796238815a5ed81fd059adbd8",
+   "date": "2026-06-17",
+   "subject": "Escalate answer->deep by USER-MESSAGE intent, not answer-text regex",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "79e1ae071f9ff2c20122928ffe81b4fdb4f8b2ab",
+   "date": "2026-06-17",
+   "subject": "Fix chat crash on deep turns + cap Quest decision summary to 4000 chars",
+   "files": [
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_quest_client_truncation.py"
+   ]
+  },
+  {
+   "commit": "5094d3e7ab9c8cb398ff6a6b928b718d3650fdee",
+   "date": "2026-06-17",
+   "subject": "Fix: re-wire unexecuted-work detector so described-but-undone fixes escalate to deep",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "9ab09b36194ab2a8f425d588c33a168fd18ce64e",
+   "date": "2026-06-17",
+   "subject": "Add 'clarify' action for user input/approval/selection",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "cef6c744a73ff2a0a1467b3c690a25bdc253156a",
+   "date": "2026-06-17",
+   "subject": "Use explicit flag instead of fragile regex patterns",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "643ba525f0b7953ab77b87637de4c029ad1871d5",
+   "date": "2026-06-17",
+   "subject": "Add deferred_deep: answer + queued code changes in one turn",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "38b30728355dd7036c8fc06d1427d913f577498d",
+   "date": "2026-06-17",
+   "subject": "Add multi-strategy edited files extraction for Claude Code and other deep runners.",
+   "files": [
+    "quest_ai_runner/adapters/context_card_updater.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "e50eb10f056d70ef5f23e678b722f2d23a7a8163",
+   "date": "2026-06-17",
+   "subject": "Fix: guidance selection call with correct parameters",
+   "files": [
+    "quest_ai_runner/adapters/quest_guidance_loader.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_guidance.py"
+   ]
+  },
+  {
+   "commit": "f139b80fa9f12af0ff419a4c1e77cd3ad6c30d91",
+   "date": "2026-06-17",
+   "subject": "quest-ai-runner: refactor rep system to use guidance cards + Quest backend",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/quest_guidance_loader.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ]
+  },
+  {
+   "commit": "58647a62f9fc62d9200677ab5230568048ce380d",
+   "date": "2026-06-17",
+   "subject": "quest-ai-runner: add FeedbackProcessor to convert corrections into guidance",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/feedback_processor.py"
+   ]
+  },
+  {
+   "commit": "a281f21f6164e26a27413b79cd6a538e9dbec3a4",
+   "date": "2026-06-17",
+   "subject": "quest-ai-runner: add universal guidance card system",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/guidance_card_manager.py",
+    "quest_ai_runner/core/guidance_provider.py"
+   ]
+  },
+  {
+   "commit": "71f633c1f84ccc782d2f02686a91dc990898a5f3",
+   "date": "2026-06-17",
+   "subject": "Make call counting generic across all ModelProviders",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/core/adapters.py"
+   ]
+  },
+  {
+   "commit": "f47d24185ef45261e7d1fecc4b00acf5ccfb5667",
+   "date": "2026-06-17",
+   "subject": "Fix: add model parameter to refresh_stale for stale-card regeneration",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "a079f6ba1f8bb8f10a784b300363b13481dd258f",
+   "date": "2026-06-17",
+   "subject": "quest-ai-runner: add QuestRetrievalAdapter for context retrieval",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/quest_retrieval_adapter.py"
+   ]
+  },
+  {
+   "commit": "b19325567ac319d3f87ee01eb6cec7dd184ad089",
+   "date": "2026-06-17",
+   "subject": "quest-ai-runner: auto-fetch goal/quest context + notes, pass to deep agent",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ]
+  },
+  {
+   "commit": "141b6c7df86c680b3ed5c949d05d2b1b9a6714fc",
+   "date": "2026-06-17",
+   "subject": "Fix bootstrap: resolve and pass model to LLM calls",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py"
+   ]
+  },
+  {
+   "commit": "e8cd2e39863b1c8346994949102237fef51a9fd7",
+   "date": "2026-06-17",
+   "subject": "Use heuristic for card estimation instead of stub parsing",
+   "files": [
+    "quest_ai_runner/adapters/dryrun_provider.py",
+    "quest_ai_runner/cli.py"
+   ]
+  },
+  {
+   "commit": "4f434945a145ac4c59ffc4324ef8c766c2c9a41e",
+   "date": "2026-06-17",
+   "subject": "Implement real dry-run using actual bootstrap code path",
+   "files": [
+    "quest_ai_runner/adapters/dryrun_provider.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/cli.py"
+   ]
+  },
+  {
+   "commit": "296d0d3c2c420435507edc652de56878c7e34910",
+   "date": "2026-06-17",
+   "subject": "Calculate bootstrap cost based on actual provider/model config",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/pricing.py"
+   ]
+  },
+  {
+   "commit": "7aa6a7bdd6e3f8728e11bba2060d2e842cbef734",
+   "date": "2026-06-17",
+   "subject": "Extract shared TF-DF-IDF sampling utilities for both adapters.",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/file_context_store.py"
+   ]
+  },
+  {
+   "commit": "88d709da1fd7cb1828a3842e65233c60f7e7dea3",
+   "date": "2026-06-17",
+   "subject": "Refactor: LLM generates card metadata, not per-source",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/card_metadata_generator.py",
+    "quest_ai_runner/adapters/conversation_card_builder.py"
+   ]
+  },
+  {
+   "commit": "5f42bff2cefc415c944d15c935c2f78b9c212baa",
+   "date": "2026-06-17",
+   "subject": "Add intelligent Claude conversation handling",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "tests/test_composite_retrieval.py"
+   ]
+  },
+  {
+   "commit": "60c696569dc7f54922172ded798b1ea530307add",
+   "date": "2026-06-17",
+   "subject": "Add recursive discovery of .claude conversations within corpus",
+   "files": [
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "tests/test_composite_retrieval.py"
+   ]
+  },
+  {
+   "commit": "ba8d0a0259be15cc9ee26f405a96ee9bfbbf7f88",
+   "date": "2026-06-17",
+   "subject": "Fix: ClaudeConversationsAdapter now derives from corpus_root, not hardcoded",
+   "files": [
+    "examples/composite_retrieval_example.py",
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "tests/test_composite_retrieval.py"
+   ]
+  },
+  {
+   "commit": "3743559f2a3095d3559bb08d2d1ea71892f1a5a4",
+   "date": "2026-06-17",
+   "subject": "Add parallel multi-source retrieval adapters",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/claude_conversations_adapter.py",
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py"
+   ]
+  },
+  {
+   "commit": "adbc32b112cb075b96edd47d49bd88277ac57542",
+   "date": "2026-06-17",
+   "subject": "Switch to semantic tier names + add OpenAI/Gemini providers",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "0ca98d01b6fe40c00fa49b9e8150a8f6c6b48491",
+   "date": "2026-06-17",
+   "subject": "Add multi-provider support + model tier configuration",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "ffb6ded887e5985547ad9aa1d9641eb0c20f06ce",
+   "date": "2026-06-17",
+   "subject": "Wire card filtering and EVENT_CONTEXT through orchestrator",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "2c2179e1ed05313804af7e5f787edd124a6db733",
+   "date": "2026-06-16",
+   "subject": "Add card filtering infrastructure for LLM-based context card selection",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/card_filter.py"
+   ]
+  },
+  {
+   "commit": "17b317c7a0ba34769f6eae8d4753d1298ea0b968",
+   "date": "2026-06-16",
+   "subject": "feat(context): LLM-cluster dedup, incremental bootstrap, version meta + bootstrap CLI",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_context_assembler.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "3cb4d1c7d4ed7c294fe19d03e99ba7be30a9ab58",
+   "date": "2026-06-16",
+   "subject": "fix(bootstrap): always run in background, never block chat startup",
+   "files": [
+    "quest_ai_runner/config.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "645c15f41a559fe3122b8da7a5a0cbfe74e8f4ba",
+   "date": "2026-06-16",
+   "subject": "feat(embedder): add make_openai_embedder and QAR_EMBEDDER_BACKEND=openai support",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "63839a7d8868757335ec9026f2fce72113febe7d",
+   "date": "2026-06-16",
+   "subject": "feat: live token tracking and granular progress events",
+   "files": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py"
+   ]
+  },
+  {
+   "commit": "308d7e0fb27bfe6be06adaa2fbc2d5dc83c70a4c",
+   "date": "2026-06-16",
+   "subject": "fix(interactive): instant ack as LLM message; add token counts to turn footer",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "06c80ef8051eb0f336bbd40e4e0b90ea877df79d",
+   "date": "2026-06-16",
+   "subject": "fix(bootstrap): 3-stage parallel fan-out, stdin piping, and concurrency lock",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "63ccfd8c100e994050bc737a363eb590896d4d4e",
+   "date": "2026-06-16",
+   "subject": "Improve /quests error messages to be specific about what failed",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_context_assembler.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "64e2673bc736759e3879334c08d32d5b747cfcdc",
+   "date": "2026-06-16",
+   "subject": "feat(file-context-store): wire _llm_topic_cards into bootstrap via provider param",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "15a31493a1da635cb87da2d5f3b33581102b47a2",
+   "date": "2026-06-16",
+   "subject": "Background incremental refresh of context cards on subsequent startups",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py"
+   ]
+  },
+  {
+   "commit": "2d72b14dddc0924fff4a9b4da164cf6b167bf4d1",
+   "date": "2026-06-16",
+   "subject": "Honour nested .gitignore files during walks; add prune_dirnames helper",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/files_adapter.py"
+   ]
+  },
+  {
+   "commit": "ee9e569d50419c5075aae55558c0ba656f056de5",
+   "date": "2026-06-16",
+   "subject": "Replace hardcoded skip-dir lists with gitignore-aware walk utility",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/files_adapter.py"
+   ]
+  },
+  {
+   "commit": "48a173c7eb61f0497d750cd5ee9a5dc91bcf30be",
+   "date": "2026-06-16",
+   "subject": "fix(chat): slash autocomplete and instant response feedback",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "d95a45f03c5b627024a3eeb5b0b6fc463815c5f9",
+   "date": "2026-06-16",
+   "subject": "Skip Android SDK dirs during context indexing; log index build progress",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/files_adapter.py"
+   ]
+  },
+  {
+   "commit": "836273ad2be2372ca8a426fdf97e9f0f532b4f30",
+   "date": "2026-06-16",
+   "subject": "feat: AI rep auto-learn system (NoteContextStore + hybrid-default + rep context in preamble)",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/note_context_store.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/rep_sync.py",
+    "tests/test_note_context_store.py"
+   ]
+  },
+  {
+   "commit": "9ce07587b05abe7c046b360d8326627c23a76918",
+   "date": "2026-06-16",
+   "subject": "fix: turn cards colocated with file cards under corpus_root",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/turn_context_store.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "3235992fb0ce98e8322f3651f1a931419f8da820",
+   "date": "2026-06-16",
+   "subject": "refactor(turn-memory): replace TurnMemory with TurnContextStore + CompositeContextAssembler",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/turn_context_store.py",
+    "tests/test_turn_context_store.py"
+   ]
+  },
+  {
+   "commit": "d23acc2a14a6d603c0c3ccdda4a3f5d0f88f9fe7",
+   "date": "2026-06-16",
+   "subject": "Pass gathered to _run_deep; add TurnMemory for relevant-turn transcript selection",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_deep_gathered.py"
+   ]
+  },
+  {
+   "commit": "e0ad06380d49c3a95700f23a16b3ec71a79a4e2b",
+   "date": "2026-06-15",
+   "subject": "fix: chat works without Quest creds/corpus; send prints task name; no-retrieval guard",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "bcb54cc627ac1db43593d8ea701b16205ae2911b",
+   "date": "2026-06-15",
+   "subject": "feat: rep identity, source paths, turn footer, and chat UX overhaul",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "0b37ac5cb843cef41a82134f34ac7c71ea28a41f",
+   "date": "2026-06-15",
+   "subject": "Guard hardening from review: tighten claim gate, re-verify after remediation, drop em dashes",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py"
+   ]
+  },
+  {
+   "commit": "f402e11cd635067beb472f37fb893c6588cbb327",
+   "date": "2026-06-15",
+   "subject": "feat: add QuestClient.create_task and quest-ai-runner send subcommand",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ]
+  },
+  {
+   "commit": "50477d8a244e8fa5438cba31e82eea2286c325bb",
+   "date": "2026-06-15",
+   "subject": "Add broken-promise guard: post-turn honesty check (auto-remediate then verify)",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_guard.py"
+   ]
+  },
+  {
+   "commit": "144e0a8673d5ee0dd03ae3351a7fd9378b8f1605",
+   "date": "2026-06-15",
+   "subject": "Add optional GuidanceProvider adapter for use-case-specific instructions",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_guidance.py"
+   ]
+  },
+  {
+   "commit": "f5ba873a937ceeb5eba1dc3084920fc88d8ed975",
+   "date": "2026-06-14",
+   "subject": "Match quest-backend: Voyage embedder factory + query/document embedder split",
+   "files": [
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "da53255e5494f6a344d45d4db7c5dbb256028d1e",
+   "date": "2026-06-13",
+   "subject": "UX: instant acknowledgment (parallel, no added latency) + context transparency",
+   "files": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_ux_features.py"
+   ]
+  },
+  {
+   "commit": "50a0f2dedcc733a9c4ca2255ba87c0e27a44ae62",
+   "date": "2026-06-13",
+   "subject": "Cold-start vector seeding from docstring cards (auto-updated); eval doc pitch",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/config.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "17341da5f416443c46252b78cf4ccb75512688a8",
+   "date": "2026-06-13",
+   "subject": "Discipline the task-to-context memory: recency decay, dedup/merge, capacity cap",
+   "files": [
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "ef66f67e58ee8809f26e11362ac885692b56b772",
+   "date": "2026-06-13",
+   "subject": "Extract docstrings for rich summaries (free, no LLM) + demand-driven enrichment",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "tests/test_context_assembler.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "ec1a7ffaef8cdd475dfa6a8b74702c62a61888d2",
+   "date": "2026-06-13",
+   "subject": "rep-sync: opt-in reps run tasks as their Quest persona by default; rep_sync_direction (pull|push|both)",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_rep_run.py"
+   ]
+  },
+  {
+   "commit": "9711f5a6ea61d457c3bf9377ff7608e44440ea13",
+   "date": "2026-06-13",
+   "subject": "Add BM25-over-content sparse retriever (parallel multi-query, auto-update)",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "tests/test_bm25_content.py"
+   ]
+  },
+  {
+   "commit": "e0e5f44cb38ba6e1f44bac68d0c8f0b46737f747",
+   "date": "2026-06-13",
+   "subject": "Add vector-search context layer: pluggable VectorStore, local Qdrant, hybrid, agentic, auto-update",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_vector_context.py"
+   ]
+  },
+  {
+   "commit": "8e03d3d2367d113ae9e257f04a65aff29ab111f5",
+   "date": "2026-06-13",
+   "subject": "Confidence gate (never-worse by construction) + parallel fingerprinting + speed metric",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "0de2db1f7001198361635d12702d8a4f5ec65886",
+   "date": "2026-06-13",
+   "subject": "Add cached-hint discipline (discard if it does not fit) to keep context Pareto-safe",
+   "files": [
+    "quest_ai_runner/core/context_doctrine.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ]
+  },
+  {
+   "commit": "70b369bdf03006fabe02ff951cd73f258331f416",
+   "date": "2026-06-13",
+   "subject": "Cold-start repo bootstrap + IDF relevance for FileContextStore",
+   "files": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "7a3bd3832193568c6137b2c7d6a7056b7171534e",
+   "date": "2026-06-13",
+   "subject": "Context handling on by default; close the write-back loop; fix path resolution",
+   "files": [
+    "examples/custom_consumer.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "ad8bf5006f287467f088dc0db6cba9a5bbc0d6db",
+   "date": "2026-06-13",
+   "subject": "Add optional ContextAssembler adapter for guaranteed, reusable context",
+   "files": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/context_doctrine.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_context_assembler.py"
+   ]
+  },
+  {
+   "commit": "63b0c2a0945f6b85e5169389f7b2d7f0a9b55cc9",
+   "date": "2026-06-11",
+   "subject": "Add multimodal (image) + file-attachment support to the runner",
+   "files": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/attachments.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_attachments.py",
+    "tests/test_model_registry.py",
+    "tests/test_orchestrator.py",
+    "tests/test_providers_multimodal.py"
+   ]
+  },
+  {
+   "commit": "b216efca0b4fdea78b65bbbbe928ae02a58efbb7",
+   "date": "2026-06-11",
+   "subject": "orchestrator: route code/file-change tasks straight to deep",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/conftest.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "a02d0e9724806c8ce5b48069cb746e64ee2e8fae",
+   "date": "2026-06-09",
+   "subject": "review: polish discovery + model-hint work",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "9db1626c7769768d9cc4de593dd4fb7ad9fadef5",
+   "date": "2026-06-09",
+   "subject": "feat: per-run model hint — task.model surfaces to the orchestrator",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py",
+    "tests/test_orchestrator.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "70205163c1eee36462901e0f149171554645ffc7",
+   "date": "2026-06-09",
+   "subject": "Add discovery contract to retrieval adapters: list/describe sources and operations",
+   "files": [
+    "quest_ai_runner/adapters/cached_db_adapter.py",
+    "quest_ai_runner/adapters/files_adapter.py",
+    "quest_ai_runner/core/adapters.py",
+    "tests/test_discovery.py"
+   ]
+  },
+  {
+   "commit": "5ed2f6ea60d073087547fcf7921b980286989264",
+   "date": "2026-06-09",
+   "subject": "core: stop re-sending unchanged transcript + context_view to the planner each step",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "9f4f3189885dfeaa0c5c9687f1fac0ed779c10b1",
+   "date": "2026-06-09",
+   "subject": "Add opt-in resource-aware throttling: pause pickup under host overload, resume on recovery",
+   "files": [
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/resources.py",
+    "quest_ai_runner/runner/poller.py",
+    "tests/test_resources.py"
+   ]
+  },
+  {
+   "commit": "dc4162352b552443e4fb1f883682f114b95d761e",
+   "date": "2026-06-09",
+   "subject": "core: feed the planner a leaner per-step view (compress older gathered)",
+   "files": [
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/conftest.py",
+    "tests/test_orchestrator.py"
+   ]
+  },
+  {
+   "commit": "44709fe6c25380de698483f4ebcf3ce432cd31b1",
+   "date": "2026-06-09",
+   "subject": "runner: stamp task handler on claim + stream live execution progress",
+   "files": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "29d64e90d925af2dce07bae4e94fdd7ae4a58ee9",
+   "date": "2026-06-08",
+   "subject": "Add AI-rep <-> skill-file sync via the Quest AI-profile API",
+   "files": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/__init__.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/rep_sync.py",
+    "tests/test_rep_sync.py"
+   ]
+  },
+  {
+   "commit": "8369a34e2ceb3367d86dd56184f3ee494e2a294f",
+   "date": "2026-06-06",
+   "subject": "core: stream deep-run execution lifecycle via DeepRunner.run_goal(emit=...)",
+   "files": [
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "tests/test_modes.py"
+   ]
+  },
+  {
+   "commit": "7c24c6fa372e31c0bd3c62e1e437a77f8f8e69a5",
+   "date": "2026-06-05",
+   "subject": "Add env_id to the environment heartbeat (multiple runners per team)",
+   "files": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/test_runner.py"
+   ]
+  },
+  {
+   "commit": "65ea956912f81550c0f6ca7bfd761c9687d27489",
+   "date": "2026-06-05",
+   "subject": "Add keyless ClaudeCliProvider (planner/answer via claude CLI subscription)",
+   "files": [
+    "examples/custom_consumer.py",
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/cli.py",
+    "tests/test_claude_cli_provider.py"
+   ]
+  },
+  {
+   "commit": "81386c2f13d1ae675a10800c5b8eebb25cdc38c7",
+   "date": "2026-06-05",
+   "subject": "Initial public release of quest-ai-runner (v0.1.0)",
+   "files": [
+    "examples/__init__.py",
+    "examples/custom_consumer.py",
+    "examples/e2e_demo.py",
+    "examples/run_lane.py",
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/cached_db_adapter.py",
+    "quest_ai_runner/adapters/files_adapter.py",
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/__init__.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/__init__.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "tests/__init__.py",
+    "tests/conftest.py",
+    "tests/test_examples.py",
+    "tests/test_model_registry.py",
+    "tests/test_modes.py",
+    "tests/test_orchestrator.py",
+    "tests/test_runner.py"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1877 @@
+{
+ "qar_commit": "0cf161e5",
+ "rule": "the commit subject is the task (it names no path, file, extension or identifier); the quest_ai_runner files of the commit that are in the pinned corpus are the needed set",
+ "cases": [
+  {
+   "id": "NS-9cef6e98",
+   "area": "quest_ai_runner",
+   "task": "Add built-in lane supervisor: quest-ai-runner lane start|stop|restart|status|ensure (no systemd, no root)",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/cli_lane.py",
+    "quest_ai_runner/cli_parser.py",
+    "quest_ai_runner/runner/lane_env_file.py",
+    "quest_ai_runner/runner/lane_supervisor.py"
+   ],
+   "commit": "9cef6e98e3ddb4edbd0be322850df4d1635a2ae5",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-9e8c4165",
+   "area": "quest_ai_runner/core",
+   "task": "Answer own-updates before the understanding step, awaiting the reach verdict",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_run_begin.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/reach_judge.py"
+   ],
+   "commit": "9e8c41658efa7014d6b2433b8bad8541784fc7d1",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-ec3d9728",
+   "area": "quest_ai_runner/core",
+   "task": "Open a requested official page in the first pass; own stop reason for an unconfirmed reply",
+   "needed": [
+    "quest_ai_runner/core/ask_policy.py",
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_turn_messages.py",
+    "quest_ai_runner/core/planner_context.py"
+   ],
+   "commit": "ec3d972828e011023f1fba81b3d62fd0d3185a28",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-24089355",
+   "area": "quest_ai_runner/core",
+   "task": "Keep requested links through reply-standard repairs; no deep run for an unopenable page",
+   "needed": [
+    "quest_ai_runner/core/link_provenance_pass.py",
+    "quest_ai_runner/core/orchestrator_reads.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/orchestrator_run_close.py",
+    "quest_ai_runner/core/reply_standards.py"
+   ],
+   "commit": "24089355a2522836ce0475beda88704921b0899d",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-ada280be",
+   "area": "quest_ai_runner/core",
+   "task": "Open a cited-but-unread page with one web page read instead of a deep run",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_run_close.py"
+   ],
+   "commit": "ada280bed17228fdfa61292a0f26508ed4b04583",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-47b69b40",
+   "area": "quest_ai_runner/core",
+   "task": "Live Trail: a running answering step so the line stays up while the answer is written",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/work_trace.py"
+   ],
+   "commit": "47b69b408ed2a8aa84c3b0edcf4d112147aefa53",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-fe646570",
+   "area": "quest_ai_runner/core",
+   "task": "Send the link check running before the guard fetches links",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/work_trace.py"
+   ],
+   "commit": "fe6465702ba273ea6b21dd84ecfff223662745de",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "NS-7a039233",
+   "area": "quest_ai_runner",
+   "task": "Terminal: Alt+letter keys reach the app instead of typing, Not-now fold persists across restarts, header icon in plain fonts",
+   "needed": [
+    "quest_ai_runner/textual_ui.py",
+    "quest_ai_runner/textual_ui_ask_folds.py",
+    "quest_ai_runner/textual_ui_prompt.py",
+    "quest_ai_runner/textual_ui_trail.py"
+   ],
+   "commit": "7a03923384e5dc80e9fe2814cf9244e538532370",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-9905a6e4",
+   "area": "quest_ai_runner/core",
+   "task": "One ask per blocked turn: dedupe key is the turn, the ask text tells the asker who was asked and that the answer returns to them, and a thread-turn worker is told the runner files the ask (a real team turn had a worker-raised unassigned ask beside the runner's)",
+   "needed": [
+    "quest_ai_runner/core/ask_policy.py",
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py"
+   ],
+   "commit": "9905a6e4ce63568223f0d9766f847de926300d81",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-952775a5",
+   "area": "quest_ai_runner/core",
+   "task": "Deep worker reports structural receipts: tool counts, pages opened, files written with sizes, read from its session record, so the interim gate has something real to show",
+   "needed": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/goal_runner_receipts.py"
+   ],
+   "commit": "952775a52677d6d1ce9fafc765fc04029340cf2a",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-aa7d8b2b",
+   "area": "quest_ai_runner",
+   "task": "Trail: shared threads name records everyone can see, removed links name their site, rare-word rule for used records",
+   "needed": [
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/core/work_trace.py"
+   ],
+   "commit": "aa7d8b2b61222772269c8ff2c172483ac9e5a3d1",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-91725990",
+   "area": "quest_ai_runner/core",
+   "task": "Interim replies and asks: real-turn tier, and four fixes it found",
+   "needed": [
+    "quest_ai_runner/core/ask_policy.py",
+    "quest_ai_runner/core/interim_policy.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/orchestrator_run_close.py",
+    "quest_ai_runner/core/orchestrator_turn_messages.py"
+   ],
+   "commit": "9172599025aba7c1e3eafd64303a43280741db3f",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-71c94694",
+   "area": "quest_ai_runner/core",
+   "task": "Trail emit: records by human title only, settled on the finished reply; sites only when the reply names them",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_events.py",
+    "quest_ai_runner/core/orchestrator_reads.py",
+    "quest_ai_runner/core/work_trace.py"
+   ],
+   "commit": "71c94694a33b9746ca30c646cf7eae1f1a94e46a",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-0c2189e3",
+   "area": "quest_ai_runner/core",
+   "task": "Trail: show a record only when the answer used it, a paper only when the reply cites it",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_reads.py",
+    "quest_ai_runner/core/orchestrator_run_begin.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/work_trace.py"
+   ],
+   "commit": "0c2189e374c7e5759a1d1f22839408f2d3d5dc66",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-c06795af",
+   "area": "quest_ai_runner/core",
+   "task": "ESOI for interim replies and asks: problem, ideal, reply-in-steps and ask-on-block, their metric, and an offline component with the incumbent, a spam baseline and the real policy",
+   "needed": [
+    "quest_ai_runner/core/ask_policy.py",
+    "quest_ai_runner/core/interim_policy.py"
+   ],
+   "commit": "c06795af03662edcd4babd73587610c1e55b018e",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-e2737f2b",
+   "area": "quest_ai_runner/core",
+   "task": "Live work trace: emit web, scholarly, records and link-check steps from structural results",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_reads.py",
+    "quest_ai_runner/core/orchestrator_run_begin.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/work_trace.py"
+   ],
+   "commit": "e2737f2b1aa10a14e4da2051ff5b062a4351d3a1",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-59d3698a",
+   "area": "quest_ai_runner/core",
+   "task": "Situation standards at the answer checkpoint: measured reply checks, code-built repair rounds and a deterministic last-resort repair",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_decide_tool.py",
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/orchestrator_types.py",
+    "quest_ai_runner/core/overseer.py",
+    "quest_ai_runner/core/planner_prompt.py",
+    "quest_ai_runner/core/reply_standards.py"
+   ],
+   "commit": "59d3698a5f18ebb850ba62034ee37152fc3d1f81",
+   "date": "2026-11-01"
+  },
+  {
+   "id": "NS-1cb2515e",
+   "area": "quest_ai_runner/core",
+   "task": "Answer product questions from docs, state only documented approval, tighten reply brevity",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "1cb2515e6602314423bed8fa3d80fd47046863e3",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-b3759ecc",
+   "area": "quest_ai_runner/core",
+   "task": "Guidance cases check the right answer; the planner asks one question, reads an addressless listed file and names one first step",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "b3759ecc6e2372bc073b37fdbe5af88151b9746a",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-4a2d75f0",
+   "area": "quest_ai_runner",
+   "task": "Planner: a quick change asked for in chat runs now instead of going to the queue after reads",
+   "needed": [
+    "quest_ai_runner/cli_config.py",
+    "quest_ai_runner/core/orchestrator_decide_tool.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "4a2d75f02b01b4c570878904c4560eba7d9c230d",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-4589f257",
+   "area": "quest_ai_runner/core",
+   "task": "Link provenance pass: a link or file address the turn never held is removed from the reply",
+   "needed": [
+    "quest_ai_runner/core/link_provenance_pass.py",
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/orchestrator_types.py"
+   ],
+   "commit": "4589f257d5ae6144202577045d30c2f007a707c1",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-278456a0",
+   "area": "quest_ai_runner/core",
+   "task": "Veto web reads the reach judge settled live in the person's own records; reply voice: documented steps and every part",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/tool_guards.py"
+   ],
+   "commit": "278456a0e577ce0470c47b0923f3d32b17452658",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-53041345",
+   "area": "quest_ai_runner/core",
+   "task": "Three code-level guards: near-identical writes in one step run once, no em dash in replies or written data, a live-world question is read from the web",
+   "needed": [
+    "quest_ai_runner/core/em_dash_pass.py",
+    "quest_ai_runner/core/orchestrator_reads.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/tool_guards.py",
+    "quest_ai_runner/core/tools.py"
+   ],
+   "commit": "53041345edf27784a38d3604be1ddc7aeed668c7",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-54baf1a9",
+   "area": "quest_ai_runner/core",
+   "task": "Planner: a how-do-I question gets the steps and no tool runs; one call per thing asked; an identical tool call twice in one step runs once",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/planner_prompt.py",
+    "quest_ai_runner/core/tools.py"
+   ],
+   "commit": "54baf1a994267f54fdcdac4d1c4730eec98ee9cd",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-4e43cf7d",
+   "area": "quest_ai_runner/core",
+   "task": "The planner's asks-first verdict reaches the reply writer as a directive; QUEST-02 accepts a Life Design answer",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_decide_tool.py",
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "4e43cf7db8b14d15dab1013fac76e9052ba0e452",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-213e6aa5",
+   "area": "quest_ai_runner/adapters",
+   "task": "Chat quality: a short named-subject question skips the resolver, quest cards are fenced by their quest in the vector arm, the eval never mails, and the family quest dates follow today",
+   "needed": [
+    "quest_ai_runner/adapters/qdrant_card_repository.py",
+    "quest_ai_runner/core/orchestrator_understanding.py",
+    "quest_ai_runner/core/scope_tags.py"
+   ],
+   "commit": "213e6aa51bd41f8a2e1c2c2fea029d402c1bddc4",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-9f740f44",
+   "area": "quest_ai_runner/core",
+   "task": "Reply voice: one concrete next step when the person does not know where to start, and use what the context shows (a listed file address becomes a link); planner: asking to be shown a listed file is a question",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "9f740f447a2c8bd1c53a97842c3aa84c40a71eea",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-e5192c36",
+   "area": "quest_ai_runner/adapters",
+   "task": "A card derived from one quest stays with that quest whatever tags later turns added",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_assembly.py",
+    "quest_ai_runner/core/scope_tags.py",
+    "quest_ai_runner/core/turn_context_store.py"
+   ],
+   "commit": "e5192c3641002e7d89e5205f7156e3d9f7efa55f",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-7fdd8e94",
+   "area": "quest_ai_runner",
+   "task": "Provider failover: the router QAR builds asks another configured vendor when one has no credit, is over quota or down",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/config_orchestrator.py",
+    "quest_ai_runner/providers.py"
+   ],
+   "commit": "7fdd8e94c2feaecf9b08f15e4eeea61f66a8b809",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-e651c87d",
+   "area": "quest_ai_runner/core",
+   "task": "Ask the one question that unlocks action when a wish or plan needs facts only the person holds",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "e651c87db74bffbfa279ed8776eb6489e1b47c44",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-4add3c80",
+   "area": "quest_ai_runner/core",
+   "task": "Compound note-plus-question writes directly and answers within the stated length",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/core/tools_quest_ops.py"
+   ],
+   "commit": "4add3c80823b7310ed907f8358d5737175b63b89",
+   "date": "2026-10-31"
+  },
+  {
+   "id": "NS-bce0b41a",
+   "area": "quest_ai_runner/core",
+   "task": "Spec search: judge lines stay unclipped, as before the move to the library",
+   "needed": [
+    "quest_ai_runner/core/spec_selection.py",
+    "quest_ai_runner/core/unified_search.py"
+   ],
+   "commit": "bce0b41aa66c21e7bd1bf4a095b0766e6bb79753",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-0abe40bb",
+   "area": "quest_ai_runner/core",
+   "task": "Orchestrator per-turn slice: the turn card cache, the progress emitter and the overseer wake-up gate are the hub's; QAR keeps the narrator and its prompt",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_events.py",
+    "quest_ai_runner/core/orchestrator_turn.py"
+   ],
+   "commit": "0abe40bbdb052c143d64df18a5300d6cbda31077",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-80747583",
+   "area": "quest_ai_runner/core",
+   "task": "Orchestrator leaves slice: staged plans, the loop's default bounds and result checks, and the status text helpers are the hub's; QAR keeps thin bindings and its own sentences",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_constants.py",
+    "quest_ai_runner/core/orchestrator_staged_plan.py",
+    "quest_ai_runner/core/orchestrator_text.py"
+   ],
+   "commit": "80747583014f1a9acf18a4ef4cfc38ac5ff08c9c",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-10f18728",
+   "area": "quest_ai_runner/adapters",
+   "task": "Prompt-spec mechanics move to the hub; QAR keeps a thin binding of its tiers and usage log",
+   "needed": [
+    "quest_ai_runner/adapters/conversation_session_store.py",
+    "quest_ai_runner/core/prompt_specs.py",
+    "quest_ai_runner/interactive_session.py"
+   ],
+   "commit": "10f18728f9dd0fd67065ccdf3a3d1dea487dd80b",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-25d25a19",
+   "area": "quest_ai_runner/adapters",
+   "task": "Q3 backlog: secret redaction, signature probes and the conversation card builder move to the hub; the other six get concrete waiver reasons",
+   "needed": [
+    "quest_ai_runner/adapters/conversation_card_builder.py",
+    "quest_ai_runner/adapters/files_redaction.py",
+    "quest_ai_runner/core/signature_probe.py"
+   ],
+   "commit": "25d25a19e0fc08e21cf8a0552089cb124d9df4cd",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-69a57933",
+   "area": "quest_ai_runner/runner",
+   "task": "Quest client: one capability probe per process, a 5 second probe timeout, a total deadline on reads",
+   "needed": [
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/quest_client_transport.py"
+   ],
+   "commit": "69a57933ea90c8f9444adf1a966f1e550fef7d27",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-d738f056",
+   "area": "quest_ai_runner/core",
+   "task": "Ask already answered: keep the 'do not ask again in other words' guidance; an in-progress 409 is a retryable failure",
+   "needed": [
+    "quest_ai_runner/core/tools_quest_ops.py",
+    "quest_ai_runner/runner/quest_client_transport.py"
+   ],
+   "commit": "d738f0564285caab808f04d70c742917ee293df3",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-4a2cf9ee",
+   "area": "quest_ai_runner/core",
+   "task": "Not applied with no ask to resolve is refused, never held",
+   "needed": [
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/core/tools_quest_standard.py",
+    "quest_ai_runner/core/tools_status.py",
+    "quest_ai_runner/runner/quest_client_quests.py",
+    "quest_ai_runner/runner/quest_client_support.py"
+   ],
+   "commit": "4a2cf9ee45cd6203abbd58d16b4e2ecebdbc3ea3",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-a6b26143",
+   "area": "quest_ai_runner/core",
+   "task": "Tools command and ledger: a write held for approval is accepted, not a failed command",
+   "needed": [
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/tools/__main__.py"
+   ],
+   "commit": "a6b26143cd99cd05333c71b54988d610a18ffc74",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-208278a7",
+   "area": "quest_ai_runner/core",
+   "task": "A held write is neither done nor failed; an unknown write is settled and never re-sent",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_reads.py",
+    "quest_ai_runner/core/orchestrator_recipes.py",
+    "quest_ai_runner/core/orchestrator_run_close.py",
+    "quest_ai_runner/core/recipes.py",
+    "quest_ai_runner/core/tools_status.py",
+    "quest_ai_runner/runner/executor_reporting.py"
+   ],
+   "commit": "208278a758bc6e188f90eaf52cd27e90b1ee50ca",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-6fe4c058",
+   "area": "quest_ai_runner/runner",
+   "task": "Requested action: a held result parks the task only when it carries an ask to resolve",
+   "needed": [
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/requested_action.py"
+   ],
+   "commit": "6fe4c0584964c22948647fc6e08a03bbe4d6145f",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-de690e11",
+   "area": "quest_ai_runner/core",
+   "task": "Metric value draft: a held proposal is the expected result, not a failure",
+   "needed": [
+    "quest_ai_runner/core/tools_status.py",
+    "quest_ai_runner/runner/metric_draft.py"
+   ],
+   "commit": "de690e11d0ddd74e90fc518b5c73a8c883ba86e3",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-3a7f9a65",
+   "area": "quest_ai_runner/adapters",
+   "task": "Retrieval slice: the vector and hybrid assemblers, the BM25 content store and the card filter are the hub's; QAR keeps its skip set, seed scope, environment names and prompts as registered specs",
+   "needed": [
+    "quest_ai_runner/adapters/bm25_content_store.py",
+    "quest_ai_runner/adapters/hybrid_context_assembler.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/card_filter.py"
+   ],
+   "commit": "3a7f9a6585d48965fd01cd9ef9e688c463e51cfa",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-2e76add8",
+   "area": "quest_ai_runner",
+   "task": "Tier selection applies measured picks only; the credit allowance comes from QAR's own configuration",
+   "needed": [
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/providers.py"
+   ],
+   "commit": "2e76add8a9f7fc3f9eaef26414365c457528697f",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-6258f5e5",
+   "area": "quest_ai_runner/core",
+   "task": "chat quality: a turn bound to a quest is told its scope in the context the planner and the answer read",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/scope_tags.py"
+   ],
+   "commit": "6258f5e5096b3c94068aeedd7a2e94072a1b8b64",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-d628b86b",
+   "area": "quest_ai_runner/core",
+   "task": "chat quality: the after-work reply covers every part the request named and shows the planner's done-standard met",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_answering.py",
+    "quest_ai_runner/core/orchestrator_run_close.py"
+   ],
+   "commit": "d628b86b2e447b0e1d68135df818690dbf1d6dee",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-0731a70c",
+   "area": "quest_ai_runner/core",
+   "task": "chat quality: a change parked on approval keeps the answer written from this turn's reads",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/orchestrator_run_close.py"
+   ],
+   "commit": "0731a70cc4c06e1f82a6625f70c48288178efeb3",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-60ee9c8a",
+   "area": "quest_ai_runner/core",
+   "task": "chat quality: the planner lists the facts it read that bear on the request, and the list travels with the work",
+   "needed": [
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/orchestrator_decide_tool.py",
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/orchestrator_planning.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "60ee9c8ae0eeda69314d6eda6eec727eb614c42f",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-57f4ec7f",
+   "area": "quest_ai_runner/core",
+   "task": "chat quality: a clipped read is shown as clipped, and the compact planner profile says where the person's records are read",
+   "needed": [
+    "quest_ai_runner/core/planner_context.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "57f4ec7f3007f949b631e915177a3127fbbb0932",
+   "date": "2026-10-30"
+  },
+  {
+   "id": "NS-463a1b58",
+   "area": "quest_ai_runner/adapters",
+   "task": "tidy: a local folder re-keys its compounded sole copies at start too",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_heal.py",
+    "quest_ai_runner/adapters/file_context_store.py"
+   ],
+   "commit": "463a1b587c8376570b7a37a917b961480c516982",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-993d6c49",
+   "area": "quest_ai_runner/core",
+   "task": "Situational planner profile: the planner prompt's sections as rules, each turn carries only the rules that apply",
+   "needed": [
+    "quest_ai_runner/core/goal_runner_contract.py",
+    "quest_ai_runner/core/goal_runner_session.py",
+    "quest_ai_runner/core/orchestrator_planning.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/planner_doctrine.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "993d6c4973a9549ccf38f444aa1c28380bb011c0",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-eb146e9d",
+   "area": "quest_ai_runner",
+   "task": "chat --resume: replay the tasks each turn ran and the model version that ran them",
+   "needed": [
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/interactive_session_persist.py",
+    "quest_ai_runner/textual_ui_outcome.py",
+    "quest_ai_runner/textual_ui_startup.py",
+    "quest_ai_runner/textual_ui_turn.py"
+   ],
+   "commit": "eb146e9d49e1c19f985d3926274e4a0364a88bdc",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-579dbef3",
+   "area": "quest_ai_runner",
+   "task": "chat --resume: replay what each turn showed, not the short note the model reads back",
+   "needed": [
+    "quest_ai_runner/interactive_session.py",
+    "quest_ai_runner/interactive_session_persist.py",
+    "quest_ai_runner/textual_ui_startup.py",
+    "quest_ai_runner/textual_ui_turn.py"
+   ],
+   "commit": "579dbef39ab13456c1372204a22cd734462bcd0a",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-13eacd24",
+   "area": "quest_ai_runner/core",
+   "task": "narration: the first beat sees the whole message, and a cut is marked",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_turn.py"
+   ],
+   "commit": "13eacd240b1f880c55d082a09acc2d8b27fd9e4d",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-a040e18d",
+   "area": "quest_ai_runner/core",
+   "task": "Prompts: drop repeated rules in the full planner prompt and the reply voice",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "a040e18d15dac74c0c16c29993fda0f78c1532e2",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-76602d52",
+   "area": "quest_ai_runner/adapters",
+   "task": "Delete the hub re-export shims: importers use hubofhubs directly",
+   "needed": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/google_link_reader.py",
+    "quest_ai_runner/adapters/remote_files_adapter.py",
+    "quest_ai_runner/adapters/web_research.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/adapters_bases.py",
+    "quest_ai_runner/core/planner_context.py",
+    "quest_ai_runner/runner/metric_draft.py"
+   ],
+   "commit": "76602d5246283d3bffe668313dea7c79925872da",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-1d2e5af4",
+   "area": "quest_ai_runner",
+   "task": "Start in an environment built before hubofhubs was required: use the sibling checkout, else say what to install",
+   "needed": [
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/hub_path.py"
+   ],
+   "commit": "1d2e5af4a2751839efba06f6f40f4672f8864ae4",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-a122b91b",
+   "area": "quest_ai_runner/core",
+   "task": "ESOI instruction follows the skill's metric notes: cascading conditionals, null stages, expiry",
+   "needed": [
+    "quest_ai_runner/core/goal_metrics.py",
+    "quest_ai_runner/core/tools_metric_results.py",
+    "quest_ai_runner/runner/autopilot_briefs.py",
+    "quest_ai_runner/runner/autopilot_defaults.py",
+    "quest_ai_runner/runner/autopilot_esoi.py"
+   ],
+   "commit": "a122b91b4b57a1c91d864c15f57c09a538f88b32",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-d6a740f2",
+   "area": "quest_ai_runner",
+   "task": "Switch to hubofhubs: required dependency, one startup registration, hub no longer evaluation only",
+   "needed": [
+    "quest_ai_runner/__init__.py",
+    "quest_ai_runner/adapters/hub_card_store.py",
+    "quest_ai_runner/hub.py"
+   ],
+   "commit": "d6a740f2c0e5e5af57a2b2a453de6dfa47f4c84c",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-6732522c",
+   "area": "quest_ai_runner/core",
+   "task": "answer: a measurement is stated only as its record shows it; the same figure in two records is one event (IMP-023)",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/context_doctrine.py"
+   ],
+   "commit": "6732522cb242988205fb828b3a79e90e0276a98d",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-aaefd22d",
+   "area": "quest_ai_runner/core",
+   "task": "chat: an answer that declines the act on stored records is the whole response; answer what the context holds; queue only long or outside work",
+   "needed": [
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/orchestrator_decide_tool.py",
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/overseer.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "aaefd22d414e6a42f56eb42d424271312d6bceec",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-096ea6da",
+   "area": "quest_ai_runner/core",
+   "task": "Core: family rules and the Claude Code model pattern are data, not vendor branches",
+   "needed": [
+    "quest_ai_runner/core/goal_runner_contract.py",
+    "quest_ai_runner/core/model_registry.py"
+   ],
+   "commit": "096ea6da12b20258a7428b2def4ea0ac2e274b7b",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "NS-8c11e660",
+   "area": "quest_ai_runner/runner",
+   "task": "Autopilot never passes over an archived quest",
+   "needed": [
+    "quest_ai_runner/runner/autopilot_gates.py",
+    "quest_ai_runner/runner/poller_passes.py"
+   ],
+   "commit": "8c11e6607e6dbd09d67d164783feb017995e6164",
+   "date": "2026-10-28"
+  },
+  {
+   "id": "NS-7908e0b8",
+   "area": "quest_ai_runner/core",
+   "task": "Chat reliability: an instruction to book or arrange reads the person's records first; two empty searches change the kind of read; the overseer does not ask what their records answer; the after-work reply names only what the result shows",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/overseer.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "7908e0b84cd4ad7dfead0c74f6e24cbcd52698e1",
+   "date": "2026-10-28"
+  },
+  {
+   "id": "NS-5133ae0a",
+   "area": "quest_ai_runner/core",
+   "task": "Prompt specs: pre-route, reach judge, cascade review and recipe args declared as specs; they now carry the no-em-dash rule",
+   "needed": [
+    "quest_ai_runner/core/planner_cascade.py",
+    "quest_ai_runner/core/reach_judge.py",
+    "quest_ai_runner/core/recipes.py"
+   ],
+   "commit": "5133ae0afabc5327e51923c9ec163a0232d20f29",
+   "date": "2026-10-28"
+  },
+  {
+   "id": "NS-a69b1ef7",
+   "area": "quest_ai_runner/core",
+   "task": "Prompt specs: selection, relevance, admission, overseer, quest ranking and explicit-ask judges declared as specs (the no-em-dash rule now rides on all of them)",
+   "needed": [
+    "quest_ai_runner/core/card_filter.py",
+    "quest_ai_runner/core/overseer.py",
+    "quest_ai_runner/core/quest_judge.py",
+    "quest_ai_runner/core/spec_selection.py",
+    "quest_ai_runner/core/unified_search.py",
+    "quest_ai_runner/runner/context_update_judges.py",
+    "quest_ai_runner/runner/personas.py"
+   ],
+   "commit": "a69b1ef799ed7e70a161c3746121746f88e06117",
+   "date": "2026-10-28"
+  },
+  {
+   "id": "NS-a38cfc6c",
+   "area": "quest_ai_runner/runner",
+   "task": "Autopilot brief names the Solution to iterate: runner reads and refreshes the quest spec, picks the solution, milestone and metric",
+   "needed": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/autopilot_briefs.py",
+    "quest_ai_runner/runner/autopilot_esoi.py",
+    "quest_ai_runner/runner/autopilot_work.py"
+   ],
+   "commit": "a38cfc6c063a118453e273e7b6ac1af215bb6400",
+   "date": "2026-10-27"
+  },
+  {
+   "id": "NS-d00777be",
+   "area": "quest_ai_runner/adapters",
+   "task": "Card tidy and limit visible to a Quest-only lane; storeless backup copies flagged; tidy check and manifest order fixed",
+   "needed": [
+    "quest_ai_runner/adapters/card_limit_report.py",
+    "quest_ai_runner/adapters/card_store_tidy.py",
+    "quest_ai_runner/adapters/context_risk_gate.py",
+    "quest_ai_runner/adapters/context_store_heal.py",
+    "quest_ai_runner/cli_cards.py"
+   ],
+   "commit": "d00777be1896c2dfd6067af20d16471ce5612628",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-eab09b4d",
+   "area": "quest_ai_runner/adapters",
+   "task": "cards tidy: add --merge-topics to join same-file cards under another name onto their keeper",
+   "needed": [
+    "quest_ai_runner/adapters/card_store_tidy.py",
+    "quest_ai_runner/cli_cards.py",
+    "quest_ai_runner/cli_parser.py"
+   ],
+   "commit": "eab09b4d9c36163bd730ee3752ad6d50ea3ef948",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-c07cf09d",
+   "area": "quest_ai_runner/adapters",
+   "task": "Card store: a lone backup copy of the corpus is gated, a run's brief is never a card, search-context writes no card",
+   "needed": [
+    "quest_ai_runner/adapters/context_risk_gate.py",
+    "quest_ai_runner/adapters/context_store_assembly.py",
+    "quest_ai_runner/adapters/context_store_cards.py",
+    "quest_ai_runner/cli_context.py"
+   ],
+   "commit": "c07cf09dae86c6bb76e3f026802a4db0bfc6aade",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-c4d2d444",
+   "area": "quest_ai_runner/adapters",
+   "task": "Card growth arm: the review findings as cases and an invariant, and what the arm found",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_bootstrap_walk.py",
+    "quest_ai_runner/adapters/context_store_heal.py"
+   ],
+   "commit": "c4d2d44408d0636cbc13f5edd15e8c4d5d13bce3",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-7c8bb2b6",
+   "area": "quest_ai_runner/adapters",
+   "task": "Unified card and specification search: one ranking over card and record views (built, not selected)",
+   "needed": [
+    "quest_ai_runner/adapters/card_views.py",
+    "quest_ai_runner/core/repo_specs.py",
+    "quest_ai_runner/core/tools_repo_specs.py",
+    "quest_ai_runner/core/unified_search.py"
+   ],
+   "commit": "7c8bb2b61048dc8795dbb43f92372c159a3273f2",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-ac61f641",
+   "area": "quest_ai_runner/adapters",
+   "task": "Context cards: a risk gate keeps backup snapshots and card-store piles out of every card source",
+   "needed": [
+    "quest_ai_runner/adapters/context_risk_gate.py",
+    "quest_ai_runner/adapters/context_store_bootstrap.py",
+    "quest_ai_runner/adapters/context_store_bootstrap_walk.py"
+   ],
+   "commit": "ac61f641e45d81264f20426dc4511a5c6ae125a4",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-2b8e3790",
+   "area": "quest_ai_runner/adapters",
+   "task": "Card stores: a copy somebody added to is joined onto its replacement before it is retired",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_bootstrap.py",
+    "quest_ai_runner/adapters/context_store_bootstrap_walk.py",
+    "quest_ai_runner/adapters/context_store_origins.py"
+   ],
+   "commit": "2b8e3790a97bdac1aab9b039d6aaeed48c945b7f",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-a1fff6f1",
+   "area": "quest_ai_runner/adapters",
+   "task": "Card stores: the tidy, the limit and edits never move or lose what a person or run added",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_cards.py",
+    "quest_ai_runner/adapters/context_store_heal.py",
+    "quest_ai_runner/adapters/context_store_origins.py"
+   ],
+   "commit": "a1fff6f17a3b90dfbead45dd440ec59b4835b6b3",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-d1457a29",
+   "area": "quest_ai_runner/core",
+   "task": "Core: the sentences said before the work starts fit an 80-column screen",
+   "needed": [
+    "quest_ai_runner/core/deep_model_selection.py",
+    "quest_ai_runner/core/goal_metrics.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py"
+   ],
+   "commit": "d1457a29cf200179e9c2dc28e515991fbd121ae9",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-5979412d",
+   "area": "quest_ai_runner",
+   "task": "Terminal chat: the metric block is written once, at the turn's end, below the answer",
+   "needed": [
+    "quest_ai_runner/textual_ui_deep.py",
+    "quest_ai_runner/textual_ui_helpers.py",
+    "quest_ai_runner/textual_ui_turn.py"
+   ],
+   "commit": "5979412df33ff93cfbd2b309492a905bf6dcb71f",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-2e93caba",
+   "area": "quest_ai_runner/adapters",
+   "task": "A deep run on a huge store waits for the search once, and the abandoned search stops starving the session monitor",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_assembly.py",
+    "quest_ai_runner/adapters/context_store_bootstrap.py",
+    "quest_ai_runner/adapters/context_store_cards.py",
+    "quest_ai_runner/core/goal_runner_session.py",
+    "quest_ai_runner/core/goal_runner_stream.py",
+    "quest_ai_runner/core/orchestrator_turn.py"
+   ],
+   "commit": "2e93cabab6ff49c28ab90524ecbfc5cf69b4198f",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-70e65575",
+   "area": "quest_ai_runner/core",
+   "task": "Metrics: the reading after the work never rests on a recorded row",
+   "needed": [
+    "quest_ai_runner/core/goal_iteration.py",
+    "quest_ai_runner/core/goal_metrics.py",
+    "quest_ai_runner/textual_ui_helpers.py"
+   ],
+   "commit": "70e65575fa9eb9acc54b3d119188cfbaab647e8e",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "NS-2f962eca",
+   "area": "quest_ai_runner",
+   "task": "Terminal chat: one Ctrl+C never quits the app, it stops the work or asks to press again",
+   "needed": [
+    "quest_ai_runner/interactive_session_text.py",
+    "quest_ai_runner/textual_ui.py",
+    "quest_ai_runner/textual_ui_actions.py",
+    "quest_ai_runner/textual_ui_turn.py"
+   ],
+   "commit": "2f962ecab5f0ac5db70cdb59c2fec2f2bdae36e6",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-75fa6088",
+   "area": "quest_ai_runner/core",
+   "task": "Core: two readings agree when rounding makes them the same, statuses end like each other, a cut goal ends at a word",
+   "needed": [
+    "quest_ai_runner/core/launch_failure.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/orchestrator_text.py",
+    "quest_ai_runner/core/usage_limit.py"
+   ],
+   "commit": "75fa608810d1be097c4f93f891c58eaaa7825cd5",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-3838ec42",
+   "area": "quest_ai_runner/adapters",
+   "task": "Say the work, not the deep run, in the statuses a person reads",
+   "needed": [
+    "quest_ai_runner/adapters/acp_deep_runner.py",
+    "quest_ai_runner/core/goal_metrics.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/goal_runner_session.py",
+    "quest_ai_runner/core/launch_failure.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py"
+   ],
+   "commit": "3838ec428b82a64acf405b072ee6ce73f09b0700",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-cf0dc4d5",
+   "area": "quest_ai_runner",
+   "task": "Terminal chat: say how a turn ended once, keep the newest output in view, never retry a failed start",
+   "needed": [
+    "quest_ai_runner/interactive_session_tracker.py",
+    "quest_ai_runner/textual_ui.py",
+    "quest_ai_runner/textual_ui_commands.py",
+    "quest_ai_runner/textual_ui_deep.py",
+    "quest_ai_runner/textual_ui_outcome.py",
+    "quest_ai_runner/textual_ui_transcript.py",
+    "quest_ai_runner/textual_ui_turn.py",
+    "quest_ai_runner/textual_ui_widgets.py"
+   ],
+   "commit": "cf0dc4d5998e95dfa544d8a7cc81b29fcb9dd09e",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-9212fd74",
+   "area": "quest_ai_runner/core",
+   "task": "Say when a usage limit resets, say why a worker never started, and print no long dashes in core statuses",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/goal_runner_stream.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/orchestrator_run_close.py",
+    "quest_ai_runner/core/usage_limit.py",
+    "quest_ai_runner/interactive_session_commands.py"
+   ],
+   "commit": "9212fd74d99b2d6c44d39551af2a9c368b8232ae",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-7795090c",
+   "area": "quest_ai_runner/runner",
+   "task": "Task executor: report the run's metric facts to the backend on every terminal status and on the finished goal's feed post",
+   "needed": [
+    "quest_ai_runner/runner/executor_reporting.py",
+    "quest_ai_runner/runner/executor_support.py",
+    "quest_ai_runner/runner/quest_client_tasks.py"
+   ],
+   "commit": "7795090cfa17a013f1be2e53bfe61795a69df0fb",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-3a59f9de",
+   "area": "quest_ai_runner/adapters",
+   "task": "Apply the vector seed ceiling before the per-card work, and rank which cards to embed",
+   "needed": [
+    "quest_ai_runner/adapters/context_store_cards.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/config_assembler.py",
+    "quest_ai_runner/core/vector_scopes.py"
+   ],
+   "commit": "3a59f9de134c8948e4d51013d51b8094edbc0d49",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-11c17af4",
+   "area": "quest_ai_runner/core",
+   "task": "Deep runs are never silent before the worker starts and no longer assemble a single-goal request twice",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_capabilities.py",
+    "quest_ai_runner/core/orchestrator_deep_context.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/orchestrator_run_begin.py",
+    "quest_ai_runner/core/orchestrator_run_close.py",
+    "quest_ai_runner/core/orchestrator_turn.py"
+   ],
+   "commit": "11c17af47cd02d55f8821c479709117f27692553",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-7da91aa3",
+   "area": "quest_ai_runner/core",
+   "task": "Automatic follow-up deep runs when a task's run leaves the ask clearly unfinished and nothing waits on a person",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_constants.py",
+    "quest_ai_runner/core/orchestrator_types.py",
+    "quest_ai_runner/runner/auto_followup.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/executor_followup.py",
+    "quest_ai_runner/runner/executor_support.py"
+   ],
+   "commit": "7da91aa38c3629bf7c1bbf32597142612572e11e",
+   "date": "2026-10-21"
+  },
+  {
+   "id": "NS-a2280f24",
+   "area": "quest_ai_runner/core",
+   "task": "Spec selection for day-to-day runs: repo spec cache and tools, gated arm, larger labelled dataset, balanced score",
+   "needed": [
+    "quest_ai_runner/core/repo_specs.py",
+    "quest_ai_runner/core/spec_selection.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/core/tools_repo_specs.py"
+   ],
+   "commit": "a2280f245bac4e0e89cd41628528c4ce79988cb4",
+   "date": "2026-10-20"
+  },
+  {
+   "id": "NS-90c94cd5",
+   "area": "quest_ai_runner/runner",
+   "task": "Autopilot: the improve-one-solution rule goes in every batch brief, not the replaceable default brief",
+   "needed": [
+    "quest_ai_runner/runner/autopilot_briefs.py",
+    "quest_ai_runner/runner/autopilot_defaults.py"
+   ],
+   "commit": "90c94cd5c1a3f4d2a63f8fdac4ce491a33b75bc6",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-1ce12ccf",
+   "area": "quest_ai_runner/core",
+   "task": "Stall note and a comment name no person",
+   "needed": [
+    "quest_ai_runner/core/prompt_layers.py",
+    "quest_ai_runner/runner/plan_reconcile.py"
+   ],
+   "commit": "1ce12ccf39c7c995005a7bfdabc6da3639ee045f",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-487245c0",
+   "area": "quest_ai_runner/core",
+   "task": "Support rewrite only when unsupported claims are the only failure; drop the research-tool nudge from the evidence rule",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_judges.py"
+   ],
+   "commit": "487245c05e65323a692c7a83d59098e8f82a45e1",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-6b01d087",
+   "area": "quest_ai_runner/runner",
+   "task": "Report a steering message as seen when it reaches a model turn",
+   "needed": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client_tasks.py"
+   ],
+   "commit": "6b01d0875966fa4aebb992378045d0e3879f8703",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-c10027bf",
+   "area": "quest_ai_runner/core",
+   "task": "Terminal Esc cancels the run instead of abandoning it",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_run.py",
+    "quest_ai_runner/textual_ui_turn.py"
+   ],
+   "commit": "c10027bf1196b1f5389fe745f26c0f631a0efbb1",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-1e36d492",
+   "area": "quest_ai_runner/core",
+   "task": "Stop the deep worker process when a task is cancelled",
+   "needed": [
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/goal_runner_contract.py",
+    "quest_ai_runner/core/orchestrator_capabilities.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py"
+   ],
+   "commit": "1e36d4929897fee4ec1b67e8a2d4e5cb497b8fda",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-afa8f047",
+   "area": "quest_ai_runner/core",
+   "task": "Answer check also judges support for claims; replies state their basis",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_decisions.py",
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_run_close.py",
+    "quest_ai_runner/core/orchestrator_types.py"
+   ],
+   "commit": "afa8f047a194f24e8ab39e56fd458980515de1f5",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-b79963f1",
+   "area": "quest_ai_runner/runner",
+   "task": "Autopilot brief: carry the intent frame, read once per quest from the backend",
+   "needed": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/autopilot_briefs.py",
+    "quest_ai_runner/runner/autopilot_work.py",
+    "quest_ai_runner/runner/quest_client_intents.py"
+   ],
+   "commit": "b79963f13ba9b7bef317f5a95de78c8f7cc1d362",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-f777f20c",
+   "area": "quest_ai_runner/core",
+   "task": "Autopilot no longer keeps specs: drop the spec paragraph and the five pinned intents tools",
+   "needed": [
+    "quest_ai_runner/core/tools_quest_intents.py",
+    "quest_ai_runner/runner/autopilot_defaults.py",
+    "quest_ai_runner/runner/run_operations.py"
+   ],
+   "commit": "f777f20c555adfc69b577c7a24ece284d00d2dcf",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "NS-039d8566",
+   "area": "quest_ai_runner/core",
+   "task": "Link guard: provenance for in-process runners, route id validator, Google ids, more evidence",
+   "needed": [
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py"
+   ],
+   "commit": "039d856646572772b51b53d48e67665ca46f9b94",
+   "date": "2026-10-18"
+  },
+  {
+   "id": "NS-eb0e78cf",
+   "area": "quest_ai_runner/core",
+   "task": "Deferred run reply never denies work the execution record proves landed",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_run_answer.py",
+    "quest_ai_runner/core/orchestrator_run_close.py"
+   ],
+   "commit": "eb0e78cf59e5f0101858b96bd86ef341320f6f4c",
+   "date": "2026-10-18"
+  },
+  {
+   "id": "NS-bf864e8f",
+   "area": "quest_ai_runner/core",
+   "task": "Link guard: a gated link must be a page, and opt-in provenance requires the AI to have seen it",
+   "needed": [
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_run_loop.py",
+    "quest_ai_runner/core/orchestrator_types.py"
+   ],
+   "commit": "bf864e8f7f35d5048345300bcbb5209a82557f3d",
+   "date": "2026-10-18"
+  },
+  {
+   "id": "NS-7c53a865",
+   "area": "quest_ai_runner/runner",
+   "task": "Insights docs: by-quest reads the caller's own insights; drop stale review-all wording",
+   "needed": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/autopilot_briefs.py",
+    "quest_ai_runner/runner/executor_context.py"
+   ],
+   "commit": "7c53a86578e8c3645b94ef70c322b9cc66b12d39",
+   "date": "2026-10-17"
+  },
+  {
+   "id": "NS-ff2d47bf",
+   "area": "quest_ai_runner",
+   "task": "operate-a-quest owns the pre-route selection (route-a-message keeps the planner); registry test no longer depends on a live waiver",
+   "needed": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "ff2d47bfc175c3bc45dc324b79eff22762da7be4",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-a6232a70",
+   "area": "quest_ai_runner/adapters",
+   "task": "serve-files: read private Google links as the requesting person, read-only; web fallback wrapper",
+   "needed": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/files_server.py",
+    "quest_ai_runner/adapters/google_link_reader.py",
+    "quest_ai_runner/adapters/private_link_web.py",
+    "quest_ai_runner/adapters/remote_files_adapter.py",
+    "quest_ai_runner/cli_serve_files.py"
+   ],
+   "commit": "a6232a70b18a219e401f6f409585e6413487cd84",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-6fa66930",
+   "area": "quest_ai_runner/core",
+   "task": "Goal loop: recognise a broken tool from the runner's own call ledger, and stop two attempts that go nowhere",
+   "needed": [
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/core/tools_quest_ops.py",
+    "quest_ai_runner/runner/executor_reporting.py",
+    "quest_ai_runner/runner/quest_client_goals.py",
+    "quest_ai_runner/runner/quest_client_quests.py"
+   ],
+   "commit": "6fa66930f29c340fb6351d72d8de091e3105b75a",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-2c3e876f",
+   "area": "quest_ai_runner/core",
+   "task": "Goal loop: stop after two attempts when a tool the work needs keeps failing",
+   "needed": [
+    "quest_ai_runner/core/adapters_values.py",
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_deep_run.py",
+    "quest_ai_runner/core/orchestrator_judges.py",
+    "quest_ai_runner/core/orchestrator_types.py",
+    "quest_ai_runner/runner/executor_reporting.py"
+   ],
+   "commit": "2c3e876ff8390fc5ac79020ae0f8fe7afbe2f927",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-134fddea",
+   "area": "quest_ai_runner/adapters",
+   "task": "serve-files: reading a folder lists it; a read spec with a file and a failed search falls back to the file",
+   "needed": [
+    "quest_ai_runner/adapters/files_server.py",
+    "quest_ai_runner/core/orchestrator_reads.py"
+   ],
+   "commit": "134fddea58b5c21172c3006f7d7f9cf695bbd1a7",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-aab7c65d",
+   "area": "quest_ai_runner/adapters",
+   "task": "serve-files index: fast build, warmed at start, stale-while-revalidate; map ranks recent folders and caps characters",
+   "needed": [
+    "quest_ai_runner/adapters/files_index.py",
+    "quest_ai_runner/adapters/files_server.py"
+   ],
+   "commit": "aab7c65d86dded7efcd15017e8e50d1cd63d3841",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-57d84963",
+   "area": "quest_ai_runner/adapters",
+   "task": "serve-files: closest visible paths on a miss, top-level map operation, planner finds before giving up",
+   "needed": [
+    "quest_ai_runner/adapters/files_index.py",
+    "quest_ai_runner/adapters/files_server.py",
+    "quest_ai_runner/adapters/remote_files_adapter.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "57d84963fabb4b2efd380008fa15d43bc26c33c7",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-85c107ce",
+   "area": "quest_ai_runner/adapters",
+   "task": "Readable file sources: composite keeps each adapter's own error, planner rule 2 leads with the file-source exception, failed remote lookups say how to find the real path",
+   "needed": [
+    "quest_ai_runner/adapters/composite_retrieval_adapter.py",
+    "quest_ai_runner/adapters/remote_files_adapter.py",
+    "quest_ai_runner/core/planner_prompt.py"
+   ],
+   "commit": "85c107cec46bf563532cc19eaae15de100084c2e",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-30927477",
+   "area": "quest_ai_runner/adapters",
+   "task": "serve-files security hardening: refuse dot paths (operator allowlist), killable search child, broader redaction, symlink double check, uniform refusal, connection cap, zip guard, untrusted-content frame",
+   "needed": [
+    "quest_ai_runner/adapters/files_adapter.py",
+    "quest_ai_runner/adapters/files_redaction.py",
+    "quest_ai_runner/adapters/files_search_worker.py",
+    "quest_ai_runner/adapters/files_server.py",
+    "quest_ai_runner/adapters/remote_files_adapter.py",
+    "quest_ai_runner/cli_serve_files.py"
+   ],
+   "commit": "30927477cf42ab4c4cd54edcc6735dfc07478997",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-1866ae13",
+   "area": "quest_ai_runner/core",
+   "task": "Task report posted to chat: what was done, how to test step by step, still open only when needed",
+   "needed": [
+    "quest_ai_runner/core/auxiliary_prompts.py",
+    "quest_ai_runner/core/orchestrator_answering.py"
+   ],
+   "commit": "1866ae1301d8490032dce281d0feef57a3aecb02",
+   "date": "2026-10-16"
+  },
+  {
+   "id": "NS-34728ea7",
+   "area": "quest_ai_runner",
+   "task": "Pending work makes a quest's pass due: config-named backlog file, shared by gate and schedule",
+   "needed": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/autopilot_gates.py",
+    "quest_ai_runner/runner/autopilot_pending.py",
+    "quest_ai_runner/runner/autopilot_result.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/poller_passes.py"
+   ],
+   "commit": "34728ea711554bc85d2847a541b501d3896bef7b",
+   "date": "2026-10-15"
+  },
+  {
+   "id": "NS-6a4330c2",
+   "area": "quest_ai_runner/runner",
+   "task": "Make quest experiments a core input: folder block, autopilot section, default brief, one open proposal",
+   "needed": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/autopilot_briefs.py",
+    "quest_ai_runner/runner/autopilot_defaults.py",
+    "quest_ai_runner/runner/autopilot_work.py",
+    "quest_ai_runner/runner/quest_client_decisions.py",
+    "quest_ai_runner/runner/quest_experiments.py",
+    "quest_ai_runner/runner/quest_folder_sync.py",
+    "quest_ai_runner/runner/quest_folder_zones.py"
+   ],
+   "commit": "6a4330c23d3f186ae737c06e40ce11e2578cafb4",
+   "date": "2026-10-15"
+  },
+  {
+   "id": "NS-cbd3304c",
+   "area": "quest_ai_runner/adapters",
+   "task": "Fix shared card store data loss: a lane only mutates cards of its own origin",
+   "needed": [
+    "quest_ai_runner/adapters/card_store_upload.py",
+    "quest_ai_runner/adapters/conversation_card_builder.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/turn_context_store.py"
+   ],
+   "commit": "cbd3304c6a1f2d367887cf0298cf47611bd828d1",
+   "date": "2026-10-14"
+  },
+  {
+   "id": "NS-85bfd49d",
+   "area": "quest_ai_runner/adapters",
+   "task": "Quest backend is the default card and vector store; context upload; loud card failures",
+   "needed": [
+    "quest_ai_runner/adapters/__init__.py",
+    "quest_ai_runner/adapters/card_store_upload.py",
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/qdrant_vector_store.py",
+    "quest_ai_runner/adapters/quest_api_card_repository.py",
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/store_cli.py"
+   ],
+   "commit": "85bfd49dee386bcea735e96951b261bc06c1cb78",
+   "date": "2026-10-14"
+  },
+  {
+   "id": "NS-45482667",
+   "area": "quest_ai_runner/core",
+   "task": "Standing instructions for every deep run, default: the adaptable-structure principles",
+   "needed": [
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/standing_instructions.py"
+   ],
+   "commit": "45482667e5d427fee34266bff4244a31ef1762ef",
+   "date": "2026-10-14"
+  },
+  {
+   "id": "NS-77683470",
+   "area": "quest_ai_runner/adapters",
+   "task": "Read shared Google files and PDFs from links; typed, honest link failures; one links rule",
+   "needed": [
+    "quest_ai_runner/adapters/web_research.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "77683470e88ed40fed3625b5e28049675436f6c8",
+   "date": "2026-10-14"
+  },
+  {
+   "id": "NS-334233db",
+   "area": "quest_ai_runner/runner",
+   "task": "Let stamped co-editors run workflow step actions",
+   "needed": [
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/requested_action.py"
+   ],
+   "commit": "334233db33afb449a45e635547ea15186363213c",
+   "date": "2026-10-13"
+  },
+  {
+   "id": "NS-4dd7dfe5",
+   "area": "quest_ai_runner/core",
+   "task": "Publish tools and connectors to Quest Workflows as step actions; run a requested action directly",
+   "needed": [
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/runner/action_catalog.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py",
+    "quest_ai_runner/runner/requested_action.py"
+   ],
+   "commit": "4dd7dfe57613b065589b05ac395e6f911fbc6b6e",
+   "date": "2026-10-13"
+  },
+  {
+   "id": "NS-cc487452",
+   "area": "quest_ai_runner/core",
+   "task": "Experiments for the AI: find, create and update tools, client methods, EXPT eval cases",
+   "needed": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "cc48745226af41b34e82ebcb82f7468d6fcdfe62",
+   "date": "2026-10-12"
+  },
+  {
+   "id": "NS-6e1b9003",
+   "area": "quest_ai_runner/runner",
+   "task": "Fix rep sync nesting a skill file inside its own managed persona block",
+   "needed": [
+    "quest_ai_runner/runner/_managed_sections.py",
+    "quest_ai_runner/runner/rep_sync.py"
+   ],
+   "commit": "6e1b9003a58a30a652406c38dc8f7e1cdf0aae59",
+   "date": "2026-10-12"
+  },
+  {
+   "id": "NS-e3b67b56",
+   "area": "quest_ai_runner/runner",
+   "task": "Skip taken-back and abandoned goals in handoff passes; owner fallback when the assignee judge fails on a shared quest",
+   "needed": [
+    "quest_ai_runner/runner/goal_handoff.py",
+    "quest_ai_runner/runner/plan_reconcile.py"
+   ],
+   "commit": "e3b67b5689ae5f8cbe9ef6f79950d0b877eb3a89",
+   "date": "2026-10-12"
+  },
+  {
+   "id": "NS-302a0059",
+   "area": "quest_ai_runner/core",
+   "task": "Report the runner's tool catalog in the environment heartbeat",
+   "needed": [
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/runner/poller.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "302a00598d43bbc9fd939d09c0ec48a6dd718b12",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-43d8dc0d",
+   "area": "quest_ai_runner/runner",
+   "task": "Pass liveness and daily budget read by status, never past the newest-200 window",
+   "needed": [
+    "quest_ai_runner/runner/autopilot.py",
+    "quest_ai_runner/runner/poller.py"
+   ],
+   "commit": "43d8dc0d70d4907705fdef64d0dbce2a512ad785",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-66142f68",
+   "area": "quest_ai_runner/runner",
+   "task": "Start a new run for steering messages sent after a run's last drain",
+   "needed": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "66142f6855a5f2dbef5d00846693d84463d22584",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-ba233389",
+   "area": "quest_ai_runner/runner",
+   "task": "Queued tasks wait out model-provider outages instead of failing",
+   "needed": [
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "ba2333894cbdf95d8c44d99420a5ff24bf7e058b",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-f5cbfe58",
+   "area": "quest_ai_runner/core",
+   "task": "One quest-data tool per field, each carrying that field's writing standard",
+   "needed": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/quest_field_instructions.py",
+    "quest_ai_runner/core/tools.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "f5cbfe5845cdc14dd40d9eae758b42655bc41511",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-488baf82",
+   "area": "quest_ai_runner",
+   "task": "reconcile-plan: a stalled goal escalates to the follow-up person as a decision",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/plan_reconcile.py"
+   ],
+   "commit": "488baf8281bf91cc1207b74f11f5dcdecdc70b2b",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-935b0bec",
+   "area": "quest_ai_runner",
+   "task": "reconcile-plan: ask goals take a short action title from the model, not the raw note",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/plan_reconcile.py"
+   ],
+   "commit": "935b0bec95914d83bd5550f28dde19f7dbe1dca4",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-89b00777",
+   "area": "quest_ai_runner",
+   "task": "reconcile-plan: judge assigned goals for AI-rep handoff (off by default)",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/plan_reconcile.py"
+   ],
+   "commit": "89b00777c394ae96107947089af8b958bc21cd90",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-6be17e20",
+   "area": "quest_ai_runner",
+   "task": "reconcile-plan: AI classifies open asks, assigns requests, verifies each goal",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/runner/plan_reconcile.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "6be17e200420d02bc9ed8ce2c28c20579e913821",
+   "date": "2026-10-11"
+  },
+  {
+   "id": "NS-33d39cb9",
+   "area": "quest_ai_runner",
+   "task": "No default resolves to Opus; defaults are tier names with balanced as the default tier",
+   "needed": [
+    "quest_ai_runner/cli.py",
+    "quest_ai_runner/core/deep_model_selection.py",
+    "quest_ai_runner/core/goal_runner.py",
+    "quest_ai_runner/core/model_registry.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/textual_ui.py"
+   ],
+   "commit": "33d39cb9e0cddfb41a7014da25765b9a165d7c0e",
+   "date": "2026-10-10"
+  },
+  {
+   "id": "NS-b5afba1a",
+   "area": "quest_ai_runner/core",
+   "task": "Recipes: learn chat writes from every deep path, nominate deep recipes at a low floor and let the verdict decide",
+   "needed": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recipes.py"
+   ],
+   "commit": "b5afba1a5d99bf7a7af2679fbe897803378f575c",
+   "date": "2026-10-10"
+  },
+  {
+   "id": "NS-1b67da79",
+   "area": "quest_ai_runner/core",
+   "task": "Deep recipes: replay a learned quest-data operation without the planner or context search",
+   "needed": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recipes.py"
+   ],
+   "commit": "1b67da798d75710cee579ec53defbc4a987aa00c",
+   "date": "2026-10-10"
+  },
+  {
+   "id": "NS-d02c8f84",
+   "area": "quest_ai_runner",
+   "task": "Add recipe fast path: replay a learned tool call before context search",
+   "needed": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/recipes.py"
+   ],
+   "commit": "d02c8f8413b760aa4c3e3b21542412c45adc00b9",
+   "date": "2026-10-10"
+  },
+  {
+   "id": "NS-4d408318",
+   "area": "quest_ai_runner",
+   "task": "Commit work-model and runner WIP left uncommitted over an hour",
+   "needed": [
+    "quest_ai_runner/config.py",
+    "quest_ai_runner/core/work_model.py",
+    "quest_ai_runner/runner/executor.py",
+    "quest_ai_runner/runner/quest_client.py"
+   ],
+   "commit": "4d408318bae19b73a96a87edb5a09b0085a3aa9d",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "NS-09013a3c",
+   "area": "quest_ai_runner/core",
+   "task": "Quest selection judge is a reusable function returning the pick and the ranked candidates",
+   "needed": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/quest_judge.py"
+   ],
+   "commit": "09013a3c2965b29ecae015c1444d8816f32c65c0",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "NS-6c10a96d",
+   "area": "quest_ai_runner/adapters",
+   "task": "Fix fourth cross-quest leak: fence anticipation bundles built from an unscoped precompute",
+   "needed": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/anticipation.py"
+   ],
+   "commit": "6c10a96d1f1cf43a45fbe90633867626621cd914",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "NS-09f19794",
+   "area": "quest_ai_runner/adapters",
+   "task": "Add an optional per-call \"step\" hint, mirroring the existing reasoning hint",
+   "needed": [
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/card_filter.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py"
+   ],
+   "commit": "09f19794240f029b40a4602a20bfc72d19700178",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "NS-d752abdf",
+   "area": "quest_ai_runner/adapters",
+   "task": "Drop leading underscore from identifiers introduced in tonight's commits",
+   "needed": [
+    "quest_ai_runner/adapters/file_context_store.py",
+    "quest_ai_runner/adapters/vector_context_assembler.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "d752abdf82dca0a9cd189fc53faa08dfe386effb",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "NS-5a2b556e",
+   "area": "quest_ai_runner/core",
+   "task": "A run that already says nothing changed is not led by a second no-change line",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "5a2b556e8342ab3acdc9e96a79068bffe01f6db4",
+   "date": "2026-10-07"
+  },
+  {
+   "id": "NS-0446399d",
+   "area": "quest_ai_runner/core",
+   "task": "Stop a deep run that changed nothing from reading as completed work",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "0446399d88c4fb0ac064a5bd35a473bf9535e2a6",
+   "date": "2026-10-06"
+  },
+  {
+   "id": "NS-6a2b0514",
+   "area": "quest_ai_runner/core",
+   "task": "A context card records what a turn observed, never what it claimed",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/card_learning.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "6a2b0514bd71436f0e5b81b558b5fd21d32b02e9",
+   "date": "2026-10-06"
+  },
+  {
+   "id": "NS-aa79988f",
+   "area": "quest_ai_runner/adapters",
+   "task": "Compact JSON formatting in the two schemas rendered into a prompt as text",
+   "needed": [
+    "quest_ai_runner/adapters/claude_cli_provider.py",
+    "quest_ai_runner/adapters/mcp_retrieval_adapter.py"
+   ],
+   "commit": "aa79988ff0d852d93b3079b9905f773b61f1a90f",
+   "date": "2026-10-06"
+  },
+  {
+   "id": "NS-62d5c559",
+   "area": "quest_ai_runner/core",
+   "task": "Not-met verdict says why another attempt would or would not help; act on it",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/runner/executor.py"
+   ],
+   "commit": "62d5c559c52d6370028b14ab564fe46fcf6ccf7b",
+   "date": "2026-10-06"
+  },
+  {
+   "id": "NS-73463e11",
+   "area": "quest_ai_runner/core",
+   "task": "Escalation nets follow the planner's own intent verdict instead of a regex net",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "73463e1134ce01a817d84ca77925df13619d8839",
+   "date": "2026-10-06"
+  },
+  {
+   "id": "NS-9beae69f",
+   "area": "quest_ai_runner/core",
+   "task": "Overseer: an honest decline is not a human fork; its deep escalation stays in the turn",
+   "needed": [
+    "quest_ai_runner/core/orchestrator.py",
+    "quest_ai_runner/core/overseer.py"
+   ],
+   "commit": "9beae69f30615c7c238063c693685a505b26f793",
+   "date": "2026-10-06"
+  },
+  {
+   "id": "NS-71c4cf06",
+   "area": "quest_ai_runner/core",
+   "task": "Orchestrator's own escalations never start background work",
+   "needed": [
+    "quest_ai_runner/core/adapters.py",
+    "quest_ai_runner/core/orchestrator.py"
+   ],
+   "commit": "71c4cf06fd4af2b33d918ce5f40491f8a595b565",
+   "date": "2026-10-06"
+  }
+ ]
+}

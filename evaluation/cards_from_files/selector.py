@@ -55,6 +55,9 @@ class Selector:
             self.store._own_repo.write(card_id, record)
         self.store._cache_dirty = True
 
+    def picked(self, task: str) -> List[List[str]]:
+        """The files of each picked card, the cards in rank order."""
+        return [[entry["path"] for entry in self.records[card_id]["files"]] for card_id in self.store.assemble(task).card_ids]
+
     def view(self, task: str) -> List[str]:
-        picked = self.store.assemble(task).card_ids
-        return [entry["path"] for card_id in picked for entry in self.records[card_id]["files"]]
+        return [path for card in self.picked(task) for path in card]
