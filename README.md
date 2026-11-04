@@ -46,7 +46,7 @@ Each id is reached through a declared interface. The call builds the implementat
 Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/assemble-and-run-your-first-seat.md).
 
 <!-- headline:start -->
-**34 alternatives measured across 7 areas, from 448 researched candidates.**
+**36 alternatives measured across 8 areas, from 448 researched candidates.**
 
 | Area | Alternatives measured | Which |
 |---|---|---|
@@ -57,6 +57,7 @@ Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/as
 | Scholarly search | 6 | `openalex`, `openalex_keywords`, `openalex_keywords_model`, `openalex_semantic`, `openalex_semantic_and_web`, `web_research` |
 | Coding agents | 3 | `fast_edit`, `stream_json_goal_runner`, `subprocess_goal_runner` |
 | Guardrails and oversight | 3 | `consent_gate`, `overseer`, `two_stage` |
+| Card building | 2 | `graphify_files`, `per_file_symbols` |
 
 Of 6 seats with rival arms on the same cases, 6 hold the arm with the highest result on all cases at the deciding stage. The claims are in-sample (the same cases chose the arm and report it): 0 of 6 selected arms are significantly ahead of every rival, two-sided. Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors (such as `none` and `single_provider`) and conformance tests, which have no rival ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative)).
 <!-- headline:end -->
@@ -77,6 +78,7 @@ numbers, never added into them. How the cases and tests work: [how we measure](d
 | `know-the-world`, Science | The paper that answers a research question is among what the arm returns. (offline) | openalex_semantic | 34.7% (27.5% to 42.6%), 52/150 | 150 | $0 | 2 (median) | ahead of openalex_semantic_and_web, not significant (two-sided McNemar p=0.664); ahead of web_research (two-sided McNemar p=4.08e-06) |
 | `act-in-the-world`, Body | A small coding task counts as done only when its own tests pass afterwards. (whole) | fast_edit | 96.7% (83.3% to 99.4%), 29/30, balanced score 0.9718 | 30 | $0.0001793 | 1.8 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972); stream_json_goal_runner: best guess, no per-case rows to test (stream_json_goal_runner 0.938 against fast_edit 0.972); subprocess_goal_runner: best guess, no per-case rows to test (subprocess_goal_runner 0.923 against fast_edit 0.972) |
 | `watch-for-risk`, Overseer | Steps a person should authorize are stopped and ordinary steps are let through. (offline) | consent_gate | 100.0% (90.4% to 100.0%), 36/36 | 36 | $0 | 0 (median) | ahead of none (two-sided McNemar p=2.29e-05); ahead of overseer, not significant (two-sided McNemar p=0.5); ahead of two_stage, not significant (two-sided McNemar p=0.5) |
+| `cards-from-files`, Subconscious, Intuition | The file a task needs is among the first three files a builder's cards show. (no cascade) | per_file_symbols (best guess, none selected) | 68.3% (56.0% to 78.4%), 43/63, balanced score 0.7765 | 63 | $0 | 0 (median) | no rival measured on the same cases |
 
 Conformance tests (cases written in this repo, no rival, not counted as alternatives): `card-store` 35/35, `choose-a-model-tier` 36/36, `model-call` 30/30, `read-registry-freshness` 41/41, `score-hub-connections` 33/33, `assemble-the-whole` 68/68. The arm with the highest result at the deciding stage on all cases is selected (an exact tie keeps the incumbent), and the same cases give the rate, interval and test, so each claim is in-sample. A lead is significant when the two-sided exact McNemar test gives p below 0.05 after Holm's correction across rivals, with alpha divided by the number of stages the pair was run at; otherwise it is a best guess, not yet significant. Where a seat's metric is a balanced score, arms are ranked by that score. Cost per passing case is the whole run's recorded spend over its passes. Every check and every arm: [leaderboard](docs/reference/leaderboard.md), [evidence by arm](docs/reference/evidence-by-arm.md).
 <!-- evidence:end -->
@@ -98,7 +100,7 @@ Named areas and implementations with no recorded run, and why. `esoi leaderboard
 - **`act-in-the-world`**, arms with no run: `acp_deep_runner` (file_edit_goals). The agent binary it needs is not installed where we measure.
 - **`context-assembler`**, arms with no run: `hybrid`, `composite`. Embedding the corpus was not authorized for the public stage.
 - **`context-assembler`**, arms with no run: `composite` (context_assembler_papers). Not run yet; bm25, vector and hybrid were run.
-- **`cards-from-files`**, arms with no run: `llm_topic_cards`, `per_file_symbols`, `graphify_files`. The three builders are built and their cases are written; the metric's stages have not been run under the metric run policy.
+- **`cards-from-files`**, arms with no run: `llm_topic_cards`. No run is recorded yet.
 - **`search-backend`**, arms with no run: `searxng`, `brave`, `serper`, `tavily`. The arm needs a key or a self-hosted instance that is not set where we measure.
 <!-- unmeasured:end -->
 

@@ -80,7 +80,7 @@
  "cards-from-files": {
   "default": "llm_topic_cards",
   "evidence": {
-   "detail": "the selected implementation has no recorded row",
+   "detail": "the selected implementation has no recorded row; best guess on the point estimate (per_file_symbols 0.776, graphify_files 0.322, one_card_per_folder 0.298, one_card 0.297, two_cards 0.297); no test was possible",
    "p": null,
    "verdict": "UNMEASURED"
   },

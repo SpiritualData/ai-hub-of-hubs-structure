@@ -59,7 +59,7 @@ flowchart LR
 
 - `metric-remember-and-recall`, remember-and-recall metric (draft)
 - `metric-context-assembler`, Relevant passage in the top five: leader `bm25@analyzer=english`, 208 of 323 cases
-- `metric-cards-from-files`, Needed file among the first three files a builder's cards show: no result recorded
+- `metric-cards-from-files`, Needed file among the first three files a builder's cards show: leader `per_file_symbols`, 43 of 63 cases
 
 ## Problems
 
