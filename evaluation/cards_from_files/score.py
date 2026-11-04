@@ -50,9 +50,10 @@ def check_cards(cards, files) -> None:
                 raise ValueError(f"card {card['id']!r} names {path!r}, which is not a file of the corpus")
 
 
-def view_function(builder, meter):
+def view_function(builder, meter, replayed=None):
     """``fn(kind, args)`` for a ``builder(root, files, existing) -> cards``: it builds on its first call, then answers each task's view.
-    ``meter`` (None allowed) is read for the build's model calls, tokens and cost."""
+    ``meter`` (None allowed) is read for the build's model calls, tokens and cost. ``replayed`` (None for a real build) names the
+    recorded build a replaying builder returns (``build``, ``calls``, ``cost``); it is reported beside the build, never as this run's cost."""
     state = {}
 
     def fn(kind, args):
@@ -68,6 +69,8 @@ def view_function(builder, meter):
             state["selector"] = Selector(cards, corpus)
             build = dict(cards=len(cards), id=build_id(cards), calls=after[0] - before[0], tokens=after[1] + after[2] - before[1] - before[2],
                          cost=round(after[3] - before[3], 4), seconds=round(seconds, 1))
+            if replayed:
+                build["replayed"] = dict(replayed)
         return dict(view=state["selector"].view(args["task"]), build=build)
     return fn
 
@@ -76,13 +79,16 @@ def adapt(implementation, meter):
     """The harness hands a declared arm's class: a builder that needs a model is given the meter-wrapped provider the hub resolves
     for the ``call-a-model`` seat; one that needs nothing is simply built."""
     instance = implementation(**needs(implementation, meter))
-    return view_function(instance.build, meter)
+    replayed = instance.replayed() if hasattr(instance, "replayed") else None
+    return view_function(instance.build, meter, replayed)
 
 
 def needs(implementation, meter):
     import inspect
-    wanted = [n for n in inspect.signature(implementation).parameters if n == "provider"]
-    if not wanted:
+    parameters = inspect.signature(implementation).parameters
+    if "pin" in parameters:   # a replaying builder is told which corpus is in force and refuses another
+        return dict(pin=pinned.read_pin())
+    if "provider" not in parameters:
         return {}
     from esoi import runtime
     from hubofhubs import seats  # noqa: F401  (declares the seats)
@@ -113,4 +119,7 @@ def aggregate(rows):
     if build:
         out.update(cards=build["cards"], build=build["id"], build_calls=build["calls"], build_tokens=build["tokens"],
                    build_cost=build["cost"], build_seconds=build["seconds"])
+        if build.get("replayed"):
+            was = build["replayed"]
+            out["replayed"] = f"from build {was['build']} ({was['calls']} calls, ${was['cost']}, its cost and not this run's)"
     return out

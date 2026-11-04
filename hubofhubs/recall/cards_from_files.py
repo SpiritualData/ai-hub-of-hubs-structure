@@ -6,6 +6,9 @@ and ``files`` (each ``{"path", "symbols", "sha256"}``). A builder proposes cards
 
 ``PerFileSymbols`` is the free floor: one card per file, described by the file's docstrings and symbols. ``LlmTopicCards`` groups
 files into topic cards with a model (the model is a constructor need, the ``call-a-model`` seat) and is a paid arm.
+
+Two free arms use the persisted paid build (``cards_dataset``): ``TopicCardsReplay`` returns its cards as they were recorded, and
+``FilePlusTopicCards`` adds them to the one-card-per-file floor. Neither calls a model.
 """
 from __future__ import annotations
 
@@ -16,12 +19,15 @@ from typing import Any, Dict, Iterable, List, Mapping, Sequence
 from esoi import implementation
 
 from ..seats import ModelCalling
+from . import cards_dataset
 from .context_bootstrap_support import jaccard, merge_card_group
 from .context_card_extraction import (
     SOURCE_FILE_WEIGHT, TEST_FILE_WEIGHT, build_rich_summary, discover_areas, extract_symbols, extract_topic_cards,
     is_test_path, path_slug,
 )
 
+REPLAY_DATASET = Path(__file__).resolve().parents[2] / "evaluation" / "cards_from_files" / "datasets" / "llm_topic_cards_75f9da90.json"
+TOPIC_PREFIX = "topic-"    # a persisted topic card's id in the combined arm, so it never collides with a file card's id
 AREA_CHUNK_FILES = 150     # files shown to the model per area-discovery call
 DUPLICATE_OVERLAP = 0.6    # topic cards whose file sets overlap at least this much (Jaccard) are one card
 
@@ -138,6 +144,53 @@ class LlmTopicCards:
 
     def changed(self, root: str, cards: Mapping[str, Mapping[str, Any]]) -> List[str]:
         return changed_cards(root, cards)
+
+
+class PersistedTopicCards:
+    """What the two replay arms share: the persisted build, loaded and checked once, and refused on any other corpus.
+
+    ``pin`` is the corpus pin in force (the harness passes it); the corpus walk handed to ``build`` is checked against the build's
+    recorded file list digest either way."""
+    def __init__(self, pin: Mapping[str, Any] | None = None, dataset: str = ""):
+        self.document = cards_dataset.load_dataset(Path(dataset) if dataset else REPLAY_DATASET)
+        self.pin = dict(pin or {})
+        cards_dataset.check_pin(self.document, self.pin)
+
+    def topic_cards(self, files: Sequence[str], prefix: str = "") -> List[dict]:
+        cards_dataset.check_pin(self.document, self.pin, files)
+        known = set(files)
+        cards = cards_dataset.card_copies(self.document, prefix)
+        return [c for c in cards if all(e["path"] in known for e in c["files"])]
+
+    def replayed(self) -> Dict[str, Any]:
+        """The recorded build's own facts, for a run that replays it: the original's calls and cost, never charged to the replay."""
+        built = self.document["built"]
+        return dict(build=self.document["recorded_build_id"], calls=built["model_calls"], cost=built["cost_usd"], seconds=built["build_seconds"])
+
+    def changed(self, root: str, cards: Mapping[str, Mapping[str, Any]]) -> List[str]:
+        return changed_cards(root, cards)
+
+
+@implementation("cards-from-files", "topic_cards_replay")
+class TopicCardsReplay(PersistedTopicCards):
+    """The topic cards of one recorded paid build of ``llm_topic_cards``, returned as recorded: a replay, not a new build.
+
+    It calls no model and costs nothing; the original build's calls and cost are in ``replayed()``. It refuses a corpus other than
+    the one the build was made on."""
+    REQUIRES = ()
+
+    def build(self, root: str, files: Sequence[str], existing: Mapping[str, Mapping[str, Any]]) -> List[dict]:
+        return self.topic_cards(files)
+
+
+@implementation("cards-from-files", "file_plus_topic_cards")
+class FilePlusTopicCards(PersistedTopicCards):
+    """The one-card-per-file floor plus the persisted topic cards (their ids prefixed ``topic-``): the selector can pick a file's own
+    card or a topic card, whichever ranks higher for the task. No model is called."""
+    REQUIRES = ()
+
+    def build(self, root: str, files: Sequence[str], existing: Mapping[str, Mapping[str, Any]]) -> List[dict]:
+        return PerFileSymbols().build(root, files, existing) + self.topic_cards(files, TOPIC_PREFIX)
 
 
 def merge_duplicates(cards: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

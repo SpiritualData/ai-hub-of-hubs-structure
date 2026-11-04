@@ -1,0 +1,4143 @@
+{
+ "format": "cards-from-files topic cards, one paid build, persisted so it is replayed for free",
+ "recorded_build_id": "75f9da90",
+ "build_id_of_the_cards_as_stored": "b5107a67",
+ "build_id_note": "recorded_build_id is the id the harness computed in the paid run; the card order of that run was not kept, so the cards below are in the order the run's selector store wrote them (file modification time), and score.build_id of that order gives build_id_of_the_cards_as_stored. The scoring does not depend on card order.",
+ "pin": {
+  "qar_commit": "0cf161e5",
+  "hub_commit": "70ccf91",
+  "cases_sha256": "0023f387bac25aca9f6dc3c986e6eed795d5a391aa722524476d73bab350cdd6",
+  "files_sha256": "799d6f5668ef6ec27120234279d9aaa6c8063ec816acc43b022554dcd0a0e4bd"
+ },
+ "built": {
+  "date": "2026-11-04",
+  "arm": "llm_topic_cards",
+  "hub_git_sha": "72e2f1f",
+  "model": "not recorded in the results row",
+  "model_calls": 52,
+  "tokens_in": 73009,
+  "tokens_out": 20651,
+  "cost_usd": 0.9967,
+  "build_seconds": 272.8,
+  "cards": 103,
+  "distinct_files": 102
+ },
+ "left_out": "each card's origin field (a local environment id, no use to a reader) was dropped",
+ "cards_sha256": "3e0e7f271bbb6a925873a33ac347f493c430c07e271821c6c85ddb651b671961",
+ "cards": [
+  {
+   "id": "anticipation-learning-core",
+   "keywords": [
+    "anticipation",
+    "learning",
+    "shared core",
+    "pure",
+    "runner lane",
+    "wrapper",
+    "prediction",
+    "quest ai"
+   ],
+   "summary": "Provides the shared pure anticipation learning core along with a runner-lane wrapper that exposes it to the Quest AI runner.",
+   "description": "Quest AI Anticipation Engine -- the SHARED learning core (pure) plus the runner-lane wrapper.",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/anticipation.py",
+     "symbols": [],
+     "sha256": "ce23bfa1142d105b1165a0a682721125ef5ff39cce730a924df06f096cfc8471"
+    }
+   ],
+   "weight": 1.0,
+   "name": "Anticipation Learning Core"
+  },
+  {
+   "id": "anatomy-doc-consistency",
+   "keywords": [
+    "anatomy",
+    "documentation",
+    "table",
+    "esoi",
+    "records",
+    "readme",
+    "diagram",
+    "stale",
+    "modules",
+    "generated"
+   ],
+   "summary": "Tests that the anatomy explanation doc's generated table, module references, and README diagram stay in sync with the ESOI records.",
+   "description": "docs/explanation/anatomy.md stays true: its table is generated from the ESOI records, its modules exist, and the README. Key: first_diagram, test_table_is_not_stale, test_every_part_names_a_real_module, test_readme_diagram_matches_the_anatomy_page",
+   "files": [
+    {
+     "path": "tests/test_anatomy_table.py",
+     "symbols": [
+      "first_diagram",
+      "test_table_is_not_stale",
+      "test_every_part_names_a_real_module",
+      "test_readme_diagram_matches_the_anatomy_page"
+     ],
+     "sha256": "4a07be053f7b07365ebdf101926d39f4043dccec942acf8aef367d2c95ed9261"
+    }
+   ],
+   "weight": 0.5,
+   "name": "Anatomy Doc Table Consistency"
+  },
+  {
+   "id": "cli-card-selection",
+   "keywords": [
+    "card selection",
+    "select_card_ids_for_text",
+    "llm selection",
+    "cli",
+    "offline tests",
+    "default behavior",
+    "topic cards"
+   ],
+   "summary": "Offline tests verifying the default LLM-based card selection behavior of select_card_ids_for_text in cli.py.",
+   "description": "Offline tests for select_card_ids_for_text's default LLM-selection behavior in cli.py.. Key: test_default_use_llm_is_false_and_skips_provider_setup, test_explicit_use_llm_true_still_attempts_provider_setup, test_llm_provider_setup_failure_is_logged_not_silent, test_card_store_assemble_failure_is_logged_not_silent",
+   "files": [
+    {
+     "path": "tests/test_cli_card_selection.py",
+     "symbols": [
+      "test_default_use_llm_is_false_and_skips_provider_setup",
+      "test_explicit_use_llm_true_still_attempts_provider_setup",
+      "test_llm_provider_setup_failure_is_logged_not_silent",
+      "test_card_store_assemble_failure_is_logged_not_silent"
+     ],
+     "sha256": "1721dc476e51545aaf91b43a36dbc27d9e4c2dd8dc02076c2d93d9b113e0bb15"
+    }
+   ],
+   "weight": 0.5,
+   "name": "CLI Topic Card Selection"
+  },
+  {
+   "id": "google-chat-all-spaces",
+   "keywords": [
+    "google chat",
+    "all spaces",
+    "unrestricted",
+    "adapter",
+    "config",
+    "context source",
+    "opt-in",
+    "spaces"
+   ],
+   "summary": "Tests the opt-in all_spaces mode for Google Chat, covering its configuration, adapter behavior and use as a context source.",
+   "description": "Opt-in unrestricted Google Chat (``all_spaces = true``): config, adapter and context source.. Key: at, Clock, FakeChat, chat, adapter, engine, card, sa_file",
+   "files": [
+    {
+     "path": "tests/test_google_chat_all_spaces.py",
+     "symbols": [
+      "at",
+      "Clock",
+      "FakeChat",
+      "chat",
+      "adapter",
+      "engine",
+      "card",
+      "sa_file",
+      "test_all_spaces_wires_without_space_names_and_logs_it",
+      "test_default_still_fails_closed_and_all_spaces_false_does_not_opt_in",
+      "test_space_allowed_unrestricted_accepts_well_formed_names_only",
+      "test_space_allowed_default_is_the_allowlist",
+      "test_enumeration_paginates_and_labels_dms_and_group_chats",
+      "test_enumeration_respects_the_cap_and_says_so",
+      "test_enumeration_never_raises_and_is_refused_when_restricted",
+      "test_label_is_never_blank",
+      "test_typed_read_of_a_dm_uses_its_label",
+      "test_restricted_typed_read_still_refuses_unlisted_space",
+      "test_adapter_has_no_write_path",
+      "test_source_reads_every_active_space_skips_stale_and_labels_each",
+      "test_source_honors_max_spaces_and_reports_truncation",
+      "test_source_explicit_space_list_still_works_in_unrestricted_mode",
+      "test_source_listing_failure_is_reported_and_holds_the_watermark",
+      "test_restricted_mode_refuses_all_with_the_opt_in_hint_and_reads_nothing"
+     ],
+     "sha256": "77b0a623f36e7b43c5e6d646dcb1f13f0a766ca1e82fefe332e9819bacea918e"
+    }
+   ],
+   "weight": 0.5,
+   "name": "Google Chat Unrestricted Spaces"
+  },
+  {
+   "id": "dependency-declarations",
+   "keywords": [
+    "dependencies",
+    "pip install",
+    "extras",
+    "all extra",
+    "third-party",
+    "imports",
+    "lazy imports",
+    "packaging",
+    "quest-ai-runner"
+   ],
+   "summary": "Verifies that installing the package with the [all] extra pulls in every third-party library the hub's code imports, whether lazily or eagerly.",
+   "description": "``pip install quest-ai-runner[all]`` pulls every third-party library the hub's code imports (lazily or not).. Key: imported_third_party, declared_names, test_every_library_the_hub_imports_is_declared_for_the_all_extra",
+   "files": [
+    {
+     "path": "tests/test_dependency_declarations.py",
+     "symbols": [
+      "imported_third_party",
+      "declared_names",
+      "test_every_library_the_hub_imports_is_declared_for_the_all_extra"
+     ],
+     "sha256": "f83b38aeff247ef4e47c632d0377d5e7863f7d0551de550aea38eb01ef82000b"
+    }
+   ],
+   "weight": 0.5,
+   "name": "Optional Dependency Extras Declarations"
+  },
+  {
+   "id": "web-evidence-verification",
+   "keywords": [
+    "verifier",
+    "web evidence",
+    "verification",
+    "turn evidence",
+    "trust",
+    "fact checking",
+    "grounding",
+    "research"
+   ],
+   "summary": "Tests that the verifier receives the current turn's gathered web evidence and trusts it over its own prior knowledge.",
+   "description": "The verifier must see THIS TURN'S gathered web evidence, and must trust it over its own. Key: test_no_web_evidence_for_none_or_empty_gathered, test_no_web_evidence_for_an_ordinary_read_or_grep, test_web_evidence_true_for_a_web_search_rel_path, test_web_evidence_true_for_a_web_page_fetch_locator, test_web_evidence_ignores_malformed_entries, test_verify_goal_with_no_gathered_is_byte_for_byte_unchanged, test_verify_goal_with_empty_gathered_list_is_unchanged, verify_prompt",
+   "files": [
+    {
+     "path": "tests/test_verify_web_evidence.py",
+     "symbols": [
+      "test_no_web_evidence_for_none_or_empty_gathered",
+      "test_no_web_evidence_for_an_ordinary_read_or_grep",
+      "test_web_evidence_true_for_a_web_search_rel_path",
+      "test_web_evidence_true_for_a_web_page_fetch_locator",
+      "test_web_evidence_ignores_malformed_entries",
+      "test_verify_goal_with_no_gathered_is_byte_for_byte_unchanged",
+      "test_verify_goal_with_empty_gathered_list_is_unchanged",
+      "verify_prompt",
+      "test_verify_goal_with_non_web_gathered_is_byte_identical_to_no_gathered",
+      "test_verify_goal_mixed_gathered_renders_only_the_web_observations",
+      "test_verify_goal_web_evidence_is_capped",
+      "test_verify_goal_with_web_gathered_adds_evidence_and_web_precedence_note",
+      "test_verify_goal_web_evidence_lands_in_the_layered_tail_not_the_cached_context",
+      "test_verify_goal_discovery_only_gathered_is_dropped_like_the_answer_path",
+      "test_answer_tail_has_no_web_citation_note_for_an_ordinary_read",
+      "test_answer_tail_has_the_web_citation_carveout_when_web_evidence_present",
+      "test_answer_tail_web_citation_note_absent_with_no_gathered",
+      "test_the_abilities_rule_makes_an_exception_for_tools_that_succeeded_this_turn"
+     ],
+     "sha256": "6ab62937bd6c5713d601f4a1926484fb2561eba0f2861e51597e14064ba275ad"
+    }
+   ],
+   "weight": 0.5,
+   "name": "Web Evidence Verification Tests"
+  },
+  {
+   "id": "web-cache-query-normalization",
+   "keywords": [
+    "webcache",
+    "cache",
+    "normalize query",
+    "whitespace",
+    "lowercase",
+    "quotes",
+    "punctuation",
+    "offline",
+    "cache key"
+   ],
+   "summary": "Offline tests for WebCache that check query normalization, including lowercasing, collapsing whitespace, and stripping surrounding quotes and punctuation.",
+   "description": "Tests for WebCache -- offline, no network.. Key: test_normalize_query_lowercases_and_collapses_whitespace, test_normalize_query_strips_surrounding_quotes_and_punctuation, test_normalize_query_empty, test_memory_miss_then_hit, test_memory_expiry, test_namespaces_are_independent, test_fresh_semantics_handled_by_caller_set_still_writes, test_lru_eviction_over_max_entries",
+   "files": [
+    {
+     "path": "tests/test_web_cache.py",
+     "symbols": [
+      "test_normalize_query_lowercases_and_collapses_whitespace",
+      "test_normalize_query_strips_surrounding_quotes_and_punctuation",
+      "test_normalize_query_empty",
+      "test_memory_miss_then_hit",
+      "test_memory_expiry",
+      "test_namespaces_are_independent",
+      "test_fresh_semantics_handled_by_caller_set_still_writes",
+      "test_lru_eviction_over_max_entries",
+      "test_stats_reports_hits_and_misses",
+      "test_disk_round_trip_across_instances",
+      "test_disk_directory_property",
+      "test_disk_expired_entry_is_a_miss_and_cleaned_up",
+      "test_disk_corrupt_file_is_a_miss",
+      "test_disk_prune_keeps_disk_entries_bounded",
+      "test_disk_write_is_atomic_no_tmp_files_left_behind",
+      "test_disk_file_is_valid_json",
+      "test_disk_prune_never_deletes_a_file_this_cache_did_not_write"
+     ],
+     "sha256": "b81501a1edabdd9b0dd4dfd10f8651d658f7dc1502e4207802a4bb1462196bb1"
+    }
+   ],
+   "weight": 0.5,
+   "name": "Web Cache Query Normalization"
+  },
+  {
+   "id": "offline-test-fakes-package",
+   "keywords": [
+    "fakes",
+    "test doubles",
+    "offline",
+    "stand-ins",
+    "external programs",
+    "package",
+    "tests",
+    "paid account"
+   ],
+   "summary": "Defines the test fakes package that groups offline replacements for external programs that would otherwise require paid access.",
+   "description": "Offline stand-ins for outside programs the tests would otherwise need a paid account for.",
+   "files": [
+    {
+     "path": "tests/fakes/__init__.py",
+     "symbols": [],
+     "sha256": "97912e3302293ea1c13fb78a9eaa2eec47580350287c1dbf699311d85c34b624"
+    }
+   ],
+   "weight": 0.5,
+   "name": "Offline Test Fakes Package"
+  },
+  {
+   "id": "agent-tool-catalog",
+   "keywords": [
+    "tools",
+    "catalog",
+    "custom tools",
+    "registration",
+    "operator",
+    "quest",
+    "metrics",
+    "search",
+    "status",
+    "repo specs"
+   ],
+   "summary": "Defines the standard catalog of callable agent tools and supports operator-registered custom tools, with guards checked before each call.",
+   "description": "Tools the brain can CALL directly: a standard catalog plus custom tools an operator registers.. Key: ToolContext -- What the loop knows about the current turn, offered to tools that declare they want it., ToolResult -- What one tool call came to., data_of -- The raw answer inside a typed client write result (a plain payload is returned as it is)., write_failed -- The result of a write that raised., result_of_write -- A tool result from what a client write returned: its typed status (or, for a plain payload, the flags the server, UnavailableTool -- A standard tool this deployment does not offer, and the one line the planner reads when a request is about what that, ToolSpec, stem -- Strip a plural or past-tense ending so \"asked\", \"asks\" and \"ask\" meet (query and tool text alike) Checks the code makes on a tool call BEFORE it runs, so a cheap planner cannot spend a write or a read on an id it made . Key: quest_id_args -- The argument names ``spec`` fills from the turn's quest: what the model may only name from what it has seen., shape_of -- What kind of identifier ``token`` looks like: ``hex`` for a long hex run, else its leading letters and first separator, words_of_id -- The words an id spells, without its shape prefix (``q_riverside_10k`` -> riverside, 10k)., evidence_ids -- Every id-shaped token of ``shape`` in ``evidence`` -> the evidence line it appears on (its label)., IdVerdict -- What the guard decided about one call's quest id arguments., resolve_unknown -- The one candidate whose label holds the words ``token`` spells, if exactly one does best., refusal_text, check_quest_ids -- Check every quest id argument of a call against what the turn has seen",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/tools.py",
+     "symbols": [
+      "ToolContext",
+      "ToolResult",
+      "data_of",
+      "write_failed",
+      "result_of_write",
+      "UnavailableTool",
+      "ToolSpec",
+      "stem",
+      "tokenize",
+      "coerce_result",
+      "ToolRegistry",
+      "_expand_env_vars",
+      "expand_placeholders",
+      "command_args_as_flags",
+      "make_command_handler",
+      "set_quest_client_factory",
+      "quest_client_from_env",
+      "quest_credentials_present",
+      "env_flag",
+      "load_handler",
+      "spec_from_toml_entry",
+      "apply_standard_overrides",
+      "load_tools_file",
+      "build_tool_registry"
+     ],
+     "sha256": "ecae8f74b69b0d90b68bc6a42957bda2a9b945bd16e03ebb21179c659d1e2d6a",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/tool_guards.py",
+     "symbols": [
+      "quest_id_args",
+      "shape_of",
+      "words_of_id",
+      "evidence_ids",
+      "IdVerdict",
+      "resolve_unknown",
+      "refusal_text",
+      "check_quest_ids",
+      "companion_calls",
+      "quests_in_receipt",
+      "listed_quests",
+      "content_words",
+      "named_quests",
+      "detail_reads",
+      "text_words",
+      "same_item",
+      "merge_near_duplicates",
+      "web_was_read",
+      "web_read_owed",
+      "drop_web_reads_for_own_records"
+     ],
+     "sha256": "9547be199bf07515644d8a02ed197449954b152e7809a9e9de3d835a509cf45f",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Agent Tool Catalog and Registration"
+  },
+  {
+   "id": "tool-call-guards",
+   "keywords": [
+    "guards",
+    "validation",
+    "tool call",
+    "hallucinated id",
+    "planner",
+    "precheck",
+    "safety",
+    "write protection"
+   ],
+   "summary": "Validates tool calls before execution so a cheap planner cannot spend reads or writes on fabricated ids.",
+   "description": "Checks the code makes on a tool call BEFORE it runs, so a cheap planner cannot spend a write or a read on an id it made . Key: quest_id_args -- The argument names ``spec`` fills from the turn's quest: what the model may only name from what it has seen., shape_of -- What kind of identifier ``token`` looks like: ``hex`` for a long hex run, else its leading letters and first separator, words_of_id -- The words an id spells, without its shape prefix (``q_riverside_10k`` -> riverside, 10k)., evidence_ids -- Every id-shaped token of ``shape`` in ``evidence`` -> the evidence line it appears on (its label)., IdVerdict -- What the guard decided about one call's quest id arguments., resolve_unknown -- The one candidate whose label holds the words ``token`` spells, if exactly one does best., refusal_text, check_quest_ids -- Check every quest id argument of a call against what the turn has seen",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/tool_guards.py",
+     "symbols": [
+      "quest_id_args",
+      "shape_of",
+      "words_of_id",
+      "evidence_ids",
+      "IdVerdict",
+      "resolve_unknown",
+      "refusal_text",
+      "check_quest_ids",
+      "companion_calls",
+      "quests_in_receipt",
+      "listed_quests",
+      "content_words",
+      "named_quests",
+      "detail_reads",
+      "text_words",
+      "same_item",
+      "merge_near_duplicates",
+      "web_was_read",
+      "web_read_owed",
+      "drop_web_reads_for_own_records"
+     ],
+     "sha256": "9547be199bf07515644d8a02ed197449954b152e7809a9e9de3d835a509cf45f",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Pre-Execution Tool Call Guards"
+  },
+  {
+   "id": "reasoning-loop-machinery",
+   "keywords": [
+    "reasoning loop",
+    "plan",
+    "gather",
+    "re-plan",
+    "deep loop",
+    "confirm",
+    "orchestration",
+    "bounded loop"
+   ],
+   "summary": "Provides the generic machinery for a bounded plan, gather, re-plan, answer, deep, or confirm reasoning loop.",
+   "description": "The reasoning loop's generic machinery: the pieces of a bounded plan, gather, re-plan, answer, deep or confirm loop that Composing answers: a grounded answer, the sub-question fan-out, and the post-work synthesis.. Key: AnswerKit -- The consumer's text and renderers for answering., AnsweringMixin -- Composing answers",
+   "files": [
+    {
+     "path": "hubofhubs/orchestrate/__init__.py",
+     "symbols": [],
+     "sha256": "2d33d719ebc1947d2a87b0c6fea9468abedfee488c86467197d712c365c37cf8",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/orchestrate/answer.py",
+     "symbols": [
+      "AnswerKit",
+      "AnsweringMixin"
+     ],
+     "sha256": "2098d7e95663681a6fbb798bbe803437913f6d768bf0ec030bac8256be48c9c4",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Bounded Reasoning Loop Machinery"
+  },
+  {
+   "id": "per-turn-anticipator",
+   "keywords": [
+    "anticipator",
+    "observe",
+    "learn",
+    "plan next",
+    "per-turn",
+    "turn loop",
+    "driver",
+    "anticipation engine"
+   ],
+   "summary": "Drives anticipation each turn via the Anticipator, which observes, learns, and plans the next step using the shared learning core.",
+   "description": "Anticipation engine, the per-turn driver: ``Anticipator`` (observe -> learn -> plan_next ->. Key: as_key_list -- Accept one scope key (a bare string) or a list; return a deduped list (same convenience, assemble_with_scope_tags -- Precompute one bundle via ``assembler.assemble``, threading ``scope_tags`` through, bundle_scope_tags -- The scope tags actually carried by the cards/hits inside a precomputed ``assembled``, bundle_is_cross_quest_mixed -- True when ``turn_tags`` (this call's own scope) UNIONED with ``bundle_tags`` (as returned, MatchResult -- What ``Anticipator.observe`` found for the actual message: the served prediction (None, Anticipator -- The runner lane's anticipation engine: observe -> learn -> plan_next, per turn Quest AI Anticipation Engine -- the SHARED learning core (pure) plus the runner-lane wrapper.",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/anticipation_engine.py",
+     "symbols": [
+      "as_key_list",
+      "assemble_with_scope_tags",
+      "bundle_scope_tags",
+      "bundle_is_cross_quest_mixed",
+      "MatchResult",
+      "Anticipator"
+     ],
+     "sha256": "a8695a5b389fffea3fdeede7ac2023038890b7255648a896a363e27f6b8706d9",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/anticipation.py",
+     "symbols": [],
+     "sha256": "ce23bfa1142d105b1165a0a682721125ef5ff39cce730a924df06f096cfc8471",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Per-Turn Anticipator Driver"
+  },
+  {
+   "id": "bounded-iterative-orchestration-loop",
+   "keywords": [
+    "orchestrator",
+    "iterative loop",
+    "planning",
+    "re-plan",
+    "gather",
+    "deep run",
+    "confirm",
+    "turn coordination",
+    "bounded loop"
+   ],
+   "summary": "Implements the orchestrator brain that drives each conversational turn through a bounded plan, gather, re-plan cycle before deciding to answer, run deep, or confirm.",
+   "description": "Orchestrator brain — the BOUNDED ITERATIVE LOOP (plan -> gather -> re-plan -> answer/deep/confirm).. Key: Orchestrator -- The domain-free brain",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/orchestrator.py",
+     "symbols": [
+      "Orchestrator"
+     ],
+     "sha256": "afefae6d81cff78ed796f083afacceea3a945753b596e350e49ad039062ed1bd",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Bounded Iterative Orchestration Loop"
+  },
+  {
+   "id": "acp-deep-runner",
+   "keywords": [
+    "acp",
+    "deep runner",
+    "claude",
+    "hubofhubs",
+    "opt-in runner",
+    "deep research",
+    "agent client protocol",
+    "runner adapter"
+   ],
+   "summary": "Binds the hub's ACP deep runner into QAR as a second, opt-in DeepRunner that drives Claude, along with its configuration.",
+   "description": "ACP deep runner: QAR's binding of the hub's (``hubofhubs.deep.acp_runner``), a SECOND, opt-in ``DeepRunner`` that drives. Key: AcpDeepRunner -- A ``DeepRunner`` that runs each goal as one ACP session against the Claude ACP agent, with QAR's settings ACP deep runner, configuration and policy: the hub's (``hubofhubs.deep.acp_config``) with QAR's environment and escalati. Key: AcpConfig -- Config for the ACP deep runner: the hub's, plus the quest an escalated permission ask belongs to., make_escalation -- The ``Escalation`` an ACP permission ask becomes, attached to ``cfg.escalation_quest_id``., acp_settings -- The hub's ACP settings, built from the environment in force right now and QAR's goal settings., resolve_node_binary -- The ``node`` used to launch the ACP agent: config, then ``QAR_ACP_NODE_PATH``, then PATH., resolve_agent_entry -- The ACP agent program: config, then ``QAR_ACP_AGENT_COMMAND``, then ``claude-agent-acp`` on PATH., build_agent_argv -- The argv that launches the ACP agent, or an explanatory error (see ``hubofhubs.deep.acp_config.build_agent_argv``)",
+   "files": [
+    {
+     "path": "quest_ai_runner/adapters/acp_deep_runner.py",
+     "symbols": [
+      "AcpDeepRunner"
+     ],
+     "sha256": "140f8afa81c18bf6f6e54e92866ee1b0fb22b2306607301326e1a13c98802d1b",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/adapters/acp_deep_runner_config.py",
+     "symbols": [
+      "AcpConfig",
+      "make_escalation",
+      "acp_settings",
+      "resolve_node_binary",
+      "resolve_agent_entry",
+      "build_agent_argv"
+     ],
+     "sha256": "332b0eb07ecec3d7f9e35b305f6d6547b689538baf50696edcfa962a80796524",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "ACP Deep Runner Binding"
+  },
+  {
+   "id": "context-assembler-resolution",
+   "keywords": [
+    "context",
+    "assembler",
+    "cards",
+    "vectors",
+    "turn store",
+    "retrieval",
+    "context index",
+    "resolve",
+    "turn"
+   ],
+   "summary": "Resolves which context assembler, topic cards, vector stores and turn store feed each turn based on a RunnerConfig.",
+   "description": "Resolve the context assembler for a ``RunnerConfig``: which cards, vectors and turn store feed a turn.. Key: composite -- QAR's ``select-context`` arm that runs several assemblers in order as one: the hub's composite assembler., filesystem_card_repository -- QAR's ``persist-cards`` arm that keeps one JSON file per card in a folder: the hub's filesystem card repository., note_resolver -- QAR's ``resolve-references`` built-in for ``note`` items: the hub's note resolver (the registry itself is the hub's ``bu, build_card_repository -- ``(repository, query-only vector store, on the Quest backend)`` for a lane's cards, from its environment., resolve_context_assembler -- Resolve the context assembler from config, then fuse on the declarative LAYERS., _resolve_context_assembler_base -- The base assembler — ON BY DEFAULT RunnerConfig — everything the CONSUMER supplies.. Key: RunnerConfig, build_orchestrator -- Wire a domain-free Orchestrator from the consumer's adapters",
+   "files": [
+    {
+     "path": "quest_ai_runner/config_assembler.py",
+     "symbols": [
+      "composite",
+      "filesystem_card_repository",
+      "note_resolver",
+      "build_card_repository",
+      "resolve_context_assembler",
+      "_resolve_context_assembler_base"
+     ],
+     "sha256": "531d25b94153ecde2590c0cfa497b64772406c7453f7bc61d22ffa6c5104b75c",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/config.py",
+     "symbols": [
+      "RunnerConfig",
+      "build_orchestrator"
+     ],
+     "sha256": "e91c0f1967508cb6fda63577c52336c5ea1cb4f9aab883885796735821513b2e",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Context Assembler Resolution"
+  },
+  {
+   "id": "answer-composition-mixin",
+   "keywords": [
+    "answer",
+    "compose",
+    "mixin",
+    "answer production",
+    "response",
+    "orchestrate answer",
+    "hub",
+    "final answer"
+   ],
+   "summary": "Provides an Orchestrator mixin that composes final answers by delegating to the hub's orchestrate answer module.",
+   "description": "Orchestrator brain — the BOUNDED ITERATIVE LOOP (plan -> gather -> re-plan -> answer/deep/confirm).. Key: Orchestrator -- The domain-free brain Composing answers: a mixin of ``Orchestrator`` (see ``orchestrator.py``) over the hub's ``hubofhubs.orchestrate.answer``. Key: layered_blocks, AnsweringMixin -- Composing answers: the hub's mixin with QAR's kit",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/orchestrator.py",
+     "symbols": [
+      "Orchestrator"
+     ],
+     "sha256": "afefae6d81cff78ed796f083afacceea3a945753b596e350e49ad039062ed1bd",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/orchestrator_answering.py",
+     "symbols": [
+      "layered_blocks",
+      "AnsweringMixin"
+     ],
+     "sha256": "492337bef132273d191dd6ae1c3df6d359ce73f13f73aeda88e5910fee90f0f9",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Answer Composition Mixin"
+  },
+  {
+   "id": "task-completion-semantics",
+   "keywords": [
+    "done",
+    "completion",
+    "evidence",
+    "outcome",
+    "verification",
+    "task status",
+    "goal loop"
+   ],
+   "summary": "Together these tests define what it means for a task to be done, covering both the evidence behind completion and the outcome it records.",
+   "description": "Finish the job before reporting: work shape and done evidence from the planner, the verifier reading the run's. Key: Provider -- Replays planner decisions, verdicts and pre-flight verdicts, told apart by tool schema name; records every call., Runner -- A deep runner that returns scripted results and keeps every brief it was handed., cov, build, run_with_events, test_the_fields_exist_only_when_opted_in_and_the_off_schema_is_unchanged, test_normalize_keeps_evidence_for_an_analysis_only_and_only_when_opted_in, test_planner_tokens_do_not_grow_in_the_full_profile_and_stay_small_in_the_compact A task that reaches ``done`` says whether it did any work: ``result_data.outcome`` is ``done`` when. Key: Client, run, test_an_answer_with_a_successful_mutating_call_is_done, test_an_answer_that_only_talked_is_nothing_done, test_a_write_held_for_approval_is_work_done -- A requested draft or proposal that Quest took and holds for a person did its work: it is not stamped nothing_done., test_a_failed_mutating_call_is_not_work_done, test_a_backend_that_refuses_result_data_still_gets_the_task_reported_done -- A backend older than ``result_data`` answers 422 to the whole PATCH; the report is retried",
+   "files": [
+    {
+     "path": "tests/test_done_evidence.py",
+     "symbols": [
+      "Provider",
+      "Runner",
+      "cov",
+      "build",
+      "run_with_events",
+      "test_the_fields_exist_only_when_opted_in_and_the_off_schema_is_unchanged",
+      "test_normalize_keeps_evidence_for_an_analysis_only_and_only_when_opted_in",
+      "test_planner_tokens_do_not_grow_in_the_full_profile_and_stay_small_in_the_compact",
+      "test_a_lookup_adds_no_call_and_no_prompt_text",
+      "test_the_verifier_is_shown_the_requirements_and_the_declared_coverage_and_nothing_extra_otherwise",
+      "test_partial_coverage_is_not_met_even_when_the_verifier_says_met_and_the_run_continues_to_the_end",
+      "test_a_run_that_stops_advancing_ends_honestly_partial_and_states_how_to_continue",
+      "test_a_spent_attempt_budget_stops_with_the_gap_and_never_claims_met",
+      "test_a_runner_that_declares_nothing_behaves_exactly_as_before",
+      "test_the_preflight_runs_once_for_an_analysis_and_hands_the_worker_the_revised_brief_and_requirements",
+      "test_a_sufficient_plan_runs_as_planned_with_the_requirements_appended",
+      "test_a_question_from_the_preflight_stops_the_run_before_any_work",
+      "test_an_honest_scope_rides_into_the_brief_and_a_failed_preflight_changes_nothing",
+      "test_an_action_or_a_flag_off_analysis_never_makes_the_preflight_call",
+      "test_a_partial_result_that_continues_emits_an_interim_event_with_the_agreed_shape",
+      "test_no_interim_event_without_the_flag_or_when_the_first_attempt_is_complete"
+     ],
+     "sha256": "6ca5ae0fc1e022f5d7788e09400d65b34727cbbd02b6879b4da62ed57f3fca8e",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    },
+    {
+     "path": "tests/test_done_outcome_stamp.py",
+     "symbols": [
+      "Client",
+      "run",
+      "test_an_answer_with_a_successful_mutating_call_is_done",
+      "test_an_answer_that_only_talked_is_nothing_done",
+      "test_a_write_held_for_approval_is_work_done",
+      "test_a_failed_mutating_call_is_not_work_done",
+      "test_a_backend_that_refuses_result_data_still_gets_the_task_reported_done"
+     ],
+     "sha256": "ca60070f98c3694ccb6672e565345b339cb1256355d4d97c0bc0b28bbda97142",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Task Completion Semantics"
+  },
+  {
+   "id": "done-evidence-verification",
+   "keywords": [
+    "done evidence",
+    "verifier",
+    "planner",
+    "work shape",
+    "finish job",
+    "reporting",
+    "run verification",
+    "completion"
+   ],
+   "summary": "Tests that the planner provides work shape and done evidence and the verifier reads the run to confirm the job is finished before reporting.",
+   "description": "Finish the job before reporting: work shape and done evidence from the planner, the verifier reading the run's. Key: Provider -- Replays planner decisions, verdicts and pre-flight verdicts, told apart by tool schema name; records every call., Runner -- A deep runner that returns scripted results and keeps every brief it was handed., cov, build, run_with_events, test_the_fields_exist_only_when_opted_in_and_the_off_schema_is_unchanged, test_normalize_keeps_evidence_for_an_analysis_only_and_only_when_opted_in, test_planner_tokens_do_not_grow_in_the_full_profile_and_stay_small_in_the_compact",
+   "files": [
+    {
+     "path": "tests/test_done_evidence.py",
+     "symbols": [
+      "Provider",
+      "Runner",
+      "cov",
+      "build",
+      "run_with_events",
+      "test_the_fields_exist_only_when_opted_in_and_the_off_schema_is_unchanged",
+      "test_normalize_keeps_evidence_for_an_analysis_only_and_only_when_opted_in",
+      "test_planner_tokens_do_not_grow_in_the_full_profile_and_stay_small_in_the_compact",
+      "test_a_lookup_adds_no_call_and_no_prompt_text",
+      "test_the_verifier_is_shown_the_requirements_and_the_declared_coverage_and_nothing_extra_otherwise",
+      "test_partial_coverage_is_not_met_even_when_the_verifier_says_met_and_the_run_continues_to_the_end",
+      "test_a_run_that_stops_advancing_ends_honestly_partial_and_states_how_to_continue",
+      "test_a_spent_attempt_budget_stops_with_the_gap_and_never_claims_met",
+      "test_a_runner_that_declares_nothing_behaves_exactly_as_before",
+      "test_the_preflight_runs_once_for_an_analysis_and_hands_the_worker_the_revised_brief_and_requirements",
+      "test_a_sufficient_plan_runs_as_planned_with_the_requirements_appended",
+      "test_a_question_from_the_preflight_stops_the_run_before_any_work",
+      "test_an_honest_scope_rides_into_the_brief_and_a_failed_preflight_changes_nothing",
+      "test_an_action_or_a_flag_off_analysis_never_makes_the_preflight_call",
+      "test_a_partial_result_that_continues_emits_an_interim_event_with_the_agreed_shape",
+      "test_no_interim_event_without_the_flag_or_when_the_first_attempt_is_complete"
+     ],
+     "sha256": "6ca5ae0fc1e022f5d7788e09400d65b34727cbbd02b6879b4da62ed57f3fca8e",
+     "last_used_ts": 1793785214.0791216,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Done Evidence Verification"
+  },
+  {
+   "id": "neutral-port-protocols",
+   "keywords": [
+    "ports",
+    "protocols",
+    "interfaces",
+    "abstraction",
+    "dependency inversion",
+    "adapters",
+    "helpers"
+   ],
+   "summary": "Defines neutral Protocols and helpers that a consumer's core codes against without depending on any concrete consumer.",
+   "description": "Ports: the neutral Protocols and helpers a consumer's core codes against. Ports and value objects for context: assembled context, conversations, ``ContextAssembler`` and ``VectorStore``.. Key: AssembledContext -- The pre-assembled context produced by a ContextAssembler before the loop starts., ConversationContext -- A rendered slice of conversation history, ready to drop into ``context_view``., ConversationStore -- Storage-agnostic conversation-history retrieval., ContextAssembler -- PRE-FLIGHT CONTEXT., VectorHit -- One result returned by a VectorStore search., VectorStore -- OPTIONAL VECTOR ORIENTATION., VectorStoreBase -- ABC variant of VectorStore for explicit subclassing., ContextAssemblerBase -- ABC variant for implementers who prefer explicit subclassing",
+   "files": [
+    {
+     "path": "hubofhubs/ports/__init__.py",
+     "symbols": [],
+     "sha256": "e77a7a95dab9cb34652e4ff391adbd41971139ff3ea8e37f7cba6f728651acbb",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/ports/context.py",
+     "symbols": [
+      "AssembledContext",
+      "ConversationContext",
+      "ConversationStore",
+      "ContextAssembler",
+      "VectorHit",
+      "VectorStore",
+      "VectorStoreBase",
+      "ContextAssemblerBase"
+     ],
+     "sha256": "3ef678bdc98ef269a24080be0e359ac73a0b442f4fd64d2805ea52e1e539c6c2",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Neutral Port Protocol Interfaces"
+  },
+  {
+   "id": "bm25-content-store",
+   "keywords": [
+    "bm25",
+    "content store",
+    "lexical search",
+    "keyword retrieval",
+    "hubofhubs",
+    "recall",
+    "ranking",
+    "text search"
+   ],
+   "summary": "Binds the hub's BM25 content store from hubofhubs.recall.bm25_store into the quest AI runner for keyword-based context retrieval.",
+   "description": "BM25ContentStore: QAR's binding of the hub's BM25 content store (``hubofhubs.recall.bm25_store``).. Key: query_prompt, BM25ContentStore -- The hub's BM25 content store under QAR's skip set and registered query prompt Reference adapter implementations.",
+   "files": [
+    {
+     "path": "quest_ai_runner/adapters/bm25_content_store.py",
+     "symbols": [
+      "query_prompt",
+      "BM25ContentStore"
+     ],
+     "sha256": "a8d39f3b97b8600d0061e6565bc4ae166647ae102f985f91a82ac4918a39155b",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/adapters/__init__.py",
+     "symbols": [
+      "says"
+     ],
+     "sha256": "e1624f00c8c07355b372eed35f6464044c1b6aa4ad15eed87e713cbc1cae0e2c",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "BM25 Content Store Binding"
+  },
+  {
+   "id": "adapter-package-exports",
+   "keywords": [
+    "adapters",
+    "reference implementations",
+    "package init",
+    "exports",
+    "imports",
+    "plugins",
+    "bindings"
+   ],
+   "summary": "Package initializer that exposes the reference adapter implementations used for context card storage and retrieval.",
+   "description": "Reference adapter implementations.",
+   "files": [
+    {
+     "path": "quest_ai_runner/adapters/__init__.py",
+     "symbols": [
+      "says"
+     ],
+     "sha256": "e1624f00c8c07355b372eed35f6464044c1b6aa4ad15eed87e713cbc1cae0e2c",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Reference Adapter Package Exports"
+  },
+  {
+   "id": "acp-config-policy",
+   "keywords": [
+    "acp",
+    "config",
+    "settings",
+    "acpconfig",
+    "acpsettings",
+    "node discovery",
+    "agent binary",
+    "policy",
+    "protocol"
+   ],
+   "summary": "Configuration and policy for the ACP deep runner, including Node and agent-binary discovery plus the AcpConfig and AcpSettings types.",
+   "description": "ACP deep runner, configuration and policy: Node and agent-binary discovery, ``AcpConfig``, ``AcpSettings`` and the. Key: EscalationAsk -- The human decision an ACP permission ask becomes, when the consumer brings no type of its own (see ``AcpSettings``)., make_escalation_ask, AcpSettings -- What the ACP runner takes from its host, none of it read from the environment here., resolve_acp_settings -- The ACP settings in force right now: a value as it is, a callable called, None the defaults., resolve_node_binary -- The ``node`` used to launch the ACP agent: config, then the settings' Node fallback, then PATH., node_major_version -- The major version of ``node_path`` (``node --version`` -> ``v22.23.2`` -> 22), or None., resolve_agent_entry -- The ACP agent program: config, then the settings' agent fallback, then ``claude-agent-acp``, build_agent_argv -- Resolve the argv that launches the ACP agent, or an explanatory error",
+   "files": [
+    {
+     "path": "hubofhubs/deep/acp_config.py",
+     "symbols": [
+      "EscalationAsk",
+      "make_escalation_ask",
+      "AcpSettings",
+      "resolve_acp_settings",
+      "resolve_node_binary",
+      "node_major_version",
+      "resolve_agent_entry",
+      "build_agent_argv",
+      "AcpConfig",
+      "classify_permission",
+      "select_option",
+      "permission_response"
+     ],
+     "sha256": "3802629ad5847de35bb90bb9878538b45c45580b807a6eeda7823fba3d10a70b",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "ACP Runner Configuration Policy"
+  },
+  {
+   "id": "context-retrieval-ports",
+   "keywords": [
+    "context",
+    "context assembler",
+    "vector store",
+    "conversation",
+    "retrieval",
+    "value objects",
+    "assembled context"
+   ],
+   "summary": "Declares ports and value objects for assembled context, conversations, context assembly, and vector store retrieval.",
+   "description": "Ports and value objects for context: assembled context, conversations, ``ContextAssembler`` and ``VectorStore``.. Key: AssembledContext -- The pre-assembled context produced by a ContextAssembler before the loop starts., ConversationContext -- A rendered slice of conversation history, ready to drop into ``context_view``., ConversationStore -- Storage-agnostic conversation-history retrieval., ContextAssembler -- PRE-FLIGHT CONTEXT., VectorHit -- One result returned by a VectorStore search., VectorStore -- OPTIONAL VECTOR ORIENTATION., VectorStoreBase -- ABC variant of VectorStore for explicit subclassing., ContextAssemblerBase -- ABC variant for implementers who prefer explicit subclassing Composing answers: a grounded answer, the sub-question fan-out, and the post-work synthesis.. Key: AnswerKit -- The consumer's text and renderers for answering., AnsweringMixin -- Composing answers",
+   "files": [
+    {
+     "path": "hubofhubs/ports/context.py",
+     "symbols": [
+      "AssembledContext",
+      "ConversationContext",
+      "ConversationStore",
+      "ContextAssembler",
+      "VectorHit",
+      "VectorStore",
+      "VectorStoreBase",
+      "ContextAssemblerBase"
+     ],
+     "sha256": "3ef678bdc98ef269a24080be0e359ac73a0b442f4fd64d2805ea52e1e539c6c2",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/orchestrate/answer.py",
+     "symbols": [
+      "AnswerKit",
+      "AnsweringMixin"
+     ],
+     "sha256": "2098d7e95663681a6fbb798bbe803437913f6d768bf0ec030bac8256be48c9c4",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Context and Vector Store Ports"
+  },
+  {
+   "id": "composite-retrieval-example",
+   "keywords": [
+    "composite",
+    "retrieval",
+    "multi-source",
+    "claude",
+    "conversations",
+    "corpus",
+    "example",
+    "search",
+    "rag"
+   ],
+   "summary": "Runnable example demonstrating multi-source composite retrieval with Claude conversations included in the corpus.",
+   "description": "Example: multi-source retrieval with Claude conversations in corpus.. Key: setup_example_corpus -- Create an example corpus with files and conversations., main Runnable examples for wiring quest-ai-runner to your own Quest backend.",
+   "files": [
+    {
+     "path": "examples/composite_retrieval_example.py",
+     "symbols": [
+      "setup_example_corpus",
+      "main"
+     ],
+     "sha256": "b2a93ed09c46fc8eafcb267515dff863ec89e6192efeb38c3d3e9365d0392e27",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    },
+    {
+     "path": "examples/__init__.py",
+     "symbols": [],
+     "sha256": "5addc63f3e6675c1d675f3ea590cc1cbf0b4ff1379b292972f3cb8eeef871375",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Composite Multi-Source Retrieval Example"
+  },
+  {
+   "id": "data-driven-search-apis",
+   "keywords": [
+    "search api",
+    "json api",
+    "data-driven",
+    "generic backend",
+    "api description",
+    "declarative",
+    "configuration",
+    "adapter"
+   ],
+   "summary": "Describes search APIs as data and runs any such description through a single generic backend.",
+   "description": "Search APIs described as DATA, and the one generic backend that runs any such description.",
+   "files": [
+    {
+     "path": "hubofhubs/websearch/apis.py",
+     "symbols": [],
+     "sha256": "06bafc4a145730d84552cac524ee176471b207ae90b25703ba7d18c0390dfec4",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Data-Described Search APIs"
+  },
+  {
+   "id": "anthropic-provider",
+   "keywords": [
+    "anthropic",
+    "claude",
+    "forced tool call",
+    "plan",
+    "answer",
+    "web search",
+    "server tool",
+    "model list",
+    "adapter"
+   ],
+   "summary": "Implements the AnthropicProvider adapter supporting planning via a single forced-tool call, answering, native server-side web search, and fetching the live model list.",
+   "description": "AnthropicProvider: plan (one forced-tool call), answer, web search through the native server tool, and the live model li. Key: build_cached_system -- Prompt-layer blocks as an Anthropic ``system`` array plus the volatile tail text, ``(system_array, tail_text)``., thinking_kwargs -- Request kwargs that turn extended thinking off for one ``messages.create``., AnthropicProvider",
+   "files": [
+    {
+     "path": "hubofhubs/models/anthropic.py",
+     "symbols": [
+      "build_cached_system",
+      "thinking_kwargs",
+      "AnthropicProvider"
+     ],
+     "sha256": "af4d9cb13381e599e0017203aa99ce4735cf38ae48df3f7a91484a23f746731a",
+     "last_used_ts": 1793785214.1160276,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Anthropic Provider Adapter"
+  },
+  {
+   "id": "persona-selection",
+   "keywords": [
+    "persona",
+    "personas",
+    "queued task",
+    "configuration",
+    "dispatch",
+    "routing",
+    "task assignment",
+    "runner"
+   ],
+   "summary": "Decides which persona runs a queued task based on configuration rather than hard-coded logic.",
+   "description": "personas — decide WHICH persona runs a queued task, from configuration instead of code.. Key: PersonaEntry -- One persona: the id Quest addresses it by, and the skill folder it runs as., PersonaRegistry -- The personas a lane knows about, keyed by id., PersonaResolverConfig -- Everything a lane's persona policy needs., slugify -- Turn a display name (or any string) into a filesystem/skill-safe slug., unique_slug -- A slug free of existing dirs under ``skills_root`` (and of an optional in-flight set)., seed_skill_file -- Create ``<skill_dir>/SKILL.md`` with valid frontmatter IF it does not already exist., _display_name_for -- Best-effort display name for an id, for the slug + skill description., _persist_entry -- Merge a newly registered persona into the registry file",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/personas.py",
+     "symbols": [
+      "PersonaEntry",
+      "PersonaRegistry",
+      "PersonaResolverConfig",
+      "slugify",
+      "unique_slug",
+      "seed_skill_file",
+      "_display_name_for",
+      "_persist_entry",
+      "register_persona",
+      "_task_text",
+      "_first_field_value",
+      "structured_assignment",
+      "_linked_names",
+      "_judge_model",
+      "llm_explicit_ask",
+      "_tokens",
+      "_card_owner",
+      "_candidate_card_paths",
+      "card_activation",
+      "build_persona_resolver"
+     ],
+     "sha256": "0015c350fe851eeb9c97129a2bdba06d12108d861918f2114db58909c2c2a511",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Configurable Persona Selection"
+  },
+  {
+   "id": "qar-provider-configuration",
+   "keywords": [
+    "qar",
+    "hub",
+    "provider",
+    "configuration",
+    "model registry",
+    "extension",
+    "environment",
+    "llm integration"
+   ],
+   "summary": "Groups tests verifying how QAR layers configuration-driven provider registration and routing on top of the hub's model provider infrastructure.",
+   "description": "DeepSeek provider in QAR: opt-in registration, tier safety, the environment it is built from.. Key: Marker, test_orchestrator_routes_deepseek_ids, test_bucket_top_ignores_deepseek_ids, test_bucket_top_honours_explicit_pin, test_registered_only_when_key_set, test_the_provider_is_built_from_the_environment, test_a_provider_that_cannot_be_built_does_not_stop_the_others QAR extends the hub's model-id prefix table from configuration: an OpenAI-compatible endpoint is configuration only.. Key: test_an_extra_prefix_comes_from_configuration_and_the_router_uses_the_same_table -- LiteLLM, vLLM or Ollama: OPENAI_BASE_URL points the provider at it, QAR_OPENAI_MODEL_PREFIXES routes its ids., test_the_openai_provider_takes_an_endpoint_from_the_environment_and_deepseek_keeps_its_own",
+   "files": [
+    {
+     "path": "tests/test_deepseek_provider.py",
+     "symbols": [
+      "Marker",
+      "test_orchestrator_routes_deepseek_ids",
+      "test_bucket_top_ignores_deepseek_ids",
+      "test_bucket_top_honours_explicit_pin",
+      "test_registered_only_when_key_set",
+      "test_the_provider_is_built_from_the_environment",
+      "test_a_provider_that_cannot_be_built_does_not_stop_the_others"
+     ],
+     "sha256": "2a1ce3a46e468f0a19e198e5154076a41419cde3aad3048460955588328f96f8",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    },
+    {
+     "path": "tests/test_model_prefix_routing.py",
+     "symbols": [
+      "test_an_extra_prefix_comes_from_configuration_and_the_router_uses_the_same_table",
+      "test_the_openai_provider_takes_an_endpoint_from_the_environment_and_deepseek_keeps_its_own"
+     ],
+     "sha256": "f7d06ffc632f7bbaba1b5b5d34a7441aa2adb06b70b14dde651f18a0580ff159",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "QAR Provider Configuration Extensions"
+  },
+  {
+   "id": "model-provider-package",
+   "keywords": [
+    "model providers",
+    "vendor sdk",
+    "wrappers",
+    "extras",
+    "anthropic",
+    "gemini",
+    "openai",
+    "call-a-model",
+    "provider registry"
+   ],
+   "summary": "Package entry point that defines the model-provider arms of the call-a-model seat as thin wrappers over individual vendor SDKs installed via optional extras.",
+   "description": "Model-provider arms of the call-a-model seat: thin wrappers over one vendor SDK each (extras ``anthropic``, ``gemini``, AnthropicProvider: plan (one forced-tool call), answer, web search through the native server tool, and the live model li. Key: build_cached_system -- Prompt-layer blocks as an Anthropic ``system`` array plus the volatile tail text, ``(system_array, tail_text)``., thinking_kwargs -- Request kwargs that turn extended thinking off for one ``messages.create``., AnthropicProvider",
+   "files": [
+    {
+     "path": "hubofhubs/models/__init__.py",
+     "symbols": [],
+     "sha256": "f69eaf430ce368481710a28165cb1d70beab81c184c8a793b528689bd99e4c88",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/models/anthropic.py",
+     "symbols": [
+      "build_cached_system",
+      "thinking_kwargs",
+      "AnthropicProvider"
+     ],
+     "sha256": "af4d9cb13381e599e0017203aa99ce4735cf38ae48df3f7a91484a23f746731a",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Model Provider Package Overview"
+  },
+  {
+   "id": "model-prefix-routing",
+   "keywords": [
+    "model prefix",
+    "routing",
+    "model id",
+    "openai-compatible",
+    "endpoint",
+    "configuration",
+    "qar",
+    "hub",
+    "registry"
+   ],
+   "summary": "Tests that QAR extends the hub's model-id prefix routing table from configuration so OpenAI-compatible endpoints can be added purely via config.",
+   "description": "QAR extends the hub's model-id prefix table from configuration: an OpenAI-compatible endpoint is configuration only.. Key: test_an_extra_prefix_comes_from_configuration_and_the_router_uses_the_same_table -- LiteLLM, vLLM or Ollama: OPENAI_BASE_URL points the provider at it, QAR_OPENAI_MODEL_PREFIXES routes its ids., test_the_openai_provider_takes_an_endpoint_from_the_environment_and_deepseek_keeps_its_own",
+   "files": [
+    {
+     "path": "tests/test_model_prefix_routing.py",
+     "symbols": [
+      "test_an_extra_prefix_comes_from_configuration_and_the_router_uses_the_same_table",
+      "test_the_openai_provider_takes_an_endpoint_from_the_environment_and_deepseek_keeps_its_own"
+     ],
+     "sha256": "f7d06ffc632f7bbaba1b5b5d34a7441aa2adb06b70b14dde651f18a0580ff159",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Config-Driven Model Prefix Routing"
+  },
+  {
+   "id": "situational-doctrine",
+   "keywords": [
+    "doctrine",
+    "situational",
+    "prompt",
+    "rules",
+    "policy",
+    "context",
+    "applicable",
+    "guidance"
+   ],
+   "summary": "Builds prompts that include only the doctrine rules applicable to the specific situation they are constructed for.",
+   "description": "Situational doctrine: a prompt carries only the rules that apply to the situation it is built for.. Key: Rule -- One rule of a prompt: ``text`` is included when ``applies_when`` holds for the situation., Doctrine -- The assembled prompt text with its estimated size and which rules it holds., clauses -- The rule's condition as a list of alternatives (empty when it always applies)., matches, applies, estimate_tokens -- A tokenizer-free estimate: characters over ``chars_per_token``, rounded up., assemble_doctrine -- The rules that apply to ``situation``, joined in the order given, with their size and the ids in and out., check_rules -- Problems in a rule set: an empty or repeated id, or a condition naming a fact the situation does not declare",
+   "files": [
+    {
+     "path": "hubofhubs/doctrine.py",
+     "symbols": [
+      "Rule",
+      "Doctrine",
+      "clauses",
+      "matches",
+      "applies",
+      "estimate_tokens",
+      "assemble_doctrine",
+      "check_rules"
+     ],
+     "sha256": "5220e5bd93cb2714b04e492024cfd99783fd297878425d69f3dbbc3743e07ab1",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Situational Doctrine Prompt Rules"
+  },
+  {
+   "id": "hub-of-hubs-connector",
+   "keywords": [
+    "hub",
+    "hubofhubs",
+    "connector",
+    "startup",
+    "quest",
+    "integration",
+    "bootstrap"
+   ],
+   "summary": "Provides the single startup integration point where QAR connects Quest to the hubofhubs hub of hubs.",
+   "description": "QAR is Quest's connector to the hub of hubs: this is the one place QAR meets ``hubofhubs`` at startup.. Key: child -- QAR's Assembler, a child of the hub's., register_with_hub -- Make QAR's arms known to its Assembler (importing the adapter declares ``qar-card-repository``)., seats -- The solution ids the hub declares: the seats QAR assembles through the hub (QAR's other records are not hub seats)., assemble -- QAR's whole hub assembly: every hub seat built from QAR's choice, else the hub's default., card_repository_of -- The repository QAR's ``card-store`` seat holds, obtained through the hub assembly., flag, make_provider -- The hub's ``call-a-model`` arm ``name`` (anthropic, gemini, openai or deepseek), built by the hub assembly from ``enviro quest-ai-runner — the orchestrator BRAIN (core) + the queued-task EXECUTOR (runner).. Key: _config_builder -- Late-bound lookup in ``config`` so patching ``config.<name>`` still takes effect., assembler -- QAR's hub Assembler (scope ``quest_ai_runner``), the entry point ``esoi requirements --package quest_ai_runner`` and, load_client -- A ``QuestClient`` for this deployment's Quest account — the front door for API scripting., load_config -- Build a ``RunnerConfig`` from a TOML file layered under the environment",
+   "files": [
+    {
+     "path": "quest_ai_runner/hub.py",
+     "symbols": [
+      "child",
+      "register_with_hub",
+      "seats",
+      "assemble",
+      "card_repository_of",
+      "flag",
+      "make_provider"
+     ],
+     "sha256": "a69632d83e6057abb32f4bdcdaa0138d599a5745537826b3f3c451b0798ee771",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/__init__.py",
+     "symbols": [
+      "_config_builder",
+      "assembler",
+      "load_client",
+      "load_config"
+     ],
+     "sha256": "c3f873c64d94857493812dc91cc078359a71fe2fe9632bac164fb461e4dbf8d4",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Hub of Hubs Startup Connector"
+  },
+  {
+   "id": "qdrant-collection-scoping",
+   "keywords": [
+    "qdrant",
+    "vector store",
+    "collection",
+    "payload",
+    "scoping",
+    "filtering",
+    "namespace",
+    "isolation"
+   ],
+   "summary": "Tests that QdrantVectorStore keeps data in a single collection and scopes reads and writes using payload fields.",
+   "description": "QdrantVectorStore single-collection payload scoping — behavior tests.. Key: toy_embedder -- Deterministic, dependency-free embedder: bucket characters into dims., store, collection_names, hit_ids, TestSingleCollection, TestScopeVisibility, TestIdNamespacing, TestScopedAccounting",
+   "files": [
+    {
+     "path": "tests/test_qdrant_vector_store_scoping.py",
+     "symbols": [
+      "toy_embedder",
+      "store",
+      "collection_names",
+      "hit_ids",
+      "TestSingleCollection",
+      "TestScopeVisibility",
+      "TestIdNamespacing",
+      "TestScopedAccounting",
+      "TestPruneLegacyCollections",
+      "TestVectorSizeIsolation"
+     ],
+     "sha256": "e7bc4669425ffd9c25090b23e7898b1426c1f1c9ae063e3f1c6d009388137765",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Qdrant Vector Store Scoping"
+  },
+  {
+   "id": "deepseek-provider-registration",
+   "keywords": [
+    "deepseek",
+    "provider",
+    "opt-in",
+    "registration",
+    "tier safety",
+    "environment",
+    "qar",
+    "llm"
+   ],
+   "summary": "Tests that the DeepSeek provider is registered in QAR only when opted in, respects tier safety, and is built from the expected environment configuration without network access.",
+   "description": "DeepSeek provider in QAR: opt-in registration, tier safety, the environment it is built from.. Key: Marker, test_orchestrator_routes_deepseek_ids, test_bucket_top_ignores_deepseek_ids, test_bucket_top_honours_explicit_pin, test_registered_only_when_key_set, test_the_provider_is_built_from_the_environment, test_a_provider_that_cannot_be_built_does_not_stop_the_others",
+   "files": [
+    {
+     "path": "tests/test_deepseek_provider.py",
+     "symbols": [
+      "Marker",
+      "test_orchestrator_routes_deepseek_ids",
+      "test_bucket_top_ignores_deepseek_ids",
+      "test_bucket_top_honours_explicit_pin",
+      "test_registered_only_when_key_set",
+      "test_the_provider_is_built_from_the_environment",
+      "test_a_provider_that_cannot_be_built_does_not_stop_the_others"
+     ],
+     "sha256": "2a1ce3a46e468f0a19e198e5154076a41419cde3aad3048460955588328f96f8",
+     "last_used_ts": 1793785214.2537932,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "DeepSeek Provider Opt-in Registration"
+  },
+  {
+   "id": "deep-goal-lifecycle",
+   "keywords": [
+    "deep goal",
+    "goal runner",
+    "lifecycle",
+    "iteration",
+    "metrics",
+    "session",
+    "flow",
+    "execution"
+   ],
+   "summary": "Together these modules govern how a deep goal is iterated and measured across a goal-driven session.",
+   "description": "The arms of ``iterate-by-spec``: how much the code does around a deep goal beyond what the standing instructions say.. Key: GoalIteration -- What the code adds around one deep goal: a slice source (None for none) and the meters that read its metric., DoctrineOnly -- The standing instructions are the whole method: no slice in the brief and no reading by the runner., SliceOnly -- The brief gets the slice for the solution the goal serves: its next milestone and the metric that measures it., SliceAndWriteback -- The slice, and the runner's own readings of its metric before and after the work, written to the run's record The metric record of ONE deep goal, kept by the flow: before the work, around it, and what every consumer is handed.. Key: working_dir_of -- The folder a goal's worker starts in: the per-run override, else the runner's configured one, else unknown., run_hint -- The sentence for the deep brief's tool section that tells the worker which run its results are kept under., deep_metric_data -- The metric payload of a finished turn, from its deep results alone: ``{\"metrics\": [...]}`` (capped, in goal order), GoalMetrics -- The metric record of one deep goal",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/goal_iteration.py",
+     "symbols": [
+      "GoalIteration",
+      "DoctrineOnly",
+      "SliceOnly",
+      "SliceAndWriteback"
+     ],
+     "sha256": "4f12459f58a353e7de178625cd7bef064d7fbecf59d2bb55345ec258839d9e51",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/goal_metrics.py",
+     "symbols": [
+      "working_dir_of",
+      "run_hint",
+      "deep_metric_data",
+      "GoalMetrics"
+     ],
+     "sha256": "9f1b3665146d4288cb81a1bb873f5066b37483716c0e4dc5f676e86e5dd2946a",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Deep goal execution lifecycle"
+  },
+  {
+   "id": "metric-drafts",
+   "keywords": [
+    "metric",
+    "draft",
+    "light turn",
+    "bounded",
+    "deep run",
+    "metrics",
+    "quick pass",
+    "runner"
+   ],
+   "summary": "Produces metric drafts via a single bounded light turn rather than a full deep run.",
+   "description": "Metric drafts: one bounded light turn, never a deep run.. Key: is_metric_draft, collection_id_of -- The metric's collection id: a structured field when the task has one, else the id the draft text names., card_block -- The card as the prompt reads it: compact JSON of exactly what the draft may rely on., parse_draft -- The model's structured answer, or None when it proposes nothing (thin evidence, no values, no evidence, or an unreadable, reason_of, MetricDraft -- One light turn for one claimed task",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/metric_draft.py",
+     "symbols": [
+      "is_metric_draft",
+      "collection_id_of",
+      "card_block",
+      "parse_draft",
+      "reason_of",
+      "MetricDraft"
+     ],
+     "sha256": "b811a41b7969f84eae8e4d690607ad8e68442fea08330bfae90c67c71dfe053e",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Metric Draft Light Turns"
+  },
+  {
+   "id": "goal-iteration-spec",
+   "keywords": [
+    "iterate-by-spec",
+    "deep goal",
+    "iteration",
+    "arms",
+    "standing instructions",
+    "goal runner",
+    "spec",
+    "behavior"
+   ],
+   "summary": "Defines the arms of iterate-by-spec, describing how much extra work the code performs around a deep goal beyond the standing instructions.",
+   "description": "The arms of ``iterate-by-spec``: how much the code does around a deep goal beyond what the standing instructions say.. Key: GoalIteration -- What the code adds around one deep goal: a slice source (None for none) and the meters that read its metric., DoctrineOnly -- The standing instructions are the whole method: no slice in the brief and no reading by the runner., SliceOnly -- The brief gets the slice for the solution the goal serves: its next milestone and the metric that measures it., SliceAndWriteback -- The slice, and the runner's own readings of its metric before and after the work, written to the run's record",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/goal_iteration.py",
+     "symbols": [
+      "GoalIteration",
+      "DoctrineOnly",
+      "SliceOnly",
+      "SliceAndWriteback"
+     ],
+     "sha256": "4f12459f58a353e7de178625cd7bef064d7fbecf59d2bb55345ec258839d9e51",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Iterate-by-spec goal handling"
+  },
+  {
+   "id": "deep-runner-package",
+   "keywords": [
+    "deep",
+    "runners",
+    "coding agent",
+    "worker",
+    "act-in-the-world",
+    "open-ended work",
+    "package",
+    "subprocess"
+   ],
+   "summary": "Package entry point defining the deep-work runners that hand open-ended tasks to a coding agent worker as the act-in-the-world seat.",
+   "description": "The deep-work runners: the arms of the act-in-the-world seat that hand open-ended work to a coding agent worker. ACP deep runner, configuration and policy: Node and agent-binary discovery, ``AcpConfig``, ``AcpSettings`` and the. Key: EscalationAsk -- The human decision an ACP permission ask becomes, when the consumer brings no type of its own (see ``AcpSettings``)., make_escalation_ask, AcpSettings -- What the ACP runner takes from its host, none of it read from the environment here., resolve_acp_settings -- The ACP settings in force right now: a value as it is, a callable called, None the defaults., resolve_node_binary -- The ``node`` used to launch the ACP agent: config, then the settings' Node fallback, then PATH., node_major_version -- The major version of ``node_path`` (``node --version`` -> ``v22.23.2`` -> 22), or None., resolve_agent_entry -- The ACP agent program: config, then the settings' agent fallback, then ``claude-agent-acp``, build_agent_argv -- Resolve the argv that launches the ACP agent, or an explanatory error",
+   "files": [
+    {
+     "path": "hubofhubs/deep/__init__.py",
+     "symbols": [
+      "argument"
+     ],
+     "sha256": "ea93cb6b00836f310921505144969f7d46f462d1d1f4f0b17da770cbe011f4ee",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/deep/acp_config.py",
+     "symbols": [
+      "EscalationAsk",
+      "make_escalation_ask",
+      "AcpSettings",
+      "resolve_acp_settings",
+      "resolve_node_binary",
+      "node_major_version",
+      "resolve_agent_entry",
+      "build_agent_argv",
+      "AcpConfig",
+      "classify_permission",
+      "select_option",
+      "permission_response"
+     ],
+     "sha256": "3802629ad5847de35bb90bb9878538b45c45580b807a6eeda7823fba3d10a70b",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Deep Work Runner Package"
+  },
+  {
+   "id": "goal-metrics-record",
+   "keywords": [
+    "metrics",
+    "deep goal",
+    "metric record",
+    "measurement",
+    "before",
+    "consumers",
+    "flow",
+    "tracking"
+   ],
+   "summary": "Maintains the metric record for a single deep goal, capturing state before and around the work and what is handed to each consumer.",
+   "description": "The metric record of ONE deep goal, kept by the flow: before the work, around it, and what every consumer is handed.. Key: working_dir_of -- The folder a goal's worker starts in: the per-run override, else the runner's configured one, else unknown., run_hint -- The sentence for the deep brief's tool section that tells the worker which run its results are kept under., deep_metric_data -- The metric payload of a finished turn, from its deep results alone: ``{\"metrics\": [...]}`` (capped, in goal order), GoalMetrics -- The metric record of one deep goal",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/goal_metrics.py",
+     "symbols": [
+      "working_dir_of",
+      "run_hint",
+      "deep_metric_data",
+      "GoalMetrics"
+     ],
+     "sha256": "9f1b3665146d4288cb81a1bb873f5066b37483716c0e4dc5f676e86e5dd2946a",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Deep goal metric records"
+  },
+  {
+   "id": "acp-deep-runner-tests",
+   "keywords": [
+    "acp",
+    "deep runner",
+    "agent runner",
+    "adapters",
+    "offline tests",
+    "acp_deep_runner",
+    "agent execution"
+   ],
+   "summary": "Offline tests that verify the behavior of the ACP deep runner adapter used to execute agents.",
+   "description": "Offline tests for the ACP deep runner (``adapters/acp_deep_runner.py``).. Key: ns, FakeConn -- A stand-in for ``acp.ClientSideConnection`` driven by a script of session updates., install_fake_connection -- Replace the ONE seam that touches the SDK/subprocess with a scripted fake., config, message_chunk, test_satisfies_the_deep_runner_protocol, test_run_goal_signature_matches_the_reference_runner -- The orchestrator forwards emit/run_id/context_preamble/working_dir by SIGNATURE INSPECTION., test_web_capability_derives_from_the_same_tool_gating",
+   "files": [
+    {
+     "path": "tests/test_acp_deep_runner.py",
+     "symbols": [
+      "ns",
+      "FakeConn",
+      "install_fake_connection",
+      "config",
+      "message_chunk",
+      "test_satisfies_the_deep_runner_protocol",
+      "test_run_goal_signature_matches_the_reference_runner",
+      "test_web_capability_derives_from_the_same_tool_gating",
+      "test_runner_is_reported_as_a_code_and_web_capability",
+      "test_agent_message_chunk_becomes_a_message_tick",
+      "test_thought_chunk_is_distinguished_narration",
+      "test_tool_call_start_renders_like_a_claude_code_session_line",
+      "test_tool_lifecycle_statuses_map_to_tool_phases",
+      "test_a_finished_tool_is_not_a_finished_subgoal",
+      "test_plan_update_summarizes_the_entries",
+      "test_startup_and_echo_chatter_is_dropped",
+      "test_the_scripted_stream_reaches_the_progress_sink",
+      "test_end_turn_with_no_output_is_a_silent_no_op_not_a_success",
+      "test_non_clean_stop_reasons_are_explained_not_met",
+      "test_an_unknown_stop_reason_is_never_reported_as_met",
+      "test_the_escalation_marker_still_pauses_the_run",
+      "test_tool_name_comes_from_the_structured_field_only",
+      "test_permission_policy_reads_the_existing_config_surface",
+      "test_options_are_selected_by_kind_never_by_display_name",
+      "permission_ask",
+      "test_an_autonomous_run_auto_approves_the_ask",
+      "test_a_disallowed_tool_is_denied_even_in_an_autonomous_run",
+      "test_a_gated_run_escalates_to_a_human_and_returns_needs_you",
+      "test_a_gated_run_with_nobody_to_ask_denies_rather_than_proceeding",
+      "test_a_raising_escalation_sink_degrades_to_a_denial"
+     ],
+     "sha256": "01f05afea5062393bb3f9098bb8fe2d758b84a256a73bc72c957474a27023948",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "ACP Deep Runner Tests"
+  },
+  {
+   "id": "consent-risk-gating",
+   "keywords": [
+    "consent",
+    "gate",
+    "risk",
+    "overseer",
+    "rule-based",
+    "watch",
+    "step",
+    "approval",
+    "safety"
+   ],
+   "summary": "Implements rule-based arms of the watch-for-risk seat, including a model-free consent gate and a gate-then-overseer pair that evaluate steps.",
+   "description": "Two more arms of the watch-for-risk seat that read the step by rule: a consent gate with no model, and a gate-then-overs. Key: words -- A case-insensitive pattern that finds any of these words (or phrases) with a common ending, at a word start., ConsentRules -- What the gate looks for; a consumer replaces any field to carry its own policy., parse_digest -- ``(action, goal, rationale, operations)`` read from a digest built by ``build_digest``; a missing part is empty., classes_named, judge -- ``(verdict, reason)`` for one digest: ``flag``, ``clear`` or ``unsure``., ConsentGate -- Flags a step that pays, sends outward, deletes, publishes or uses a credential, by rule, with no model call., TwoStage -- The consent gate first; the model overseer only when the gate is unsure",
+   "files": [
+    {
+     "path": "hubofhubs/consent_gate.py",
+     "symbols": [
+      "words",
+      "ConsentRules",
+      "parse_digest",
+      "classes_named",
+      "judge",
+      "ConsentGate",
+      "TwoStage"
+     ],
+     "sha256": "d13e3cfe0193b48ffcab826e33ceff6913ec59239b204b0e35c07ab4338632a7",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Consent Gate Risk Watch"
+  },
+  {
+   "id": "deep-run-cancellation",
+   "keywords": [
+    "cancel",
+    "cancellation",
+    "subprocess",
+    "claude code",
+    "process termination",
+    "stop task",
+    "deep runner",
+    "kill"
+   ],
+   "summary": "Tests that cancelling a deep task promptly stops the running Claude Code subprocess.",
+   "description": "Cancelling a task stops the running Claude Code process, promptly.. Key: make_fake_claude, pid_alive, wait_until, runner_for, quick_poll, cancel_once_started -- A cancel signal that turns True a moment after the stand-in has read its prompt., test_a_cancel_stops_the_running_process_and_keeps_the_session, test_a_worker_that_ignores_the_interrupt_is_terminated_after_the_grace",
+   "files": [
+    {
+     "path": "tests/test_deep_cancel_subprocess.py",
+     "symbols": [
+      "make_fake_claude",
+      "pid_alive",
+      "wait_until",
+      "runner_for",
+      "quick_poll",
+      "cancel_once_started",
+      "test_a_cancel_stops_the_running_process_and_keeps_the_session",
+      "test_a_worker_that_ignores_the_interrupt_is_terminated_after_the_grace",
+      "test_a_worker_that_ignores_interrupt_and_terminate_is_killed",
+      "test_a_run_nobody_cancels_is_untouched",
+      "test_kill_process_group_actually_kills_the_group",
+      "test_stop_process_group_reports_how_far_it_had_to_escalate",
+      "CancellableRunner",
+      "OldRunner",
+      "build",
+      "test_the_orchestrator_passes_its_cancel_signal_to_a_runner_that_accepts_it",
+      "test_a_stopped_worker_ends_the_run_without_a_verifier_call_or_a_retry",
+      "test_a_runner_without_the_parameter_is_called_exactly_as_before",
+      "BlockingRunner",
+      "test_closing_run_stream_stops_the_run_and_waits_for_it",
+      "test_run_stream_forwards_a_cancel_check_to_the_run"
+     ],
+     "sha256": "22e071db16e9da6e333097012ce6c3d2bb077f70ca862bfc5ac39b32717c4859",
+     "last_used_ts": 1793785214.3979602,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Deep Run Subprocess Cancellation"
+  },
+  {
+   "id": "managed-sections-roundtrip",
+   "keywords": [
+    "managed sections",
+    "markers",
+    "delimited",
+    "round-trip",
+    "context updates",
+    "file sections",
+    "helpers",
+    "primitive"
+   ],
+   "summary": "Provides marker-delimited managed-section helpers used by the runner to round-trip content updates in files.",
+   "description": "Managed-section helpers — the marker-delimited round-trip primitive shared by the runner's. Key: ManagedSectionError -- A managed block body would contain a managed marker, which would nest the block in itself., strip_managed_blocks -- Remove every managed block (and any stray managed marker) from ``text``., replace_between -- Replace the content between (and including) a marker pair, or append a fresh block., extract_between -- Return the text strictly between a marker pair, or None if the pair isn't present quest_ai_runner.runner — the EXECUTOR (the watchdog generalized).",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/_managed_sections.py",
+     "symbols": [
+      "ManagedSectionError",
+      "strip_managed_blocks",
+      "replace_between",
+      "extract_between"
+     ],
+     "sha256": "0d73c8236379d06e0c47be48ead4358cc382bead52f8636a1be730e7b8b3519e",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/runner/__init__.py",
+     "symbols": [],
+     "sha256": "41c7a49fa9144bdc6fb8c9ca52b6330b0e0502ac58025ac314ad9b8cbb22aab7",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Managed Section Round-Trip Helpers"
+  },
+  {
+   "id": "async-context-card-update",
+   "keywords": [
+    "async",
+    "context",
+    "card",
+    "update",
+    "deep",
+    "run",
+    "updater",
+    "background",
+    "future",
+    "refresh"
+   ],
+   "summary": "Tests the asynchronous updater that refreshes context cards after a deep run to prepare for future queries.",
+   "description": "Async post-deep context-card updater (prepare for the FUTURE after a deep run).. Key: RecordingCardStore -- A card-update-capable store (duck-typed: exposes update_card + add_content)., _Composite -- A minimal composite wrapper exposing ``_assemblers`` (the shape _card_update_store unwraps)., CardEditProvider -- plan() routes PLANNER decisions (action=deep), VERIFIER verdicts (met=True), and the CARD, _Runner -- A DeepRunner whose output carries a FUTURE-CONTEXT section; records each brief it was given., _orch, test_parser_extracts_future_context_section, test_parser_absent_section_returns_empty, test_parser_uses_last_delimiter_occurrence",
+   "files": [
+    {
+     "path": "tests/test_async_card_update.py",
+     "symbols": [
+      "RecordingCardStore",
+      "_Composite",
+      "CardEditProvider",
+      "_Runner",
+      "_orch",
+      "test_parser_extracts_future_context_section",
+      "test_parser_absent_section_returns_empty",
+      "test_parser_uses_last_delimiter_occurrence",
+      "test_strip_removes_future_context_from_user_output",
+      "test_strip_is_noop_without_delimiter",
+      "test_strip_and_parse_are_complementary",
+      "_R",
+      "test_future_context_for_display_collects_bullets",
+      "test_future_context_for_display_drops_none_placeholder",
+      "test_future_context_for_display_merges_multiple_results",
+      "test_card_update_store_detects_direct_and_wrapped",
+      "test_updater_applies_edits_including_correction_and_fields",
+      "test_updater_no_edits_on_empty_plan",
+      "test_updater_user_scoping_no_user_id_unchanged_id",
+      "test_failing_updater_never_raises_and_returns_zero",
+      "test_deep_run_appends_future_context_instruction_and_result_unaffected",
+      "test_disabled_toggle_no_call_no_instruction",
+      "test_no_card_update_store_no_call_no_instruction",
+      "SimilarCardStore",
+      "_run_updater",
+      "test_proposed_card_text_builds_from_name_description_and_notes",
+      "test_merge_redirects_create_to_similar_existing_card",
+      "test_no_merge_when_no_similar_card_creates_as_before",
+      "test_no_find_similar_capability_unchanged",
+      "test_merge_never_uses_another_users_match"
+     ],
+     "sha256": "69172515935885ca0feed669e743f48d3bfac98729859a7e89ed508f84865d60",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Async Context Card Updater"
+  },
+  {
+   "id": "recall-package-overview",
+   "keywords": [
+    "recall",
+    "memory",
+    "remember",
+    "card threading",
+    "assembler",
+    "conversation",
+    "date bounds",
+    "text sampling",
+    "context cards"
+   ],
+   "summary": "Defines the remember-and-recall package entry point that ties together text sampling, date bounds, pacing, card threading, assembler composition, and conversation and card handling.",
+   "description": "The remember-and-recall seat: text sampling, date bounds, pacing, card threading, assembler composition, conversation an",
+   "files": [
+    {
+     "path": "hubofhubs/recall/__init__.py",
+     "symbols": [],
+     "sha256": "a8717c9afb89632a1e31d1e6472933b6f696df4eccdbc9c50030bbf763759813",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Recall Package Seat Overview"
+  },
+  {
+   "id": "quest-context-reflections",
+   "keywords": [
+    "email",
+    "context entries",
+    "reflections",
+    "insights",
+    "insight collections",
+    "context",
+    "quest client"
+   ],
+   "summary": "Client methods for managing email, context entries, reflections and insight collections in the Quest service.",
+   "description": "Email, context entries, reflections and insight collections.. Key: ContextEntriesMixin -- Email, context entries, reflections and insight collections QuestClient — the reference client for Quest's assistant-tasks + team-decisions API.. Key: QuestClient -- Thin urllib client for the Quest task + decision API., QuestDecisionSink -- Adapt a QuestClient into a core EscalationSink., quest_client_from_env -- A ``QuestClient`` from ``QUEST_BASE_URL`` (or ``QUEST_API_URL``), ``QUEST_API_KEY`` and ``QUEST_TEAM_ID``",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/quest_client_context.py",
+     "symbols": [
+      "ContextEntriesMixin"
+     ],
+     "sha256": "8eeae3edd0eb80a0d53a0451439293e5998eb3e9b6167e627ebfa7f44324459e",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/runner/quest_client.py",
+     "symbols": [
+      "QuestClient",
+      "QuestDecisionSink",
+      "quest_client_from_env"
+     ],
+     "sha256": "43ac22bdd380db91bca4bb9ccbb4cc32738dae49b22cced1bfd4bfc1320f70ec",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Context Entries and Reflections"
+  },
+  {
+   "id": "context-doctrine-gates",
+   "keywords": [
+    "doctrine",
+    "context",
+    "sufficiency",
+    "model-tier",
+    "prompt",
+    "gates",
+    "discipline",
+    "centralized"
+   ],
+   "summary": "Centralizes prompt gates that enforce the context sufficiency and model-tier disciplines.",
+   "description": "context_doctrine -- centralized prompt gates for the sufficiency and model-tier disciplines.. Key: compose_deep_preamble -- Return DEEP_CONTEXT_DOCTRINE + base_preamble + assembled.context_view (if present)",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/context_doctrine.py",
+     "symbols": [
+      "compose_deep_preamble"
+     ],
+     "sha256": "3034e470982b4e79008b33b96582bcdad0fe60240e19b37aa6b46b0666c2e7b8",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Context Sufficiency Doctrine Gates"
+  },
+  {
+   "id": "act-in-world-edits",
+   "keywords": [
+    "act",
+    "edit",
+    "search replace",
+    "editblock",
+    "whole file",
+    "mcp",
+    "write operation",
+    "apply edits",
+    "anchored",
+    "ledger"
+   ],
+   "summary": "Defines the act seat that changes things outside the model, including parsing SEARCH/REPLACE and whole-file edits and applying them with content anchoring.",
+   "description": "The act-in-the-world seat: the arms that change something outside the model (edit files, call a write operation of an MC SEARCH/REPLACE + whole-file edit parsing and content-anchored application.. Key: prep, perfect_or_whitespace, perfect_replace, replace_most_similar_chunk -- Best efforts to find the `part` lines in `whole` and replace them with `replace`, try_dotdotdots -- See if the edit block has ..., replace_part_with_missing_leading_whitespace, match_but_for_leading_whitespace, strip_quoted_wrapping -- Given an input string which may have extra \"wrapping\" around it, remove the wrapping",
+   "files": [
+    {
+     "path": "hubofhubs/act/__init__.py",
+     "symbols": [],
+     "sha256": "c7d327443bd678700b3f0a7e6c54eac89883b6fc63cd57c98f4e3dafcca90bfa",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/act/editblock.py",
+     "symbols": [
+      "prep",
+      "perfect_or_whitespace",
+      "perfect_replace",
+      "replace_most_similar_chunk",
+      "try_dotdotdots",
+      "replace_part_with_missing_leading_whitespace",
+      "match_but_for_leading_whitespace",
+      "strip_quoted_wrapping",
+      "apply_edit",
+      "strip_filename",
+      "find_original_update_blocks",
+      "find_filename",
+      "find_similar_lines",
+      "find_whole_file_blocks"
+     ],
+     "sha256": "0f311cf85cfd730217ee20c6ca9e0294b2503ec039eb35db15da6bc74d114227",
+     "last_used_ts": 1793785214.478653,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Act-in-the-World Edit Execution"
+  },
+  {
+   "id": "env-vars-config-reference",
+   "keywords": [
+    "environment variables",
+    "env vars",
+    "configuration",
+    "reference docs",
+    "settings",
+    "docs generation",
+    "config"
+   ],
+   "summary": "Discovers every environment variable the library reads and renders the configuration reference doc from them.",
+   "description": "Find every environment variable the library reads and render docs/reference/configuration.md from them.. Key: _envlike, env_vars_in_code -- {variable: sorted repo-relative files that mention it}., _doc_texts, descriptions -- {variable: one-line description} from esoi/env_descriptions.csv., render_env_doc, without_explained_in -- The doc minus its \"Explained in\" column, which follows other docs and so changes whenever they do",
+   "files": [
+    {
+     "path": "scripts/env_vars.py",
+     "symbols": [
+      "_envlike",
+      "env_vars_in_code",
+      "_doc_texts",
+      "descriptions",
+      "render_env_doc",
+      "without_explained_in"
+     ],
+     "sha256": "e8895043e6aa82f190bf660d72d753e40c83421777c6f845d245ea362935f690",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Environment Variables Configuration Reference"
+  },
+  {
+   "id": "textual-session-launch",
+   "keywords": [
+    "session",
+    "launcher",
+    "attended",
+    "interactive",
+    "startup",
+    "textual",
+    "launch",
+    "mode"
+   ],
+   "summary": "Launches the attended interactive session by starting the Textual-based UI application.",
+   "description": "Session launcher for the Textual-based interactive (attended) mode.. Key: start_textual_interactive -- Launch the Textual UI immediately, build the InteractiveSession in a background worker., saved_conversation_id -- The conversation id to offer for `--resume`, only if its file really exists on disk., is_textual_available -- True if Textual can be imported Textual-based interactive terminal UI for Quest AI Runner.. Key: QuestAITerminal -- Textual REPL over an `InteractiveSession`'s orchestrator brain",
+   "files": [
+    {
+     "path": "quest_ai_runner/textual_session.py",
+     "symbols": [
+      "start_textual_interactive",
+      "saved_conversation_id",
+      "is_textual_available"
+     ],
+     "sha256": "013f90dbfac8637bf3d6f192271a235bb811006d14168fba50fba2c0d6f19f62",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/textual_ui.py",
+     "symbols": [
+      "QuestAITerminal"
+     ],
+     "sha256": "66f185e9765da87c9d899693846df9321e5fdfd2b7d818732574dc8f66d6add6",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Textual Session Launcher"
+  },
+  {
+   "id": "guidance-provider-adapter",
+   "keywords": [
+    "guidance",
+    "guidanceprovider",
+    "instructions",
+    "adapter",
+    "use-case",
+    "prompts",
+    "optional",
+    "provider"
+   ],
+   "summary": "Tests the optional GuidanceProvider adapter that supplies use-case-specific instructions to the planner and prompts.",
+   "description": "GuidanceProvider: the optional use-case-specific instruction adapter.. Key: FakeGuidance -- In-memory GuidanceProvider over a fixed set of cards., _orch, _cards, test_no_guidance_is_unchanged_behavior, test_list_read_guidance_verbs_inert_without_provider, test_list_guidance_returns_catalog, test_read_guidance_returns_card_body, test_read_guidance_unknown_id_is_benign GuidanceProvider.select() must never hang a turn indefinitely.. Key: _HangingGuidance -- select() blocks well past the test's configured timeout, simulating a stuck, _orch, test_hanging_guidance_select_does_not_hang_the_turn, test_guidance_selection_timeout_env_default, test_guidance_selection_timeout_env_override, test_guidance_selection_timeout_invalid_env_falls_back, test_fast_guidance_select_still_applies_normally -- The timeout wrapper must not change the normal, fast-path behavior",
+   "files": [
+    {
+     "path": "tests/test_guidance.py",
+     "symbols": [
+      "FakeGuidance",
+      "_orch",
+      "_cards",
+      "test_no_guidance_is_unchanged_behavior",
+      "test_list_read_guidance_verbs_inert_without_provider",
+      "test_list_guidance_returns_catalog",
+      "test_read_guidance_returns_card_body",
+      "test_read_guidance_unknown_id_is_benign",
+      "test_select_prepends_applicable_guidance_block",
+      "test_select_empty_adds_no_block",
+      "test_read_guidance_of_preselected_id_returns_dedupe_note"
+     ],
+     "sha256": "b3a7e55bd82eba7f273508271faab2ee94a56e23530ec9317e6817ae9d49de32",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    },
+    {
+     "path": "tests/test_guidance_selection_timeout.py",
+     "symbols": [
+      "_HangingGuidance",
+      "_orch",
+      "test_hanging_guidance_select_does_not_hang_the_turn",
+      "test_guidance_selection_timeout_env_default",
+      "test_guidance_selection_timeout_env_override",
+      "test_guidance_selection_timeout_invalid_env_falls_back",
+      "test_fast_guidance_select_still_applies_normally"
+     ],
+     "sha256": "2141646ce80afd284e57bd946aed92bb353c517ab2d15a10bdd07e431c11e62e",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Guidance Provider Instruction Adapter"
+  },
+  {
+   "id": "channel-context-sources",
+   "keywords": [
+    "context source",
+    "messaging channels",
+    "inbox",
+    "google chat",
+    "mail",
+    "ingestion",
+    "channels"
+   ],
+   "summary": "Groups tests verifying that external messaging channels like Google Chat and inbound mail feed messages in as context sources.",
+   "description": "Opt-in unrestricted Google Chat (``all_spaces = true``): config, adapter and context source.. Key: at, Clock, FakeChat, chat, adapter, engine, card, sa_file Mail arriving at a mailbox is a context source too, once real people are told apart from bulk.. Key: _now, _msg, FakeMailClient -- Stands in for ``adapters.inbound_mail.InboundMail``: no network, canned messages., FakeQuestClient -- Stands in for ``QuestClient``: records every relayed note, never touches the network., _card, _engine, test_is_bulk_mail_reads_headers_only, test_bulk_mail_is_dropped_before_a_context_update_even_exists -- No admission judge is wired at all here -- proof that filtering the newsletter out cannot",
+   "files": [
+    {
+     "path": "tests/test_google_chat_all_spaces.py",
+     "symbols": [
+      "at",
+      "Clock",
+      "FakeChat",
+      "chat",
+      "adapter",
+      "engine",
+      "card",
+      "sa_file",
+      "test_all_spaces_wires_without_space_names_and_logs_it",
+      "test_default_still_fails_closed_and_all_spaces_false_does_not_opt_in",
+      "test_space_allowed_unrestricted_accepts_well_formed_names_only",
+      "test_space_allowed_default_is_the_allowlist",
+      "test_enumeration_paginates_and_labels_dms_and_group_chats",
+      "test_enumeration_respects_the_cap_and_says_so",
+      "test_enumeration_never_raises_and_is_refused_when_restricted",
+      "test_label_is_never_blank",
+      "test_typed_read_of_a_dm_uses_its_label",
+      "test_restricted_typed_read_still_refuses_unlisted_space",
+      "test_adapter_has_no_write_path",
+      "test_source_reads_every_active_space_skips_stale_and_labels_each",
+      "test_source_honors_max_spaces_and_reports_truncation",
+      "test_source_explicit_space_list_still_works_in_unrestricted_mode",
+      "test_source_listing_failure_is_reported_and_holds_the_watermark",
+      "test_restricted_mode_refuses_all_with_the_opt_in_hint_and_reads_nothing"
+     ],
+     "sha256": "77b0a623f36e7b43c5e6d646dcb1f13f0a766ca1e82fefe332e9819bacea918e",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    },
+    {
+     "path": "tests/test_inbound_mail.py",
+     "symbols": [
+      "_now",
+      "_msg",
+      "FakeMailClient",
+      "FakeQuestClient",
+      "_card",
+      "_engine",
+      "test_is_bulk_mail_reads_headers_only",
+      "test_bulk_mail_is_dropped_before_a_context_update_even_exists",
+      "test_a_mailbox_with_only_bulk_mail_reports_why_nothing_arrived",
+      "test_the_admission_judge_admits_a_real_person_and_drops_the_rest",
+      "test_a_judge_that_returns_none_keeps_everything",
+      "test_a_judge_that_raises_keeps_everything",
+      "test_no_admission_judge_configured_also_keeps_everything",
+      "test_inbound_mail_is_never_put_to_the_relevance_judge",
+      "test_an_admitted_item_is_relayed_onto_the_quest_under_the_senders_own_address",
+      "test_relaying_the_same_item_twice_posts_only_one_note",
+      "test_relaying_persists_across_a_restart",
+      "test_relaying_never_happens_at_collection_time_only_at_mark_seen",
+      "test_a_relay_failure_is_swallowed_and_the_item_is_retried_next_time",
+      "test_the_watermark_advances_after_delivery",
+      "test_collecting_alone_never_advances_the_watermark",
+      "test_refuses_as_inbound_mailbox_catches_a_bare_reply_address",
+      "test_refuses_as_inbound_mailbox_catches_a_tagged_reply_address",
+      "test_refuses_as_inbound_mailbox_allows_an_ordinary_mailbox",
+      "test_a_card_pointed_at_the_reply_mailbox_is_a_reported_error_not_a_silent_ingest",
+      "test_the_reply_mailbox_refusal_is_checked_before_the_client_is_ever_consulted",
+      "test_inbound_mail_is_advertised_by_the_default_engine"
+     ],
+     "sha256": "4015172e35466e7539b13f0e825cf9e8966398b5a4a9a492685015f23185b455",
+     "last_used_ts": 1793785214.5802224,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Messaging Channels as Context"
+  },
+  {
+   "id": "fake-backend-stores",
+   "keywords": [
+    "quest transport",
+    "notion",
+    "card store",
+    "fake backend",
+    "in-memory",
+    "test doubles",
+    "fixtures",
+    "storage"
+   ],
+   "summary": "Defines fake Quest transport, Notion, and card store backends used as fixtures across the test suite.",
+   "description": "Shared stub adapters for the tests — no network, no API key, no real model.. Key: hermetic_qar_environment -- No test inherits a QAR_* setting from the host shell or a lane's service environment., quest_capability_cache_starts_empty -- The Quest client remembers what a backend said about itself for the whole process; no test inherits another's answer., chat_log_stays_in_a_temp_file -- A test that mounts the terminal app never writes the real per-user chat log., deep_runner_default_is_inert_in_tests -- The auto-built default deep runner must never resolve to a REAL worker during the suite., claude_live_model_lookup_is_off_in_tests -- No test reads the developer's Claude login or hits the network for the live model list., tool_catalog_is_empty_unless_a_test_says_otherwise -- No test inherits the developer's tool catalog., no_web_research_backend_unless_a_test_says_otherwise -- No test inherits the developer's/host's live-web backend keys., no_background_index_survives_a_test -- No context-index thread may outlive the test that started it",
+   "files": [
+    {
+     "path": "tests/conftest.py",
+     "symbols": [
+      "hermetic_qar_environment",
+      "quest_capability_cache_starts_empty",
+      "chat_log_stays_in_a_temp_file",
+      "deep_runner_default_is_inert_in_tests",
+      "claude_live_model_lookup_is_off_in_tests",
+      "tool_catalog_is_empty_unless_a_test_says_otherwise",
+      "no_web_research_backend_unless_a_test_says_otherwise",
+      "no_background_index_survives_a_test",
+      "StubProvider",
+      "StubRetrieval",
+      "StubDeepRunner",
+      "StubEscalation",
+      "runner_clock_is_utc_unless_a_test_says_otherwise"
+     ],
+     "sha256": "66b934de88469040e1f2302ae09d8f13802c556f99ace3a496f6f3c168eac929",
+     "last_used_ts": 1793785214.6727295,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Fake Quest Notion Card Backends"
+  },
+  {
+   "id": "arm-environment-needs",
+   "keywords": [
+    "arm needs",
+    "arms",
+    "environment",
+    "requirements",
+    "dependencies",
+    "shared",
+    "hub arms"
+   ],
+   "summary": "States once, in a shared module, what the hub's arms require from their environment.",
+   "description": "What the hub's arms need from their environment, stated once and shared.. Key: gemini_api -- The Gemini API, with the key variables in the order the arm uses them",
+   "files": [
+    {
+     "path": "hubofhubs/arm_needs.py",
+     "symbols": [
+      "gemini_api"
+     ],
+     "sha256": "e1f7eb48e4302a41007139510a09e5dbadd63674bda6f6a86220ef5895549b7b",
+     "last_used_ts": 1793785214.774306,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Arm Environment Needs"
+  },
+  {
+   "id": "runner-config-model",
+   "keywords": [
+    "runner",
+    "config",
+    "runnerconfig",
+    "consumer",
+    "settings",
+    "configuration",
+    "dataclass",
+    "environment",
+    "validation"
+   ],
+   "summary": "Defines the consumer-supplied RunnerConfig that holds all runner settings without baked-in consumer-specific values.",
+   "description": "RunnerConfig — everything the CONSUMER supplies.. Key: RunnerConfig, build_orchestrator -- Wire a domain-free Orchestrator from the consumer's adapters",
+   "files": [
+    {
+     "path": "quest_ai_runner/config.py",
+     "symbols": [
+      "RunnerConfig",
+      "build_orchestrator"
+     ],
+     "sha256": "e91c0f1967508cb6fda63577c52336c5ea1cb4f9aab883885796735821513b2e",
+     "last_used_ts": 1793785214.774306,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Runner Configuration Model"
+  },
+  {
+   "id": "tool-catalog-shell-entry",
+   "keywords": [
+    "cli",
+    "tool catalog",
+    "shell",
+    "deep run",
+    "entry point",
+    "main",
+    "dispatch",
+    "in-process tools",
+    "brain"
+   ],
+   "summary": "Exposes the runner's tool catalog as a command-line package so a deep run can invoke from its shell the same tools the brain calls in-process.",
+   "description": "Command-line tools a deep run can invoke from its shell. The tool catalog from a shell: how a deep run calls the same tools the brain calls in-process.. Key: main",
+   "files": [
+    {
+     "path": "quest_ai_runner/tools/__init__.py",
+     "symbols": [],
+     "sha256": "4c7e2424725be6a412120a0b7c24b2de10a810696653538774175813892ca780",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/tools/__main__.py",
+     "symbols": [
+      "main"
+     ],
+     "sha256": "d106b97fb47700261cc3cae4c36b866994bb0b087c0721d5ad27aa16cffa7c05",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Shell Tool Catalog Entry"
+  },
+  {
+   "id": "poller-cli-entry-point",
+   "keywords": [
+    "cli",
+    "entry point",
+    "console",
+    "poller",
+    "quest-ai-runner",
+    "command line",
+    "argument parsing",
+    "subcommands",
+    "main"
+   ],
+   "summary": "Provides the quest-ai-runner console entry point that parses command-line arguments and dispatches to poller subcommands.",
+   "description": "Console entry point for the poller (``quest-ai-runner``).. Key: main",
+   "files": [
+    {
+     "path": "quest_ai_runner/cli.py",
+     "symbols": [
+      "main"
+     ],
+     "sha256": "0703b06a6d00c887443c446fdf5c5088aa7719d1d2d1aea08a332d6ffdc24b27",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Poller Console Entry Point"
+  },
+  {
+   "id": "quest-email-sending",
+   "keywords": [
+    "email",
+    "quest email",
+    "send mail",
+    "cli",
+    "notification",
+    "run",
+    "bootstrap report",
+    "mailer",
+    "bootstrap",
+    "monthly report",
+    "qar",
+    "report",
+    "send",
+    "scheduled"
+   ],
+   "summary": "Command-line tools that send quest-related mail from inside a run, including a quest's own messages and bootstrap reports.",
+   "description": "Send a QAR bootstrap monthly report via Quest email.. Key: main Send a quest's mail from inside a run.. Key: _body_from, main",
+   "files": [
+    {
+     "path": "quest_ai_runner/tools/send_bootstrap_report.py",
+     "symbols": [
+      "main"
+     ],
+     "sha256": "ef3a063b93af20f6f3aa7d5b999ac459246d29fc20fb7f3fc3f2529ce17ed1b6",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/tools/send_quest_email.py",
+     "symbols": [
+      "_body_from",
+      "main"
+     ],
+     "sha256": "f4abbaf9ab1da9a1410cd7f7b4330de60813dee9eeff7a9b1ba522728e853d81",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Quest Email Sending Tools"
+  },
+  {
+   "id": "acp-runner-config-policy",
+   "keywords": [
+    "acp config",
+    "configuration",
+    "policy",
+    "environment",
+    "escalation",
+    "settings",
+    "deep runner config",
+    "hubofhubs"
+   ],
+   "summary": "Defines the ACP deep runner's configuration and policy by combining the hub's acp_config with QAR's environment settings and escalation rules.",
+   "description": "ACP deep runner, configuration and policy: the hub's (``hubofhubs.deep.acp_config``) with QAR's environment and escalati. Key: AcpConfig -- Config for the ACP deep runner: the hub's, plus the quest an escalated permission ask belongs to., make_escalation -- The ``Escalation`` an ACP permission ask becomes, attached to ``cfg.escalation_quest_id``., acp_settings -- The hub's ACP settings, built from the environment in force right now and QAR's goal settings., resolve_node_binary -- The ``node`` used to launch the ACP agent: config, then ``QAR_ACP_NODE_PATH``, then PATH., resolve_agent_entry -- The ACP agent program: config, then ``QAR_ACP_AGENT_COMMAND``, then ``claude-agent-acp`` on PATH., build_agent_argv -- The argv that launches the ACP agent, or an explanatory error (see ``hubofhubs.deep.acp_config.build_agent_argv``)",
+   "files": [
+    {
+     "path": "quest_ai_runner/adapters/acp_deep_runner_config.py",
+     "symbols": [
+      "AcpConfig",
+      "make_escalation",
+      "acp_settings",
+      "resolve_node_binary",
+      "resolve_agent_entry",
+      "build_agent_argv"
+     ],
+     "sha256": "332b0eb07ecec3d7f9e35b305f6d6547b689538baf50696edcfa962a80796524",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "ACP Runner Configuration Policy"
+  },
+  {
+   "id": "fake-claude-stream",
+   "keywords": [
+    "claude",
+    "fake",
+    "stream-json",
+    "scripted",
+    "offline",
+    "test double",
+    "mock",
+    "cli",
+    "stub",
+    "tests"
+   ],
+   "summary": "Provides an offline, scripted stand-in for the claude CLI's stream-json input/output mode so tests can run without a paid account.",
+   "description": "Offline stand-ins for outside programs the tests would otherwise need a paid account for. A scripted stand-in for ``claude -p --input-format stream-json --output-format stream-json``.. Key: main, Fake",
+   "files": [
+    {
+     "path": "tests/fakes/__init__.py",
+     "symbols": [],
+     "sha256": "97912e3302293ea1c13fb78a9eaa2eec47580350287c1dbf699311d85c34b624",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    },
+    {
+     "path": "tests/fakes/fake_claude_stream.py",
+     "symbols": [
+      "main",
+      "Fake"
+     ],
+     "sha256": "3eb2af00607ea2ea293c6019a931484b62763ca35acacf313f6b114a21bf97d2",
+     "last_used_ts": 1793785214.8372626,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Scripted Claude Stream Fake"
+  },
+  {
+   "id": "quest-client-core",
+   "keywords": [
+    "quest client",
+    "assistant tasks",
+    "team decisions",
+    "api client",
+    "reference client",
+    "quests",
+    "goals",
+    "intents",
+    "transport"
+   ],
+   "summary": "Provides the reference QuestClient wrapping Quest's assistant-tasks and team-decisions API endpoints.",
+   "description": "QuestClient — the reference client for Quest's assistant-tasks + team-decisions API.. Key: QuestClient -- Thin urllib client for the Quest task + decision API., QuestDecisionSink -- Adapt a QuestClient into a core EscalationSink., quest_client_from_env -- A ``QuestClient`` from ``QUEST_BASE_URL`` (or ``QUEST_API_URL``), ``QUEST_API_KEY`` and ``QUEST_TEAM_ID``",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/quest_client.py",
+     "symbols": [
+      "QuestClient",
+      "QuestDecisionSink",
+      "quest_client_from_env"
+     ],
+     "sha256": "43ac22bdd380db91bca4bb9ccbb4cc32738dae49b22cced1bfd4bfc1320f70ec",
+     "last_used_ts": 1793785214.9086313,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Quest Client Core API"
+  },
+  {
+   "id": "package-structure-overview",
+   "keywords": [
+    "quest-ai-runner",
+    "orchestrator",
+    "brain",
+    "core",
+    "runner",
+    "executor",
+    "queued tasks",
+    "package"
+   ],
+   "summary": "Defines the top-level quest-ai-runner package split between the domain-free orchestrator core (brain) and the queued-task runner (executor).",
+   "description": "quest-ai-runner — the orchestrator BRAIN (core) + the queued-task EXECUTOR (runner).. Key: _config_builder -- Late-bound lookup in ``config`` so patching ``config.<name>`` still takes effect., assembler -- QAR's hub Assembler (scope ``quest_ai_runner``), the entry point ``esoi requirements --package quest_ai_runner`` and, load_client -- A ``QuestClient`` for this deployment's Quest account — the front door for API scripting., load_config -- Build a ``RunnerConfig`` from a TOML file layered under the environment quest_ai_runner.core — the domain-free orchestrator BRAIN.",
+   "files": [
+    {
+     "path": "quest_ai_runner/__init__.py",
+     "symbols": [
+      "_config_builder",
+      "assembler",
+      "load_client",
+      "load_config"
+     ],
+     "sha256": "c3f873c64d94857493812dc91cc078359a71fe2fe9632bac164fb461e4dbf8d4",
+     "last_used_ts": 1793785214.9086313,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/__init__.py",
+     "symbols": [],
+     "sha256": "adc226598b0374046df2144da9c7615050871adf191d06dd049ac53fd1c500d3",
+     "last_used_ts": 1793785214.9086313,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Orchestrator Brain and Executor Packages"
+  },
+  {
+   "id": "auto-followup-runs",
+   "keywords": [
+    "follow-up",
+    "followup",
+    "deep run",
+    "unfinished",
+    "automatic",
+    "continuation",
+    "remaining work",
+    "task"
+   ],
+   "summary": "Automatically launches follow-up runs to finish work that a task's deep run left undone without explicit user request.",
+   "description": "Automatic follow-up runs: finish what a task's deep run left undone, without being asked.. Key: FollowUpDecision -- Whether to start another run, why, and the remaining items it should finish., _clean, _cap, result_tokens -- The tokens the worker(s) of ``result`` reported, summed., _deep_block_reason -- Why this UNMET deep result cannot be followed up, or None when it can., _deep_remaining -- What this unmet deep result says remains, from structured fields., remaining_items -- The remaining items a result names, one string per unmet part., assess -- Decide whether ``result`` earns an automatic follow-up run",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/auto_followup.py",
+     "symbols": [
+      "FollowUpDecision",
+      "_clean",
+      "_cap",
+      "result_tokens",
+      "_deep_block_reason",
+      "_deep_remaining",
+      "remaining_items",
+      "assess",
+      "followup_brief"
+     ],
+     "sha256": "31947cf9f383c4823da3b633b565102423f1210b8ff93c85cb40e66db1917b13",
+     "last_used_ts": 1793785214.9926126,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Automatic Follow-up Runs"
+  },
+  {
+   "id": "autonomous-work-orchestration",
+   "keywords": [
+    "autonomous",
+    "runner",
+    "orchestration",
+    "autopilot",
+    "follow-up",
+    "background",
+    "unattended",
+    "scheduling"
+   ],
+   "summary": "Together these runner modules drive unattended progress by scheduling autopilot passes and chaining follow-up runs.",
+   "description": "Automatic follow-up runs: finish what a task's deep run left undone, without being asked.. Key: FollowUpDecision -- Whether to start another run, why, and the remaining items it should finish., _clean, _cap, result_tokens -- The tokens the worker(s) of ``result`` reported, summed., _deep_block_reason -- Why this UNMET deep result cannot be followed up, or None when it can., _deep_remaining -- What this unmet deep result says remains, from structured fields., remaining_items -- The remaining items a result names, one string per unmet part., assess -- Decide whether ``result`` earns an automatic follow-up run Autopilot — the recurring \"autopilot pass\" task that scans opted-in quests and makes progress.. Key: AutopilotPass -- Runs ONE autopilot pass against a Quest client",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/auto_followup.py",
+     "symbols": [
+      "FollowUpDecision",
+      "_clean",
+      "_cap",
+      "result_tokens",
+      "_deep_block_reason",
+      "_deep_remaining",
+      "remaining_items",
+      "assess",
+      "followup_brief"
+     ],
+     "sha256": "31947cf9f383c4823da3b633b565102423f1210b8ff93c85cb40e66db1917b13",
+     "last_used_ts": 1793785214.9926126,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/runner/autopilot.py",
+     "symbols": [
+      "AutopilotPass"
+     ],
+     "sha256": "12dfd77cdf89b0a1dfdf700ea8ff0912683b9ee0b934598db781a5095a8ac4d6",
+     "last_used_ts": 1793785214.9926126,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Autonomous Work Orchestration"
+  },
+  {
+   "id": "autopilot-pass",
+   "keywords": [
+    "autopilot",
+    "recurring",
+    "periodic",
+    "scan",
+    "quests",
+    "opted-in",
+    "progress",
+    "autonomous",
+    "task"
+   ],
+   "summary": "Defines the recurring autopilot pass task that scans opted-in quests and autonomously makes progress on them.",
+   "description": "Autopilot — the recurring \"autopilot pass\" task that scans opted-in quests and makes progress.. Key: AutopilotPass -- Runs ONE autopilot pass against a Quest client",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/autopilot.py",
+     "symbols": [
+      "AutopilotPass"
+     ],
+     "sha256": "12dfd77cdf89b0a1dfdf700ea8ff0912683b9ee0b934598db781a5095a8ac4d6",
+     "last_used_ts": 1793785214.9926126,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Recurring Autopilot Pass"
+  },
+  {
+   "id": "runner-executor-package",
+   "keywords": [
+    "runner",
+    "executor",
+    "watchdog",
+    "lanes",
+    "channels",
+    "execution",
+    "package",
+    "quest ai runner"
+   ],
+   "summary": "Defines the runner package as the generalized executor (watchdog) that runs work across channels and lanes.",
+   "description": "quest_ai_runner.runner — the EXECUTOR (the watchdog generalized).",
+   "files": [
+    {
+     "path": "quest_ai_runner/runner/__init__.py",
+     "symbols": [],
+     "sha256": "41c7a49fa9144bdc6fb8c9ca52b6330b0e0502ac58025ac314ad9b8cbb22aab7",
+     "last_used_ts": 1793785214.9926126,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Runner Executor Package Core"
+  },
+  {
+   "id": "bootstrap-email-reporting",
+   "keywords": [
+    "email",
+    "monthly report",
+    "bootstrap",
+    "qar",
+    "reporting",
+    "notification",
+    "completion",
+    "summary email"
+   ],
+   "summary": "Sends monthly email reports after the QAR bootstrap process completes.",
+   "description": "Monthly email reporting after QAR bootstrap completion.. Key: get_bootstrap_state_path -- Get path to the bootstrap state file that tracks last email send time., load_bootstrap_state -- Load the bootstrap state file (last email send timestamps, etc)., save_bootstrap_state -- Save the bootstrap state file., should_send_monthly_email -- Check if enough time has passed to send another email (default 1 month)., generate_bootstrap_email_body -- Generate a professional email body with bootstrap stats and recommendations., send_bootstrap_email_via_quest_api -- Send an email via Quest API using QuestClient., send_monthly_bootstrap_email -- Send a monthly email report after bootstrap completion",
+   "files": [
+    {
+     "path": "quest_ai_runner/bootstrap_email.py",
+     "symbols": [
+      "get_bootstrap_state_path",
+      "load_bootstrap_state",
+      "save_bootstrap_state",
+      "should_send_monthly_email",
+      "generate_bootstrap_email_body",
+      "send_bootstrap_email_via_quest_api",
+      "send_monthly_bootstrap_email"
+     ],
+     "sha256": "fe3bde74f4a2fdb1c358e6627f59d49097c93c88c6fe6efad12b9d4785b8a912",
+     "last_used_ts": 1793785215.1178122,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Bootstrap Monthly Email Reporting"
+  },
+  {
+   "id": "done-outcome-stamp",
+   "keywords": [
+    "outcome",
+    "result data",
+    "done status",
+    "task completion",
+    "no-op",
+    "work performed",
+    "outcome stamp"
+   ],
+   "summary": "Tests that tasks reaching done record in result_data.outcome whether they actually performed any work.",
+   "description": "A task that reaches ``done`` says whether it did any work: ``result_data.outcome`` is ``done`` when. Key: Client, run, test_an_answer_with_a_successful_mutating_call_is_done, test_an_answer_that_only_talked_is_nothing_done, test_a_write_held_for_approval_is_work_done -- A requested draft or proposal that Quest took and holds for a person did its work: it is not stamped nothing_done., test_a_failed_mutating_call_is_not_work_done, test_a_backend_that_refuses_result_data_still_gets_the_task_reported_done -- A backend older than ``result_data`` answers 422 to the whole PATCH; the report is retried",
+   "files": [
+    {
+     "path": "tests/test_done_outcome_stamp.py",
+     "symbols": [
+      "Client",
+      "run",
+      "test_an_answer_with_a_successful_mutating_call_is_done",
+      "test_an_answer_that_only_talked_is_nothing_done",
+      "test_a_write_held_for_approval_is_work_done",
+      "test_a_failed_mutating_call_is_not_work_done",
+      "test_a_backend_that_refuses_result_data_still_gets_the_task_reported_done"
+     ],
+     "sha256": "ca60070f98c3694ccb6672e565345b339cb1256355d4d97c0bc0b28bbda97142",
+     "last_used_ts": 1793785215.1178122,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Done Task Outcome Stamp"
+  },
+  {
+   "id": "quest-card-repository",
+   "keywords": [
+    "quest",
+    "card",
+    "repository",
+    "api",
+    "fake",
+    "offline",
+    "in-process",
+    "client",
+    "tests"
+   ],
+   "summary": "Offline tests that exercise QuestApiCardRepository against an in-process fake of the card API.",
+   "description": "Offline tests for ``QuestApiCardRepository`` against an in-process fake of the card API.. Key: backend, make_repo, paths, test_load_all_returns_the_mapping_the_protocol_requires, test_older_mapping_reply_shape_is_still_accepted, test_search_cards_is_callable_the_way_the_store_calls_it_and_asks_for_managed, test_the_context_store_reads_through_this_repository, test_user_is_resolved_from_the_key_and_sent_as_the_acting_user",
+   "files": [
+    {
+     "path": "tests/test_quest_api_card_repository.py",
+     "symbols": [
+      "backend",
+      "make_repo",
+      "paths",
+      "test_load_all_returns_the_mapping_the_protocol_requires",
+      "test_older_mapping_reply_shape_is_still_accepted",
+      "test_search_cards_is_callable_the_way_the_store_calls_it_and_asks_for_managed",
+      "test_the_context_store_reads_through_this_repository",
+      "test_user_is_resolved_from_the_key_and_sent_as_the_acting_user",
+      "test_a_user_hint_that_differs_from_the_key_loses_with_a_warning",
+      "test_a_lane_with_a_team_writes_team_cards",
+      "test_a_lane_without_a_team_writes_private_cards",
+      "test_server_owned_fields_are_not_echoed_back",
+      "test_updating_a_private_card_listed_earlier_stays_private_in_a_team_lane",
+      "test_runner_env_id_is_read_from_qar_env_id",
+      "test_first_load_pages_through_every_card",
+      "test_a_later_refresh_fetches_only_what_changed_then_a_deletion_forces_one_full_refresh",
+      "test_revision_uses_the_stamp_endpoint_and_changes_with_writes",
+      "test_a_failed_listing_is_logged_counted_surfaced_and_serves_the_last_good_listing",
+      "test_an_unreachable_backend_is_loud_on_every_operation",
+      "test_a_missing_card_is_not_counted_as_an_outage",
+      "test_a_failing_backend_shows_up_in_the_runs_context_sources",
+      "test_the_cache_seam_defaults_to_a_null_implementation",
+      "test_bulk_write_batches_at_100_and_offers_vectors_with_the_embedder",
+      "test_bulk_write_without_vectors_sends_none_and_a_failed_batch_is_reported",
+      "test_the_vector_arm_hands_the_servers_ranking_through_without_embedding"
+     ],
+     "sha256": "5d05c6a983555d21990923e2a0cc8973de981122364680237fe4ea22c2053a88",
+     "last_used_ts": 1793785215.1178122,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Quest API Card Repository"
+  },
+  {
+   "id": "core-adapter-ports",
+   "keywords": [
+    "adapters",
+    "ports",
+    "value objects",
+    "interfaces",
+    "host application",
+    "public api",
+    "hexagonal",
+    "core"
+   ],
+   "summary": "Exposes the public import path for the core ports and value objects that host applications build against.",
+   "description": "The public import path of the ports and value objects a host application builds against. quest_ai_runner.core — the domain-free orchestrator BRAIN.",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/adapters.py",
+     "symbols": [],
+     "sha256": "da1c209d742111d43f25641a9d5fcd1b5d01d84ad81cecff39ca7fd4946f29f2",
+     "last_used_ts": 1793785215.1178122,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/__init__.py",
+     "symbols": [],
+     "sha256": "adc226598b0374046df2144da9c7615050871adf191d06dd049ac53fd1c500d3",
+     "last_used_ts": 1793785215.1178122,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Core Adapter Ports and Values"
+  },
+  {
+   "id": "done-evidence-check",
+   "keywords": [
+    "done evidence",
+    "finish the job",
+    "completion",
+    "evidence",
+    "structural check",
+    "reporting",
+    "critique",
+    "verification"
+   ],
+   "summary": "Structurally checks that work is actually finished with supporting evidence before it is reported as done.",
+   "description": "done_evidence -- the STRUCTURAL half of \"finish the job before reporting\".. Key: _whole -- A non-negative integer, or None for anything else (a bool, a float, a string, a negative)., CoverageRecord -- A runner's declared coverage of a set, parsed., parse_coverage -- The declared coverage as a ``CoverageRecord``, or None when nothing usable was declared., CoverageGap -- What is missing from a declared set., coverage_gap -- The gap in a declared coverage, or None when it is complete or nothing was declared., coverage_progress -- True when ``current`` covers more than ``previous`` (or there was no previous record)., continue_decision -- ``(verdict, why)``: whether to run again on a coverage gap., clean_requirements -- A planner's ``done_evidence`` as at most ``MAX_REQUIREMENTS`` short non-empty strings The think-critically seat: link honesty (detecting links and checking them before a reply leaves), the abridged-read gat",
+   "files": [
+    {
+     "path": "hubofhubs/critique/done_evidence.py",
+     "symbols": [
+      "_whole",
+      "CoverageRecord",
+      "parse_coverage",
+      "CoverageGap",
+      "coverage_gap",
+      "coverage_progress",
+      "continue_decision",
+      "clean_requirements",
+      "render_requirements",
+      "_count",
+      "render_coverage_line",
+      "render_continue_plan",
+      "interim_data"
+     ],
+     "sha256": "a749e3615c330fceed723fbf8a33bcdbc604329145eb9a2ef433599c1bbdf2f7",
+     "last_used_ts": 1793785215.2265546,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/critique/__init__.py",
+     "symbols": [],
+     "sha256": "84dd2a7b9ebc5d9d19b9cd47a3864785717374df03a4e60017ed9deb439ab891",
+     "last_used_ts": 1793785215.2265546,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Done Evidence Verification"
+  },
+  {
+   "id": "terminal-event-rendering",
+   "keywords": [
+    "terminal",
+    "rendering",
+    "events",
+    "blocks",
+    "output",
+    "display",
+    "agent output",
+    "no ui library"
+   ],
+   "summary": "Defines the terminal rendering package that converts run events into output blocks without depending on a UI library.",
+   "description": "Terminal rendering that needs no UI library: events in, blocks out. An ask: the run is blocked on a person and says so as a prompt block.. Key: Ask, AskAnswer -- What to send for a typed answer: the resolution word and the person's own words., ask_from_event -- An ask from a decision event (``decision_id`` and its ``data``)., is_for_viewer -- The ask is for the viewer when it is addressed to them, or to nobody else than the one who asked (the fallback)., parse_answer -- A typed line as an answer., ask_block, answered_block -- The settled line: who answered, and whether the work is known to pick back up (only when it is)., error_block",
+   "files": [
+    {
+     "path": "hubofhubs/terminal/__init__.py",
+     "symbols": [],
+     "sha256": "02400c56af517439624e73358ce569624fdf51ca9ea5ab39d225e2e8075c056f",
+     "last_used_ts": 1793785215.2689922,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/terminal/asks.py",
+     "symbols": [
+      "Ask",
+      "AskAnswer",
+      "ask_from_event",
+      "is_for_viewer",
+      "parse_answer",
+      "ask_block",
+      "answered_block",
+      "error_block"
+     ],
+     "sha256": "09166c0b864a70b7075ec57497cb2eeb3b2592a9516ddb350b20bcb80ce0cbed",
+     "last_used_ts": 1793785215.2689922,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Library-free terminal event rendering"
+  },
+  {
+   "id": "blocking-ask-prompts",
+   "keywords": [
+    "ask",
+    "prompt",
+    "blocked",
+    "user input",
+    "human in the loop",
+    "question",
+    "prompt block",
+    "waiting"
+   ],
+   "summary": "Represents a run that is blocked waiting on a person and renders that ask as a prompt block in the terminal.",
+   "description": "An ask: the run is blocked on a person and says so as a prompt block.. Key: Ask, AskAnswer -- What to send for a typed answer: the resolution word and the person's own words., ask_from_event -- An ask from a decision event (``decision_id`` and its ``data``)., is_for_viewer -- The ask is for the viewer when it is addressed to them, or to nobody else than the one who asked (the fallback)., parse_answer -- A typed line as an answer., ask_block, answered_block -- The settled line: who answered, and whether the work is known to pick back up (only when it is)., error_block",
+   "files": [
+    {
+     "path": "hubofhubs/terminal/asks.py",
+     "symbols": [
+      "Ask",
+      "AskAnswer",
+      "ask_from_event",
+      "is_for_viewer",
+      "parse_answer",
+      "ask_block",
+      "answered_block",
+      "error_block"
+     ],
+     "sha256": "09166c0b864a70b7075ec57497cb2eeb3b2592a9516ddb350b20bcb80ce0cbed",
+     "last_used_ts": 1793785215.2689922,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Blocking ask prompt blocks"
+  },
+  {
+   "id": "auxiliary-prompts-tool-schemas",
+   "keywords": [
+    "auxiliary",
+    "prompt",
+    "tool",
+    "schema",
+    "model",
+    "brain",
+    "text",
+    "non-plan",
+    "messages"
+   ],
+   "summary": "Holds the auxiliary prompt text and tool schemas the brain sends to models outside of the main plan.",
+   "description": "Auxiliary prompt text and tool schemas: everything the brain says to a model besides the plan.",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/auxiliary_prompts.py",
+     "symbols": [
+      "of"
+     ],
+     "sha256": "a8e02905d2f730e5960ed8084500c0cd960183af798504b6bd9cd93f4e62b82c",
+     "last_used_ts": 1793785215.3588417,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Auxiliary Prompts and Tool Schemas"
+  },
+  {
+   "id": "prompt-text-sources",
+   "keywords": [
+    "prompt",
+    "text",
+    "centralized",
+    "model",
+    "instructions",
+    "doctrine",
+    "auxiliary",
+    "llm"
+   ],
+   "summary": "Groups the modules that define reusable prompt text and instructions sent to models.",
+   "description": "Auxiliary prompt text and tool schemas: everything the brain says to a model besides the plan. context_doctrine -- centralized prompt gates for the sufficiency and model-tier disciplines.. Key: compose_deep_preamble -- Return DEEP_CONTEXT_DOCTRINE + base_preamble + assembled.context_view (if present)",
+   "files": [
+    {
+     "path": "quest_ai_runner/core/auxiliary_prompts.py",
+     "symbols": [
+      "of"
+     ],
+     "sha256": "a8e02905d2f730e5960ed8084500c0cd960183af798504b6bd9cd93f4e62b82c",
+     "last_used_ts": 1793785215.3588417,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/core/context_doctrine.py",
+     "symbols": [
+      "compose_deep_preamble"
+     ],
+     "sha256": "3034e470982b4e79008b33b96582bcdad0fe60240e19b37aa6b46b0666c2e7b8",
+     "last_used_ts": 1793785215.3588417,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Centralized Prompt Text Sources"
+  },
+  {
+   "id": "background-work-pacing",
+   "keywords": [
+    "pacing",
+    "background",
+    "throttle",
+    "rate limit",
+    "scheduling",
+    "idle work",
+    "maintenance",
+    "recall"
+   ],
+   "summary": "Paces low-priority background recall work that no caller is actively waiting on.",
+   "description": "Pacing for work that nobody is waiting on.. Key: Pacer -- Call it inside a loop as often as is convenient (it costs a clock read); it pauses once enough work has run The remember-and-recall seat: text sampling, date bounds, pacing, card threading, assembler composition, conversation an",
+   "files": [
+    {
+     "path": "hubofhubs/recall/background_pacing.py",
+     "symbols": [
+      "Pacer"
+     ],
+     "sha256": "8837dfb9137fa641385fd5c743435b55cdf3d1594c1f1f16474e4b4a64798290",
+     "last_used_ts": 1793785215.4108114,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/recall/__init__.py",
+     "symbols": [],
+     "sha256": "a8717c9afb89632a1e31d1e6472933b6f696df4eccdbc9c50030bbf763759813",
+     "last_used_ts": 1793785215.4108114,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Background Work Pacing"
+  },
+  {
+   "id": "terminal-calm-output",
+   "keywords": [
+    "terminal",
+    "calm",
+    "diagnostics",
+    "context block",
+    "long waits",
+    "spinner",
+    "noise",
+    "chat output"
+   ],
+   "summary": "Tests that the terminal chat stays calm by keeping diagnostics, the context block and long waits quiet.",
+   "description": "The terminal chat stays calm: diagnostics, the context block and long waits.. Key: RecordingLog -- Captures everything written to the transcript as plain text., make_record, make_handler, run_app -- Build a ``QuestAITerminal`` with startup skipped, run ``build(app, pilot)`` once mounted., test_the_transcript_gets_one_short_deduped_line_and_the_file_gets_every_full_record, test_the_details_hint_is_the_last_line_of_the_group_never_between_two_warnings, test_a_second_burst_in_the_same_turn_is_shown_while_the_turn_has_room_and_each_burst_is_closed_once -- The closing line used to switch every later warning off for the rest of the session., test_a_new_turn_starts_its_own_three_lines_and_its_own_count",
+   "files": [
+    {
+     "path": "tests/test_terminal_calm_output.py",
+     "symbols": [
+      "RecordingLog",
+      "make_record",
+      "make_handler",
+      "run_app",
+      "test_the_transcript_gets_one_short_deduped_line_and_the_file_gets_every_full_record",
+      "test_the_details_hint_is_the_last_line_of_the_group_never_between_two_warnings",
+      "test_a_second_burst_in_the_same_turn_is_shown_while_the_turn_has_room_and_each_burst_is_closed_once",
+      "test_a_new_turn_starts_its_own_three_lines_and_its_own_count",
+      "test_an_error_is_always_shown_and_never_counted_away",
+      "test_a_record_that_says_it_is_not_for_the_transcript_goes_to_the_file_only",
+      "test_the_usage_limit_record_is_marked_for_the_file_only_so_the_closing_line_is_the_only_telling",
+      "test_nothing_is_written_to_close_a_group_that_never_had_a_warning",
+      "test_a_librarys_records_reach_the_file_but_never_the_transcript",
+      "test_a_librarys_error_is_shown_because_an_error_is_never_chatter",
+      "test_verbose_mode_keeps_the_full_record_in_the_transcript_for_any_logger",
+      "test_a_warning_is_cut_to_the_terminal_width_on_a_clause_or_a_word",
+      "test_a_long_first_sentence_is_ellipsized_and_a_multiline_message_uses_its_first_line",
+      "test_after_three_distinct_warnings_the_rest_are_counted_in_one_closing_line",
+      "test_an_unwritable_log_location_never_raises_and_the_hint_falls_back_to_verbose",
+      "test_the_log_file_is_rotated_and_capped",
+      "test_the_log_path_sits_beside_the_conversations_and_an_override_wins",
+      "test_in_the_running_app_a_worker_thread_warning_is_one_line_and_a_library_warning_is_silent",
+      "child_env",
+      "test_importing_the_cli_sets_the_hub_verbosity_default_and_a_users_value_wins",
+      "test_the_hub_logger_stays_at_error_even_though_its_import_resets_the_level",
+      "many_cards",
+      "test_the_context_block_is_one_sentence_two_titles_and_how_many_more",
+      "test_the_context_line_names_every_source_when_there_are_two_or_fewer",
+      "test_a_long_title_is_cut_and_the_sentence_wraps_instead_of_being_clipped",
+      "test_a_source_without_a_title_never_falls_back_to_its_internal_id"
+     ],
+     "sha256": "b1daacee39ab7d2b952410b1b52ff236d41c34f0572012c044a57e57af6c7ff1",
+     "last_used_ts": 1793785215.4108114,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Calm Terminal Chat Output"
+  },
+  {
+   "id": "chat-conversation-resume",
+   "keywords": [
+    "resume",
+    "chat",
+    "conversation",
+    "saved",
+    "reopen",
+    "history",
+    "session",
+    "persistence",
+    "quest-ai-runner",
+    "picker",
+    "interactive",
+    "select",
+    "menu",
+    "terminal",
+    "claude code",
+    "chooser"
+   ],
+   "summary": "Locates QAR's own saved chat conversations and reopens them when running quest-ai-runner chat --resume.",
+   "description": "Find and reopen QAR's own saved chat conversations (``quest-ai-runner chat --resume``).. Key: chat_history_dir -- The directory QAR writes chat conversations to (``QAR_CHAT_HISTORY_DIR`` wins)., chat_log_path -- The file the chat writes its full diagnostic log to (``QAR_CHAT_LOG_FILE`` wins)., SavedConversation -- One saved chat conversation file, with just enough read to list and resume it., read_conversation -- Parse one conversation file into (user, assistant) pairs., list_conversations -- Saved conversations, newest first., resolve_conversation -- The conversation ``--resume [REF]`` names., format_conversation_list -- Plain-text table for ``chat --list-conversations``: id, age, turns, first message Interactive picker for ``quest-ai-runner chat --resume`` (no id), modeled on Claude Code's.. Key: describe_age, conversation_label, conversation_matches -- Every word of the query appears somewhere in the conversation (or its id), any case., picker_app -- Build the picker app; after it exits, ``app.chosen`` is the pick or None if cancelled., pick_conversation -- Show the picker and return the chosen conversation, or None if the user cancelled",
+   "files": [
+    {
+     "path": "quest_ai_runner/chat_conversations.py",
+     "symbols": [
+      "chat_history_dir",
+      "chat_log_path",
+      "SavedConversation",
+      "read_conversation",
+      "list_conversations",
+      "resolve_conversation",
+      "format_conversation_list"
+     ],
+     "sha256": "075121196200de9073bd8739a29956a0f7dff76f5ead17edd49b481d6153427d",
+     "last_used_ts": 1793785215.4108114,
+     "use_count": 1
+    },
+    {
+     "path": "quest_ai_runner/conversation_picker.py",
+     "symbols": [
+      "describe_age",
+      "conversation_label",
+      "conversation_matches",
+      "picker_app",
+      "pick_conversation"
+     ],
+     "sha256": "c269411857ef6284fc4bceb55426349dba94ae8b3ea0cb0d444f580cff8cbe5e",
+     "last_used_ts": 1793785215.4108114,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Saved Chat Conversation Resume"
+  },
+  {
+   "id": "critique-link-honesty",
+   "keywords": [
+    "critique",
+    "link check",
+    "link validity",
+    "abridged read",
+    "gate",
+    "think critically",
+    "reply review",
+    "honesty"
+   ],
+   "summary": "Provides the think-critically seat that detects and checks links before a reply leaves and gates abridged reads.",
+   "description": "The think-critically seat: link honesty (detecting links and checking them before a reply leaves), the abridged-read gat",
+   "files": [
+    {
+     "path": "hubofhubs/critique/__init__.py",
+     "symbols": [],
+     "sha256": "84dd2a7b9ebc5d9d19b9cd47a3864785717374df03a4e60017ed9deb439ab891",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Critical Review and Link Honesty"
+  },
+  {
+   "id": "citation-doi-verification",
+   "keywords": [
+    "citations",
+    "doi",
+    "verification",
+    "crossref",
+    "references",
+    "hallucination",
+    "reply check",
+    "grounding"
+   ],
+   "summary": "Compares the DOIs cited in a reply against the DOIs that were actually available during the turn to detect unsupported citations.",
+   "description": "citations -- compare the DOIs in a reply with the DOIs a turn actually had.. Key: doi_candidates -- Each DOI in ``text`` as ``(start, end, doi)``, the DOI lower case without trailing punctuation or an unmatched ``)``., dois_in -- Every DOI that appears in the given texts (strings, or lists and dicts of them), lower case., unlisted_dois -- The DOIs in ``text`` that are not in ``known`` (lower case DOIs), in order of first appearance., strip_unlisted_dois -- ``text`` with every DOI not in ``known`` replaced by ``placeholder``, and the DOIs replaced Scholarly search that executes: an OpenAlex arm of the ``know-the-world`` seat (works search with year and open-access",
+   "files": [
+    {
+     "path": "hubofhubs/science/citations.py",
+     "symbols": [
+      "doi_candidates",
+      "dois_in",
+      "unlisted_dois",
+      "strip_unlisted_dois"
+     ],
+     "sha256": "c1cd04911a57e19a4b901477057b369fc79bf6f8dcc4e2cd666a6613dc70212c",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/science/__init__.py",
+     "symbols": [],
+     "sha256": "4d508e4af20c6d9e42184fd060b21067d9d93a9b712a6a9bcec95e1c55018990",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Citation DOI Verification"
+  },
+  {
+   "id": "doi-check-rule",
+   "keywords": [
+    "doi",
+    "citation",
+    "invented doi",
+    "hallucination",
+    "content rule",
+    "link guard",
+    "reply checking",
+    "bare doi",
+    "references"
+   ],
+   "summary": "Tests that a DOI appearing in a finished reply but not present in the turn's sources is replaced, while legitimately returned DOIs are kept, covering a gap the link guard leaves open.",
+   "description": "A DOI in a finished reply that the turn did not have is replaced; the link guard alone lets a bare invented DOI through.. Key: run_turn, test_an_invented_bare_doi_is_replaced_and_the_returned_one_is_kept, test_a_reply_that_cites_only_returned_dois_is_untouched, test_a_doi_the_person_pasted_is_evidence_too, test_the_check_is_part_of_the_link_guard_and_goes_with_it, test_a_failure_inside_the_check_never_loses_the_reply",
+   "files": [
+    {
+     "path": "tests/test_doi_check.py",
+     "symbols": [
+      "run_turn",
+      "test_an_invented_bare_doi_is_replaced_and_the_returned_one_is_kept",
+      "test_a_reply_that_cites_only_returned_dois_is_untouched",
+      "test_a_doi_the_person_pasted_is_evidence_too",
+      "test_the_check_is_part_of_the_link_guard_and_goes_with_it",
+      "test_a_failure_inside_the_check_never_loses_the_reply"
+     ],
+     "sha256": "566b8264f2f8d49f695203ac88eca28ed07b792495467a3d8ccbbc588c936afd",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Invented DOI Replacement Check"
+  },
+  {
+   "id": "openalex-scholarly-search",
+   "keywords": [
+    "openalex",
+    "scholarly",
+    "works search",
+    "academic",
+    "papers",
+    "open access",
+    "publication year",
+    "science"
+   ],
+   "summary": "Provides scholarly search that queries OpenAlex for works with year and open-access filtering as part of the know-the-world seat.",
+   "description": "Scholarly search that executes: an OpenAlex arm of the ``know-the-world`` seat (works search with year and open-access",
+   "files": [
+    {
+     "path": "hubofhubs/science/__init__.py",
+     "symbols": [],
+     "sha256": "4d508e4af20c6d9e42184fd060b21067d9d93a9b712a6a9bcec95e1c55018990",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "OpenAlex Scholarly Works Search"
+  },
+  {
+   "id": "feedback-ledger-tracking",
+   "keywords": [
+    "feedback",
+    "ledger",
+    "asks",
+    "requests",
+    "progress",
+    "tracking",
+    "fulfillment",
+    "tests"
+   ],
+   "summary": "Tests the feedback ledger that records what a person asked for and how far work on each ask actually progressed.",
+   "description": "What a person asked for, and how far anybody actually got with it.. Key: _ledger, _observe, test_only_a_listed_disposition_means_anything, test_a_receipt_line_can_carry_two_asks, test_a_line_with_no_disposition_records_nothing, test_the_run_is_shown_the_whole_vocabulary_it_must_choose_from -- A run cannot pick from a list it was never given, and a guessed word records nothing., test_seeing_something_is_not_acting_on_it, test_a_standing_rule_is_never_done_however_the_run_words_it -- The failure this whole module exists for The additions that make the ledger safe for asks that come from PEOPLE, not from a lane.. Key: ledger, an_item, test_without_the_gate_a_run_still_finishes_things -- The default is exactly what it was: a lane's own asks close on the run's account., test_with_the_gate_done_only_reaches_awaiting_acceptance, test_only_a_person_accepts_and_a_run_cannot_undo_it, test_asked_puts_it_on_the_person_and_authorises_nothing, test_blocked_is_owed_and_keeps_the_kind, test_an_untriaged_capture_authorises_nothing_until_a_person_classifies_it -- What an automatic mailbox sweep creates, and what it may cause: nothing, until triage",
+   "files": [
+    {
+     "path": "tests/test_feedback_ledger.py",
+     "symbols": [
+      "_ledger",
+      "_observe",
+      "test_only_a_listed_disposition_means_anything",
+      "test_a_receipt_line_can_carry_two_asks",
+      "test_a_line_with_no_disposition_records_nothing",
+      "test_the_run_is_shown_the_whole_vocabulary_it_must_choose_from",
+      "test_seeing_something_is_not_acting_on_it",
+      "test_a_standing_rule_is_never_done_however_the_run_words_it",
+      "test_a_rule_followed_only_in_part_says_so",
+      "test_a_request_finishes_and_stops_being_owed",
+      "test_an_unknown_disposition_leaves_the_item_exactly_as_it_was",
+      "test_a_person_outranks_a_run",
+      "test_coming_back_to_a_standing_rule_means_it_needs_reapplying",
+      "test_the_record_survives_a_restart",
+      "test_one_paragraph_two_asks_becomes_two_tracked_things",
+      "test_a_ref_the_run_said_nothing_about_moves_nothing",
+      "_Cards",
+      "test_a_standing_rule_becomes_guidance_in_the_persons_own_words",
+      "test_a_one_time_request_never_becomes_a_rule",
+      "test_a_rule_is_carded_once_however_often_it_is_applied",
+      "test_a_broken_guidance_store_never_costs_the_record",
+      "test_what_is_still_owed_is_offered_to_the_next_run_with_its_state",
+      "test_a_closed_item_is_not_dragged_into_the_next_run",
+      "test_a_rule_in_force_is_not_re_announced_as_news",
+      "test_a_recorded_status_outranks_the_timestamp_reading",
+      "test_the_owed_block_reads_as_a_backlog_not_as_news",
+      "test_the_record_lives_beside_the_lanes_own_state",
+      "test_a_deployment_can_switch_it_off",
+      "test_a_read_only_ledger_never_writes",
+      "test_a_persons_own_diary_is_never_something_they_owe_an_answer_to"
+     ],
+     "sha256": "20915c399fcf663044510696f3c49dbbd8cbb5539ccea0a0694c78b623165dd9",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    },
+    {
+     "path": "tests/test_feedback_ledger_acceptance.py",
+     "symbols": [
+      "ledger",
+      "an_item",
+      "test_without_the_gate_a_run_still_finishes_things",
+      "test_with_the_gate_done_only_reaches_awaiting_acceptance",
+      "test_only_a_person_accepts_and_a_run_cannot_undo_it",
+      "test_asked_puts_it_on_the_person_and_authorises_nothing",
+      "test_blocked_is_owed_and_keeps_the_kind",
+      "test_an_untriaged_capture_authorises_nothing_until_a_person_classifies_it",
+      "test_all_items_reads_the_whole_store",
+      "write_one",
+      "test_two_processes_writing_the_same_ledger_keep_both_rows",
+      "test_a_read_sees_what_another_writer_wrote",
+      "test_a_mixed_note_cards_only_the_standing_half",
+      "test_a_mixed_note_with_no_focused_words_cards_nothing",
+      "test_build_ledger_carries_the_acceptance_gate"
+     ],
+     "sha256": "f4504049faee0b09db972a59e818963506edd41dba02ef1e725bcdcee8926f81",
+     "last_used_ts": 1793785215.492751,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Feedback Ledger Progress Tracking"
+  },
+  {
+   "id": "source-discovery-tools",
+   "keywords": [
+    "discovery",
+    "list sources",
+    "describe operations",
+    "mcp tools",
+    "introspection",
+    "capabilities",
+    "brain",
+    "registry"
+   ],
+   "summary": "Tests that the brain can discover available sources and operations through list_* and describe_* tools.",
+   "description": "Discovery tools: the brain learns what sources/operations exist via list_*/describe_*.. Key: DiscoveryStubRetrieval -- A retrieval adapter that records discovery calls and answers them., _orch, test_list_sources_informs_planner_not_answer, test_describe_specs_fan_out_in_parallel, test_describe_operation_drilldown, test_discovery_on_legacy_adapter_degrades_gracefully, test_files_adapter_discovery, _make_db -- Build a CachedDbAdapter whose fetch returns canned rows",
+   "files": [
+    {
+     "path": "tests/test_discovery.py",
+     "symbols": [
+      "DiscoveryStubRetrieval",
+      "_orch",
+      "test_list_sources_informs_planner_not_answer",
+      "test_describe_specs_fan_out_in_parallel",
+      "test_describe_operation_drilldown",
+      "test_discovery_on_legacy_adapter_degrades_gracefully",
+      "test_files_adapter_discovery",
+      "_make_db",
+      "test_cached_db_list_sources_advertised",
+      "test_cached_db_list_sources_from_cache",
+      "test_cached_db_list_sources_empty",
+      "test_cached_db_describe_source_with_custom_describe",
+      "test_cached_db_describe_source_infers_from_sample",
+      "test_cached_db_describe_source_no_rows",
+      "test_cached_db_list_operations_default",
+      "test_cached_db_list_operations_custom",
+      "test_cached_db_describe_operation",
+      "test_cached_db_discovery_via_orchestrator"
+     ],
+     "sha256": "0485bcce38f4e4a868f2765d81c2018b29132b6b0097f79238077191e8e1ed09",
+     "last_used_ts": 1793785215.7632542,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Source and Operation Discovery"
+  },
+  {
+   "id": "question-vs-task-intent",
+   "keywords": [
+    "question",
+    "task",
+    "intent",
+    "no task",
+    "task creation",
+    "user instruction",
+    "agent behavior",
+    "reply"
+   ],
+   "summary": "Tests that asking a question does not open a task and that an explicit request for no task is obeyed.",
+   "description": "Asking a question must not open a task, and asking for no task must be obeyed.. Key: _orch, test_veto_phrases_forbid_a_new_task, test_cancel_instructions_are_still_executable, test_veto_degrades_planner_deep_to_answer, test_mixed_hold_and_directive_does_not_forbid_a_task, test_bare_hold_phrase_alone_still_forbids_a_task, test_veto_degrades_planner_confirm_to_answer, test_veto_reaches_the_planner_and_the_reply_contract",
+   "files": [
+    {
+     "path": "tests/test_question_not_task.py",
+     "symbols": [
+      "_orch",
+      "test_veto_phrases_forbid_a_new_task",
+      "test_cancel_instructions_are_still_executable",
+      "test_veto_degrades_planner_deep_to_answer",
+      "test_mixed_hold_and_directive_does_not_forbid_a_task",
+      "test_bare_hold_phrase_alone_still_forbids_a_task",
+      "test_veto_degrades_planner_confirm_to_answer",
+      "test_veto_reaches_the_planner_and_the_reply_contract",
+      "test_an_ordinary_message_is_untouched"
+     ],
+     "sha256": "d54c6747afadb167376162fe50d093d995023d3832920dc03175725872b91baa",
+     "last_used_ts": 1793785215.7632542,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Questions Do Not Open Tasks"
+  },
+  {
+   "id": "quest-asks-brief",
+   "keywords": [
+    "quest",
+    "ask",
+    "asks",
+    "brief",
+    "autopilot",
+    "batch",
+    "what you asked",
+    "questclient",
+    "tools",
+    "tests"
+   ],
+   "summary": "Tests for the What You Asked section of an autopilot batch and the QuestClient calls made by the ask tools.",
+   "description": "The What You Asked section of an autopilot batch, and the QuestClient calls the ask tools make.. Key: test_open_asks_are_listed_with_keys_and_closed_ones_are_not, test_an_unsorted_ask_is_marked_and_a_standing_rule_is_shown_as_a_rule, test_an_unreadable_or_empty_ledger_emits_nothing, test_what_already_waits_on_a_person_is_listed_so_it_is_not_raised_twice, test_the_section_rides_in_the_batch_text_and_changes_nothing_when_absent, pass_client, test_a_pass_puts_the_open_asks_in_the_batch_and_reads_the_ledger_once, test_a_failed_read_leaves_the_batch_without_the_section",
+   "files": [
+    {
+     "path": "tests/test_quest_asks_brief.py",
+     "symbols": [
+      "test_open_asks_are_listed_with_keys_and_closed_ones_are_not",
+      "test_an_unsorted_ask_is_marked_and_a_standing_rule_is_shown_as_a_rule",
+      "test_an_unreadable_or_empty_ledger_emits_nothing",
+      "test_what_already_waits_on_a_person_is_listed_so_it_is_not_raised_twice",
+      "test_the_section_rides_in_the_batch_text_and_changes_nothing_when_absent",
+      "pass_client",
+      "test_a_pass_puts_the_open_asks_in_the_batch_and_reads_the_ledger_once",
+      "test_a_failed_read_leaves_the_batch_without_the_section",
+      "make_client",
+      "call",
+      "test_record_ask_sends_the_post_the_backend_expects",
+      "test_update_ask_sends_a_run_claim_and_never_an_acceptance",
+      "test_the_client_methods_raise_on_failure_and_omit_unset_fields",
+      "entry",
+      "test_an_answer_is_shown_with_the_question_it_answers",
+      "test_a_plain_note_from_the_person_is_shown_without_a_question",
+      "test_the_runs_own_last_note_shows_on_asks_in_progress_or_blocked_only",
+      "test_an_unanswered_question_is_shown_and_the_run_is_told_not_to_work_or_reask",
+      "test_answers_and_notes_are_cut_and_budgeted",
+      "test_an_ask_with_no_history_renders_as_before",
+      "test_update_ask_awaiting_answer_needs_a_question_and_sends_it",
+      "test_the_awaiting_answer_text_points_at_asks_for_you"
+     ],
+     "sha256": "eeb94987350a6a50fa0fc1fe449f4103dddfbae39454fb550ed8875c88f6df80",
+     "last_used_ts": 1793785215.9608145,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Autopilot Asks Brief Section"
+  },
+  {
+   "id": "feedback-ledger-human-acceptance",
+   "keywords": [
+    "acceptance",
+    "human",
+    "people",
+    "lane",
+    "safety",
+    "ledger",
+    "validation",
+    "feedback",
+    "asks"
+   ],
+   "summary": "Tests ledger additions that make it safe to accept asks originating from people rather than from automated lanes.",
+   "description": "The additions that make the ledger safe for asks that come from PEOPLE, not from a lane.. Key: ledger, an_item, test_without_the_gate_a_run_still_finishes_things -- The default is exactly what it was: a lane's own asks close on the run's account., test_with_the_gate_done_only_reaches_awaiting_acceptance, test_only_a_person_accepts_and_a_run_cannot_undo_it, test_asked_puts_it_on_the_person_and_authorises_nothing, test_blocked_is_owed_and_keeps_the_kind, test_an_untriaged_capture_authorises_nothing_until_a_person_classifies_it -- What an automatic mailbox sweep creates, and what it may cause: nothing, until triage",
+   "files": [
+    {
+     "path": "tests/test_feedback_ledger_acceptance.py",
+     "symbols": [
+      "ledger",
+      "an_item",
+      "test_without_the_gate_a_run_still_finishes_things",
+      "test_with_the_gate_done_only_reaches_awaiting_acceptance",
+      "test_only_a_person_accepts_and_a_run_cannot_undo_it",
+      "test_asked_puts_it_on_the_person_and_authorises_nothing",
+      "test_blocked_is_owed_and_keeps_the_kind",
+      "test_an_untriaged_capture_authorises_nothing_until_a_person_classifies_it",
+      "test_all_items_reads_the_whole_store",
+      "write_one",
+      "test_two_processes_writing_the_same_ledger_keep_both_rows",
+      "test_a_read_sees_what_another_writer_wrote",
+      "test_a_mixed_note_cards_only_the_standing_half",
+      "test_a_mixed_note_with_no_focused_words_cards_nothing",
+      "test_build_ledger_carries_the_acceptance_gate"
+     ],
+     "sha256": "f4504049faee0b09db972a59e818963506edd41dba02ef1e725bcdcee8926f81",
+     "last_used_ts": 1793785216.2353332,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Human Ask Ledger Safety"
+  },
+  {
+   "id": "guidance-selection-timeout",
+   "keywords": [
+    "timeout",
+    "select",
+    "hang",
+    "guidance",
+    "turn",
+    "deadline",
+    "blocking",
+    "resilience"
+   ],
+   "summary": "Ensures GuidanceProvider.select() is bounded by a timeout so a slow provider can never hang a turn indefinitely.",
+   "description": "GuidanceProvider.select() must never hang a turn indefinitely.. Key: _HangingGuidance -- select() blocks well past the test's configured timeout, simulating a stuck, _orch, test_hanging_guidance_select_does_not_hang_the_turn, test_guidance_selection_timeout_env_default, test_guidance_selection_timeout_env_override, test_guidance_selection_timeout_invalid_env_falls_back, test_fast_guidance_select_still_applies_normally -- The timeout wrapper must not change the normal, fast-path behavior",
+   "files": [
+    {
+     "path": "tests/test_guidance_selection_timeout.py",
+     "symbols": [
+      "_HangingGuidance",
+      "_orch",
+      "test_hanging_guidance_select_does_not_hang_the_turn",
+      "test_guidance_selection_timeout_env_default",
+      "test_guidance_selection_timeout_env_override",
+      "test_guidance_selection_timeout_invalid_env_falls_back",
+      "test_fast_guidance_select_still_applies_normally"
+     ],
+     "sha256": "2141646ce80afd284e57bd946aed92bb353c517ab2d15a10bdd07e431c11e62e",
+     "last_used_ts": 1793785216.2353332,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Guidance Selection Timeout Safety"
+  },
+  {
+   "id": "anatomy-parts-table",
+   "keywords": [
+    "anatomy",
+    "parts table",
+    "esoi",
+    "records",
+    "docs generation",
+    "markdown table",
+    "explanation docs"
+   ],
+   "summary": "Generates the parts table in the anatomy explanation doc from ESOI records.",
+   "description": "Generate the parts table in docs/explanation/anatomy.md from the ESOI records.. Key: rows, table, render",
+   "files": [
+    {
+     "path": "scripts/anatomy_table.py",
+     "symbols": [
+      "rows",
+      "table",
+      "render"
+     ],
+     "sha256": "951d46153466531ad47b18823225f603bad1ab4724a78cd569543ecdc3462b74",
+     "last_used_ts": 1793785216.288064,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Anatomy Parts Table Generator"
+  },
+  {
+   "id": "drive-comment-channel",
+   "keywords": [
+    "google drive",
+    "comments",
+    "reply",
+    "document",
+    "channel",
+    "write adapter",
+    "read comments",
+    "gdrive"
+   ],
+   "summary": "Tests treating Google Drive document comments as a two-way channel that can be both read and replied to.",
+   "description": "Comments on a document are a channel, not a corpus: they can be read AND answered.. Key: FakeHTTP -- Stands in for ``urllib.request.urlopen``: records requests, replays queued responses., _Resp, _http_error, http, _client, _comment, _reply, test_a_comment_arrives_with_the_passage_it_was_anchored_to",
+   "files": [
+    {
+     "path": "tests/test_drive_comments.py",
+     "symbols": [
+      "FakeHTTP",
+      "_Resp",
+      "_http_error",
+      "http",
+      "_client",
+      "_comment",
+      "_reply",
+      "test_a_comment_arrives_with_the_passage_it_was_anchored_to",
+      "test_since_is_pushed_down_to_drive_so_a_reopened_thread_still_comes_back",
+      "test_resolved_threads_are_left_out_unless_they_are_asked_for",
+      "test_a_thread_whose_last_word_is_ours_is_answered_and_one_they_replied_to_is_not",
+      "test_an_essay_length_comment_cannot_crowd_out_the_work_it_is_about",
+      "test_a_folder_is_the_unit_a_person_thinks_in",
+      "test_a_folder_read_without_a_since_still_finds_a_comment_on_an_old_file",
+      "test_files_in_folder_reports_what_the_person_edited_since_we_looked",
+      "test_no_token_means_no_access_rather_than_an_exception",
+      "test_a_broken_token_provider_degrades_to_no_access",
+      "test_an_api_failure_reads_as_nothing_new_not_as_a_crash",
+      "test_a_reply_lands_on_the_thread_it_answers",
+      "test_resolving_says_what_was_done_rather_than_silently_closing_the_thread",
+      "test_a_read_scoped_token_gets_the_apis_own_reason_not_a_silent_no_op",
+      "test_an_empty_reply_is_refused_before_it_reaches_the_api",
+      "test_no_token_is_reported_plainly_rather_than_reported_as_sent",
+      "test_rendered_comments_always_carry_the_address_to_answer_them_at",
+      "test_nothing_to_show_renders_nothing",
+      "test_html_entities_in_comment_and_quote_are_decoded"
+     ],
+     "sha256": "1211d8f887e6bc156610441512e0ad8b1d44bdb69e97d04da6cbe3cfec940481",
+     "last_used_ts": 1793785216.288064,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Drive Document Comments Channel"
+  },
+  {
+   "id": "web-search-backends",
+   "keywords": [
+    "web search",
+    "searxng",
+    "gemini grounding",
+    "search backend",
+    "provider search",
+    "search api",
+    "fetch",
+    "extraction"
+   ],
+   "summary": "Defines the executing web search layer with multiple backends including SearXNG, Gemini grounding, provider-native search and JSON search APIs.",
+   "description": "Web search that executes: search backends (SearXNG, JSON search APIs described as data, Gemini grounding, a provider's o Search APIs described as DATA, and the one generic backend that runs any such description.",
+   "files": [
+    {
+     "path": "hubofhubs/websearch/__init__.py",
+     "symbols": [],
+     "sha256": "8c4276e2cb585f91f04fa90eb0d5420b9660ec3a40453450c681e7596a2c994e",
+     "last_used_ts": 1793785216.3621461,
+     "use_count": 1
+    },
+    {
+     "path": "hubofhubs/websearch/apis.py",
+     "symbols": [],
+     "sha256": "06bafc4a145730d84552cac524ee176471b207ae90b25703ba7d18c0390dfec4",
+     "last_used_ts": 1793785216.3621461,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Web Search Backends"
+  },
+  {
+   "id": "test-stub-adapters",
+   "keywords": [
+    "pytest",
+    "conftest",
+    "fixtures",
+    "stubs",
+    "fakes",
+    "mock",
+    "adapters",
+    "offline",
+    "no network",
+    "test suite"
+   ],
+   "summary": "Provides shared pytest configuration and stub adapters so tests run without network access, API keys, or a real model.",
+   "description": " Shared stub adapters for the tests — no network, no API key, no real model.. Key: hermetic_qar_environment -- No test inherits a QAR_* setting from the host shell or a lane's service environment., quest_capability_cache_starts_empty -- The Quest client remembers what a backend said about itself for the whole process; no test inherits another's answer., chat_log_stays_in_a_temp_file -- A test that mounts the terminal app never writes the real per-user chat log., deep_runner_default_is_inert_in_tests -- The auto-built default deep runner must never resolve to a REAL worker during the suite., claude_live_model_lookup_is_off_in_tests -- No test reads the developer's Claude login or hits the network for the live model list., tool_catalog_is_empty_unless_a_test_says_otherwise -- No test inherits the developer's tool catalog., no_web_research_backend_unless_a_test_says_otherwise -- No test inherits the developer's/host's live-web backend keys., no_background_index_survives_a_test -- No context-index thread may outlive the test that started it",
+   "files": [
+    {
+     "path": "tests/__init__.py",
+     "symbols": [],
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "last_used_ts": 1793785216.3621461,
+     "use_count": 1
+    },
+    {
+     "path": "tests/conftest.py",
+     "symbols": [
+      "hermetic_qar_environment",
+      "quest_capability_cache_starts_empty",
+      "chat_log_stays_in_a_temp_file",
+      "deep_runner_default_is_inert_in_tests",
+      "claude_live_model_lookup_is_off_in_tests",
+      "tool_catalog_is_empty_unless_a_test_says_otherwise",
+      "no_web_research_backend_unless_a_test_says_otherwise",
+      "no_background_index_survives_a_test",
+      "StubProvider",
+      "StubRetrieval",
+      "StubDeepRunner",
+      "StubEscalation",
+      "runner_clock_is_utc_unless_a_test_says_otherwise"
+     ],
+     "sha256": "66b934de88469040e1f2302ae09d8f13802c556f99ace3a496f6f3c168eac929",
+     "last_used_ts": 1793785216.3621461,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Shared Test Stub Adapters"
+  },
+  {
+   "id": "examples-package",
+   "keywords": [
+    "examples",
+    "package",
+    "quest",
+    "backend",
+    "runner",
+    "wiring",
+    "demo",
+    "quest-ai-runner"
+   ],
+   "summary": "Package marker for runnable examples showing how to wire quest-ai-runner to a custom Quest backend.",
+   "description": "Runnable examples for wiring quest-ai-runner to your own Quest backend.",
+   "files": [
+    {
+     "path": "examples/__init__.py",
+     "symbols": [],
+     "sha256": "5addc63f3e6675c1d675f3ea590cc1cbf0b4ff1379b292972f3cb8eeef871375",
+     "last_used_ts": 1793785216.5503826,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Quest Backend Examples Package"
+  },
+  {
+   "id": "query-aware-retrieval-routing",
+   "keywords": [
+    "query-aware",
+    "retrieval",
+    "routing",
+    "search",
+    "offline",
+    "spec v3",
+    "work package c",
+    "query classification"
+   ],
+   "summary": "Offline tests for routing retrieval requests according to the query, as described in spec v3 work package C.",
+   "description": "Query-aware retrieval routing (spec v3, work package C) — all offline, no network.. Key: _orch, _write_conv, _exchange, test_parse_goal_condition_reply_single_line_has_no_constraints, test_parse_goal_condition_reply_parses_full_constraints_line, test_parse_goal_condition_reply_malformed_json_degrades_to_none, test_parse_goal_condition_reply_drops_unrecognized_keys_and_bad_enum_values, test_parse_goal_condition_reply_all_constraints_invalid_yields_none",
+   "files": [
+    {
+     "path": "tests/test_query_aware_retrieval.py",
+     "symbols": [
+      "_orch",
+      "_write_conv",
+      "_exchange",
+      "test_parse_goal_condition_reply_single_line_has_no_constraints",
+      "test_parse_goal_condition_reply_parses_full_constraints_line",
+      "test_parse_goal_condition_reply_malformed_json_degrades_to_none",
+      "test_parse_goal_condition_reply_drops_unrecognized_keys_and_bad_enum_values",
+      "test_parse_goal_condition_reply_all_constraints_invalid_yields_none",
+      "test_parse_goal_condition_reply_empty_input",
+      "test_format_now_block_uses_the_given_fixed_now",
+      "test_format_now_block_falls_back_to_system_clock_when_absent",
+      "test_derive_goal_condition_threads_fixed_now_into_the_prompt",
+      "test_derive_goal_condition_returns_constraints_from_the_same_call",
+      "_FakeFilterableStore",
+      "_ConstraintProvider",
+      "test_run_routes_a_filtered_conversation_search_when_constraints_present",
+      "test_run_does_not_search_conversations_when_no_constraints_detected",
+      "test_run_degrades_cleanly_on_malformed_constraints_line",
+      "test_related_slices_time_range_hard_filters_before_relevance",
+      "test_related_slices_time_range_degrades_when_nothing_matches",
+      "test_related_slices_topic_terms_are_folded_into_the_query",
+      "_write_conv_with_timestamp",
+      "test_claude_conversations_adapter_query_time_range_filters",
+      "test_claude_conversations_adapter_query_time_range_degrades_when_empty",
+      "test_decide_tool_schema_exposes_generic_filter_fields_on_reads",
+      "_RecordingQueryRetrieval",
+      "test_planner_filtered_query_reaches_the_retrieval_adapter_unchanged",
+      "test_string_query_spec_still_reaches_the_adapter",
+      "_note",
+      "_write_card"
+     ],
+     "sha256": "435b89bec1fd1784c0bac51ba5cc338783cf621e46ee1506dedcfc877c70a969",
+     "last_used_ts": 1793785216.943219,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Query-Aware Retrieval Routing"
+  },
+  {
+   "id": "cli-chat-rep-positional",
+   "keywords": [
+    "qar",
+    "chat",
+    "rep",
+    "positional argument",
+    "shorthand",
+    "quest-ai-runner",
+    "argument parsing",
+    "cli"
+   ],
+   "summary": "Tests that a positional name in the chat command acts as shorthand for the --rep NAME option.",
+   "description": "`qar <name>` (e.g.. Key: _valid_cfg, _run_chat, test_positional_rep_sets_name_and_specified, test_explicit_rep_flag_wins_over_positional, test_no_positional_no_flag_unchanged, test_positional_rep_loads_matching_corpus_folder_persona, test_positional_rep_with_no_matching_folder_runs_without_persona, test_explicit_persona_file_wins_over_positional_folder_lookup",
+   "files": [
+    {
+     "path": "tests/test_cli_chat_rep_positional.py",
+     "symbols": [
+      "_valid_cfg",
+      "_run_chat",
+      "test_positional_rep_sets_name_and_specified",
+      "test_explicit_rep_flag_wins_over_positional",
+      "test_no_positional_no_flag_unchanged",
+      "test_positional_rep_loads_matching_corpus_folder_persona",
+      "test_positional_rep_with_no_matching_folder_runs_without_persona",
+      "test_explicit_persona_file_wins_over_positional_folder_lookup"
+     ],
+     "sha256": "338d13919ae661d5ca0ff423f3b5a872c67586d2dbae847ecec882c1bfb1e1e4",
+     "last_used_ts": 1793785217.038421,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Chat Rep Positional Shorthand"
+  },
+  {
+   "id": "textual-terminal-ui",
+   "keywords": [
+    "textual",
+    "tui",
+    "terminal",
+    "widgets",
+    "prompt",
+    "transcript",
+    "ui",
+    "interactive",
+    "app"
+   ],
+   "summary": "Defines the Textual-based interactive terminal UI for Quest AI Runner, including its widgets, prompt and transcript display.",
+   "description": "Textual-based interactive terminal UI for Quest AI Runner.. Key: QuestAITerminal -- Textual REPL over an `InteractiveSession`'s orchestrator brain",
+   "files": [
+    {
+     "path": "quest_ai_runner/textual_ui.py",
+     "symbols": [
+      "QuestAITerminal"
+     ],
+     "sha256": "66f185e9765da87c9d899693846df9321e5fdfd2b7d818732574dc8f66d6add6",
+     "last_used_ts": 1793785217.0810647,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Textual Interactive Terminal UI"
+  },
+  {
+   "id": "answer-composition",
+   "keywords": [
+    "answer",
+    "grounded answer",
+    "synthesis",
+    "sub-question",
+    "fan-out",
+    "answerkit",
+    "compose"
+   ],
+   "summary": "Composes grounded answers, fans out sub-questions, and synthesizes results after work is gathered.",
+   "description": "Composing answers: a grounded answer, the sub-question fan-out, and the post-work synthesis.. Key: AnswerKit -- The consumer's text and renderers for answering., AnsweringMixin -- Composing answers",
+   "files": [
+    {
+     "path": "hubofhubs/orchestrate/answer.py",
+     "symbols": [
+      "AnswerKit",
+      "AnsweringMixin"
+     ],
+     "sha256": "2098d7e95663681a6fbb798bbe803437913f6d768bf0ec030bac8256be48c9c4",
+     "last_used_ts": 1793785217.1826754,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Answer Composition and Synthesis"
+  },
+  {
+   "id": "hub-registry-package",
+   "keywords": [
+    "hubofhubs",
+    "registry",
+    "hubs",
+    "seats",
+    "protocols",
+    "assembly",
+    "scorer",
+    "package"
+   ],
+   "summary": "Defines the hubofhubs package as a registry of AI-intelligence hubs with protocol seats, the assembly that wires them, and a scorer.",
+   "description": "hubofhubs: the registry of AI-intelligence hubs, the seats (Protocols) and the assembly that wires them, and the scorer",
+   "files": [
+    {
+     "path": "hubofhubs/__init__.py",
+     "symbols": [],
+     "sha256": "8e64037be69f7d49f6e3bbcf36bcb2c5f41f9f04beb0e47e3d796c45e36e4630",
+     "last_used_ts": 1793785217.2796237,
+     "use_count": 1
+    }
+   ],
+   "weight": 1.0,
+   "name": "Hub Registry Package Overview"
+  },
+  {
+   "id": "declined-act-response",
+   "keywords": [
+    "declined act",
+    "chat quality",
+    "imp-028",
+    "records",
+    "response",
+    "conversation",
+    "refusal",
+    "answer handling"
+   ],
+   "summary": "Tests ensuring that when an answer declines an act on the records it read, that declination forms the entire response.",
+   "description": "An answer that declines an act on the records it read is the whole response (chat_quality IMP-028).. Key: run_turn, test_a_declined_act_stays_the_answer_and_opens_no_deep_run, test_the_same_act_answer_without_the_verdict_still_escalates, test_act_declined_is_true_only_for_a_real_boolean, test_the_planner_rubric_states_answer_first_and_the_declined_verdict, test_the_overseer_does_not_escalate_over_records_that_decide_the_act, test_the_queued_handoff_is_for_long_or_outside_work_only",
+   "files": [
+    {
+     "path": "tests/test_act_declined_net.py",
+     "symbols": [
+      "run_turn",
+      "test_a_declined_act_stays_the_answer_and_opens_no_deep_run",
+      "test_the_same_act_answer_without_the_verdict_still_escalates",
+      "test_act_declined_is_true_only_for_a_real_boolean",
+      "test_the_planner_rubric_states_answer_first_and_the_declined_verdict",
+      "test_the_overseer_does_not_escalate_over_records_that_decide_the_act",
+      "test_the_queued_handoff_is_for_long_or_outside_work_only"
+     ],
+     "sha256": "55a0a09a07b79db0c54281a1e834a130552a94fc3c789daf8904bfc7934b8181",
+     "last_used_ts": 1793785217.6420875,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Declined Act Answer Handling"
+  },
+  {
+   "id": "deep-difficulty-model-selection",
+   "keywords": [
+    "model selection",
+    "difficulty",
+    "starting model",
+    "unpinned",
+    "deep run",
+    "deep_model_selection",
+    "model choice",
+    "escalation"
+   ],
+   "summary": "Tests how the deep runner picks a starting model based on task difficulty for unpinned runs.",
+   "description": "Difficulty-based STARTING model for unpinned deep runs (core/deep_model_selection.py).. Key: deep_plan, RecordingRunner, RecordingSink, build, run_models, test_default_mapping_on_the_default_ladder, test_selection_record_carries_difficulty_start_ladder_and_reason, test_configured_hard_model_is_honoured",
+   "files": [
+    {
+     "path": "tests/test_deep_difficulty_model_selection.py",
+     "symbols": [
+      "deep_plan",
+      "RecordingRunner",
+      "RecordingSink",
+      "build",
+      "run_models",
+      "test_default_mapping_on_the_default_ladder",
+      "test_selection_record_carries_difficulty_start_ladder_and_reason",
+      "test_configured_hard_model_is_honoured",
+      "test_rungs_match_by_what_the_worker_invokes",
+      "test_a_start_model_missing_from_the_ladder_goes_to_the_nearest_stronger_rung",
+      "test_unknown_difficulty_or_empty_ladder_means_no_selection",
+      "test_normalize_difficulty_accepts_synonyms_and_rejects_garbage",
+      "test_planner_fields_are_parsed_and_fail_safe",
+      "test_simple_work_starts_on_haiku_and_escalates_to_sonnet_and_stops_there",
+      "test_normal_work_starts_on_sonnet_and_stays_at_the_ceiling",
+      "test_hard_work_starts_on_sonnet_by_default_and_stays_at_the_ceiling",
+      "test_configured_ladder_is_the_escalation_path",
+      "test_a_per_task_model_pin_beats_the_automatic_choice",
+      "test_a_per_task_tier_pin_also_beats_the_automatic_choice",
+      "test_disabled_restores_the_first_rung_start",
+      "test_disabled_with_no_ladder_uses_the_generic_fallback_ladder",
+      "test_no_rating_on_a_configured_ladder_starts_at_the_normal_rung",
+      "test_no_rating_and_no_ladder_keeps_the_generic_fallback_ladder_unchanged",
+      "test_an_unparseable_rating_is_treated_as_no_rating",
+      "test_the_choice_is_announced_once_with_structured_data",
+      "test_a_pinned_run_announces_no_automatic_choice",
+      "test_plan_decision_defaults_to_no_rating",
+      "test_env_wiring",
+      "test_env_defaults"
+     ],
+     "sha256": "808272194864692e9bee3a4b00c50a3980741edc5b273d691f0161ae2fa6044b",
+     "last_used_ts": 1793785217.8060296,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Difficulty-Based Model Selection"
+  },
+  {
+   "id": "terminal-readability",
+   "keywords": [
+    "readability",
+    "80 columns",
+    "line width",
+    "plain language",
+    "colours",
+    "contrast",
+    "terminal",
+    "wrapping"
+   ],
+   "summary": "Tests that the terminal chat reads well at 80 columns, uses plain wording and uses legible colours.",
+   "description": "The terminal chat reads well at 80 columns, in plain words, and in colours a person can read.. Key: Session -- The part of a session the app touches after startup., Log -- Everything written to the transcript, as plain lines., Console, run_app -- Mount the app with a session already built, run ``build(app, pilot)``, return what it returns., event, cards, keys_drawn, test_the_keys_start_with_the_one_that_stops_the_work_in_the_order_cancel_details_sources_scroll",
+   "files": [
+    {
+     "path": "tests/test_terminal_readability.py",
+     "symbols": [
+      "Session",
+      "Log",
+      "Console",
+      "run_app",
+      "event",
+      "cards",
+      "keys_drawn",
+      "test_the_keys_start_with_the_one_that_stops_the_work_in_the_order_cancel_details_sources_scroll",
+      "test_tab_is_shown_only_when_there_is_more_than_one_job_to_cycle_through",
+      "test_a_key_that_would_do_nothing_is_not_listed_and_esc_only_while_the_ai_works",
+      "test_the_key_line_shows_whole_hints_and_never_a_key_cut_in_half",
+      "test_ctrl_y_is_not_bound_to_a_copy_the_prompts_own_redo_would_shadow_and_the_copy_has_a_key_that_works",
+      "test_the_busy_placeholder_names_the_key_that_stops_the_work_and_the_ready_one_fits_at_80_columns",
+      "test_the_key_line_sits_directly_under_the_prompt_in_one_row",
+      "test_understood_as_is_not_the_style_of_the_persons_own_line_and_keeps_its_text",
+      "test_a_deep_plan_writes_no_deep_execution_line_and_says_getting_ready_in_plain_words",
+      "test_the_context_is_counted_in_sources_everywhere_and_the_counts_agree",
+      "test_the_context_line_never_names_an_id_and_at_most_two_titles",
+      "test_nothing_a_person_reads_by_default_contains_an_internal_word",
+      "test_the_status_strings_say_the_work_and_never_the_deep_run",
+      "test_a_plain_answers_closing_line_writes_its_time_the_way_every_other_time_is_written",
+      "test_the_work_panels_clock_is_the_turns_clock_not_a_second_one",
+      "fixed_start_statuses",
+      "test_every_fixed_sentence_said_before_or_just_after_the_work_starts_is_short_enough_to_read_whole",
+      "test_the_activity_bar_shows_each_of_them_whole_at_80_columns_with_a_long_clock",
+      "test_the_transcript_is_as_wide_with_a_panel_open_as_without_and_has_no_sideways_scrollbar",
+      "test_the_live_panel_grows_when_its_text_does",
+      "test_a_fresh_start_prints_the_session_line_and_one_ready_without_the_word_corpus",
+      "test_a_command_typed_before_the_session_is_ready_says_what_happens_next",
+      "test_the_header_says_resuming_with_the_ellipsis_character_the_rest_of_the_app_uses"
+     ],
+     "sha256": "d62655b2f31b98d199f1be43d20044ffe684c89750178983900942af233fb3e2",
+     "last_used_ts": 1793785218.0452285,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Terminal Chat Readability"
+  },
+  {
+   "id": "card-store-quarantine",
+   "keywords": [
+    "quarantine",
+    "cards",
+    "card store",
+    "cleanup",
+    "script",
+    "maintenance",
+    "invalid cards",
+    "topic cards"
+   ],
+   "summary": "Tests the scripts/quarantine_cards.py tool that cleans up the card store by quarantining problematic cards.",
+   "description": "Tests for scripts/quarantine_cards.py, the card-store cleanup tool.. Key: load_tool -- Import the script by path (it lives in scripts/, which is not a package)., write_card, store, test_an_interior_root_hop_is_compounded, test_a_repeated_namespace_segment_is_compounded, test_a_single_import_namespace_is_not_compounded, test_two_import_namespace_prefixes_are_compounded_but_one_is_not, test_a_hex_looking_topic_word_is_not_a_prefix",
+   "files": [
+    {
+     "path": "tests/test_quarantine_cards.py",
+     "symbols": [
+      "load_tool",
+      "write_card",
+      "store",
+      "test_an_interior_root_hop_is_compounded",
+      "test_a_repeated_namespace_segment_is_compounded",
+      "test_a_single_import_namespace_is_not_compounded",
+      "test_two_import_namespace_prefixes_are_compounded_but_one_is_not",
+      "test_a_hex_looking_topic_word_is_not_a_prefix",
+      "test_a_card_owned_by_another_system_is_never_moved",
+      "test_a_used_card_is_kept_even_when_it_duplicates_another",
+      "test_a_hand_learned_card_is_kept",
+      "test_a_used_compounded_copy_moves_only_after_what_it_holds_joins_its_survivor",
+      "test_a_used_compounded_copy_that_cannot_join_without_loss_is_kept",
+      "test_a_card_that_gained_a_note_after_the_plan_stays_where_it_is",
+      "test_a_compounded_card_with_a_surviving_equivalent_is_moved",
+      "test_a_compounded_only_copy_is_kept_and_listed_in_skipped",
+      "test_a_compounded_card_whose_only_equivalent_is_moved_in_the_same_run_is_kept",
+      "test_a_compounded_data_file_card_is_still_moved_as_thin_with_a_thin_equivalent",
+      "test_a_compounded_card_inside_an_excluded_folder_is_still_moved",
+      "test_a_card_entirely_inside_an_excluded_folder_is_moved",
+      "test_a_card_with_most_files_excluded_is_moved_unless_used_or_managed",
+      "test_the_root_prefix_never_excludes_everything",
+      "test_surplus_duplicates_collapse_to_the_earliest_card",
+      "test_surplus_keeper_prefers_usage_then_name_match_then_age_then_id",
+      "test_surplus_ties_fall_to_earliest_created_then_id",
+      "test_name_match_score_is_a_share_of_card_words_found_in_paths",
+      "test_surplus_detail_says_when_the_keeper_is_also_moved",
+      "test_a_distinct_file_set_is_not_surplus",
+      "test_a_single_data_file_card_is_thin_but_a_markdown_one_is_not",
+      "test_dry_run_touches_nothing"
+     ],
+     "sha256": "e96ce57531598201ef943b56dfb58ba22a19f5362b93aee0ab6a2472cfc0f4bc",
+     "last_used_ts": 1793785218.1928983,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Card Store Quarantine Cleanup"
+  },
+  {
+   "id": "inbound-mail-context",
+   "keywords": [
+    "inbound mail",
+    "mailbox",
+    "email",
+    "bulk mail",
+    "sender classification",
+    "context source",
+    "real people",
+    "inbox"
+   ],
+   "summary": "Tests treating mail arriving at a mailbox as a context source while distinguishing real people from bulk senders.",
+   "description": "Mail arriving at a mailbox is a context source too, once real people are told apart from bulk.. Key: _now, _msg, FakeMailClient -- Stands in for ``adapters.inbound_mail.InboundMail``: no network, canned messages., FakeQuestClient -- Stands in for ``QuestClient``: records every relayed note, never touches the network., _card, _engine, test_is_bulk_mail_reads_headers_only, test_bulk_mail_is_dropped_before_a_context_update_even_exists -- No admission judge is wired at all here -- proof that filtering the newsletter out cannot",
+   "files": [
+    {
+     "path": "tests/test_inbound_mail.py",
+     "symbols": [
+      "_now",
+      "_msg",
+      "FakeMailClient",
+      "FakeQuestClient",
+      "_card",
+      "_engine",
+      "test_is_bulk_mail_reads_headers_only",
+      "test_bulk_mail_is_dropped_before_a_context_update_even_exists",
+      "test_a_mailbox_with_only_bulk_mail_reports_why_nothing_arrived",
+      "test_the_admission_judge_admits_a_real_person_and_drops_the_rest",
+      "test_a_judge_that_returns_none_keeps_everything",
+      "test_a_judge_that_raises_keeps_everything",
+      "test_no_admission_judge_configured_also_keeps_everything",
+      "test_inbound_mail_is_never_put_to_the_relevance_judge",
+      "test_an_admitted_item_is_relayed_onto_the_quest_under_the_senders_own_address",
+      "test_relaying_the_same_item_twice_posts_only_one_note",
+      "test_relaying_persists_across_a_restart",
+      "test_relaying_never_happens_at_collection_time_only_at_mark_seen",
+      "test_a_relay_failure_is_swallowed_and_the_item_is_retried_next_time",
+      "test_the_watermark_advances_after_delivery",
+      "test_collecting_alone_never_advances_the_watermark",
+      "test_refuses_as_inbound_mailbox_catches_a_bare_reply_address",
+      "test_refuses_as_inbound_mailbox_catches_a_tagged_reply_address",
+      "test_refuses_as_inbound_mailbox_allows_an_ordinary_mailbox",
+      "test_a_card_pointed_at_the_reply_mailbox_is_a_reported_error_not_a_silent_ingest",
+      "test_the_reply_mailbox_refusal_is_checked_before_the_client_is_ever_consulted",
+      "test_inbound_mail_is_advertised_by_the_default_engine"
+     ],
+     "sha256": "4015172e35466e7539b13f0e825cf9e8966398b5a4a9a492685015f23185b455",
+     "last_used_ts": 1793785218.29502,
+     "use_count": 1
+    }
+   ],
+   "weight": 0.5,
+   "name": "Inbound Mail Context Source"
+  }
+ ]
+}

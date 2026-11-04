@@ -145,3 +145,66 @@ def test_llm_topic_cards_groups_files_and_merges_duplicates(tmp_path):
     cards = arms.LlmTopicCards(provider).build(str(tmp_path), ["a.py", "b.py", "c.py"], {})
     assert len(cards) == 1 and [e["path"] for e in cards[0]["files"]] == ["a.py", "b.py"]
     assert cards[0]["keywords"] == ["alpha", "beta"] and len(provider.prompts) == 2
+
+
+DATASET = ROOT / "evaluation" / "cards_from_files" / "datasets" / "llm_topic_cards_75f9da90.json"
+
+
+def test_the_persisted_build_loads_with_unique_ids_and_corpus_files(corpus):
+    from hubofhubs.recall import cards_dataset
+    document = cards_dataset.load_dataset(DATASET)
+    assert document["recorded_build_id"] == "75f9da90" and len(document["cards"]) == 103
+    assert document["built"]["model_calls"] == 52
+    score.check_cards(document["cards"], corpus.files)   # unique ids and every file in the pinned corpus
+    cards_dataset.check_pin(document, pinned.read_pin(), corpus.files)
+    assert not any("origin" in card for card in document["cards"]) and "/home/" not in json.dumps(document)
+
+
+def test_a_changed_dataset_is_refused(tmp_path):
+    from hubofhubs.recall import cards_dataset
+    document = json.loads(DATASET.read_text())
+    document["cards"][0]["summary"] += " edited"
+    path = tmp_path / "edited.json"
+    path.write_text(json.dumps(document))
+    with pytest.raises(cards_dataset.DatasetError, match="digest"):
+        cards_dataset.load_dataset(path)
+    document = json.loads(DATASET.read_text())
+    document["cards"][1]["id"] = document["cards"][0]["id"]
+    document["cards_sha256"] = cards_dataset.cards_digest(document["cards"])
+    path.write_text(json.dumps(document))
+    with pytest.raises(cards_dataset.DatasetError, match="same id"):
+        cards_dataset.load_dataset(path)
+
+
+def test_a_replay_on_another_pin_or_corpus_is_refused():
+    from hubofhubs.recall import cards_dataset
+    pin = pinned.read_pin()
+    with pytest.raises(cards_dataset.DatasetError, match="another corpus"):
+        arms.TopicCardsReplay(pin=dict(pin, qar_commit="deadbeef"))
+    with pytest.raises(cards_dataset.DatasetError, match="another corpus"):
+        arms.FilePlusTopicCards(pin=dict(pin, cases_sha256="0" * 64))
+    with pytest.raises(cards_dataset.DatasetError, match="files differ"):
+        arms.TopicCardsReplay(pin=pin).build("", ["a.py"], {})
+
+
+@pytest.mark.parametrize("arm", [arms.TopicCardsReplay, arms.FilePlusTopicCards])
+def test_the_replay_arms_are_built_without_a_model(arm):
+    import inspect
+    assert arm.REQUIRES == () and "provider" not in inspect.signature(arm).parameters
+    assert score.needs(arm, None) == dict(pin=pinned.read_pin())
+
+
+def test_the_replay_and_the_combination_reproduce_the_measured_results(corpus):
+    replay = run_all(arms.TopicCardsReplay(pin=pinned.read_pin()).build, corpus)
+    both = run_all(arms.FilePlusTopicCards(pin=pinned.read_pin()).build, corpus)
+    assert passes(replay) == 5 and passes(both) == 40
+    assert sum(r["top1"] for r in both) == 35 and sum(r["top10"] for r in both) == 47 and sum(r["anywhere"] for r in both) == 50
+    cards = arms.FilePlusTopicCards(pin=pinned.read_pin()).build(str(corpus.root), corpus.files, {})
+    assert len(cards) == 892 + 103 and sum(c["id"].startswith("topic-") for c in cards) == 103
+
+
+def test_a_replay_is_reported_beside_the_build_never_as_its_cost(corpus):
+    fn = score.adapt(arms.TopicCardsReplay, None)
+    first = score.score_case(fn, corpus.cases[0])
+    assert first["build"]["cost"] == 0.0 and first["build"]["replayed"]["calls"] == 52
+    assert "from build 75f9da90" in score.aggregate([first])["replayed"]
