@@ -352,6 +352,13 @@ def _flatten_messages(messages: List[Dict[str, Any]]) -> str:
     return "\n\n".join(parts)
 
 
+OFFLINE_VARIABLE = "ESOI_OFFLINE"
+
+
+class OfflineRefusal(RuntimeError):
+    """Raised instead of starting any model process while the provider's environment says ``ESOI_OFFLINE=1``."""
+
+
 class UsageLimitError(RuntimeError):
     """A Claude call was refused because the subscription usage limit is reached. A RuntimeError on purpose, so a caller that
     catches the provider's RuntimeError keeps working; ``.limit`` is the limit object. A consumer's ``usage_limits`` collaborator
@@ -472,6 +479,14 @@ class ClaudeCliProvider(ModelProviderBase):
             env["PATH"] = cur
         return env
 
+    def refuse_when_offline(self) -> None:
+        """Start no process, not even ``claude --help`` or a fallback binary, when the environment mapping this provider was given
+        (``environment``, a mapping or a callable) sets ``ESOI_OFFLINE=1``. A provider with no ``environment`` inherits the process's
+        and reads none here, so an offline run that must stop it passes ``environment=`` (esoi's harness also blocks the process)."""
+        given = value_of(self.environment)
+        if given is not None and str(given.get(OFFLINE_VARIABLE, "")).strip() == "1":
+            raise OfflineRefusal(f"{OFFLINE_VARIABLE}=1 is set in this provider's environment, so no model process is started; unset {OFFLINE_VARIABLE} to run a model call")
+
     def _resolve_binary(self) -> str:
         """The worker binary to spawn, re-resolved on EVERY call.
 
@@ -518,6 +533,7 @@ class ClaudeCliProvider(ModelProviderBase):
         The prompt is piped via stdin (not passed as a CLI argument) so large prompts do not
         hit the OS ARG_MAX limit.
         """
+        self.refuse_when_offline()
         # While the lane knows Claude Code is at its usage limit, do not spawn a CLI that can only
         # be refused: say so straight away, as the same typed error a live refusal raises. The
         # note clears itself at the reset (see the usage-limit collaborator's active_limit).
@@ -677,7 +693,7 @@ class ClaudeCliProvider(ModelProviderBase):
             extra = ({} if self.plan_thinking_tokens is None
                      else {"thinking_tokens": self.plan_thinking_tokens})
             text = self._invoke(prompt + instruction, model=model, **extra)
-        except (UsageLimitError, getattr(self.usage_limits, "UsageLimitError", UsageLimitError)):
+        except (OfflineRefusal, UsageLimitError, getattr(self.usage_limits, "UsageLimitError", UsageLimitError)):
             # Not a hiccup: nothing further in this turn can run, so let the caller stop and wait
             # rather than planning on an empty default decision.
             raise

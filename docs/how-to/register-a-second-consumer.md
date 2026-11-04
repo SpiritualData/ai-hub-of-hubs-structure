@@ -82,6 +82,6 @@ the variables used, never their values. `model-call` has the arm `via_call_a_mod
 `call-a-model` arm you choose, so `arms={"call-a-model": "anthropic"}` plus `ANTHROPIC_API_KEY` in `environ` gives both.
 
 `call-a-model` defaults to `claude_cli`: it runs `claude -p` (Claude Code) on your subscription login, with no API key, and needs only
-the `claude` executable on PATH. Every other vendor stays selectable with one argument: `hubofhubs.assemble(arms={"call-a-model": "gemini"})`
+the `claude` executable on PATH. It also looks in `~/.local/bin/claude` and `~/.claude/local/claude` when PATH has none. When the `environment` the provider is given sets `ESOI_OFFLINE=1`, it raises `OfflineRefusal` (naming the variable) before it resolves any binary or starts any process, `claude --help` included; the provider reads no process environment, so a consumer that builds it with no `environment` relies on esoi's harness, which blocks the process itself in an offline run. Every other vendor stays selectable with one argument: `hubofhubs.assemble(arms={"call-a-model": "gemini"})`
 (or `anthropic`, `openai`, `deepseek`), and `arms={"call-a-model": "multi_provider"}` with `options={"call-a-model": {"primary": ...}}` routes
 among several. A consumer's own default (a `Binding` selection) sits between the hub's and a per-call `arms=`.

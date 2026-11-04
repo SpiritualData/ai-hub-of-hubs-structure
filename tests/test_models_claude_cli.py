@@ -539,3 +539,29 @@ def test_a_usage_limit_is_a_typed_error_from_the_collaborator():
 def test_the_arm_is_declared_and_needs_only_the_claude_executable():
     from hubofhubs.arm_needs import CLAUDE_BINARY
     assert ClaudeCliProvider.REQUIRES == (CLAUDE_BINARY,)
+
+
+def test_an_offline_environment_refuses_to_start_any_model_process(tmp_path, monkeypatch):
+    """ESOI_OFFLINE=1 in the provider's environment: no process starts, not the fallback ``~/.local/bin/claude`` of a fake home either.
+    The shim only writes a log line, so a log means the provider spawned something; no real call is possible here."""
+    home, log = tmp_path / "home", tmp_path / "shim.log"
+    (home / ".local" / "bin").mkdir(parents=True)
+    shim = home / ".local" / "bin" / "claude"
+    shim.write_text(f'#!/bin/sh\necho called >> "{log}"\necho \'{{"result": "x"}}\'\n')
+    shim.chmod(0o755)
+    monkeypatch.setenv("HOME", str(home))
+    (tmp_path / "empty").mkdir()
+    only_here = str(tmp_path / "empty")     # no real claude can be found on this PATH, only the shim of the fake home
+    monkeypatch.setenv("PATH", only_here)
+    ccp._supported_flags.cache_clear()
+    provider = ClaudeCliProvider(environment={"ESOI_OFFLINE": "1", "PATH": only_here})
+    with pytest.raises(ccp.OfflineRefusal, match="ESOI_OFFLINE"):
+        provider.answer([{"role": "user", "content": "hi"}], model="haiku")
+    with pytest.raises(ccp.OfflineRefusal):
+        provider.plan("hi", model="haiku", tool_schema={"input_schema": {"type": "object"}})
+    assert not log.exists()
+    # the same provider with the flag unset does reach the shim, which proves the refusal is what stopped it
+    ccp._supported_flags.cache_clear()
+    ClaudeCliProvider(environment={"PATH": only_here}).answer([{"role": "user", "content": "hi"}], model="haiku")
+    assert log.exists()
+    ccp._supported_flags.cache_clear()
