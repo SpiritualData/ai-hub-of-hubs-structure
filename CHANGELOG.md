@@ -6,7 +6,7 @@
 - **Composition arms in code** for take-in-the-world, remember-and-recall, reason-and-answer, keep-it-generic and assemble-the-whole, plus implementations for stay-current, connect-any-integration and think-critically (links held to their evidence).
 - **hold-the-intents is dissolved**: its research area now sits under reason-and-answer.
 - **Composites build a member on first use**: the whole-hub question needs only the search key, and `remember-and-recall` runs offline; the model, the risk watch, the acting seat and the audit are built when first used.
-- **Install pins esoi to tag v0.3.0**; the core and the extras are pinned.
+- **Install pins the extras; esoi is installed from `@main` with the same direct-URL string the consumers use** (a tag pin here would make pip fail on two different direct URLs for one package, as on 2026-10-19). Tags and a version range come in the coordinated release window, in every consumer at once.
 - New pages: glossary, the mind map, compared, and `CONTRIBUTING.md`.
 
 ## Unreleased
