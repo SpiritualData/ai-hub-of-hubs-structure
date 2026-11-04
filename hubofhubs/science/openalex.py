@@ -38,6 +38,7 @@ from urllib.parse import urlparse
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Union
 
 from esoi import implementation
+from esoi.entry import Offline
 
 from ..ports.retrieval import Observation
 from ..ports.scholarly import ScholarlyError, Work, WorksResult
@@ -302,6 +303,8 @@ class OpenAlexWorks:
                 self.limiter.record()
         try:
             response = self.transport(url, params=sent, headers=headers, timeout=self.timeout)
+        except Offline:
+            raise     # the offline guard is not an answer: the entry check must see the refusal
         except TransportError as exc:
             return WorksResult(query=query, source=SERVICE, error=ScholarlyError(exc.kind, f"{SERVICE}: {exc}"))
         except Exception as exc:  # noqa: BLE001  a custom transport may raise anything

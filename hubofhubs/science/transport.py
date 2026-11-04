@@ -8,9 +8,23 @@ from __future__ import annotations
 
 from typing import Any, Callable, Mapping, Optional
 
+from esoi.entry import Offline
+
 from ..ports.scholarly import ScholarlyError
 
 Transport = Callable[..., Any]
+
+
+def guard_in(exc: BaseException) -> Optional[Offline]:
+    """The offline guard's refusal anywhere in ``exc``'s cause chain: a blocked network is not a network failure, so it is
+    re-raised instead of becoming a typed error that would read as an answer."""
+    seen = []
+    while exc is not None and exc not in seen:
+        if isinstance(exc, Offline):
+            return exc
+        seen.append(exc)
+        exc = exc.__cause__ or exc.__context__
+    return None
 
 
 class TransportError(Exception):
@@ -26,9 +40,12 @@ def default_transport(url: str, *, params: Mapping[str, Any], headers: Mapping[s
         raise TransportError("missing_dependency", "httpx is not installed (install the hubofhubs[science] extra)") from exc
     try:
         return httpx.get(url, params=dict(params), headers=dict(headers), timeout=timeout, follow_redirects=True)
-    except httpx.TimeoutException as exc:
-        raise TransportError("timeout", f"no answer within {timeout:g} seconds") from exc
     except httpx.HTTPError as exc:
+        blocked = guard_in(exc)
+        if blocked is not None:
+            raise blocked
+        if isinstance(exc, httpx.TimeoutException):
+            raise TransportError("timeout", f"no answer within {timeout:g} seconds") from exc
         raise TransportError("network", f"request failed: {type(exc).__name__}") from exc
 
 

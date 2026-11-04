@@ -17,6 +17,8 @@ from __future__ import annotations
 from typing import Any, Mapping, Optional
 from urllib.parse import quote
 
+from esoi.entry import Offline
+
 from ..ports.scholarly import ScholarlyError, Work, WorksResult
 from .openalex import doi_of, one_line, web_url
 from .transport import Transport, TransportError, default_transport, error_for_status
@@ -52,6 +54,8 @@ def lookup_doi(doi_or_url: str, *, mailto: str = "", transport: Optional[Transpo
     headers = {"Accept": "application/json", "User-Agent": "hubofhubs-science" + (f" (mailto:{mailto})" if mailto else "")}
     try:
         response = (transport or default_transport)(BASE_URL + quote(doi, safe="/"), params=params, headers=headers, timeout=timeout)
+    except Offline:
+        raise
     except TransportError as exc:
         return WorksResult(query=doi, source=SERVICE, error=ScholarlyError(exc.kind, f"{SERVICE}: {exc}"))
     except Exception as exc:  # noqa: BLE001

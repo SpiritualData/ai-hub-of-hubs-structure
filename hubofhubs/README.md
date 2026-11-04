@@ -36,7 +36,7 @@ Support claims with sources a reader can check, for anyone who asks an AI a fact
 - Entry call: `hubofhubs.run("know-the-world", 'meditation and attention')`
 - Selected implementation: `openalex_semantic`
 - Metric: Research question finds its paper
-- Implemented by: [`hubofhubs/science/__init__.py`](science/__init__.py), [`hubofhubs/science/citations.py`](science/citations.py), [`hubofhubs/science/crossref.py`](science/crossref.py), [`hubofhubs/science/openalex.py`](science/openalex.py), [`hubofhubs/science/openalex_keywords.py`](science/openalex_keywords.py), [`hubofhubs/science/openalex_semantic.py`](science/openalex_semantic.py), [`hubofhubs/science/openalex_semantic_and_web.py`](science/openalex_semantic_and_web.py), [`hubofhubs/science/transport.py`](science/transport.py) and 7 more
+- Implemented by: [`hubofhubs/science/__init__.py`](science/__init__.py), [`hubofhubs/science/citations.py`](science/citations.py), [`hubofhubs/science/crossref.py`](science/crossref.py), [`hubofhubs/science/openalex.py`](science/openalex.py), [`hubofhubs/science/openalex_keywords.py`](science/openalex_keywords.py), [`hubofhubs/science/openalex_semantic.py`](science/openalex_semantic.py), [`hubofhubs/science/openalex_semantic_and_web.py`](science/openalex_semantic_and_web.py), [`hubofhubs/science/transport.py`](science/transport.py) and 8 more
 
 ## act-in-the-world: the Body seat (`act-in-the-world`)
 
