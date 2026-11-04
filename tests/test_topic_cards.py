@@ -163,3 +163,24 @@ def test_the_iteration_how_to_matches_the_recorded_stages():
     assert re.search(r'paid_arms = \["cards_from_files/llm_topic_cards"\]', (ROOT / "esoi.toml").read_text())
     assert "cards_from_files --impl cochange_topic_cards" in rows["metric-cards-from-files"]["command"]
     assert "—" not in page   # no em dashes
+
+
+def test_the_saved_build_is_the_llm_arms_output_charged_with_what_it_cost(corpus, monkeypatch):
+    """With the environment switch the llm_topic_cards arm returns its persisted build, calls no model and is charged the build's cost."""
+    from esoi import harness
+    monkeypatch.setenv(score.SAVED_BUILD_ENVIRONMENT, "1")
+    meter = harness.CallMeter()
+    fn = score.adapt(file_arms.LlmTopicCards, meter)
+    first = score.score_case(fn, score.load_cases()[0])
+    assert (meter.calls, meter.tokens_in, meter.tokens_out, round(meter.cost_usd, 4)) == (52, 73009, 20651, 0.9967)
+    assert first["build"]["calls"] == 52 and first["build"]["saved"]["build"] == "75f9da90" and first["build"]["cards"] == 103
+    assert "scored from the saved build 75f9da90" in score.saved_note([first])
+    assert "saved" not in file_arms.TopicCardsReplay(pin=pinned.read_pin()).replayed()
+    monkeypatch.delenv(score.SAVED_BUILD_ENVIRONMENT)
+    assert "saved_build" not in score.needs(file_arms.LlmTopicCards, meter)
+
+
+def test_the_saved_build_is_refused_on_another_corpus(corpus):
+    from hubofhubs.recall import cards_dataset
+    with pytest.raises(cards_dataset.DatasetError):
+        file_arms.LlmTopicCards(provider=None, saved_build=True, pin=dict(pinned.read_pin(), qar_commit="deadbeef"))

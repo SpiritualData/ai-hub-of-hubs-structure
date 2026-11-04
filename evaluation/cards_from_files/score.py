@@ -89,7 +89,7 @@ def check_cards(cards, files) -> None:
                 raise ValueError(f"card {card['id']!r} names {path!r}, which is not a file of the corpus")
 
 
-def view_function(builder, meter, replayed=None):
+def view_function(builder, meter, replayed=None, saved=None):
     """``fn(kind, args)`` for a ``builder(root, files, existing) -> cards``: it builds on its first call, then answers each task's view.
     ``meter`` (None allowed) is read for the build's model calls, tokens and cost. ``replayed`` (None for a real build) names the
     recorded build a replaying builder returns (``build``, ``calls``, ``cost``); it is reported beside the build, never as this run's cost."""
@@ -111,6 +111,8 @@ def view_function(builder, meter, replayed=None):
                          cost=round(after[3] - before[3], 4), seconds=round(seconds, 1))
             if replayed:
                 build["replayed"] = dict(replayed)
+            if saved:
+                build["saved"] = dict(saved)
         picked = state["selector"].picked(args["task"])
         return dict(view=[path for card in picked for path in card], cards=picked, build=build, stored=state["stored"])
     return fn
@@ -118,25 +120,42 @@ def view_function(builder, meter, replayed=None):
 
 def adapt(implementation, meter):
     """The harness hands a declared arm's class: a builder that needs a model is given the meter-wrapped provider the hub resolves
-    for the ``call-a-model`` seat; one that needs nothing is simply built."""
+    for the ``call-a-model`` seat; one that needs nothing is simply built. An arm that returns a saved build of its own (``charged()``)
+    is charged that build's model calls, tokens and cost on the meter, so the balanced score carries what the build cost."""
     instance = implementation(**needs(implementation, meter))
     replayed = instance.replayed() if hasattr(instance, "replayed") else None
-    return view_function(instance.build, meter, replayed)
+    charge = instance.charged() if hasattr(instance, "charged") else None
+    builder = instance.build
+    if charge and meter is not None:
+        def builder(root, files, existing, build=instance.build):
+            cards = build(root, files, existing)
+            meter.calls += charge["calls"]
+            meter.tokens_in += charge["tokens_in"]
+            meter.tokens_out += charge["tokens_out"]
+            meter.cost_usd += charge["cost"]
+            return cards
+    return view_function(builder, meter, replayed, charge)
+
+
+SAVED_BUILD_ENVIRONMENT = "CARDS_FROM_FILES_SAVED_BUILD"   # set to 1: score an arm's persisted build instead of building
 
 
 def needs(implementation, meter):
     import inspect
-    parameters = inspect.signature(implementation).parameters
-    if "pin" in parameters:   # a replaying builder is told which corpus is in force and refuses another
-        return dict(pin=pinned.read_pin())
-    if "provider" not in parameters:
-        return {}
-    from esoi import runtime
-    from hubofhubs import seats  # noqa: F401  (declares the seats)
     import os
-    provider_class = runtime.resolve("call-a-model", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
-    provider = provider_class(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
-    return dict(provider=meter.wrap(provider, ("answer",)))
+    parameters = inspect.signature(implementation).parameters
+    found = {}
+    if "pin" in parameters:   # a replaying builder is told which corpus is in force and refuses another
+        found["pin"] = pinned.read_pin()
+    if "saved_build" in parameters and os.environ.get(SAVED_BUILD_ENVIRONMENT) == "1":
+        found["saved_build"] = True
+    if "provider" in parameters:
+        from esoi import runtime
+        from hubofhubs import seats  # noqa: F401  (declares the seats)
+        provider_class = runtime.resolve("call-a-model", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
+        provider = provider_class(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
+        found["provider"] = meter.wrap(provider, ("answer",))
+    return found
 
 
 def judge_file(got, case):
@@ -182,8 +201,16 @@ def aggregate(rows):
     files = [r for r in rows if r.get("kind", "file") == "file" and "top1" in r]
     if files:
         out.update(file_top1=sum(bool(r["top1"]) for r in files), file_top10=sum(bool(r["top10"]) for r in files))
+    out = dict(source=saved_note(rows), **out) if saved_note(rows) else out
     out.update(build_headline(rows))
     return out
+
+
+def saved_note(rows):
+    build = next((r["build"] for r in rows if r.get("build")), None)
+    if build and build.get("saved"):
+        return f"scored from the saved build {build['saved']['build']} (one stochastic build; replayed, no new model call)"
+    return ""
 
 
 def build_headline(rows):

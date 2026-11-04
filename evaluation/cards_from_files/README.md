@@ -70,6 +70,12 @@ kept, so the stored cards in their recovered order have id b5107a67, and that is
 75f9da90"; its own cost is zero. On the file-finding cases it scores what the paid build scored: `topic_cards_replay` 5 of 63 (the paid run's 5 of 63,
 reproduced exactly), `file_plus_topic_cards` 40 of 63, below the per-file floor's 43, so the topic cards do not help the floor here.
 
+The saved build is also `llm_topic_cards`'s own output for that build, so the arm scores it without a model call: with
+`CARDS_FROM_FILES_SAVED_BUILD=1` in the environment of the run, `llm_topic_cards` returns the persisted cards (refused on another
+corpus) and the run is charged the build's recorded model calls, tokens and cost, so the balanced score carries what the build cost.
+The row's details start with "scored from the saved build 75f9da90 (one stochastic build; replayed, no new model call)". The harness
+measures wall-clock seconds itself, so the build's recorded 278 seconds are in the details of the replay and not in the time term.
+
 `graphify_files` needs the `graphify` extra (`pip install "hubofhubs[graphify]"`), so it runs in an environment that has it:
 
     python3 -m esoi run cards_from_files --impl graphify_files --record

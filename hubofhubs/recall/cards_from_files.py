@@ -108,12 +108,25 @@ class LlmTopicCards:
     """Model-written topic cards: the files are cut into chunks, a model names the areas of each chunk, then writes topic cards for
     each area from a sample of its files; cards that cover mostly the same files are merged into one.
 
-    The model is a constructor need typed with the call-a-model seat (``hubofhubs.seats.ModelCalling``); every build spends calls."""
+    The model is a constructor need typed with the call-a-model seat (``hubofhubs.seats.ModelCalling``); every build spends calls.
+
+    With ``saved_build`` the arm returns the cards of the one persisted build (``datasets/replays``) instead of building, when the
+    corpus pin matches, and ``charged()`` gives the cost that build had, which the scoring run charges to itself. No model is called."""
     REQUIRES = ()
 
-    def __init__(self, provider: ModelCalling, model: str = ""):
+    def __init__(self, provider: ModelCalling, model: str = "", saved_build: bool = False, pin: Mapping[str, Any] | None = None):
         self.provider = provider
         self.model = model
+        self.saved = PersistedTopicCards(pin) if saved_build else None   # the persisted build of this arm; refused on another corpus
+
+    def charged(self) -> Dict[str, Any] | None:
+        """With ``saved_build``: the recorded build's own model calls, tokens, cost and seconds, which a run that scores the saved build
+        charges to itself (the build cost them once); None for a build that calls the model."""
+        if not self.saved:
+            return None
+        built = self.saved.document["built"]
+        return dict(build=self.saved.document["recorded_build_id"], calls=built["model_calls"], tokens_in=built["tokens_in"],
+                    tokens_out=built["tokens_out"], cost=built["cost_usd"], seconds=built["build_seconds"])
 
     def propose(self, root: Path, files: Sequence[str]) -> List[Dict[str, Any]]:
         """The model's topic cards for ``files``, each ``{id, name, keywords, summary, files}``, duplicates merged."""
@@ -127,6 +140,8 @@ class LlmTopicCards:
         return merge_duplicates(cards)
 
     def build(self, root: str, files: Sequence[str], existing: Mapping[str, Mapping[str, Any]]) -> List[dict]:
+        if self.saved:   # the saved build is this arm's own output for that build: scored without a new model call
+            return self.saved.topic_cards(files)
         base = Path(root)
         kept = [dict(card) for card in existing.values() if kept_card(card, base)]
         covered = {e["path"] for card in kept for e in card["files"]}
