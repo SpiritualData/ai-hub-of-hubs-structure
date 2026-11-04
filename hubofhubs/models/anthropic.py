@@ -44,7 +44,7 @@ def thinking_kwargs(create, enabled: bool = False) -> Dict[str, Any]:
 
 @implementation("call-a-model", "anthropic")
 class AnthropicProvider(ModelProviderBase):
-    REQUIRES = (needs.ANTHROPIC_API, needs.ANTHROPIC_SDK)
+    REQUIRES = (needs.ANTHROPIC_NETWORK, needs.ANTHROPIC_API, needs.ANTHROPIC_SDK)
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, max_answer_tokens: int = 2048,
                  max_plan_tokens: int = 800, thinking: bool = False,

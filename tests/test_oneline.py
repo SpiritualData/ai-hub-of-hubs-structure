@@ -117,17 +117,15 @@ def test_papers_run_the_scholarly_arm_on_a_recorded_response():
 
 def test_every_hub_id_answers_or_names_what_to_set():
     """The strict definition behind the README's one function: with no environment each id returns a value or raises Pending (ok,
-    pending-key or pending-install). One id is a known exception: know-the-world needs the network and esoi has no `network`
-    requirement kind yet, so run offline it is a `live-attempt`, never `ok` and never a pending outcome. When esoi gains the kind, declare
-    it on the arm and this test requires the strict set for every id."""
+    pending-key, pending-install or pending-network). Every arm that reaches a service declares `network(...)`, so none is a
+    `live-attempt`."""
     import subprocess
     root = Path(__file__).resolve().parent.parent
     done = subprocess.run([sys.executable, "-m", "esoi.entry", "--json", str(root)], capture_output=True, text=True)
     rows = json.loads(done.stdout.strip().splitlines()[-1])      # the check blocks the network and programs for its own process, so it runs in one
-    strict = ("ok", "pending-key", "pending-install")
-    off = [r for r in rows if r["outcome"] not in strict]
-    assert rows and [r["id"] for r in off] == ["know-the-world"] and off[0]["outcome"] == "live-attempt", off
-    assert not [r for r in rows if r["id"] == "know-the-world" and r["outcome"] == "ok"]
+    strict = ("ok", "pending-key", "pending-install", "pending-network")
+    assert rows and not [r for r in rows if r["outcome"] not in strict], [r for r in rows if r["outcome"] not in strict]
+    assert [r["outcome"] for r in rows if r["id"] == "know-the-world"] == ["pending-network"]
 
 
 def test_needs_lists_the_lines_for_any_id():
@@ -173,11 +171,13 @@ def test_live_grounded_run_and_model_alone():
     assert alone.answer and alone.note and alone.items == ()
 
 
-def test_the_readme_blocks_run_as_written():
+def test_the_readme_blocks_run_as_written(monkeypatch):
     """The first block pends on its key and the second runs offline as written: the README's one function, proven here."""
     import re
     from esoi import entry
     text = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
     blocks = [b for b in re.findall(r"```pycon\n(.*?)```", text, flags=re.S) if "hubofhubs.run(" in b]
+    for name in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY"):
+        monkeypatch.delenv(name, raising=False)      # the first block pends on its key; it must never make a live call from a developer's shell
     first, second = entry.run_block(blocks[0], guard=False), entry.run_block(blocks[1], guard=False)
     assert not first["problems"] and not second["problems"] and not second["pending"], (first, second)

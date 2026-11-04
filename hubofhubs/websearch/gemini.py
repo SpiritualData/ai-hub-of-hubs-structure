@@ -47,7 +47,7 @@ class GeminiGroundingBackend:
     The grounding API exposes no page date (a chunk has only ``uri``, ``title`` and ``domain``), so ``date`` is empty.
     ``instruction`` is added to the search prompt.
     """
-    REQUIRES = (needs.gemini_api("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY"), needs.GOOGLE_GENAI, needs.HTTPX, needs.FILELOCK)
+    REQUIRES = (needs.GEMINI_NETWORK, needs.gemini_api("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY"), needs.GOOGLE_GENAI, needs.HTTPX, needs.FILELOCK)
 
     name = "gemini-grounding"
 

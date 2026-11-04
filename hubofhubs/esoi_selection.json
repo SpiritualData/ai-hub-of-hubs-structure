@@ -134,8 +134,8 @@
  "know-the-world": {
   "default": "openalex_semantic",
   "evidence": {
-   "detail": "openalex_semantic leads openalex_semantic_and_web (openalex_semantic_and_web 0.327 against openalex_semantic 0.347; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.664, 21 of 150 cases disagree); openalex_semantic is better than web_research (two-sided exact McNemar test, Holm-adjusted p=4.08e-06, 52 of 150 cases disagree)",
-   "p": 4e-06,
+   "detail": "openalex_semantic leads openalex (openalex 0.05 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.019, 12 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic leads openalex_keywords (openalex_keywords 0.075 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.0234, 13 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic leads openalex_keywords_model (openalex_keywords_model 0.075 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.0234, 11 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic is better than openalex_semantic_and_web (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=6.2e-31, 150 of 150 cases disagree); openalex_semantic is better than web_research (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.12e-25, 150 of 150 cases disagree)",
+   "p": 0.0,
    "verdict": "WIN"
   },
   "modules": {
@@ -229,8 +229,8 @@
  "watch-for-risk": {
   "default": "consent_gate",
   "evidence": {
-   "detail": "consent_gate is better than none (two-sided exact McNemar test, Holm-adjusted p=2.29e-05, 18 of 36 cases disagree); consent_gate leads overseer (overseer 0.917 against consent_gate 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.5, 3 of 36 cases disagree); consent_gate leads two_stage (two_stage 0.944 against consent_gate 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.5, 2 of 36 cases disagree)",
-   "p": 2.3e-05,
+   "detail": "consent_gate is better than none (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000102, 31 of 60 cases disagree); consent_gate leads overseer (overseer 0.917 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.479, overseer passed 33 of 36, consent_gate 36 of 36); consent_gate leads two_stage (two_stage 0.944 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.493, two_stage passed 34 of 36, consent_gate 36 of 36)",
+   "p": 0.000102,
    "verdict": "WIN"
   },
   "modules": {

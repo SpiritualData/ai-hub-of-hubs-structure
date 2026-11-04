@@ -127,7 +127,7 @@ class ConfiguredJsonBackend:
         if cls.spec.get("key_env"):
             names = tuple(cls.spec["key_env"])      # option <- the variable names the description lists (esoi.assemble)
             declared = KEY_APIS.get(cls.spec.get("name"))
-            cls.REQUIRES = (declared or env(names[0], option="api_key", secret=True, also=names[1:]), needs.HTTPX)
+            cls.REQUIRES = (needs.WEB_SEARCH_NETWORK, declared or env(names[0], option="api_key", secret=True, also=names[1:]), needs.HTTPX)
 
     def __init__(self, api_key: str = "", http: HttpCallable = default_http) -> None:
         self.api_key = api_key
@@ -217,7 +217,7 @@ def load_file_specs(path: str) -> Dict[str, type]:
 @implementation("search-backend", "searxng")
 class SearxngBackend:
     """A self-hosted SearXNG instance. ``instruction`` is accepted and ignored (not model-backed)."""
-    REQUIRES = (needs.SEARXNG_URL, needs.SEARXNG_SERVICE, needs.HTTPX)
+    REQUIRES = (needs.SEARXNG_NETWORK, needs.SEARXNG_URL, needs.SEARXNG_SERVICE, needs.HTTPX)
     name = "searxng"
 
     def __init__(self, base_url: str = "", http: HttpCallable = default_http) -> None:

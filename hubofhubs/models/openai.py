@@ -20,7 +20,7 @@ class OpenAIProvider(ModelProviderBase):
     self-hosted one that takes no key. ``create_kwargs`` are extra keyword arguments for every completion; ``model_marker`` is the
     substring that keeps a listed model id; ``fallback_models`` is the list used when listing fails. ``keyless`` left unset means
     keyless exactly when a ``base_url`` is given."""
-    REQUIRES = (needs.OPENAI_API, needs.OPENAI_KEY, needs.OPENAI_BASE_URL, needs.OPENAI_SDK)     # a key, or an endpoint that takes none
+    REQUIRES = (needs.OPENAI_NETWORK, needs.OPENAI_API, needs.OPENAI_KEY, needs.OPENAI_BASE_URL, needs.OPENAI_SDK)     # a key, or an endpoint that takes none
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, base_url: Optional[str] = None,
                  keyless: Optional[bool] = None, create_kwargs: Optional[Dict[str, Any]] = None, model_marker: str = "gpt",
@@ -99,7 +99,7 @@ class OpenAIProvider(ModelProviderBase):
 @implementation("call-a-model", "deepseek")
 class DeepSeekProvider(OpenAIProvider):
     """DeepSeek's OpenAI-compatible API. Thinking is off by default (slower, and more output tokens when on)."""
-    REQUIRES = (needs.DEEPSEEK_API, needs.DEEPSEEK_BASE_URL, needs.OPENAI_SDK)     # the OpenAI SDK against DeepSeek's compatible endpoint
+    REQUIRES = (needs.DEEPSEEK_NETWORK, needs.DEEPSEEK_API, needs.DEEPSEEK_BASE_URL, needs.OPENAI_SDK)     # the OpenAI SDK against DeepSeek's compatible endpoint
 
     def __init__(self, *, api_key: Optional[str] = None, cache_seconds: float = 3600.0, base_url: Optional[str] = None,
                  thinking: bool = False, env_name: Optional[str] = None):

@@ -109,7 +109,7 @@ class WebResearchAdapter:
     wires in and calls directly from its read-spec handling (``{"web": "<query>"}`` and
     ``{"web_page": "<url>", "focus": "..."}``).
     """
-    REQUIRES = (needs.HTTPX, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the search; this reads the pages
+    REQUIRES = (needs.WEB_PAGES_NETWORK, needs.HTTPX, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the search; this reads the pages
 
     def __init__(
         self,

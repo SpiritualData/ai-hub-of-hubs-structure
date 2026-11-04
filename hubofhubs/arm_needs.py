@@ -93,6 +93,16 @@ TAVILY_API = api(
 SEARXNG_SERVICE = service("SearXNG", "SEARXNG_URL", health_path=None)
 SEARXNG_URL = env("SEARXNG_URL", option="base_url", note="a self-hosted SearXNG instance whose settings allow the json format (the arm requests format=json)")
 
+# Every arm that sends a request to a hosted service declares the network, so an offline run answers pending-network for it
+# and never tries a live call.
+GEMINI_NETWORK = network("generativelanguage.googleapis.com", note="Gemini calls and Google Search grounding go to Google")
+ANTHROPIC_NETWORK = network("api.anthropic.com", note="model calls go to Anthropic")
+OPENAI_NETWORK = network("api.openai.com", note="model calls go to OpenAI, or to the endpoint named by the base url")
+DEEPSEEK_NETWORK = network("api.deepseek.com", note="model calls go to DeepSeek")
+WEB_SEARCH_NETWORK = network("", note="the search API is called over the network")
+SEARXNG_NETWORK = network("", note="the SearXNG instance is reached over the network")
+WEB_PAGES_NETWORK = network("", note="pages are fetched from the web")
+
 # --- scholarly and DOI services ---------------------------------------------------------------------------------------------
 
 # Every scholarly arm reaches OpenAlex over the network, so an offline run answers pending-network for it and never tries a live call.
