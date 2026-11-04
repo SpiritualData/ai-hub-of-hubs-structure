@@ -33,4 +33,16 @@ PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi docs ch
 PYTHONPATH=../evolvable-structure/implementations/python python3 -m esoi requirements --package hubofhubs --coherence   # offline; also tests/test_requirements.py. --online needs wheels of hubofhubs and esoi (neither is on PyPI): build them in a throwaway venv under /tmp and set PIP_FIND_LINKS
 ```
 
+## Measuring
+
+A changed file only informs; it does not order a metric run. `esoi run --stale --plan` lists which recorded results no longer describe the
+code (the changed file and the component that owns it) and why each is or is not re-run, and `esoi check --strict` gives the same as advice
+that never fails. Run a metric when what it teaches is worth its cost: improve the arm first, rerun only failing cases, run the whole set
+when they pass, and re-record the selected arms when a decision or release depends on them (`esoi run --stale --for-decision`, or name an arm
+with `--include seat/arm`; `--all` is the old run-everything). No commit hook and no CI step runs metrics. A row is stale only when code the
+arm measures changed (esoi's `import_closure` rule: the files the arm's module imports, found by reading the source); `esoi stale --explain
+<seat>` shows which. An offline run refuses to start a model command (esoi's harness sets `ESOI_OFFLINE=1` and blocks `claude`, `codex` and
+`gemini` unless the arm declares `PAID = True` or is run with `--max-calls`), so the `claude_cli` fallback to `~/.local/bin/claude` cannot spend
+money in an offline run.
+
 Generic mechanics belong in esoi (`evolvable-structure`) and are edited only on the owner's own prompt, never from here.
