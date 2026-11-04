@@ -2,33 +2,33 @@ These are ESOI records rendered as a diagram (evolvable structure that optimizes
 
 # Solution diagram: The best parts for AI intelligence, assembled and proven
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and assemble-the-whole is the one call that holds it together. It answers a question through take-in-the-world and remember-and-recall, holds that answer to its sources through think-critically, asks a model at a measured tier through reason-and-answer, shows a task the pieces of a folder's files it needs, within a token budget or not at all, through retrieve-context, carries a goal out through act-in-the-world only after watch-for-risk lets the step pass, and checks that the hub stays generic through keep-it-generic. take-in-the-world brings outside material in by running a web search through search-backend and, for research questions, a paper lookup through know-the-world. remember-and-recall keeps cards in card-store, draws the cards a query needs by relevance through context-assembler, and fills the store from a folder's files through cards-from-files. cards-from-files groups a folder's files into topic cards by which files import each other, so it writes them without asking a model. reason-and-answer sends a question to the model that choose-a-model-tier measured best for the tier, through model-call, which is built on call-a-model. act-in-the-world makes each file edit with a single request through call-a-model, at the tier that choose-a-model-tier picks. keep-it-generic audits the hub for consumer wording and learns how stale its research is through stay-current. keep-it-generic also learns how much of the hub connects by configuration through connect-any-integration. stay-current lists the areas whose research is older than ninety days by reading their dates through read-registry-freshness. connect-any-integration reports the share of connections that need no code by scoring them through score-hub-connections.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The whole being is the one call that holds the mind together. A request enters through World in, which brings outside material in by running a web search and, for research questions, a paper lookup through Science. Subconscious, Intuition keeps what is known as cards in the card store, draws the cards a query needs by relevance through the context assembler, and fills the store from a folder's files through cards from files, which groups the files by which import each other and so writes cards without asking a model. The context retriever shows a task the pieces of a folder's files it needs, within a token budget or not at all, and feeds the context assembler. The Mind answers by sending the question to the model that the model tier chooser measured best for the tier, through the model call, which is built on the vendor model caller. Critical thinking then holds that answer to its sources, and the Overseer lets a step pass only when it is safe to take. The Body carries a goal out outside the model, making each file edit with a single request through the vendor model caller at the tier the chooser picks. Character checks that the hub stays generic: it audits for consumer wording, learns how stale the research is through Learning, which reads the dates through the research freshness reader, and learns how much of the hub connects by configuration through Hands, which reports the share of connections that need no code by scoring them through the connection scorer.
 
 An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
 
 ```mermaid
 flowchart LR
-    s0["take-in-the-world: the World seat<br/>take-in-the-world"]
-    s1["reason-and-answer: the Mind seat<br/>reason-and-answer"]
-    s2["choose-a-model-tier: pick the model for...<br/>choose-a-model-tier"]
-    s3["know-the-world: the Science seat<br/>know-the-world"]
-    s4["act-in-the-world: the Body seat<br/>act-in-the-world"]
-    s5["watch-for-risk: the Overseer seat<br/>watch-for-risk"]
-    s6["assemble-the-whole: the The whole being...<br/>assemble-the-whole"]
-    s7["stay-current: the Learning seat<br/>stay-current"]
-    s8["read-registry-freshness: how old is...<br/>read-registry-freshness"]
-    s9["keep-it-generic: the Character seat<br/>keep-it-generic"]
-    s10["connect-any-integration: the Hands seat<br/>connect-any-integration"]
-    s11["score-hub-connections: how much of an...<br/>score-hub-connections"]
-    s12["card-store: a place to keep and find...<br/>card-store"]
-    s13["think-critically: the Critical thinking...<br/>think-critically"]
-    s14["model-call: ask a model one question<br/>model-call"]
-    s15["call-a-model: ask a vendor's model to...<br/>call-a-model"]
-    s16["remember-and-recall: the Subconscious...<br/>remember-and-recall"]
-    s17["context-assembler: pick the context a...<br/>context-assembler"]
-    s18["cards-from-files: cards for a folder<br/>cards-from-files"]
-    s19["retrieve-context: pick the pieces of a...<br/>retrieve-context"]
-    s20["search-backend: run one web search<br/>search-backend"]
+    s0["World in<br/><i>take-in-the-world</i>"]
+    s1["Mind<br/><i>reason-and-answer</i>"]
+    s2["Model tier chooser<br/><i>choose-a-model-tier</i>"]
+    s3["Science<br/><i>know-the-world</i>"]
+    s4["Body<br/><i>act-in-the-world</i>"]
+    s5["Overseer<br/><i>watch-for-risk</i>"]
+    s6["The whole being<br/><i>assemble-the-whole</i>"]
+    s7["Learning<br/><i>stay-current</i>"]
+    s8["Research freshness reader<br/><i>read-registry-freshness</i>"]
+    s9["Character<br/><i>keep-it-generic</i>"]
+    s10["Hands<br/><i>connect-any-integration</i>"]
+    s11["Connection scorer<br/><i>score-hub-connections</i>"]
+    s12["Card store<br/><i>card-store</i>"]
+    s13["Critical thinking<br/><i>think-critically</i>"]
+    s14["Model call<br/><i>model-call</i>"]
+    s15["Vendor model caller<br/><i>call-a-model</i>"]
+    s16["Subconscious, Intuition<br/><i>remember-and-recall</i>"]
+    s17["Context assembler<br/><i>context-assembler</i>"]
+    s18["Cards from files<br/><i>cards-from-files</i>"]
+    s19["Context retriever<br/><i>retrieve-context</i>"]
+    s20["Web search<br/><i>search-backend</i>"]
     s0 -->|"Outside material for a task, from the search backends"| s6
     s1 -->|"The text a model answers to the prompt at that tier"| s6
     s2 -->|"A mapping from each tier to the chosen provider and model"| s1

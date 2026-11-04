@@ -30,12 +30,12 @@ TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render
 
 def seats():
     """``(seat id, part of the mind)`` for each mind seat in the records tree (``esoi.intents.read_tree``), in reading order. A mind seat is named
-    ``<id>: the <part> seat``; a seat with no researched area still appears, with 0."""
+    a solution in ``evidence_summary.MIND_SEATS``, whose name is the part; a seat with no researched area still appears, with 0."""
     out = []
     for row in read_tree(ROOT / "esoi", "solutions.csv"):
-        found = re.fullmatch(r"[a-z-]+: the (.+) seat", row["name"])
-        if found:
-            out.append((row["solution_id"], found.group(1)))
+        part = evidence_summary.mind_part(row)
+        if part:
+            out.append((row["solution_id"], part))
     return out
 
 

@@ -137,7 +137,7 @@ def claims(config: Config, registry: Registry, root: Path, today: Optional[datet
         fraction = policy.holdout
         seat = solutions.get(label["seat"], {})
         record: Row = {"component": component, "solution": sid, "area": label.get("area", ""), "apart": apart, "label": label, "rows": rows,
-                       "seat": seat.get("name", "").split(": the ")[-1].replace(" seat", "") if ": the " in seat.get("name", "") else "",
+                       "seat": mind_part(seat), "display": solutions.get(sid, {}).get("name", ""),
                        "does": solutions.get(sid, {}).get("purpose", ""), "selected": selected, "decisions": [], "leader": selected,
                        "deciding": deciding.get(component) == sid, "fraction": fraction, "stage": "", "pending": "",
                        "conformance": "(this repo)" in label["cases"] and len(rows) == 1 and not apart}
@@ -206,9 +206,9 @@ def checks_block(config: Config, registry: Registry, root: Path, today: Optional
             result = result_cell(r)
         stage = (r["stage"] or "no cascade") if r["deciding"] else "not the deciding check"
         if compact:
-            cells = [f"`{r['solution']}`, {r['seat']}", f"{check['check']} ({stage})", arm, rate, n, cost, seconds, result]
+            cells = [first_cell(r), f"{check['check']} ({stage})", arm, rate, n, cost, seconds, result]
         else:
-            cells = [f"`{r['solution'] or r['component']}`" + (f", {r['seat']}" if r["seat"] else ""), r["does"], check["check"],
+            cells = [first_cell(r), r["does"], check["check"],
                      check["cases"].replace("{n}", str(r["shown"].get("cases", ""))), stage, arm, rate, n, cost, seconds, result, r["research"]]
         lines.append("| " + " | ".join(evidence_table.cell(c) for c in cells) + " |")
     return "\n".join(lines) if len(lines) > 2 else "No check has a recorded run yet."
@@ -295,6 +295,24 @@ def arms_block(config: Config, registry: Registry, today: Optional[datetime.date
     return "\n".join(lines)
 
 
+def first_cell(row: Row) -> str:
+    """The first cell of a check row: the solution's display name, its part of the mind when that differs, then its id as the call handle."""
+    name = row.get("display") or ""
+    shown = ", ".join(x for x in (name, row["seat"] if row["seat"] != name else "") if x)
+    handle = f"`{row['solution'] or row['component']}`"
+    return f"{shown} ({handle})" if shown else handle
+
+
+#: The parts of the mind, in the order a request meets them. A solution with one of these ids is a mind seat, and its name is the part's name.
+MIND_SEATS = ("take-in-the-world", "remember-and-recall", "reason-and-answer", "know-the-world", "think-critically", "watch-for-risk",
+              "act-in-the-world", "stay-current", "connect-any-integration", "keep-it-generic", "assemble-the-whole")
+
+
+def mind_part(sol: Dict[str, str]) -> str:
+    """The part of the mind a solution is, which is its display name, or "" when it is not a mind seat."""
+    return sol.get("name", "") if sol.get("solution_id") in MIND_SEATS else ""
+
+
 def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
     """What is named but has no run: mind seats with no measured solution, and arms a metric names that have no recorded row."""
     history = leaderboard.all_results(config.results_path)
@@ -303,12 +321,12 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
     measured_seats = {x["seat"] for x in labels(root) if x["kind"] == "check" and x["key"] in history}
     lines = []
     for sol in registry.every_solution():
-        match = re.fullmatch(r"[a-z-]+: the (.+) seat", sol.get("name", ""))
-        if match and sol["solution_id"] not in measured_seats:
+        part = mind_part(sol)
+        if part and sol["solution_id"] not in measured_seats:
             why = reasons.get(sol["solution_id"], "no check is written yet")
-            lines.append(f"- **`{sol['solution_id']}`** ({match.group(1)}): not measured. {why}")
-        elif match and f"{sol['solution_id']}:rest" in reasons:
-            lines.append(f"- **`{sol['solution_id']}`** ({match.group(1)}): measured in part. {reasons[sol['solution_id'] + ':rest']}")
+            lines.append(f"- **{part}** (`{sol['solution_id']}`): not measured. {why}")
+        elif part and f"{sol['solution_id']}:rest" in reasons:
+            lines.append(f"- **{part}** (`{sol['solution_id']}`): measured in part. {reasons[sol['solution_id'] + ':rest']}")
     grouped: Dict[tuple, List[str]] = {}
     for sol in registry.solutions:
         for component, impl in harness_arms(config, sol.get("metric_command", "")):

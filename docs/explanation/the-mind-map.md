@@ -26,7 +26,7 @@ The table below is generated from the records.
 <!-- seats:start -->
 | Seat | Part of the mind | Areas | Built on now | Candidates researched | Oldest research |
 |---|---|---|---|---|---|
-| take-in-the-world | World | 7 | 1 | 36 | 2026-10-30 |
+| take-in-the-world | World in | 7 | 1 | 36 | 2026-10-30 |
 | reason-and-answer | Mind | 8 | 1 | 55 | 2026-10-30 |
 | know-the-world | Science | 10 | 2 | 73 | 2026-10-30 |
 | act-in-the-world | Body | 20 | 5 | 133 | 2026-10-30 |

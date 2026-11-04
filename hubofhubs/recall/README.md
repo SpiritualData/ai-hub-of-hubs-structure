@@ -2,16 +2,16 @@
 
 *ESOI records kept beside the code in `hubofhubs/recall`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-## remember-and-recall: the Subconscious, Intuition seat (`remember-and-recall`)
+## Subconscious, Intuition (`remember-and-recall`)
 
 Give an AI the context a task needs and nothing from another person's scope.
 
 - Entry call: `hubofhubs.run("remember-and-recall", 'rust release')`
 - Selected implementation: `card_recall`
-- Metric: remember-and-recall metric (draft)
+- Metric: Subconscious, Intuition measure (draft)
 - Implemented by: [`docs/reference/work-trace-event.schema.json`](../../docs/reference/work-trace-event.schema.json), [`hubofhubs/ports/__init__.py`](../ports/__init__.py), [`hubofhubs/ports/context.py`](../ports/context.py), [`hubofhubs/ports/control.py`](../ports/control.py), [`hubofhubs/ports/deep.py`](../ports/deep.py), [`hubofhubs/ports/events.py`](../ports/events.py), [`hubofhubs/ports/model.py`](../ports/model.py), [`hubofhubs/ports/retrieval.py`](../ports/retrieval.py) and 85 more
 
-## context-assembler: pick the context a task needs (`context-assembler`)
+## Context assembler (`context-assembler`)
 
 Find the passages that bear on a request, for any consumer that keeps knowledge to draw on.
 
@@ -20,7 +20,7 @@ Find the passages that bear on a request, for any consumer that keeps knowledge 
 - Metric: Relevant passage in the top five
 - Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/affinity_tags.py`](affinity_tags.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py) and 70 more
 
-## cards-from-files: cards for a folder (`cards-from-files`)
+## Cards from files (`cards-from-files`)
 
 Give any consumer cards for the knowledge it already keeps in files, so recall starts from what is there instead of an empty store.
 
@@ -35,36 +35,36 @@ An arrow runs from the solution that provides to the solution that builds on it;
 
 ```mermaid
 flowchart LR
-    s0["remember-and-recall: the Subconscious...<br/>remember-and-recall"]
-    s1["context-assembler: pick the context a...<br/>context-assembler"]
-    s2["cards-from-files: cards for a folder<br/>cards-from-files"]
+    s0["Subconscious, Intuition<br/><i>remember-and-recall</i>"]
+    s1["Context assembler<br/><i>context-assembler</i>"]
+    s2["Cards from files<br/><i>cards-from-files</i>"]
     s1 -->|"An assembled context view and the ids of the cards it drew..."| s0
     s2 -->|"Cards in the card-store record shape (grouping, summary..."| s0
 ```
 
 ## Implementations
 
-| Implementation | Name | Code | Selected |
+| Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| `context-assembler:composite` | Composite | [`hubofhubs/recall/composite_assembler.py`](composite_assembler.py) |  |
-| `context-assembler:bm25` | BM25 over file text | [`hubofhubs/recall/bm25_store.py`](bm25_store.py) |  |
-| `context-assembler:hybrid` | Hybrid fusion | [`hubofhubs/recall/hybrid_assembler.py`](hybrid_assembler.py) |  |
-| `context-assembler:vector` | Vector search | [`hubofhubs/recall/vector_assembler.py`](vector_assembler.py) |  |
-| `cards-from-files:llm_topic_cards` | Model-written topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
-| `cards-from-files:per_file_symbols` | One card per file | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
-| `cards-from-files:graphify_files` | Graphify file groups | [`hubofhubs/recall/cards_from_graphify.py`](cards_from_graphify.py) |  |
-| `remember-and-recall:card_recall` | Cards drawn by relevance from a store | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
-| `cards-from-files:file_plus_topic_cards` | File plus topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
-| `cards-from-files:topic_cards_replay` | Topic cards replay | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
-| `cards-from-files:cochange_topic_cards` | Cochange topic cards | [`hubofhubs/recall/cards_from_topics.py`](cards_from_topics.py) |  |
-| `cards-from-files:import_graph_topic_cards` | Import graph topic cards | [`hubofhubs/recall/cards_from_topics.py`](cards_from_topics.py) | selected |
-| `context-assembler:file_retrieval` | Files through retrieve-context | [`hubofhubs/recall/file_retrieval_assembler.py`](file_retrieval_assembler.py) |  |
+| Composite | `context-assembler:composite` | [`hubofhubs/recall/composite_assembler.py`](composite_assembler.py) |  |
+| BM25 over file text | `context-assembler:bm25` | [`hubofhubs/recall/bm25_store.py`](bm25_store.py) |  |
+| Hybrid fusion | `context-assembler:hybrid` | [`hubofhubs/recall/hybrid_assembler.py`](hybrid_assembler.py) |  |
+| Vector search | `context-assembler:vector` | [`hubofhubs/recall/vector_assembler.py`](vector_assembler.py) |  |
+| Model-written topic cards | `cards-from-files:llm_topic_cards` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| One card per file | `cards-from-files:per_file_symbols` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| Graphify file groups | `cards-from-files:graphify_files` | [`hubofhubs/recall/cards_from_graphify.py`](cards_from_graphify.py) |  |
+| Cards drawn by relevance from a store | `remember-and-recall:card_recall` | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
+| File plus topic cards | `cards-from-files:file_plus_topic_cards` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| Topic cards replay | `cards-from-files:topic_cards_replay` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| Cochange topic cards | `cards-from-files:cochange_topic_cards` | [`hubofhubs/recall/cards_from_topics.py`](cards_from_topics.py) |  |
+| Import graph topic cards | `cards-from-files:import_graph_topic_cards` | [`hubofhubs/recall/cards_from_topics.py`](cards_from_topics.py) | selected |
+| Files through the context retriever | `context-assembler:file_retrieval` | [`hubofhubs/recall/file_retrieval_assembler.py`](file_retrieval_assembler.py) |  |
 
 ## Metrics
 
-- `metric-remember-and-recall`, remember-and-recall metric (draft)
-- `metric-context-assembler`, Relevant passage in the top five: leader `bm25@analyzer=english`, 208 of 323 cases
-- `metric-cards-from-files`, Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size: leader `import_graph_topic_cards`, 112 of 252 cases
+- Subconscious, Intuition measure (draft) (`metric-remember-and-recall`)
+- Relevant passage in the top five (`metric-context-assembler`): leader `bm25@analyzer=english`, 208 of 323 cases
+- Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): leader `import_graph_topic_cards`, 112 of 252 cases
 
 ## Problems
 
@@ -72,7 +72,7 @@ flowchart LR
 
 ## Ideals
 
-- `hideal-cards-proportionate-and-current`: A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
+- Proportionate, current cards (`hideal-cards-proportionate-and-current`): A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
 
 ## Where to go next
 

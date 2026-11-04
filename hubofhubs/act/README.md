@@ -4,10 +4,10 @@
 
 ## Implementations
 
-| Implementation | Name | Code | Selected |
+| Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| `act-in-the-world:fast_edit` | One-call file edit | [`hubofhubs/act/fast_edit.py`](fast_edit.py) | selected |
-| `act-in-the-world:mcp_operations` | One-call MCP write | [`hubofhubs/act/mcp_operations.py`](mcp_operations.py) |  |
+| One-call file edit | `act-in-the-world:fast_edit` | [`hubofhubs/act/fast_edit.py`](fast_edit.py) | selected |
+| One-call MCP write | `act-in-the-world:mcp_operations` | [`hubofhubs/act/mcp_operations.py`](mcp_operations.py) |  |
 
 ## Where to go next
 

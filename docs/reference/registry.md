@@ -9,7 +9,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 [the weekly refresh](../how-to/refresh-the-registry.md); how the files join is in [connect a hub](../how-to/connect-a-hub.md).
 
 <!-- registry:start -->
-### take-in-the-world (World)
+### take-in-the-world (World in)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|

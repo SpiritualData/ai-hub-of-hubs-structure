@@ -1,8 +1,8 @@
-# search-backend: run one web search
+# Web search
 
 *ESOI records kept beside the code in `hubofhubs/websearch`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-## search-backend: run one web search (`search-backend`)
+## Web search (`search-backend`)
 
 Run a web search through any service, for any consumer that needs sources.
 
@@ -13,19 +13,19 @@ Run a web search through any service, for any consumer that needs sources.
 
 ## Implementations
 
-| Implementation | Name | Code | Selected |
+| Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| `search-backend:brave` | Brave Search API | [`hubofhubs/websearch/backends.py`](backends.py) |  |
-| `search-backend:gemini` | Gemini grounding | [`hubofhubs/websearch/gemini.py`](gemini.py) | selected |
-| `search-backend:provider` | Provider-native search | [`hubofhubs/websearch/backends.py`](backends.py) |  |
-| `search-backend:searxng` | SearXNG | [`hubofhubs/websearch/backends.py`](backends.py) |  |
-| `search-backend:serper` | Serper | [`hubofhubs/websearch/backends.py`](backends.py) |  |
-| `search-backend:tavily` | Tavily | [`hubofhubs/websearch/backends.py`](backends.py) |  |
-| `know-the-world:web_research` | Web research | [`hubofhubs/websearch/research.py`](research.py) |  |
+| Brave Search API | `search-backend:brave` | [`hubofhubs/websearch/backends.py`](backends.py) |  |
+| Gemini grounding | `search-backend:gemini` | [`hubofhubs/websearch/gemini.py`](gemini.py) | selected |
+| Provider-native search | `search-backend:provider` | [`hubofhubs/websearch/backends.py`](backends.py) |  |
+| SearXNG | `search-backend:searxng` | [`hubofhubs/websearch/backends.py`](backends.py) |  |
+| Serper | `search-backend:serper` | [`hubofhubs/websearch/backends.py`](backends.py) |  |
+| Tavily | `search-backend:tavily` | [`hubofhubs/websearch/backends.py`](backends.py) |  |
+| Web research | `know-the-world:web_research` | [`hubofhubs/websearch/research.py`](research.py) |  |
 
 ## Metrics
 
-- `metric-search-backend`, Search finds the source: leader `gemini`, 32 of 40 cases
+- Search finds the source (`metric-search-backend`): leader `gemini`, 32 of 40 cases
 
 ## Where to go next
 
