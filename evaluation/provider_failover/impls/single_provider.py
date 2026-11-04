@@ -1,4 +1,5 @@
-"""BASELINE: the primary provider alone, no router. What a consumer wired to one vendor gets today."""
+"""The primary provider alone, no router: what a consumer wired to one vendor gets today."""
+ALTERNATIVE = True   # a diagnostic bound, ranked on the same number as every arm and never excluded by a mark
 from provider_failover.score import ask, world
 
 

@@ -46,18 +46,18 @@ Each id is reached through a declared interface. The call builds the implementat
 Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/assemble-and-run-your-first-seat.md).
 
 <!-- headline:start -->
-**41 alternatives measured across 8 areas, from 448 researched candidates.**
+**47 alternatives measured across 8 areas, from 448 researched candidates.**
 
 | Area | Alternatives measured | Which |
 |---|---|---|
 | RAG retrieval | 6 | `bm25`, `bm25@analyzer=english`, `composite`, `hybrid`, `hybrid@vector_weight=1.0`, `vector` |
-| LLM routing and failover | 1 | `multi_provider` |
+| LLM routing and failover | 2 | `multi_provider`, `single_provider` |
 | LLMs (model quality and cost) | 13 | `claude_cli`, `claude_haiku`, `claude_opus`, `claude_sonnet`, `deepseek`, `deepseek_flash`, `deepseek_v4_pro`, `gemini`, `gemini_2_5_flash`, `gemini_2_5_flash_lite`, `gpt_5_mini`, `gpt_5_nano`, `openai` |
 | Web search APIs | 2 | `gemini`, `provider` |
 | Scholarly search | 6 | `openalex`, `openalex_keywords`, `openalex_keywords_model`, `openalex_semantic`, `openalex_semantic_and_web`, `web_research` |
-| Coding agents | 3 | `fast_edit`, `stream_json_goal_runner`, `subprocess_goal_runner` |
+| Coding agents | 4 | `fast_edit`, `none`, `stream_json_goal_runner`, `subprocess_goal_runner` |
 | Guardrails and oversight | 4 | `consent_gate`, `none`, `overseer`, `two_stage` |
-| Card building | 6 | `cochange_topic_cards`, `file_plus_topic_cards`, `graphify_files`, `import_graph_topic_cards`, `llm_topic_cards`, `topic_cards_replay` |
+| Card building | 10 | `cochange_topic_cards`, `file_plus_topic_cards`, `graphify_files`, `import_graph_topic_cards`, `llm_topic_cards`, `one_card`, `one_card_per_folder`, `per_file_symbols`, `topic_cards_replay`, `two_cards` |
 
 Of 7 seats with rival arms on the same cases, 7 hold the arm with the highest result on all cases at the deciding stage. The claims are in-sample (the same cases chose the arm and report it): 0 of 7 selected arms are significantly ahead of every rival, two-sided. Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors (such as `none` and `single_provider`) and conformance tests, which have no rival ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative)).
 <!-- headline:end -->
