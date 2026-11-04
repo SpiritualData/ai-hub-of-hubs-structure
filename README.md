@@ -14,7 +14,7 @@ The latest stable release of Rust is version 1.99.1
 ```
 
 The defaults are chosen by recorded evals, and a lockfile pins them. When a better implementation wins, the selection changes and every
-caller written like this stays the same. The live answer cites its sources (https://blog.rust-lang.org/releases/latest/ and https://releases.rs/).
+caller written like this stays the same. The live answer (run on 2026-11-03, about 10 seconds, one free search call) cites its sources (https://blog.rust-lang.org/releases/latest/ and https://releases.rs/).
 
 Next:
 1. Call any id the same way, `hubofhubs.run("card-store", "rust release")`. `hubofhubs.needs("hub-of-hubs")` lists what your setup lacks.
