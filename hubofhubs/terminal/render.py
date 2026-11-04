@@ -17,7 +17,7 @@ from .blocks import Block, removed
 from .strings import say
 
 TRAIL_KEY = "trail"
-#: How many rows a group shows before "Show all" (the Quest app's rule).
+#: How many rows a group shows before "Show all" (the consumer app's rule).
 GROUP_ROWS = 5
 
 

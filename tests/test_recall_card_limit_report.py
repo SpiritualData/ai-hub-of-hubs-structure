@@ -42,8 +42,8 @@ def test_the_count_line_always_fits_one_screen_line_with_all_four_counts():
 
 def test_a_store_over_its_limit_says_so_and_the_consumers_word_for_managed_cards_is_used():
     b = Breakdown(limit=5, total=12, topic=12)
-    quest = voice(count_words=(("topic", "imported", "learned", "quest"), ("top", "imp", "lrn", "qst")))
-    assert report.count_line(b, quest) == "Store over limit 5 (12): 12 topic, 0 imported, 0 learned, 0 quest"
+    project = voice(count_words=(("topic", "imported", "learned", "project"), ("top", "imp", "lrn", "prj")))
+    assert report.count_line(b, project) == "Store over limit 5 (12): 12 topic, 0 imported, 0 learned, 0 project"
 
 
 def test_the_notice_is_the_count_line_then_the_consumers_how_to_change_line(tmp_path):

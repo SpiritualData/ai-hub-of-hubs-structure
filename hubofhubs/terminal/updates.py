@@ -1,7 +1,7 @@
 """Interim replies and the "Earlier updates (n)" fold.
 
 A turn is a group of messages with one ``turn_id``: interims (work continues), at most one ask, and the final reply. The rule is the
-Quest app's (``utils/replyUpdates.ts``): the LAST message of a group is open; every earlier one folds into one row, "Earlier
+consumer app's reply-updates rule: the LAST message of a group is open; every earlier one folds into one row, "Earlier
 updates (n)", with a one-line preview of the latest folded update. A group of one is unchanged. A replayed message (same turn and
 seq twice) shows once. Grouping reads stored fields only, never the words.
 """

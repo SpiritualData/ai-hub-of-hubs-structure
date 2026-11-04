@@ -317,7 +317,7 @@ class SubprocessGoalRunner(DeepRunner):
                               "replay_tokens": replay, "prompt_tokens": prompt_tokens}))
                 resume_session_id = None
         # ``working_dir`` is an OPTIONAL PER-CALL override of ``self.cfg.working_dir`` (e.g. a
-        # quest's synced folder, see quest_autopilot_design.md's execution-environment section).
+        # consumer's per-task working folder).
         # Used for THIS run's subprocess cwd AND the session monitor's search root; the consumer's
         # configured global working_dir is untouched (no shared-state mutation, so concurrent
         # tasks with different folders never race on it). Falls back to the configured default

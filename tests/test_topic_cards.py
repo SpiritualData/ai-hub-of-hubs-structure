@@ -53,7 +53,7 @@ def test_folder_chunks_keep_a_folder_together_and_never_leave_a_lone_tail():
 
 @pytest.mark.parametrize("subject,names", [
     ("Answer a request for the person's own updates directly before the plan", False),
-    ("Fix the loader in quest_ai_runner/core/orchestrator.py now", True),
+    ("Fix the loader in app_pkg/core/orchestrator.py now", True),
     ("Rename the loader in orchestrator.py everywhere it appears", True),
     ("Make the FileContextStore ignore stale cards in every answer", True),
     ("Call `assemble` once per turn for every conversation lane", True),

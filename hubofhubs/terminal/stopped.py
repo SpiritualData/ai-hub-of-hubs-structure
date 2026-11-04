@@ -7,7 +7,7 @@ from .blocks import Block
 from .strings import say
 
 STOP_REASONS = ("budget", "stalled", "attempt_cap", "tool_fault", "unverified")
-#: What "Continue" sends as the next message (the Quest app sends the same word).
+#: What "Continue" sends as the next message (a consumer app usually sends the same word).
 CONTINUE_MESSAGE_KEY = "questAIScreen.continueAnalysis.message"
 
 
@@ -20,7 +20,7 @@ def stopped_block(outcome: str, stop_reason: str, overrides=None, can_continue: 
     reason = stopped_reason(outcome, stop_reason)
     if reason is None:
         return None
-    # An unverified reply is complete, so no Continue (it would read as a failed turn); the Quest app does the same.
+    # An unverified reply is complete, so no Continue (it would read as a failed turn); a consumer app does the same.
     can_continue = can_continue and reason != "unverified"
     actions = (("continue", say("replyUpdates.stopped.continue", overrides)),) if can_continue else ()
     return Block(kind="stopped", text=say(f"replyUpdates.stopped.{reason}", overrides), state="stopped", fold_key="stopped",

@@ -37,17 +37,17 @@ def test_any_garbage_continues_the_current_card(raw):
 
 
 def test_a_dropped_namespace_prefix_is_repaired_when_it_is_unambiguous():
-    """A REAL failure, pinned. A model handed "quest:quest_rt_622dc4ed" verbatim emitted
-    "switch_to:quest_rt_622dc4ed", losing the namespace. The id was unknown, the fail-safe fired,
+    """A REAL failure, pinned. A model handed "project:project_rt_622dc4ed" verbatim emitted
+    "switch_to:project_rt_622dc4ed", losing the namespace. The id was unknown, the fail-safe fired,
     and the turn stayed on the wrong idea. An EXACT, unique match on the id's trailing segment is
     not a guess, so it is repaired. Two matches would be an ambiguity, and ambiguity continues."""
-    d = parse_card_thread("switch_to:quest_rt_622dc4ed", active_card_id="topic:general",
-                          known_ids=["topic:general", "quest:quest_rt_622dc4ed"])
-    assert (d.action, d.card_id, d.fell_back) == (ACTION_SWITCH, "quest:quest_rt_622dc4ed", False)
+    d = parse_card_thread("switch_to:project_rt_622dc4ed", active_card_id="topic:general",
+                          known_ids=["topic:general", "project:project_rt_622dc4ed"])
+    assert (d.action, d.card_id, d.fell_back) == (ACTION_SWITCH, "project:project_rt_622dc4ed", False)
 
     # Ambiguous (two known ids share the trailing segment): continue, never pick one.
     d = parse_card_thread("switch_to:plan", active_card_id="topic:general",
-                          known_ids=["topic:plan", "quest:plan"])
+                          known_ids=["topic:plan", "project:plan"])
     assert (d.action, d.card_id, d.fell_back) == (ACTION_CONTINUE, "topic:general", True)
 
 
@@ -103,12 +103,12 @@ def test_merge_candidates_uses_this_turns_retrieval_and_respects_allowed_types()
     ctx = CardThreadContext(
         active_card_id="topic:sleep", active_label="Sleep",
         candidates=[CardCandidate(id="topic:general", label="General chat")],
-        allowed_types=["topic", "quest"],
+        allowed_types=["topic", "project"],
     )
     card_metadata = [
         {"id": "topic:launch-plan", "title": "Launch plan", "card_type": "topic"},
-        {"id": "grant:team:1:quest_command.goal.create", "title": "grant", "card_type": "capability"},
-        {"id": "quest:abc", "title": "Marathon quest", "card_type": "quest", "lifecycle": "completed"},
+        {"id": "grant:team:1:project_command.goal.create", "title": "grant", "card_type": "capability"},
+        {"id": "project:abc", "title": "Marathon project", "card_type": "project", "lifecycle": "completed"},
         {"id": "docs:onboarding", "title": "Docs", "card_type": ""},   # untyped: not a topic
     ]
     cands = merge_candidates(ctx, card_metadata)
@@ -116,20 +116,20 @@ def test_merge_candidates_uses_this_turns_retrieval_and_respects_allowed_types()
 
     assert "topic:general" in ids          # consumer candidates always pass
     assert "topic:launch-plan" in ids      # keyword/vector arm surfaced it: the free prior
-    assert "quest:abc" in ids
-    assert "grant:team:1:quest_command.goal.create" not in ids   # not a topic
+    assert "project:abc" in ids
+    assert "grant:team:1:project_command.goal.create" not in ids   # not a topic
     assert "docs:onboarding" not in ids
     # The ACTIVE card is always on the table even when nothing retrieved it this turn ("make it
     # shorter" carries none of its keywords).
     assert "topic:sleep" in ids
-    assert next(c for c in cands if c.id == "quest:abc").status == "completed"
+    assert next(c for c in cands if c.id == "project:abc").status == "completed"
 
 
 def test_thread_hint_names_the_active_card_the_candidates_and_finished_work():
     ctx = CardThreadContext(active_card_id="topic:sleep", active_label="Sleep")
     hint = render_thread_hint(ctx, [
         CardCandidate(id="topic:launch-plan", label="Launch plan", why="matched this message"),
-        CardCandidate(id="quest:abc", label="Marathon quest", status="completed"),
+        CardCandidate(id="project:abc", label="Marathon project", status="completed"),
     ])
     assert "CURRENT TOPIC: [topic:sleep] Sleep" in hint
     assert "[topic:launch-plan] Launch plan" in hint

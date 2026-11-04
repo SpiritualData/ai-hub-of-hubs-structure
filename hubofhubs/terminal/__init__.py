@@ -2,7 +2,7 @@
 
 ``render(event, state)`` and ``settle(state)`` turn a run's progress events into ``Block`` values (see ``blocks.py``); a frontend
 (a Textual app, a line REPL, plain text, JSON lines) only draws them. Core is the standard library plus this package. The wording
-of the work summary and the asks is the Quest app's English (``strings.py``), kept equal by ``tests/test_terminal_drift.py``.
+of the work summary and the asks is generic English (``strings.py``); a consumer app registers its own words with ``strings.register_overrides`` and owns any drift check.
 Design and plan: ``docs/explanation/terminal-harness.md``.
 """
 from .asks import Ask, AskAnswer, ask_block, ask_from_event, parse_answer

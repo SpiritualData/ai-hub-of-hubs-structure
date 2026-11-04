@@ -1,9 +1,9 @@
-"""The English words of the terminal blocks, one flat table keyed like the Quest app's English pack.
+"""The default English words of the terminal blocks, one flat table keyed like a consumer app's English pack.
 
-The keys and values are copied from a consumer's English pack so a person sees the same sentence in the app and in a terminal.
-`tests/test_terminal_drift.py` compares this table with that pack (and the rules with its TypeScript source) when the sibling
-checkout is present and fails when they differ. Plural forms are `key_one` and `key_other`; `{name}` placeholders use the pack's
-`{{name}}` spelling and are filled by `say`. A profile can pass `overrides` to say the same thing in its own words.
+The defaults are generic. A consumer that wants its app's exact words calls `register_overrides` once at start-up with a table of
+the keys it changes (see below); a consumer that keeps its words in sync with an app pack owns that drift check. Plural forms are
+`key_one` and `key_other`; `{name}` placeholders use the pack's `{{name}}` spelling and are filled by `say`. A single call can also
+pass `overrides` to say the same thing in its own words; precedence is per-call overrides, then registered overrides, then `EN`.
 """
 from __future__ import annotations
 
@@ -35,8 +35,8 @@ EN: dict = {
     'workTrace.summary.recordsTeamTwo': "Used the team's records: {{a}} and {{b}}",
     'workTrace.summary.recordsTeamMore_one': 'Used the team\'s record "{{a}}" and {{count}} more record',
     'workTrace.summary.recordsTeamMore_other': 'Used the team\'s record "{{a}}" and {{count}} more records',
-    'workTrace.group.records': 'From your Quest',
-    'workTrace.group.recordsShared': "From your team's Quest",
+    'workTrace.group.records': 'From your records',
+    'workTrace.group.recordsShared': "From your team's records",
     'workTrace.group.sources': 'Sites',
     'workTrace.group.papers': 'Papers',
     'workTrace.removedLinks_one': 'Left out {{count}} link I could not verify',
@@ -59,7 +59,7 @@ EN: dict = {
     'workTrace.searchingWeb': 'Searching the web',
     'workTrace.checkingLinks': 'Checking the links',
     'workTrace.composingAnswer': 'Putting the answer together',
-    'workTrace.recordKind.quest': 'Quest',
+    'workTrace.recordKind.project': 'Project',
     'workTrace.recordKind.reflection': 'Reflection',
     'workTrace.recordKind.goal': 'Goal',
     'workTrace.recordKind.note': 'Note',
@@ -117,12 +117,33 @@ EN: dict = {
 }
 
 
+_REGISTERED: dict = {}
+
+
+def register_overrides(table: Mapping[str, str]) -> None:
+    """Merge a consumer's words over the defaults for every later `say`. Call it once at start-up; later calls add to or replace keys.
+
+    Any key may be given, including keys the hub does not default (a consumer's own record kinds such as ``workTrace.recordKind.<kind>``).
+    """
+    _REGISTERED.update(table)
+
+
+def clear_overrides() -> None:
+    """Forget every registered override (the defaults speak again). For tests."""
+    _REGISTERED.clear()
+
+
+def table() -> dict:
+    """The words in force now: the defaults with the registered overrides on top."""
+    return {**EN, **_REGISTERED}
+
+
 def say(key: str, overrides: Optional[Mapping[str, str]] = None, /, **params: Any) -> str:
     """The sentence for ``key`` with ``{{name}}`` filled from ``params``. A numeric ``count`` picks ``key_one`` or ``key_other``.
 
     ``overrides`` (a profile's own words) win over the table. A missing key raises ``KeyError``: a renderer never shows a raw key.
     """
-    table = dict(EN, **(overrides or {}))
+    table = {**EN, **_REGISTERED, **(overrides or {})}
     value = table.get(key)
     count = params.get("count")
     if value is None and isinstance(count, (int, float)):
@@ -135,4 +156,4 @@ def say(key: str, overrides: Optional[Mapping[str, str]] = None, /, **params: An
 
 
 def has(key: str) -> bool:
-    return key in EN or f"{key}_other" in EN
+    return key in EN or f"{key}_other" in EN or key in _REGISTERED or f"{key}_other" in _REGISTERED

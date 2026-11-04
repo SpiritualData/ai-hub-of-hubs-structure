@@ -1,8 +1,8 @@
 """The Trail: what the AI read, as a live line, a one-line summary and the groups behind it.
 
 Pure functions over work trace events (the wire dict of ``hubofhubs.ports.trace``, latest event per ``step_id``). The rules and the
-words match the Quest app's ``src/utils/workTrace.ts`` (``liveText``, ``summaryText``, ``expandedGroups``) and its English pack, and
-``tests/test_terminal_drift.py`` fails when they stop matching. Nothing here reads a model's wording: only typed fields.
+words follow the consumer app's work-trace rules (``liveText``, ``summaryText``, ``expandedGroups``) and English pack; a consumer
+that mirrors an app owns the drift check against it. Nothing here reads a model's wording: only typed fields.
 
 Rules kept (each is a test): the latest event for a step replaces the earlier one; a bad event is dropped, never raised; counts are
 honest (a kind with nothing read is omitted); a page a search only listed is never called read; a shared thread names only records

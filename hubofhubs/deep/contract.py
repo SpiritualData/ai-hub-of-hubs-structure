@@ -465,8 +465,8 @@ class GoalRunner:
             # DeepRunner signatures (no ``context_preamble`` kwarg) keep working unchanged.
             if context_preamble is not None and run_goal_accepts(self.runner, "context_preamble"):
                 kwargs["context_preamble"] = context_preamble
-            # Same opt-in discipline for a per-call working-directory override (e.g. a quest's
-            # synced folder for THIS run only, falling back to the runner's configured default).
+            # Same opt-in discipline for a per-call working-directory override (e.g. a consumer's
+            # per-task working folder for THIS run only, falling back to the runner's configured default).
             if working_dir is not None and run_goal_accepts(self.runner, "working_dir"):
                 kwargs["working_dir"] = working_dir
             # Continuing a turn-budget-exhausted attempt in the worker's own session, same rule.

@@ -11,7 +11,7 @@ Graceful fallback (no provider / parse fail): keep ALL cards + ALL items, delive
 
 ORDERING CONTRACT: the LLM's usefulness judgment (0 = most useful) survives as ``priority_rank``
 on each entry, but the RETURNED LIST is sorted by ``card_id`` (lexicographic), not by usefulness.
-This is the cache-economics fix (see ``HANDS_FREE_QUEST_AI_DESIGN.md`` section 6): provider prompt
+This is the cache-economics fix (prefix-cache stability): provider prompt
 caches are PREFIX caches, so a card set that re-orders every call defeats caching for the whole
 layer even when the same cards keep getting selected.
 """

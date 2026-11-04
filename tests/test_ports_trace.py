@@ -42,10 +42,10 @@ def test_url_inside_a_label_becomes_a_domain():
 
 
 def test_paths_are_dropped_and_labels_trimmed():
-    event = project(raw(kind="records", items=[{"ref": "/home/user/file", "label": "f"}, {"ref": "r1", "label": "x" * 200, "kind": "quest"},
+    event = project(raw(kind="records", items=[{"ref": "/home/user/file", "label": "f"}, {"ref": "r1", "label": "x" * 200, "kind": "project"},
                                               {"ref": "r2", "label": "line\nbreak"}]), trace_id="t1")
     assert len(event.items) == 2 and event.items[0]["ref"] == "r1"
-    assert len(event.items[0]["label"]) == trace.MAX_LABEL and event.items[0]["kind"] == "quest"
+    assert len(event.items[0]["label"]) == trace.MAX_LABEL and event.items[0]["kind"] == "project"
     assert "\n" not in event.items[1]["label"]
 
 
@@ -139,13 +139,13 @@ def test_a_sources_item_keeps_whether_the_page_was_read_or_only_found():
 
 
 def test_a_record_marked_visible_to_all_keeps_its_title_for_a_viewer_who_may_not_see_titles():
-    items = [{"ref": "team-quest", "label": "Team launch plan", "visible_to_all": True},
+    items = [{"ref": "team-plan", "label": "Team launch plan", "visible_to_all": True},
              {"ref": "mine", "label": "My private goal", "visible_to_all": False},
              {"ref": "mine2", "label": "My other private goal"},
              {"ref": "mine3", "label": "Sneaky private goal", "visible_to_all": "true"}]
     event = project(raw(kind="records", counts={"found": 4, "read": 4}, items=items), trace_id="t1", viewer_may_see_titles=False)
     blob = json.dumps(event.to_dict())
-    assert event.items == [{"ref": "team-quest", "label": "Team launch plan", "visible_to_all": True}]
+    assert event.items == [{"ref": "team-plan", "label": "Team launch plan", "visible_to_all": True}]
     assert event.counts == {"found": 4, "read": 4}
     assert "private" not in blob and validate(event.to_dict()) == []
     # The owner sees every title; the flag survives only where it is exactly true.
