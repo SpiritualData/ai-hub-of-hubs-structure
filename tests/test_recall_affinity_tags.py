@@ -55,3 +55,11 @@ def test_record_ranking_orders_by_affinity_after_the_floor():
     out = RecordContextAssembler(lambda m: rows, max_records=1, affinity_home_boost=2.0).assemble(
         "dana tuesday", meta={"affinity_tags": ["q:1"]})
     assert out.card_ids == ["home"]
+
+
+def test_a_hit_from_another_grouping_says_so_in_its_rendered_block():
+    store = FakeStore([hit("away", 0.9, affinity_tags=["p:2"]), hit("home", 0.9, affinity_tags=["p:1"]), hit("plain", 0.9)])
+    ctx = VectorContextAssembler(store, num_queries=0).assemble("words", meta={"affinity_tags": ["p:1"]})
+    sections = {m["id"]: m["rendered_section"] for m in ctx.card_metadata}
+    assert "from another grouping: p:2" in sections["away"]
+    assert "another grouping" not in sections["home"] + sections["plain"]

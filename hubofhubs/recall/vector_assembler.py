@@ -82,7 +82,7 @@ from hubofhubs.recall.card_content_render import (
 )
 from hubofhubs.recall.card_selection import keep_whole_task, memo_get, memo_put, selection_key
 from hubofhubs.recall.reference_resolver import build_resolver_registry
-from hubofhubs.recall.affinity_tags import affinity_factor
+from hubofhubs.recall.affinity_tags import affinity_factor, affinity_label
 from hubofhubs.recall.scope_tags import scope_tags_allow
 from hubofhubs.recall.vector_scopes import CARD_SEED_SCOPE
 from hubofhubs.critique.specificity import SpecificityResult, rerank_factor, score_candidates
@@ -812,6 +812,7 @@ class VectorContextAssembler(ContextAssemblerBase):
         hits: List[VectorHit],
         task_text: str = "",
         spec_by_id: Optional[Dict[str, "SpecificityResult"]] = None,
+        turn_affinity_tags: Any = None,
     ) -> List[str]:
         """Render each VectorHit into its OWN rendered section, aligned with ``hits`` order.
 
@@ -837,6 +838,10 @@ class VectorContextAssembler(ContextAssemblerBase):
         parts: List[str] = []
         for hit in hits:
             part_lines = [f"### Vector hit: {hit.id}  (score={hit.score:.3f})"]
+            # Provenance for a hit from another grouping than the turn's focus (affinity_tags, soft).
+            hit_home = (hit.payload or {}).get("affinity_tags")
+            if hit_home and turn_affinity_tags and affinity_factor(hit_home, turn_affinity_tags, home_boost=2.0, away_factor=0.5) == 0.5:
+                part_lines.append(f"  from another grouping: {affinity_label(hit_home)}")
             # Subject-match (specificity) annotation: tells the reader whether this hit is about the
             # SPECIFIC subject asked or only an adjacent sibling that shares the category.
             sr = spec_by_id.get(hit.id) if spec_by_id else None
@@ -1035,7 +1040,8 @@ class VectorContextAssembler(ContextAssemblerBase):
         # Step e: render (pass task_text so card-content references rank + resolve against it).
         # Render per-hit sections so each hit's VERBATIM block can be attached to its card_metadata
         # (rendered_section), then join them for the context_view exactly as before.
-        hit_sections = self._render_hit_sections(kept, task_text, spec_by_id=spec_by_id)
+        hit_sections = self._render_hit_sections(kept, task_text, spec_by_id=spec_by_id,
+                                                  turn_affinity_tags=(meta or {}).get("affinity_tags"))
         context_view = "\n\n---\n\n".join(hit_sections)
         rendered_by_id: Dict[str, str] = {
             h.id: hit_sections[i] for i, h in enumerate(kept) if i < len(hit_sections)
