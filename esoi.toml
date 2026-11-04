@@ -56,6 +56,18 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.02
 seconds_per_case = 12
 
+# The topic-needs and orientation components use the same budgets as the file-finding one, set by value before any arm ran: a card
+# build of this corpus is worth at most the cases' budget. The topic-needs store cap (0.25 cards per file) is a gate in its scorer.
+[balance.needed_set]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.02
+seconds_per_case = 12
+
+[balance.orientation]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.02
+seconds_per_case = 12
+
 # Opt-in rules (esoi/docs): S36 the overall network on the root solution, S37 every id has an interface and a one-line entry,
 # S38 the paragraph and diagram match the code, S39 the ratchet against the base commit. S38 floors are per intent, set at the measured values.
 [rules.S36]
