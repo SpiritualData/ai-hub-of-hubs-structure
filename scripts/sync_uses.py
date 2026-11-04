@@ -1,4 +1,4 @@
-"""Write (or with --check, verify) the uses_solution_ids column of esoi/implementations.csv from the constructor parameters
+"""Write (or with --check, verify) the uses_solution_ids column of the implementations.csv records from the constructor parameters
 typed with a seat Protocol, and check the graph (no cycles, every need resolves or is consumer-provided). The work is the
 library's (``esoi.assemble``); this binds it to the hub's records.
 
