@@ -26,7 +26,7 @@ Choose the cheapest model that does the job at each tier, for any product that c
 
 - Entry call: `hubofhubs.run("choose-a-model-tier", {'available': ['anthropic']})`
 - Selected implementation: `tier_selector`
-- Metric: Tier choice by passing work per cost, Tier passing work per cost
+- Metric: Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer
 - Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 41 more
 
 ## know-the-world: the Science seat (`know-the-world`)
@@ -217,6 +217,8 @@ flowchart LR
 - `metric-harness-context-subagents-recursion-ranked`, Harness, context, sub-agents and recursion ranked
 - `metric-integration-served-by-combined-hubs`, Integration served by combined hubs
 - `metric-solution-coherence`, Intents whose solutions one paragraph and one diagram explain as the code builds them
+- `metric-model-quality`, Model quality on hard maths: leader `deepseek_v4_pro`, 3 of 3 cases
+- `metric-vendor-answers`, Vendor arms answer: leader `claude_cli`, 3 of 3 cases
 
 ## Problems
 

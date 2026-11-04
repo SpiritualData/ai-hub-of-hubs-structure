@@ -69,7 +69,7 @@ flowchart LR
 |---|---|---|---|
 | `take-in-the-world` | `hubofhubs.run("take-in-the-world", 'latest Rust release')` | `search_backends` | take-in-the-world metric (draft) |
 | `reason-and-answer` | `hubofhubs.run("reason-and-answer", ...)` | `model_calls` | reason-and-answer metric (draft) |
-| `choose-a-model-tier` | `hubofhubs.run("choose-a-model-tier", {'available': ['anthropic']})` | `tier_selector` | Tier choice by passing work per cost, Tier passing work per cost |
+| `choose-a-model-tier` | `hubofhubs.run("choose-a-model-tier", {'available': ['anthropic']})` | `tier_selector` | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
 | `know-the-world` | `hubofhubs.run("know-the-world", 'meditation and attention')` | `openalex_semantic` | Research question finds its paper |
 | `act-in-the-world` | `hubofhubs.run("act-in-the-world", ...)` | `fast_edit` | Goal met by its own tests, Harness, context, sub-agents and recursion ranked |
 | `watch-for-risk` | `hubofhubs.run("watch-for-risk", 'delete the old backup folder')` | `consent_gate` | Risky steps stopped, ordinary steps let through, Guard marginal value |
@@ -82,7 +82,7 @@ flowchart LR
 | `card-store` | `hubofhubs.run("card-store", 'rust release')` | `local_card_store` | Cards found again, none lost |
 | `think-critically` | `hubofhubs.run("think-critically", ...)` | `evidence_check` | think-critically metric (draft) |
 | `model-call` | `hubofhubs.run("model-call", ...)` | `via_call_a_model` | Model call answers for the tier |
-| `call-a-model` | `hubofhubs.run("call-a-model", ...)` | `claude_cli` | Provider failover and vendor answers |
+| `call-a-model` | `hubofhubs.run("call-a-model", ...)` | `claude_cli` | Provider failover |
 | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | remember-and-recall metric (draft) |
 | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
 | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `import_graph_topic_cards` | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
@@ -130,7 +130,7 @@ flowchart LR
 - `metric-stay-current`, stay-current metric (draft)
 - `metric-read-registry-freshness`, Registry freshness reading: leader `registry_scan`, 41 of 41 cases
 - `metric-keep-it-generic`, keep-it-generic metric (draft)
-- and 22 more: all 32 are in [metrics](#metrics) of the full record below
+- and 24 more: all 34 are in [metrics](#metrics) of the full record below
 
 ## Where to go next
 
@@ -182,7 +182,7 @@ flowchart LR
 |---|---|---|---|
 | `take-in-the-world` | take-in-the-world: the World seat | search_backends | take-in-the-world metric (draft) |
 | `reason-and-answer` | reason-and-answer: the Mind seat | model_calls | reason-and-answer metric (draft) |
-| `choose-a-model-tier` | choose-a-model-tier: pick the model for each tier | tier_selector | Tier choice by passing work per cost, Tier passing work per cost |
+| `choose-a-model-tier` | choose-a-model-tier: pick the model for each tier | tier_selector | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
 | `know-the-world` | know-the-world: the Science seat | openalex_semantic | Research question finds its paper |
 | `act-in-the-world` | act-in-the-world: the Body seat | fast_edit | Goal met by its own tests, Harness, context, sub-agents and recursion ranked |
 | `watch-for-risk` | watch-for-risk: the Overseer seat | consent_gate | Risky steps stopped, ordinary steps let through, Guard marginal value |
@@ -195,7 +195,7 @@ flowchart LR
 | `card-store` | card-store: a place to keep and find cards | local_card_store | Cards found again, none lost |
 | `think-critically` | think-critically: the Critical thinking seat | evidence_check | think-critically metric (draft) |
 | `model-call` | model-call: ask a model one question | via_call_a_model | Model call answers for the tier |
-| `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | claude_cli | Provider failover and vendor answers |
+| `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | claude_cli | Provider failover |
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat | card_recall | remember-and-recall metric (draft) |
 | `context-assembler` | context-assembler: pick the context a task needs | bm25@analyzer=english | Relevant passage in the top five |
 | `cards-from-files` | cards-from-files: cards for a folder | import_graph_topic_cards | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
@@ -284,9 +284,11 @@ flowchart LR
 - `metric-harness-context-subagents-recursion-ranked`, Harness, context, sub-agents and recursion ranked: `python3 -m pytest tests/test_deep_session_subagents.py`
 - `metric-integration-served-by-combined-hubs`, Integration served by combined hubs: `none`
 - `metric-solution-coherence`, Intents whose solutions one paragraph and one diagram explain as the code builds them: `python3 -m esoi.coherence --gate`
+- `metric-model-quality`, Model quality on hard maths: `esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
+- `metric-vendor-answers`, Vendor arms answer: `esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run call_a_model --impl claude_cli`
 - `metric-think-critically`, think-critically metric (draft): `none`
 - `metric-model-call`, Model call answers for the tier: `esoi run model_call --impl via_call_a_model`
-- `metric-call-a-model`, Provider failover and vendor answers: `esoi run provider_failover --impl multi_provider; esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
+- `metric-call-a-model`, Provider failover: `esoi run provider_failover --impl multi_provider`
 - `metric-remember-and-recall`, remember-and-recall metric (draft): `none`
 - `metric-context-assembler`, Relevant passage in the top five: `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite`
 - `metric-cards-from-files`, Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size: `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`

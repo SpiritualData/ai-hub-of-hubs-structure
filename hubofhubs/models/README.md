@@ -17,7 +17,7 @@ Reach any model vendor through one interface, for any consumer that calls models
 
 - Entry call: `hubofhubs.run("call-a-model", ...)`
 - Selected implementation: `claude_cli`
-- Metric: Provider failover and vendor answers
+- Metric: Provider failover
 - Implemented by: [`hubofhubs/models/__init__.py`](__init__.py), [`hubofhubs/models/anthropic.py`](anthropic.py), [`hubofhubs/models/claude_cli.py`](claude_cli.py), [`hubofhubs/models/family.py`](family.py), [`hubofhubs/models/gemini.py`](gemini.py), [`hubofhubs/models/layers.py`](layers.py), [`hubofhubs/models/listing.py`](listing.py), [`hubofhubs/models/openai.py`](openai.py) and 8 more
 
 ## Diagram
@@ -46,7 +46,7 @@ flowchart LR
 ## Metrics
 
 - `metric-model-call`, Model call answers for the tier: leader `via_call_a_model`, 30 of 30 cases
-- `metric-call-a-model`, Provider failover and vendor answers: leader `multi_provider`, 30 of 30 cases
+- `metric-call-a-model`, Provider failover: leader `multi_provider`, 30 of 30 cases
 
 ## Where to go next
 

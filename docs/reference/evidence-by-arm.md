@@ -9,9 +9,9 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | Component | Arm | Cases (held-out part when split) | Pass rate (95% Wilson) | Cost per passing case | Seconds per case | Versus the selected arm | Public evidence (not in our numbers) |
 |---|---|---|---|---|---|---|---|
 | assemble_the_whole | zero_config | 68 | 100.0% (94.7% to 100.0%), 68/68 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| call_a_model | claude_cli (selected) | 3 | 100.0% (43.9% to 100.0%), 3/3 | $0.0002333 | 2.6 (median) | complementary arm, not ranked | none recorded |
+| call_a_model | gemini (selected) | 50 | 100.0% (92.9% to 100.0%), 50/50 | $0.000158 | 0.85 (median) | complementary arm, not ranked | none recorded |
+| call_a_model | claude_cli | 3 | 100.0% (43.9% to 100.0%), 3/3 | $0.0002333 | 2.6 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | deepseek | 50 | 94.0% (83.8% to 97.9%), 47/50 | $0.0001638 | 1.2 (median) | complementary arm, not ranked | none recorded |
-| call_a_model | gemini | 50 | 100.0% (92.9% to 100.0%), 50/50 | $0.000158 | 0.85 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | openai | 50 | 92.0% (81.2% to 96.8%), 46/50 | $0.0002848 | 2.55 (median) | complementary arm, not ranked | none recorded |
 | card_store | local_card_store (selected) | 35 | 100.0% (90.1% to 100.0%), 35/35 | $0 | 0 (median) | selected | none recorded |
 | cards_from_files | import_graph_topic_cards (selected) | 252 | 44.4% (38.4% to 50.6%), 112/252 | $0 | 0.1 (median) | selected | none recorded |
