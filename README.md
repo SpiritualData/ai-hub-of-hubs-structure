@@ -46,7 +46,7 @@ Each id is reached through a declared interface. The call builds the implementat
 Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/assemble-and-run-your-first-seat.md).
 
 <!-- headline:start -->
-**40 alternatives measured across 8 areas, from 448 researched candidates.**
+**41 alternatives measured across 8 areas, from 448 researched candidates.**
 
 | Area | Alternatives measured | Which |
 |---|---|---|
@@ -56,7 +56,7 @@ Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/as
 | Web search APIs | 2 | `gemini`, `provider` |
 | Scholarly search | 6 | `openalex`, `openalex_keywords`, `openalex_keywords_model`, `openalex_semantic`, `openalex_semantic_and_web`, `web_research` |
 | Coding agents | 3 | `fast_edit`, `stream_json_goal_runner`, `subprocess_goal_runner` |
-| Guardrails and oversight | 3 | `consent_gate`, `overseer`, `two_stage` |
+| Guardrails and oversight | 4 | `consent_gate`, `none`, `overseer`, `two_stage` |
 | Card building | 6 | `cochange_topic_cards`, `file_plus_topic_cards`, `graphify_files`, `import_graph_topic_cards`, `llm_topic_cards`, `topic_cards_replay` |
 
 Of 7 seats with rival arms on the same cases, 7 hold the arm with the highest result on all cases at the deciding stage. The claims are in-sample (the same cases chose the arm and report it): 0 of 7 selected arms are significantly ahead of every rival, two-sided. Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors (such as `none` and `single_provider`) and conformance tests, which have no rival ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative)).
@@ -75,9 +75,9 @@ numbers, never added into them. How the cases and tests work: [how we measure](d
 | `context-assembler`, Subconscious, Intuition | A document that answers the query is among the top five results. (offline) | bm25@analyzer=english | 64.4% (59.0% to 69.4%), 208/323 | 323 | $0 | 0.3 (median) | ahead of bm25, not significant (two-sided McNemar p=0.154); ahead of vector, not significant (two-sided McNemar p=0.78) |
 | `call-a-model`, Mind | When the first provider fails, a healthy one answers; a bad request is not hidden. (offline) | multi_provider | 100.0% (88.6% to 100.0%), 30/30 | 30 | $0 | 0 (median) | ahead of single_provider (two-sided McNemar p=7.63e-06) |
 | `search-backend`, World | A top-five search hit comes from a page or site that holds the answer. (whole) | gemini | 80.0% (65.2% to 89.5%), 32/40 | 40 | $5.625e-05 | 2 (median) | ahead of provider (two-sided McNemar p=1.1e-05) |
-| `know-the-world`, Science | The paper that answers a research question is among what the arm returns. (offline) | openalex_semantic | 34.7% (27.5% to 42.6%), 52/150 | 150 | $0 | 2 (median) | ahead of openalex_semantic_and_web, not significant (two-sided McNemar p=0.664); ahead of web_research (two-sided McNemar p=4.08e-06) |
+| `know-the-world`, Science | The paper that answers a research question is among what the arm returns. (offline) | openalex_semantic | 30.0% (18.1% to 45.4%), 12/40 | 40 | $0 | 2 (median) | ahead of openalex, not significant (two-sided McNemar p=0.019); ahead of openalex_keywords, not significant (two-sided McNemar p=0.0234); ahead of openalex_keywords_model, not significant (two-sided McNemar p=0.0234); ahead of openalex_semantic_and_web (two-sided sign test p=6.2e-31); ahead of web_research (two-sided sign test p=1.12e-25) |
 | `act-in-the-world`, Body | A small coding task counts as done only when its own tests pass afterwards. (whole) | fast_edit | 96.7% (83.3% to 99.4%), 29/30, balanced score 0.9718 | 30 | $0.0001793 | 1.8 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972); stream_json_goal_runner: best guess, no per-case rows to test (stream_json_goal_runner 0.938 against fast_edit 0.972); subprocess_goal_runner: best guess, no per-case rows to test (subprocess_goal_runner 0.923 against fast_edit 0.972) |
-| `watch-for-risk`, Overseer | Steps a person should authorize are stopped and ordinary steps are let through. (offline) | consent_gate | 100.0% (90.4% to 100.0%), 36/36 | 36 | $0 | 0 (median) | ahead of none (two-sided McNemar p=2.29e-05); ahead of overseer, not significant (two-sided McNemar p=0.5); ahead of two_stage, not significant (two-sided McNemar p=0.5) |
+| `watch-for-risk`, Overseer | Steps a person should authorize are stopped and ordinary steps are let through. (offline) | consent_gate | 88.3% (77.8% to 94.2%), 53/60, balanced score 0.9183 | 60 | $0 | 0 (median) | ahead of none (two-sided sign test p=0.000102); ahead of overseer, not significant (two-sided Fisher p=0.479); ahead of two_stage, not significant (two-sided Fisher p=0.493) |
 | `cards-from-files`, Subconscious, Intuition | The file a task needs is among the first three files a builder's cards show. (free) | import_graph_topic_cards | 44.4% (38.4% to 50.6%), 112/252, balanced score 0.6099 | 252 | $0 | 0.1 (median) | ahead of cochange_topic_cards (two-sided sign test p=0.000568); ahead of file_plus_topic_cards, not significant (two-sided sign test p=0.448); ahead of llm_topic_cards (two-sided sign test p=4.94e-05); ahead of one_card (two-sided sign test p=1.48e-42); ahead of one_card_per_folder (two-sided sign test p=2.82e-19); ahead of per_file_symbols, not significant (two-sided sign test p=0.448); ahead of topic_cards_replay (two-sided sign test p=2.59e-05); ahead of two_cards (two-sided sign test p=2.75e-44) |
 
 Conformance tests (cases written in this repo, no rival, not counted as alternatives): `card-store` 35/35, `choose-a-model-tier` 36/36, `model-call` 30/30, `read-registry-freshness` 41/41, `score-hub-connections` 33/33, `assemble-the-whole` 68/68. The arm with the highest result at the deciding stage on all cases is selected (an exact tie keeps the incumbent), and the same cases give the rate, interval and test, so each claim is in-sample. A lead is significant when the two-sided exact McNemar test gives p below 0.05 after Holm's correction across rivals, with alpha divided by the number of stages the pair was run at; otherwise it is a best guess, not yet significant. Where a seat's metric is a balanced score, arms are ranked by that score. Cost per passing case is the whole run's recorded spend over its passes. Every check and every arm: [leaderboard](docs/reference/leaderboard.md), [evidence by arm](docs/reference/evidence-by-arm.md).
@@ -99,7 +99,6 @@ Named areas and implementations with no recorded run, and why. `esoi leaderboard
 - **`remember-and-recall`** (Subconscious, Intuition): measured in part. Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet.
 - **`act-in-the-world`**, arms with no run: `acp_deep_runner` (file_edit_goals). The agent binary it needs is not installed where we measure.
 - **`context-assembler`**, arms with no run: `hybrid`, `composite`. Embedding the corpus was not authorized for the public stage.
-- **`context-assembler`**, arms with no run: `composite` (context_assembler_papers). Not run yet; bm25, vector and hybrid were run.
 - **`search-backend`**, arms with no run: `searxng`, `brave`, `serper`, `tavily`. The arm needs a key or a self-hosted instance that is not set where we measure.
 <!-- unmeasured:end -->
 

@@ -63,7 +63,7 @@ Give any consumer a working system from one line of configuration.
 - Entry call: `hubofhubs.run("assemble-the-whole", 'what is the latest Rust release?')`
 - Selected implementation: `zero_config`
 - Metric: Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor
-- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 161 more
+- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 153 more
 
 ## stay-current: the Learning seat (`stay-current`)
 
@@ -197,7 +197,7 @@ flowchart LR
 - `metric-choose-a-model-tier`, Tier choice by passing work per cost: leader `tier_selector`, 36 of 36 cases
 - `metric-know-the-world`, Research question finds its paper: leader `openalex_semantic`, 52 of 150 cases
 - `metric-act-in-the-world`, Goal met by its own tests: leader `fast_edit`, 29 of 30 cases
-- `metric-watch-for-risk`, Risky steps stopped, ordinary steps let through: leader `consent_gate`, 36 of 36 cases
+- `metric-watch-for-risk`, Risky steps stopped, ordinary steps let through: leader `two_stage`, 34 of 36 cases
 - `metric-assemble-the-whole`, Whole assembly
 - `metric-stay-current`, stay-current metric (draft)
 - `metric-read-registry-freshness`, Registry freshness reading: leader `registry_scan`, 41 of 41 cases
