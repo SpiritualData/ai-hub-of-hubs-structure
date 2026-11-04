@@ -1,4 +1,4 @@
-"""The cases of the needed-set component: topics taken from Quest AI Runner's git history, split in time.
+"""The topic cases of cards-from-files: topics taken from Quest AI Runner's git history, split in time.
 
 A commit that changed two to eight Python files of the ``quest_ai_runner`` package is a task when its subject reads as a topic or
 an intent and names nothing to look up: at least 30 characters and no path, file name, extension, code identifier or backticked text
@@ -21,10 +21,10 @@ from typing import List, Tuple
 
 from cards_from_files import corpus as pinned
 
-HERE = Path(__file__).resolve().parent
-CASES_FILE = HERE / "datasets" / "qar_commits.json"
-HISTORY_FILE = HERE / "datasets" / "cochange_history.json"
-PIN_FILE = HERE / "datasets" / "qar_commits_pin.json"
+HERE = Path(__file__).resolve().parent / "datasets" / "topic_cases"
+CASES_FILE = HERE / "qar_commits.json"
+HISTORY_FILE = HERE / "cochange_history.json"
+PIN_FILE = HERE / "qar_commits_pin.json"
 PACKAGE = "quest_ai_runner/"
 MIN_CHANGED, MAX_CHANGED, MIN_SUBJECT, MIN_NEEDED, SAMPLE_SIZE = 2, 8, 30, 2, 150
 MAX_HISTORY_FILES = 30   # a commit touching more files than this is a sweep, not a topic
@@ -106,8 +106,8 @@ def write(replace: bool = False) -> dict:
                             "no test commit is here")
     CASES_FILE.write_text(cases_text, encoding="utf-8")
     HISTORY_FILE.write_text(history_text, encoding="utf-8")
-    record = dict(qar_commit=pin["qar_commit"], cases_file="datasets/qar_commits.json", cases_sha256=pinned.sha256_text(cases_text), cases=len(cases),
-                  history_file="datasets/cochange_history.json", history_sha256=pinned.sha256_text(history_text), history_commits=len(history),
+    record = dict(qar_commit=pin["qar_commit"], cases_file="datasets/topic_cases/qar_commits.json", cases_sha256=pinned.sha256_text(cases_text), cases=len(cases),
+                  history_file="datasets/topic_cases/cochange_history.json", history_sha256=pinned.sha256_text(history_text), history_commits=len(history),
                   oldest_test_commit=cases[-1]["commit"],
                   sample=f"the {len(cases)} most recent topic-only qualifying commits with at least {MIN_NEEDED} files in the corpus")
     PIN_FILE.write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8")

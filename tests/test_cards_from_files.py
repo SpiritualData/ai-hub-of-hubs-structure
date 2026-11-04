@@ -32,7 +32,7 @@ def run_all(builder, corpus):
 
 
 def passes(rows):
-    return sum(r["ok"] for r in rows)
+    return sum(r["raw"] for r in rows)
 
 
 def test_the_pin_digests_are_filled_and_hold(corpus):
@@ -63,8 +63,8 @@ def test_the_view_is_read_in_the_builders_own_order(corpus):
                  files=[dict(path=p, symbols=[]) for p in first])]
     behind = score.score_case(score.view_function(builder(others + [case["target"]]), None), case)
     ahead = score.score_case(score.view_function(builder([case["target"]] + others), None), case)
-    assert (behind["rank"], behind["ok"]) == (4, False)
-    assert (ahead["rank"], ahead["ok"], ahead["top1"]) == (1, True, True)
+    assert (behind["rank"], behind["raw"]) == (4, False)
+    assert (ahead["rank"], ahead["raw"], ahead["top1"]) == (1, True, True)
 
 
 def test_a_builder_naming_a_file_outside_the_corpus_is_refused(corpus):
@@ -101,12 +101,13 @@ def test_the_builder_runs_once_and_its_cost_lands_on_the_first_case(corpus):
     assert set(first["build"]) == {"cards", "id", "calls", "tokens", "cost", "seconds"}
 
 
-def test_aggregate_reports_the_details_the_metric_names():
-    rows = [dict(ok=True, top1=True, top10=True, anywhere=True, view=10, build=dict(cards=5, id="ab", calls=0, tokens=0, cost=0.0, seconds=1.0)),
-            dict(ok=False, top1=False, top10=False, anywhere=True, view=30)]
+def test_aggregate_reports_the_details_the_metric_names(corpus):
+    rows = [dict(kind="file", raw=True, ok=True, top1=True, top10=True, anywhere=True, penalty=0.0, stored=5, view=10,
+                 build=dict(cards=5, id="ab", calls=0, tokens=0, cost=0.0, seconds=1.0)),
+            dict(kind="file", raw=False, ok=False, top1=False, top10=False, anywhere=True, penalty=0.0, view=30)]
     got = score.aggregate(rows)
-    assert got == dict(top1="1/2", top10="1/2", anywhere="2/2", view_median=20, view_max=30, cards=5, build="ab",
-                       build_calls=0, build_tokens=0, build_cost=0.0, build_seconds=1.0)
+    assert (got["file_raw"], got["file_counted"], got["file_top1"], got["file_top10"], got["cards"], got["build"]) == ("1/2", 1, 1, 1, 5, "ab")
+    assert got["build_calls"] == 0 and got["store_penalty"] == 0.0
 
 
 def test_per_file_cards_and_staleness(tmp_path):

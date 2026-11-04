@@ -4,7 +4,7 @@ A topic card bundles the files that belong to one piece of work, so a task about
 files by structure and keep to a size cap (``cap`` files per card, a file in one card):
 
 ``CochangeTopicCards`` groups files that changed together in the same commits of a recorded history (``history`` is a list of
-``{subject, files}``; the default is the committed history of the needed-set component, which ends before every test case). The
+``{subject, files}``; the default is the committed history of the topic cases of cards-from-files, which ends before every test case). The
 subjects of the commits that changed a group's files together are written into its description: a topic named in the words people
 used when they changed it.
 ``ImportGraphTopicCards`` groups files that import each other, read from the source in the folder it is handed.
@@ -25,7 +25,7 @@ from esoi import implementation
 from .cards_from_files import file_card, group_card
 from .topic_clusters import add_pair, agglomerate, folder_chunks
 
-HISTORY_FILE = Path(__file__).resolve().parents[2] / "evaluation" / "needed_set" / "datasets" / "cochange_history.json"
+HISTORY_FILE = Path(__file__).resolve().parents[2] / "evaluation" / "cards_from_files" / "datasets" / "topic_cases" / "cochange_history.json"
 CARD_CAP = 8            # files in one topic card
 MIN_SUPPORT = 2         # commits a pair of files must have changed in together
 SUBJECTS_PER_CARD = 6   # commit subjects written into a card
