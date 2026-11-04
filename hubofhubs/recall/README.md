@@ -25,7 +25,7 @@ Find the passages that bear on a request, for any consumer that keeps knowledge 
 Give any consumer cards for the knowledge it already keeps in files, so recall starts from what is there instead of an empty store.
 
 - Entry call: `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})`
-- Selected implementation: `llm_topic_cards`
+- Selected implementation: `per_file_symbols`
 - Metric: Needed file among the first three files a builder's cards show
 - Implemented by: [`hubofhubs/recall/__init__.py`](__init__.py), [`hubofhubs/recall/background_pacing.py`](background_pacing.py), [`hubofhubs/recall/bm25_store.py`](bm25_store.py), [`hubofhubs/recall/card_content_render.py`](card_content_render.py), [`hubofhubs/recall/card_limit.py`](card_limit.py), [`hubofhubs/recall/card_limit_report.py`](card_limit_report.py), [`hubofhubs/recall/card_origin.py`](card_origin.py), [`hubofhubs/recall/card_recall.py`](card_recall.py) and 64 more
 
@@ -50,8 +50,8 @@ flowchart LR
 | `context-assembler:bm25` | BM25 over file text | [`hubofhubs/recall/bm25_store.py`](bm25_store.py) |  |
 | `context-assembler:hybrid` | Hybrid fusion | [`hubofhubs/recall/hybrid_assembler.py`](hybrid_assembler.py) |  |
 | `context-assembler:vector` | Vector search | [`hubofhubs/recall/vector_assembler.py`](vector_assembler.py) |  |
-| `cards-from-files:llm_topic_cards` | Model-written topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) | selected |
-| `cards-from-files:per_file_symbols` | One card per file | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| `cards-from-files:llm_topic_cards` | Model-written topic cards | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
+| `cards-from-files:per_file_symbols` | One card per file | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) | selected |
 | `cards-from-files:graphify_files` | Graphify file groups | [`hubofhubs/recall/cards_from_graphify.py`](cards_from_graphify.py) |  |
 | `remember-and-recall:card_recall` | Cards drawn by relevance from a store | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
 

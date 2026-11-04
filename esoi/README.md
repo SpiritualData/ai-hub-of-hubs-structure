@@ -85,7 +85,7 @@ flowchart LR
 | `call-a-model` | `hubofhubs.run("call-a-model", ...)` | `claude_cli` | Provider failover and vendor answers |
 | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | remember-and-recall metric (draft) |
 | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
-| `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `llm_topic_cards` | Needed file among the first three files a builder's cards show |
+| `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `per_file_symbols` | Needed file among the first three files a builder's cards show |
 | `search-backend` | `hubofhubs.run("search-backend", 'latest Rust release')` | `gemini` | Search finds the source |
 
 ## Problems and ideals
@@ -198,7 +198,7 @@ flowchart LR
 | `call-a-model` | call-a-model: ask a vendor's model to plan, answer or list models | claude_cli | Provider failover and vendor answers |
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat | card_recall | remember-and-recall metric (draft) |
 | `context-assembler` | context-assembler: pick the context a task needs | bm25@analyzer=english | Relevant passage in the top five |
-| `cards-from-files` | cards-from-files: cards for a folder | llm_topic_cards | Needed file among the first three files a builder's cards show |
+| `cards-from-files` | cards-from-files: cards for a folder | per_file_symbols | Needed file among the first three files a builder's cards show |
 | `search-backend` | search-backend: run one web search | gemini | Search finds the source |
 
 ### Implementations

@@ -78,11 +78,11 @@
   }
  },
  "cards-from-files": {
-  "default": "llm_topic_cards",
+  "default": "per_file_symbols",
   "evidence": {
-   "detail": "the selected implementation has no recorded row; best guess on the point estimate (per_file_symbols 0.776, graphify_files 0.322, one_card_per_folder 0.298, one_card 0.297, two_cards 0.297); no test was possible",
-   "p": null,
-   "verdict": "UNMEASURED"
+   "detail": "per_file_symbols is better than graphify_files (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.55e-17, 63 of 63 cases disagree); per_file_symbols is better than llm_topic_cards (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=3.47e-17, 58 of 63 cases disagree); per_file_symbols is better than one_card (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.55e-17, 63 of 63 cases disagree); per_file_symbols is better than one_card_per_folder (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.55e-17, 63 of 63 cases disagree); per_file_symbols is better than two_cards (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.55e-17, 63 of 63 cases disagree)",
+   "p": 0.0,
+   "verdict": "WIN"
   },
   "modules": {
    "graphify_files": "hubofhubs.recall.cards_from_graphify",
