@@ -26,7 +26,7 @@ from .context_card_extraction import (
     is_test_path, path_slug,
 )
 
-REPLAY_DATASET = Path(__file__).resolve().parents[2] / "evaluation" / "cards_from_files" / "datasets" / "llm_topic_cards_75f9da90.json"
+REPLAY_DATASET = Path(__file__).resolve().parents[2] / "evaluation" / "cards_from_files" / "datasets" / "replays" / "llm_topic_cards_75f9da90.json"
 TOPIC_PREFIX = "topic-"    # a persisted topic card's id in the combined arm, so it never collides with a file card's id
 AREA_CHUNK_FILES = 150     # files shown to the model per area-discovery call
 DUPLICATE_OVERLAP = 0.6    # topic cards whose file sets overlap at least this much (Jaccard) are one card

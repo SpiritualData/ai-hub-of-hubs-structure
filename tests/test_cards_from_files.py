@@ -147,7 +147,7 @@ def test_llm_topic_cards_groups_files_and_merges_duplicates(tmp_path):
     assert cards[0]["keywords"] == ["alpha", "beta"] and len(provider.prompts) == 2
 
 
-DATASET = ROOT / "evaluation" / "cards_from_files" / "datasets" / "llm_topic_cards_75f9da90.json"
+DATASET = ROOT / "evaluation" / "cards_from_files" / "datasets" / "replays" / "llm_topic_cards_75f9da90.json"
 
 
 def test_the_persisted_build_loads_with_unique_ids_and_corpus_files(corpus):
