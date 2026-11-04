@@ -19,6 +19,13 @@ share of every case: ``store_penalty`` is the square of the cards per file (one 
 counted when it is right and its fixed place in [0, 1) (a hash of the case id) is at or above the penalty. A card per file therefore
 scores nothing and a topic store of a tenth of the files loses about one case in a hundred. The balanced score then weighs that accuracy,
 cost and time by ``[balance.cards_from_files]`` in ``esoi.toml``. The details give each kind's raw result, the store and the build.
+
+Bootstrapping and refreshing the store from the sources is this component's job and no retrieval arm's (``context_retrieval`` charges an arm
+only for the index derived for its own method and for any reading it does while answering). The build's reading is therefore reported here
+(``reads.py``): ``source_opens`` and ``source_files`` read under the corpus root, ``source_mb``, ``reads_per_item`` (opens per file ingested), and
+for a builder that calls no model a second build from its own cards over the unchanged corpus: ``refresh_reads``, ``refresh_seconds`` and
+``refresh_share`` (its reads over the full build's; 1.0 is a full rescan, a small share is an incremental refresh). Staleness lag (how long a
+changed source goes unseen) is not measured here: the corpus is pinned, so there is no change to lag behind.
 """
 from __future__ import annotations
 
@@ -29,6 +36,7 @@ import time
 
 from cards_from_files import corpus as pinned
 from cards_from_files import mix, orientation_kind, topic_cases, topic_kind
+from cards_from_files.reads import Reads
 from cards_from_files.selector import Selector
 
 TOP = 3
@@ -101,14 +109,23 @@ def view_function(builder, meter, replayed=None, saved=None):
         if not state:
             before = (meter.calls, meter.tokens_in, meter.tokens_out, meter.cost_usd) if meter else (0, 0, 0, 0.0)
             started = time.time()
-            cards = builder(str(corpus.root), list(corpus.files), {})
+            with Reads(corpus.root) as full:
+                cards = builder(str(corpus.root), list(corpus.files), {})
             seconds = time.time() - started
             check_cards(cards, corpus.files)
+            refresh = None
+            if not replayed and (meter is None or meter.calls == before[0]):      # a free builder is refreshed once more from its own cards: an incremental one reads little of an unchanged corpus
+                started = time.time()
+                with Reads(corpus.root) as again:
+                    builder(str(corpus.root), list(corpus.files), {c["id"]: c for c in cards})
+                refresh = dict(reads=again.opens, seconds=round(time.time() - started, 2), share=round(again.opens / max(full.opens, 1), 3))
             after = (meter.calls, meter.tokens_in, meter.tokens_out, meter.cost_usd) if meter else (0, 0, 0, 0.0)
             state["selector"] = Selector(cards, corpus)
             state["stored"] = len(cards)
             build = dict(cards=len(cards), id=build_id(cards), calls=after[0] - before[0], tokens=after[1] + after[2] - before[1] - before[2],
-                         cost=round(after[3] - before[3], 4), seconds=round(seconds, 1))
+                         cost=round(after[3] - before[3], 4), seconds=round(seconds, 1),
+                         reads=dict(opens=full.opens, files=full.files, mb=round(full.bytes / 1e6, 2), per_item=round(full.opens / max(len(corpus.files), 1), 3)),
+                         refresh=refresh)
             if replayed:
                 build["replayed"] = dict(replayed)
             if saved:
@@ -221,6 +238,10 @@ def build_headline(rows):
     if build:
         out.update(cards=build["cards"], build=build["id"], build_calls=build["calls"], build_tokens=build["tokens"],
                    build_cost=build["cost"], build_seconds=build["seconds"])
+        out.update(source_opens=build["reads"]["opens"], source_files=build["reads"]["files"], source_mb=build["reads"]["mb"],
+                   reads_per_item=build["reads"]["per_item"])
+        if build.get("refresh"):
+            out.update(refresh_reads=build["refresh"]["reads"], refresh_seconds=build["refresh"]["seconds"], refresh_share=build["refresh"]["share"])
         if build.get("replayed"):
             was = build["replayed"]
             out["replayed"] = f"from build {was['build']} ({was['calls']} calls, ${was['cost']}, its cost and not this run's)"

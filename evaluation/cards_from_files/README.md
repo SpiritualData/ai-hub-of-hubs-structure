@@ -37,6 +37,12 @@ answer found; the selector is keyword IDF, not production's hybrid.
 1. The builder is called once, on the first case, with the corpus root, the files in walk order and no existing cards. Its model
    calls, tokens, cost and seconds are charged to that case, because one build serves every case of a run.
 2. The fixed selector is Quest AI Runner's keyword IDF card store at the pinned commit (confidence gate off, ten cards in view).
+   **Bootstrapping is this component's job.** Building and refreshing the store from the sources belongs to the card builder and not to any retrieval arm
+   (`evaluation/context_retrieval` charges an arm only for the index it derives for its own method and for reading the sources while answering). So the build
+   reports what it read (`reads.py`, counted through the interpreter's audit hook, so no builder has to cooperate): `source_opens`, `source_files` and
+   `source_mb` under the corpus root, `reads_per_item` (opens per file ingested), and for a builder that calls no model a second build from its own cards over
+   the unchanged corpus, `refresh_reads`, `refresh_seconds` and `refresh_share` (its reads over the full build's: 1.0 is a full rescan, a small share an
+   incremental refresh). These are reported, not yet priced into the number, and staleness lag is not measured because the corpus is pinned.
 3. The view is the picked cards in rank order, each card's files in the order the builder listed them. Nothing reorders a card's
    files per query, as in production.
 4. A case is counted when it is right for its kind and its fixed place in [0, 1) (a hash of its id) is at or above the store penalty:
