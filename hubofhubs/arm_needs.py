@@ -30,6 +30,9 @@ ACP_SDK = python("acp", "hubofhubs", extra="acp")
 BM25S = python("bm25s", "hubofhubs", extra="bm25")
 STEMMER = python("Stemmer", "hubofhubs", extra="bm25")
 GRAPHIFY = python("graphify", "hubofhubs", extra="graphify")
+FASTEMBED_LOCAL = python("fastembed", "hubofhubs", extra="retrieval")
+NUMPY = python("numpy", "hubofhubs", extra="retrieval")
+SKLEARN = python("sklearn", "hubofhubs", extra="retrieval")
 
 # --- model vendors ----------------------------------------------------------------------------------------------------------
 

@@ -63,7 +63,7 @@ Give any consumer a working system from one line of configuration.
 - Entry call: `hubofhubs.run("assemble-the-whole", 'what is the latest Rust release?')`
 - Selected implementation: `zero_config`
 - Metric: Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor
-- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 153 more
+- Implemented by: [`.gitignore`](../.gitignore), [`CHANGELOG.md`](../CHANGELOG.md), [`CLAUDE.md`](../CLAUDE.md), [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`LICENSE`](../LICENSE), [`NOTICE`](../NOTICE), [`esoi.toml`](../esoi.toml), [`esoi/COMPONENTS.md`](../esoi/COMPONENTS.md) and 172 more
 
 ## stay-current: the Learning seat (`stay-current`)
 
@@ -144,7 +144,8 @@ flowchart LR
     s16["remember-and-recall: the Subconscious...<br/>remember-and-recall"]
     s17["context-assembler: pick the context a...<br/>context-assembler"]
     s18["cards-from-files: cards for a folder<br/>cards-from-files"]
-    s19["search-backend: run one web search<br/>search-backend"]
+    s19["retrieve-context: pick the pieces of a...<br/>retrieve-context"]
+    s20["search-backend: run one web search<br/>search-backend"]
     s0 -->|"Outside material for a task, from the search backends"| s6
     s1 -->|"The text a model answers to the prompt at that tier"| s6
     s2 -->|"A mapping from each tier to the chosen provider and model"| s1
@@ -165,11 +166,14 @@ flowchart LR
     s15 -->|"Text, a plan or a list of models"| s5
     s15 -->|"Text, a plan or a list of models"| s14
     s15 -->|"Text, a plan or a list of models"| s18
+    s15 -->|"Text, a plan or a list of models"| s19
     s16 -->|"The cards a task needs, in one rendered view with their ids"| s6
     s17 -->|"An assembled context view and the ids of the cards it drew..."| s16
     s18 -->|"Cards in the card-store record shape (grouping, summary..."| s16
-    s19 -->|"A response of hits (title, link, snippet, date, passages..."| s0
-    s19 -->|"A response of hits (title, link, snippet, date, passages..."| s3
+    s19 -->|"Hits: unit id, file, first line, score, tokens and text..."| s6
+    s19 -->|"Hits: unit id, file, first line, score, tokens and text..."| s17
+    s20 -->|"A response of hits (title, link, snippet, date, passages..."| s0
+    s20 -->|"A response of hits (title, link, snippet, date, passages..."| s3
 ```
 
 ## Implementations
@@ -259,6 +263,7 @@ flowchart LR
 - Down: [hubofhubs/deep](deep/README.md)
 - Down: [hubofhubs/models](models/README.md)
 - Down: [hubofhubs/recall](recall/README.md)
+- Down: [hubofhubs/retrieval](retrieval/README.md)
 - Down: [hubofhubs/science](science/README.md)
 - Down: [hubofhubs/websearch](websearch/README.md)
 - Repository: [top README](../README.md)

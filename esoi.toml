@@ -104,3 +104,12 @@ coverage = 1.0
 
 [rules.S39]
 enabled = true
+
+# context-retrieval: one retrieval is worth at most half a cent and two seconds (a keyword search costs nothing and a local embedding of the
+# query a few hundredths of a second; a model reranker costs a few tenths of a cent and a few seconds). The weights are the library's defaults,
+# fixed with the budgets before any arm was scored on the mix of evaluation/context_retrieval/mix.py; the store size is a term of the accuracy
+# (score.store_penalty), as in cards-from-files, because the library's balanced score has three terms.
+[balance.context_retrieval]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.005
+seconds_per_case = 2

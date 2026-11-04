@@ -38,6 +38,7 @@ at the repository root.
 | `connect-any-integration:catalog_entries` | none | none | none | none | no |
 | `context-assembler:bm25` | none | none | `bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | none | no |
 | `context-assembler:composite` | none | none | none | none | no |
+| `context-assembler:file_retrieval` | none | none | none | none | no |
 | `context-assembler:hybrid` | none | none | `qdrant_client` via extra `qdrant` (optional)<br>`fastembed` via extra `qdrant` (optional)<br>`bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional)<br>service Qdrant (`QDRANT_URL`, default http://localhost:6333) (optional) | no |
 | `context-assembler:vector` | none | Voyage AI (`VOYAGE_API_KEY`) (optional) | `qdrant_client` via extra `qdrant` (optional)<br>`fastembed` via extra `qdrant` (optional)<br>`voyageai` via extra `voyage` (optional) | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional)<br>service Qdrant (`QDRANT_URL`, default http://localhost:6333) (optional) | no |
 | `keep-it-generic:prompts_as_data` | none | none | none | none | no |
@@ -51,6 +52,18 @@ at the repository root.
 | `read-registry-freshness:registry_scan` | none | none | none | none | no |
 | `reason-and-answer:model_calls` | none | none | none | none | no |
 | `remember-and-recall:card_recall` | none | none | none | none | no |
+| `retrieve-context:abstaining_hybrid` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:abstaining_learned` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:bm25_body` | none | none | none | none | no |
+| `retrieve-context:bm25_fielded` | none | none | none | none | no |
+| `retrieve-context:bm25_whole_files` | none | none | none | none | no |
+| `retrieve-context:dense_bge_small` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:feature_rerank` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:feature_rerank_no_priors` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:hybrid_rrf` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:learned_rerank` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:llm_rerank` | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| `retrieve-context:lsi` | none | none | `sklearn` via extra `retrieval` | none | no |
 | `score-hub-connections:hub_of_hubs_scorer` | none | none | none | none | no |
 | `search-backend:brave` | none | Brave Search (`BRAVE_SEARCH_API_KEY` or `BRAVE_API_KEY`) | `httpx` via extra `web` | none | no |
 | `search-backend:gemini` | none | Gemini (`GEMINI_API_KEY` or `GOOGLE_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional) | none | no |

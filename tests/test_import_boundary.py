@@ -12,7 +12,7 @@ PACKAGE_DIRS = ("hubofhubs",)
 ALLOWED = set(sys.stdlib_module_names) | set(PACKAGE_DIRS) | {"esoi"}
 # Third-party libraries of the per-arm extras (pyproject optional-dependencies), by import name. They may be imported only
 # inside a function, so importing a module never needs them.
-LAZY = {"httpx", "google", "trafilatura", "pypdf", "filelock", "anthropic", "openai", "mcp", "qdrant_client", "fastembed", "voyageai", "bm25s", "Stemmer", "acp", "graphify", "networkx"}
+LAZY = {"httpx", "google", "trafilatura", "pypdf", "filelock", "anthropic", "openai", "mcp", "qdrant_client", "fastembed", "voyageai", "bm25s", "Stemmer", "acp", "graphify", "networkx", "numpy", "sklearn"}
 
 
 def top_level_imports(source: str) -> set[str]:
@@ -50,7 +50,7 @@ def test_checker_rejects_unlisted_modules():
     assert offenders("import requests") == {"requests"}
     assert offenders("from quest_ai_runner.core import x") == {"quest_ai_runner"}
     assert offenders("import json, esoi.runtime\nfrom . import registry\nfrom hubofhubs import a") == set()
-    assert offenders("def f():\n    import numpy") == {"numpy"}  # function-level imports count too
+    assert offenders("def f():\n    import pandas") == {"pandas"}  # function-level imports count too
     assert offenders("def f():\n    import httpx") == set()        # an extra's library, imported lazily
     assert offenders("import httpx") == {"httpx"}                     # but never at module level
     assert offenders("try:\n    import pypdf\nexcept ImportError:\n    pass") == {"pypdf"}

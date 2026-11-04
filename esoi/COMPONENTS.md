@@ -13,6 +13,7 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | `hub-websearch` | core | : the search-backend arms and the web research code moved out of a consumer (backends, cache, limiter, page fetch and extraction, the research adapter) | search-backend |
 | `hub-models` | core | Model vendor arms, the router and the Claude program arm. | call-a-model, model-call, reason-and-answer |
 | `hub-recall` | core | The card store, context assemblers and card builders. | remember-and-recall, context-assembler, cards-from-files |
+| `hub-retrieval` | core | Retrieval of the context a task needs from a corpus of files under a token budget: chunking and descriptors, lexical, latent and dense arms, fusion, reranking, priors, a learned reranker and abstention. | retrieve-context |
 | `hub-critique` | core | Link detection and the evidence check that holds an answer to its sources. | think-critically |
 | `hub-act` | core | The file-editing arm, the folder writer and operation writing over MCP. | act-in-the-world |
 | `hub-science` | core | Scholarly search arms over OpenAlex. | know-the-world |

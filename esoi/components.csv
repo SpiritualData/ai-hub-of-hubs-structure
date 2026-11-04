@@ -7,6 +7,7 @@ hub-ports,core,hubofhubs/ports/*.py;docs/reference/work-trace-event.schema.json;
 hub-websearch,core,hubofhubs/websearch/*.py;tests/test_websearch.py;tests/test_ws_*.py,": the search-backend arms and the web research code moved out of a consumer (backends, cache, limiter, page fetch and extraction, the research adapter)",search-backend
 hub-models,core,hubofhubs/models/*.py;tests/test_models*.py,"Model vendor arms, the router and the Claude program arm.",call-a-model;model-call;reason-and-answer
 hub-recall,core,hubofhubs/recall/*.py;tests/test_recall_*.py,"The card store, context assemblers and card builders.",remember-and-recall;context-assembler;cards-from-files
+hub-retrieval,core,hubofhubs/retrieval/*.py;tests/test_retrieval*.py,"Retrieval of the context a task needs from a corpus of files under a token budget: chunking and descriptors, lexical, latent and dense arms, fusion, reranking, priors, a learned reranker and abstention.",retrieve-context
 hub-critique,core,hubofhubs/critique/*.py;tests/test_critique_*.py,Link detection and the evidence check that holds an answer to its sources.,think-critically
 hub-act,core,hubofhubs/act/*.py;tests/test_act_*.py;tests/act_support.py,"The file-editing arm, the folder writer and operation writing over MCP.",act-in-the-world
 hub-science,core,hubofhubs/science/*.py;tests/test_science_*.py;tests/fixtures/*,Scholarly search arms over OpenAlex.,know-the-world

@@ -8,7 +8,7 @@ from esoi.assemble import Lazy
 
 from .oneline import Result, event, trace_event
 from .ports.events import EVENT_DONE, EVENT_RESULT, EVENT_STATUS, EVENT_WORK_TRACE
-from .seats import Acting, Critiquing, Genericity, Reasoning, Remembering, RiskWatching, TakingIn
+from .seats import Acting, ContextRetrieval, Critiquing, Genericity, Reasoning, Remembering, RiskWatching, TakingIn
 
 
 MODEL_ONLY_NOTE = "answered from the model only: no sources were consulted"
@@ -18,13 +18,14 @@ MODEL_ONLY_NOTE = "answered from the model only: no sources were consulted"
 class ZeroConfig:
     """Every seat from its selected arm: what is remembered and what the web says answer the text, the critic holds the answer to
     its sources, and a goal is acted on only when the risk watch lets it through. The answer path needs the world, recall and the critic;
-    the model, the risk watch, the acting seat and the audit are built on first use, so a question never asks for what only they need."""
+    the model, the risk watch, the acting seat, the audit and the file retrieval are built on first use, so a question never asks for what only they need."""
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, take_in: TakingIn, recall: Remembering, critic: Critiquing, reason: Lazy[Reasoning], watch: Lazy[RiskWatching],
-                 act: Lazy[Acting], generic: Lazy[Genericity]):
+                 act: Lazy[Acting], generic: Lazy[Genericity], retrieval: Lazy[ContextRetrieval]):
         self.take_in, self.recall, self.critic = take_in, recall, critic
         self.reason, self.watch, self.act_arm, self.generic = reason, watch, act, generic
+        self.retrieval = retrieval
 
     def answer(self, text: str) -> Result:
         began = time.monotonic()
@@ -58,6 +59,11 @@ class ZeroConfig:
                 event(EVENT_RESULT, text, result_kind="answer"), event(EVENT_DONE, "", result_kind="answer", seat="reason-and-answer")]
         return Result(input=prompt, seat="reason-and-answer", answer=text, arms={"reason-and-answer": type(self.reason).__name__},
                       seconds=time.monotonic() - began, note=MODEL_ONLY_NOTE, events=tuple(done))
+
+    def context_for(self, task: str, files: Mapping[str, str], budget_tokens: int = 4000) -> List[Any]:
+        """The pieces of ``files`` (path to text) that ``task`` needs within a token budget, by the selected retrieval arm; an empty list
+        means the task needs no context from them."""
+        return list(self.retrieval.retrieve(task, files, budget_tokens))
 
     def act(self, goal: str, brief: str = "") -> Any:
         """Carry out ``goal`` with the acting seat when the risk watch lets the step through; otherwise return the signal."""

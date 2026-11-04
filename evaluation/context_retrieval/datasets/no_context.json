@@ -1,0 +1,130 @@
+[
+ {
+  "id": "NONE-00",
+  "task": "Thanks, that worked."
+ },
+ {
+  "id": "NONE-01",
+  "task": "Hello! Are you there?"
+ },
+ {
+  "id": "NONE-02",
+  "task": "What is the capital of Australia?"
+ },
+ {
+  "id": "NONE-03",
+  "task": "Write a haiku about autumn rain."
+ },
+ {
+  "id": "NONE-04",
+  "task": "Explain in two sentences what a mutex is."
+ },
+ {
+  "id": "NONE-05",
+  "task": "Convert 72 degrees Fahrenheit to Celsius."
+ },
+ {
+  "id": "NONE-06",
+  "task": "Can you summarise the paragraph I pasted above in one line?"
+ },
+ {
+  "id": "NONE-07",
+  "task": "What does the acronym API stand for?"
+ },
+ {
+  "id": "NONE-08",
+  "task": "Translate 'good morning' into French and Spanish."
+ },
+ {
+  "id": "NONE-09",
+  "task": "Give me three names for a pet goldfish."
+ },
+ {
+  "id": "NONE-10",
+  "task": "What is the difference between a list and a tuple in general?"
+ },
+ {
+  "id": "NONE-11",
+  "task": "Remind me what time zone Tokyo is in."
+ },
+ {
+  "id": "NONE-12",
+  "task": "How many days are there in a leap year?"
+ },
+ {
+  "id": "NONE-13",
+  "task": "Please be more concise from now on."
+ },
+ {
+  "id": "NONE-14",
+  "task": "Which is heavier, a kilogram of feathers or a kilogram of iron?"
+ },
+ {
+  "id": "NONE-15",
+  "task": "Suggest a polite way to decline a meeting invitation."
+ },
+ {
+  "id": "NONE-16",
+  "task": "Explain the Pythagorean theorem to a ten year old."
+ },
+ {
+  "id": "NONE-17",
+  "task": "What is 17 times 23?"
+ },
+ {
+  "id": "NONE-18",
+  "task": "Tell me a joke about programmers."
+ },
+ {
+  "id": "NONE-19",
+  "task": "What is the plural of 'index'?"
+ },
+ {
+  "id": "NONE-20",
+  "task": "Proofread this sentence: 'Their going to the market tomorow.'"
+ },
+ {
+  "id": "NONE-21",
+  "task": "What are good habits for a productive morning?"
+ },
+ {
+  "id": "NONE-22",
+  "task": "Define the word 'idempotent' in plain words."
+ },
+ {
+  "id": "NONE-23",
+  "task": "Is it better to use tabs or spaces, as a matter of taste?"
+ },
+ {
+  "id": "NONE-24",
+  "task": "How do I say thank you in Japanese?"
+ },
+ {
+  "id": "NONE-25",
+  "task": "What year did the first moon landing happen?"
+ },
+ {
+  "id": "NONE-26",
+  "task": "List five healthy snacks."
+ },
+ {
+  "id": "NONE-27",
+  "task": "Explain what recursion is without using code."
+ },
+ {
+  "id": "NONE-28",
+  "task": "What is the boiling point of water at sea level?"
+ },
+ {
+  "id": "NONE-29",
+  "task": "Rewrite 'we need to talk' so it sounds friendlier."
+ },
+ {
+  "id": "NONE-30",
+  "task": "Who wrote Pride and Prejudice?"
+ },
+ {
+  "id": "NONE-31",
+  "task": "Give me a short motivational quote."
+ }
+]

@@ -147,6 +147,16 @@ class CardsFromFiles(typing.Protocol):
     def changed(self, root: str, cards: Mapping[str, Mapping[str, Any]]) -> List[str]: ...
 
 
+@solution("retrieve-context", kind="event", entry="retrieve", example={"query": "where is the retry delay computed?", "files": {"net.py": "def retry_delay(attempt):\n    return 2 ** attempt\n", "ui.py": "def draw():\n    pass\n"}})
+@runtime_checkable
+class ContextRetrieval(typing.Protocol):
+    """Picks, from a corpus of files, the pieces of text a task needs and returns them best first within a token budget (a list of hits: unit
+    id, file, first line, score, tokens). An empty list means the arm judged that no context is needed. The corpus is passed as files (path to
+    text), with an optional history of past changes (date, subject, files) that arms may learn from; an arm indexes a corpus once and keeps it."""
+
+    def retrieve(self, query: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = 4000, history: Sequence[Mapping[str, Any]] = ()) -> Sequence[Any]: ...
+
+
 @solution("remember-and-recall", kind="event", entry="recall", example="rust release")
 @runtime_checkable
 class Remembering(typing.Protocol):
@@ -161,10 +171,11 @@ class Remembering(typing.Protocol):
 class WholeAnswering(typing.Protocol):
     """Answers free text with the best-measured arm of every seat it composes and returns a ``Result`` (answer, items with their
     sources, trace, the arms used). It also acts on a goal behind the risk watch (``act``) and reports whether the hub itself stays
-    generic and current (``health``); ``model_only`` is the model's own words with a note that no source was consulted."""
+    generic and current (``health``); ``context_for`` picks the pieces of a folder's files a task needs within a token budget; ``model_only`` is the model's own words with a note that no source was consulted."""
 
     def answer(self, text: str) -> Any: ...
     def model_only(self, prompt: str, tier: str = "") -> Any: ...
+    def context_for(self, task: str, files: Mapping[str, str], budget_tokens: int = 4000) -> Any: ...
     def act(self, goal: str, brief: str = "") -> Any: ...
     def health(self) -> Mapping[str, Any]: ...
 

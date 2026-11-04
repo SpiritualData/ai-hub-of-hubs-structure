@@ -21,6 +21,7 @@
    "read-registry-freshness": "hubofhubs",
    "reason-and-answer": "hubofhubs",
    "remember-and-recall": "hubofhubs",
+   "retrieve-context": "hubofhubs",
    "score-hub-connections": "hubofhubs",
    "search-backend": "hubofhubs",
    "stay-current": "hubofhubs",
@@ -121,6 +122,7 @@
   "modules": {
    "bm25": "hubofhubs.recall.bm25_store",
    "composite": "hubofhubs.recall.composite_assembler",
+   "file_retrieval": "hubofhubs.recall.file_retrieval_assembler",
    "hybrid": "hubofhubs.recall.hybrid_assembler",
    "vector": "hubofhubs.recall.vector_assembler"
   }
@@ -179,6 +181,28 @@
   "default": "card_recall",
   "modules": {
    "card_recall": "hubofhubs.recall.card_recall"
+  }
+ },
+ "retrieve-context": {
+  "default": "abstaining_hybrid",
+  "evidence": {
+   "detail": "abstaining_hybrid is better than abstaining_learned (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.76e-05, 70 of 253 cases disagree); abstaining_hybrid is better than bm25_body (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=6.56e-19, 193 of 253 cases disagree); abstaining_hybrid is better than bm25_fielded (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.06e-20, 189 of 253 cases disagree); abstaining_hybrid is better than bm25_whole_files (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00103, 193 of 253 cases disagree); abstaining_hybrid is better than dense_bge_small (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.81e-17, 189 of 253 cases disagree); abstaining_hybrid is better than feature_rerank (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.94e-08, 147 of 253 cases disagree); abstaining_hybrid is better than feature_rerank_no_priors (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=8.02e-06, 128 of 253 cases disagree); abstaining_hybrid is better than hybrid_rrf (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.41e-12, 150 of 253 cases disagree); abstaining_hybrid leads learned_rerank (learned_rerank 0.537 against abstaining_hybrid 0.646; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0542, 131 of 253 cases disagree); abstaining_hybrid is better than lsi (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=7.47e-14, 191 of 253 cases disagree)",
+   "p": 0.0,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "abstaining_hybrid": "hubofhubs.retrieval.abstain",
+   "abstaining_learned": "hubofhubs.retrieval.abstain",
+   "bm25_body": "hubofhubs.retrieval.lexical",
+   "bm25_fielded": "hubofhubs.retrieval.lexical",
+   "bm25_whole_files": "hubofhubs.retrieval.lexical",
+   "dense_bge_small": "hubofhubs.retrieval.dense",
+   "feature_rerank": "hubofhubs.retrieval.fusion",
+   "feature_rerank_no_priors": "hubofhubs.retrieval.fusion",
+   "hybrid_rrf": "hubofhubs.retrieval.fusion",
+   "learned_rerank": "hubofhubs.retrieval.learned",
+   "llm_rerank": "hubofhubs.retrieval.abstain",
+   "lsi": "hubofhubs.retrieval.dense"
   }
  },
  "score-hub-connections": {

@@ -8,7 +8,7 @@ Opportunities: Any product that needs an AI grounded in a person or team's own g
 
 ## How the solutions fit together
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and assemble-the-whole is the one call that holds it together. It answers a question through take-in-the-world and remember-and-recall, holds that answer to its sources through think-critically, asks a model at a measured tier through reason-and-answer, carries a goal out through act-in-the-world only after watch-for-risk lets the step pass, and checks that the hub stays generic through keep-it-generic. take-in-the-world brings outside material in by running a web search through search-backend and, for research questions, a paper lookup through know-the-world. remember-and-recall keeps cards in card-store, draws the cards a query needs by relevance through context-assembler, and fills the store from a folder's files through cards-from-files. cards-from-files groups a folder's files into topic cards by which files import each other, so it writes them without asking a model. reason-and-answer sends a question to the model that choose-a-model-tier measured best for the tier, through model-call, which is built on call-a-model. act-in-the-world makes each file edit with a single request through call-a-model, at the tier that choose-a-model-tier picks. keep-it-generic audits the hub for consumer wording and learns how stale its research is through stay-current. keep-it-generic also learns how much of the hub connects by configuration through connect-any-integration. stay-current lists the areas whose research is older than ninety days by reading their dates through read-registry-freshness. connect-any-integration reports the share of connections that need no code by scoring them through score-hub-connections.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and assemble-the-whole is the one call that holds it together. It answers a question through take-in-the-world and remember-and-recall, holds that answer to its sources through think-critically, asks a model at a measured tier through reason-and-answer, shows a task the pieces of a folder's files it needs, within a token budget or not at all, through retrieve-context, carries a goal out through act-in-the-world only after watch-for-risk lets the step pass, and checks that the hub stays generic through keep-it-generic. take-in-the-world brings outside material in by running a web search through search-backend and, for research questions, a paper lookup through know-the-world. remember-and-recall keeps cards in card-store, draws the cards a query needs by relevance through context-assembler, and fills the store from a folder's files through cards-from-files. cards-from-files groups a folder's files into topic cards by which files import each other, so it writes them without asking a model. reason-and-answer sends a question to the model that choose-a-model-tier measured best for the tier, through model-call, which is built on call-a-model. act-in-the-world makes each file edit with a single request through call-a-model, at the tier that choose-a-model-tier picks. keep-it-generic audits the hub for consumer wording and learns how stale its research is through stay-current. keep-it-generic also learns how much of the hub connects by configuration through connect-any-integration. stay-current lists the areas whose research is older than ninety days by reading their dates through read-registry-freshness. connect-any-integration reports the share of connections that need no code by scoring them through score-hub-connections.
 
 ## Diagram
 
@@ -35,7 +35,8 @@ flowchart LR
     s16["remember-and-recall: the Subconscious...<br/>remember-and-recall"]
     s17["context-assembler: pick the context a...<br/>context-assembler"]
     s18["cards-from-files: cards for a folder<br/>cards-from-files"]
-    s19["search-backend: run one web search<br/>search-backend"]
+    s19["retrieve-context: pick the pieces of a...<br/>retrieve-context"]
+    s20["search-backend: run one web search<br/>search-backend"]
     s0 -->|"Outside material for a task, from the search backends"| s6
     s1 -->|"The text a model answers to the prompt at that tier"| s6
     s2 -->|"A mapping from each tier to the chosen provider and model"| s1
@@ -56,11 +57,14 @@ flowchart LR
     s15 -->|"Text, a plan or a list of models"| s5
     s15 -->|"Text, a plan or a list of models"| s14
     s15 -->|"Text, a plan or a list of models"| s18
+    s15 -->|"Text, a plan or a list of models"| s19
     s16 -->|"The cards a task needs, in one rendered view with their ids"| s6
     s17 -->|"An assembled context view and the ids of the cards it drew..."| s16
     s18 -->|"Cards in the card-store record shape (grouping, summary..."| s16
-    s19 -->|"A response of hits (title, link, snippet, date, passages..."| s0
-    s19 -->|"A response of hits (title, link, snippet, date, passages..."| s3
+    s19 -->|"Hits: unit id, file, first line, score, tokens and text..."| s6
+    s19 -->|"Hits: unit id, file, first line, score, tokens and text..."| s17
+    s20 -->|"A response of hits (title, link, snippet, date, passages..."| s0
+    s20 -->|"A response of hits (title, link, snippet, date, passages..."| s3
 ```
 
 ## Solutions at a glance
@@ -86,6 +90,7 @@ flowchart LR
 | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | `card_recall` | remember-and-recall metric (draft) |
 | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
 | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | `import_graph_topic_cards` | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
+| `retrieve-context` | `hubofhubs.run("retrieve-context", ...)` | `abstaining_hybrid` | Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size |
 | `search-backend` | `hubofhubs.run("search-backend", 'latest Rust release')` | `gemini` | Search finds the source |
 
 ## Problems and ideals
@@ -102,7 +107,7 @@ flowchart LR
 - `hprob-assembly-not-jarvis-from-the-users-seat`: An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before...
 - `hprob-public-evals-relied-on-singly`: One public benchmark is trusted alone to rank parts, although it may measure a different task, be saturated or leaked into training data, and its source is rarely checked.
 - `hprob-one-best-pick-ignores-circumstance`: A part is ranked best overall, but which part is best depends on the circumstance (a cost limit, a speed limit, a language, the size of the input), so the single winner is wrong for many users.
-- and 4 more: all 14 are in [problems](#problems) of the full record below
+- and 5 more: all 15 are in [problems](#problems) of the full record below
 
 **Ideals**
 
@@ -116,7 +121,7 @@ flowchart LR
 - `hideal-common-sense-metrics-with-sourced-stages`, Common-sense metrics, sourced stages: Every metric is a plain check anyone would accept, and its stages come from public evaluations whose sources are named and compared with each other.
 - `hideal-best-in-circumstance-with-variants`, Best in each circumstance, with variants: The hub names the best part for each circumstance and not one winner, by comparing variants of a part (one setting changed) on the same cases.
 - `hideal-guards-earn-their-place`, Guards earn their place: A guard is kept only when it catches something the model or harness would miss, shown by running the same cases with and without it.
-- and 3 more: all 13 are in [ideals](#ideals) of the full record below
+- and 4 more: all 14 are in [ideals](#ideals) of the full record below
 
 ## Metrics and their leaders
 
@@ -130,12 +135,12 @@ flowchart LR
 - `metric-stay-current`, stay-current metric (draft)
 - `metric-read-registry-freshness`, Registry freshness reading: leader `registry_scan`, 41 of 41 cases
 - `metric-keep-it-generic`, keep-it-generic metric (draft)
-- and 24 more: all 34 are in [metrics](#metrics) of the full record below
+- and 25 more: all 35 are in [metrics](#metrics) of the full record below
 
 ## Where to go next
 
 - Repository: [top README](../README.md)
-- Records beside the code: [hubofhubs](../hubofhubs/README.md), [hubofhubs/act](../hubofhubs/act/README.md), [hubofhubs/critique](../hubofhubs/critique/README.md), [hubofhubs/deep](../hubofhubs/deep/README.md), [hubofhubs/models](../hubofhubs/models/README.md), [hubofhubs/recall](../hubofhubs/recall/README.md), [hubofhubs/science](../hubofhubs/science/README.md), [hubofhubs/websearch](../hubofhubs/websearch/README.md)
+- Records beside the code: [hubofhubs](../hubofhubs/README.md), [hubofhubs/act](../hubofhubs/act/README.md), [hubofhubs/critique](../hubofhubs/critique/README.md), [hubofhubs/deep](../hubofhubs/deep/README.md), [hubofhubs/models](../hubofhubs/models/README.md), [hubofhubs/recall](../hubofhubs/recall/README.md), [hubofhubs/retrieval](../hubofhubs/retrieval/README.md), [hubofhubs/science](../hubofhubs/science/README.md), [hubofhubs/websearch](../hubofhubs/websearch/README.md)
 - Records: [intent.csv](intent.csv), [implementations.csv](implementations.csv)
 - Diagram page: [diagram.md](diagram.md)
 
@@ -159,6 +164,7 @@ flowchart LR
 - `hprob-harness-dear-and-slow-on-the-subscription`: An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
 - `hprob-one-integration-needs-several-hubs`: One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest.
 - `hprob-files-without-cards`: A consumer whose knowledge lives in files has no cards for it until something writes them, and cards written once go stale as the files change.
+- `hprob-context-too-broad-or-missing`: A task is shown too much of a codebase, the wrong part of it, or context it never needed, so the model pays for noise or misses the file that matters.
 
 ### Ideals
 
@@ -175,6 +181,7 @@ flowchart LR
 - `hideal-cheap-fast-harness-with-ideal-context`, Cheap, fast harness with ideal context: An agent harness is chosen for the lowest cost and time at the same pass rate, given the best context the hub can assemble for it, and the choice accounts for sub-agents and recursion.
 - `hideal-hubs-combined-per-integration`, Hubs combined per integration: An integration is served by the combination of hubs that covers the most of it, chosen by data and never by one hub's reach.
 - `hideal-cards-proportionate-and-current`, Proportionate, current cards: A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
+- `hideal-context-needed-and-little-else`, The context a task needs, and little else: A task is shown the pieces it needs, in order of need, within a budget, and nothing when it needs nothing.
 
 ### Solutions
 
@@ -199,6 +206,7 @@ flowchart LR
 | `remember-and-recall` | remember-and-recall: the Subconscious, Intuition seat | card_recall | remember-and-recall metric (draft) |
 | `context-assembler` | context-assembler: pick the context a task needs | bm25@analyzer=english | Relevant passage in the top five |
 | `cards-from-files` | cards-from-files: cards for a folder | import_graph_topic_cards | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
+| `retrieve-context` | retrieve-context: pick the pieces of a corpus a task needs within a token budget | abstaining_hybrid | Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size |
 | `search-backend` | search-backend: run one web search | gemini | Search finds the source |
 
 ### Implementations
@@ -244,6 +252,19 @@ flowchart LR
 | `cards-from-files:topic_cards_replay` | Topic cards replay | [hubofhubs/recall/cards_from_files.py](../hubofhubs/recall/cards_from_files.py) |  |
 | `cards-from-files:cochange_topic_cards` | Cochange topic cards | [hubofhubs/recall/cards_from_topics.py](../hubofhubs/recall/cards_from_topics.py) |  |
 | `cards-from-files:import_graph_topic_cards` | Import graph topic cards | [hubofhubs/recall/cards_from_topics.py](../hubofhubs/recall/cards_from_topics.py) |  |
+| `context-assembler:file_retrieval` | Files through retrieve-context | [hubofhubs/recall/file_retrieval_assembler.py](../hubofhubs/recall/file_retrieval_assembler.py) |  |
+| `retrieve-context:bm25_body` | BM25 over chunk text | [hubofhubs/retrieval/lexical.py](../hubofhubs/retrieval/lexical.py) |  |
+| `retrieve-context:bm25_fielded` | BM25F over path, title and body | [hubofhubs/retrieval/lexical.py](../hubofhubs/retrieval/lexical.py) |  |
+| `retrieve-context:bm25_whole_files` | BM25F over whole files | [hubofhubs/retrieval/lexical.py](../hubofhubs/retrieval/lexical.py) |  |
+| `retrieve-context:lsi` | Latent semantic index | [hubofhubs/retrieval/dense.py](../hubofhubs/retrieval/dense.py) |  |
+| `retrieve-context:dense_bge_small` | Dense bge-small vectors | [hubofhubs/retrieval/dense.py](../hubofhubs/retrieval/dense.py) |  |
+| `retrieve-context:hybrid_rrf` | BM25F and dense by rank fusion | [hubofhubs/retrieval/fusion.py](../hubofhubs/retrieval/fusion.py) |  |
+| `retrieve-context:feature_rerank` | Local feature reranker | [hubofhubs/retrieval/fusion.py](../hubofhubs/retrieval/fusion.py) |  |
+| `retrieve-context:feature_rerank_no_priors` | Feature reranker without priors | [hubofhubs/retrieval/fusion.py](../hubofhubs/retrieval/fusion.py) |  |
+| `retrieve-context:learned_rerank` | Learned reranker | [hubofhubs/retrieval/learned.py](../hubofhubs/retrieval/learned.py) |  |
+| `retrieve-context:abstaining_hybrid` | Hybrid that can say nothing | [hubofhubs/retrieval/abstain.py](../hubofhubs/retrieval/abstain.py) |  |
+| `retrieve-context:abstaining_learned` | Learned reranker that can say nothing | [hubofhubs/retrieval/abstain.py](../hubofhubs/retrieval/abstain.py) |  |
+| `retrieve-context:llm_rerank` | Model reranker | [hubofhubs/retrieval/abstain.py](../hubofhubs/retrieval/abstain.py) |  |
 | `know-the-world:openalex` | OpenAlex keyword search | [hubofhubs/science/openalex.py](../hubofhubs/science/openalex.py) |  |
 | `know-the-world:openalex_semantic` | OpenAlex semantic search | [hubofhubs/science/openalex_semantic.py](../hubofhubs/science/openalex_semantic.py) |  |
 | `know-the-world:openalex_keywords` | OpenAlex keywords, rule rewrite | [hubofhubs/science/openalex_keywords.py](../hubofhubs/science/openalex_keywords.py) |  |
@@ -292,4 +313,5 @@ flowchart LR
 - `metric-remember-and-recall`, remember-and-recall metric (draft): `none`
 - `metric-context-assembler`, Relevant passage in the top five: `esoi run context_assembler --impl bm25; esoi run context_assembler --impl vector; esoi run context_assembler --impl hybrid; esoi run context_assembler --impl composite`
 - `metric-cards-from-files`, Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size: `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
+- `metric-retrieve-context`, Balanced score of retrieval on file, topic, orientation and no-context requests, with the index size: `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl llm_rerank`
 - `metric-search-backend`, Search finds the source: `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`
