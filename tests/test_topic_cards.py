@@ -142,3 +142,19 @@ def test_the_free_topic_builders_keep_to_the_cap_and_are_deterministic(corpus, a
     assert all(len(c["files"]) <= topic_arms.CARD_CAP for c in cards)
     listed = [e["path"] for c in cards for e in c["files"]]
     assert len(listed) == len(set(listed)) and set(listed) == set(corpus.files)   # every file reachable, in one card
+
+
+def test_the_iteration_how_to_matches_the_recorded_stages():
+    """The how-to names the stages the metric record carries, in the same order, and only paid arm in esoi.toml is the model builder."""
+    import csv
+    import re
+    rows = {r["metric_id"]: r for r in csv.DictReader(open(ROOT / "hubofhubs" / "recall" / "metrics.csv", newline=""))}
+    stages = [s.split(" [")[0].strip() for s in rows["metric-cards-topic-needs"]["cascading_conditionals"].split(" > ")]
+    assert stages == ["idea", "free", "one", "sample", "whole"]
+    page = (ROOT / "docs" / "how-to" / "iterate-on-card-builders-without-repeating-model-calls.md").read_text()
+    assert [m.group(1) for m in re.finditer(r"^## Stage (\d)", page, re.M)] == ["0", "1", "2"]
+    assert all(f"`{name}`" in page for name in ("needed_set", "cards_from_files", "orientation", "topic_cards_replay"))
+    assert re.search(r'paid_arms = \["cards_from_files/llm_topic_cards"\]', (ROOT / "esoi.toml").read_text())
+    commands = rows["metric-cards-topic-needs"]["command"]
+    assert "needed_set --impl cochange_topic_cards" in commands and "orientation" in rows["metric-cards-orientation"]["command"]
+    assert "—" not in page   # no em dashes
