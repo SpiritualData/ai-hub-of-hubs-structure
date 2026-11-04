@@ -146,21 +146,21 @@ flowchart LR
     s18["cards-from-files: cards for a folder<br/>cards-from-files"]
     s19["search-backend: run one web search<br/>search-backend"]
     s0 -->|"Outside material for a task, from the search backends"| s6
-    s1 -->|"An answer worked out through measured model calls"| s6
+    s1 -->|"The text a model answers to the prompt at that tier"| s6
     s2 -->|"A mapping from each tier to the chosen provider and model"| s1
     s2 -->|"A mapping from each tier to the chosen provider and model"| s4
-    s3 -->|"Observations about the world a reader can cite"| s0
+    s3 -->|"One observation: title, link and snippet per hit, or the..."| s0
     s4 -->|"A DeepResult that says whether the goal was met, with the..."| s6
     s5 -->|"One signal: proceed, redirect, answer_now, escalate_deep or..."| s6
-    s7 -->|"Each seat's candidates, researched and dated this week"| s9
+    s7 -->|"The names of the registry's areas whose research is older..."| s9
     s8 -->|"Days since the date, or the combined freshness reading with..."| s7
     s9 -->|"Seats whose wording is data, whose arms are current and..."| s6
-    s10 -->|"An integration as a catalog entry, with its connection..."| s9
+    s10 -->|"The share, from 0 to 1, of the area's hub connections that..."| s9
     s11 -->|"Per-area checks and a combined score"| s10
-    s12 -->|"The stored cards, and the cards matching a query or a tag"| s16
+    s12 -->|"The id of an added card, a card or nothing for an id, the..."| s16
     s13 -->|"The findings, one per claim the evidence does not support..."| s6
-    s14 -->|"The text a model answers to one prompt at a tier"| s1
-    s14 -->|"The text a model answers to one prompt at a tier"| s3
+    s14 -->|"The text a model answers to the prompt"| s1
+    s14 -->|"The text a model answers to the prompt"| s3
     s15 -->|"Text, a plan or a list of models"| s4
     s15 -->|"Text, a plan or a list of models"| s5
     s15 -->|"Text, a plan or a list of models"| s14
@@ -168,8 +168,8 @@ flowchart LR
     s16 -->|"The cards a task needs, in one rendered view with their ids"| s6
     s17 -->|"An assembled context view and the ids of the cards it drew..."| s16
     s18 -->|"Cards in the card-store record shape (grouping, summary..."| s16
-    s19 -->|"Hits for a query: title, link and snippet per hit"| s0
-    s19 -->|"Hits for a query: title, link and snippet per hit"| s3
+    s19 -->|"A response of hits (title, link, snippet, date, passages..."| s0
+    s19 -->|"A response of hits (title, link, snippet, date, passages..."| s3
 ```
 
 ## Implementations

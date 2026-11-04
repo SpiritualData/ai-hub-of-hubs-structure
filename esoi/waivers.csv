@@ -1,15 +1,8 @@
 rule,path,reason
-S26,card-store,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,stay-current,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,connect-any-integration,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,reason-and-answer,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,model-call,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
 S24,search-backend:searxng,Not measured: no credential (SEARXNG_URL is not set and public instances are not used). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,search-backend:brave,Not measured: no credential (no Brave key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,search-backend:serper,Not measured: no credential (no Serper key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,search-backend:tavily,Not measured: no credential (no Tavily key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
-S26,know-the-world,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
-S26,search-backend,"The interface fields (parameters, inputs, outputs, effects) of this solution are not written yet; the metric and its offline component are."
 S24,context-assembler:hybrid,"Not measured: embedding budget not authorized. The arm shares the vector arm's embedded index, and embedding a corpus needs a person's authorization. Wired in evaluation/context_assembler/score.py."
 S24,context-assembler:composite,"Not measured: embedding budget not authorized. The arm shares the vector arm's embedded index, and embedding a corpus needs a person's authorization. Wired in evaluation/context_assembler/score.py."
 S24,act-in-the-world:acp_deep_runner,Not measured: its agent binary (claude-agent-acp) is not installed on the measuring machine and no global tool is installed for a measurement. The arm needs a model-backed agent binary to attempt the file-edit goals.
