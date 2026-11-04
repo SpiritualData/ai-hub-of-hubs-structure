@@ -32,5 +32,6 @@ gap,call_a_model:anthropic,,,,,,"The Anthropic account is capped until 2026-11-0
 gap,context_assembler:hybrid,,,,,,Embedding the corpus was not authorized for the public stage.,
 gap,context_assembler:composite,,,,,,Embedding the corpus was not authorized for the public stage.,
 gap,search_backend,,,,,,The arm needs a key or a self-hosted instance that is not set where we measure.,
+gap,cards_from_files,,,,,,The three builders are built and their cases are written; the metric's stages have not been run under the metric run policy.,
 gap,context_assembler_papers:composite,,,,,,"Not run yet; bm25, vector and hybrid were run.",
 gap,model_quality_aime:deepseek_v4_pro,,,,,,Stopped after 3 problems: its estimated full run would have broken the USD 2.50 cap.,

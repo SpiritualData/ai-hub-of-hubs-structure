@@ -13,6 +13,6 @@ S26,search-backend,"The interface fields (parameters, inputs, outputs, effects) 
 S24,context-assembler:hybrid,"Not measured: embedding budget not authorized. The arm shares the vector arm's embedded index, and embedding a corpus needs a person's authorization. Wired in evaluation/context_assembler/score.py."
 S24,context-assembler:composite,"Not measured: embedding budget not authorized. The arm shares the vector arm's embedded index, and embedding a corpus needs a person's authorization. Wired in evaluation/context_assembler/score.py."
 S24,act-in-the-world:acp_deep_runner,Not measured: its agent binary (claude-agent-acp) is not installed on the measuring machine and no global tool is installed for a measurement. The arm needs a model-backed agent binary to attempt the file-edit goals.
-S24,cards-from-files:per_file_symbols,Not built yet: recorded in step 5b with the component.
-S24,cards-from-files:graphify_files,Not built yet: recorded in step 5b with the component.
+S24,cards-from-files:per_file_symbols,Not run: the arm is built (hubofhubs/recall/cards_from_files.py) and its stages wait for the metric run policy.
+S24,cards-from-files:graphify_files,Not run: the arm is built (hubofhubs/recall/cards_from_graphify.py) and its stages wait for the metric run policy.
 S10,cards-from-files:unmeasured,Pending decision: llm_topic_cards is what production runs today and has no recorded row yet; its one and whole stages run under the metric run policy in step 5b.

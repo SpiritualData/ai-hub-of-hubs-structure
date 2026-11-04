@@ -4,7 +4,7 @@ Interchangeable components for an LLM application (model calls, web search, retr
 are picked by recorded evals on shared cases. Built for and used by [Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner).
 
 ```bash
-pip install "hubofhubs[web,gemini] @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@v0.2.0"
+pip install "hubofhubs[web,gemini,bm25] @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@v0.2.0"
 ```
 
 ```pycon
@@ -21,7 +21,7 @@ Next:
 2. Override only what differs: `arms={"search-backend": "serper"}`, `options={...}` or `provided={"card-store": obj}`.
 3. Pin the defaults with `lock="esoi.lock.json"`, made by `esoi lock`.
 
-The whole hub needs a free Gemini key (`GEMINI_API_KEY`, from https://aistudio.google.com/apikey). A call that cannot run yet raises `esoi.entry.Pending` naming the exact key or install.
+The whole hub needs a free Gemini key (`GEMINI_API_KEY`, from https://aistudio.google.com/apikey) and the `bm25` extra named in the install line, which the default context assembler uses. A call that cannot run yet raises `esoi.entry.Pending` naming the exact key or install.
 
 Compared with LangChain, LlamaIndex and others: [compared](docs/explanation/compared.md). Terms: [glossary](docs/explanation/glossary.md).
 
@@ -98,8 +98,7 @@ Named areas and implementations with no recorded run, and why. `esoi leaderboard
 - **`act-in-the-world`**, arms with no run: `acp_deep_runner` (file_edit_goals). The agent binary it needs is not installed where we measure.
 - **`context-assembler`**, arms with no run: `hybrid`, `composite`. Embedding the corpus was not authorized for the public stage.
 - **`context-assembler`**, arms with no run: `composite` (context_assembler_papers). Not run yet; bm25, vector and hybrid were run.
-- **`cards-from-files`**, arms with no run: `llm_topic_cards`. No run is recorded yet.
-- **`cards-from-files`**, arms with no run: `per_file_symbols`, `graphify_files`. Not built yet: recorded in step 5b with the component.
+- **`cards-from-files`**, arms with no run: `llm_topic_cards`, `per_file_symbols`, `graphify_files`. The three builders are built and their cases are written; the metric's stages have not been run under the metric run policy.
 - **`search-backend`**, arms with no run: `searxng`, `brave`, `serper`, `tavily`. The arm needs a key or a self-hosted instance that is not set where we measure.
 <!-- unmeasured:end -->
 
