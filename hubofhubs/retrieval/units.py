@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 import math
 import posixpath
 import re
@@ -72,6 +73,11 @@ class Corpus:
     digest: str
     size_bytes: int = 0
     history: List[Mapping[str, object]] = field(default_factory=list)
+    meta: Dict[str, Dict[str, object]] = field(default_factory=dict)
+
+    def meta_of(self, path: str) -> Mapping[str, object]:
+        """The optional metadata of a file (see ``ITEM_META``); empty when the corpus carries none for it."""
+        return getattr(self, "meta", {}).get(path, {})
 
     def neighbours(self, path: str) -> Set[str]:
         return self.links.get(path, set())
@@ -227,17 +233,54 @@ def describe(path: str, text: str, idf: Mapping[str, float], linked: Iterable[st
     return " ".join([path.replace("/", " ")] + heads + names + scored + [posixpath.splitext(posixpath.basename(l))[0] for l in sorted(linked)][:12])
 
 
-def digest_of(files: Mapping[str, str], history: Sequence[Mapping[str, object]], unit: str) -> str:
+# ---- optional item metadata -----------------------------------------------------------------------------------------------------------------
+
+# A file (any item: a message, a note, a record field, a commit) MAY carry metadata in ``meta[path]``; an arm that ignores it works unchanged.
+ITEM_META = {
+    "kind": "what the item is: message, note, file, commit, record_field, ...",
+    "author_role": "who wrote it relative to the request: requester, other_person, assistant, system",
+    "timestamp": "when it was written or last changed (ISO 8601), so an arm can compute its age relative to the request",
+    "affinity_tags": "its home groupings, '<kind>:<id>' (hubofhubs.recall.affinity_tags): a project, a repository, a topic",
+    "scope_tags": "who may see it (hubofhubs.recall.scope_tags): a hard fence, read by the source meter's out-of-scope count",
+}
+# A request MAY carry the same vocabulary: ``timestamp`` (when it is asked), ``affinity_tags`` (its focus) and ``scope_tags`` (what it may read).
+
+
+def parse_time(stamp: object) -> Optional[float]:
+    """Seconds since the epoch of an ISO 8601 date or date-time (a trailing Z is UTC; no zone reads as UTC); None when it is absent or unreadable."""
+    import datetime
+    text = str(stamp or "").strip()
+    if not text:
+        return None
+    try:
+        when = datetime.datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=datetime.timezone.utc)
+    return when.timestamp()
+
+
+def age_days(item_stamp: object, request_stamp: object) -> Optional[float]:
+    """Days from the item to the request (positive: the item is older); None when either time is unknown."""
+    a, b = parse_time(item_stamp), parse_time(request_stamp)
+    return None if a is None or b is None else (b - a) / 86400.0
+
+
+def digest_of(files: Mapping[str, str], history: Sequence[Mapping[str, object]], unit: str, meta: Optional[Mapping[str, Mapping[str, object]]] = None) -> str:
     h = hashlib.sha256(unit.encode())
     for path in sorted(files):
         h.update(path.encode())
         h.update(hashlib.sha256(files[path].encode()).digest())
     for commit in history:
         h.update(str(commit.get("commit", commit.get("subject", ""))).encode())
+    if meta:     # absent metadata leaves the digest of a corpus without it unchanged
+        h.update(json.dumps({p: meta[p] for p in sorted(meta)}, sort_keys=True, default=str).encode())
     return h.hexdigest()[:16]
 
 
-def build_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object]] = (), unit: str = "chunk") -> Corpus:
+def build_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object]] = (), unit: str = "chunk",
+                 meta: Optional[Mapping[str, Mapping[str, object]]] = None) -> Corpus:
     """Cut ``files`` into units and attach the links and priors. ``unit`` is ``chunk`` (natural boundaries) or ``file`` (whole files)."""
     known = set(files)
     links = import_links(files)
@@ -257,23 +300,25 @@ def build_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object
             units.append(u)
             by_file[path].append(u.index)
     return Corpus(files=dict(files), units=units, by_file=dict(by_file), links=links, cochange=cochange_counts(history, known),
-                  recency=recency_of(history, known), descriptors=descriptors, digest=digest_of(files, history, unit),
-                  size_bytes=sum(len(t.encode()) for t in files.values()), history=list(history))
+                  recency=recency_of(history, known), descriptors=descriptors, digest=digest_of(files, history, unit, meta),
+                  size_bytes=sum(len(t.encode()) for t in files.values()), history=list(history),
+                  meta={p: dict(m) for p, m in (meta or {}).items() if p in known})
 
 
-def cached_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object]] = (), unit: str = "chunk", folder: Optional[str] = None) -> Corpus:
+def cached_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object]] = (), unit: str = "chunk", folder: Optional[str] = None,
+                  meta: Optional[Mapping[str, Mapping[str, object]]] = None) -> Corpus:
     """``build_corpus`` kept on disk by the digest of its inputs, so a rerun over the same files and history skips the cutting and tokenizing."""
     import pickle
     import tempfile
     from pathlib import Path
-    digest = digest_of(files, history, unit)
+    digest = digest_of(files, history, unit, meta)
     path = Path(folder or Path(tempfile.gettempdir()) / "hubofhubs_retrieval") / f"corpus_{digest}.pkl"
     if path.is_file():
         try:
             return pickle.loads(path.read_bytes())
         except Exception:  # noqa: BLE001  an unreadable cache is rebuilt
             pass
-    corpus = build_corpus(files, history, unit)
+    corpus = build_corpus(files, history, unit, meta)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(pickle.dumps(corpus))
     return corpus

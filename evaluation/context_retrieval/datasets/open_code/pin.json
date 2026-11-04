@@ -1,0 +1,35 @@
+{
+ "repos": {
+  "httpx": {
+   "url": "https://github.com/encode/httpx",
+   "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "package": "httpx",
+   "licence": "BSD-3-Clause",
+   "licence_file": "LICENSE.md",
+   "licence_sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+  },
+  "httpcore": {
+   "url": "https://github.com/encode/httpcore",
+   "commit": "10a658221deb38a4c5b16db55ab554b0bf731707",
+   "package": "httpcore",
+   "licence": "BSD-3-Clause",
+   "licence_file": "LICENSE.md",
+   "licence_sha256": "fdcb59154c74cbaba16a11242f7740bea9f23d6feb5547917d8c5f94a80392a5"
+  },
+  "starlette": {
+   "url": "https://github.com/encode/starlette",
+   "commit": "0f08970e5cce0aec4fc1cea7447c262d741795eb",
+   "package": "starlette",
+   "licence": "BSD-3-Clause",
+   "licence_file": "LICENSE.md",
+   "licence_sha256": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf"
+  }
+ },
+ "files_sha256": "f214311847a012ef7456e45cdd6c0515e8dcd3eb324b45718cd14367edc147f1",
+ "cases_sha256": "8c437de212c0c4a0b77242f2223f67fdb01a5d4750e79e00e47b39e5089df3b7",
+ "history_sha256": "37284eba51b2278c46f477a4fc751c88f7ee1424b61797685d01c4a1ad806158",
+ "cases": 95,
+ "history_commits": 321,
+ "oldest_case_date": "2020-04-29",
+ "files": 185
+}

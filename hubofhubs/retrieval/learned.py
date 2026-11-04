@@ -47,7 +47,11 @@ class LearnedRerank(Retriever):
             queries += 1
         self.trained_on = queries
         if queries < 20 or sum(labels) < 20:
-            raise ValueError(f"learned_rerank needs a history of at least 20 commits that changed two or more files of the corpus; got {queries}")
+            if corpus.history:
+                raise ValueError(f"learned_rerank needs a history of at least 20 commits that changed two or more files of the corpus; got {queries}")
+            self.model, self.trained_on = None, 0       # no labelled history at all (a corpus of conversations): the fixed weights of the feature reranker
+            self.coefficients = {}
+            return
         self.model = LogisticRegression(C=self.regularisation, max_iter=2000, class_weight="balanced").fit(np.array(rows), np.array(labels))
         self.coefficients = dict(zip(FEATURES, (round(float(w), 3) for w in self.model.coef_[0])))
 
@@ -55,6 +59,9 @@ class LearnedRerank(Retriever):
         import numpy as np
         c = Candidates(self.hybrid, query, self.corpus)
         matrix = np.array([r[:RECENT] + [0.0] + r[RECENT + 1:] for r in c.matrix])
+        if self.model is None:
+            from .fusion import RERANK_WEIGHTS
+            return dict(zip(c.pool, (sum(w * f for w, f in zip(RERANK_WEIGHTS, row)) for row in c.matrix)))
         return dict(zip(c.pool, (float(s) for s in self.model.decision_function(matrix)))) if len(matrix) else {}
 
     def index_bytes(self) -> int:

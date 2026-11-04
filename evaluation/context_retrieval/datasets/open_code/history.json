@@ -1,0 +1,3474 @@
+{
+ "rule": "every commit older than the oldest case, its files in the corpus",
+ "commits": [
+  {
+   "commit": "4c01117dd21acc0448f3e7f464aaa743fd8cffce",
+   "date": "2020-04-15",
+   "subject": "Move types definitions to a dedicated module",
+   "files": [
+    "httpx/httpx/_api.py",
+    "httpx/httpx/_auth.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_types.py",
+    "httpx/httpx/_utils.py"
+   ]
+  },
+  {
+   "commit": "5829ecb648f4b53611ae7d6d9ae6df0babf2cfae",
+   "date": "2020-04-10",
+   "subject": "Implement streaming multipart uploads",
+   "files": [
+    "httpx/httpx/_utils.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "3046e920ea899c95987a7b912dee0cafcb6630ce",
+   "date": "2020-04-08",
+   "subject": "Httpcore interface",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/httpx/__version__.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_exceptions.py",
+    "httpx/httpx/_models.py",
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "631ba97635262fc72556a1638bac42cc843fe2ea",
+   "date": "2020-04-08",
+   "subject": "Revert \"Add content-length header for empty bytestream (#866)\"",
+   "files": [
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_requests.py"
+   ]
+  },
+  {
+   "commit": "1c9b852783f065db1b495b587c1c986246355198",
+   "date": "2020-03-29",
+   "subject": "Improve type hinting for `HTTPError.request`",
+   "files": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_exceptions.py"
+   ]
+  },
+  {
+   "commit": "8f400c269eddeb1f8fc4d63776d20bfde8217f56",
+   "date": "2020-03-29",
+   "subject": "Drop usage of `AnyStr`",
+   "files": [
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_types.py",
+    "httpx/httpx/_utils.py"
+   ]
+  },
+  {
+   "commit": "939f3ce7ce43d11f3a9829dabaa292b3a906b56d",
+   "date": "2020-03-28",
+   "subject": "Add content-length header for empty bytestream",
+   "files": [
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_requests.py"
+   ]
+  },
+  {
+   "commit": "707e54c48415e98224ca74e67809a5593b41b03d",
+   "date": "2020-03-02",
+   "subject": "Enable NO_PROXY environment variable support",
+   "files": [
+    "httpx/httpx/_client.py",
+    "httpx/tests/client/test_proxies.py"
+   ]
+  },
+  {
+   "commit": "53804173bb734ce94d13d1b34c0ebaab46abd8c3",
+   "date": "2020-02-27",
+   "subject": "Drop backend parameter on AsyncClient",
+   "files": [
+    "httpx/httpx/_client.py",
+    "httpx/tests/client/test_async_client.py"
+   ]
+  },
+  {
+   "commit": "efe9f61bc2f047574c7b78bbd3d00ca74f930196",
+   "date": "2020-02-24",
+   "subject": "Drop RedirectLoop exception",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_exceptions.py",
+    "httpx/tests/__init__.py",
+    "httpx/tests/client/test_redirects.py"
+   ]
+  },
+  {
+   "commit": "b3db9ff0b6554ed3a48ff912682f4a7d10c3f3f8",
+   "date": "2020-02-10",
+   "subject": "Add Auth.requires_response_body attribute",
+   "files": [
+    "httpx/httpx/_auth.py",
+    "httpx/httpx/_client.py",
+    "httpx/tests/client/test_auth.py"
+   ]
+  },
+  {
+   "commit": "82dc6f32f864d26677df8fc61249a7fc74c687e8",
+   "date": "2020-01-28",
+   "subject": "Switch to private module names",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/models/test_url.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "ee37a762ef6378ed16681a3452f494a5640d98de",
+   "date": "2020-01-08",
+   "subject": "Reintroduce sync API.",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_wsgi.py"
+   ]
+  },
+  {
+   "commit": "12dd157feaa26a3cd9fbf933e127fefb2ddd8404",
+   "date": "2020-01-07",
+   "subject": "Public Auth API",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/models/test_requests.py"
+   ]
+  },
+  {
+   "commit": "2b92a78c41544da0891d2c42c7e2a28174783c57",
+   "date": "2020-01-07",
+   "subject": "Drop `Origin` from public API",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/models/test_url.py"
+   ]
+  },
+  {
+   "commit": "f17ab37b2f19e075b35546fe00766e7985462aae",
+   "date": "2020-01-07",
+   "subject": "Prep for introducing SyncClient",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "e19bd9bc4bf5849650a3847232a4b1353600635e",
+   "date": "2020-01-06",
+   "subject": "Dispatcher -> AsyncDispatcher",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "6ac49dacdd96f474467d276d2ff1b63edc382684",
+   "date": "2020-01-06",
+   "subject": "Drop `run` and `run_in_threadpool`",
+   "files": [
+    "httpx/tests/concurrency.py",
+    "httpx/tests/conftest.py"
+   ]
+  },
+  {
+   "commit": "910aa9094c4dde3516f38086da30adf52127ba49",
+   "date": "2020-01-03",
+   "subject": "Repurpose RedirectBodyUnavailable as RequestBodyUnavailable",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_redirects.py"
+   ]
+  },
+  {
+   "commit": "f5eaec7ab3ac6207e03dd007fa30ac740ea1606a",
+   "date": "2020-01-02",
+   "subject": "More coverage improvements",
+   "files": [
+    "httpx/tests/concurrency.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "b8394f1e00d165544e315ee10ad67c8322ac15ae",
+   "date": "2020-01-01",
+   "subject": "Bump coverage",
+   "files": [
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "e284b84bf9365c8c10a681140a72066980e0da9d",
+   "date": "2019-12-29",
+   "subject": "Rename Client to AsyncClient (with compat synonym)",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_properties.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_asgi.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_timeouts.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "f9d18a87585bf5775bbdbe354319b5bc50d241be",
+   "date": "2019-12-29",
+   "subject": "Rename 'read/close' to 'aread/aclose' on Response",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "d0427bead03790599acee0d16ae4e3c92b93b25d",
+   "date": "2019-12-21",
+   "subject": "Clean up 'backend' fixture",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "56c8edaf666d55264aedeed65ffa9eee5246869b",
+   "date": "2019-12-21",
+   "subject": "Make 'request' non-optional on responses",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "e34df7a7a19b5ebdbad59a0b7e1a54b4f011811b",
+   "date": "2019-12-20",
+   "subject": "Rename `concurrency` directory to `backends`",
+   "files": [
+    "httpx/tests/concurrency.py",
+    "httpx/tests/conftest.py"
+   ]
+  },
+  {
+   "commit": "cee1fccaca1701c39901c2c9663fcaa081075b2d",
+   "date": "2019-12-20",
+   "subject": "Use Streams API for both requests and responses.",
+   "files": [
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "5ee512d803d1d6b49dc171e1114f0075618de78e",
+   "date": "2019-12-20",
+   "subject": "Fix Host header and HSTS when the default port is explicitly included in URL",
+   "files": [
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/models/test_url.py"
+   ]
+  },
+  {
+   "commit": "8d4f18250022a8823f16006993900228e216146b",
+   "date": "2019-12-18",
+   "subject": "Added RequestContent",
+   "files": [
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/test_content.py"
+   ]
+  },
+  {
+   "commit": "ab41a5d5c39627dfae8d31584e30183c28525b71",
+   "date": "2019-12-07",
+   "subject": "Refactor tests in the light of backend auto-detection",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/concurrency.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "ec40d04382093d75ae18a2f7de2f1178a90a27e6",
+   "date": "2019-12-06",
+   "subject": "Add aiter methods on response",
+   "files": [
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/models/test_responses.py"
+   ]
+  },
+  {
+   "commit": "d15dc0b1f8e775f3debc09ff0228f5ca56eab322",
+   "date": "2019-12-06",
+   "subject": "Tighten up top-level API to only expose public API",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/concurrency.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/models/test_url.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "8d8ea8bbbafcbd73840fa2b17a406eb485f11f9f",
+   "date": "2019-12-05",
+   "subject": "Add Client.stream() method.",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "fc95c7e71e87b0e53f6ad3744458df9c9ff62ac7",
+   "date": "2019-12-05",
+   "subject": "stream -> stream_bytes, raw -> stream_raw",
+   "files": [
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/models/test_responses.py"
+   ]
+  },
+  {
+   "commit": "2f54b200deda274fe71ca678419142329111d6f7",
+   "date": "2019-12-05",
+   "subject": "Allow default+override timeout style",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "c033ed1b6513759de0c473962f1f597af4be04b3",
+   "date": "2019-12-04",
+   "subject": "TimeoutConfig -> Timeout",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "30229f16527882305d75ff2877c5b8831f6dc638",
+   "date": "2019-12-02",
+   "subject": "Better HTTP/2 defaults.",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "12d00b238e837a96271d7b07b8c3b456bd82fe0c",
+   "date": "2019-12-02",
+   "subject": "Minor test fixes",
+   "files": [
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "248aa580a1931840acb1dfc22524f2ad71d63b61",
+   "date": "2019-11-30",
+   "subject": "Add Response.stream_lines",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "364378a814981044484ea68960be7860e75740f0",
+   "date": "2019-11-29",
+   "subject": "Pool timeouts should be on the TimeoutConfig, not PoolLimits",
+   "files": [
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "206c5372a60cb2511cf5ac39c963ff76953c569f",
+   "date": "2019-11-27",
+   "subject": "Drop sync",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_asgi.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_timeouts.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "7a96a2c896a6561b4571aa2fd79a1b0ba0d296a0",
+   "date": "2019-11-19",
+   "subject": "Add support for unix domain sockets",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/conftest.py"
+   ]
+  },
+  {
+   "commit": "08069e9368e1da5088173bde65c083ecbec92b96",
+   "date": "2019-11-06",
+   "subject": "Add DEBUG logs of HTTP requests",
+   "files": [
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "a0282569d5f74bb6ef7a8f5e88ac37257acbe6f2",
+   "date": "2019-10-01",
+   "subject": "Make HTTPError importable from the top-level",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py"
+   ]
+  },
+  {
+   "commit": "05f5dc26de7ed2c1b3ceeba0f2b873fcefc5907a",
+   "date": "2019-09-29",
+   "subject": "Get test suite back to ~100% line coverage",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/client/test_queryparams.py",
+    "httpx/tests/models/test_queryparams.py"
+   ]
+  },
+  {
+   "commit": "e62e5c3758b10a8830c751acbe588d7b572a9957",
+   "date": "2019-09-23",
+   "subject": "Add debug logs to ASGIDispatch",
+   "files": [
+    "httpx/tests/models/test_headers.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "c9810a79d9c61583165e9aa237d1ac039086f3a8",
+   "date": "2019-09-23",
+   "subject": "Add support for SSL_CERT_FILE and SSL_CERT_DIR",
+   "files": [
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "08355c62f56b899af15967906aa45392cd45dbdd",
+   "date": "2019-09-21",
+   "subject": "Add trio concurrency backend",
+   "files": [
+    "httpx/tests/concurrency.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "b0fa0859a8954edf7aaa5e4d64d85bd16765cd23",
+   "date": "2019-09-20",
+   "subject": "Configure Proxy from Client",
+   "files": [
+    "httpx/tests/client/test_proxies.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "05ac1176791b5bd4b76cc82a2c23a89b9fed5dbf",
+   "date": "2019-09-18",
+   "subject": "Add `.elapsed` onto Response objects tracking how long a request took.",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "57c27cac36f9ca28201e26e35ae4f79be2051a8e",
+   "date": "2019-09-15",
+   "subject": "Implement HTTPProxy dispatcher",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/models/test_url.py"
+   ]
+  },
+  {
+   "commit": "fd3b69d2aac4f3625405ad87664fc9a93dc9af45",
+   "date": "2019-09-10",
+   "subject": "Add DigestAuth middleware",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_auth.py"
+   ]
+  },
+  {
+   "commit": "08edfac37dbe94faf5b99f09d62cadf608d010e0",
+   "date": "2019-09-08",
+   "subject": "Add `build_request` to `Client`",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/conftest.py"
+   ]
+  },
+  {
+   "commit": "40e6e8c99da395ccfa338b89ae412695397728b2",
+   "date": "2019-09-01",
+   "subject": "Refactor client functionality into middleware",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_redirects.py"
+   ]
+  },
+  {
+   "commit": "e34d2806731f918fd6f7230f80fd4301e4c05419",
+   "date": "2019-09-01",
+   "subject": "Add server.url property in tests",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_timeouts.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "a46462764e89bbcf2ac9587e11296a171cef8306",
+   "date": "2019-08-31",
+   "subject": "Tighten up response.next()",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_redirects.py"
+   ]
+  },
+  {
+   "commit": "994403bec920c923a6c3970215e75d6a99385e0c",
+   "date": "2019-08-29",
+   "subject": "Serve test server in thread",
+   "files": [
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_api.py"
+   ]
+  },
+  {
+   "commit": "9e420a5c348f8f05124a0918e229acb8bf88acec",
+   "date": "2019-08-27",
+   "subject": "Automatically convert Client.cookies and Client.headers on set",
+   "files": [
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_properties.py"
+   ]
+  },
+  {
+   "commit": "3674058ff74f43b127b97900a9f0b93a5a4b7953",
+   "date": "2019-08-25",
+   "subject": "Parametrize tests with concurrency backend",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/concurrency.py",
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_asgi.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "c1ec1c33cddc683101ffb046dfb418a9a62cf12b",
+   "date": "2019-08-20",
+   "subject": "Response.protocol -> Response.http_version",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py"
+   ]
+  },
+  {
+   "commit": "b343ee4a70f24937f21ee7a4667c7d9bc48b6753",
+   "date": "2019-08-20",
+   "subject": "Add Client(http_versions=...) support",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "a770102fd2d6c2410c028522ab04fe34c2662a66",
+   "date": "2019-08-20",
+   "subject": "Added http_versions to dispatch interface",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "cad9c035008bafd32cb47c50b07c5bfe7868f0f3",
+   "date": "2019-08-16",
+   "subject": "Added links property to BaseResponse",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "af907e85e175541289768e61ad21511cfa3ec1b7",
+   "date": "2019-08-14",
+   "subject": "Implement Response.stream_text()",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "80dc3e274e8a797b305baa5005128c6d47cf8f3f",
+   "date": "2019-08-13",
+   "subject": "Use nox for automation and CI",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/models/test_url.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "95dad247b531489f4cf18ac6d8daacf9c4906d18",
+   "date": "2019-08-13",
+   "subject": "Remove \"Host\" header on redirects if URL origin has changed",
+   "files": [
+    "httpx/httpx/__init__.py",
+    "httpx/tests/client/test_headers.py",
+    "httpx/tests/client/test_redirects.py"
+   ]
+  },
+  {
+   "commit": "92fbe5fd87143e67cc22a54d69a5d3b3e75abea3",
+   "date": "2019-08-06",
+   "subject": "Added base class HTTPError with request/response attribute",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py"
+   ]
+  },
+  {
+   "commit": "9142a893ffa2d399add134a42cf72915fa92d0d2",
+   "date": "2019-08-01",
+   "subject": "Move HSTS preload checking to client",
+   "files": [
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/models/test_url.py"
+   ]
+  },
+  {
+   "commit": "919e8d3f9b634f61c2abdf786610df36d6cd3a82",
+   "date": "2019-08-01",
+   "subject": "added netrc support",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "7e9110b9784a085899ad7f6516c8666561007b1f",
+   "date": "2019-07-28",
+   "subject": "Add additional flake8 plugins",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/models/test_url.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "2d09d5b36c108f7d669c13e87e0958a1833a6422",
+   "date": "2019-07-19",
+   "subject": "Renaming -> httpx",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_cookies.py",
+    "httpx/tests/models/test_headers.py",
+    "httpx/tests/models/test_queryparams.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/models/test_url.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_asgi.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_status_codes.py",
+    "httpx/tests/test_timeouts.py",
+    "httpx/tests/test_utils.py",
+    "httpx/tests/test_wsgi.py"
+   ]
+  },
+  {
+   "commit": "c1044cab84124072c15a17332216d3e5ae440f7f",
+   "date": "2019-07-18",
+   "subject": "Start using flake8, fix lint issues",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_asgi.py",
+    "httpx/tests/test_multipart.py",
+    "httpx/tests/test_wsgi.py"
+   ]
+  },
+  {
+   "commit": "ba83e29aee162c16b3ba8e4ee0629e88bf4ecaeb",
+   "date": "2019-07-16",
+   "subject": "Support client cert passwords, new TLS options",
+   "files": [
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "5442006a41f94a3e41186910d7a6e8546adf0f89",
+   "date": "2019-07-11",
+   "subject": "Encoding detection in Response.json",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_utils.py"
+   ]
+  },
+  {
+   "commit": "fe1f9ed1193e8824c9f1041117758741dd34600e",
+   "date": "2019-07-03",
+   "subject": "Minor tweaks in line with requests behavior",
+   "files": [
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/test_api.py"
+   ]
+  },
+  {
+   "commit": "f9e3ad4c162945a04ecc0f96a2156eca5ab39886",
+   "date": "2019-06-23",
+   "subject": "Fixed response repr.",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/models/test_responses.py"
+   ]
+  },
+  {
+   "commit": "bb8697011d1b7f525131e11226818fef399c0f78",
+   "date": "2019-06-18",
+   "subject": "Support WSGI and ASGI apps.",
+   "files": [
+    "httpx/tests/test_asgi.py",
+    "httpx/tests/test_wsgi.py"
+   ]
+  },
+  {
+   "commit": "56a79432065f2c9052dd0dd7ddbcf63a24f915b1",
+   "date": "2019-06-17",
+   "subject": "Int status codes",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_status_codes.py"
+   ]
+  },
+  {
+   "commit": "6a44b05e4dd062b1ee318ff472122d095b2565f9",
+   "date": "2019-06-17",
+   "subject": "Multipart support",
+   "files": [
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_multipart.py"
+   ]
+  },
+  {
+   "commit": "c9747aa35731991de2965f23cc047b7d4ea33af9",
+   "date": "2019-06-12",
+   "subject": "http3",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_cookies.py",
+    "httpx/tests/models/test_headers.py",
+    "httpx/tests/models/test_queryparams.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/models/test_url.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_decoders.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "0cbf3c75819a176bf2812e72eee4829bf387cc96",
+   "date": "2019-06-10",
+   "subject": "Sync or Async dispatch",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "95740415db889e68255bf4839ab158dc54e02785",
+   "date": "2019-05-23",
+   "subject": "Work on bringing API into parity with `requests`.",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "5a63d313f0838f81be28f04a2cdf63daadb039c5",
+   "date": "2019-05-17",
+   "subject": "Add json interfaces",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py"
+   ]
+  },
+  {
+   "commit": "2116d447775815d5747fdf3b81a78bb41bfbf16e",
+   "date": "2019-05-17",
+   "subject": "Add response.json()",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/client/test_redirects.py"
+   ]
+  },
+  {
+   "commit": "a284d0b2ea1867f9fe7fbd985d8ff4b00c9afdc2",
+   "date": "2019-05-17",
+   "subject": "Tweak test naming",
+   "files": [
+    "httpx/tests/client/__init__.py",
+    "httpx/tests/models/__init__.py"
+   ]
+  },
+  {
+   "commit": "feae0a895deea88726388a49e22d9e7536330edc",
+   "date": "2019-05-17",
+   "subject": "Cookie support",
+   "files": [
+    "httpx/tests/models/test_cookies.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "4a3325f87b01d768cd33b4ed79f81c1f8869f33b",
+   "date": "2019-05-16",
+   "subject": "Initial pass at cookie support",
+   "files": [
+    "httpx/tests/client/test_cookies.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "3ed08857eec8b6bfcf8b8f6c1c696fafd3bd6b95",
+   "date": "2019-05-16",
+   "subject": "Drop unused interface on ConnectionStore",
+   "files": [
+    "httpx/tests/client/test_auth.py",
+    "httpx/tests/conftest.py"
+   ]
+  },
+  {
+   "commit": "4fe6bc058aaef044b875320a0ad0ccf3576de775",
+   "date": "2019-05-16",
+   "subject": "Add 100-continue test",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/conftest.py"
+   ]
+  },
+  {
+   "commit": "2e9ab2e904abe5feec2ccb74eecb7f874bde5ba9",
+   "date": "2019-05-15",
+   "subject": "Include URL.__hash__ in test",
+   "files": [
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_url.py"
+   ]
+  },
+  {
+   "commit": "8d53257915dcacae6f8b9505688a7407810a606d",
+   "date": "2019-05-14",
+   "subject": "Add tests for config",
+   "files": [
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "fe5a3b875b6f10a2f7769c791c8a85ba1ed18b8b",
+   "date": "2019-05-13",
+   "subject": "Add tests for additional HTTP methods on async client",
+   "files": [
+    "httpx/tests/client/test_async_client.py",
+    "httpx/tests/client/test_client.py"
+   ]
+  },
+  {
+   "commit": "8627b628639f10de88d6760b736095b066f8e7d3",
+   "date": "2019-05-13",
+   "subject": "Switch to sync-by-default",
+   "files": [
+    "httpx/tests/client/test_client.py",
+    "httpx/tests/client/test_redirects.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "e99ffbd7acbffb0d4eddd912ad3a30571f62a499",
+   "date": "2019-05-08",
+   "subject": "Increase test coverage",
+   "files": [
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py"
+   ]
+  },
+  {
+   "commit": "e1ecb360d9839d31d2c5645ee4021af7dbb97800",
+   "date": "2019-05-01",
+   "subject": "Carefulness with encoding everywhere",
+   "files": [
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/models/test_url.py"
+   ]
+  },
+  {
+   "commit": "302fe93df9fa44218b5089379fb9f3236169dec0",
+   "date": "2019-04-30",
+   "subject": "Use rfc3986 for URL handling",
+   "files": [
+    "httpx/tests/models/test_requests.py",
+    "httpx/tests/models/test_responses.py"
+   ]
+  },
+  {
+   "commit": "4c5511313c792cc3eee4a300b40e9ff6f98ba57f",
+   "date": "2019-04-30",
+   "subject": "Response.content",
+   "files": [
+    "httpx/tests/models/test_headers.py",
+    "httpx/tests/models/test_responses.py",
+    "httpx/tests/test_decoders.py"
+   ]
+  },
+  {
+   "commit": "d7619a92a8fac98fa2136f262c003dd3d89df179",
+   "date": "2019-04-30",
+   "subject": "Finessing interface",
+   "files": [
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "fab6fcd397e43e97286ba284816762cf6e7e55c9",
+   "date": "2019-04-26",
+   "subject": "Adapters",
+   "files": [
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_config.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "275443c4a11290a00497340dc8b572289ee05c75",
+   "date": "2019-04-23",
+   "subject": "Add client.request",
+   "files": [
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "be774980cea4cadb205a53a6bda3a2d40bfd9086",
+   "date": "2019-04-22",
+   "subject": "Refactor to request = Client.send(request)",
+   "files": [
+    "httpx/tests/test_api.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "148818c212a0c486e39dba0d56993564ffb08857",
+   "date": "2019-04-17",
+   "subject": "Add PoolTimeout, and timeout tests",
+   "files": [
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_timeouts.py"
+   ]
+  },
+  {
+   "commit": "ba1953cdd01f48a9847ad8481dd8786415a8c58a",
+   "date": "2019-04-06",
+   "subject": "Linting",
+   "files": [
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_api.py"
+   ]
+  },
+  {
+   "commit": "86263fa073aa97cc4f11026e9ca81bef12599f1b",
+   "date": "2019-04-06",
+   "subject": "Connections",
+   "files": [
+    "httpx/tests/conftest.py",
+    "httpx/tests/test_api.py"
+   ]
+  },
+  {
+   "commit": "291ba377925a0e6aa67ee2de566337b361facbff",
+   "date": "2020-04-08",
+   "subject": "More typing fixes",
+   "files": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ]
+  },
+  {
+   "commit": "e08d48b86824a8f39b0938c25f18791e1bfd2732",
+   "date": "2020-04-01",
+   "subject": "Bring dev tools up to par with httpx",
+   "files": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ]
+  },
+  {
+   "commit": "704bd5b3a1c1864dc16958a4004265310f048700",
+   "date": "2020-03-05",
+   "subject": "Include pool config on HTTPProxy classes",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ]
+  },
+  {
+   "commit": "e64cefba98c62ba89ae7d7989e2f2fbdc86315a4",
+   "date": "2020-03-03",
+   "subject": "Made ConnectionPool interface private",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ]
+  },
+  {
+   "commit": "13bcdb1dd17753d12f2f70f314c1f9e041a9808c",
+   "date": "2020-03-02",
+   "subject": "Async close rename",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/trio.py"
+   ]
+  },
+  {
+   "commit": "8f1f226a0d07a1be04145cdbc673b453e0da0a29",
+   "date": "2020-02-27",
+   "subject": "Add _add_to_pool, _remove_from_pool",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ]
+  },
+  {
+   "commit": "9a10c68e40fe5ac0db3d6fc14d38517590fc6971",
+   "date": "2020-02-26",
+   "subject": "Add keepalive-expiry",
+   "files": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ]
+  },
+  {
+   "commit": "6325cb9ffaddb81e16c5daf044f52e6017a81ac8",
+   "date": "2020-02-25",
+   "subject": "Add max_keepalive",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ]
+  },
+  {
+   "commit": "fe0156f009e85a9268a6a18048351e3042838813",
+   "date": "2020-02-25",
+   "subject": "Add max_connections",
+   "files": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ]
+  },
+  {
+   "commit": "6c35d44d455d80570ef403045505fb4e79ddd2d9",
+   "date": "2020-02-25",
+   "subject": "Shared connection acquiry for HTTP/2",
+   "files": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ]
+  },
+  {
+   "commit": "4aeafef90f008f394d75ea8df743d60a7f0c742e",
+   "date": "2020-02-25",
+   "subject": "Support connections as negotiated HTTP/1.1 or HTTP/2",
+   "files": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ]
+  },
+  {
+   "commit": "5b3b42b2f64a9a812e8c01bbdcf138cd811fb1d1",
+   "date": "2020-02-25",
+   "subject": "Handle `NoAvailableStreamIDError` case",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ]
+  },
+  {
+   "commit": "21199eb2370edb1781e734b23f78d555bd8760fe",
+   "date": "2020-02-24",
+   "subject": "Reusable HTTP/2 connections.",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ]
+  },
+  {
+   "commit": "ce8a38f832c39e57f03001b24bf367f63b05e97d",
+   "date": "2020-02-24",
+   "subject": "Initial HTTP/2 support",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ]
+  },
+  {
+   "commit": "2e7cfebe96bbacf1b9f863afa0df506c2d0698bc",
+   "date": "2020-02-10",
+   "subject": "Proxy support",
+   "files": [
+    "httpcore/httpcore/__init__.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ]
+  },
+  {
+   "commit": "7555f57489c45a5120b58c16ff2905352c1bb68d",
+   "date": "2020-02-07",
+   "subject": "Keep PENDING state during connect",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ]
+  },
+  {
+   "commit": "4171cae9000c0ba4c1cce0a742d3ae28e2b3f348",
+   "date": "2020-02-07",
+   "subject": "Drop request_finished on http connections",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ]
+  },
+  {
+   "commit": "ea0eb3a5b48a9d3179b4d3adbd30ec5fa242ee54",
+   "date": "2020-02-06",
+   "subject": "Thread safety around connection state in sync case",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ]
+  },
+  {
+   "commit": "066ebcfc0ad455f5ea1d4021771036411f9642ed",
+   "date": "2020-02-06",
+   "subject": "Add `ConnectionState.CLOSED`",
+   "files": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ]
+  },
+  {
+   "commit": "a24431c03778ce2f3ae68ec28ae3fa1a8af87ba3",
+   "date": "2020-02-06",
+   "subject": "Initial implementation",
+   "files": [
+    "httpcore/httpcore/__init__.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_backends/__init__.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ]
+  },
+  {
+   "commit": "9a1c85a6bd78d24088177854316c9b1c9381a44c",
+   "date": "2020-01-30",
+   "subject": "Initial design document",
+   "files": [
+    "httpcore/httpcore/__init__.py",
+    "httpcore/httpcore/_async/__init__.py",
+    "httpcore/httpcore/_sync/__init__.py"
+   ]
+  },
+  {
+   "commit": "773fe0a353726b29f30314e3fcee144d20518721",
+   "date": "2020-04-23",
+   "subject": "Switch to a more lenient cookie parsing method",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "9440fd704058775215495f1d69584dfbfe3e96cc",
+   "date": "2020-04-21",
+   "subject": "Add a UUID convertor",
+   "files": [
+    "starlette/starlette/convertors.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "678f87da74232a76feb7db9b273a6b23fa56d92d",
+   "date": "2020-04-15",
+   "subject": "Version 0.13.3",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "2ded04c8fe9dd5bf2a905b6b0be38f99ac3fff24",
+   "date": "2020-04-15",
+   "subject": "allow exceptions in middleware to surface when using TestClient",
+   "files": [
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "5b1348a7cafc3f7ab259c4b0490924e57f43e40a",
+   "date": "2020-03-27",
+   "subject": "Fix safelisted CORS headers implementation",
+   "files": [
+    "starlette/starlette/middleware/cors.py",
+    "starlette/tests/middleware/test_cors.py"
+   ]
+  },
+  {
+   "commit": "c63f22fecbdcb308fe55c3c824f8a798f7208f10",
+   "date": "2020-03-18",
+   "subject": "ignore malformed cookie instead of raising an exception",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "00c365a4fb851a3d68a23238bab993c94a2e27a3",
+   "date": "2020-02-25",
+   "subject": "SameSite support for cookies",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "78f7095d7e254940fe242e72055f3d0d7883b405",
+   "date": "2020-02-20",
+   "subject": "Websocket iter",
+   "files": [
+    "starlette/starlette/concurrency.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "38b9ee339a210618a195d9a9811af2520aae82c1",
+   "date": "2020-02-20",
+   "subject": "Add iter_text, iter_bytes, iter_json to WebSocket",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "1e406655fe82a5b89c3b39884a1de5779d457eee",
+   "date": "2020-02-17",
+   "subject": "Allow non latin-1 filename in FileResponse",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "508ab752b4f9fb4f5c414eec56f204459297825d",
+   "date": "2020-01-29",
+   "subject": "Fix slash redirects",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "20973f2ed31f4fe7faca988f8590fe3eaf70541e",
+   "date": "2020-01-15",
+   "subject": "Security patch: Updating CORS origin regex to use a full regex match",
+   "files": [
+    "starlette/starlette/middleware/cors.py",
+    "starlette/tests/middleware/test_cors.py"
+   ]
+  },
+  {
+   "commit": "7bcb07786a538596441c563af7ea935c810c5336",
+   "date": "2020-01-07",
+   "subject": "typing: remove unused \"type: ignore\" comments",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/testclient.py"
+   ]
+  },
+  {
+   "commit": "00e830080499c47a3e72f1b4adb2678758e388ee",
+   "date": "2019-12-17",
+   "subject": "Ignore gnarly type check in WSGI implementation",
+   "files": [
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "d2b65c3c99eb9a64679c45c1eaadecbdd3211904",
+   "date": "2019-12-17",
+   "subject": "support Path in Config",
+   "files": [
+    "starlette/starlette/config.py",
+    "starlette/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "4152533ce43fcaf29d6d8efcabce4f628523c02f",
+   "date": "2019-11-20",
+   "subject": "Tweak app signatures",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "7f8cd041734be3b290cdb178e99c37e1d5a19b41",
+   "date": "2019-11-13",
+   "subject": "Version 0.13",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/middleware/__init__.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "91eefb2af3940364b051138bed47319e189d31be",
+   "date": "2019-11-04",
+   "subject": "Support app configuration on initialization.",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/middleware/__init__.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/middleware/test_base.py"
+   ]
+  },
+  {
+   "commit": "cefe8dcab1e8ca77b4193875036390565e519e5b",
+   "date": "2019-11-01",
+   "subject": "Fix url_for with double mounts",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "2a8c045822238764ef5b2dd70d8148b201e5e4d2",
+   "date": "2019-11-01",
+   "subject": "Include 'root_path' when returning URLs from request.url_for",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "1ea45ad54954e6af78a640acc4cd7cc665beb901",
+   "date": "2019-11-01",
+   "subject": "Resolve latest mypy issues",
+   "files": [
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py"
+   ]
+  },
+  {
+   "commit": "32fafb7307c1317487dadfe82006579e73f6b6cd",
+   "date": "2019-10-15",
+   "subject": "Add HTTPException.__repr__",
+   "files": [
+    "starlette/starlette/exceptions.py",
+    "starlette/tests/test_exceptions.py"
+   ]
+  },
+  {
+   "commit": "5845c08b22016897ec9baf619c739fe580c6a7f1",
+   "date": "2019-10-15",
+   "subject": "Enable flag parameters",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "b2551a3d1787157c7ee53861223940f5eb588bd9",
+   "date": "2019-10-02",
+   "subject": "Update for new mypy",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/testclient.py"
+   ]
+  },
+  {
+   "commit": "a46747377b0b60ea4fd8386f52a058a7950ea0a3",
+   "date": "2019-09-02",
+   "subject": "Add support for server push",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "bc7f4bd3d35b2b06272328e1e701edcf51d48cd2",
+   "date": "2019-08-27",
+   "subject": "Application state",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/requests.py"
+   ]
+  },
+  {
+   "commit": "58016bd9187fb592eff4e21c431bb9fc8d7fb86a",
+   "date": "2019-07-29",
+   "subject": "utf-8 is better for default multipart encoding",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "ca65c9b5cae56910cc1025f76271424d8bdd4e8b",
+   "date": "2019-07-04",
+   "subject": "Fix pytest.raises usage",
+   "files": [
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "5355003aefd48b06552aaaf2ed066d93eae95648",
+   "date": "2019-07-04",
+   "subject": "include_query_params / replace_query_params / remove_query_params",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "bd9d11964ca02b98c39bd7f2fe62b480576fd2a7",
+   "date": "2019-07-04",
+   "subject": "URL.add_query_params and URL.replace_query_params",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "3f702238247c99089eac76880965b32bd050f3cb",
+   "date": "2019-06-25",
+   "subject": ":recycle: Make 307 the default redirect status code",
+   "files": [
+    "starlette/starlette/middleware/httpsredirect.py",
+    "starlette/starlette/responses.py",
+    "starlette/tests/middleware/test_https_redirect.py"
+   ]
+  },
+  {
+   "commit": "f2e9115c0596519141b201a1025311d80e9a8730",
+   "date": "2019-06-24",
+   "subject": "allow use of characters out of latin-1 in multipart form values and filename",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "99057dd53821d1beb3d38f3e6736880bc4c34f12",
+   "date": "2019-06-19",
+   "subject": "request.scope and request.state",
+   "files": [
+    "starlette/starlette/middleware/base.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "93bf4f3f922fcfd2862e14fc5a649168f31bf158",
+   "date": "2019-06-17",
+   "subject": "Address some PR feedbacks.",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "1654a48fa4f6edf5a4fc5dab118ef53ae0ef2ead",
+   "date": "2019-06-17",
+   "subject": "Allow None fore JSONResponse",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "c85c13d229787543db2197b44e0c17a8a62aa9ba",
+   "date": "2019-06-17",
+   "subject": "Applying linter.",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "0d6bf72a6db58d3c1c4d22b4e9797de79e64bb63",
+   "date": "2019-06-16",
+   "subject": "More tests and yet it is still 99%.",
+   "files": [
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "81b0089ab6a9b27bbf0e6775003fae1d777e8f67",
+   "date": "2019-06-15",
+   "subject": "Begin work in making sure `request.state` is preserved between middlewares.",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "3226ad726f953e18e8262efdeb7b0f98a3ab535b",
+   "date": "2019-06-13",
+   "subject": "remove unused code",
+   "files": [
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py"
+   ]
+  },
+  {
+   "commit": "e0e2621add2ef2aff24b4cb706932a61467b2658",
+   "date": "2019-05-13",
+   "subject": "flake8 fixes",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/config.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/middleware/test_wsgi.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_authentication.py",
+    "starlette/tests/test_formparsers.py",
+    "starlette/tests/test_schemas.py",
+    "starlette/tests/test_staticfiles.py",
+    "starlette/tests/test_templates.py"
+   ]
+  },
+  {
+   "commit": "d6830cacca5b4439d483fe0ea1ca33a90af5bc1d",
+   "date": "2019-05-13",
+   "subject": "lint: forgot to run black locally",
+   "files": [
+    "starlette/tests/middleware/test_cors.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "dd9a2c485463ba8a95bf0cf04409f0f82140dcb0",
+   "date": "2019-04-25",
+   "subject": "fix formatting errors",
+   "files": [
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "e1e8404bc24c4df0ae6da4d0cad5d2f740dadb37",
+   "date": "2019-04-22",
+   "subject": "Send lifespan.startup.failed if exception occurs during startup",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py"
+   ]
+  },
+  {
+   "commit": "7414099e65bcd35e9696fe7e436e911d99c52b76",
+   "date": "2019-04-03",
+   "subject": "Make StreamingResponse compatible with normal iterators",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/concurrency.py",
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "3226c7c6f4fe8ea8339052696bdc417d44d11524",
+   "date": "2019-04-02",
+   "subject": "Don't block the event loop in WebSocketTestSession",
+   "files": [
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "1d42dd8b599fab0eaed12b46911e8c5b32d6fee4",
+   "date": "2019-03-27",
+   "subject": "Replace mutable \"allowed_hosts\" argument of TrustedHostMiddleware with None",
+   "files": [
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/tests/middleware/test_trusted_host.py"
+   ]
+  },
+  {
+   "commit": "9de146c4498950285dc8bbd0d00e901f7243c654",
+   "date": "2019-03-20",
+   "subject": "Add `StaticFiles(html=True)`",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "4d5708e4688ff4d89888224668d9435b3e9e7000",
+   "date": "2019-03-19",
+   "subject": "ASGI 3",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/middleware/authentication.py",
+    "starlette/starlette/middleware/base.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/middleware/gzip.py",
+    "starlette/starlette/middleware/httpsredirect.py",
+    "starlette/starlette/middleware/sessions.py",
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/starlette/templating.py",
+    "starlette/starlette/testclient.py",
+    "starlette/starlette/types.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/middleware/test_errors.py",
+    "starlette/tests/test_background.py",
+    "starlette/tests/test_exceptions.py",
+    "starlette/tests/test_formparsers.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_staticfiles.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "5d0075736f001bdc6bee047e2c881dc2014d995e",
+   "date": "2019-03-18",
+   "subject": "Fix for Mount('/', ...)",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "3eb2b13ab0860d1d690914283ea8330aa384bb65",
+   "date": "2019-03-08",
+   "subject": "config: cast=bool: handle \"0\" and \"1\" as False/True",
+   "files": [
+    "starlette/starlette/config.py",
+    "starlette/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "09fc5982889712f96e09d8a225e2bc4a9d15f9cf",
+   "date": "2019-02-26",
+   "subject": "Staticfiles packages",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/__init__.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "e77a289748de4bd8f277f498aadd35cd0fdefaa6",
+   "date": "2019-02-25",
+   "subject": "Fix lower case header value preflight request",
+   "files": [
+    "starlette/starlette/middleware/cors.py",
+    "starlette/tests/middleware/test_cors.py"
+   ]
+  },
+  {
+   "commit": "92dddea776ef8015e4bfd6c4c46438d2f46eb9ed",
+   "date": "2019-02-20",
+   "subject": "Reinstate Lifespan Middleware, for Responder",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "82c610559c627462aa87a32f4ea1a6f63ad5d609",
+   "date": "2019-02-19",
+   "subject": "Request state",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "e396f079a5b9a9610ad7d241f17f2e34fd4283ad",
+   "date": "2019-02-19",
+   "subject": "Version 0.11",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/applications.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_config.py",
+    "starlette/tests/test_datastructures.py",
+    "starlette/tests/test_schemas.py",
+    "starlette/tests/test_templates.py"
+   ]
+  },
+  {
+   "commit": "590c77e03df0be328a3805d4c06d5151ae23a9a3",
+   "date": "2019-02-19",
+   "subject": "Improvements to schema generation",
+   "files": [
+    "starlette/starlette/schemas.py",
+    "starlette/tests/test_schemas.py"
+   ]
+  },
+  {
+   "commit": "06adecd6ed9c3a5156758c05c5d552c25767df78",
+   "date": "2019-02-19",
+   "subject": "Lifespan route instance",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "e3543aa08e3143b404135f69d99720d5acd4e882",
+   "date": "2019-02-18",
+   "subject": "Add `routes` argument to Mount",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "879bbcd41a2515aa0e78fd0bce08374222b2b337",
+   "date": "2019-02-18",
+   "subject": "Seperate SchemaGenerator from Application",
+   "files": [
+    "starlette/starlette/schemas.py",
+    "starlette/tests/test_schemas.py"
+   ]
+  },
+  {
+   "commit": "b3ad311bbcb750f8136d68cec4770d56e88831f0",
+   "date": "2019-02-18",
+   "subject": "Template component",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/templating.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_templates.py"
+   ]
+  },
+  {
+   "commit": "5abdc2e4fb62efe740c8ab00e9c9ec0f70d936eb",
+   "date": "2019-02-18",
+   "subject": "Fix imports",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_templates.py"
+   ]
+  },
+  {
+   "commit": "37ee43efc27ae320f43279c843a75bc0df34eae1",
+   "date": "2019-02-18",
+   "subject": "Add Jinja2Templates component",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/templating.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_templates.py"
+   ]
+  },
+  {
+   "commit": "e8dff17ed4d9669b6ffb0725b1165539d00d22ba",
+   "date": "2019-02-14",
+   "subject": "Move to 'databases' instead of built-in DatabaseMiddleware",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_https_redirect.py"
+   ]
+  },
+  {
+   "commit": "204d1b596f285c037a811a3ed48158965e7ec4a6",
+   "date": "2019-02-11",
+   "subject": "Don't drop explict port on HTTPS redirects",
+   "files": [
+    "starlette/starlette/middleware/httpsredirect.py",
+    "starlette/tests/middleware/test_https_redirect.py"
+   ]
+  },
+  {
+   "commit": "96d50862e4468addc736ec0c4665055d6564ef95",
+   "date": "2019-02-01",
+   "subject": "Add content_type attribute to UploadFile",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "84f3488f60206378f580a36ccd868556ebd32c1b",
+   "date": "2019-01-30",
+   "subject": "Routing for Hosts and Subdomains",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "a4ebd7c47428246895a23929cc7e3ae5e8aca03a",
+   "date": "2019-01-25",
+   "subject": "Datastructure cleanups",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "1ee194739f8867b9c29cbdcc81e10c9dcf32557b",
+   "date": "2019-01-25",
+   "subject": "WebSockets now default to sending JSON using text dataframes",
+   "files": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/testclient.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_endpoints.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "16db18f519a42071204fe5aae5fb73109c2f9f72",
+   "date": "2019-01-25",
+   "subject": "WebSocket support for auth",
+   "files": [
+    "starlette/starlette/authentication.py",
+    "starlette/starlette/middleware/authentication.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_authentication.py"
+   ]
+  },
+  {
+   "commit": "88bd2a2ce94d3dbbd15712fe7ee792d976aa6f3e",
+   "date": "2019-01-25",
+   "subject": "Fix typo in scope check for 'websocket'",
+   "files": [
+    "starlette/starlette/authentication.py",
+    "starlette/starlette/middleware/authentication.py"
+   ]
+  },
+  {
+   "commit": "25cbba15c087547052126e60634234c1aa5ef9f1",
+   "date": "2019-01-25",
+   "subject": "MultiDict",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "d5a6dd3a2ecc91eae7a8f0e5c9876cfa0b3d51b7",
+   "date": "2019-01-24",
+   "subject": "Add FormData.close()",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py"
+   ]
+  },
+  {
+   "commit": "b786f68d60a3eec6292a10eafd58363c10130090",
+   "date": "2019-01-23",
+   "subject": "Add ImmutableMultiDict",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "c1b312ff73e2c783eacf9788952a0af4f9765495",
+   "date": "2019-01-22",
+   "subject": "Use urlsplit, not urlparse",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "10b61f6cc28ec233ad3265b2822ae713dc26a68d",
+   "date": "2019-01-22",
+   "subject": "Multi item form data",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_datastructures.py",
+    "starlette/tests/test_formparsers.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "774cb40a1750723f6ad6fa8fb778978b41227317",
+   "date": "2019-01-22",
+   "subject": "Ensure query params behavior matches standard mappings.",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "0c3a1e4a604a21bf615b0d9d93ad2070ff77edb7",
+   "date": "2019-01-22",
+   "subject": "f-strings everywhere",
+   "files": [
+    "starlette/starlette/authentication.py",
+    "starlette/starlette/config.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "24ac0b44fe03970f12bb48f5ca99dc86cea8cc25",
+   "date": "2019-01-18",
+   "subject": "Session cookie expires",
+   "files": [
+    "starlette/starlette/middleware/sessions.py",
+    "starlette/tests/middleware/test_session.py"
+   ]
+  },
+  {
+   "commit": "2f51a38266473a555b1a25633896c150090a1c4f",
+   "date": "2019-01-16",
+   "subject": "Minor cleanups",
+   "files": [
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "c220994eb14bce6181526961018e4ecb87cba80e",
+   "date": "2019-01-15",
+   "subject": "Add `request.is_disconnected()`",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "6488650855b6f9de84ef0d334bf3d3277fb67d98",
+   "date": "2019-01-14",
+   "subject": "Apply URL escaping to form encoded key names.",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "93a124805fc8724e312cf6716ea526428962cddf",
+   "date": "2019-01-14",
+   "subject": "Drop body from responses on HEAD requests",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "a59b5295ef6fa3a1228df14194a4df55c201631e",
+   "date": "2019-01-10",
+   "subject": "Flexible requires decorator",
+   "files": [
+    "starlette/starlette/authentication.py",
+    "starlette/tests/test_authentication.py"
+   ]
+  },
+  {
+   "commit": "6cd0b2b787e01f202caed914cf0099b9f06fa4fb",
+   "date": "2019-01-10",
+   "subject": "Remove unused imports, with 'autoflake'",
+   "files": [
+    "starlette/starlette/authentication.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py",
+    "starlette/starlette/websockets.py"
+   ]
+  },
+  {
+   "commit": "7300d873d371bbdb98feb8c2606ee92fd9a6f6ff",
+   "date": "2019-01-10",
+   "subject": "Support `@requires` as a method decorator",
+   "files": [
+    "starlette/starlette/authentication.py",
+    "starlette/tests/test_authentication.py"
+   ]
+  },
+  {
+   "commit": "a290bbf1a9471a35ec32fbffc77b6d47ffb787cf",
+   "date": "2019-01-04",
+   "subject": "Fix multi field forms parsing after already having read the body",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "81d3697ba591215100a465b4e539cfd8291710ed",
+   "date": "2018-12-26",
+   "subject": "fix population of content-type and content-length headers",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "155c8dd62586f0a7aa1d5ffbf960026ebc6692a2",
+   "date": "2018-12-18",
+   "subject": "Add on_error parameter to AuthenticationMiddleware",
+   "files": [
+    "starlette/starlette/middleware/authentication.py",
+    "starlette/tests/test_authentication.py"
+   ]
+  },
+  {
+   "commit": "5fcf4945e60e873be0bc55b3c705ed2da0385755",
+   "date": "2018-12-18",
+   "subject": "Fix mixed uploaded files and data",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "eb316509b5b11fa28079ccf2367bab5c185782e6",
+   "date": "2018-12-17",
+   "subject": "Add security flags to session cookie",
+   "files": [
+    "starlette/starlette/middleware/sessions.py",
+    "starlette/tests/middleware/test_session.py"
+   ]
+  },
+  {
+   "commit": "fe2b926009e39884496dd7bb8578890155accb95",
+   "date": "2018-12-14",
+   "subject": "Add `CommaSeparatedStrings` datatype",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "96c09044e832d5fba189928d8ea5611474da69e6",
+   "date": "2018-12-14",
+   "subject": "Add BackgroundTasks for multiple jobs. Support GraphQL background tasks.",
+   "files": [
+    "starlette/starlette/background.py",
+    "starlette/tests/test_background.py"
+   ]
+  },
+  {
+   "commit": "a2613494a475ed113f821ee1c48bc45556911f6c",
+   "date": "2018-12-14",
+   "subject": "Add request.client",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "c440a1c4626d2140a88a8f2653e9fffafe13815b",
+   "date": "2018-12-13",
+   "subject": "Add HTTPConnection. Base class for both Request and WebSocket.",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/starlette/websockets.py"
+   ]
+  },
+  {
+   "commit": "4745fb1aef14daee419cc2a958f0341dd205e0dc",
+   "date": "2018-12-13",
+   "subject": "Add TemplateResponse.",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "256b6245f719e1e61c42ed2796ebab1212f30b05",
+   "date": "2018-12-07",
+   "subject": "Version 0.9.7",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/middleware/authentication.py",
+    "starlette/tests/test_authentication.py"
+   ]
+  },
+  {
+   "commit": "ce9556acce964cde68ae12e3adfb99b8ee8027a8",
+   "date": "2018-12-07",
+   "subject": "Authentication",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/authentication.py",
+    "starlette/starlette/middleware/authentication.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_authentication.py"
+   ]
+  },
+  {
+   "commit": "147c47deb10e21ab845134e86744c2d8daacd754",
+   "date": "2018-12-06",
+   "subject": "Version 0.9.5",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/middleware/sessions.py"
+   ]
+  },
+  {
+   "commit": "08af34763d50746f539723918bef41eb6a6a01fa",
+   "date": "2018-12-05",
+   "subject": "Version 0.9.4",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/config.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_config.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "5712d950176fdfb939e0f555b3dd406f06b2a412",
+   "date": "2018-12-05",
+   "subject": "Add Secret",
+   "files": [
+    "starlette/starlette/config.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "d2512656e3689651d13b9925d4e29dedcf8f907a",
+   "date": "2018-12-05",
+   "subject": "Add Environ, DatabaseURL",
+   "files": [
+    "starlette/starlette/config.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_config.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "1a20c63f140611106b1c2f10fd1c413f6c2b6886",
+   "date": "2018-12-05",
+   "subject": "Add Config()",
+   "files": [
+    "starlette/starlette/config.py",
+    "starlette/tests/test_config.py"
+   ]
+  },
+  {
+   "commit": "26d46d5a6e5c0c5e11bba109fa6e6ce3a5824969",
+   "date": "2018-12-04",
+   "subject": "Hide password in URL.__repr__",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "16e8b87f72d8102dff3fc96ae96d2d9d35bbba74",
+   "date": "2018-11-28",
+   "subject": "Version 0.9.1",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "632150d73e0d2d3fda5e238750230eba7b8ee024",
+   "date": "2018-11-28",
+   "subject": "Lifespan as middleware",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_applications.py"
+   ]
+  },
+  {
+   "commit": "ed16b7df21174892095a0665c1e816a2a2ed306e",
+   "date": "2018-11-23",
+   "subject": "Asyncio cleanups",
+   "files": [
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_testclient.py"
+   ]
+  },
+  {
+   "commit": "80369c1b859ed327d0cee54c0ab2c54b4a585676",
+   "date": "2018-11-23",
+   "subject": "add tests for chunked requests",
+   "files": [
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "95517b700233a482c125d9632ba21a6c0a4b8cb4",
+   "date": "2018-11-21",
+   "subject": "remove unused imports",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/gzip.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/middleware/test_wsgi.py",
+    "starlette/tests/test_background.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "1e4ce58ec754e088535e5b418f6e5a8228d2cd0d",
+   "date": "2018-11-16",
+   "subject": "Fix incorrect decoding of application/x-www-form-urlencoded request body",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/tests/test_requests.py"
+   ]
+  },
+  {
+   "commit": "14650bfd221b7d4236234bd364d427c35d2b33b6",
+   "date": "2018-11-16",
+   "subject": "URL convertors",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/convertors.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "a0bb1f5f231d8763c570876374c29ce89a83d4be",
+   "date": "2018-11-14",
+   "subject": "Suooprt HTTP 304 for static files.",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "c504323eaf9210d81e45a86ae4be2ec3b2462986",
+   "date": "2018-11-09",
+   "subject": "Default to empty body on responses",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "7455fd1f47bdba1c0273d726fb25f1e6f42596bf",
+   "date": "2018-11-09",
+   "subject": "URL reconstruction fix",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "ce62bdfa51dc5d1c4094dcfacaf18287939c7d40",
+   "date": "2018-11-09",
+   "subject": "Add name to app routes",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "8e30f073f0f3112b6cc491776b1e854204dd9a42",
+   "date": "2018-11-08",
+   "subject": "Do not read file for HEAD method on StaticFiles",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "2ef21f49c9218b8853a5ee21a0522f8b910bea75",
+   "date": "2018-11-08",
+   "subject": "Jinja2",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/applications.py",
+    "starlette/tests/test_templates.py"
+   ]
+  },
+  {
+   "commit": "a7e0af0a9869056a0acb5726daaefb278900113b",
+   "date": "2018-11-08",
+   "subject": "Implement session expiry with configurable maximum age",
+   "files": [
+    "starlette/starlette/middleware/sessions.py",
+    "starlette/tests/middleware/test_session.py"
+   ]
+  },
+  {
+   "commit": "9f3dcb7d2b8556773e0d0bf7fd61311dded2ea35",
+   "date": "2018-11-08",
+   "subject": "Rejig ExceptionMiddleware and ServerErrorMiddleware",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_exceptions.py"
+   ]
+  },
+  {
+   "commit": "150c7092e58cfe527e14b41909b685759c245459",
+   "date": "2018-11-08",
+   "subject": "StaticFiles will check if directory exists upon instantiation",
+   "files": [
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "b686174d0e74fc1f0b61da231f062e50f8c39e68",
+   "date": "2018-11-07",
+   "subject": "Add `async run_in_threadpool(func, *args, **kwargs)`",
+   "files": [
+    "starlette/starlette/background.py",
+    "starlette/starlette/concurrency.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "efecf56735b4fd2d8f4cb5f21984c89d77c1e041",
+   "date": "2018-11-06",
+   "subject": "Add support for name to mount points.",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "3e2e3430d1a08e885325c96205330b13f426fb4c",
+   "date": "2018-11-06",
+   "subject": "Add `@app.middleware(...)` decorator",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/middleware/base.py",
+    "starlette/tests/middleware/test_base.py"
+   ]
+  },
+  {
+   "commit": "3c7573715d4fa81a5e5c921527a466d8f78530c5",
+   "date": "2018-11-05",
+   "subject": "Add www_redirect behavior to TrustedHostsMiddleware",
+   "files": [
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/tests/middleware/test_trusted_host.py"
+   ]
+  },
+  {
+   "commit": "552e0f6f2dfd50c9de83ee9404182dcd2236edfc",
+   "date": "2018-11-05",
+   "subject": "adds background task param to StreamingResponse and FileResponse",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "23c009ca532171282fbc2df1b4c639eb4775f005",
+   "date": "2018-11-05",
+   "subject": "Finesse mount routing",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "5584568f8a71e3db8b5731875172bf8d61351501",
+   "date": "2018-11-01",
+   "subject": "Drop add_graphql_route, in favor of more consistent API style",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "81c4306a3a059775b553514852b0ce770a6fed8f",
+   "date": "2018-11-01",
+   "subject": "Add OpenAPIResponse, API Schema docs, etc...",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/schemas.py",
+    "starlette/tests/test_schemas.py"
+   ]
+  },
+  {
+   "commit": "de010e7796a3ab155c0efbe1a3b995c8cad14870",
+   "date": "2018-11-01",
+   "subject": "Return strings from `url_path_for`",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/schemas.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_schemas.py"
+   ]
+  },
+  {
+   "commit": "96c51c959ae5592194f0b785a424e225cd4f4d3c",
+   "date": "2018-10-30",
+   "subject": "Routing tweaks",
+   "files": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "244916e1ded4286662735a5839509a8c7e3bb82d",
+   "date": "2018-10-29",
+   "subject": "Support clearing sessions",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/middleware/sessions.py",
+    "starlette/tests/middleware/test_session.py"
+   ]
+  },
+  {
+   "commit": "87da226f1c1134c2c3a1b45dc01780ded306a70e",
+   "date": "2018-10-29",
+   "subject": "Session middleware",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/sessions.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_session.py"
+   ]
+  },
+  {
+   "commit": "bcf876c686e0bbd938e3e4e1f9427e18569dede9",
+   "date": "2018-10-29",
+   "subject": "Use isort for consistent import ordering",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/middleware/base.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/gzip.py",
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/starlette/testclient.py",
+    "starlette/starlette/types.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/middleware/test_base.py",
+    "starlette/tests/middleware/test_wsgi.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_background.py",
+    "starlette/tests/test_datastructures.py",
+    "starlette/tests/test_endpoints.py",
+    "starlette/tests/test_exceptions.py",
+    "starlette/tests/test_formparsers.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_staticfiles.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "ee4732f385ba325c35faca2afd51f8f59e66837b",
+   "date": "2018-10-29",
+   "subject": "BaseHTTPMiddleware",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/middleware/base.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/middleware/test_base.py"
+   ]
+  },
+  {
+   "commit": "c047fe4e75a6af4264f34feac230e09d3d272ab6",
+   "date": "2018-10-29",
+   "subject": "Support app.url_path_for and request.url_for",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "8da0f00fe7c78bb9d207bded922a015eb663a46c",
+   "date": "2018-10-29",
+   "subject": "Routing interface",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/applications.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_endpoints.py",
+    "starlette/tests/test_exceptions.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "f53b172f8aadb123bef4997847e903822ccbbcbe",
+   "date": "2018-10-29",
+   "subject": "Domain wildcards for trusted host",
+   "files": [
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/tests/middleware/test_trusted_host.py"
+   ]
+  },
+  {
+   "commit": "cdb08bc644169454aedecb12c75a73e3e0660744",
+   "date": "2018-10-28",
+   "subject": "Drop support for `StaticFile`",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "a32ea0a8e89567b24f3b8cd04847a1b01c9e98f0",
+   "date": "2018-10-26",
+   "subject": "Return an iterator over keys for Headers and QueryParams",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "3ca34ce0a277ce59b5d4e3d0b227caa9c94dee1d",
+   "date": "2018-10-26",
+   "subject": "Support a routing interface for `Router`",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "67b8d7160127c65334e7fe850d8ff6b439415f4b",
+   "date": "2018-10-18",
+   "subject": "Revisit WebSocket status codes",
+   "files": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/status.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "b0763469ff38a300cf2665f77b9e58b02823b6b4",
+   "date": "2018-10-18",
+   "subject": "Support a function-based interface for adding events on LifespanHandler",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/tests/test_applications.py"
+   ]
+  },
+  {
+   "commit": "860fdf6c8b0eb88b9668153fdf2bf0352ec3152a",
+   "date": "2018-10-17",
+   "subject": "Add WSGI middleware",
+   "files": [
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/tests/middleware/test_wsgi.py"
+   ]
+  },
+  {
+   "commit": "2b2c07078cb94009b1612b7559228c4796e3c2f8",
+   "date": "2018-10-17",
+   "subject": "Fix Headers repr",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "4afb143f0207784c4b0d673ef7fbf59babc9a4ad",
+   "date": "2018-10-17",
+   "subject": "Add QueryParams(items=...)",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "6dd6dd6f0a67b17941476bf84d648e3337660505",
+   "date": "2018-10-17",
+   "subject": "Add scope=... arguments to Headers, QueryParams, URL",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/gzip.py",
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_applications.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "eed466abbc7ade71d4f9e240b537584ba7ab4a89",
+   "date": "2018-10-17",
+   "subject": "Add http and websocket status codes with descriptive variables",
+   "files": [
+    "starlette/starlette/status.py",
+    "starlette/tests/test_responses.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "c50460fbb94d5ecdf530a95634297a3db4e601e3",
+   "date": "2018-10-16",
+   "subject": "Add final missing annotations, and enable '--disallow-untyped-defs'",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_applications.py"
+   ]
+  },
+  {
+   "commit": "43fb6764396d10eed82028466f1071c472d5f7cf",
+   "date": "2018-10-16",
+   "subject": "Add missing type annotations",
+   "files": [
+    "starlette/starlette/background.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/requests.py"
+   ]
+  },
+  {
+   "commit": "d05aa0fd1615682f4e6e6ecec9894bd997993e6a",
+   "date": "2018-10-16",
+   "subject": "Missing annotations added on responses module.",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/responses.py"
+   ]
+  },
+  {
+   "commit": "0a86c16a2496db830f9f1c4e0eaf568d7ce51e28",
+   "date": "2018-10-16",
+   "subject": "Adding type annotations",
+   "files": [
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/middleware/gzip.py"
+   ]
+  },
+  {
+   "commit": "300977aa2378e3fb0a62284a1a6a41eed2578d91",
+   "date": "2018-10-16",
+   "subject": "Missing annotations added on applications module",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ]
+  },
+  {
+   "commit": "097152be5ac8c411157011d640148bff3c577fbd",
+   "date": "2018-10-15",
+   "subject": "Add GZip middleware",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/gzip.py",
+    "starlette/tests/middleware/test_gzip.py",
+    "starlette/tests/middleware/test_https_redirect.py",
+    "starlette/tests/middleware/test_trusted_host.py"
+   ]
+  },
+  {
+   "commit": "d05ef2328dc2c5747f9b6749f9e3e835e8693715",
+   "date": "2018-10-15",
+   "subject": "Enable mypy in tests",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/requests.py"
+   ]
+  },
+  {
+   "commit": "77d995d7c85ab06f0496423f96a7b94c7c112950",
+   "date": "2018-10-15",
+   "subject": "Handle server: None and scheme: None cases in URL scope",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "c43a070eedc1f5993d84cd06643920b962761adc",
+   "date": "2018-10-12",
+   "subject": "Form parsing",
+   "files": [
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/requests.py",
+    "starlette/tests/test_formparsers.py"
+   ]
+  },
+  {
+   "commit": "cc09042c1ca5ccac78bf0ff689faa5dcd3e04f3a",
+   "date": "2018-10-10",
+   "subject": "Enable mypy in tests",
+   "files": [
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/testclient.py"
+   ]
+  },
+  {
+   "commit": "58898a729ccc93382073150134348b516195feb7",
+   "date": "2018-10-10",
+   "subject": "Add explicit UJSONResponse",
+   "files": [
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "59c5c24f6ac11ff12e6b22b2f9d61f1c863d412f",
+   "date": "2018-10-10",
+   "subject": "Version 0.3.7",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/middleware/__init__.py"
+   ]
+  },
+  {
+   "commit": "139753f857b7693d20ae8c6a87d325cc553c21e5",
+   "date": "2018-10-09",
+   "subject": "Add support for `app.on_event(\"startup\")` and `app.on_event(\"cleanup\")`.",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "060f0593bc9a9b2edff520ce8ac2ea7116941232",
+   "date": "2018-10-09",
+   "subject": "Push black linting into ./scripts/test",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py"
+   ]
+  },
+  {
+   "commit": "d1ba5d67226f556f1d5d46b7990c19bbbff4695d",
+   "date": "2018-10-06",
+   "subject": "Cookies",
+   "files": [
+    "starlette/starlette/requests.py",
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "c98c15005e88d42bbf19cc5302c5f22e282293f7",
+   "date": "2018-10-05",
+   "subject": "Middleware and CORS support",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/httpsredirect.py",
+    "starlette/starlette/middleware/trustedhost.py"
+   ]
+  },
+  {
+   "commit": "19670ae2cd5ec4a78d610f7ceebbf896fd8fc049",
+   "date": "2018-10-05",
+   "subject": "Middleware",
+   "files": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/httpsredirect.py",
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/tests/test_applications.py"
+   ]
+  },
+  {
+   "commit": "94044e599135f06d076cc8fd97087a3f9c1d6d1c",
+   "date": "2018-10-05",
+   "subject": "Tweaks to URL datastructure",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/responses.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_datastructures.py",
+    "starlette/tests/test_requests.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "d36499526dd93c812e3fbe2d766a1d2147895de9",
+   "date": "2018-10-02",
+   "subject": "Missing annotations added on staticfiles module",
+   "files": [
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "a24ba6655632581969cd3e7c852bdd877606acca",
+   "date": "2018-10-02",
+   "subject": "Type hinting",
+   "files": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/types.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "041381e40c458e17ef51d3e575c458c2c21cefeb",
+   "date": "2018-10-02",
+   "subject": "Missing annotations on websockets module.",
+   "files": [
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "6d2e9f4faecfe7615ee8184182c659e70abb1395",
+   "date": "2018-10-02",
+   "subject": "replace -> replace_components (Avoid clashing with str builtin)",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "7eafe567df1601fa10f8b39aec519d3ba42d3aa1",
+   "date": "2018-10-02",
+   "subject": "Missing annotations added datastructures & requests modules",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py"
+   ]
+  },
+  {
+   "commit": "7c1a1e9dd5bcc0fad5c65ac5cedd33f3fee252a3",
+   "date": "2018-10-02",
+   "subject": "Add support for background tasks",
+   "files": [
+    "starlette/starlette/background.py",
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_background.py"
+   ]
+  },
+  {
+   "commit": "1ce4c89149d6bea8d0ccb1196df0b6037d13aa02",
+   "date": "2018-10-02",
+   "subject": "Class-based websocket handler",
+   "files": [
+    "starlette/starlette/endpoints.py",
+    "starlette/tests/test_endpoints.py"
+   ]
+  },
+  {
+   "commit": "c3fc0cf6ea2c9d29e0b53d3e42d8d6e9c39561e7",
+   "date": "2018-09-17",
+   "subject": "Ensure TestClient sets HTTP reason phrase",
+   "files": [
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_responses.py"
+   ]
+  },
+  {
+   "commit": "78d1829758259b1096021702eb8953116813b032",
+   "date": "2018-09-05",
+   "subject": "Version 0.3",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/responses.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "f4fe0ec312e30e50f7b37cf6d359700630d0d2be",
+   "date": "2018-09-05",
+   "subject": "Name changes",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_exceptions.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_staticfiles.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "67d95fcfa76f98c3ad91ca35a80fcf3333ca3099",
+   "date": "2018-09-04",
+   "subject": "Exception handling",
+   "files": [
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/starlette/testclient.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_exceptions.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "8245768f81d6458bdeca264a98e29c7f48db4127",
+   "date": "2018-08-30",
+   "subject": "Use 405 for Method Not Allowed",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "2519f83765022ffb0c82a96b99024f8e68e90723",
+   "date": "2018-08-28",
+   "subject": "client.wsconnect -> client.websocket_connect",
+   "files": [
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "00a972c7196d05d29fb059b7de79aba3808ca74c",
+   "date": "2018-08-28",
+   "subject": "Add App class",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "cb9fc8746b77793c241c6474488b8a8110b5e01f",
+   "date": "2018-08-27",
+   "subject": "Redirect response",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "6f948e95b4ab90e473a5406c1abfb2c11312b0ea",
+   "date": "2018-08-17",
+   "subject": "WebSockets support",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py",
+    "starlette/starlette/websockets.py",
+    "starlette/tests/test_routing.py",
+    "starlette/tests/test_websockets.py"
+   ]
+  },
+  {
+   "commit": "d1ea71f47e1b60e33133d4dc30a5e5e241b4d355",
+   "date": "2018-07-13",
+   "subject": "MutableHeaders retains insertion order",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "140cf99df92bd7f9ec27ad8c20256d1e74e47fe5",
+   "date": "2018-07-13",
+   "subject": "Add Headers.mutablecopy()",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "e3d090b3597167f7b3a4f76e4bb3c0d3e94be61a",
+   "date": "2018-07-12",
+   "subject": "Black formatting",
+   "files": [
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "43ed5327288e91dd1b526ce8c8e080c86147c584",
+   "date": "2018-07-12",
+   "subject": "Tweak imports and docs",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "755de3fa09b752f8f218e370c910fdf6699eee98",
+   "date": "2018-07-12",
+   "subject": "Black formatting",
+   "files": [
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "6259df6e7a316f48e1610305a78b7018c1694466",
+   "date": "2018-07-12",
+   "subject": "Configuration checks for StaticFiles",
+   "files": [
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "2ed676835288d8e275f7f484481fb58696aebcdf",
+   "date": "2018-07-12",
+   "subject": "Add StaticFile and StaticFiles ASGI applications",
+   "files": [
+    "starlette/starlette/staticfiles.py",
+    "starlette/tests/test_staticfiles.py"
+   ]
+  },
+  {
+   "commit": "2e0bd33f59c9ffa1559bfe84cdfa8513f4b3ab41",
+   "date": "2018-07-11",
+   "subject": "Use getlist, instead of get_list",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "5f194f73bf9d789cb2b1eed3c48243d13f9b0a54",
+   "date": "2018-07-11",
+   "subject": "Add FileResponse",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/__init__.py"
+   ]
+  },
+  {
+   "commit": "4e60c86248268eda5bf12ea5caeb5de2fce76193",
+   "date": "2018-07-10",
+   "subject": "Black formatting",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/testclient.py"
+   ]
+  },
+  {
+   "commit": "704b582d89838127991ae6402ba5659f4af9d996",
+   "date": "2018-07-10",
+   "subject": "Performance improvements",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  },
+  {
+   "commit": "4f80753cf7735b329976d27a0742b94d2aaee7fd",
+   "date": "2018-06-26",
+   "subject": "Version 0.1.3",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "753554b5a8b9ce52157287abfeca080409bb2df5",
+   "date": "2018-06-26",
+   "subject": "More type annotation",
+   "files": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/types.py"
+   ]
+  },
+  {
+   "commit": "2a4955f9939044cea59bd4ceda656fb16e970cc9",
+   "date": "2018-06-25",
+   "subject": "Black",
+   "files": [
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "903e1b2fc5ca09f22912d3fda2fdd212f19d633d",
+   "date": "2018-06-25",
+   "subject": "Add Router, Path, PathPrefix",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/routing.py",
+    "starlette/tests/test_routing.py"
+   ]
+  },
+  {
+   "commit": "5a9fe3f048664eef8f958581c6b7be8f7abf71cc",
+   "date": "2018-06-25",
+   "subject": "Initial commit",
+   "files": [
+    "starlette/starlette/__init__.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/testclient.py",
+    "starlette/tests/test_datastructures.py"
+   ]
+  }
+ ]
+}

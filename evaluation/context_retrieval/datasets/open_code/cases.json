@@ -1,0 +1,1631 @@
+{
+ "rule": "the commit subject (trailing (#N) removed) is the task; it names no path, file, extension or identifier and is not a bump or release; the package files of the commit that are in the corpus are the needed set; history is every older commit of any repository",
+ "cases": [
+  {
+   "id": "GR-starlette-c67ca4ee",
+   "kind": "grouping",
+   "task": "Add HTTP 103 Early Hints support",
+   "needed": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/middleware/base.py",
+    "starlette/starlette/middleware/gzip.py",
+    "starlette/starlette/requests.py"
+   ],
+   "commit": "c67ca4eeef171c679074f4ebc579ee5dbd657aa8",
+   "date": "2026-10-04",
+   "repo": "starlette",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2026-10-04"
+  },
+  {
+   "id": "OT-starlette-e4bd5981",
+   "kind": "topic_open",
+   "task": "Add support for the QUERY HTTP method",
+   "needed": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/schemas.py"
+   ],
+   "commit": "e4bd5981540ee0003deaae69d7f4881f11714b96",
+   "date": "2026-08-30",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2026-08-30"
+  },
+  {
+   "id": "OT-starlette-49e22755",
+   "kind": "topic_open",
+   "task": "Reject malformed Host authorities consistently",
+   "needed": [
+    "starlette/starlette/_utils.py",
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/middleware/httpsredirect.py",
+    "starlette/starlette/middleware/trustedhost.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "49e22755cd4495a11277c25f232510e9af56ea84",
+   "date": "2026-08-26",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2026-08-26"
+  },
+  {
+   "id": "OT-starlette-e6f7ad1a",
+   "kind": "topic_open",
+   "task": "avoid collapsing exception groups from user code",
+   "needed": [
+    "starlette/starlette/_utils.py",
+    "starlette/starlette/middleware/base.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/responses.py"
+   ],
+   "commit": "e6f7ad1ab85efb27ab7910d8007b3f4531f7b083",
+   "date": "2026-06-10",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2026-06-10"
+  },
+  {
+   "id": "OT-starlette-508023b4",
+   "kind": "topic_open",
+   "task": "Support httpx2 in the test client",
+   "needed": [
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/testclient.py"
+   ],
+   "commit": "508023b488b649d97c091eb60da1d8ef3636ee06",
+   "date": "2026-05-25",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2026-05-25"
+  },
+  {
+   "id": "OT-starlette-739ea492",
+   "kind": "topic_open",
+   "task": "Allow async exception handlers to type-check",
+   "needed": [
+    "starlette/starlette/_exception_handler.py",
+    "starlette/starlette/_utils.py",
+    "starlette/starlette/applications.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/middleware/exceptions.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "739ea4928b11d4b4cb2b366ccad11405ef3034c4",
+   "date": "2025-06-13",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2025-06-13"
+  },
+  {
+   "id": "OT-starlette-427a8dcf",
+   "kind": "topic_open",
+   "task": "Fix issue with middleware args passing",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/middleware/__init__.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "427a8dcf357597df27b2509b1ac436caf7708300",
+   "date": "2024-11-14",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2024-11-14"
+  },
+  {
+   "id": "OT-httpx-1805ee0d",
+   "kind": "topic_open",
+   "task": "Graceful upgrade path for 0.28.",
+   "needed": [
+    "httpx/httpx/__init__.py",
+    "httpx/httpx/_api.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_main.py",
+    "httpx/httpx/_transports/default.py",
+    "httpx/httpx/_urls.py"
+   ],
+   "commit": "1805ee0d22f96e2b29f0500dd3076e10020004bf",
+   "date": "2024-11-12",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2024-11-12"
+  },
+  {
+   "id": "GR-httpx-e9cabc8e",
+   "kind": "grouping",
+   "task": "made dependencies on certifi and httpcore only load when required",
+   "needed": [
+    "httpx/httpx/__version__.py",
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_main.py",
+    "httpx/httpx/_transports/default.py"
+   ],
+   "commit": "e9cabc8e1deb6548c5c5e2f453e343d39a2a5321",
+   "date": "2024-10-29",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2024-10-29"
+  },
+  {
+   "id": "GR-httpx-ba2e5121",
+   "kind": "grouping",
+   "task": "Review urlescape percent-safe set, and use + behavior for form spaces.",
+   "needed": [
+    "httpx/httpx/_urlparse.py",
+    "httpx/httpx/_urls.py"
+   ],
+   "commit": "ba2e51215e4e619540f2a24282b84ed8a738e6fd",
+   "date": "2024-10-28",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2024-10-28"
+  },
+  {
+   "id": "OT-starlette-1a6018e0",
+   "kind": "topic_open",
+   "task": "Support python-multipart 0.0.12",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/formparsers.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/schemas.py",
+    "starlette/starlette/templating.py"
+   ],
+   "commit": "1a6018e08a994c78f5c169b8535408259af0f249",
+   "date": "2024-09-29",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2024-09-29"
+  },
+  {
+   "id": "GR-httpcore-accae7b3",
+   "kind": "grouping",
+   "task": "Fix support for connection Upgrade and CONNECT when some data in the stream has been read.",
+   "needed": [
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ],
+   "commit": "accae7b3db6ff603327aae243b1868d91bf886b0",
+   "date": "2024-02-20",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2024-02-20"
+  },
+  {
+   "id": "GR-httpcore-b2de19e5",
+   "kind": "grouping",
+   "task": "Use SSL context for \"wss\" scheme",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_sync/connection.py"
+   ],
+   "commit": "b2de19e594b0ef89521afaa5e6ea9f33cabf3f67",
+   "date": "2024-01-09",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2024-01-09"
+  },
+  {
+   "id": "OT-httpx-f8981f3d",
+   "kind": "topic_open",
+   "task": "Add the 'proxy' parameter and deprecate 'proxies'.",
+   "needed": [
+    "httpx/httpx/_api.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_main.py",
+    "httpx/httpx/_transports/default.py",
+    "httpx/httpx/_types.py"
+   ],
+   "commit": "f8981f3d124f9b8db9073fd5c8afa11acb55a738",
+   "date": "2023-12-11",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-12-11"
+  },
+  {
+   "id": "OT-httpcore-2fcd062d",
+   "kind": "topic_open",
+   "task": "Remove expensive run time type casting",
+   "needed": [
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ],
+   "commit": "2fcd062df71555cc7de55774c6dc137551eb8692",
+   "date": "2023-12-07",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2023-12-07"
+  },
+  {
+   "id": "GR-httpx-87f39f12",
+   "kind": "grouping",
+   "task": "add missing type hints to __init__(...)",
+   "needed": [
+    "httpx/httpx/_auth.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_content.py",
+    "httpx/httpx/_decoders.py",
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_transports/default.py"
+   ],
+   "commit": "87f39f12c9ecdd0ebcd8d017235698e72567e9c7",
+   "date": "2023-11-17",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2023-11-17"
+  },
+  {
+   "id": "GR-starlette-93494a46",
+   "kind": "grouping",
+   "task": "Replace black with ruff formatter",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/middleware/authentication.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "93494a46ee0f2e8b1eeafd12e466ebac15037b41",
+   "date": "2023-11-08",
+   "repo": "starlette",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-11-08"
+  },
+  {
+   "id": "GR-starlette-7349c60a",
+   "kind": "grouping",
+   "task": "Fixed import error when exceptiongroup isn't available",
+   "needed": [
+    "starlette/starlette/_utils.py",
+    "starlette/starlette/middleware/base.py"
+   ],
+   "commit": "7349c60a813972b902a7be6daa7b9916668201ab",
+   "date": "2023-08-25",
+   "repo": "starlette",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-08-25"
+  },
+  {
+   "id": "GR-starlette-e99738b7",
+   "kind": "grouping",
+   "task": "Move exception handling logic to Route",
+   "needed": [
+    "starlette/starlette/_exception_handler.py",
+    "starlette/starlette/middleware/exceptions.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "e99738b719cff9b81a18a3da3862d48753bd477e",
+   "date": "2023-06-07",
+   "repo": "starlette",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-06-07"
+  },
+  {
+   "id": "OT-httpcore-93d7804c",
+   "kind": "topic_open",
+   "task": "Add support for socket options",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "93d7804c3b90cd185a9290bd872488de6c5ce5cf",
+   "date": "2023-05-23",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2023-05-23"
+  },
+  {
+   "id": "GR-httpcore-a174e66e",
+   "kind": "grouping",
+   "task": "Adjust max streams when remote settings change",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "a174e66ec71d450f5a4e4cf9b041afa5b0ff3242",
+   "date": "2023-03-16",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-03-16"
+  },
+  {
+   "id": "OT-starlette-f640241b",
+   "kind": "topic_open",
+   "task": "Fix typing of Lifespan to allow subclasses of Starlette",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/types.py"
+   ],
+   "commit": "f640241b878491c8047c1704098093f36b474c9c",
+   "date": "2023-03-13",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2023-03-13"
+  },
+  {
+   "id": "OT-starlette-92ab71ec",
+   "kind": "topic_open",
+   "task": "Allow returning a State object from lifespans instead of accepting a dict as an argument",
+   "needed": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/types.py"
+   ],
+   "commit": "92ab71ecb03dd1513b4560008328a7ea8e1a62db",
+   "date": "2023-03-09",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2023-03-09"
+  },
+  {
+   "id": "OT-httpx-a6af45ed",
+   "kind": "topic_open",
+   "task": "Use '%20' for encoding spaces in query parameters.",
+   "needed": [
+    "httpx/httpx/_urlparse.py",
+    "httpx/httpx/_urls.py"
+   ],
+   "commit": "a6af45edac51dce888e1e1f0ebf344f126a1c66c",
+   "date": "2023-01-10",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-01-10"
+  },
+  {
+   "id": "GR-httpcore-7eb20224",
+   "kind": "grouping",
+   "task": "Accept http headers up to 100kB",
+   "needed": [
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ],
+   "commit": "7eb20224833b8165d0945d08ac8f714ccb6750b9",
+   "date": "2023-01-05",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2023-01-05"
+  },
+  {
+   "id": "GR-httpcore-b4fd42bf",
+   "kind": "grouping",
+   "task": "Forwarding HTTP proxies should use a fresh connection for every remote host",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "b4fd42bf8e190b69a3365f894613225de203fc70",
+   "date": "2022-12-12",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-12-12"
+  },
+  {
+   "id": "OT-httpcore-52e6832f",
+   "kind": "topic_open",
+   "task": "Remove unnecessary comprehensions",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_models.py",
+    "httpcore/httpcore/_sync/http2.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "52e6832f911aa74b17c9eb6cb0313ba57c0b60da",
+   "date": "2022-11-30",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2022-11-30"
+  },
+  {
+   "id": "OT-httpx-69e13cbc",
+   "kind": "topic_open",
+   "task": "Remove and dissallow unused type ignores",
+   "needed": [
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_content.py",
+    "httpx/httpx/_status_codes.py",
+    "httpx/httpx/_transports/mock.py"
+   ],
+   "commit": "69e13cbc393ee13624d0e4aa4b6f861a95e3f91c",
+   "date": "2022-11-29",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-11-29"
+  },
+  {
+   "id": "OT-httpx-1b4e7fbb",
+   "kind": "topic_open",
+   "task": "Typing: always fill in generic type parameters",
+   "needed": [
+    "httpx/httpx/_auth.py",
+    "httpx/httpx/_main.py",
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_transports/asgi.py",
+    "httpx/httpx/_transports/mock.py",
+    "httpx/httpx/_transports/wsgi.py",
+    "httpx/httpx/_urls.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "1b4e7fbb4825aefa0bce9565af94499bc3ae8c76",
+   "date": "2022-11-29",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-11-29"
+  },
+  {
+   "id": "OT-httpcore-c03eea0f",
+   "kind": "topic_open",
+   "task": "Handle 1xx interim response codes",
+   "needed": [
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_sync/http11.py"
+   ],
+   "commit": "c03eea0fa532d1efdac4f2f3789c491539f72b4a",
+   "date": "2022-11-17",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2022-11-17"
+  },
+  {
+   "id": "GR-httpcore-ce8f872e",
+   "kind": "grouping",
+   "task": "Fix async cancellation behaviour",
+   "needed": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ],
+   "commit": "ce8f872e9bc96675f141c71bd10642a78049cc7a",
+   "date": "2022-11-07",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-11-07"
+  },
+  {
+   "id": "GR-httpx-0ebe9259",
+   "kind": "grouping",
+   "task": "Allow str content for multipart upload files",
+   "needed": [
+    "httpx/httpx/_multipart.py",
+    "httpx/httpx/_types.py"
+   ],
+   "commit": "0ebe9259aca97baf4cadf112b0aa47152bec426c",
+   "date": "2022-10-06",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2022-10-06"
+  },
+  {
+   "id": "OT-httpx-f13ab4d2",
+   "kind": "topic_open",
+   "task": "Replace cgi which will be deprecated in Python 3.11",
+   "needed": [
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "f13ab4d288d0b790f6f1c515a6c0ea45e9615748",
+   "date": "2022-08-25",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-08-25"
+  },
+  {
+   "id": "OT-httpx-1526048c",
+   "kind": "topic_open",
+   "task": "allow setting an explicit multipart boundary via headers",
+   "needed": [
+    "httpx/httpx/_content.py",
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_multipart.py"
+   ],
+   "commit": "1526048c9417ac3c715592cbc9b5947d5779824e",
+   "date": "2022-08-15",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-08-15"
+  },
+  {
+   "id": "OT-starlette-5b058faa",
+   "kind": "topic_open",
+   "task": "Improve detection of async callables",
+   "needed": [
+    "starlette/starlette/_utils.py",
+    "starlette/starlette/authentication.py",
+    "starlette/starlette/background.py",
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/middleware/exceptions.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py"
+   ],
+   "commit": "5b058faa108ebe0e7d8810e84bf88cb37744faf8",
+   "date": "2022-05-28",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2022-05-28"
+  },
+  {
+   "id": "GR-httpx-1c33a285",
+   "kind": "grouping",
+   "task": "Make charset auto-detection optional.",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "1c33a2854e5d18955c8766c5c01e6229716b5b7a",
+   "date": "2022-05-23",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2022-05-23"
+  },
+  {
+   "id": "OT-starlette-589df786",
+   "kind": "topic_open",
+   "task": "Remove compat code for Python < 3.7",
+   "needed": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/status.py"
+   ],
+   "commit": "589df78616bcd8c464a5a8b6e3b4a0fd4f9a4653",
+   "date": "2022-05-01",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2022-05-01"
+  },
+  {
+   "id": "OT-starlette-b314fd94",
+   "kind": "topic_open",
+   "task": "Add docstrings to discourage routing decorator style API",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "b314fd9491a2b9afbfea76cac4d2f8ec42656f93",
+   "date": "2022-02-09",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2022-02-09"
+  },
+  {
+   "id": "OT-httpx-4401d55e",
+   "kind": "topic_open",
+   "task": "Preserve Authorization header on HTTPS redirect (#1850)",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "4401d55ecf0d95be237098b6c73c45420d54d499",
+   "date": "2022-02-09",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-02-09"
+  },
+  {
+   "id": "OT-starlette-6182d0a0",
+   "kind": "topic_open",
+   "task": "fix handling of scope's client in Request",
+   "needed": [
+    "starlette/starlette/datastructures.py",
+    "starlette/starlette/requests.py"
+   ],
+   "commit": "6182d0a0bc7e5817197d2919b18d67f70e3a71d1",
+   "date": "2022-02-01",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2022-02-01"
+  },
+  {
+   "id": "GR-httpcore-7ddb4cab",
+   "kind": "grouping",
+   "task": "Resolve race condition around exceptions during streaming a response.",
+   "needed": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "7ddb4cabecb551ce6a79f7db5aa540f19530cb2b",
+   "date": "2022-01-31",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-01-31"
+  },
+  {
+   "id": "OT-starlette-79812bb2",
+   "kind": "topic_open",
+   "task": "add Allow header to 405 responses as required by RFC 7231",
+   "needed": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/routing.py"
+   ],
+   "commit": "79812bb2205890038aa2ffcaa2f9e6c1d86bbf0a",
+   "date": "2022-01-26",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2022-01-26"
+  },
+  {
+   "id": "GR-starlette-2b54f427",
+   "kind": "grouping",
+   "task": "use typing.Mapping for Response.headers",
+   "needed": [
+    "starlette/starlette/responses.py",
+    "starlette/starlette/templating.py"
+   ],
+   "commit": "2b54f427613ebd1a6ccb2031aa97364e2d5070a5",
+   "date": "2022-01-26",
+   "repo": "starlette",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2022-01-26"
+  },
+  {
+   "id": "OT-httpcore-b7c0d8a7",
+   "kind": "topic_open",
+   "task": "Only create SSLContext when required",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "b7c0d8a7c62a9b59e2954559494ca44be2afcf3d",
+   "date": "2021-12-16",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2021-12-16"
+  },
+  {
+   "id": "OT-starlette-05d53148",
+   "kind": "topic_open",
+   "task": "Fix Mypy errors in routing and testclient",
+   "needed": [
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py"
+   ],
+   "commit": "05d531483a37f1d4e023eece13dd801daba5e818",
+   "date": "2021-12-16",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2021-12-16"
+  },
+  {
+   "id": "GR-httpcore-de629324",
+   "kind": "grouping",
+   "task": "Ensure h2 connection gets closed",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "de629324b1e2b375fe1d6c61b0daf8d9430559ca",
+   "date": "2021-11-18",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-11-18"
+  },
+  {
+   "id": "OT-httpcore-9d3358e3",
+   "kind": "topic_open",
+   "task": "Differentiate between stream and connection errors",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "9d3358e34917b70fa7f4a1a518c57516cc94bdb9",
+   "date": "2021-11-18",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2021-11-18"
+  },
+  {
+   "id": "GR-httpcore-0e8bc1f0",
+   "kind": "grouping",
+   "task": "Fix race condition when removing closed connections from the pool",
+   "needed": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ],
+   "commit": "0e8bc1f0591b05f40a9c8d0569ba1a914cee4d14",
+   "date": "2021-11-17",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-11-17"
+  },
+  {
+   "id": "OT-httpcore-ccf15efe",
+   "kind": "topic_open",
+   "task": "Connections which fail should not remain in the pool",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_sync/connection.py"
+   ],
+   "commit": "ccf15efe11895d88f96410524f6ffdf2759aa96a",
+   "date": "2021-11-16",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2021-11-16"
+  },
+  {
+   "id": "GR-httpcore-e2bb80b5",
+   "kind": "grouping",
+   "task": "Prefer Sequence to List in annotations",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_models.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "e2bb80b5861c434782ec3b9003efbde2f95350c0",
+   "date": "2021-11-12",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-11-12"
+  },
+  {
+   "id": "GR-httpcore-abee287c",
+   "kind": "grouping",
+   "task": "Fix import issues. Closes #426",
+   "needed": [
+    "httpcore/httpcore/_async/__init__.py",
+    "httpcore/httpcore/_sync/__init__.py"
+   ],
+   "commit": "abee287c57d2efe5eb2c750e4bf817dddba36869",
+   "date": "2021-11-12",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-11-12"
+  },
+  {
+   "id": "OT-httpx-47266d76",
+   "kind": "topic_open",
+   "task": "Switch follow redirects default",
+   "needed": [
+    "httpx/httpx/_api.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "47266d763bdef9dc99f9c9d09d49d441b87802e6",
+   "date": "2021-09-13",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-09-13"
+  },
+  {
+   "id": "OT-httpx-20e66d20",
+   "kind": "topic_open",
+   "task": "enforce-upload-files-binary-type",
+   "needed": [
+    "httpx/httpx/_multipart.py",
+    "httpx/httpx/_types.py"
+   ],
+   "commit": "20e66d204864b320ba6816b501c6dca17e101836",
+   "date": "2021-08-13",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-08-13"
+  },
+  {
+   "id": "OT-starlette-537ab6af",
+   "kind": "topic_open",
+   "task": "use an async context manager factory for lifespan",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/testclient.py"
+   ],
+   "commit": "537ab6afd110b79dca95f3c8ecc6980710b1de1c",
+   "date": "2021-07-03",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2021-07-03"
+  },
+  {
+   "id": "GR-httpcore-8970484a",
+   "kind": "grouping",
+   "task": "Close socket when read or write timeouts occur",
+   "needed": [
+    "httpcore/httpcore/_backends/anyio.py",
+    "httpcore/httpcore/_backends/trio.py"
+   ],
+   "commit": "8970484a78e5eadeee09580d3e35f99023014271",
+   "date": "2021-06-15",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-06-15"
+  },
+  {
+   "id": "OT-httpcore-de4a3752",
+   "kind": "topic_open",
+   "task": "Move attributes on connection classes into private namespace.",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "de4a3752d12e626486d364f815c718d2c799fb31",
+   "date": "2021-06-11",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2021-06-11"
+  },
+  {
+   "id": "OT-httpcore-3acf913f",
+   "kind": "topic_open",
+   "task": "Don't raise exceptions on graceless close cases",
+   "needed": [
+    "httpcore/httpcore/_backends/anyio.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py"
+   ],
+   "commit": "3acf913f56c4a2d292ecaa72e441a3099508dfbb",
+   "date": "2021-04-28",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2021-04-28"
+  },
+  {
+   "id": "OT-httpx-6e55ca1a",
+   "kind": "topic_open",
+   "task": "Escalate 0.17 deprecation warnings to becoming fully deprecated.",
+   "needed": [
+    "httpx/httpx/__init__.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_status_codes.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "6e55ca1af9fd1cb02f6f0916e9ceb7a9b9e82968",
+   "date": "2021-04-26",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-04-26"
+  },
+  {
+   "id": "OT-httpx-2d571046",
+   "kind": "topic_open",
+   "task": "Make Request and Response picklable",
+   "needed": [
+    "httpx/httpx/_content.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "2d571046e15d3f4c4cbe5a68173cdf12e99cb3ca",
+   "date": "2021-04-21",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-04-21"
+  },
+  {
+   "id": "GR-starlette-1222e78a",
+   "kind": "grouping",
+   "task": "Don't use 'raise exc from None' because it suppresses exception causes",
+   "needed": [
+    "starlette/starlette/endpoints.py",
+    "starlette/starlette/exceptions.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/testclient.py"
+   ],
+   "commit": "1222e78a15336162d190060f76c8ccee4b011d6b",
+   "date": "2021-03-29",
+   "repo": "starlette",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2021-03-29"
+  },
+  {
+   "id": "OT-httpx-86964054",
+   "kind": "topic_open",
+   "task": "Allow tuple as input of query parameters.",
+   "needed": [
+    "httpx/httpx/_api.py",
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_types.py"
+   ],
+   "commit": "86964054d60da7796c65e501ba021440b14cc36c",
+   "date": "2020-12-12",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-12-12"
+  },
+  {
+   "id": "GR-httpcore-bdcd5bf5",
+   "kind": "grouping",
+   "task": "Allow Host to override :authority in HTTP2",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "bdcd5bf50d5267ed0f579156ae10a99e95cfb7d9",
+   "date": "2020-11-27",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-11-27"
+  },
+  {
+   "id": "GR-httpcore-62b47316",
+   "kind": "grouping",
+   "task": "Fixed the problem with socket, which might leak when tunnel proxy connection couldn't be establish",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "62b47316983c5309c8f7b703139d45af1cd402d8",
+   "date": "2020-10-30",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-10-30"
+  },
+  {
+   "id": "OT-httpcore-0a9575fc",
+   "kind": "topic_open",
+   "task": "Properly wrap OS errors when using trio",
+   "needed": [
+    "httpcore/httpcore/_backends/anyio.py",
+    "httpcore/httpcore/_backends/trio.py"
+   ],
+   "commit": "0a9575fcb589e95059af603d97d84c1731111102",
+   "date": "2020-10-26",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-10-26"
+  },
+  {
+   "id": "OT-httpcore-5f214d0f",
+   "kind": "topic_open",
+   "task": "Add some basic connection-pool-specific tests",
+   "needed": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ],
+   "commit": "5f214d0f1cbdfbbea0b3ed599a40ec0537fa4206",
+   "date": "2020-09-24",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-09-24"
+  },
+  {
+   "id": "OT-httpx-f3c29416",
+   "kind": "topic_open",
+   "task": "Support Response(text=...), Response(html=...), Response(json=...)",
+   "needed": [
+    "httpx/httpx/_content.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "f3c29416f12bc580b18f94538abfbc41ac06cce5",
+   "date": "2020-09-21",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-09-21"
+  },
+  {
+   "id": "OT-httpcore-685a9b6c",
+   "kind": "topic_open",
+   "task": "Ignored a new error from updated flake8-pie",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_exceptions.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "685a9b6c968f0662b45f637ffacaf4795454fb9d",
+   "date": "2020-09-13",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-09-13"
+  },
+  {
+   "id": "OT-httpx-016e4ee2",
+   "kind": "topic_open",
+   "task": "Add support for sync-specific or async-specific auth flows",
+   "needed": [
+    "httpx/httpx/_auth.py",
+    "httpx/httpx/_client.py"
+   ],
+   "commit": "016e4ee210114bb97e631c0abcdbc462d2751ad5",
+   "date": "2020-09-09",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-09-09"
+  },
+  {
+   "id": "OT-starlette-b95acea9",
+   "kind": "topic_open",
+   "task": "Update CI scripts to match httpcore",
+   "needed": [
+    "starlette/starlette/applications.py",
+    "starlette/starlette/config.py",
+    "starlette/starlette/middleware/cors.py",
+    "starlette/starlette/middleware/errors.py",
+    "starlette/starlette/middleware/wsgi.py",
+    "starlette/starlette/requests.py",
+    "starlette/starlette/routing.py",
+    "starlette/starlette/staticfiles.py"
+   ],
+   "commit": "b95acea973c20eea3e7cbbca42d09b1f5d4a3412",
+   "date": "2020-09-06",
+   "repo": "starlette",
+   "focus": [
+    "repo:starlette"
+   ],
+   "timestamp": "2020-09-06"
+  },
+  {
+   "id": "OT-httpx-e0b4528b",
+   "kind": "topic_open",
+   "task": "Make the response's request parameter optional",
+   "needed": [
+    "httpx/httpx/_decoders.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "e0b4528b170be0835d1ed4ffcafd1141fa9dfc6d",
+   "date": "2020-09-01",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-09-01"
+  },
+  {
+   "id": "GR-httpcore-ccea853e",
+   "kind": "grouping",
+   "task": "Allowed expiring connections where idle time == expiration time",
+   "needed": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ],
+   "commit": "ccea853eaf9f429b980ebff5774d958f3ba9a8fc",
+   "date": "2020-08-30",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-08-30"
+  },
+  {
+   "id": "OT-httpx-6e6ece66",
+   "kind": "topic_open",
+   "task": "Made cookies construct-able from a list of tuples",
+   "needed": [
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_types.py"
+   ],
+   "commit": "6e6ece66c633f0b1a74486d674f2019cb3f1c07f",
+   "date": "2020-08-24",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-08-24"
+  },
+  {
+   "id": "OT-httpcore-55ea7b8d",
+   "kind": "topic_open",
+   "task": "Import http2 server disconnected behaviour",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "55ea7b8d341378aab4bc98812b2648acb9c7b836",
+   "date": "2020-08-20",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-08-20"
+  },
+  {
+   "id": "OT-httpcore-c98a9a07",
+   "kind": "topic_open",
+   "task": "Always include port on tunnel proxy",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "c98a9a076d74994bf6e4d878b5c92ec91cb6a6a8",
+   "date": "2020-08-13",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-08-13"
+  },
+  {
+   "id": "OT-httpcore-2328b0c5",
+   "kind": "topic_open",
+   "task": "Add Unix Domain Socket support",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_backends/auto.py",
+    "httpcore/httpcore/_backends/base.py",
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ],
+   "commit": "2328b0c5154fce375a60095e43b0743b22287984",
+   "date": "2020-08-11",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-08-11"
+  },
+  {
+   "id": "OT-httpx-0a386950",
+   "kind": "topic_open",
+   "task": "Fixed warnings in unit tests suite, caused by #1127 PR",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "0a3869506391849b20e373a67157e5cef133fcee",
+   "date": "2020-08-06",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-08-06"
+  },
+  {
+   "id": "GR-httpcore-5c4c2a4f",
+   "kind": "grouping",
+   "task": "Improve performance when receiving large responses",
+   "needed": [
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "5c4c2a4f24d45a0f9a557a7a3b047b86324cb11a",
+   "date": "2020-08-05",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-08-05"
+  },
+  {
+   "id": "OT-httpcore-276ed99b",
+   "kind": "topic_open",
+   "task": "Improve readability of forward and tunnel implementations",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "276ed99b29c42af44d0f0a7a54c39e293e1d9a9a",
+   "date": "2020-08-02",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-08-02"
+  },
+  {
+   "id": "OT-httpx-71d52343",
+   "kind": "topic_open",
+   "task": "Rename URLMatcher -> URLPattern",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "71d52343052359c416a9e6252daa322abdf8dd90",
+   "date": "2020-08-01",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-08-01"
+  },
+  {
+   "id": "OT-httpx-e1a7d5a4",
+   "kind": "topic_open",
+   "task": "Use public API only from transports",
+   "needed": [
+    "httpx/httpx/_transports/asgi.py",
+    "httpx/httpx/_transports/wsgi.py"
+   ],
+   "commit": "e1a7d5a4ae5dae974ea2f0e7b820a8b114683c55",
+   "date": "2020-07-31",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-07-31"
+  },
+  {
+   "id": "OT-httpx-16893e41",
+   "kind": "topic_open",
+   "task": "Add support for no-proxy configurations",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_types.py"
+   ],
+   "commit": "16893e414fe68bd41890dc52f449328679a65134",
+   "date": "2020-07-31",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-07-31"
+  },
+  {
+   "id": "OT-httpx-35f09d13",
+   "kind": "topic_open",
+   "task": "Single consistent name for status codes",
+   "needed": [
+    "httpx/httpx/__init__.py",
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_status_codes.py"
+   ],
+   "commit": "35f09d13941647bb677f2749c4230bec664b8c15",
+   "date": "2020-07-27",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-07-27"
+  },
+  {
+   "id": "OT-httpcore-44d44137",
+   "kind": "topic_open",
+   "task": "Improve handling of server disconnects",
+   "needed": [
+    "httpcore/httpcore/_backends/sync.py",
+    "httpcore/httpcore/_backends/trio.py"
+   ],
+   "commit": "44d441375234272d06b8e5bc33310398bb6746d8",
+   "date": "2020-07-15",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-07-15"
+  },
+  {
+   "id": "OT-httpx-2f0e0480",
+   "kind": "topic_open",
+   "task": "Remove needless whitespace strips",
+   "needed": [
+    "httpx/httpx/_auth.py",
+    "httpx/httpx/_config.py"
+   ],
+   "commit": "2f0e0480da43330f6e6dc3aac0457cb5e6ab8470",
+   "date": "2020-07-05",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-07-05"
+  },
+  {
+   "id": "GR-httpx-c53172d7",
+   "kind": "grouping",
+   "task": "Remove unused type checker ignores",
+   "needed": [
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "c53172d716a6f2b5d3a5d79187d33da2232def25",
+   "date": "2020-07-02",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-07-02"
+  },
+  {
+   "id": "OT-httpx-620b0670",
+   "kind": "topic_open",
+   "task": "Increase test coverage - take 2",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_models.py"
+   ],
+   "commit": "620b0670db07ae844aa6fae40d9209a856440c9d",
+   "date": "2020-06-02",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-06-02"
+  },
+  {
+   "id": "OT-httpx-89a8100b",
+   "kind": "topic_open",
+   "task": "Replace remaining occurrences of dispatch with transport",
+   "needed": [
+    "httpx/httpx/_models.py",
+    "httpx/httpx/_transports/asgi.py",
+    "httpx/httpx/_transports/wsgi.py"
+   ],
+   "commit": "89a8100b6c1f2cf97f16bd7d3594211be88fbc93",
+   "date": "2020-05-30",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-05-30"
+  },
+  {
+   "id": "GR-httpx-e724abdc",
+   "kind": "grouping",
+   "task": "Fix pool option warnings for default connection pool",
+   "needed": [
+    "httpx/httpx/_config.py",
+    "httpx/httpx/_utils.py"
+   ],
+   "commit": "e724abdcd190eca5ac17e7da23fd79db5f10df7c",
+   "date": "2020-05-22",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-05-22"
+  },
+  {
+   "id": "OT-httpx-9b6605c3",
+   "kind": "topic_open",
+   "task": "Updates for httpcore 0.9 interface.",
+   "needed": [
+    "httpx/httpx/_client.py",
+    "httpx/httpx/_transports/asgi.py",
+    "httpx/httpx/_transports/wsgi.py"
+   ],
+   "commit": "9b6605c3d519142db7ebaf56c13094bf779c7dea",
+   "date": "2020-05-21",
+   "repo": "httpx",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-05-21"
+  },
+  {
+   "id": "OT-httpcore-30847a01",
+   "kind": "topic_open",
+   "task": "Max concurrent stream improvements",
+   "needed": [
+    "httpcore/httpcore/_async/http2.py",
+    "httpcore/httpcore/_sync/http2.py"
+   ],
+   "commit": "30847a01453bc7fdcdac596698e2c4f70c7d9fbe",
+   "date": "2020-05-14",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-05-14"
+  },
+  {
+   "id": "GR-httpcore-c634ba72",
+   "kind": "grouping",
+   "task": "get-or-create-connection should be an atomic operation",
+   "needed": [
+    "httpcore/httpcore/_async/connection_pool.py",
+    "httpcore/httpcore/_sync/connection_pool.py"
+   ],
+   "commit": "c634ba72d682bdf52a5209e3a40ed47ca5e46770",
+   "date": "2020-05-11",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-05-11"
+  },
+  {
+   "id": "GR-httpcore-92930f2e",
+   "kind": "grouping",
+   "task": "Pass http2 flag to connections in proxy",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "92930f2e3dd656d47a8d383c1d3eea5205da1d21",
+   "date": "2020-05-04",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-05-04"
+  },
+  {
+   "id": "GR-httpcore-42b6e455",
+   "kind": "grouping",
+   "task": "Fix forward proxy adding connection to pool",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "42b6e455bbdbaeb3b986d90a4025b6764089ba9f",
+   "date": "2020-05-03",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpx"
+   ],
+   "timestamp": "2020-05-03"
+  },
+  {
+   "id": "OT-httpcore-ac1d91f0",
+   "kind": "topic_open",
+   "task": "Support HTTPS requests on tunnel proxy",
+   "needed": [
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "ac1d91f0d42381741160a47b5057af1fda8458b0",
+   "date": "2020-04-30",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-04-30"
+  },
+  {
+   "id": "OT-httpcore-b65eaef1",
+   "kind": "topic_open",
+   "task": "Fix tunnel proxy: HTTP requests only",
+   "needed": [
+    "httpcore/httpcore/_async/connection.py",
+    "httpcore/httpcore/_async/http11.py",
+    "httpcore/httpcore/_async/http_proxy.py",
+    "httpcore/httpcore/_sync/connection.py",
+    "httpcore/httpcore/_sync/http11.py",
+    "httpcore/httpcore/_sync/http_proxy.py"
+   ],
+   "commit": "b65eaef14e8a3fb7266b2aa0393e471087da4f3f",
+   "date": "2020-04-29",
+   "repo": "httpcore",
+   "focus": [
+    "repo:httpcore"
+   ],
+   "timestamp": "2020-04-29"
+  }
+ ]
+}

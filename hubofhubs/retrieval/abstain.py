@@ -52,9 +52,11 @@ class AbstainingLearned(Retriever):
     def scores(self, query: str) -> Dict[int, float]:
         return self.inner.scores(query)
 
-    def retrieve(self, query: str, files: Optional[Any] = None, budget_tokens: int = DEFAULT_BUDGET, history: Sequence[Any] = ()) -> List[Hit]:
+    def retrieve(self, query: str, files: Optional[Any] = None, budget_tokens: int = DEFAULT_BUDGET, history: Sequence[Any] = (),
+                 meta: Optional[Any] = None, request: Optional[Any] = None) -> List[Hit]:
         if files is not None:
-            self.prepare(files, history)
+            self.prepare(files, history, meta)
+        self.begin(request)
         if self.confidence(query) < self.threshold:
             return []
         return within_budget(self.corpus, self.inner.ranking(query), budget_tokens)
