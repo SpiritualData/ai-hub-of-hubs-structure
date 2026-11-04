@@ -82,6 +82,7 @@ from hubofhubs.recall.card_content_render import (
 )
 from hubofhubs.recall.card_selection import keep_whole_task, memo_get, memo_put, selection_key
 from hubofhubs.recall.reference_resolver import build_resolver_registry
+from hubofhubs.recall.affinity_tags import affinity_factor
 from hubofhubs.recall.scope_tags import scope_tags_allow
 from hubofhubs.recall.vector_scopes import CARD_SEED_SCOPE
 from hubofhubs.critique.specificity import SpecificityResult, rerank_factor, score_candidates
@@ -336,6 +337,8 @@ class VectorContextAssembler(ContextAssemblerBase):
         num_queries: int = 3,
         top_k: int = 8,
         confidence_min_score: float = 0.0,
+        affinity_home_boost: float = 1.0,
+        affinity_away_factor: float = 1.0,
         max_in_view: int = 8,
         half_life_days: float = 30.0,
         max_associations: int = 500,
@@ -362,6 +365,8 @@ class VectorContextAssembler(ContextAssemblerBase):
         self._num_queries = num_queries
         self._top_k = top_k
         self._confidence_min_score = confidence_min_score
+        self._affinity_home_boost = affinity_home_boost
+        self._affinity_away_factor = affinity_away_factor
         self._max_in_view = max_in_view
         self._half_life_days = half_life_days
         self._max_associations = max_associations
@@ -969,6 +974,7 @@ class VectorContextAssembler(ContextAssemblerBase):
             h.id: sr for h, sr in zip(candidates, spec_results)
         }
 
+        turn_affinity_tags = (meta or {}).get("affinity_tags")
         now = self._clock()
         half_life = self._half_life_days
         decayed: List[tuple] = []  # (effective_score, hit)
@@ -991,6 +997,10 @@ class VectorContextAssembler(ContextAssemblerBase):
                 recency = 0.5
 
             effective = h.score * rerank_factor(sr) * recency
+            # Soft grouping preference (hubofhubs.recall.affinity_tags): ordering only, after the hard
+            # fence; 1.0 (no change) unless both sides carry affinity_tags and a weight is configured.
+            effective *= affinity_factor((h.payload or {}).get("affinity_tags"), turn_affinity_tags,
+                                         home_boost=self._affinity_home_boost, away_factor=self._affinity_away_factor)
             decayed.append((effective, h))
 
         # Confidence gate applies to the RAW similarity score (not the decayed score): the floor is a
@@ -1126,6 +1136,8 @@ class VectorContextAssembler(ContextAssemblerBase):
                 # project-tagged card; without this the resulting bundle would be cached untagged and
                 # served to every other project's turn forever). Empty when the card is untagged.
                 "scope_tags": list(payload.get("scope_tags") or []),
+                # The hit's OWN affinity_tags (soft grouping, see hubofhubs.recall.affinity_tags), verbatim.
+                "affinity_tags": list(payload.get("affinity_tags") or []),
                 # The VERBATIM rendered block this hit contributed to context_view, so the hybrid
                 # consolidator rebuilds from it (a hit's payload fields + resolved content, not just
                 # its content items) instead of dropping them when consolidation engages.

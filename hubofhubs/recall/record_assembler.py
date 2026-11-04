@@ -19,6 +19,7 @@ import time
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 from ..ports.context import AssembledContext
+from .affinity_tags import affinity_factor
 from .scope_tags import scope_tags_allow
 
 #: Words too common to say what a message is about.
@@ -36,11 +37,13 @@ def words_of(text: str) -> List[str]:
 
 
 def rank_records(task_text: str, records: Iterable[Dict[str, Any]], *, max_records: int = 3,
-                 min_score: float = 1.0) -> List[Tuple[float, Dict[str, Any]]]:
+                 min_score: float = 1.0, turn_affinity_tags: Any = None, home_boost: float = 1.0,
+                 away_factor: float = 1.0) -> List[Tuple[float, Dict[str, Any]]]:
     """The records that share distinctive words with ``task_text``, best first, at most ``max_records``.
 
     A record's score is the sum of ``log(1 + N / df)`` over the distinct message words it contains (``N`` records, ``df``
-    of them containing the word); records scoring under ``min_score`` are dropped, so one very common word never admits a record."""
+    of them containing the word); records scoring under ``min_score`` are dropped, so one very common word never admits a record.
+    ``affinity_tags`` (see ``affinity_tags.py``) then scale the surviving scores for ORDERING only, after that gate."""
     rows = [r for r in records if isinstance(r, dict) and str(r.get("text") or "").strip()]
     if not rows:
         return []
@@ -55,6 +58,7 @@ def rank_records(task_text: str, records: Iterable[Dict[str, Any]], *, max_recor
             frequency = sum(1 for other in bags if word in other)
             score += math.log(1 + len(rows) / frequency)
         if score >= min_score:
+            score *= affinity_factor(row.get("affinity_tags"), turn_affinity_tags, home_boost=home_boost, away_factor=away_factor)
             scored.append((score, row))
     scored.sort(key=lambda pair: -pair[0])
     return scored[:max_records]
@@ -68,10 +72,12 @@ class RecordContextAssembler:
 
     def __init__(self, lister: Callable[[Optional[Dict[str, Any]]], Iterable[Dict[str, Any]]], *, header: str = "Records that mention what you asked about:",
                  max_records: int = 3, min_score: float = 1.0, max_chars: int = 600, cache_seconds: float = 60.0,
-                 cache_key: Optional[Callable[[Optional[Dict[str, Any]]], str]] = None):
+                 cache_key: Optional[Callable[[Optional[Dict[str, Any]]], str]] = None,
+                 affinity_home_boost: float = 1.0, affinity_away_factor: float = 1.0):
         self.lister, self.header = lister, header
         self.max_records, self.min_score, self.max_chars = max_records, min_score, max_chars
         self.cache_seconds, self.cache_key = cache_seconds, cache_key
+        self.affinity_home_boost, self.affinity_away_factor = affinity_home_boost, affinity_away_factor
         self.cached: Dict[str, Tuple[float, List[Dict[str, Any]]]] = {}
 
     def listed(self, meta: Optional[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -87,7 +93,9 @@ class RecordContextAssembler:
         try:
             turn_tags = (meta or {}).get("scope_tags")
             rows = [r for r in self.listed(meta) if scope_tags_allow(r.get("scope_tags"), turn_tags)]
-            best = rank_records(task_text, rows, max_records=self.max_records, min_score=self.min_score)
+            best = rank_records(task_text, rows, max_records=self.max_records, min_score=self.min_score,
+                                turn_affinity_tags=(meta or {}).get("affinity_tags"),
+                                home_boost=self.affinity_home_boost, away_factor=self.affinity_away_factor)
             if not best:
                 return AssembledContext()
             lines = []
