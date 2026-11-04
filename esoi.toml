@@ -60,6 +60,33 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.02
 seconds_per_case = 12
 
+# The balanced scores of the three cascades that pool several kinds of case into one component (esoi/balance.py, docs/how-to/
+# write-a-cascade-that-stays-one-number.md). Weights are the library's defaults; the budgets say what one case is worth at most and are
+# fixed before any arm is scored on the pooled set, not tuned on its results. The kinds of case (know-the-world: LitSearch questions;
+# watch-for-risk: explicit and ambiguous step digests; context-assembler: public medical queries, title or sentence queries over a paper
+# sample, paraphrased queries over the same sample) are case sources of one component each, mixed by the table in the component's own
+# mix module, never separate stages or leaderboards.
+#
+# know-the-world: one paper lookup is worth at most a cent and half a minute; the paid arms spend about a hundredth of that in money
+# and a few seconds.
+[balance.know_the_world]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.01
+seconds_per_case = 30
+
+# watch-for-risk: the check runs before steps of a run, so one verdict is worth at most half a cent and ten seconds.
+[balance.watch_for_risk]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.005
+seconds_per_case = 10
+
+# context-assembler: one retrieval runs per query and its embedding is the only money spent, so a query is worth at most half a cent and
+# five seconds.
+[balance.context_assembler]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.005
+seconds_per_case = 5
+
 # Opt-in rules (esoi/docs): S36 the overall network on the root solution, S37 every id has an interface and a one-line entry,
 # S38 the paragraph and diagram match the code, S39 the ratchet against the base commit. S38 floors are per intent, set at the measured values.
 [rules.S36]
