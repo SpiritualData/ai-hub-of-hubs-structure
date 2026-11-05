@@ -91,8 +91,7 @@ Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. 
 
 ```pycon
 >>> import hubofhubs
->>> from hubofhubs.the_body.internal_context.card_store.interface import CardStore
->>> from hubofhubs.the_body.internal_context.card_store.card import Card
+>>> from hubofhubs.api import CardStore, Card
 >>> store = hubofhubs.run(CardStore)          # the typed, ready handle
 >>> store.add(Card("rust-1-91", "Rust 1.91 was released on 2025-10-30."))
 'rust-1-91'
@@ -102,6 +101,10 @@ Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. 
 
 Each id is reached through a declared interface. The call builds the implementation its metric selected and passes your input to it.
 Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/assemble-and-run-your-first-seat.md).
+
+## The front door
+
+Import from one place. Every part is reached by `hubofhubs.run("<id>", ...)` or by its typed handle `hubofhubs.run(Interface)`, and every interface, result type and helper you may need is a name in `hubofhubs.api` (`from hubofhubs.api import CardStore, Card, DeepRunner`). Never import a path inside the hub, such as `hubofhubs.the_world.tools.deep`: parts move as the hub improves, and a name in `hubofhubs.api` keeps working because only its entry in that file changes. `hubofhubs.api.__all__` lists every public name.
 
 ## What is measured
 

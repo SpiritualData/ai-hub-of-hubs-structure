@@ -21,7 +21,7 @@ needs which.
 
 ```python
 import hubofhubs
-from hubofhubs.the_body.internal_context.card_store.card import Card
+from hubofhubs.api import Card
 
 system = hubofhubs.assemble()
 print(sorted(system.pending))

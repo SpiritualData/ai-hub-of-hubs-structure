@@ -24,7 +24,7 @@ The arm is registered so it can be measured against that on the same cases; sele
 ## Use
 
 ```python
-from hubofhubs.the_world.science.openalex import OpenAlexWorks
+from hubofhubs.api import OpenAlexWorks
 arm = OpenAlexWorks(api_key=key_from_your_config, mailto=contact_from_your_config, daily_limit=200)
 observation = arm.search("aerobic fitness knee injury")          # text with numbered citation lines, hits as dicts
 result = arm.find_works("aerobic fitness knee injury", year_from=2015, open_access_only=True)   # typed WorksResult
