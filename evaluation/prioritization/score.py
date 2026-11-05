@@ -14,7 +14,8 @@ from offline import judge  # noqa: E402
 
 def adapt(implementation, meter):
     arm = implementation()
-    return lambda kind, args: [item["id"] for item in arm.prioritize(person=args["person"], candidates=args["candidates"], stated=args.get("stated"), now=args["now"])["ordered"]]
+    return lambda kind, args: [item["id"] for item in arm.prioritize(person=args["person"], candidates=args["candidates"], stated=args.get("stated"), now=args["now"],
+                                                                  **{k: args[k] for k in ("subject", "batch_limit") if k in args})["ordered"]]
 
 
 def agreement(got, want):

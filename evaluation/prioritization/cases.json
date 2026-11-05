@@ -557,5 +557,639 @@
   "expect": [
    "a1"
   ]
+ },
+ {
+  "id": "prioritize-asks-unblocks-most-first",
+  "kind": "asks",
+  "origin": "rule: the ask whose answer frees the most waiting items first, whatever order they arrived in",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a",
+     "kind": "ask",
+     "asked_at": "2026-07-01T00:00:00Z"
+    },
+    {
+     "id": "b",
+     "kind": "ask",
+     "unblocks": [
+      "t1"
+     ]
+    },
+    {
+     "id": "c",
+     "kind": "ask",
+     "unblocks": [
+      "t1",
+      "t2",
+      "t3"
+     ]
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks"
+  },
+  "expect": [
+   "c",
+   "b",
+   "a"
+  ]
+ },
+ {
+  "id": "prioritize-asks-unblocks-counts-dependents",
+  "kind": "asks",
+  "origin": "rule: items that list the ask in blocked_by count as freed by it",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a",
+     "kind": "ask"
+    },
+    {
+     "id": "b",
+     "kind": "ask"
+    },
+    {
+     "id": "t1",
+     "kind": "task",
+     "blocked_by": [
+      "b"
+     ]
+    },
+    {
+     "id": "t2",
+     "kind": "task",
+     "blocked_by": [
+      "b"
+     ]
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks"
+  },
+  "expect": [
+   "b",
+   "a",
+   "t1",
+   "t2"
+  ]
+ },
+ {
+  "id": "prioritize-asks-deadline-breaks-an-unblock-tie",
+  "kind": "asks",
+  "origin": "rule: with the same number freed, the earlier deadline first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "late",
+     "kind": "ask",
+     "unblocks": [
+      "t1"
+     ],
+     "deadline": "2026-07-30T00:00:00Z"
+    },
+    {
+     "id": "soon",
+     "kind": "ask",
+     "unblocks": [
+      "t2"
+     ],
+     "deadline": "2026-07-13T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks"
+  },
+  "expect": [
+   "soon",
+   "late"
+  ]
+ },
+ {
+  "id": "prioritize-asks-unblock-before-deadline",
+  "kind": "asks",
+  "origin": "rule: what an ask frees counts before its deadline",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "due",
+     "kind": "ask",
+     "deadline": "2026-07-13T00:00:00Z"
+    },
+    {
+     "id": "frees",
+     "kind": "ask",
+     "unblocks": [
+      "t1",
+      "t2"
+     ],
+     "deadline": "2026-09-01T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks"
+  },
+  "expect": [
+   "frees",
+   "due"
+  ]
+ },
+ {
+  "id": "prioritize-asks-shorter-effort-first",
+  "kind": "asks",
+  "origin": "rule: with the same freed and deadline, the ask that takes less to answer first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "long",
+     "kind": "ask",
+     "unblocks": [
+      "t1"
+     ],
+     "effort": 30
+    },
+    {
+     "id": "quick",
+     "kind": "ask",
+     "unblocks": [
+      "t2"
+     ],
+     "effort": 2
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks"
+  },
+  "expect": [
+   "quick",
+   "long"
+  ]
+ },
+ {
+  "id": "prioritize-asks-recently-asked-later",
+  "kind": "asks",
+  "origin": "rule: an ask the person was asked about recently comes after one they were not",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "recent",
+     "kind": "ask",
+     "last_nudged_at": "2026-07-12T08:00:00Z"
+    },
+    {
+     "id": "never",
+     "kind": "ask"
+    },
+    {
+     "id": "week",
+     "kind": "ask",
+     "last_nudged_at": "2026-07-05T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks"
+  },
+  "expect": [
+   "never",
+   "week",
+   "recent"
+  ]
+ },
+ {
+  "id": "prioritize-asks-person-order-beats-unblocks",
+  "kind": "asks",
+  "origin": "rule: what the person ordered comes before what another ask frees",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "frees",
+     "kind": "ask",
+     "unblocks": [
+      "t1",
+      "t2"
+     ]
+    },
+    {
+     "id": "pinned",
+     "kind": "ask"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks",
+   "stated": {
+    "order": [
+     "pinned"
+    ]
+   }
+  },
+  "expect": [
+   "pinned",
+   "frees"
+  ]
+ },
+ {
+  "id": "prioritize-asks-person-deferral-last",
+  "kind": "asks",
+  "origin": "rule: an ask the person deferred comes last whatever it frees",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "frees",
+     "kind": "ask",
+     "unblocks": [
+      "t1",
+      "t2"
+     ]
+    },
+    {
+     "id": "plain",
+     "kind": "ask"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks",
+   "stated": {
+    "deferred": [
+     "frees"
+    ]
+   }
+  },
+  "expect": [
+   "plain",
+   "frees"
+  ]
+ },
+ {
+  "id": "prioritize-asks-batch-limit-keeps-the-first",
+  "kind": "asks",
+  "origin": "rule: with a batch limit only that many are put in front of the person, the first of the order",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a",
+     "kind": "ask"
+    },
+    {
+     "id": "b",
+     "kind": "ask",
+     "unblocks": [
+      "t1"
+     ]
+    },
+    {
+     "id": "c",
+     "kind": "ask",
+     "unblocks": [
+      "t1",
+      "t2"
+     ]
+    },
+    {
+     "id": "d",
+     "kind": "ask",
+     "unblocks": [
+      "t1",
+      "t2",
+      "t3"
+     ]
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks",
+   "batch_limit": 2
+  },
+  "expect": [
+   "d",
+   "c"
+  ]
+ },
+ {
+  "id": "prioritize-asks-batch-limit-above-the-count",
+  "kind": "asks",
+  "origin": "rule: a limit above the number of asks holds nothing back",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a",
+     "kind": "ask",
+     "unblocks": [
+      "t1"
+     ]
+    },
+    {
+     "id": "b",
+     "kind": "ask"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "asks",
+   "batch_limit": 5
+  },
+  "expect": [
+   "a",
+   "b"
+  ]
+ },
+ {
+  "id": "prioritize-goals-unblocks-first",
+  "kind": "goals",
+  "origin": "rule: the milestone another milestone depends on comes before the one that waits",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "ship",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "blocked_by": [
+      "build"
+     ]
+    },
+    {
+     "id": "build",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "build",
+   "ship"
+  ]
+ },
+ {
+  "id": "prioritize-goals-frees-more-first",
+  "kind": "goals",
+  "origin": "rule: the milestone that unblocks more comes first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "one",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "unblocks": [
+      "x"
+     ]
+    },
+    {
+     "id": "three",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-1",
+     "unblocks": [
+      "x",
+      "y",
+      "z"
+     ]
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "three",
+   "one"
+  ]
+ },
+ {
+  "id": "prioritize-goals-target-time-first",
+  "kind": "goals",
+  "origin": "rule: the earlier target time first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "late",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "deadline": "2026-09-01T00:00:00Z"
+    },
+    {
+     "id": "soon",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-1",
+     "deadline": "2026-07-20T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "soon",
+   "late"
+  ]
+ },
+ {
+  "id": "prioritize-goals-met-held-back",
+  "kind": "goals",
+  "origin": "rule: a met milestone is no longer a priority and is held back",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "met",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "met": "2026-06-01T00:00:00Z"
+    },
+    {
+     "id": "open",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "open"
+  ]
+ },
+ {
+  "id": "prioritize-goals-ended-held-back",
+  "kind": "goals",
+  "origin": "rule: a milestone whose end condition has passed is held back",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "ended",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "ends_at": "2026-07-01T00:00:00Z"
+    },
+    {
+     "id": "open",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-1"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "open"
+  ]
+ },
+ {
+  "id": "prioritize-goals-no-metric-ordered-the-same",
+  "kind": "goals",
+  "origin": "rule: a milestone with no metric value is ordered by the same fields as one with a metric",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "measured",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "metric": 0.8,
+     "deadline": "2026-08-15T00:00:00Z"
+    },
+    {
+     "id": "unmeasured",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-1",
+     "deadline": "2026-07-20T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "unmeasured",
+   "measured"
+  ]
+ },
+ {
+  "id": "prioritize-goals-person-orders-a-solution",
+  "kind": "goals",
+  "origin": "rule: what the person ordered about a solution puts its milestones first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a1",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "deadline": "2026-07-15T00:00:00Z"
+    },
+    {
+     "id": "b1",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-1"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals",
+   "stated": {
+    "order": [
+     "s-b"
+    ]
+   }
+  },
+  "expect": [
+   "b1",
+   "a1"
+  ]
+ },
+ {
+  "id": "prioritize-goals-feedback-later-on-an-intent",
+  "kind": "goals",
+  "origin": "rule: feedback that implies later about an intent moves its milestones down",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a1",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1"
+    },
+    {
+     "id": "b1",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-2"
+    },
+    {
+     "id": "a2",
+     "kind": "milestone",
+     "solution": "s-c",
+     "intent": "i-1"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals",
+   "stated": {
+    "feedback": [
+     {
+      "about": "i-1",
+      "direction": "later"
+     }
+    ]
+   }
+  },
+  "expect": [
+   "b1",
+   "a1",
+   "a2"
+  ]
+ },
+ {
+  "id": "prioritize-goals-person-rank",
+  "kind": "goals",
+  "origin": "rule: the person's own rank of a milestone comes before its target time",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "due",
+     "kind": "milestone",
+     "solution": "s-a",
+     "intent": "i-1",
+     "deadline": "2026-07-13T00:00:00Z"
+    },
+    {
+     "id": "ranked",
+     "kind": "milestone",
+     "solution": "s-b",
+     "intent": "i-1",
+     "rank": 0,
+     "deadline": "2026-12-01T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "subject": "goals"
+  },
+  "expect": [
+   "ranked",
+   "due"
+  ]
  }
 ]
