@@ -293,7 +293,7 @@ class ContextTaking(typing.Protocol):
     def take(self, request: str, prepared: Optional[Mapping[str, Any]] = None, outside: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
 
 
-@solution("request-planner", kind="event", entry="plan", example={"request": "what is the latest Rust release?"})
+@solution("planner", kind="event", entry="plan", example={"request": "what is the latest Rust release?"})
 @runtime_checkable
 class Planning(typing.Protocol):
     """Breaks a request into pieces (a list of mappings with ``piece``, ``sub_goal`` and ``tool``, the worker category that fits it or empty).
@@ -303,7 +303,7 @@ class Planning(typing.Protocol):
              guidance: Optional[Mapping[str, Any]] = None, unmet: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]: ...
 
 
-@solution("work-delegation", kind="event", entry="delegate", example={"pieces": [], "authority": {}})
+@solution("delegation", kind="event", entry="delegate", example={"pieces": [], "authority": {}})
 @runtime_checkable
 class Delegating(typing.Protocol):
     """Hands each piece to the right worker, only when necessary, carrying the Representative's ``authority`` and the sub-goal's done-standard;
@@ -349,7 +349,7 @@ class Objectives(typing.Protocol):
     def place(self, request: str, person: str = "") -> Mapping[str, Any]: ...
 
 
-@solution("planner-guidance", kind="event", entry="nudge", example={"request": "what is the latest Rust release?", "objectives": []})
+@solution("guidance", kind="event", entry="nudge", example={"request": "what is the latest Rust release?", "objectives": []})
 @runtime_checkable
 class Guiding(typing.Protocol):
     """An infrequent longer-term nudge for the Planner, with the context-specific quality criteria; ``None`` when none is due."""
@@ -413,7 +413,7 @@ class ResponseJudging(typing.Protocol):
     def critique(self, answer: str, evidence: str = "") -> Sequence[str]: ...
 
 
-@solution("the-proactivity", kind="event", entry="due", example={"schedules": [], "now": "2026-07-12T09:00:00Z"})
+@solution("proactivity", kind="event", entry="due", example={"schedules": [], "now": "2026-07-12T09:00:00Z"})
 @runtime_checkable
 class Proactive(typing.Protocol):
     """Lets the system act without being asked: given its standing schedules and the time, returns the triggers that are due (each a mapping
@@ -440,7 +440,7 @@ class TakingIn(typing.Protocol):
 class Tooling(typing.Protocol):
     """Uses the tool of one category (``web-search``, ``read-files``, ``file-editing``, ``connected-system-operations`` or
     ``delegated-agent-sessions``) by calling that category's entry point with the request. A category the Representative's authority does not
-    allow is refused by Work Delegation, and a request that names the ``owner`` of the data it reads (a person) outside the ``data_scope`` of the
+    allow is refused by Delegation, and a request that names the ``owner`` of the data it reads (a person) outside the ``data_scope`` of the
     ``authority`` it is given is refused here: data scope is enforced by Tools and by Body's adapters, which declare whose each source is."""
 
     def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None, authority: Optional[Mapping[str, Any]] = None) -> Any: ...
@@ -521,7 +521,7 @@ class FeedbackLearning(typing.Protocol):
     def learn(self, person: str = "", feedback: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
 
 
-@solution("human-prioritization", kind="event", entry="prioritize", example={"person": "", "request": "what is the latest Rust release?"})
+@solution("prioritization", kind="event", entry="prioritize", example={"person": "", "request": "what is the latest Rust release?"})
 @runtime_checkable
 class Prioritizing(typing.Protocol):
     """Translates the priorities a person states or implies into ESOI milestones and weights, including quality profile weights."""

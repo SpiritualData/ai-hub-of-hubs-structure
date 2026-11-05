@@ -63,8 +63,8 @@ flowchart TB
 - **Card Store**: keeps short cards of knowledge and finds them again.
 
 **Intelligence**
-- **Mind**: turns one request into a plan and a response. Its parts are Context Intake (one view of what is known), Request Planner (splits the request and replans from what failed), Work Delegation (hands work on with its authority, budget and done-standard), and Response Writer.
-- **Higher Mind**: keeps the AI working toward what matters beyond the request in front of it: Long-Term Memory, Objectives and Planner Guidance.
+- **Mind**: turns one request into a plan and a response. Its parts are Context Intake (one view of what is known), Planner (splits the request and replans from what failed), Delegation (hands work on with its authority, budget and done-standard), and Response Writer.
+- **Higher Mind**: keeps the AI working toward what matters beyond the request in front of it: Long-Term Memory, Objectives and Guidance.
 - **Subconscious**: finds and prepares the information a request needs, without crossing into another person's data: Context Retriever, Cards From Files and Intuition (useful things that surface unasked).
 - **Critical Thinking**: says what success means and checks it was reached: Metric Translation, Goal Completion, Response Quality and ESOI Application (keeps the system's own specs and scores improving).
 - **Nervous System**: one risk signal before steps that cannot be undone or that belong to a person.
@@ -80,7 +80,7 @@ flowchart TB
 - **Representatives**: an AI acts for a person within the authority that person gave.
 - **Judgment Calls**: asks a person only when they would want to be asked, and decides how.
 - **Feedback Learning**: a correction given once changes behaviour afterwards.
-- **Human Prioritization**: turns the priorities a person implies into scores the system can optimize.
+- **Prioritization**: turns the priorities a person implies into scores the system can optimize.
 - **Request Intake**: takes in each request once, from wherever the system listens.
 
 Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. The full table of parts, with their research, is on [the mind map](docs/explanation/the-mind-map.md).

@@ -39,7 +39,7 @@
    "file-editing": "hubofhubs",
    "goal-completion": "hubofhubs",
    "higher-mind": "hubofhubs",
-   "human-prioritization": "hubofhubs",
+   "prioritization": "hubofhubs",
    "intake-sources": "hubofhubs",
    "internal-context": "hubofhubs",
    "judgment-calls": "hubofhubs",
@@ -49,10 +49,10 @@
    "model-plumbing": "hubofhubs",
    "model-tier-chooser": "hubofhubs",
    "nervous-system": "hubofhubs",
-   "planner-guidance": "hubofhubs",
+   "guidance": "hubofhubs",
    "read-files": "hubofhubs",
    "request-intake": "hubofhubs",
-   "request-planner": "hubofhubs",
+   "planner": "hubofhubs",
    "research-freshness-reader": "hubofhubs",
    "response-quality": "hubofhubs",
    "response-writer": "hubofhubs",
@@ -66,7 +66,7 @@
    "the-intuition": "hubofhubs",
    "the-learning": "hubofhubs",
    "the-mind": "hubofhubs",
-   "the-proactivity": "hubofhubs",
+   "proactivity": "hubofhubs",
    "the-representatives": "hubofhubs",
    "the-science": "hubofhubs",
    "the-self": "hubofhubs",
@@ -75,7 +75,7 @@
    "the-world": "hubofhubs",
    "vendor-model-caller": "hubofhubs",
    "web-search": "hubofhubs",
-   "work-delegation": "hubofhubs"
+   "delegation": "hubofhubs"
   }
  },
  "card-store": {
@@ -270,7 +270,7 @@
    "every_declared_source": "hubofhubs.consciousness.intake"
   }
  },
- "request-planner": {
+ "planner": {
   "default": "cue_router",
   "evidence": {
    "detail": "cue_router is better than one_piece (two-sided exact McNemar test, Holm-adjusted p=1.05e-08, 62 of 81 cases disagree)",
@@ -353,7 +353,7 @@
    "composition": "hubofhubs.flows"
   }
  },
- "the-proactivity": {
+ "proactivity": {
   "default": "calendar_and_events",
   "evidence": {
    "detail": "calendar_and_events is better than elapsed_hours (two-sided exact McNemar test, Holm-adjusted p=0.00781, 8 of 18 cases disagree)",
@@ -443,7 +443,7 @@
    "tavily": "hubofhubs.websearch.backends"
   }
  },
- "work-delegation": {
+ "delegation": {
   "default": "to_tools",
   "modules": {
    "to_tools": "hubofhubs.orchestrate.delegation"

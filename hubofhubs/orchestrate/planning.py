@@ -39,7 +39,7 @@ def unmet_pieces(unmet: Optional[Mapping[str, Any]]) -> Sequence[str]:
     return [str(p) for p in (unmet or {}).get("failed_pieces", ())]
 
 
-@implementation("request-planner", "cue_router")
+@implementation("planner", "cue_router")
 class CueRouter:
     """Splits a request at numbered or bulleted steps and at "then", and routes each piece to a worker category by the words it uses: an edit
     verb to file editing, a literature word to Science, a question or a freshness word to web search, and nothing else to no worker."""
@@ -53,7 +53,7 @@ class CueRouter:
         return [{"piece": p, "sub_goal": sub_goal(p, target), "tool": tool_for(p)} for p in chosen]
 
 
-@implementation("request-planner", "one_piece")
+@implementation("planner", "one_piece")
 class OnePiece:
     """The whole request as one piece with no worker: what a Mind does with no planner. It is the bound the router has to beat."""
     REQUIRES = ()     # nothing

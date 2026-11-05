@@ -312,14 +312,14 @@ MIND_TREE = (
     ("internal-context", "the-body"), ("card-store", "internal-context"), ("intake-sources", "the-body"),
     ("the-hands", "the-body"),
     ("the-intelligence", ""),
-    ("the-mind", "the-intelligence"), ("context-intake", "the-mind"), ("request-planner", "the-mind"),
-    ("work-delegation", "the-mind"), ("response-writer", "the-mind"),
-    ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("live-objectives", "higher-mind"), ("planner-guidance", "higher-mind"),
+    ("the-mind", "the-intelligence"), ("context-intake", "the-mind"), ("planner", "the-mind"),
+    ("delegation", "the-mind"), ("response-writer", "the-mind"),
+    ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("live-objectives", "higher-mind"), ("guidance", "higher-mind"),
     ("the-subconscious", "the-intelligence"), ("the-intuition", "the-subconscious"), ("cards-from-files", "the-subconscious"),
     ("context-retriever", "the-subconscious"),
     ("critical-thinking", "the-intelligence"), ("esoi-application", "critical-thinking"), ("metric-translation", "critical-thinking"),
     ("goal-completion", "critical-thinking"), ("response-quality", "critical-thinking"),
-    ("nervous-system", "the-intelligence"), ("the-proactivity", "the-intelligence"),
+    ("nervous-system", "the-intelligence"), ("proactivity", "the-intelligence"),
     ("the-world", ""),
     ("the-science", "the-world"),
     ("the-tools", "the-world"), ("web-search", "the-tools"), ("read-files", "the-tools"), ("file-editing", "the-tools"),
@@ -328,7 +328,7 @@ MIND_TREE = (
     ("the-learning", "the-world"), ("research-freshness-reader", "the-learning"),
     ("the-consciousness", ""),
     ("the-representatives", "the-consciousness"), ("judgment-calls", "the-consciousness"), ("feedback-learning", "the-consciousness"),
-    ("human-prioritization", "the-consciousness"), ("request-intake", "the-consciousness"),
+    ("prioritization", "the-consciousness"), ("request-intake", "the-consciousness"),
 )
 #: A solution with one of these ids is a mind seat, and its name is the part's name.
 MIND_SEATS = tuple(sid for sid, _inside in MIND_TREE)

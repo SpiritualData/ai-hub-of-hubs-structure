@@ -14,7 +14,7 @@ from hubofhubs.signals import RiskSignal  # noqa: E402
 from hubofhubs.steps import NO_ARM  # noqa: E402
 from test_oneline import FakeProvider, whole_hub  # noqa: E402
 
-NO_ARM_SOLUTIONS = ("feedback-learning", "human-prioritization", "esoi-application", "long-term-memory", "live-objectives", "planner-guidance",
+NO_ARM_SOLUTIONS = ("feedback-learning", "prioritization", "esoi-application", "long-term-memory", "live-objectives", "guidance",
                     "the-intuition", "role-understanding", "the-hands")
 
 
@@ -32,9 +32,9 @@ def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(t
                    ("the-consciousness", "done")]
     assert result.steps[-1]["steps"] == [{"solution": "feedback-learning", "status": "skipped", "reason": "no feedback was given"}]   # nothing to learn from
     every = {s["solution"]: s for s in walk(result.steps)}
-    for sid in ("request-planner", "work-delegation", "response-writer", "context-intake", "higher-mind", "metric-translation", "goal-completion"):
+    for sid in ("planner", "delegation", "response-writer", "context-intake", "higher-mind", "metric-translation", "goal-completion"):
         assert every[sid]["status"] == "done", (sid, every[sid])
-    for sid in ("long-term-memory", "live-objectives", "planner-guidance", "the-hands", "esoi-application"):
+    for sid in ("long-term-memory", "live-objectives", "guidance", "the-hands", "esoi-application"):
         assert every[sid]["status"] == "pending" and every[sid]["reason"] == NO_ARM, (sid, every[sid])
     assert result.note == "" and result.items[0]["url"].startswith("https://blog.rust-lang.org/")
     assert result.to_dict()["steps"] == list(result.steps)
@@ -105,14 +105,14 @@ class Judgment:
 
 def test_the_mind_checks_the_risk_signal_and_the_persons_decision_before_it_delegates():
     delegation = Delegation()
-    provided = {"request-planner": Planner(), "work-delegation": delegation, "response-writer": Writer(), "context-intake": Intake(), "nervous-system": Watch(),
+    provided = {"planner": Planner(), "delegation": delegation, "response-writer": Writer(), "context-intake": Intake(), "nervous-system": Watch(),
                 "judgment-calls": Judgment()}
     out = hubofhubs.run("the-mind", {"request": "tidy up", "authority": {"person": "p1"}}, provided=provided, environ={})
     assert delegation.handed == [([{"piece": "read the file", "sub_goal": "file read"}], {"person": "p1"})]    # the risky piece was declined for this person
     assert out["text"] == "read the file; delete the old backup folder"        # the writer is told the declined piece was not done
     assert out["results"][-1]["refused"] == "asked"
     order = [(s["solution"], s["status"]) for s in out["steps"]]
-    assert order[0] == ("context-intake", "done") and order[1] == ("request-planner", "done") and order[-2:] == [("work-delegation", "done"), ("response-writer", "done")]
+    assert order[0] == ("context-intake", "done") and order[1] == ("planner", "done") and order[-2:] == [("delegation", "done"), ("response-writer", "done")]
     assert [s for s, _ in order].count("judgment-calls") == 2
 
 

@@ -4,8 +4,8 @@
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| Calendar periods and events | `the-proactivity:calendar_and_events` | [`hubofhubs/proactivity/triggers.py`](triggers.py) | selected |
-| Elapsed hours | `the-proactivity:elapsed_hours` | [`hubofhubs/proactivity/triggers.py`](triggers.py) |  |
+| Calendar periods and events | `proactivity:calendar_and_events` | [`hubofhubs/proactivity/triggers.py`](triggers.py) | selected |
+| Elapsed hours | `proactivity:elapsed_hours` | [`hubofhubs/proactivity/triggers.py`](triggers.py) |  |
 
 ## Where to go next
 

@@ -8,7 +8,7 @@ This sub-intent arises as the implementation `the-intelligence:composition` of i
 
 ## How the solutions fit together
 
-Intelligence turns one request into a response. Higher Mind keeps the long view through Long-Term Memory, Objectives and Planner Guidance, which gives an infrequent longer-term nudge. Critical Thinking turns the request into a target with a budget through Metric Translation, records it through ESOI Application, and holds the result to it through Goal Completion and Response Quality. Subconscious finds and prepares information through Cards From Files, Context Retriever and Intuition. Mind takes the request in through Context Intake, breaks it into pieces through Request Planner, passes each piece to a worker through Work Delegation and writes the response through Response Writer. Mind asks for a signal before a risky piece from Nervous System, and for the decision for the person from Judgment Calls. An unmet goal sends the flow back to the planning step within the request's budget, and when the budget or the authority runs out the flow goes to Judgment Calls. Proactivity says what is due without being asked.
+Intelligence turns one request into a response. Higher Mind keeps the long view through Long-Term Memory, Objectives and Guidance, which gives an infrequent longer-term nudge. Critical Thinking turns the request into a target with a budget through Metric Translation, records it through ESOI Application, and holds the result to it through Goal Completion and Response Quality. Subconscious finds and prepares information through Cards From Files, Context Retriever and Intuition. Mind takes the request in through Context Intake, breaks it into pieces through Planner, passes each piece to a worker through Delegation and writes the response through Response Writer. Mind asks for a signal before a risky piece from Nervous System, and for the decision for the person from Judgment Calls. An unmet goal sends the flow back to the planning step within the request's budget, and when the budget or the authority runs out the flow goes to Judgment Calls. Proactivity says what is due without being asked.
 
 ## Diagram
 
@@ -26,10 +26,10 @@ flowchart LR
     s7["Objectives<br/><i>live-objectives</i>"]
     s8["Intuition<br/><i>the-intuition</i>"]
     s9["Context Intake<br/><i>context-intake</i>"]
-    s10["Request Planner<br/><i>request-planner</i>"]
-    s11["Work Delegation<br/><i>work-delegation</i>"]
+    s10["planner"]
+    s11["delegation"]
     s12["Response Writer<br/><i>response-writer</i>"]
-    s13["Planner Guidance<br/><i>planner-guidance</i>"]
+    s13["guidance"]
     s14["ESOI Application<br/><i>esoi-application</i>"]
     s15["Metric Translation<br/><i>metric-translation</i>"]
     s16["Goal Completion<br/><i>goal-completion</i>"]
@@ -66,16 +66,16 @@ flowchart LR
 | Objectives | `live-objectives` | `hubofhubs.run("live-objectives", '')` | none selected | An objective persists until it is met |
 | Intuition | `the-intuition` | `hubofhubs.run("the-intuition", {'request': 'what is the latest Rust release?'})` | none selected | Unasked items are taken and useful |
 | Context Intake | `context-intake` | `hubofhubs.run("context-intake", {'request': 'what is the latest Rust release?'})` | Merge into one labelled view (`one_view`) | One view with every source named |
-| Request Planner | `request-planner` | `hubofhubs.run("request-planner", {'request': 'what is the latest Rust release?'})` | Split and route by cues (`cue_router`) | Requests routed to the right worker |
-| Work Delegation | `work-delegation` | `hubofhubs.run("work-delegation", {'pieces': [], 'authority': {}})` | Route to Tools and Science (`to_tools`) | Handoffs keep authority, budget and cancellation |
+| Planner | `planner` | `hubofhubs.run("planner", {'request': 'what is the latest Rust release?'})` | Split and route by cues (`cue_router`) | Requests routed to the right worker |
+| Delegation | `delegation` | `hubofhubs.run("delegation", {'pieces': [], 'authority': {}})` | Route to Tools and Science (`to_tools`) | Handoffs keep authority, budget and cancellation |
 | Response Writer | `response-writer` | `hubofhubs.run("response-writer", {'results': [], 'profile': None})` | Cited results (`cited_results`) | Responses that say what the results hold |
-| Planner Guidance | `planner-guidance` | `hubofhubs.run("planner-guidance", ...)` | none selected | A nudge that helps the Planner |
+| Guidance | `guidance` | `hubofhubs.run("guidance", ...)` | none selected | A nudge that helps the Planner |
 | ESOI Application | `esoi-application` | `hubofhubs.run("esoi-application", {'change': {}})` | none selected | Specs and metrics improve by the loop |
 | Metric Translation | `metric-translation` | `hubofhubs.run("metric-translation", {'request': 'what is the latest Rust release?'})` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
 | Goal Completion | `goal-completion` | `hubofhubs.run("goal-completion", ...)` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Response Quality | `response-quality` | `hubofhubs.run("response-quality", ...)` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Cards From Files | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Proactivity | `the-proactivity` | `hubofhubs.run("the-proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ## Problems and ideals
 
@@ -170,16 +170,16 @@ flowchart LR
 | Objectives | `live-objectives` | none selected | An objective persists until it is met |
 | Intuition | `the-intuition` | none selected | Unasked items are taken and useful |
 | Context Intake | `context-intake` | Merge into one labelled view (`one_view`) | One view with every source named |
-| Request Planner | `request-planner` | Split and route by cues (`cue_router`) | Requests routed to the right worker |
-| Work Delegation | `work-delegation` | Route to Tools and Science (`to_tools`) | Handoffs keep authority, budget and cancellation |
+| Planner | `planner` | Split and route by cues (`cue_router`) | Requests routed to the right worker |
+| Delegation | `delegation` | Route to Tools and Science (`to_tools`) | Handoffs keep authority, budget and cancellation |
 | Response Writer | `response-writer` | Cited results (`cited_results`) | Responses that say what the results hold |
-| Planner Guidance | `planner-guidance` | none selected | A nudge that helps the Planner |
+| Guidance | `guidance` | none selected | A nudge that helps the Planner |
 | ESOI Application | `esoi-application` | none selected | Specs and metrics improve by the loop |
 | Metric Translation | `metric-translation` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
 | Goal Completion | `goal-completion` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Response Quality | `response-quality` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Cards From Files | `cards-from-files` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Proactivity | `the-proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Proactivity | `proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ### Implementations
 
@@ -221,13 +221,13 @@ flowchart LR
 | Evidence standard | `goal-completion:evidence_standard` | [hubofhubs/critique/goal_completion.py](../critique/goal_completion.py) |  |
 | Outcome is not empty | `goal-completion:nonempty` | [hubofhubs/critique/goal_completion.py](../critique/goal_completion.py) |  |
 | Goal record with default budget | `metric-translation:goal_record` | [hubofhubs/orchestrate/translation.py](../orchestrate/translation.py) |  |
-| Calendar periods and events | `the-proactivity:calendar_and_events` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
-| Elapsed hours | `the-proactivity:elapsed_hours` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
-| Split and route by cues | `request-planner:cue_router` | [hubofhubs/orchestrate/planning.py](../orchestrate/planning.py) |  |
-| One piece, no worker | `request-planner:one_piece` | [hubofhubs/orchestrate/planning.py](../orchestrate/planning.py) |  |
+| Calendar periods and events | `proactivity:calendar_and_events` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
+| Elapsed hours | `proactivity:elapsed_hours` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
+| Split and route by cues | `planner:cue_router` | [hubofhubs/orchestrate/planning.py](../orchestrate/planning.py) |  |
+| One piece, no worker | `planner:one_piece` | [hubofhubs/orchestrate/planning.py](../orchestrate/planning.py) |  |
 | Cited results | `response-writer:cited_results` | [hubofhubs/orchestrate/writer.py](../orchestrate/writer.py) |  |
 | Model synthesis | `response-writer:model_synthesis` | [hubofhubs/orchestrate/writer.py](../orchestrate/writer.py) |  |
-| Route to Tools and Science | `work-delegation:to_tools` | [hubofhubs/orchestrate/delegation.py](../orchestrate/delegation.py) |  |
+| Route to Tools and Science | `delegation:to_tools` | [hubofhubs/orchestrate/delegation.py](../orchestrate/delegation.py) |  |
 
 ### Metrics
 

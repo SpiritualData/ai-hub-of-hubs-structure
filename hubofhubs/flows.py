@@ -119,7 +119,7 @@ class HigherMindComposition:
     def view(self, request: str, person: str = "") -> Mapping[str, Any]:
         goals = take(self.objectives, "live-objectives", person=person)
         remembered = take(self.memory, "long-term-memory", query=request, person=person)
-        nudge = take(self.guidance, "planner-guidance", request=request, objectives=done(goals) or ())
+        nudge = take(self.guidance, "guidance", request=request, objectives=done(goals) or ())
         return {"objectives": done(goals) or [], "memory": done(remembered) or [], "guidance": done(nudge), "steps": listing([goals, remembered, nudge])}
 
 
@@ -177,7 +177,7 @@ class MindComposition:
               cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]:
         authority = authority or {}
         log: List[Step] = [take(self.intake, "context-intake", request=request, prepared=prepared, outside=outside)]
-        planned = take(self.planner, "request-planner", request=request, context=done(log[0]), target=target, guidance=guidance, unmet=unmet)
+        planned = take(self.planner, "planner", request=request, context=done(log[0]), target=target, guidance=guidance, unmet=unmet)
         log.append(planned)
         allowed: List[Mapping[str, Any]] = []
         asked: List[Mapping[str, Any]] = []
@@ -199,7 +199,7 @@ class MindComposition:
                 asked.append({**piece, "refused": "asked", "decision": done(decision)})
         if not done(planned):
             log += [skipped("nervous-system", "no piece to check yet"), skipped("judgment-calls", "no piece to decide on yet")]
-        handed = take(self.delegation, "work-delegation", pieces=allowed, authority=authority, budget=budget, cancelled=cancelled)
+        handed = take(self.delegation, "delegation", pieces=allowed, authority=authority, budget=budget, cancelled=cancelled)
         results = list(done(handed) or []) + [{"piece": str(p.get("piece", "")), "tool": str(p.get("tool", "")), "refused": p["refused"], "items": [], "text": ""}
                                               for p in asked]
         written = take(self.writer, "response-writer", results=results, profile=profile)
@@ -226,7 +226,7 @@ class IntelligenceComposition:
         self.judgment, self.proactivity = judgment, proactivity
 
     def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "") -> Sequence[Mapping[str, Any]]:
-        return list(done(take(self.proactivity, "the-proactivity", schedules=schedules, now=now)) or [])
+        return list(done(take(self.proactivity, "proactivity", schedules=schedules, now=now)) or [])
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
                 priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]:
@@ -286,7 +286,7 @@ class ConsciousnessComposition:
 
     def represent(self, person: str = "") -> Mapping[str, Any]:
         who = take(self.representatives, "the-representatives", person=person)
-        weighed = take(self.priorities, "human-prioritization", person=person)
+        weighed = take(self.priorities, "prioritization", person=person)
         return {"person": person, "representative": done(who) or {"person": person}, "priorities": done(weighed), "steps": listing([who, weighed])}
 
     def receive(self, person: str = "") -> Sequence[Mapping[str, Any]]:

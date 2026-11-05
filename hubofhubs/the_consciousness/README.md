@@ -8,7 +8,7 @@ This sub-intent arises as the implementation `the-consciousness:composition` of 
 
 ## How the solutions fit together
 
-Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Human Prioritization turns the priorities a person states or implies into ESOI. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization turns the priorities a person states or implies into ESOI. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
 
 ## Solutions at a glance
 
@@ -17,7 +17,7 @@ Consciousness is where the system adapts to the humans and policies it works for
 | Representatives | `the-representatives` | `hubofhubs.run("the-representatives", '')` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Feedback Learning | `feedback-learning` | `hubofhubs.run("feedback-learning", {'person': '', 'feedback': {}})` | none selected | A correction given once is followed afterwards |
 | Judgment Calls | `judgment-calls` | `hubofhubs.run("judgment-calls", {'signal': {'signal': 'proceed'}, 'person': ''})` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
-| Human Prioritization | `human-prioritization` | `hubofhubs.run("human-prioritization", ...)` | none selected | Weights match the priorities the person confirms |
+| Prioritization | `prioritization` | `hubofhubs.run("prioritization", ...)` | none selected | Weights match the priorities the person confirms |
 | Request Intake | `request-intake` | `hubofhubs.run("request-intake", {'person': ''})` | Every declared source (`every_declared_source`) | Requests taken in once with their person |
 
 ## Problems and ideals
@@ -77,7 +77,7 @@ Consciousness is where the system adapts to the humans and policies it works for
 | Representatives | `the-representatives` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Feedback Learning | `feedback-learning` | none selected | A correction given once is followed afterwards |
 | Judgment Calls | `judgment-calls` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
-| Human Prioritization | `human-prioritization` | none selected | Weights match the priorities the person confirms |
+| Prioritization | `prioritization` | none selected | Weights match the priorities the person confirms |
 | Request Intake | `request-intake` | Every declared source (`every_declared_source`) | Requests taken in once with their person |
 
 ### Implementations

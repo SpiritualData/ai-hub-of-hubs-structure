@@ -916,7 +916,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "work-delegation"
+   "seat": "delegation"
   },
   "expect": "ok"
  },
@@ -952,7 +952,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "planner-guidance"
+   "seat": "guidance"
   },
   "expect": "ok"
  },
@@ -1051,7 +1051,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "request-planner"
+   "seat": "planner"
   },
   "expect": "ok"
  },
@@ -1060,7 +1060,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "human-prioritization"
+   "seat": "prioritization"
   },
   "expect": "ok"
  },

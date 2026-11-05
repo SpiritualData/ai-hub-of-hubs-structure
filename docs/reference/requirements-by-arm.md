@@ -45,6 +45,7 @@ at the repository root.
 | Delegated Agent Sessions, Agent Client Protocol runner (`delegated-agent-sessions:acp_deep_runner`) | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, one shot (`delegated-agent-sessions:subprocess_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| Delegation, Route to Tools and Science (`delegation:to_tools`) | none | none | none | none | no |
 | File Editing, One-call file edit (`file-editing:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
 | Goal Completion, Evidence standard (`goal-completion:evidence_standard`) | none | none | none | none | no |
 | Goal Completion, Outcome is not empty (`goal-completion:nonempty`) | none | none | none | none | no |
@@ -59,10 +60,12 @@ at the repository root.
 | Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
 | Nervous System, Digest-driven overseer (`nervous-system:overseer`) | none | none | none | none | no |
 | Nervous System, Gate then overseer (`nervous-system:two_stage`) | none | none | none | none | no |
+| Planner, Split and route by cues (`planner:cue_router`) | none | none | none | none | no |
+| Planner, One piece, no worker (`planner:one_piece`) | none | none | none | none | no |
+| Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
+| Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
 | Request Intake, Every declared source (`request-intake:every_declared_source`) | none | none | none | none | no |
-| Request Planner, Split and route by cues (`request-planner:cue_router`) | none | none | none | none | no |
-| Request Planner, One piece, no worker (`request-planner:one_piece`) | none | none | none | none | no |
 | Research Freshness Reader, Registry date scan (`research-freshness-reader:registry_scan`) | none | none | none | none | no |
 | Response Quality, Links held to their evidence (`response-quality:evidence_check`) | none | none | none | none | no |
 | Response Writer, Cited results (`response-writer:cited_results`) | none | none | none | none | no |
@@ -74,8 +77,6 @@ at the repository root.
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
 | Learning, Stale areas from the registry dates (`the-learning:registry_research`) | none | none | none | none | no |
 | Mind, The four parts of the Mind in order (`the-mind:composition`) | none | none | none | none | no |
-| Proactivity, Calendar periods and events (`the-proactivity:calendar_and_events`) | none | none | none | none | no |
-| Proactivity, Elapsed hours (`the-proactivity:elapsed_hours`) | none | none | none | none | no |
 | Representatives, Declared authority (`the-representatives:declared_authority`) | none | none | none | none | no |
 | Science, OpenAlex keyword search (`the-science:openalex`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
 | Science, OpenAlex keywords, rule rewrite (`the-science:openalex_keywords`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
@@ -99,7 +100,6 @@ at the repository root.
 | Web Search, SearXNG metasearch (`web-search:searxng`) | `SEARXNG_URL` | none | `httpx` via extra `web` | service SearXNG (`SEARXNG_URL`) | no |
 | Web Search, Serper Google search (`web-search:serper`) | none | Serper (`SERPER_API_KEY`) | `httpx` via extra `web` | none | no |
 | Web Search, Tavily search API (`web-search:tavily`) | none | Tavily (`TAVILY_API_KEY` or `WEB_SEARCH_API_KEY`) | `httpx` via extra `web` | none | no |
-| Work Delegation, Route to Tools and Science (`work-delegation:to_tools`) | none | none | none | none | no |
 
 ### External services and accounts
 

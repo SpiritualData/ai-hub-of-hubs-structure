@@ -93,13 +93,13 @@ The table below is generated from the records. Names lead, each part says what i
 | Intelligence | the hub | 0 | 0 | 0 | none | `the-intelligence` |
 | Mind | Intelligence | 8 | 1 | 55 | 2026-10-30 | `the-mind` |
 | Context Intake | Mind | 0 | 0 | 0 | none | `context-intake` |
-| Request Planner | Mind | 0 | 0 | 0 | none | `request-planner` |
-| Work Delegation | Mind | 0 | 0 | 0 | none | `work-delegation` |
+| Planner | Mind | 0 | 0 | 0 | none | `planner` |
+| Delegation | Mind | 0 | 0 | 0 | none | `delegation` |
 | Response Writer | Mind | 0 | 0 | 0 | none | `response-writer` |
 | Higher Mind | Intelligence | 0 | 0 | 0 | none | `higher-mind` |
 | Long-Term Memory | Higher Mind | 0 | 0 | 0 | none | `long-term-memory` |
 | Objectives | Higher Mind | 0 | 0 | 0 | none | `live-objectives` |
-| Planner Guidance | Higher Mind | 0 | 0 | 0 | none | `planner-guidance` |
+| Guidance | Higher Mind | 0 | 0 | 0 | none | `guidance` |
 | Subconscious | Intelligence | 10 | 8 | 69 | 2026-10-30 | `the-subconscious` |
 | Intuition | Subconscious | 0 | 0 | 0 | none | `the-intuition` |
 | Cards From Files | Subconscious | 0 | 0 | 0 | none | `cards-from-files` |
@@ -110,7 +110,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Goal Completion | Critical Thinking | 0 | 0 | 0 | none | `goal-completion` |
 | Response Quality | Critical Thinking | 5 | 5 | 26 | 2026-10-30 | `response-quality` |
 | Nervous System | Intelligence | 5 | 5 | 29 | 2026-10-30 | `nervous-system` |
-| Proactivity | Intelligence | 0 | 0 | 0 | none | `the-proactivity` |
+| Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
 | World | the hub | 7 | 1 | 36 | 2026-10-30 | `the-world` |
 | Science | World | 10 | 2 | 73 | 2026-10-30 | `the-science` |
 | Tools | World | 0 | 0 | 0 | none | `the-tools` |
@@ -128,7 +128,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Representatives | Consciousness | 0 | 0 | 0 | none | `the-representatives` |
 | Judgment Calls | Consciousness | 0 | 0 | 0 | none | `judgment-calls` |
 | Feedback Learning | Consciousness | 0 | 0 | 0 | none | `feedback-learning` |
-| Human Prioritization | Consciousness | 0 | 0 | 0 | none | `human-prioritization` |
+| Prioritization | Consciousness | 0 | 0 | 0 | none | `prioritization` |
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
 
 74 areas and 456 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).

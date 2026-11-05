@@ -18,9 +18,9 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | Action code | `hub-act` | core | The file-editing arm, the folder writer and operation writing over MCP. | file-editing, connected-system-operations, delegated-agent-sessions, read-files |
 | Science code | `hub-science` | core | Scholarly search arms over OpenAlex. | the-science |
 | Agent runner code | `hub-deep` | core | Agent runners that drive Claude Code or an ACP agent. | file-editing, connected-system-operations, delegated-agent-sessions |
-| Orchestration code | `hub-orchestrate` | core | The planning and answering loop moved from a consumer. | the-mind, context-intake, request-planner, work-delegation, response-writer, metric-translation |
+| Orchestration code | `hub-orchestrate` | core | The planning and answering loop moved from a consumer. | the-mind, context-intake, planner, delegation, response-writer, metric-translation |
 | Evaluation code | `hub-evaluation` | evaluation | The per-seat cases, scorers and arm wrappers that esoi runs to record results. | the-assembler |
 | Terminal renderers | `hub-terminal` | core | : pure renderers from run events to framework-free blocks for any terminal frontend (work trace, interim folding, asks, stopped reason),  moved in from a consumer | the-world |
 | Consciousness code | `hub-consciousness` | core | Representatives, Judgment Calls and Request Intake: the person's authority, the decision to ask and the requests taken in. | the-representatives, judgment-calls, request-intake |
 | Intake adapters | `hub-intake` | core | The adapters that say where a system's requests come from. | intake-sources |
-| Proactivity code | `hub-proactivity` | core | Which standing schedules are due, by calendar period, requested run or event. | the-proactivity |
+| Proactivity code | `hub-proactivity` | core | Which standing schedules are due, by calendar period, requested run or event. | proactivity |

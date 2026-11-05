@@ -39,7 +39,7 @@ def outcome(category: str, got: Any) -> Dict[str, Any]:
     return {"text": str(getattr(got, "text", got) or ""), "items": [], "met": None}
 
 
-@implementation("work-delegation", "to_tools")
+@implementation("delegation", "to_tools")
 class ToTools:
     """Routes a piece to Tools (web search, file editing, connected systems, agent sessions) or to Science for a literature lookup."""
     REQUIRES = ()     # the seats it is handed
