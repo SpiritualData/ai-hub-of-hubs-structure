@@ -9,7 +9,7 @@ from esoi import solution
 class IntakeSourcing(typing.Protocol):
     """Body's intake adapters: ``sources`` lists where this system's requests come from (a chat, a task queue, a place meeting action items are
     written; a system declares its own), and ``pull`` takes the requests waiting at one of them (each a mapping with ``text``, ``person`` and
-    ``source``), handing each over once."""
+    ``source``, and an ``at`` time when it is an event that Proactivity should count), handing each over once."""
 
     def sources(self) -> Sequence[Mapping[str, Any]]: ...
     def pull(self, source: str = "", limit: int = 10) -> Sequence[Mapping[str, Any]]: ...

@@ -14,7 +14,7 @@ from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal  # noqa
 from hubofhubs.the_self.steps import NO_ARM  # noqa: E402
 from test_oneline import FakeProvider, whole_hub  # noqa: E402
 
-NO_ARM_SOLUTIONS = ("feedback-learning", "prioritization", "esoi-application", "long-term-memory", "live-objectives", "guidance",
+NO_ARM_SOLUTIONS = ("feedback-learning", "esoi-application", "long-term-memory", "live-objectives", "guidance",
                     "the-intuition", "role-understanding", "the-hands")
 
 
@@ -209,7 +209,7 @@ class Quiet:
 
 def intelligence(critical, thinker):
     from hubofhubs.the_intelligence.flow import IntelligenceComposition
-    return IntelligenceComposition(Quiet(), Quiet(), critical, thinker, Quiet(), Absent())
+    return IntelligenceComposition(Quiet(), Quiet(), critical, thinker, Quiet(), Absent(), Absent())
 
 
 def test_an_unmet_goal_returns_to_the_planner_within_the_budget():
@@ -287,3 +287,46 @@ def test_an_unsure_step_is_medium_and_the_default_person_is_asked_about_it():
     signal = hubofhubs.run("nervous-system", "Run the tidy script")
     assert signal.severity == "medium"
     assert hubofhubs.run("judgment-calls", {"signal": {"reason": "no severity named"}, "person": ""})["decision"] == "ask"      # no severity is never none
+
+
+# --- an autopilot built on Proactivity and Prioritization: what is due, and what matters first -------------------------------------------------------------------
+
+SCHEDULES = [
+    {"name": "weekly-report", "request": "write the weekly report", "cadence": "weekly", "kind": "standing-work", "horizon": "week"},
+    {"name": "daily-review", "request": "do the daily review", "cadence": "daily", "kind": "standing-work", "horizon": "today"},
+    {"name": "done-today", "request": "already ran", "cadence": "daily", "last_run": "2026-07-12T08:00:00Z"},
+    {"name": "on-event", "request": "react to the event", "reactive": False, "event_source": "quest-events", "last_run": "2026-07-01T00:00:00Z", "horizon": "month"},
+]
+NOW = "2026-07-12T09:00:00Z"
+
+
+def test_the_unasked_work_comes_back_due_and_most_important_first_through_the_whole_flow(tmp_path):
+    system = hubofhubs.assemble(**whole_hub(tmp_path))
+    out = system["the-intelligence"].proactive(
+        SCHEDULES, NOW, person="p", candidates=[{"id": "open-ask", "kind": "ask", "request": "answer the ask", "asked_at": "2026-07-10T09:00:00Z"}],
+        events=[{"source": "quest-events", "at": "2026-07-05T00:00:00Z"}])
+    assert [t["schedule"] for t in out] == ["open-ask", "daily-review", "weekly-report", "on-event"]      # the ask, then the horizons shortest first
+    assert [t["rank"] for t in out] == [1, 2, 3, 4] and all(t["priority_reason"] and t["metric"]["milestone"] for t in out)
+    assert [t["kind"] for t in out] == ["waiting", "period", "period", "event"]      # what each was due for; the pulled event made the reactive schedule due
+    assert sum(t["metric"]["weight"] for t in out) == pytest.approx(1.0, abs=1e-3)
+
+
+def test_what_the_person_deferred_is_held_back_and_their_order_wins(tmp_path):
+    system = hubofhubs.assemble(**whole_hub(tmp_path))
+    out = system["the-intelligence"].proactive(SCHEDULES, NOW, person="p", stated={"order": ["weekly-report"], "not_before": {"daily-review": "2026-07-13T00:00:00Z"}})
+    assert [t["schedule"] for t in out] == ["weekly-report"]
+
+
+def test_the_self_acts_unasked_in_the_order_prioritization_gives(tmp_path):
+    system = hubofhubs.assemble(**whole_hub(tmp_path))
+    asked = []
+    system["the-self"].respond = lambda request, person="", **kw: asked.append(request) or request
+    out = system["the-self"].act_unasked(SCHEDULES[:2], NOW, person="p")
+    assert asked == ["do the daily review", "write the weekly report"] and out == asked
+
+
+def test_without_prioritization_the_due_order_stays_and_no_work_is_made_up():
+    from hubofhubs.the_intelligence.flow import IntelligenceComposition
+    from hubofhubs.the_intelligence.proactivity.triggers import CalendarAndEvents
+    part = IntelligenceComposition(Absent(), Absent(), Absent(), Absent(), Absent(), CalendarAndEvents(), Absent())
+    assert [t["schedule"] for t in part.proactive(SCHEDULES[:2], NOW)] == ["weekly-report", "daily-review"]

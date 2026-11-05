@@ -28,7 +28,7 @@ class SelfComposition:
     """The Self responds as the whole. Its flow, in order: Consciousness represents the person, Body describes where the system's data lives,
     Intelligence processes the request with the Representative's authority (World's tools do the outside work from there), Role Understanding states what
     Intelligence is for, Body keeps the run record and Integrity audits it, and Consciousness learns from feedback when there is some. The result lists the step of every part and says
-    which have no arm yet. World is asked, in ``health``, how current the research is. ``serve`` takes the waiting requests in through Consciousness; ``act_unasked`` responds to what Proactivity says is due.
+    which have no arm yet. World is asked, in ``health``, how current the research is. ``serve`` takes the waiting requests in through Consciousness; ``act_unasked`` responds to what Proactivity says is due, in the order Prioritization gives.
     Every part, World included, is built on first use, so a seat that cannot be built is a pending step, not a failure of the rest, and a request that needs no key runs with none."""
     REQUIRES = ()     # the seats it is handed
 
@@ -67,9 +67,17 @@ class SelfComposition:
         requests = take(self.consciousness, "the-consciousness", method="receive", person=person)
         return [self.respond(row["text"], row.get("person") or person) for row in (requests.output or [])]
 
-    def act_unasked(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "") -> Sequence[Result]:
-        due = take(self.intelligence, "the-intelligence", method="proactive", schedules=schedules, now=now)
-        return [self.respond(trigger["request"], person) for trigger in (due.output or [])]
+    def act_unasked(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "", candidates: Sequence[Mapping[str, Any]] = (),
+                    stated: Optional[Mapping[str, Any]] = None, events: Sequence[Mapping[str, Any]] = ()) -> Sequence[Result]:
+        """Responds to what is due, most important first: Consciousness gives the person's priorities (``stated``, else the ``priorities`` the Representative's
+        preferences declare), Intelligence asks Proactivity what is due and Prioritization what matters first among it and ``candidates``, and each trigger,
+        in that order, is responded to as a request. ``events`` are the items pulled through Body's Intake Sources."""
+        known = take(self.consciousness, "the-consciousness", person=person)
+        who = (known.output or {}) if known.status == DONE else {}
+        said = stated if stated is not None else ((who.get("representative") or {}).get("preferences") or {}).get("priorities")
+        due = take(self.intelligence, "the-intelligence", method="proactive", schedules=schedules, now=now, person=person, candidates=candidates,
+                   stated=said, events=events)
+        return [self.respond(trigger["request"], person) for trigger in (due.output or []) if trigger.get("request")]
 
     def coverage(self) -> Mapping[str, Any]:
         found = take(self.assembler, "the-assembler")

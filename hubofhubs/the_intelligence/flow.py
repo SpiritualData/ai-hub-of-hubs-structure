@@ -6,7 +6,9 @@ from hubofhubs.the_consciousness.representatives.quality import resolve_profile
 from hubofhubs.the_intelligence.critical_thinking.interface import CriticalThinking
 from hubofhubs.the_intelligence.higher_mind.interface import HigherMind
 from hubofhubs.the_consciousness.judgment_calls.interface import JudgmentCalling
+from hubofhubs.the_consciousness.prioritization.interface import Prioritizing
 from hubofhubs.the_intelligence.proactivity.interface import Proactive
+from hubofhubs.the_intelligence.proactivity.triggers import attach_events, candidate_of, in_priority_order
 from hubofhubs.the_intelligence.mind.interface import Reasoning
 from hubofhubs.the_intelligence.subconscious.interface import Remembering
 from hubofhubs.the_self.steps import Step, listing, skipped, take
@@ -19,16 +21,25 @@ class IntelligenceComposition:
     """One request through Intelligence: Higher Mind gives the long view, Critical Thinking translates the request into a target with a budget,
     the Subconscious prepares information, the Mind plans, delegates and writes, and Critical Thinking checks the goal and the response quality.
     When Goal Completion says the goal is unmet the flow returns to the Planner with what failed, within the attempts the budget allows; when the
-    budget or the authority runs out it goes to Judgment Calls. Proactivity says what is due without being asked."""
+    budget or the authority runs out it goes to Judgment Calls. Proactivity says what is due without being asked, and Prioritization, which
+    Consciousness gives the person's priorities, says what matters first among the due work and the other work that is waiting."""
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, higher: Lazy[HigherMind], subconscious: Lazy[Remembering], critical: Lazy[CriticalThinking], mind: Lazy[Reasoning],
-                 judgment: Lazy[JudgmentCalling], proactivity: Lazy[Proactive]):
+                 judgment: Lazy[JudgmentCalling], proactivity: Lazy[Proactive], priorities: Lazy[Prioritizing]):
         self.higher, self.subconscious, self.critical, self.mind = higher, subconscious, critical, mind
-        self.judgment, self.proactivity = judgment, proactivity
+        self.judgment, self.proactivity, self.priorities = judgment, proactivity, priorities
 
-    def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "") -> Sequence[Mapping[str, Any]]:
-        return list(done(take(self.proactivity, "proactivity", schedules=schedules, now=now)) or [])
+    def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "", candidates: Sequence[Mapping[str, Any]] = (),
+                  stated: Optional[Mapping[str, Any]] = None, events: Sequence[Mapping[str, Any]] = ()) -> Sequence[Mapping[str, Any]]:
+        """What to do unasked, most important first: Proactivity says which standing work is due (the events a consumer pulled through Body's Intake Sources
+        count as events of the schedules that name their source), Prioritization puts the due work and ``candidates`` (the other work waiting, such as open
+        asks) in order for this person, and the triggers come back in that order with each one's rank and reason. Without Prioritization the due order stays."""
+        due = take(self.proactivity, "proactivity", schedules=attach_events(schedules, events), now=now)
+        triggers = list(done(due) or [])
+        ordered = take(self.priorities, "prioritization", person=person, candidates=[candidate_of(t, schedules) for t in triggers] + list(candidates),
+                       stated=stated, now=now)
+        return in_priority_order(triggers, candidates, done(ordered))
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
                 priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]:

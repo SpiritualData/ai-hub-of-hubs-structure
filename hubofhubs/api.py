@@ -279,6 +279,13 @@ LOCATIONS = {
     "JudgmentCalling": "hubofhubs.the_consciousness.judgment_calls.interface:JudgmentCalling",
     # hubofhubs.the_consciousness.prioritization.interface
     "Prioritizing": "hubofhubs.the_consciousness.prioritization.interface:Prioritizing",
+    # hubofhubs.the_consciousness.prioritization.types
+    "Stated": "hubofhubs.the_consciousness.prioritization.types:Stated",
+    "Ranked": "hubofhubs.the_consciousness.prioritization.types:Ranked",
+    "CANDIDATE_FIELDS": "hubofhubs.the_consciousness.prioritization.types:FIELDS",
+    "HORIZONS": "hubofhubs.the_consciousness.prioritization.types:HORIZONS",
+    "DEFAULT_KIND_ORDER": "hubofhubs.the_consciousness.prioritization.types:DEFAULT_KIND_ORDER",
+    "ordered_ids": "hubofhubs.the_consciousness.prioritization.types:ids_of",
     # hubofhubs.the_consciousness.representatives.interface
     "Representing": "hubofhubs.the_consciousness.representatives.interface:Representing",
     # hubofhubs.the_consciousness.request_intake.interface
@@ -450,6 +457,11 @@ LOCATIONS = {
     "RiskWatching": "hubofhubs.the_intelligence.nervous_system.interface:RiskWatching",
     # hubofhubs.the_intelligence.proactivity.interface
     "Proactive": "hubofhubs.the_intelligence.proactivity.interface:Proactive",
+    # hubofhubs.the_intelligence.proactivity.triggers
+    "TRIGGER_KINDS": "hubofhubs.the_intelligence.proactivity.triggers:KINDS",
+    "attach_events": "hubofhubs.the_intelligence.proactivity.triggers:attach_events",
+    "candidate_of": "hubofhubs.the_intelligence.proactivity.triggers:candidate_of",
+    "in_priority_order": "hubofhubs.the_intelligence.proactivity.triggers:in_priority_order",
     # hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files
     "changed_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files:changed_cards",
     "file_card": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files:file_card",
