@@ -1,6 +1,6 @@
 """Scores a Proactivity arm: given standing schedules and the time, are exactly the schedules that are due named?
 
-The cases are the cadence, run-request and reactive-event cases a production autopilot's own tests assert. One number: the share of cases with exactly the
+The cases are standing cadence, run-request and reactive-event rules (kind schedule) and invented window cases (kind window), each tagged with its origin. One number: the share of cases with exactly the
 right schedules. No model call, no network."""
 import sys
 from pathlib import Path

@@ -2,6 +2,7 @@
  {
   "id": "proactive-never-run",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -19,6 +20,7 @@
  {
   "id": "proactive-weekly-same-week",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -35,6 +37,7 @@
  {
   "id": "proactive-weekly-later-week",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -53,6 +56,7 @@
  {
   "id": "proactive-daily-late-yesterday",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -71,6 +75,7 @@
  {
   "id": "proactive-daily-already-today",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -87,6 +92,7 @@
  {
   "id": "proactive-monthly-last-month",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -105,6 +111,7 @@
  {
   "id": "proactive-monthly-this-month",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -121,6 +128,7 @@
  {
   "id": "proactive-monthly-year-boundary",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -139,6 +147,7 @@
  {
   "id": "proactive-weekly-year-boundary",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -157,6 +166,7 @@
  {
   "id": "proactive-unreadable-time-fails-open",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -175,6 +185,7 @@
  {
   "id": "proactive-evening-run-in-its-own-zone",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -194,6 +205,7 @@
  {
   "id": "proactive-run-requested-after-last-run",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -213,6 +225,7 @@
  {
   "id": "proactive-run-requested-before-last-run",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -230,6 +243,7 @@
  {
   "id": "proactive-reactive-event-after-last-run",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -251,6 +265,7 @@
  {
   "id": "proactive-reactive-event-before-last-run",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -270,6 +285,7 @@
  {
   "id": "proactive-reactive-never-run-with-event",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -290,6 +306,7 @@
  {
   "id": "proactive-reactive-never-run-no-event",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -306,6 +323,7 @@
  {
   "id": "proactive-reactive-unreadable-events-ignored",
   "kind": "schedule",
+  "origin": "rule: standing cadence, request and event rules",
   "args": {
    "schedules": [
     {
@@ -320,6 +338,680 @@
     }
    ],
    "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-weekday-open",
+  "kind": "window",
+  "origin": "rule: a chosen day is due once its local time of day has arrived (09:30 in New York)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-before-the-time",
+  "kind": "window",
+  "origin": "rule: not due before the local time of day (08:30 in New York)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T12:30:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-not-a-chosen-day",
+  "kind": "window",
+  "origin": "rule: not due on a day that is not chosen (a Sunday)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T13:30:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-grace-ended",
+  "kind": "window",
+  "origin": "rule: not due once the grace window has ended (11:00 with 60 minutes)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T15:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-grace-end-is-inclusive",
+  "kind": "window",
+  "origin": "rule: due at the last minute of the grace window",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T14:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-zero-grace-at-the-time",
+  "kind": "window",
+  "origin": "rule: with no grace, due only at the minute of the time of day",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 0
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-zero-grace-a-minute-later",
+  "kind": "window",
+  "origin": "rule: with no grace, not due a minute later",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 0
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:01:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-already-ran-in-the-occasion",
+  "kind": "window",
+  "origin": "rule: once in each occasion: a run after it opened covers it",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "last_run": "2026-07-13T13:05:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:30:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-ran-the-day-before",
+  "kind": "window",
+  "origin": "rule: a run on an earlier occasion does not cover this one",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "last_run": "2026-07-13T13:05:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-14T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-ran-before-it-opened",
+  "kind": "window",
+  "origin": "rule: a run earlier the same day, before the time of day, does not cover the occasion",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "last_run": "2026-07-13T12:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-missed-days-are-not-owed",
+  "kind": "window",
+  "origin": "rule: days missed are not run later: only the open occasion counts",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "last_run": "2026-07-13T13:05:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-15T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-grace-longer-than-a-day",
+  "kind": "window",
+  "origin": "rule: a grace window longer than a day keeps the occasion open into the next day",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 2000
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-14T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-time-zone-not-yet",
+  "kind": "window",
+  "origin": "rule: the same instant is read in the schedule's own zone (22:30 in Tokyo, before 23:00)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "23:00",
+      "time_zone": "Asia/Tokyo",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:30:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-time-zone-open",
+  "kind": "window",
+  "origin": "rule: the same instant is due in a zone where the time of day has arrived (22:30 in Tokyo, from 22:00)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "22:00",
+      "time_zone": "Asia/Tokyo",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-13T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-local-day-after-the-utc-day",
+  "kind": "window",
+  "origin": "rule: the day is the local day: Monday evening in Los Angeles is already Tuesday in UTC",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon"
+      ],
+      "run_time": "20:00",
+      "time_zone": "America/Los_Angeles",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-14T03:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-local-day-before-the-utc-day",
+  "kind": "window",
+  "origin": "rule: a Tuesday in UTC that is still Monday locally is not a Tuesday occasion",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "tue"
+      ],
+      "run_time": "20:00",
+      "time_zone": "America/Los_Angeles",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-14T03:30:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-grace-crosses-midnight",
+  "kind": "window",
+  "origin": "rule: the occasion keeps its own day when the grace window crosses midnight (00:15 Saturday for a Friday 23:30 start)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "fri"
+      ],
+      "run_time": "23:30",
+      "time_zone": "Europe/Paris",
+      "grace_minutes": 120
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-17T22:15:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-midnight-grace-ended",
+  "kind": "window",
+  "origin": "rule: the same window closes after its grace (02:00 Saturday)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "fri"
+      ],
+      "run_time": "23:30",
+      "time_zone": "Europe/Paris",
+      "grace_minutes": 120
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-18T00:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-requested-outside-the-window",
+  "kind": "window",
+  "origin": "rule: a run requested after the last run is due whatever the window",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "last_run": "2026-07-10T13:05:00Z",
+     "run_requested_at": "2026-07-12T12:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-dst-wall-clock-kept",
+  "kind": "window",
+  "origin": "rule: after the clocks go forward the time of day is still the local one (09:30 EDT on the first Monday after)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-03-09T13:30:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-dst-wall-clock-grace-ended",
+  "kind": "window",
+  "origin": "rule: and the grace window ends an hour after it in local time (10:30 EDT)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri"
+      ],
+      "run_time": "09:00",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-03-09T14:30:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-dst-missing-time-not-yet",
+  "kind": "window",
+  "origin": "rule: a local time the clocks jump over (02:30 on the spring change) has not opened before the jump",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "sun"
+      ],
+      "run_time": "02:30",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-03-08T06:59:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-window-dst-missing-time-opens-after-the-jump",
+  "kind": "window",
+  "origin": "rule: it opens when the clock passes it (03:45 after the jump)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "sun"
+      ],
+      "run_time": "02:30",
+      "time_zone": "America/New_York",
+      "grace_minutes": 60
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-03-08T07:45:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-dst-repeated-time-first-pass",
+  "kind": "window",
+  "origin": "rule: a local time that happens twice opens the first time (01:45, first pass)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "sun"
+      ],
+      "run_time": "01:30",
+      "time_zone": "America/New_York",
+      "grace_minutes": 120
+     },
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-11-01T05:45:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-window-dst-repeated-time-runs-once",
+  "kind": "window",
+  "origin": "rule: and a run made in the first pass covers the second (01:40, second pass)",
+  "args": {
+   "schedules": [
+    {
+     "window": {
+      "days": [
+       "sun"
+      ],
+      "run_time": "01:30",
+      "time_zone": "America/New_York",
+      "grace_minutes": 120
+     },
+     "last_run": "2026-11-01T05:35:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-11-01T06:40:00Z"
   },
   "expect": []
  }

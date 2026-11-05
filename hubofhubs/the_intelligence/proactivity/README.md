@@ -19,12 +19,12 @@ Part of [How the AI processes information](../README.md)
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
-| Calendar periods and events | `proactivity:calendar_and_events` | Due by calendar period in the schedule's own zone, by a run requested after the last run, or by an event after the last run for a reactive schedule; an unreadable time fails open to due. | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) | selected |
+| Calendar periods and events | `proactivity:calendar_and_events` | Due by calendar period in the schedule's own zone, on the days and at the time of day of its window (once per occasion, within its grace), by a run requested after the last run, or by an event after the last run for a reactive schedule; an unreadable time fails open to due. | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) | selected |
 | Elapsed hours | `proactivity:elapsed_hours` | Due when the cadence's hours have passed since the last run. | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) |  |
 
 ## Metrics
 
-- Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 18 of 18 cases
+- Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 43 of 43 cases
 
 ## Problems
 

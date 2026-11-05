@@ -235,3 +235,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-05,guidance,always_nudge,24,6,6/24,0/0,0,0,0,0.0,0.0,0.475,7f4c68e-dirty,aaaf4c76,,none,"nudge_pass_rate=0.4167; restraint_pass_rate=0.0833 | forced past unsolved failures: arm complete, first full run"
 2026-11-05,prioritization,as_given,34,1,1/34,0/0,0,0,0,0.0,0.0,0.3206,75d797c,e6d4257b,,none,asks_passed=1/10; carried_passed=0/6; goals_passed=0/9; rank_passed=0/3; stated_passed=0/6; mean_pairwise_agreement=0.3039
 2026-11-05,prioritization,stated_fields,34,34,34/34,0/0,0,0,0,0.0,0.0,1.0,75d797c,e6d4257b,,none,asks_passed=10/10; carried_passed=6/6; goals_passed=9/9; rank_passed=3/3; stated_passed=6/6; mean_pairwise_agreement=1.0
+2026-11-05,proactivity,elapsed_hours,43,22,22/43,0/0,0,0,0,0.0,0.0,,0940911,7b906e2b,,none,
+2026-11-05,proactivity,calendar_and_events,43,43,43/43,0/0,0,0,0,0.0,0.0,,0940911,7b906e2b,,none,

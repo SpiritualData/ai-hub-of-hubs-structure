@@ -76,8 +76,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | model_quality_aime | gpt_5_nano | 30 | 66.7% (48.8% to 80.8%), 20/30 | $0.006135 | 25.7 (median) | complementary arm, not ranked | none recorded |
 | prioritization | stated_fields (selected) | 34 | 100.0% (89.8% to 100.0%), 34/34 | $0 | 0 (median) | selected | none recorded |
 | prioritization | as_given | 34 | 2.9% (0.5% to 14.9%), 1/34 | $0 | 0 (median) | ahead of as_given (two-sided sign test p=2.33e-10) | none recorded |
-| proactivity | calendar_and_events (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
-| proactivity | elapsed_hours | 18 | 55.6% (33.7% to 75.4%), 10/18 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=0.00781) | none recorded |
+| proactivity | calendar_and_events (selected) | 43 | 100.0% (91.8% to 100.0%), 43/43 | $0 | 0 (median) | selected | none recorded |
+| proactivity | elapsed_hours | 43 | 51.2% (36.8% to 65.4%), 22/43 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=9.54e-07) | none recorded |
 | provider_failover | multi_provider (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | provider_failover | single_provider | 30 | 40.0% (24.6% to 57.7%), 12/30 | $0 | 0 (median) | ahead of single_provider (two-sided McNemar p=7.63e-06) | none recorded |
 | reason_and_answer | tier_selector (selected) | 36 | 100.0% (90.4% to 100.0%), 36/36 | $0 | 0 (median) | selected | none recorded |

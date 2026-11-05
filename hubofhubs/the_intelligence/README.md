@@ -71,7 +71,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The long view survives between requests (`metric-higher-mind`)
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): leader `two_stage`, 34 of 36 cases
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`)
-- Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 18 of 18 cases
+- Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 43 of 43 cases
 
 ## Where to go next
 
