@@ -12,38 +12,46 @@ the Body holds the system's own internal context, and the World is everything ou
 Each container is named for the kind of change that moves its metrics, and each is a solution whose implementation composes its parts. Every
 solution states its role: what it is responsible for, what it is not, and which sibling owns that.
 
-- **The Self** keeps the parts working as one whole. Integrity keeps the hub generic, with claims that match evidence and records that match
-  code. Role Understanding says what each part is for. The Assembler builds the whole from configuration in one call. Its metric is
-  Integrated Efficiency: is the system's total value justified by the cost of its components, found by taking out LLM calls, components and
-  top-level solutions one at a time, and counting the size of each task's instructions.
+- **The Self** keeps the parts working as one whole. Integrity keeps the hub generic, with claims that match evidence and records that match code,
+  and audits what the system says about itself and what it did against the run record. Role Understanding says what each part is for. The
+  Assembler builds the whole from configuration in one call. Its metric is Integrated Efficiency: is the system's total value justified by the
+  cost of its components, found by taking out LLM calls, components and top-level solutions one at a time. It weighs completion, honest reporting
+  and cost; keeping consent is not its job but Consciousness's.
 - **Body** is the AI system's form and internal context, and its metrics change with the system's data model or code. Every Body solution is
-  specified to expect adaptation to a particular system. Internal Context declares where the system's data lives and which World tool reads
-  and writes it: local files at a standard location through File Editing by default, or the system's own tool. It holds the Card Store and
-  Cards From Files. Hands makes sure the system's enduring integrations, such as an enterprise system's own AI tool registry, LLM platform
-  and guardrails, are accessible to the AI and used by it. The models and guardrails themselves come from World.
-- **Intelligence** is how information is processed for one request, and its metrics change with machine learning task accuracy. The Mind takes
-  context in through Context Intake, breaks the request into pieces with the Planner, hands each piece to the right worker through Delegation
-  only when that is necessary (carrying the Representative's authority and a sub-goal done-standard), and outputs plans, requests and
-  communications through the Response Writer. Higher Mind keeps the long view: Long-Term Memory, Objectives and Guidance. The Subconscious
-  finds and prepares information for the Mind with Intuition, the Context Assembler and the Context Retriever. Critical Thinking turns a request
-  into a metric with a target through Metric Translation, applies ESOI through ESOI Application, and checks the result with Goal Completion and
-  Response Quality, which are separate solutions. The Nervous System raises a risk signal with a severity and a reason.
+  specified to expect adaptation to a particular system. Internal Context declares where the system's data lives and which World tool reads it:
+  local files in a folder the system names, read through File Reading by default, or the system's own tool. The Subconscious reads the system's
+  context only through Internal Context, which holds the Card Store and keeps each run's record in a run store apart from the cards. Intake
+  Sources declares where requests come from. Hands makes sure the system's enduring integrations, such as an enterprise system's own AI tool
+  registry, LLM platform and guardrails, are accessible to the AI and used by it. The models and guardrails themselves come from World.
+- **Intelligence** is how information is processed, and its metrics change with machine learning task accuracy. Four of its solutions have parts
+  of their own. The Mind takes context in through Context Intake (what the Subconscious prepared, what the World brought and the instructions
+  that apply to the request, chosen within a token budget), breaks the request into pieces with the Planner, hands each piece to the right worker
+  through Delegation only when that is necessary (carrying the Representative's authority and a sub-goal done-standard), and outputs plans,
+  requests and communications through the Response Writer. Higher Mind keeps the long view across requests: Long-Term Memory, Objectives and
+  Guidance. The Subconscious finds and prepares information for the Mind: Cards From Files builds cards, the Context Retriever picks what bears on
+  the request and Intuition offers what comes to mind unasked. Critical Thinking turns a request into a metric with a target through Metric
+  Translation, applies ESOI through ESOI Application, and checks the result with Goal Completion and Response Quality, which are separate
+  solutions. The Nervous System raises one risk signal with a severity and a reason, and Proactivity says what is due without being asked.
 - **World** is awareness of the outside and interaction with it, and its metrics change with outside systems. Science returns observations a
   reader can cite. Tools groups what the AI can use by category, and every implementation of a category does the same job: Web Search, File
-  Editing, Connected System Operations, Delegated Agent Sessions and Personal Data Locations. Model Plumbing is the one way every part asks a
-  model, and Learning keeps the hub's research current.
+  Reading, File Editing, Connected System Operations and Delegated Agent Sessions. Model Plumbing is the one way every part asks a model (the Model
+  Tier Chooser picks the model, the Vendor Model Caller reaches the vendor), and Learning reports which of the hub's research is out of date.
 - **Consciousness** is the humans who interact with the system, and its metrics change with alignment to humans or policies. Representatives are
-  AI personas. Judgment Calls decides, for each person, whether to ask, proceed or decline, and the decision may go to a human, another agent or
-  a delegate. Feedback Learning applies feedback to specs and metrics and never to prompts. Prioritization translates the priorities a person
-  states or implies into ESOI. Their metrics are separate and their implementation may be shared.
+  AI personas that carry a person's authority and data scope. Request Intake takes in what people ask, from the sources Body declares. Judgment
+  Calls decides, for each person, whether to ask, proceed or decline, and the decision may go to a human, another agent or a delegate. It also
+  holds the consent the person has set: a step that needs the person never proceeds without a decision. Feedback Learning applies a person's
+  feedback to specs and metrics. Prioritization translates the priorities a person states or implies into ESOI. Their metrics are separate and
+  their implementation may be shared.
 
 ## The flow
 
-The Self responds to one request in this order. Consciousness gives the Representative. Intelligence reads the long view, translates the request
-into a target, has the Subconscious prepare, and runs the Mind with the Nervous System signal and Judgment Calls before a risky piece. Then
-Critical Thinking checks the goal and judges the response against a quality profile, and Feedback Learning applies feedback when there is some.
-The flow is code (`respond` in The Self and the composition of each container), every step calls the entry point of its solution, and a step
-whose solution has no arm yet is reported as pending with the reason and not faked.
+The Self responds to one request in this order. Consciousness gives the Representative. Body says where the system's data lives. Intelligence
+reads the long view, translates the request into a target, has the Subconscious prepare from what Internal Context returns, and runs the Mind
+with the Nervous System signal and Judgment Calls before a risky piece. Then Critical Thinking checks the goal and judges the response against a
+quality profile; an unmet goal returns to the Planner within the request's budget, and when the budget or the authority runs out it goes to
+Judgment Calls. Body keeps the run record and Integrity audits it, and Feedback Learning applies feedback when there is some. The flow is code
+(`respond` in The Self and the `flow.py` of each container), every step calls the entry point of its solution, and a step whose solution has no
+arm yet is reported as pending with the reason and not faked.
 
 Response Quality judges against a profile: a named set of criteria with weights and targets, resolved for each request from the Representative,
 Guidance and Prioritization, with a researched default profile as the fallback.
@@ -54,8 +62,8 @@ The Nervous System and Judgment Calls share one signal contract. The Nervous Sys
 Judgment Calls turns it into a decision for one person: ask, proceed or decline. Feedback adjusts that person's thresholds, so the two never
 drift apart.
 
-The Mind has one intake with two sources. What the Subconscious prepares from the system's internal context and what World brings in through
-Science and Tools reach the Mind the same way, through Context Intake.
+The Mind has one intake with three sources. What the Subconscious prepares from the system's internal context, what World brings in through
+Science and Tools, and the instructions that apply to the request reach the Mind the same way, through Context Intake.
 
 ```mermaid
 flowchart TB

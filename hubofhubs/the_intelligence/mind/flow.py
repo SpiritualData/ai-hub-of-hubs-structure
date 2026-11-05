@@ -37,9 +37,9 @@ class MindComposition:
     def think(self, request: str, authority: Optional[Mapping[str, Any]] = None, target: Optional[Mapping[str, Any]] = None,
               guidance: Optional[Mapping[str, Any]] = None, profile: Optional[Any] = None, prepared: Optional[Mapping[str, Any]] = None,
               unmet: Optional[Mapping[str, Any]] = None, outside: Optional[Mapping[str, Any]] = None, budget: Optional[Any] = None,
-              cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]:
+              cancelled: Optional[Callable[[], bool]] = None, instructions: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
         authority = authority or {}
-        log: List[Step] = [take(self.intake, "context-intake", request=request, prepared=prepared, outside=outside)]
+        log: List[Step] = [take(self.intake, "context-intake", request=request, prepared=prepared, outside=outside, instructions=instructions)]
         planned = take(self.planner, "planner", request=request, context=done(log[0]), target=target, guidance=guidance, unmet=unmet)
         log.append(planned)
         allowed: List[Mapping[str, Any]] = []

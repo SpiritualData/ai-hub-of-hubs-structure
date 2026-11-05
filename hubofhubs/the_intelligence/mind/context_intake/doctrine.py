@@ -9,6 +9,10 @@ A condition is ``{fact: allowed}`` (all facts must match; ``allowed`` is one val
 mappings (any one may match). An empty condition always applies. A fact the situation does not know (missing or None)
 matches, so a rule is left out only on a positive reason: unknown fails open and the prompt keeps the rule.
 
+Instructions are the third source of Context Intake, beside what the Subconscious prepared and what the World brought: they are chosen for the
+request within a token budget (``within_budget``), and their size is counted as part of what the request costs. A prompt that carries every rule of
+every task makes each task pay for the rest; only the instructions relevant to the task are pulled in.
+
 The hub ships no rules: wording is the consumer's. Standard library only, no environment reads, no consumer import.
 """
 from dataclasses import dataclass
@@ -67,6 +71,24 @@ def assemble_doctrine(rules: Sequence[Rule], situation: Mapping[str, Any], *, ch
     kept = {r.id for r in chosen}
     return Doctrine(text, estimate_tokens(text, chars_per_token), tuple(r.id for r in chosen),
                     tuple(r.id for r in rules if r.id not in kept))
+
+
+def within_budget(rules: Sequence[Rule], situation: Mapping[str, Any], budget_tokens: int, *, chars_per_token: float = 3.5) -> Doctrine:
+    """The rules that apply to ``situation``, in the order given, kept while the text stays within ``budget_tokens`` (zero or less means no limit); the rules
+    that apply but do not fit, and those that do not apply, are listed as excluded."""
+    chosen: List[Rule] = []
+    used = 0
+    for rule in rules:
+        if not applies(rule, situation):
+            continue
+        cost = estimate_tokens(rule.text, chars_per_token)
+        if budget_tokens > 0 and used + cost > budget_tokens:
+            continue
+        chosen.append(rule)
+        used += cost
+    text = "".join(r.text for r in chosen)
+    kept = {r.id for r in chosen}
+    return Doctrine(text, estimate_tokens(text, chars_per_token), tuple(r.id for r in chosen), tuple(r.id for r in rules if r.id not in kept))
 
 
 def check_rules(rules: Sequence[Rule], facts: Sequence[str]) -> List[str]:

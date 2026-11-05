@@ -8,7 +8,7 @@ These are the solutions of [The best parts for AI intelligence, assembled and pr
 
 ## How the solutions fit together
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and asks World how current the research is. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, and passes the request on for processing to Intelligence. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback. When asked for its health, The Self reports on itself, and for the research it asks World how current it is.
 
 ## Overview diagram
 
@@ -42,8 +42,8 @@ Keep every part working as one whole for one request.
 
 - Entry call: `hubofhubs.run("the-self", ...)`
 - Selected implementation: Responds through every container (`composition`)
-- Metric: The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole
-- Implemented by: [`hubofhubs/the_self/__init__.py`](the_self/__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](the_self/assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](the_self/assembler/arm_needs.py), [`hubofhubs/the_self/assembler/cli.py`](the_self/assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](the_self/assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](the_self/assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](the_self/assembler/resolution.py), [`hubofhubs/the_self/assembler/zero_config.py`](the_self/assembler/zero_config.py) and 21 more
+- Metric: The assembled whole answers a real request, Integrated efficiency of the whole
+- Implemented by: [`hubofhubs/the_self/__init__.py`](the_self/__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](the_self/assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](the_self/assembler/arm_needs.py), [`hubofhubs/the_self/assembler/cli.py`](the_self/assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](the_self/assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](the_self/assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](the_self/assembler/resolution.py), [`hubofhubs/the_self/assembler/zero_config.py`](the_self/assembler/zero_config.py) and 20 more
 
 ## Body (`the-body`)
 
@@ -61,7 +61,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](the_intelligence/critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](the_intelligence/critical_thinking/goal_completion/goal_completion.py) and 136 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](the_intelligence/critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](the_intelligence/critical_thinking/goal_completion/goal_completion.py) and 137 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -98,7 +98,6 @@ flowchart LR
 | Declared sources and enduring integrations | `the-body:composition` | [`hubofhubs/the_body/flow.py`](the_body/flow.py) | selected |
 | One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [`hubofhubs/the_intelligence/flow.py`](the_intelligence/flow.py) | selected |
 | Representative, priorities and feedback | `the-consciousness:composition` | [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py) | selected |
-| The parts of the system | `the-self:parts` | no code yet |  |
 | Search and papers through the tools | `the-world:composition` | [`hubofhubs/the_world/flow.py`](the_world/flow.py) | selected |
 
 ## Metrics

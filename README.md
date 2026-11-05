@@ -13,8 +13,8 @@ pip install "hubofhubs[web,gemini,bm25] @ git+https://github.com/SpiritualData/a
 >>> records = pathlib.Path(hubofhubs.__file__).parent        # the hub's own records: the files Body declares as the system's data
 >>> system = hubofhubs.assemble(options={"internal-context": {"root": str(records)}}, environ={})   # no key, no network
 >>> result = system["the-self"].respond("Explain what Judgment Calls decides for a person")
->>> print(result.answer[:49])
-[file the_consciousness/judgment_calls/README.md]
+>>> print("[file the_consciousness/judgment_calls/README.md]" in result.answer)   # the answer is built from the files the retriever picked
+True
 ```
 
 That request ran the whole flow offline. Consciousness represented the person, Body declared its source, the Subconscious read it through Internal Context, the Context Retriever picked the files that bear on the request, the Mind planned and wrote from them, Critical Thinking checked the result, and the run was kept in Body's run store. `result.steps` lists what each part did. The defaults are chosen by recorded evals, and a lockfile pins them; when a better implementation wins, the selection changes and every caller written like this stays the same.

@@ -11,6 +11,7 @@ from hubofhubs.the_consciousness.interface import HumanAdapting
 from hubofhubs.the_intelligence.interface import InformationProcessing
 from hubofhubs.the_world.interface import TakingIn
 from hubofhubs.the_self.assembler.interface import WholeAssembling
+from hubofhubs.the_self.role_understanding.interface import RoleUnderstanding
 from hubofhubs.the_self.steps import DONE, listing, take
 
 
@@ -25,16 +26,16 @@ def sources_of(results: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
 @implementation("the-self", "composition")
 class SelfComposition:
     """The Self responds as the whole. Its flow, in order: Consciousness represents the person, Body describes where the system's data lives,
-    Intelligence processes the request with the Representative's authority (World's tools do the outside work from there), Body keeps the run
-    record and Integrity audits it, and Consciousness learns from feedback when there is some. The result lists the step of every part and says
+    Intelligence processes the request with the Representative's authority (World's tools do the outside work from there), Role Understanding states what
+    Intelligence is for, Body keeps the run record and Integrity audits it, and Consciousness learns from feedback when there is some. The result lists the step of every part and says
     which have no arm yet. World is asked, in ``health``, how current the research is. ``serve`` takes the waiting requests in through Consciousness; ``act_unasked`` responds to what Proactivity says is due.
     Every part, World included, is built on first use, so a seat that cannot be built is a pending step, not a failure of the rest, and a request that needs no key runs with none."""
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, world: Lazy[TakingIn], assembler: Lazy[WholeAssembling], integrity: Lazy[Genericity], body: Lazy[FormAndContext], intelligence: Lazy[InformationProcessing],
-                 consciousness: Lazy[HumanAdapting]):
+                 consciousness: Lazy[HumanAdapting], roles: Lazy[RoleUnderstanding]):
         self.world, self.assembler, self.integrity = world, assembler, integrity
-        self.body, self.intelligence, self.consciousness = body, intelligence, consciousness
+        self.body, self.intelligence, self.consciousness, self.roles = body, intelligence, consciousness, roles
 
     def respond(self, request: str, person: str = "", feedback: Optional[Mapping[str, Any]] = None,
                 cancelled: Optional[Callable[[], bool]] = None) -> Result:
@@ -45,7 +46,8 @@ class SelfComposition:
         processed = take(self.intelligence, "the-intelligence", request=request, person=person, representative=who.get("representative"),
                          priorities=who.get("priorities"), cancelled=cancelled)
         thought = (processed.output or {}) if processed.status == DONE else {}
-        log = [known, context, processed]
+        stated = take(self.roles, "role-understanding", part_id="the-intelligence")
+        log = [known, context, processed, stated]
         run = {"id": int(began * 1000), "request": request, "person": person, "sources": (context.output or {}).get("sources", []) if context.status == DONE else [],
                "steps": listing(log), "answer": thought.get("answer", ""),
                "attempts": thought.get("attempts", 0), "stopped": thought.get("stopped", "")}

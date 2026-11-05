@@ -4,11 +4,11 @@ The parts of the system work as one whole: each part knows its role, what the sy
 
 *ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
 
-This sub-intent arises as the implementation `the-self:parts` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: A system can check itself, each part can state what it is for, and every part can share one measured way of asking a model, none of which the assembly alone asks for. Whoever builds on the hub gets the integration without writing it.
+This sub-intent arises as the implementation `the-self:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: A system can check itself, each part can state what it is for, and every part can share one measured way of asking a model, none of which the assembly alone asks for. Whoever builds on the hub gets the integration without writing it.
 
 ## How the solutions fit together
 
-The Self keeps the parts of the system working as one whole through the Assembler and Integrity. The Assembler builds the whole from configuration in one call and reports which seats are built and what the rest need. Integrity audits what the system says about itself and what it did, including the run record, and checks that the hub stays generic, with claims that match evidence and records that match code. Role Understanding states what each part is for, so that no part does another's work.
+The Self keeps the parts of the system working as one whole. To respond to a request, The Self asks Consciousness for the person's authority and priorities. The Self asks Body where the system's data lives. The Self passes the request on to Intelligence. The Self asks Role Understanding what that part is for, so that no part does another's work. Integrity then audits what the system says about itself and what it did against the run record, and checks that the hub stays generic, with claims that match evidence and records that match code. The Assembler builds the whole from configuration in one call and reports which seats are built and what the rest need. When asked for its health, The Self asks World how current the research is.
 
 ## Solutions at a glance
 

@@ -61,7 +61,7 @@ def test_external_seats_are_consumer_provided_and_have_no_default():
     assert "external" in registry.split(by["web-search"]["tags"]) and by["web-search"]["selected"] == "gemini"
     # model-plumbing: the hub ships an arm over vendor-model-caller, which is the consumer-provided seat it needs
     assert by["model-plumbing"]["selected"] == "via_vendor"
-    assert "external" in registry.split(by["vendor-model-caller"]["tags"]) and by["vendor-model-caller"]["selected"] == "claude_cli"
+    assert "external" in registry.split(by["vendor-model-caller"]["tags"]) and by["vendor-model-caller"]["selected"] == "multi_provider"      # the metric selects the router; the consumer passes its providers
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
@@ -89,9 +89,9 @@ def test_a_consumer_provided_card_store_wins():
 
 
 def test_external_seats_fail_at_startup_unless_provided():
-    assert type(assemble(AssemblyConfig(solutions=("vendor-model-caller",)))["vendor-model-caller"]).__name__ == "ClaudeCliProvider"   # the default arm needs only the claude executable
-    with pytest.raises(AssemblyError, match="vendor-model-caller .multi_provider. needs option"):
-        assemble(AssemblyConfig(solutions=("vendor-model-caller",), selections={"vendor-model-caller": "multi_provider"}))
+    with pytest.raises(AssemblyError, match="vendor-model-caller .multi_provider. needs option"):      # the selected router needs the consumer's providers
+        assemble(AssemblyConfig(solutions=("vendor-model-caller",)))
+    assert type(assemble(AssemblyConfig(solutions=("vendor-model-caller",), selections={"vendor-model-caller": "claude_cli"}))["vendor-model-caller"]).__name__ == "ClaudeCliProvider"   # a keyless arm needs only the claude executable, when a consumer picks it
     assert "gemini" in assemble(AssemblyConfig(solutions=("web-search",))).reasons[0]   # a default arm is built lazily; its key is read when it searches
 
 

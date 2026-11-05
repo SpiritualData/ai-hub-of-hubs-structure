@@ -1,6 +1,6 @@
 """Situational doctrine: rules as data, a situation as facts, an ordered prompt with its size and the ids in and out."""
-import hubofhubs.the_self.integrity.doctrine as doctrine
-from hubofhubs.the_self.integrity.doctrine import Rule, applies, assemble_doctrine, check_rules, estimate_tokens
+import hubofhubs.the_intelligence.mind.context_intake.doctrine as doctrine
+from hubofhubs.the_intelligence.mind.context_intake.doctrine import Rule, applies, assemble_doctrine, check_rules, estimate_tokens
 
 RULES = (
     Rule("core", "CORE\n"),
@@ -58,3 +58,14 @@ def test_check_rules_names_a_repeated_id_and_a_fact_the_situation_does_not_decla
 def test_the_module_has_no_consumer_and_reads_no_environment():
     source = open(doctrine.__file__).read()
     assert "os.environ" not in source and "getenv" not in source
+
+
+def test_instructions_are_chosen_within_a_budget_and_counted_by_context_intake():
+    from hubofhubs.the_intelligence.mind.context_intake.doctrine import within_budget
+    from hubofhubs.the_intelligence.mind.context_intake.intake import OneView
+    rules = (Rule("a", "A" * 35), Rule("b", "B" * 35, {"mode": "deep"}), Rule("c", "C" * 35))
+    kept = within_budget(rules, {"mode": "normal"}, 15)
+    assert kept.included == ("a",) and kept.excluded == ("b", "c") and kept.tokens == 10      # b does not apply; c applies but does not fit
+    assert within_budget(rules, {}, 0).included == ("a", "b", "c")                              # no budget means no limit
+    view = OneView().take("task", instructions={"rules": rules, "situation": {"mode": "normal"}, "budget_tokens": 15})
+    assert view["view"] == "[instructions] " + "A" * 35 and view["instructions"] == {"included": ["a"], "excluded": ["b", "c"], "tokens": 10}

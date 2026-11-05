@@ -30,7 +30,7 @@ flowchart LR
 |---|---|---|---|---|
 | Model Plumbing | `model-plumbing` | `hubofhubs.run("model-plumbing", ...)` | Tier chooser then vendor (`via_vendor`) | Model asked at the tier, within the budget |
 | Science | `the-science` | `hubofhubs.run("the-science", 'meditation and attention')` | OpenAlex semantic search (`openalex_semantic`) | Research question finds its paper |
-| Tools | `the-tools` | `hubofhubs.run("the-tools", ...)` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Share of connections that need no code |
+| Tools | `the-tools` | `hubofhubs.run("the-tools", ...)` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user |
 | Learning | `the-learning` | `hubofhubs.run("the-learning", '2026-11-03')` | Stale areas from the registry dates (`registry_research`) | Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants |
 | Research Freshness Reader | `research-freshness-reader` | `hubofhubs.run("research-freshness-reader", '2026-10-01')` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
@@ -55,7 +55,6 @@ flowchart LR
 - Model asked at the tier, within the budget (`metric-model-plumbing`): leader `via_vendor`, 30 of 30 cases
 - Research question finds its paper (`metric-the-science`): leader `openalex_semantic`, 52 of 150 cases
 - The best integration of each category is chosen (`metric-the-tools`)
-- Share of connections that need no code (`metric-connection-config-share`)
 - Days since each seat was researched (`metric-the-learning`)
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`)
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`)
@@ -95,7 +94,7 @@ flowchart LR
 |---|---|---|---|
 | Model Plumbing | `model-plumbing` | Tier chooser then vendor (`via_vendor`) | Model asked at the tier, within the budget |
 | Science | `the-science` | OpenAlex semantic search (`openalex_semantic`) | Research question finds its paper |
-| Tools | `the-tools` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Share of connections that need no code |
+| Tools | `the-tools` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user |
 | Learning | `the-learning` | Stale areas from the registry dates (`registry_research`) | Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants |
 | Research Freshness Reader | `research-freshness-reader` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
@@ -119,7 +118,6 @@ flowchart LR
 - Model asked at the tier, within the budget (`metric-model-plumbing`): `esoi run model_call --impl via_vendor`
 - Research question finds its paper (`metric-the-science`): `esoi run know_the_world --impl openalex_semantic_and_web; esoi run know_the_world --impl openalex_semantic; esoi run know_the_world --impl web_research; esoi run know_the_world --impl openalex; esoi run know_the_world --impl openalex_keywords; esoi run know_the_world --impl openalex_keywords_model`
 - The best integration of each category is chosen (`metric-the-tools`): `none`
-- Share of connections that need no code (`metric-connection-config-share`): `python3 -m pytest tests/test_registry.py tests/test_areas.py`
 - Days since each seat was researched (`metric-the-learning`): `none`
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`): `none`
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`): `none`

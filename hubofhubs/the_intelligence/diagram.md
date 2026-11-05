@@ -8,7 +8,7 @@ An arrow runs from the solution that provides to the solution that builds on it;
 
 ```mermaid
 flowchart LR
-    s0["Nervous System<br/><i>nervous-system</i>"]
-    s1["Mind<br/><i>the-mind</i>"]
-    s0 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s1
+    s0["Mind<br/><i>the-mind</i>"]
+    s1["Nervous System<br/><i>nervous-system</i>"]
+    s1 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s0
 ```

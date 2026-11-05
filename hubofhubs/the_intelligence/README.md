@@ -16,20 +16,20 @@ An arrow runs from the solution that provides to the solution that builds on it;
 
 ```mermaid
 flowchart LR
-    s0["Nervous System<br/><i>nervous-system</i>"]
-    s1["Mind<br/><i>the-mind</i>"]
-    s0 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s1
+    s0["Mind<br/><i>the-mind</i>"]
+    s1["Nervous System<br/><i>nervous-system</i>"]
+    s1 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s0
 ```
 
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Nervous System | `nervous-system` | `hubofhubs.run("nervous-system", 'delete the old backup folder')` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | Critical Thinking | `critical-thinking` | `hubofhubs.run("critical-thinking", {'request': 'what is the latest Rust version?'})` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
 | Subconscious | `the-subconscious` | `hubofhubs.run("the-subconscious", 'rust release')` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
 | Mind | `the-mind` | `hubofhubs.run("the-mind", {'request': 'what is the latest Rust version?'})` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust version?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
+| Nervous System | `nervous-system` | `hubofhubs.run("nervous-system", 'delete the old backup folder')` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ## Problems and ideals
@@ -52,12 +52,12 @@ flowchart LR
 
 ## Metrics and their leaders
 
-- Risky steps stopped, ordinary steps let through (`metric-nervous-system`): leader `two_stage`, 34 of 36 cases
-- Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`)
 - Requests with a named problem, ideal and metric (`metric-critical-thinking`)
 - Answer quality per dollar and per second (`metric-the-mind`)
 - Right context admitted, none from another scope (`metric-the-subconscious`)
 - The long view survives between requests (`metric-higher-mind`)
+- Risky steps stopped, ordinary steps let through (`metric-nervous-system`): leader `two_stage`, 34 of 36 cases
+- Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`)
 - Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 18 of 18 cases
 
 ## Where to go next
@@ -96,11 +96,11 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Nervous System | `nervous-system` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | Critical Thinking | `critical-thinking` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
 | Subconscious | `the-subconscious` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
 | Mind | `the-mind` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
+| Nervous System | `nervous-system` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | Proactivity | `proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ### Implementations
@@ -117,10 +117,10 @@ flowchart LR
 
 ### Metrics
 
-- Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
-- Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest tests/test_risk.py`
 - Requests with a named problem, ideal and metric (`metric-critical-thinking`): `none`
 - Answer quality per dollar and per second (`metric-the-mind`): `none`
 - Right context admitted, none from another scope (`metric-the-subconscious`): `none`
 - The long view survives between requests (`metric-higher-mind`): `none`
+- Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
+- Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest tests/test_risk.py`
 - Schedules due when they should be (`metric-proactivity`): `esoi run proactivity --impl calendar_and_events; esoi run proactivity --impl elapsed_hours`

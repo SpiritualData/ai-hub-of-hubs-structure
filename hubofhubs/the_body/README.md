@@ -25,7 +25,7 @@ flowchart LR
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Hands | `the-hands` | `hubofhubs.run("the-hands", '')` | none selected | Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user, Share of connections that need no code, Share of connections that need no code |
+| Hands | `the-hands` | `hubofhubs.run("the-hands", '')` | none selected | Declared integrations are reachable and used |
 | Intake Sources | `intake-sources` | `hubofhubs.run("intake-sources", {'source': '', 'limit': 10})` | Folder of queued requests (`folder_queue`) | Requests read from a declared source, once |
 | Internal Context | `internal-context` | `hubofhubs.run("internal-context", 'rust release')` | Declared sources, cards kept and built from files (`composition`) | An internal source reaches the AI through one declaration |
 | Card Store | `card-store` | `hubofhubs.run("card-store", 'rust release')` | Local card store (`local_card_store`) | Cards found again, none lost |
@@ -53,10 +53,7 @@ flowchart LR
 
 ## Metrics and their leaders
 
-- Integration added with zero code (`metric-integration-added-with-zero-code`)
-- Integration available within the weekly refresh (`metric-integration-availability-lag`)
-- Integration credentials stay with their user (`metric-integration-credential-isolation`)
-- Integration served by combined hubs (`metric-integration-served-by-combined-hubs`)
+- Declared integrations are reachable and used (`metric-hands-integrations-used`)
 - Requests read from a declared source, once (`metric-intake-sources`)
 - An internal source reaches the AI through one declaration (`metric-internal-context`)
 - Cards found again, none lost (`metric-card-store`): leader `local_card_store`, 35 of 35 cases
@@ -96,7 +93,7 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Hands | `the-hands` | none selected | Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user, Share of connections that need no code, Share of connections that need no code |
+| Hands | `the-hands` | none selected | Declared integrations are reachable and used |
 | Intake Sources | `intake-sources` | Folder of queued requests (`folder_queue`) | Requests read from a declared source, once |
 | Internal Context | `internal-context` | Declared sources, cards kept and built from files (`composition`) | An internal source reaches the AI through one declaration |
 | Card Store | `card-store` | Local card store (`local_card_store`) | Cards found again, none lost |
@@ -111,10 +108,7 @@ flowchart LR
 
 ### Metrics
 
-- Integration added with zero code (`metric-integration-added-with-zero-code`): `none`
-- Integration available within the weekly refresh (`metric-integration-availability-lag`): `none`
-- Integration credentials stay with their user (`metric-integration-credential-isolation`): `none`
-- Integration served by combined hubs (`metric-integration-served-by-combined-hubs`): `none`
+- Declared integrations are reachable and used (`metric-hands-integrations-used`): `none`
 - Requests read from a declared source, once (`metric-intake-sources`): `python3 -m pytest tests/test_intake.py`
 - An internal source reaches the AI through one declaration (`metric-internal-context`): `none`
 - Cards found again, none lost (`metric-card-store`): `esoi run card_store --impl local_card_store`

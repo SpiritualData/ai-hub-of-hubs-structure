@@ -38,7 +38,7 @@
     "root": "the-intelligence"
    },
    "the_self": {
-    "arm": "parts",
+    "arm": "composition",
     "root": "the-self"
    },
    "the_world": {

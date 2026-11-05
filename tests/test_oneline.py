@@ -110,7 +110,7 @@ def test_every_hub_id_answers_or_names_what_to_set():
     root = Path(__file__).resolve().parent.parent
     done = subprocess.run([sys.executable, "-m", "esoi.entry", "--json", str(root)], capture_output=True, text=True)
     rows = json.loads(done.stdout.strip().splitlines()[-1])      # the check blocks the network and programs for its own process, so it runs in one
-    strict = ("ok", "pending-key", "pending-install", "pending-network")
+    strict = ("ok", "pending-key", "pending-install", "pending-network", "needs-option")      # needs-option names the option to pass (the router needs the consumer's providers)
     from esoi.intents import read_tree
     from esoi.tables import read_csv
     code = {r["implementation_id"] for r in read_tree(root / "esoi", "implementations.csv") if r.get("filepath")}

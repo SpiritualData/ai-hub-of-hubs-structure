@@ -28,8 +28,8 @@ def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(t
     result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?", **whole_hub(tmp_path))
     assert "1.90.0" in result.answer and "https://blog.rust-lang.org/" in result.answer      # what the Response Writer wrote from the delegated search
     top = [(s["solution"], s["status"]) for s in result.steps]
-    assert top == [("the-consciousness", "done"), ("the-body", "done"), ("the-intelligence", "done"), ("the-body", "done"), ("system-integrity", "done"),
-                   ("the-consciousness", "done")]
+    assert top == [("the-consciousness", "done"), ("the-body", "done"), ("the-intelligence", "done"), ("role-understanding", "pending"), ("the-body", "done"),
+                   ("system-integrity", "done"), ("the-consciousness", "done")]
     assert result.steps[-1]["steps"] == [{"solution": "feedback-learning", "status": "skipped", "reason": "no feedback was given"}]   # nothing to learn from
     every = {s["solution"]: s for s in walk(result.steps)}
     for sid in ("planner", "delegation", "response-writer", "context-intake", "higher-mind", "metric-translation", "goal-completion"):
@@ -87,7 +87,7 @@ class Writer:
 
 
 class Intake:
-    def take(self, request, prepared=None, outside=None):
+    def take(self, request, prepared=None, outside=None, instructions=None):
         return {"view": request}
 
 

@@ -8,7 +8,7 @@ Opportunities: Any product that needs an AI grounded in a person or team's own g
 
 ## How the solutions fit together
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and asks World how current the research is. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, and passes the request on for processing to Intelligence. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback. When asked for its health, The Self reports on itself, and for the research it asks World how current it is.
 
 ## Diagram
 
@@ -32,7 +32,7 @@ flowchart LR
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | World | `the-world` | `hubofhubs.run("the-world", 'latest Rust version')` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole |
+| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole |
 | Body | `the-body` | `hubofhubs.run("the-body", '')` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | `hubofhubs.run("the-intelligence", ...)` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
 | Consciousness | `the-consciousness` | `hubofhubs.run("the-consciousness", '')` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
@@ -107,7 +107,7 @@ flowchart LR
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
 | World | `the-world` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole |
+| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole |
 | Body | `the-body` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
 | Consciousness | `the-consciousness` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
@@ -117,11 +117,10 @@ flowchart LR
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
 | Hand-wired general agent framework | `the-self:hand_wired_agent_framework` |  |  |
-| Responds through every container | `the-self:composition` | [hubofhubs/the_self/respond.py](../hubofhubs/the_self/respond.py) |  |
+| Responds through every container | `the-self:composition` | [hubofhubs/the_self/respond.py](../hubofhubs/the_self/respond.py) | [the_self](the_self/README.md) |
 | Declared sources and enduring integrations | `the-body:composition` | [hubofhubs/the_body/flow.py](../hubofhubs/the_body/flow.py) | [the_body](the_body/README.md) |
 | One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [hubofhubs/the_intelligence/flow.py](../hubofhubs/the_intelligence/flow.py) | [the_intelligence](the_intelligence/README.md) |
 | Representative, priorities and feedback | `the-consciousness:composition` | [hubofhubs/the_consciousness/flow.py](../hubofhubs/the_consciousness/flow.py) | [the_consciousness](the_consciousness/README.md) |
-| The parts of the system | `the-self:parts` |  | [the_self](the_self/README.md) |
 | Search and papers through the tools | `the-world:composition` | [hubofhubs/the_world/flow.py](../hubofhubs/the_world/flow.py) | [the_world](the_world/README.md) |
 
 ### Metrics

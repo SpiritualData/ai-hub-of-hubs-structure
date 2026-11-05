@@ -30,19 +30,24 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 
 ## Metrics and their leaders
 
+- Integration added with zero code (`metric-integration-added-with-zero-code`)
+- Integration served by combined hubs (`metric-integration-served-by-combined-hubs`)
+- Integration available within the weekly refresh (`metric-integration-availability-lag`)
+- Integration credentials stay with their user (`metric-integration-credential-isolation`)
+- Share of connections that need no code (`metric-connection-config-share`)
 - The operation is carried out and nothing else (`metric-connected-system-operations`)
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
 - Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): leader `none`, 0 of 12 cases
 - Goal met by its own tests (`metric-file-editing`): leader `fast_edit`, 29 of 30 cases
 - Files read inside the folder (`metric-read-files`)
-- Search finds the source (`metric-web-search`): leader `gemini`, 32 of 40 cases
+- and 1 more: all 11 are in [metrics](#metrics) of the full record below
 
 ## Where to go next
 
 - Parent intent: [Awareness of the outside and interaction with it](../README.md)
 - Repository: [top README](../../../README.md)
 - Records beside the code: [hubofhubs/the_world/tools/connected_system_operations](connected_system_operations/README.md), [hubofhubs/the_world/tools/delegated_agent_sessions](delegated_agent_sessions/README.md), [hubofhubs/the_world/tools/file_editing](file_editing/README.md), [hubofhubs/the_world/tools/file_reading](file_reading/README.md), [hubofhubs/the_world/tools/web_search](web_search/README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [metrics.csv](metrics.csv)
 
 ---
 
@@ -83,6 +88,11 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 
 ### Metrics
 
+- Integration added with zero code (`metric-integration-added-with-zero-code`): `none`
+- Integration served by combined hubs (`metric-integration-served-by-combined-hubs`): `none`
+- Integration available within the weekly refresh (`metric-integration-availability-lag`): `none`
+- Integration credentials stay with their user (`metric-integration-credential-isolation`): `none`
+- Share of connections that need no code (`metric-connection-config-share`): `python3 -m pytest tests/test_registry.py tests/test_areas.py`
 - The operation is carried out and nothing else (`metric-connected-system-operations`): `none`
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`): `python3 -m pytest tests/test_deep_session_subagents.py`
 - Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): `esoi run agent_sessions --impl stream_json_goal_runner; esoi run agent_sessions --impl subprocess_goal_runner; esoi run agent_sessions --impl acp_deep_runner; esoi run agent_sessions --impl none`
