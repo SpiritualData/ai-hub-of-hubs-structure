@@ -139,7 +139,10 @@ def coverage_progress(previous: Any, current: Any) -> bool:
     if now is None:
         return False
     before = parse_coverage(previous)
-    return before is None or now.processed > before.processed
+    if before is None or now.processed > before.processed:
+        return True
+    # A run that reports only its own pages still advances when its resume point does.
+    return now.next_skip is not None and (before.next_skip is None or now.next_skip > before.next_skip)
 
 
 def continue_decision(gap: Optional[CoverageGap], *, attempts_left: int,
