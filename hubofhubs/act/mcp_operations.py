@@ -93,7 +93,7 @@ class MCPOperationConfig:
     tier: str = "balanced"
 
 
-@implementation("act-in-the-world", "mcp_operations")
+@implementation("connected-system-operations", "mcp_operations")
 class MCPOperationRunner(DeepRunnerBase):
     """One-call MCP write execution behind the ``DeepRunner`` interface.
 

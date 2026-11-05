@@ -307,24 +307,28 @@ def first_cell(row: Row) -> str:
 #: entry is ``(solution id, the id of the part it is inside, or "" for a container)``. Names, counts and descriptions come from the records.
 MIND_TREE = (
     ("the-self", ""),
-    ("keep-it-generic", "the-self"), ("role-understanding", "the-self"), ("assemble-the-whole", "the-self"), ("model-plumbing", "the-self"),
-    ("choose-a-model-tier", "model-plumbing"), ("model-call", "model-plumbing"), ("call-a-model", "model-plumbing"),
+    ("keep-it-generic", "the-self"), ("role-understanding", "the-self"), ("assemble-the-whole", "the-self"),
     ("the-body", ""),
     ("internal-context", "the-body"), ("card-store", "internal-context"), ("cards-from-files", "internal-context"),
-    ("stay-current", "the-body"), ("read-registry-freshness", "stay-current"),
-    ("watch-for-risk", "the-body"),
-    ("connect-any-integration", "the-body"), ("score-hub-connections", "connect-any-integration"),
-    ("act-in-the-world", "the-body"),
+    ("connect-any-integration", "the-body"),
     ("the-intelligence", ""),
-    ("reason-and-answer", "the-intelligence"),
-    ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("long-term-context", "higher-mind"), ("hold-objectives", "higher-mind"),
+    ("reason-and-answer", "the-intelligence"), ("context-intake", "reason-and-answer"), ("planner", "reason-and-answer"),
+    ("delegation", "reason-and-answer"), ("response-writer", "reason-and-answer"),
+    ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("hold-objectives", "higher-mind"), ("guidance", "higher-mind"),
     ("remember-and-recall", "the-intelligence"), ("offer-intuition", "remember-and-recall"), ("context-assembler", "remember-and-recall"),
     ("retrieve-context", "remember-and-recall"),
-    ("think-critically", "the-intelligence"),
+    ("think-critically", "the-intelligence"), ("esoi-application", "think-critically"), ("metric-translation", "think-critically"),
+    ("goal-completion", "think-critically"), ("response-quality", "think-critically"),
+    ("watch-for-risk", "the-intelligence"),
     ("take-in-the-world", ""),
-    ("know-the-world", "take-in-the-world"), ("use-tools", "take-in-the-world"), ("search-backend", "use-tools"), ("personal-data-locations", "use-tools"),
+    ("know-the-world", "take-in-the-world"),
+    ("use-tools", "take-in-the-world"), ("search-backend", "use-tools"), ("edit-files", "use-tools"),
+    ("connected-system-operations", "use-tools"), ("delegated-agent-sessions", "use-tools"), ("personal-data-locations", "use-tools"),
+    ("model-plumbing", "take-in-the-world"), ("choose-a-model-tier", "model-plumbing"), ("model-call", "model-plumbing"), ("call-a-model", "model-plumbing"),
+    ("stay-current", "take-in-the-world"), ("read-registry-freshness", "stay-current"),
     ("the-consciousness", ""),
-    ("ai-representatives", "the-consciousness"), ("asking-judgment", "the-consciousness"), ("feedback-learning", "the-consciousness"),
+    ("ai-representatives", "the-consciousness"), ("judgment-calls", "the-consciousness"), ("feedback-learning", "the-consciousness"),
+    ("prioritization", "the-consciousness"),
 )
 #: A solution with one of these ids is a mind seat, and its name is the part's name.
 MIND_SEATS = tuple(sid for sid, _inside in MIND_TREE)
@@ -358,8 +362,8 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
         part = mind_part(sol) if sol else ""
         if not part:
             continue
-        if not sol.get("interface_name"):
-            empty.append(part)      # a seat defined and empty: it has no interface, no arm and no check yet
+        if not sol.get("interface_name") or not sol.get("implementations"):
+            empty.append(part)      # a seat defined and empty: it has no arm (its interface may be declared) and no check yet
             continue
         top = not tree[sid] or not tree[tree[sid]]      # a container or a second-level part; the parts nested under them are listed through their arms
         if not top or (not tree[sid] and sid not in reasons and f"{sid}:rest" not in reasons):

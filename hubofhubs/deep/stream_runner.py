@@ -418,7 +418,7 @@ class StreamRun:
                 self.wait_exit(5)
 
 
-@implementation("act-in-the-world", "stream_json_goal_runner")
+@implementation("delegated-agent-sessions", "stream_json_goal_runner")
 class StreamJsonGoalRunner(SubprocessGoalRunner):
     """Deep runner holding one live ``claude -p --input-format stream-json`` session per run.
 

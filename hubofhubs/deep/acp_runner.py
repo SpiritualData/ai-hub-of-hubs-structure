@@ -81,7 +81,7 @@ from .. import arm_needs as needs
 # The DeepRunner
 # ---------------------------------------------------------------------------------------------
 
-@implementation("act-in-the-world", "acp_deep_runner")
+@implementation("delegated-agent-sessions", "acp_deep_runner")
 class AcpDeepRunner(DeepRunnerBase):
     """A ``DeepRunner`` that runs each goal as one ACP session against the Claude ACP agent.
 

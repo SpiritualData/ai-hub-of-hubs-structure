@@ -10,8 +10,8 @@
     "root": "the-body"
    },
    "the_consciousness": {
-    "arm": "",
-    "root": "ai-representatives"
+    "arm": "composition",
+    "root": "the-consciousness"
    },
    "the_intelligence": {
     "arm": "composition",
@@ -22,39 +22,49 @@
     "root": "the-self"
    },
    "the_world": {
-    "arm": "parts",
+    "arm": "composition",
     "root": "take-in-the-world"
    }
   },
   "scopes": {
-   "act-in-the-world": "hubofhubs",
    "ai-representatives": "hubofhubs",
-   "asking-judgment": "hubofhubs",
    "assemble-the-whole": "hubofhubs",
    "call-a-model": "hubofhubs",
    "card-store": "hubofhubs",
    "cards-from-files": "hubofhubs",
    "choose-a-model-tier": "hubofhubs",
    "connect-any-integration": "hubofhubs",
+   "connected-system-operations": "hubofhubs",
    "context-assembler": "hubofhubs",
+   "context-intake": "hubofhubs",
+   "delegated-agent-sessions": "hubofhubs",
+   "delegation": "hubofhubs",
+   "edit-files": "hubofhubs",
+   "esoi-application": "hubofhubs",
    "feedback-learning": "hubofhubs",
+   "goal-completion": "hubofhubs",
+   "guidance": "hubofhubs",
    "higher-mind": "hubofhubs",
    "hold-objectives": "hubofhubs",
    "internal-context": "hubofhubs",
+   "judgment-calls": "hubofhubs",
    "keep-it-generic": "hubofhubs",
    "know-the-world": "hubofhubs",
-   "long-term-context": "hubofhubs",
    "long-term-memory": "hubofhubs",
+   "metric-translation": "hubofhubs",
    "model-call": "hubofhubs",
    "model-plumbing": "hubofhubs",
    "offer-intuition": "hubofhubs",
    "personal-data-locations": "hubofhubs",
+   "planner": "hubofhubs",
+   "prioritization": "hubofhubs",
    "read-registry-freshness": "hubofhubs",
    "reason-and-answer": "hubofhubs",
    "remember-and-recall": "hubofhubs",
+   "response-quality": "hubofhubs",
+   "response-writer": "hubofhubs",
    "retrieve-context": "hubofhubs",
    "role-understanding": "hubofhubs",
-   "score-hub-connections": "hubofhubs",
    "search-backend": "hubofhubs",
    "stay-current": "hubofhubs",
    "take-in-the-world": "hubofhubs",
@@ -65,21 +75,6 @@
    "think-critically": "hubofhubs",
    "use-tools": "hubofhubs",
    "watch-for-risk": "hubofhubs"
-  }
- },
- "act-in-the-world": {
-  "default": "fast_edit",
-  "evidence": {
-   "detail": "best guess, not yet significant: none 0.298 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: stream_json_goal_runner 0.938 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test",
-   "p": null,
-   "verdict": "WIN"
-  },
-  "modules": {
-   "acp_deep_runner": "hubofhubs.deep.acp_runner",
-   "fast_edit": "hubofhubs.act.fast_edit",
-   "mcp_operations": "hubofhubs.act.mcp_operations",
-   "stream_json_goal_runner": "hubofhubs.deep.stream_runner",
-   "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
   }
  },
  "assemble-the-whole": {
@@ -143,10 +138,10 @@
    "tier_selector": "hubofhubs.tiers"
   }
  },
- "connect-any-integration": {
-  "default": "catalog_entries",
+ "connected-system-operations": {
+  "default": "",
   "modules": {
-   "catalog_entries": "hubofhubs.areas"
+   "mcp_operations": "hubofhubs.act.mcp_operations"
   }
  },
  "context-assembler": {
@@ -162,6 +157,42 @@
    "file_retrieval": "hubofhubs.recall.file_retrieval_assembler",
    "hybrid": "hubofhubs.recall.hybrid_assembler",
    "vector": "hubofhubs.recall.vector_assembler"
+  }
+ },
+ "delegated-agent-sessions": {
+  "default": "stream_json_goal_runner",
+  "evidence": {
+   "detail": "beaten by fast_edit: best guess, not yet significant: fast_edit 0.972 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: none 0.298 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test",
+   "p": null,
+   "verdict": "LOSS"
+  },
+  "modules": {
+   "acp_deep_runner": "hubofhubs.deep.acp_runner",
+   "stream_json_goal_runner": "hubofhubs.deep.stream_runner",
+   "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
+  }
+ },
+ "edit-files": {
+  "default": "fast_edit",
+  "evidence": {
+   "detail": "best guess, not yet significant: none 0.298 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: stream_json_goal_runner 0.938 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test",
+   "p": null,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "fast_edit": "hubofhubs.act.fast_edit"
+  }
+ },
+ "higher-mind": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "internal-context": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
   }
  },
  "keep-it-generic": {
@@ -197,6 +228,12 @@
    "via_call_a_model": "hubofhubs.models.via_provider"
   }
  },
+ "model-plumbing": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.areas"
+  }
+ },
  "read-registry-freshness": {
   "default": "registry_scan",
   "evidence": {
@@ -209,15 +246,21 @@
   }
  },
  "reason-and-answer": {
-  "default": "model_calls",
+  "default": "composition",
   "modules": {
-   "model_calls": "hubofhubs.areas"
+   "composition": "hubofhubs.flows"
   }
  },
  "remember-and-recall": {
   "default": "card_recall",
   "modules": {
    "card_recall": "hubofhubs.recall.card_recall"
+  }
+ },
+ "response-quality": {
+  "default": "evidence_check",
+  "modules": {
+   "evidence_check": "hubofhubs.critique.evidence_check"
   }
  },
  "retrieve-context": {
@@ -247,17 +290,6 @@
    "lsi": "hubofhubs.retrieval.dense"
   }
  },
- "score-hub-connections": {
-  "default": "hub_of_hubs_scorer",
-  "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
-  },
-  "modules": {
-   "hub_of_hubs_scorer": "hubofhubs.measure"
-  }
- },
  "search-backend": {
   "default": "gemini",
   "evidence": {
@@ -281,9 +313,27 @@
   }
  },
  "take-in-the-world": {
-  "default": "search_backends",
+  "default": "composition",
   "modules": {
-   "search_backends": "hubofhubs.areas"
+   "composition": "hubofhubs.areas"
+  }
+ },
+ "the-body": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "the-consciousness": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "the-intelligence": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
   }
  },
  "the-self": {
@@ -293,9 +343,15 @@
   }
  },
  "think-critically": {
-  "default": "evidence_check",
+  "default": "composition",
   "modules": {
-   "evidence_check": "hubofhubs.critique.evidence_check"
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "use-tools": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
   }
  },
  "watch-for-risk": {

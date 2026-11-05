@@ -1,4 +1,4 @@
-"""The deep-work runners: the arms of the act-in-the-world seat that hand open-ended work to a coding agent worker.
+"""The deep-work runners: the arms of the Delegated Agent Sessions seat that hand open-ended work to a coding agent worker.
 
 ``launch`` is the pure argv builder, ``settings`` the frozen values a consumer hands in (timeouts, the usage-limit and prompt-budget
 collaborators, the marker the worker prints when it escalates), ``contract`` the goal contract around any ``DeepRunner``, ``session``

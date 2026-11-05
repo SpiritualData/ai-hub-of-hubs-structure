@@ -65,7 +65,7 @@ from .settings import GoalSettings, GoalSettingsSource, resolve_goal_settings
 from .. import arm_needs as needs
 
 
-@implementation("act-in-the-world", "subprocess_goal_runner")
+@implementation("delegated-agent-sessions", "subprocess_goal_runner")
 class SubprocessGoalRunner(DeepRunner):
     """Reference DeepRunner: spawn Claude Code headless with ``/goal`` + ``--max-turns``.
 

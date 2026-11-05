@@ -31,6 +31,7 @@ class Result:
     seconds: float = 0.0
     note: str = ""                              # what the critic found wrong with the answer, empty when it held
     events: Tuple[ProgressEvent, ...] = ()
+    steps: Tuple[Dict[str, Any], ...] = ()      # the step of every part of a flow: done, skipped, or pending with the reason (no arm yet)
 
     def __str__(self) -> str:
         return self.answer
@@ -38,7 +39,7 @@ class Result:
     def to_dict(self) -> Dict[str, Any]:
         return {"input": self.input, "seat": self.seat, "answer": self.answer, "items": list(self.items), "trace": list(self.trace),
                 "arms": dict(self.arms), "tokens": dict(self.tokens) if self.tokens else None, "seconds": round(self.seconds, 3), "note": self.note,
-                "events": [e.to_dict() for e in self.events]}
+                "events": [e.to_dict() for e in self.events], "steps": list(self.steps)}
 
 
 def needs(target: str = "hub-of-hubs", *, arms: Optional[Mapping[str, str]] = None, options: Optional[Mapping[str, Any]] = None,

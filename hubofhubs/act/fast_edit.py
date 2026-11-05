@@ -204,7 +204,7 @@ class FastEditConfig:
     max_retries: int = 1
 
 
-@implementation("act-in-the-world", "fast_edit")
+@implementation("edit-files", "fast_edit")
 class FastEditRunner(DeepRunnerBase):
     """One-call file editing behind the ``DeepRunner`` interface.
 

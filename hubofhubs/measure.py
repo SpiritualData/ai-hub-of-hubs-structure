@@ -1,6 +1,6 @@
 """Reads the registry together with one consumer's code (a ``Binding``) and answers, per area, whether the hub-of-hubs idea
-holds. ``evaluate`` returns the per-area facts and the combined numbers; ``check`` answers one case."""
-from esoi import implementation
+holds. ``evaluate`` returns the per-area facts and the combined numbers; ``check`` answers one case. It is the code of a metric (the share of
+connections that need no code, a metric of Tools and of Hands), not a solution with arms."""
 from esoi.intents import read_tree
 
 from . import registry, scan
@@ -152,13 +152,3 @@ def check(fact, kind):
 def metrics(facts, connections, seat_facts=None):
     seat_facts = seat_facts if seat_facts is not None else getattr(facts, "seats", None)
     return registry.combine(list(facts.values()), connections, None if seat_facts is None else list(seat_facts.values()))
-
-
-@implementation("score-hub-connections", "hub_of_hubs_scorer")
-class HubScorer:
-    """The hub-of-hubs scorer as one registered implementation of the score-hub-connections solution."""
-    REQUIRES = ()     # pure functions over the registry files
-    evaluate = staticmethod(evaluate)
-    evaluate_seats = staticmethod(evaluate_seats)
-    check = staticmethod(check)
-    metrics = staticmethod(metrics)
