@@ -1,5 +1,5 @@
 """The record assembler finds a record by a name the message uses, respects scope tags, and never raises. Offline."""
-from hubofhubs.recall.record_assembler import RecordContextAssembler, rank_records
+from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.record_assembler import RecordContextAssembler, rank_records
 
 RECORDS = [
     {"id": "n1", "title": "Language", "text": "Dana only teaches on Tuesday and Thursday evenings, never on Friday.", "scope_tags": ["group:a"]},

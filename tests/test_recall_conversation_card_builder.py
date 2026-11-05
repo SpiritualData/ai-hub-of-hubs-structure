@@ -1,7 +1,7 @@
 """Conversation sources for cards: the source entry, the new card, and the origin stamp on write."""
 import json
 
-from hubofhubs.recall.conversation_card_builder import ConversationCardBuilder
+from hubofhubs.the_intelligence.subconscious.cards_from_files.conversation_card_builder import ConversationCardBuilder
 
 
 def test_a_conversation_becomes_a_source_with_its_turn_count(tmp_path):

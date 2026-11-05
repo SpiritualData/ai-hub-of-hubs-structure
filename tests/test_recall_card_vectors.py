@@ -4,18 +4,12 @@ import sys
 
 import pytest
 
-from hubofhubs.ports.context import VectorHit
-from hubofhubs.recall import embedders
-from hubofhubs.recall.card_vectors import (
-    Compatibility,
-    ReadOnlyVectorReader,
-    RemoteMountReaders,
-    compatibility,
-    embedded_reason,
-    seed_scope_digest,
-)
-from hubofhubs.recall.qdrant_store import scope_hash
-from hubofhubs.recall.vector_scopes import CARD_SEED_SCOPE
+from hubofhubs.the_body.internal_context.context import VectorHit
+from hubofhubs.the_body.internal_context.card_store import embedders
+from hubofhubs.the_body.internal_context.card_store.card_vectors import (
+    Compatibility, ReadOnlyVectorReader, RemoteMountReaders, compatibility, embedded_reason, seed_scope_digest)
+from hubofhubs.the_body.internal_context.card_store.qdrant_store import scope_hash
+from hubofhubs.the_body.internal_context.card_store.vector_scopes import CARD_SEED_SCOPE
 
 
 class Point:

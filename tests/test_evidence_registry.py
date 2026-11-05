@@ -4,7 +4,7 @@ import re
 from datetime import date
 from pathlib import Path
 
-from hubofhubs import registry
+from hubofhubs.the_world.learning.research_freshness_reader import registry
 
 ROOT = Path(__file__).resolve().parent.parent
 PATH = ROOT / "hubofhubs" / "registry" / "hub_evidence.csv"

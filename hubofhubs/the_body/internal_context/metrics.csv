@@ -1,0 +1,2 @@
+metric_id,name,purpose,record,disadvantages,cascading_conditionals,expiration,solution_ids,ideal_ids,command,parent_metric_ids
+metric-internal-context,An internal source reaches the AI through one declaration,An internal source is declared once and its context reaches the AI.,An internal source is declared once and its context reaches the AI. Draft: no cases or runs exist yet.,"A draft: it names what to measure, and no cases are written yet.",,,internal-context,hideal-a-system-offers-its-own-context,,metric-the-body

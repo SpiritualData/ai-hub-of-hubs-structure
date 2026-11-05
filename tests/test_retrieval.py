@@ -1,7 +1,7 @@
 """The retrieval units, the lexical arms and the budgeted choice, on a tiny corpus: no model, no network."""
-from hubofhubs.retrieval.base import within_budget
-from hubofhubs.retrieval.lexical import Bm25Body, Bm25Fielded, Bm25WholeFiles
-from hubofhubs.retrieval.units import build_corpus, cochange_counts, import_links, python_pieces, tokens
+from hubofhubs.the_intelligence.subconscious.context_retriever.base import within_budget
+from hubofhubs.the_intelligence.subconscious.context_retriever.lexical import Bm25Body, Bm25Fielded, Bm25WholeFiles
+from hubofhubs.the_intelligence.subconscious.context_retriever.units import build_corpus, cochange_counts, import_links, python_pieces, tokens
 
 NET = '"""Network helpers."""\nimport time\n\n\ndef retry_delay(attempt):\n    """How long to wait before the next retry."""\n    return 2 ** attempt\n\n\ndef open_socket(host):\n    return host\n'
 UI = '"""Drawing."""\nfrom net import retry_delay\n\n\ndef draw_window(title):\n    """Draw the main window."""\n    return title\n'

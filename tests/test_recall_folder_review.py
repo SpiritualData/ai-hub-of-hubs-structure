@@ -1,7 +1,7 @@
 """The folder review decides what is not worth indexing; its settings are arguments and it names no consumer folder."""
 from pathlib import Path
 
-from hubofhubs.recall.context_folder_review import folder_review, nested_vcs_dirs, review_corpus
+from hubofhubs.the_body.internal_context.card_store.context_folder_review import folder_review, nested_vcs_dirs, review_corpus
 
 
 def make_corpus(root: Path, store_dir_name: str) -> Path:
@@ -33,7 +33,7 @@ def test_an_unreviewable_corpus_is_indexed_in_full(tmp_path):
 
 
 def test_the_consumers_store_folder_name_decides_whether_a_nested_repo_has_its_own_store(tmp_path, monkeypatch):
-    import hubofhubs.recall.context_folder_review as review
+    import hubofhubs.the_body.internal_context.card_store.context_folder_review as review
     monkeypatch.setattr(review, "FOLDER_REVIEW_MIN_FILES", 1)
     corpus = make_corpus(tmp_path, ".cards")
     excluded, verdicts = review_corpus(corpus, set(), None, None, tmp_path / "cards1", store_dir_name=".cards")
@@ -45,7 +45,7 @@ def test_the_consumers_store_folder_name_decides_whether_a_nested_repo_has_its_o
 
 
 def test_nested_repositories_are_indexed_when_the_consumer_switches_the_safeguard_off(tmp_path, monkeypatch):
-    import hubofhubs.recall.context_folder_review as review
+    import hubofhubs.the_body.internal_context.card_store.context_folder_review as review
     monkeypatch.setattr(review, "FOLDER_REVIEW_MIN_FILES", 1)
     corpus = make_corpus(tmp_path, ".cards")
     excluded, _ = review_corpus(corpus, set(), None, None, tmp_path / "cards", store_dir_name=".cards", skip_nested_repos=False)

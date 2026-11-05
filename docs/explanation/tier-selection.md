@@ -1,6 +1,6 @@
 # Choosing the model for each tier
 
-`hubofhubs/tiers.py` picks, per tier, the (provider, model) arm that does the most passing work per unit of cost. The metric
+`hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py` picks, per tier, the (provider, model) arm that does the most passing work per unit of cost. The metric
 decides; no provider or model is a default by preference.
 
 - **Arms** are data in `registry/tier_arms.csv`: one default per tier and other providers as candidates, which are measured

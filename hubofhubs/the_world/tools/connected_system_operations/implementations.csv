@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+connected-system-operations:mcp_operations,connected-system-operations,One-call MCP write,Picks at most one writable operation of an MCP server and its arguments in one model call and runs it.,One round trip for a single write.,"Writes through operations, not files, so the file-edit cases cannot test it.",hubofhubs/the_world/tools/connected_system_operations/mcp_operations.py,,

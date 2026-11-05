@@ -1,9 +1,9 @@
 """The card limit: a number the owner chose, parsed from a raw setting, enforced by one admission function and always announced."""
 import pytest
 
-from hubofhubs.recall import card_limit
-from hubofhubs.recall.card_limit import CardLimit, card_kind, parse_max_cards
-from hubofhubs.recall.card_repository import FilesystemCardRepository
+from hubofhubs.the_body.internal_context.card_store import card_limit
+from hubofhubs.the_body.internal_context.card_store.card_limit import CardLimit, card_kind, parse_max_cards
+from hubofhubs.the_body.internal_context.card_store.card_repository import FilesystemCardRepository
 
 
 def topic(cid, used=0):

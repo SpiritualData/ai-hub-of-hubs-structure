@@ -4,18 +4,11 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
-from hubofhubs.recall.card_content_render import (
-    content_identity_key,
-    dedupe_content,
-    normalize_content as _normalize_content,
-    rank_content_by_recency_relevance as _rank_content_by_recency_relevance,
-)
-from hubofhubs.recall.reference_resolver import (
-    NoteResolver,
-    ReferenceResolver,
-    build_resolver_registry,
-    _render_unresolved,
-)
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render import (
+    content_identity_key, dedupe_content, normalize_content as _normalize_content,
+    rank_content_by_recency_relevance as _rank_content_by_recency_relevance)
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.reference_resolver import (
+    NoteResolver, ReferenceResolver, build_resolver_registry, _render_unresolved)
 
 
 class _StubCollectionResolver:

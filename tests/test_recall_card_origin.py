@@ -1,8 +1,8 @@
 """Where a card came from, and the rules that keep one card from becoming many: pure functions, rules passed in."""
 from pathlib import Path
 
-from hubofhubs.recall import card_origin as origin
-from hubofhubs.recall.card_store_identity import write_meta
+from hubofhubs.the_body.internal_context.card_store import card_origin as origin
+from hubofhubs.the_body.internal_context.card_store.card_store_identity import write_meta
 
 
 def bootstrap_card(**extra):

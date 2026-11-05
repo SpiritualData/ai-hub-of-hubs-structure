@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import status  # noqa: E402
-from hubofhubs import evidence_summary  # noqa: E402
+from hubofhubs.the_self.integrity import evidence_summary  # noqa: E402
 
 ROOT = status.ROOT
 

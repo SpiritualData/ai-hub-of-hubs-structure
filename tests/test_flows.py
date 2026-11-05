@@ -9,9 +9,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hubofhubs  # noqa: E402
 from esoi.entry import Pending  # noqa: E402
-from hubofhubs import quality  # noqa: E402
-from hubofhubs.signals import RiskSignal  # noqa: E402
-from hubofhubs.steps import NO_ARM  # noqa: E402
+from hubofhubs.the_consciousness.representatives import quality  # noqa: E402
+from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal  # noqa: E402
+from hubofhubs.the_self.steps import NO_ARM  # noqa: E402
 from test_oneline import FakeProvider, whole_hub  # noqa: E402
 
 NO_ARM_SOLUTIONS = ("feedback-learning", "prioritization", "esoi-application", "long-term-memory", "live-objectives", "guidance",
@@ -47,7 +47,7 @@ def test_without_a_key_the_whole_says_what_to_set_and_no_answer_is_made_up():
 
 
 def test_the_run_is_recorded_and_integrity_audits_it(tmp_path):
-    store = hubofhubs.run(hubofhubs.seats.CardStore)
+    store = hubofhubs.run(hubofhubs.the_body.internal_context.card_store.interface.CardStore)
     result = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", **whole_hub(tmp_path, provided={"vendor-model-caller": FakeProvider(), "card-store": store}))
     assert [c.source for c in store.search("", limit=10)] == ["run record"]
     audit = hubofhubs.resolve("system-integrity", "prompts_as_data")
@@ -159,7 +159,7 @@ def test_response_quality_takes_the_resolved_profile_and_judges_only_the_criteri
 
 def test_critical_thinking_resolves_the_profile_and_reports_goal_and_quality_steps():
     arm = hubofhubs.resolve("critical-thinking", "composition")
-    from hubofhubs.critique.evidence_check import EvidenceCheck
+    from hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check import EvidenceCheck
 
     part = arm(Absent(), Absent(), Absent(), EvidenceCheck())
     result = part.evaluate("q", "See https://other.example/x", {"done_standard": "cited"}, "x", priorities={"quality_weights": {"safety": 0.4}})
@@ -204,7 +204,7 @@ class Quiet:
 
 
 def intelligence(critical, thinker):
-    from hubofhubs.flows import IntelligenceComposition
+    from hubofhubs.the_intelligence.flow import IntelligenceComposition
     return IntelligenceComposition(Quiet(), Quiet(), critical, thinker, Quiet(), Absent())
 
 
@@ -236,7 +236,7 @@ def test_a_cancel_stops_the_flow_without_asking_anyone():
 
 
 def test_feedback_is_applied_by_esoi_application_with_no_approval_unless_judgment_calls_asks():
-    from hubofhubs.flows import ConsciousnessComposition
+    from hubofhubs.the_consciousness.flow import ConsciousnessComposition
 
     class Feedback:
         def learn(self, person="", feedback=None):

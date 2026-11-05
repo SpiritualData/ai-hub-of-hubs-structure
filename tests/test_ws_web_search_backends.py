@@ -8,19 +8,10 @@ import pytest
 
 httpx = pytest.importorskip("httpx")  # the web extra; the default install has no HTTP library
 
-from hubofhubs.websearch.backends import (
-    BraveBackend,
-    FallbackSearchBackend,
-    ProviderNativeBackend,
-    SearchBackendError,
-    SearchHit,
-    SearchResponse,
-    SearxngBackend,
-    SerperBackend,
-    TavilyBackend,
-    select_search_backend,
-)
-from hubofhubs.websearch.gemini import GeminiGroundingBackend
+from hubofhubs.the_world.tools.web_search.backends import (
+    BraveBackend, FallbackSearchBackend, ProviderNativeBackend, SearchBackendError, SearchHit, SearchResponse, SearxngBackend, SerperBackend,
+    TavilyBackend, select_search_backend)
+from hubofhubs.the_world.tools.web_search.gemini import GeminiGroundingBackend
 
 
 class FakeResponse:
@@ -491,7 +482,7 @@ def test_a_consumer_resolver_selects_its_own_backend_by_name_with_no_branch_in_t
 
 
 def test_a_consumer_can_rename_the_settings_the_selector_reads():
-    from hubofhubs.websearch.backends import SelectionKeys
+    from hubofhubs.the_world.tools.web_search.backends import SelectionKeys
     keys = SelectionKeys(backend="ACME_BACKEND", enabled="ACME_ON")
     assert select_search_backend({"ACME_BACKEND": "brave", "BRAVE_API_KEY": "k"}, keys=keys).name == "brave"
     assert select_search_backend({"ACME_ON": "off", "BRAVE_API_KEY": "k"}, keys=keys) is None
@@ -507,14 +498,14 @@ def test_the_hub_resolves_a_backend_name_through_its_own_seat():
 # ---------------------------------------------------------------------------
 
 def test_shipped_hosted_apis_are_data_entries_run_by_one_backend():
-    from hubofhubs.websearch.backends import ConfiguredJsonBackend
+    from hubofhubs.the_world.tools.web_search.backends import ConfiguredJsonBackend
     for cls in (SerperBackend, BraveBackend, TavilyBackend):
         assert issubclass(cls, ConfiguredJsonBackend) and cls.spec["name"] in ("serper", "brave", "tavily")
 
 
 def test_a_search_api_described_in_a_file_is_selected_with_no_code(tmp_path):
     import json
-    from hubofhubs.websearch.backends import select_search_backend
+    from hubofhubs.the_world.tools.web_search.backends import select_search_backend
     spec = [{"name": "acmesearch", "method": "GET", "url": "https://search.invalid/v2", "key_env": ["ACME_KEY"],
              "headers": {"Authorization": "Token {key}"}, "send": "params",
              "payload": {"term": "{query}", "limit": "{max_results}"}, "results_path": "data.items",
@@ -539,7 +530,7 @@ def test_a_search_api_described_in_a_file_is_selected_with_no_code(tmp_path):
 
 
 def test_a_bad_apis_file_loads_nothing_and_does_not_raise(tmp_path):
-    from hubofhubs.websearch.backends import load_file_specs
+    from hubofhubs.the_world.tools.web_search.backends import load_file_specs
     path = tmp_path / "apis.json"
     path.write_text("not json")
     assert load_file_specs(str(path)) == {}

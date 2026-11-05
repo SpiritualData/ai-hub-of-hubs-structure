@@ -8,11 +8,13 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import hubofhubs  # noqa: E402
-from hubofhubs.act.folder_writer import FolderWriter  # noqa: E402
-from hubofhubs.act.tier_registry import TierRegistry  # noqa: E402
-from hubofhubs.areas import PromptsAsData, RegistryResearch, WorldComposition, config_share  # noqa: E402
-from hubofhubs.critique.evidence_check import EvidenceCheck  # noqa: E402
-from hubofhubs.tiers import TierSelector  # noqa: E402
+from hubofhubs.the_world.tools.file_editing.folder_writer import FolderWriter  # noqa: E402
+from hubofhubs.the_world.model_plumbing.model_tier_chooser.tier_registry import TierRegistry  # noqa: E402
+from hubofhubs.the_self.integrity.audit import PromptsAsData, config_share
+from hubofhubs.the_world.learning.registry_research import RegistryResearch
+from hubofhubs.the_world.flow import WorldComposition  # noqa: E402
+from hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check import EvidenceCheck  # noqa: E402
+from hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers import TierSelector  # noqa: E402
 
 
 class Hit:
@@ -57,7 +59,7 @@ def test_take_in_the_world_returns_the_answer_with_its_sources_and_adds_papers_w
 
 
 def test_model_plumbing_asks_the_model_the_tier_chooser_measured_best():
-    from hubofhubs.models.via_provider import ViaVendor
+    from hubofhubs.the_world.model_plumbing.via_vendor import ViaVendor
 
     class Vendor:
         def __init__(self):
@@ -77,9 +79,9 @@ def test_model_plumbing_asks_the_model_the_tier_chooser_measured_best():
 
 
 def test_stay_current_lists_the_areas_older_than_ninety_days():
-    arm = RegistryResearch(hubofhubs.registry.RegistryScan())
+    arm = RegistryResearch(hubofhubs.the_world.learning.research_freshness_reader.registry.RegistryScan())
     assert arm.stale_areas("2026-10-31") == []
-    assert len(arm.stale_areas("2027-06-01")) == len(hubofhubs.registry.read("hubs.csv"))
+    assert len(arm.stale_areas("2027-06-01")) == len(hubofhubs.the_world.learning.research_freshness_reader.registry.read("hubs.csv"))
 
 
 def test_the_connection_metric_reports_the_share_that_needs_no_code():
@@ -87,7 +89,7 @@ def test_the_connection_metric_reports_the_share_that_needs_no_code():
 
 
 def test_keep_it_generic_finds_a_vendor_branch_in_the_hub_and_reports_the_rest():
-    stay = RegistryResearch(hubofhubs.registry.RegistryScan())
+    stay = RegistryResearch(hubofhubs.the_world.learning.research_freshness_reader.registry.RegistryScan())
     arm = PromptsAsData(stay)
     report = arm.audit(["gemini"])
     assert set(report) == {"vendor_branches", "stale_areas", "config_share"}

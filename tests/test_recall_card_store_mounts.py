@@ -1,9 +1,9 @@
 """Mounting card stores read-only, in place: discovery, readability, the path rebase and the guard against writing into a mount."""
 from pathlib import Path
 
-from hubofhubs.recall import card_store_mounts as mounts
-from hubofhubs.recall.card_repository import FilesystemCardRepository
-from hubofhubs.recall.card_store_identity import write_meta
+from hubofhubs.the_body.internal_context.card_store import card_store_mounts as mounts
+from hubofhubs.the_body.internal_context.card_store.card_repository import FilesystemCardRepository
+from hubofhubs.the_body.internal_context.card_store.card_store_identity import write_meta
 
 FOLDER = ".cards"
 

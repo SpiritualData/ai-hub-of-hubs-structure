@@ -7,8 +7,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from hubofhubs.websearch.provider_adapter import ProviderWebSearchAdapter
-from hubofhubs.ports.retrieval import Observation
+from hubofhubs.the_world.tools.web_search.provider_adapter import ProviderWebSearchAdapter
+from hubofhubs.the_world.observation import Observation
 
 
 class StubWebProvider:

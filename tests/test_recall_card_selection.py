@@ -1,6 +1,6 @@
 """Offline tests for ``filter_cards_by_relevance``: the batched file ranking + the selection memo.
 
-Covers the two call-reduction changes in ``hubofhubs.recall.card_selection``:
+Covers the two call-reduction changes in ``hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection``:
 
 * Stage 2 (within-card file ranking) is ONE batched LLM call over ALL selected cards, never one
   call per card; a malformed ranking response degrades to each card's original file order.
@@ -17,10 +17,7 @@ from __future__ import annotations
 import gc
 from typing import Any, Dict, List
 
-from hubofhubs.recall.card_selection import (
-    consolidate_context,
-    filter_cards_by_relevance,
-)
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import consolidate_context, filter_cards_by_relevance
 
 
 class CountingProvider:

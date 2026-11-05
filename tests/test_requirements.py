@@ -11,7 +11,8 @@ from esoi import requirements as needs  # noqa: E402
 from esoi.assemble import AssemblyConfig  # noqa: E402
 from esoi.installer import assembly_plan  # noqa: E402
 
-from hubofhubs import assembler, requirements_doc  # noqa: E402
+from hubofhubs import assembler
+from hubofhubs.the_self.integrity import requirements_doc  # noqa: E402
 
 # the distribution that provides an importable module, where the two names differ
 DISTRIBUTION_OF = {"google.genai": "google-genai", "qdrant_client": "qdrant-client", "Stemmer": "PyStemmer", "acp": "agent-client-protocol", "graphify": "graphifyy", "sklearn": "scikit-learn"}

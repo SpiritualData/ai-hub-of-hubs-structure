@@ -1,9 +1,29 @@
 {
  "@intents": {
   "intents": {
+   "critical_thinking": {
+    "arm": "composition",
+    "root": "critical-thinking"
+   },
+   "higher_mind": {
+    "arm": "composition",
+    "root": "higher-mind"
+   },
    "hub-of-hubs": {
     "arm": "",
     "root": "the-self"
+   },
+   "mind": {
+    "arm": "composition",
+    "root": "the-mind"
+   },
+   "model_plumbing": {
+    "arm": "via_vendor",
+    "root": "model-plumbing"
+   },
+   "subconscious": {
+    "arm": "card_recall",
+    "root": "the-subconscious"
    },
    "the_body": {
     "arm": "composition",
@@ -24,6 +44,10 @@
    "the_world": {
     "arm": "composition",
     "root": "the-world"
+   },
+   "tools": {
+    "arm": "composition",
+    "root": "the-tools"
    }
   },
   "scopes": {
@@ -34,12 +58,13 @@
    "context-retriever": "hubofhubs",
    "critical-thinking": "hubofhubs",
    "delegated-agent-sessions": "hubofhubs",
+   "delegation": "hubofhubs",
    "esoi-application": "hubofhubs",
    "feedback-learning": "hubofhubs",
    "file-editing": "hubofhubs",
    "goal-completion": "hubofhubs",
+   "guidance": "hubofhubs",
    "higher-mind": "hubofhubs",
-   "prioritization": "hubofhubs",
    "intake-sources": "hubofhubs",
    "internal-context": "hubofhubs",
    "judgment-calls": "hubofhubs",
@@ -49,10 +74,11 @@
    "model-plumbing": "hubofhubs",
    "model-tier-chooser": "hubofhubs",
    "nervous-system": "hubofhubs",
-   "guidance": "hubofhubs",
+   "planner": "hubofhubs",
+   "prioritization": "hubofhubs",
+   "proactivity": "hubofhubs",
    "read-files": "hubofhubs",
    "request-intake": "hubofhubs",
-   "planner": "hubofhubs",
    "research-freshness-reader": "hubofhubs",
    "response-quality": "hubofhubs",
    "response-writer": "hubofhubs",
@@ -66,7 +92,6 @@
    "the-intuition": "hubofhubs",
    "the-learning": "hubofhubs",
    "the-mind": "hubofhubs",
-   "proactivity": "hubofhubs",
    "the-representatives": "hubofhubs",
    "the-science": "hubofhubs",
    "the-self": "hubofhubs",
@@ -74,8 +99,7 @@
    "the-tools": "hubofhubs",
    "the-world": "hubofhubs",
    "vendor-model-caller": "hubofhubs",
-   "web-search": "hubofhubs",
-   "delegation": "hubofhubs"
+   "web-search": "hubofhubs"
   }
  },
  "card-store": {
@@ -86,7 +110,7 @@
    "verdict": "UNMEASURED"
   },
   "modules": {
-   "local_card_store": "hubofhubs.cardstore"
+   "local_card_store": "hubofhubs.the_body.internal_context.card_store.cardstore"
   }
  },
  "cards-from-files": {
@@ -97,25 +121,25 @@
    "verdict": "WIN"
   },
   "modules": {
-   "cochange_topic_cards": "hubofhubs.recall.cards_from_topics",
-   "file_plus_topic_cards": "hubofhubs.recall.cards_from_files",
-   "graphify_files": "hubofhubs.recall.cards_from_graphify",
-   "import_graph_topic_cards": "hubofhubs.recall.cards_from_topics",
-   "llm_topic_cards": "hubofhubs.recall.cards_from_files",
-   "per_file_symbols": "hubofhubs.recall.cards_from_files",
-   "topic_cards_replay": "hubofhubs.recall.cards_from_files"
+   "cochange_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_topics",
+   "file_plus_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
+   "graphify_files": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_graphify",
+   "import_graph_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_topics",
+   "llm_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
+   "per_file_symbols": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
+   "topic_cards_replay": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files"
   }
  },
  "connected-system-operations": {
   "default": "",
   "modules": {
-   "mcp_operations": "hubofhubs.act.mcp_operations"
+   "mcp_operations": "hubofhubs.the_world.tools.connected_system_operations.mcp_operations"
   }
  },
  "context-intake": {
   "default": "one_view",
   "modules": {
-   "one_view": "hubofhubs.orchestrate.intake"
+   "one_view": "hubofhubs.the_intelligence.mind.context_intake.intake"
   }
  },
  "context-retriever": {
@@ -126,29 +150,29 @@
    "verdict": "WIN"
   },
   "modules": {
-   "abstaining_affinity": "hubofhubs.retrieval.aware",
-   "abstaining_aware": "hubofhubs.retrieval.aware",
-   "abstaining_fenced": "hubofhubs.retrieval.aware",
-   "abstaining_hybrid": "hubofhubs.retrieval.abstain",
-   "abstaining_learned": "hubofhubs.retrieval.abstain",
-   "abstaining_recency": "hubofhubs.retrieval.aware",
-   "bm25_body": "hubofhubs.retrieval.lexical",
-   "bm25_fielded": "hubofhubs.retrieval.lexical",
-   "bm25_whole_files": "hubofhubs.retrieval.lexical",
-   "dense_bge_small": "hubofhubs.retrieval.dense",
-   "feature_rerank": "hubofhubs.retrieval.fusion",
-   "feature_rerank_no_priors": "hubofhubs.retrieval.fusion",
-   "hybrid_rrf": "hubofhubs.retrieval.fusion",
-   "learned_rerank": "hubofhubs.retrieval.learned",
-   "live_scan": "hubofhubs.retrieval.aware",
-   "llm_rerank": "hubofhubs.retrieval.abstain",
-   "lsi": "hubofhubs.retrieval.dense"
+   "abstaining_affinity": "hubofhubs.the_intelligence.subconscious.context_retriever.aware",
+   "abstaining_aware": "hubofhubs.the_intelligence.subconscious.context_retriever.aware",
+   "abstaining_fenced": "hubofhubs.the_intelligence.subconscious.context_retriever.aware",
+   "abstaining_hybrid": "hubofhubs.the_intelligence.subconscious.context_retriever.abstain",
+   "abstaining_learned": "hubofhubs.the_intelligence.subconscious.context_retriever.abstain",
+   "abstaining_recency": "hubofhubs.the_intelligence.subconscious.context_retriever.aware",
+   "bm25_body": "hubofhubs.the_intelligence.subconscious.context_retriever.lexical",
+   "bm25_fielded": "hubofhubs.the_intelligence.subconscious.context_retriever.lexical",
+   "bm25_whole_files": "hubofhubs.the_intelligence.subconscious.context_retriever.lexical",
+   "dense_bge_small": "hubofhubs.the_intelligence.subconscious.context_retriever.dense",
+   "feature_rerank": "hubofhubs.the_intelligence.subconscious.context_retriever.fusion",
+   "feature_rerank_no_priors": "hubofhubs.the_intelligence.subconscious.context_retriever.fusion",
+   "hybrid_rrf": "hubofhubs.the_intelligence.subconscious.context_retriever.fusion",
+   "learned_rerank": "hubofhubs.the_intelligence.subconscious.context_retriever.learned",
+   "live_scan": "hubofhubs.the_intelligence.subconscious.context_retriever.aware",
+   "llm_rerank": "hubofhubs.the_intelligence.subconscious.context_retriever.abstain",
+   "lsi": "hubofhubs.the_intelligence.subconscious.context_retriever.dense"
   }
  },
  "critical-thinking": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.flows"
+   "composition": "hubofhubs.the_intelligence.critical_thinking.flow"
   }
  },
  "delegated-agent-sessions": {
@@ -159,9 +183,15 @@
    "verdict": "LOSS"
   },
   "modules": {
-   "acp_deep_runner": "hubofhubs.deep.acp_runner",
-   "stream_json_goal_runner": "hubofhubs.deep.stream_runner",
-   "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
+   "acp_deep_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
+   "stream_json_goal_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner",
+   "subprocess_goal_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner"
+  }
+ },
+ "delegation": {
+  "default": "to_tools",
+  "modules": {
+   "to_tools": "hubofhubs.the_intelligence.mind.delegation.delegation"
   }
  },
  "file-editing": {
@@ -172,7 +202,7 @@
    "verdict": "WIN"
   },
   "modules": {
-   "fast_edit": "hubofhubs.act.fast_edit"
+   "fast_edit": "hubofhubs.the_world.tools.file_editing.fast_edit"
   }
  },
  "goal-completion": {
@@ -183,26 +213,26 @@
    "verdict": "WIN"
   },
   "modules": {
-   "evidence_standard": "hubofhubs.critique.goal_completion",
-   "nonempty": "hubofhubs.critique.goal_completion"
+   "evidence_standard": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion",
+   "nonempty": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion"
   }
  },
  "higher-mind": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.flows"
+   "composition": "hubofhubs.the_intelligence.higher_mind.flow"
   }
  },
  "intake-sources": {
   "default": "folder_queue",
   "modules": {
-   "folder_queue": "hubofhubs.intake.queue"
+   "folder_queue": "hubofhubs.the_body.intake_sources.queue"
   }
  },
  "internal-context": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.flows"
+   "composition": "hubofhubs.the_body.internal_context.flow"
   }
  },
  "judgment-calls": {
@@ -213,14 +243,14 @@
    "verdict": "WIN"
   },
   "modules": {
-   "ask_every_time": "hubofhubs.consciousness.judgment",
-   "severity_policy": "hubofhubs.consciousness.judgment"
+   "ask_every_time": "hubofhubs.the_consciousness.judgment_calls.judgment",
+   "severity_policy": "hubofhubs.the_consciousness.judgment_calls.judgment"
   }
  },
  "metric-translation": {
   "default": "goal_record",
   "modules": {
-   "goal_record": "hubofhubs.orchestrate.translation"
+   "goal_record": "hubofhubs.the_intelligence.critical_thinking.metric_translation.translation"
   }
  },
  "model-plumbing": {
@@ -231,7 +261,7 @@
    "verdict": "UNMEASURED"
   },
   "modules": {
-   "via_vendor": "hubofhubs.models.via_provider"
+   "via_vendor": "hubofhubs.the_world.model_plumbing.via_vendor"
   }
  },
  "model-tier-chooser": {
@@ -242,7 +272,7 @@
    "verdict": "UNMEASURED"
   },
   "modules": {
-   "tier_selector": "hubofhubs.tiers"
+   "tier_selector": "hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers"
   }
  },
  "nervous-system": {
@@ -253,21 +283,9 @@
    "verdict": "WIN"
   },
   "modules": {
-   "consent_gate": "hubofhubs.consent_gate",
-   "overseer": "hubofhubs.risk",
-   "two_stage": "hubofhubs.consent_gate"
-  }
- },
- "read-files": {
-  "default": "folder_reader",
-  "modules": {
-   "folder_reader": "hubofhubs.act.read_files"
-  }
- },
- "request-intake": {
-  "default": "every_declared_source",
-  "modules": {
-   "every_declared_source": "hubofhubs.consciousness.intake"
+   "consent_gate": "hubofhubs.the_intelligence.nervous_system.consent_gate",
+   "overseer": "hubofhubs.the_intelligence.mind.delegation.overseer.risk",
+   "two_stage": "hubofhubs.the_intelligence.nervous_system.consent_gate"
   }
  },
  "planner": {
@@ -278,79 +296,8 @@
    "verdict": "WIN"
   },
   "modules": {
-   "cue_router": "hubofhubs.orchestrate.planning",
-   "one_piece": "hubofhubs.orchestrate.planning"
-  }
- },
- "research-freshness-reader": {
-  "default": "registry_scan",
-  "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
-  },
-  "modules": {
-   "registry_scan": "hubofhubs.registry"
-  }
- },
- "response-quality": {
-  "default": "evidence_check",
-  "modules": {
-   "evidence_check": "hubofhubs.critique.evidence_check"
-  }
- },
- "response-writer": {
-  "default": "cited_results",
-  "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
-  },
-  "modules": {
-   "cited_results": "hubofhubs.orchestrate.writer",
-   "model_synthesis": "hubofhubs.orchestrate.writer"
-  }
- },
- "system-integrity": {
-  "default": "prompts_as_data",
-  "modules": {
-   "prompts_as_data": "hubofhubs.areas"
-  }
- },
- "the-assembler": {
-  "default": "zero_config",
-  "modules": {
-   "zero_config": "hubofhubs.whole"
-  }
- },
- "the-body": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
-  }
- },
- "the-consciousness": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
-  }
- },
- "the-intelligence": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
-  }
- },
- "the-learning": {
-  "default": "registry_research",
-  "modules": {
-   "registry_research": "hubofhubs.areas"
-  }
- },
- "the-mind": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
+   "cue_router": "hubofhubs.the_intelligence.mind.planner.planning",
+   "one_piece": "hubofhubs.the_intelligence.mind.planner.planning"
   }
  },
  "proactivity": {
@@ -361,14 +308,97 @@
    "verdict": "WIN"
   },
   "modules": {
-   "calendar_and_events": "hubofhubs.proactivity.triggers",
-   "elapsed_hours": "hubofhubs.proactivity.triggers"
+   "calendar_and_events": "hubofhubs.the_intelligence.proactivity.triggers",
+   "elapsed_hours": "hubofhubs.the_intelligence.proactivity.triggers"
+  }
+ },
+ "read-files": {
+  "default": "folder_reader",
+  "modules": {
+   "folder_reader": "hubofhubs.the_world.tools.file_reading.read_files"
+  }
+ },
+ "request-intake": {
+  "default": "every_declared_source",
+  "modules": {
+   "every_declared_source": "hubofhubs.the_consciousness.request_intake.intake"
+  }
+ },
+ "research-freshness-reader": {
+  "default": "registry_scan",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "registry_scan": "hubofhubs.the_world.learning.research_freshness_reader.registry"
+  }
+ },
+ "response-quality": {
+  "default": "evidence_check",
+  "modules": {
+   "evidence_check": "hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check"
+  }
+ },
+ "response-writer": {
+  "default": "cited_results",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "cited_results": "hubofhubs.the_intelligence.mind.response_writer.writer",
+   "model_synthesis": "hubofhubs.the_intelligence.mind.response_writer.writer"
+  }
+ },
+ "system-integrity": {
+  "default": "prompts_as_data",
+  "modules": {
+   "prompts_as_data": "hubofhubs.the_self.integrity.audit"
+  }
+ },
+ "the-assembler": {
+  "default": "zero_config",
+  "modules": {
+   "zero_config": "hubofhubs.the_self.assembler.zero_config"
+  }
+ },
+ "the-body": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.the_body.flow"
+  }
+ },
+ "the-consciousness": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.the_consciousness.flow"
+  }
+ },
+ "the-intelligence": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.the_intelligence.flow"
+  }
+ },
+ "the-learning": {
+  "default": "registry_research",
+  "modules": {
+   "registry_research": "hubofhubs.the_world.learning.registry_research"
+  }
+ },
+ "the-mind": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.the_intelligence.mind.flow"
   }
  },
  "the-representatives": {
   "default": "declared_authority",
   "modules": {
-   "declared_authority": "hubofhubs.consciousness.representatives"
+   "declared_authority": "hubofhubs.the_consciousness.representatives.representatives"
   }
  },
  "the-science": {
@@ -379,36 +409,36 @@
    "verdict": "WIN"
   },
   "modules": {
-   "openalex": "hubofhubs.science.openalex",
-   "openalex_keywords": "hubofhubs.science.openalex_keywords",
-   "openalex_keywords_model": "hubofhubs.science.openalex_keywords",
-   "openalex_semantic": "hubofhubs.science.openalex_semantic",
-   "openalex_semantic_and_web": "hubofhubs.science.openalex_semantic_and_web",
-   "web_research": "hubofhubs.websearch.research"
+   "openalex": "hubofhubs.the_world.science.openalex",
+   "openalex_keywords": "hubofhubs.the_world.science.openalex_keywords",
+   "openalex_keywords_model": "hubofhubs.the_world.science.openalex_keywords",
+   "openalex_semantic": "hubofhubs.the_world.science.openalex_semantic",
+   "openalex_semantic_and_web": "hubofhubs.the_world.science.openalex_semantic_and_web",
+   "web_research": "hubofhubs.the_world.tools.web_search.research"
   }
  },
  "the-self": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.whole"
+   "composition": "hubofhubs.the_self.respond"
   }
  },
  "the-subconscious": {
   "default": "card_recall",
   "modules": {
-   "card_recall": "hubofhubs.recall.card_recall"
+   "card_recall": "hubofhubs.the_intelligence.subconscious.card_recall"
   }
  },
  "the-tools": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.flows"
+   "composition": "hubofhubs.the_world.tools.flow"
   }
  },
  "the-world": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.areas"
+   "composition": "hubofhubs.the_world.flow"
   }
  },
  "vendor-model-caller": {
@@ -419,12 +449,12 @@
    "verdict": "WIN"
   },
   "modules": {
-   "anthropic": "hubofhubs.models.anthropic",
-   "claude_cli": "hubofhubs.models.claude_cli",
-   "deepseek": "hubofhubs.models.openai",
-   "gemini": "hubofhubs.models.gemini",
-   "multi_provider": "hubofhubs.models.router",
-   "openai": "hubofhubs.models.openai"
+   "anthropic": "hubofhubs.the_world.model_plumbing.vendor_model_caller.anthropic",
+   "claude_cli": "hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli",
+   "deepseek": "hubofhubs.the_world.model_plumbing.vendor_model_caller.openai",
+   "gemini": "hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini",
+   "multi_provider": "hubofhubs.the_world.model_plumbing.vendor_model_caller.router",
+   "openai": "hubofhubs.the_world.model_plumbing.vendor_model_caller.openai"
   }
  },
  "web-search": {
@@ -435,18 +465,12 @@
    "verdict": "WIN"
   },
   "modules": {
-   "brave": "hubofhubs.websearch.backends",
-   "gemini": "hubofhubs.websearch.gemini",
-   "provider": "hubofhubs.websearch.backends",
-   "searxng": "hubofhubs.websearch.backends",
-   "serper": "hubofhubs.websearch.backends",
-   "tavily": "hubofhubs.websearch.backends"
-  }
- },
- "delegation": {
-  "default": "to_tools",
-  "modules": {
-   "to_tools": "hubofhubs.orchestrate.delegation"
+   "brave": "hubofhubs.the_world.tools.web_search.backends",
+   "gemini": "hubofhubs.the_world.tools.web_search.gemini",
+   "provider": "hubofhubs.the_world.tools.web_search.backends",
+   "searxng": "hubofhubs.the_world.tools.web_search.backends",
+   "serper": "hubofhubs.the_world.tools.web_search.backends",
+   "tavily": "hubofhubs.the_world.tools.web_search.backends"
   }
  }
 }

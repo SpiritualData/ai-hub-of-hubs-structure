@@ -4,9 +4,9 @@ from concurrent.futures import Future
 
 import pytest
 
-from hubofhubs.orchestrate.turn import Emitter, TurnCardCache
-from hubofhubs.ports.deep import ProgressEvent
-from hubofhubs.ports.events import EVENT_STATUS, Mode
+from hubofhubs.the_intelligence.mind.delegation.overseer.turn import Emitter, TurnCardCache
+from hubofhubs.the_world.tools.deep import ProgressEvent
+from hubofhubs.the_world.tools.events import EVENT_STATUS, Mode
 
 
 class Assembled:

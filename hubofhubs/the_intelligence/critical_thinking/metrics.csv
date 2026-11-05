@@ -1,0 +1,2 @@
+metric_id,name,purpose,record,disadvantages,cascading_conditionals,expiration,solution_ids,ideal_ids,command,parent_metric_ids
+metric-esoi-application,Specs and metrics improve by the loop,A spec or metric edited by the loop scores no worse on its own measure afterwards.,Draft: no cases or runs exist yet.,"A draft: it names what to measure, and no cases are written yet.",,,esoi-application,hideal-every-request-has-a-target,,metric-critical-thinking

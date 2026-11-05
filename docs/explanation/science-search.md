@@ -5,11 +5,11 @@ Descriptive wording in the records stays the owner's; the implementation row rea
 
 ## What it is
 
-`hubofhubs.science.openalex.OpenAlexWorks` is an implementation of the `the-science` seat (`@implementation("the-science",
+`hubofhubs.the_world.science.openalex.OpenAlexWorks` is an implementation of the `the-science` seat (`@implementation("the-science",
 "openalex")`), beside `web_research`. It finds scholarly works and returns what a citation needs: title, authors, year, venue, DOI,
-citation count, an abstract rebuilt from OpenAlex's inverted index, and a landing link. `hubofhubs.science.crossref.lookup_doi`
+citation count, an abstract rebuilt from OpenAlex's inverted index, and a landing link. `hubofhubs.the_world.science.crossref.lookup_doi`
 is a small helper that asks Crossref whether a DOI exists and what it is registered as. Port values (`Work`, `WorksResult`,
-`ScholarlyError`) are in `hubofhubs.ports.scholarly`.
+`ScholarlyError`) are in `hubofhubs.the_world.science.scholarly`.
 
 **Why the existing seat and not a new one.** `WorldKnowing` already is "look up what the world says and return observations a
 reader can cite" (`describe`, `search`, `fetch`). A scholarly arm fits it: `search` returns one `Observation` whose hits are
@@ -24,7 +24,7 @@ The arm is registered so it can be measured against that on the same cases; sele
 ## Use
 
 ```python
-from hubofhubs.science.openalex import OpenAlexWorks
+from hubofhubs.the_world.science.openalex import OpenAlexWorks
 arm = OpenAlexWorks(api_key=key_from_your_config, mailto=contact_from_your_config, daily_limit=200)
 observation = arm.search("aerobic fitness knee injury")          # text with numbered citation lines, hits as dicts
 result = arm.find_works("aerobic fitness knee injury", year_from=2015, open_access_only=True)   # typed WorksResult
@@ -43,7 +43,7 @@ a record cannot pose as a line of its own. A landing page is kept only when it i
 filter and drops any record that still says retracted (`include_retracted=True` turns this off). A DOI lookup returns a retracted
 work with "RETRACTED:" before its title.
 
-**Checking a reply's DOIs.** `hubofhubs.science.citations` compares the DOI strings in a reply with the DOIs the turn held
+**Checking a reply's DOIs.** `hubofhubs.the_intelligence.critical_thinking.response_quality.citations` compares the DOI strings in a reply with the DOIs the turn held
 (`dois_in(evidence)`, `strip_unlisted_dois(reply, known)`): an unknown DOI is replaced by a placeholder. It reads DOI strings only, to
 compare them with returned data; it makes no judgement from the model's wording. The consumer decides where to apply it.
 

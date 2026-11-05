@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+the-learning:registry_research,the-learning,Stale areas from the registry dates,"Lists the areas whose last research is older than the ninety day bar, reading the dates through the freshness reader.",A plain list that a weekly job can act on.,It reports what is stale and does not run the research.,hubofhubs/the_world/learning/registry_research.py,research-freshness-reader,

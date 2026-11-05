@@ -20,8 +20,8 @@ from typing import Any, Dict, List, Optional
 import pytest
 
 from act_support import FixedTiers
-from hubofhubs.act.mcp_operations import MCPOperationConfig, MCPOperationRunner
-from hubofhubs.ports.deep import WriteResult
+from hubofhubs.the_world.tools.connected_system_operations.mcp_operations import MCPOperationConfig, MCPOperationRunner
+from hubofhubs.the_world.tools.deep import WriteResult
 
 
 class ScriptedPlanProvider:

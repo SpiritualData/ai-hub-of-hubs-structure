@@ -1,16 +1,10 @@
 """Bootstrap settings arrive as arguments (the hub reads no environment), and the extractors stay bounded."""
 import json
 
-from hubofhubs.recall.context_bootstrap_support import (
-    BOOTSTRAP_MAX_BYTES,
-    BOOTSTRAP_WORKERS_DEFAULT,
-    read_bootstrap_meta,
-    write_bootstrap_meta,
-    bootstrap_workers,
-    flag_enabled,
-    optional_positive_int,
-)
-from hubofhubs.recall.context_card_ceilings import positive_int
+from hubofhubs.the_body.internal_context.card_store.context_bootstrap_support import (
+    BOOTSTRAP_MAX_BYTES, BOOTSTRAP_WORKERS_DEFAULT, read_bootstrap_meta, write_bootstrap_meta, bootstrap_workers, flag_enabled,
+    optional_positive_int)
+from hubofhubs.the_body.internal_context.card_store.context_card_ceilings import positive_int
 
 
 def test_workers_take_the_first_integer_setting_in_order_of_strength():
@@ -62,7 +56,7 @@ def test_the_meta_file_keeps_the_stores_identity_across_passes(tmp_path):
 
 
 def test_head_extractors_read_a_prefix_not_the_whole_file(tmp_path):
-    from hubofhubs.recall.context_card_extraction import _extract_leading_comment, _extract_text_description, _read_head
+    from hubofhubs.the_body.internal_context.card_store.context_card_extraction import _extract_leading_comment, _extract_text_description, _read_head
 
     # A corpus root can legitimately contain data dumps no name-based ignore rule excludes. These
     # two extractors only ever inspect the TOP of a file, so their cost must not scale with its
@@ -78,7 +72,7 @@ def test_head_extractors_read_a_prefix_not_the_whole_file(tmp_path):
 
 
 def test_ast_extractors_skip_a_file_too_big_to_card(tmp_path):
-    from hubofhubs.recall.context_card_extraction import extract_symbols, _read_whole_if_small
+    from hubofhubs.the_body.internal_context.card_store.context_card_extraction import extract_symbols, _read_whole_if_small
 
     small = tmp_path / "small.py"
     small.write_text("def alpha():\n    pass\n\nclass Beta:\n    pass\n")

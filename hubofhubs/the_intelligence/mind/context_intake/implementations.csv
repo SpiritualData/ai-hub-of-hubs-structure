@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+context-intake:one_view,context-intake,Merge into one labelled view,"Merges the cards, picked file pieces and offered items the Subconscious prepared with the answer and sources the World brought into one view, each line naming where it came from.",Free and exact: every line of the view says its source.,It merges and labels; it does not judge what helps the plan.,hubofhubs/the_intelligence/mind/context_intake/intake.py,,

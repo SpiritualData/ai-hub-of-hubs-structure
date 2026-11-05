@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT))
 
 from cards_from_files import corpus as pinned  # noqa: E402
 from cards_from_files import score  # noqa: E402
-from hubofhubs.recall import cards_from_files as arms  # noqa: E402
+from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_from_files as arms  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -154,7 +154,7 @@ DATASET = ROOT / "evaluation" / "cards_from_files" / "datasets" / "replays" / "l
 
 
 def test_the_persisted_build_loads_with_unique_ids_and_corpus_files(corpus):
-    from hubofhubs.recall import cards_dataset
+    from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_dataset
     document = cards_dataset.load_dataset(DATASET)
     assert document["recorded_build_id"] == "75f9da90" and len(document["cards"]) == 103
     assert document["built"]["model_calls"] == 52
@@ -164,7 +164,7 @@ def test_the_persisted_build_loads_with_unique_ids_and_corpus_files(corpus):
 
 
 def test_a_changed_dataset_is_refused(tmp_path):
-    from hubofhubs.recall import cards_dataset
+    from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_dataset
     document = json.loads(DATASET.read_text())
     document["cards"][0]["summary"] += " edited"
     path = tmp_path / "edited.json"
@@ -180,7 +180,7 @@ def test_a_changed_dataset_is_refused(tmp_path):
 
 
 def test_a_replay_on_another_pin_or_corpus_is_refused():
-    from hubofhubs.recall import cards_dataset
+    from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_dataset
     pin = pinned.read_pin()
     with pytest.raises(cards_dataset.DatasetError, match="another corpus"):
         arms.TopicCardsReplay(pin=dict(pin, qar_commit="deadbeef"))

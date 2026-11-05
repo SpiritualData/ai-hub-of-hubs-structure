@@ -4,11 +4,11 @@ import time
 from concurrent.futures import Future
 from types import SimpleNamespace as NS
 
-from hubofhubs.orchestrate.oversee import OverseeMixin
-from hubofhubs.orchestrate.plan import PlanDecision
-from hubofhubs.ports.deep import ProgressEvent
-from hubofhubs.ports.events import EVENT_OVERSEER
-from hubofhubs.risk import OverseerSignal
+from hubofhubs.the_intelligence.mind.delegation.overseer.oversee import OverseeMixin
+from hubofhubs.the_intelligence.mind.planner.plan import PlanDecision
+from hubofhubs.the_world.tools.deep import ProgressEvent
+from hubofhubs.the_world.tools.events import EVENT_OVERSEER
+from hubofhubs.the_intelligence.mind.delegation.overseer.risk import OverseerSignal
 
 CFG = NS(max_steps=10, max_elapsed_seconds=90.0, max_gathered_chars=1000, planner_tier="p", overseer_tier="o",
          overseer_digest_char_budget=500, overseer_gate_min_consecutive_reads=2, overseer_gate_repeat_plan=True,

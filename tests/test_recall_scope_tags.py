@@ -1,5 +1,6 @@
 """The scope-tag fence: an item scoped to one grouping never answers a turn scoped to another; the kinds are the consumer's."""
-from hubofhubs.recall.scope_tags import as_tag_list, scope_tags_allow, scope_tags_from_keys, union_scope_tags
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.scope_tags import (
+    as_tag_list, scope_tags_allow, scope_tags_from_keys, union_scope_tags)
 
 
 def test_tags_normalise_to_a_deduped_list_of_strings():

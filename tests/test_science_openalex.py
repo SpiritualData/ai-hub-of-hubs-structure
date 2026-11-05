@@ -8,10 +8,11 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs import AssemblyConfig, assemble, seats  # noqa: E402
-from hubofhubs.science import crossref  # noqa: E402
-from hubofhubs.science.openalex import OpenAlexWorks, abstract_text, citation_line, doi_of, work_from_record  # noqa: E402
-from hubofhubs.science.transport import TransportError  # noqa: E402
+from hubofhubs import AssemblyConfig, assemble  # noqa: E402
+from hubofhubs.the_world.science.interface import WorldKnowing  # noqa: E402
+from hubofhubs.the_world.science import crossref  # noqa: E402
+from hubofhubs.the_world.science.openalex import OpenAlexWorks, abstract_text, citation_line, doi_of, work_from_record  # noqa: E402
+from hubofhubs.the_world.science.transport import TransportError  # noqa: E402
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
@@ -206,7 +207,7 @@ def test_fetch_of_a_page_that_is_not_a_doi_is_an_error_observation_without_a_cal
 
 def test_the_arm_is_a_world_knowing_seat_assembled_by_name_with_no_needs_and_selected_by_no_record():
     system = assemble(AssemblyConfig(solutions=("the-science",), selections={"the-science": "openalex"}))
-    assert isinstance(system["the-science"], seats.WorldKnowing)
+    assert isinstance(system["the-science"], WorldKnowing)
     assert system["the-science"].describe().startswith("scholarly works search")
 
 
@@ -288,7 +289,7 @@ def test_the_cache_keeps_at_most_cache_size_entries_and_drops_the_least_recently
 
 
 def test_a_limiter_handed_in_keeps_the_days_count_across_rebuilt_arms():
-    from hubofhubs.websearch.limiter import DailyLimiter
+    from hubofhubs.the_world.tools.web_search.limiter import DailyLimiter
     limiter = DailyLimiter(2)
     first, _ = arm(SEARCH, limiter=limiter)
     assert first.find_works("one").ok and first.find_works("two").ok

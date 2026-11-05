@@ -34,7 +34,7 @@ def counts(pools):
 
 # ---- source access: cost and risk of reading the sources at request time (fixed before any arm was scored on it) ------------------------------
 # An arm answers from the index it built beforehand; reading the live sources while answering (scanning a server, many API calls) costs money, time
-# and exposure even when it is accurate. The corpus hands every arm a ``SourceMeter`` (hubofhubs.retrieval.base) that counts, per request, the source
+# and exposure even when it is accurate. The corpus hands every arm a ``SourceMeter`` (hubofhubs.the_intelligence.subconscious.context_retriever.base) that counts, per request, the source
 # calls, the records and the bytes read; an arm that reads only its prebuilt index counts 0. The count is folded into the case's cost at these prices
 # (the balanced weights do not change):
 SOURCE_CALL_USD = 0.0005      # one round trip to a source (an API request, a file open on a remote share): a tenth of the half-cent request budget

@@ -25,7 +25,7 @@ excluded by a mark; the weakest ones are diagnostic bounds that show what a meth
     may learn from (321 commits), so the split in time is global. The request's *focus* is the repository the commit belongs to in `topic_open`; in
     `grouping` it is the sibling repository (httpcore for httpx, httpx for httpcore and starlette), so the needed files are at home elsewhere than the
     focus: a hard fence over the focus cannot answer them and a soft preference can. `open_code.py` builds the cases.
-- **Item metadata and the request** (all optional, `hubofhubs.retrieval.units.ITEM_META`): an item may carry `kind` (message, note, file, commit,
+- **Item metadata and the request** (all optional, `hubofhubs.the_intelligence.subconscious.context_retriever.units.ITEM_META`): an item may carry `kind` (message, note, file, commit,
   record_field), `author_role` (requester, other_person, assistant, system), `timestamp`, `affinity_tags` (its home groupings, `repo:httpx`) and
   `scope_tags`; a request may carry its `timestamp`, its focus (`affinity_tags`) and the `scope_tags` it may read. An arm that ignores them ranks
   exactly as before (a test checks it). They are filled from the benchmark's timestamps and roles for memory, and for code from the history (the date of

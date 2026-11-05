@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+file-editing:fast_edit,file-editing,One-call file edit,"Lands a bounded file edit in one model call, using the context already gathered.",Cheapest and fastest of the arms on well-specified edits.,"One attempt with no tool loop, so it cannot recover from a wrong first try.",hubofhubs/the_world/tools/file_editing/fast_edit.py,model-tier-chooser;vendor-model-caller,

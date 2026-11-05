@@ -1,6 +1,6 @@
 """The nervous-system engine: digest, signal parsing, the safe default, and assembly with a consumer's prompt as data."""
 import hubofhubs
-from hubofhubs import risk
+from hubofhubs.the_intelligence.mind.delegation.overseer import risk
 
 PROMPT = "WATCH\n{digest}"
 
@@ -56,7 +56,7 @@ def test_assembly_builds_the_overseer_with_the_consumers_prompt_and_names_the_la
                                  options={"nervous-system": {"render": render}})
     system = hubofhubs.assemble(config)
     watcher = system["nervous-system"]
-    assert isinstance(watcher, hubofhubs.seats.RiskWatching)
+    assert isinstance(watcher, hubofhubs.the_intelligence.nervous_system.interface.RiskWatching)
     assert watcher.oversee(Provider({"signal": "escalate_human", "reason": "Do you want me to proceed?"}), "m", watcher.digest(
         user_message="u", step=1, max_steps=1)).signal == "escalate_human"
     assert any("overseer" in line and "consumer selections" in line for line in system.reasons)

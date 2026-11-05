@@ -1,8 +1,8 @@
 """Text sampling and date bounds: pure helpers the recall code shares. Offline, standard library only."""
 from datetime import datetime, timezone
 
-from hubofhubs.recall.date_bounds import parse_date_bound, timestamp_in_range
-from hubofhubs.recall.text_sampling import compute_idf, extract_terms, keywords_from_text, select_representatives
+from hubofhubs.the_intelligence.subconscious.cards_from_files.date_bounds import parse_date_bound, timestamp_in_range
+from hubofhubs.the_body.internal_context.card_store.text_sampling import compute_idf, extract_terms, keywords_from_text, select_representatives
 
 
 def test_keywords_drop_stopwords_and_short_tokens():

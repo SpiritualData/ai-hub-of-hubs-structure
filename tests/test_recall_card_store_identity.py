@@ -1,8 +1,8 @@
 """A card store has an identity that outlives its location; the hub names no consumer folder or collection."""
 import pytest
 
-from hubofhubs.recall import card_store_identity as ident
-from hubofhubs.recall.card_repository import FilesystemCardRepository
+from hubofhubs.the_body.internal_context.card_store import card_store_identity as ident
+from hubofhubs.the_body.internal_context.card_store.card_repository import FilesystemCardRepository
 
 
 def test_a_store_without_a_meta_gets_no_bare_identity(tmp_path):

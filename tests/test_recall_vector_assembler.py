@@ -8,16 +8,10 @@ import threading
 
 import pytest
 
-from hubofhubs.ports.context import VectorHit, VectorStoreBase
-from hubofhubs.recall.vector_assembler import (
-    MAX_SEED_ITEMS_DEFAULT,
-    VectorContextAssembler,
-    VectorPrompts,
-    seed_source_takes_limit,
-    snippet,
-    task_slug,
-)
-from hubofhubs.recall.vector_scopes import CARD_SEED_SCOPE, SeedItems
+from hubofhubs.the_body.internal_context.context import VectorHit, VectorStoreBase
+from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.vector_assembler import (
+    MAX_SEED_ITEMS_DEFAULT, VectorContextAssembler, VectorPrompts, seed_source_takes_limit, snippet, task_slug)
+from hubofhubs.the_body.internal_context.card_store.vector_scopes import CARD_SEED_SCOPE, SeedItems
 
 
 class FakeStore(VectorStoreBase):

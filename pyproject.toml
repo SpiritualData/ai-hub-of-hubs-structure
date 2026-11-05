@@ -11,7 +11,7 @@ license = { text = "Apache-2.0" }
 dependencies = ["esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@main#subdirectory=implementations/python"]
 
 [project.scripts]
-ahohs = "hubofhubs.cli:main"
+ahohs = "hubofhubs.the_self.assembler.cli:main"
 
 [project.optional-dependencies]
 # One extra per arm that needs a third-party library; the library is imported lazily, only when that arm runs.
@@ -30,8 +30,8 @@ bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # the-subconscious: 
 retrieval = ["numpy>=1.26", "scikit-learn>=1.4", "fastembed>=0.8"]   # context-retriever: the dense arm (a local embedding model), the latent semantic index and the learned reranker
 graphify = ["graphifyy==0.9.102"]                           # cards-from-files: the graphify_files builder (code-only extraction, no model)
 
-[tool.setuptools]
-packages = ["hubofhubs", "hubofhubs.act", "hubofhubs.critique", "hubofhubs.deep", "hubofhubs.models", "hubofhubs.orchestrate", "hubofhubs.ports", "hubofhubs.recall", "hubofhubs.retrieval", "hubofhubs.science", "hubofhubs.terminal", "hubofhubs.websearch"]
+[tool.setuptools.packages.find]
+include = ["hubofhubs*"]
 
 [tool.setuptools.package-data]
-hubofhubs = ["registry/*.csv", "examples/*.toml", "esoi_selection.json"]
+hubofhubs = ["registry/*.csv", "esoi_selection.json"]

@@ -1,4 +1,4 @@
-"""Offline tests for the specificity signal (hubofhubs/critique/specificity.py).
+"""Offline tests for the specificity signal (hubofhubs/the_intelligence/subconscious/context_retriever/specificity.py).
 
 The failure being guarded: a query about one specific subject must not be led by, or answered from, a sibling that only shares
 the category. Specificity is measured as neighborhood-IDF: the shared category term is discounted, the rare distinguishing
@@ -6,7 +6,7 @@ terms carry the referent. Fully offline, no model, no network.
 """
 from __future__ import annotations
 
-from hubofhubs.critique import specificity as sp
+from hubofhubs.the_intelligence.subconscious.context_retriever import specificity as sp
 
 
 # ---------------------------------------------------------------------------

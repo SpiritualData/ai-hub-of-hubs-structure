@@ -1,10 +1,9 @@
 """Staged plans: nesting is normalized, capped and split into stages, and ``run_when`` reads the step before."""
 from typing import Any, Dict, Optional
 
-from hubofhubs.orchestrate.staged_plan import (
-    count_tasks, is_staged, normalize_staged_subtasks, sequence_stages, split_plan, step_allows, tasks_flat, tasks_in,
-)
-from hubofhubs.ports.deep import DeepResult
+from hubofhubs.the_intelligence.mind.planner.staged_plan import (
+    count_tasks, is_staged, normalize_staged_subtasks, sequence_stages, split_plan, step_allows, tasks_flat, tasks_in)
+from hubofhubs.the_world.tools.deep import DeepResult
 
 
 def task(name: str, run_when: Optional[str] = None) -> Dict[str, Any]:

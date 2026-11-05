@@ -1,12 +1,11 @@
 # esoi configuration for ai-hub-of-hubs-structure.
 package = "hubofhubs"
 layers = ["core"]
-other_layers = ["docs", "tests", "scripts", "examples", "evaluation"]
+other_layers = ["docs", "tests", "scripts", "evaluation"]
 max_lines = 1500
 
 # Evaluation: one component folder per seat under evaluation/ (cases.json, score.py, impls/), results and per-case logs beside the records.
-# The measured code is the package without the critique module (no seat measured here uses it), so an unrelated edit there does not
-# make a result stale; docs are not code.
+# The measured code is the package; docs are not code.
 # Arms that may spend money: never run by `esoi run --stale` without --include-paid (esoi harness.paid_reason).
 paid_arms = ["cards_from_files/llm_topic_cards"]
 evaluation_dir = "evaluation"
@@ -15,7 +14,7 @@ results = "esoi/results.csv"
 # evaluation folder and not the command of a metric.
 shared_eval_dirs = ["__pycache__", "assemble_the_whole"]
 # The records beside the code (see [records] beside_code) are not measured code either.
-code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(exclude,glob)**/*.md", ":(exclude,glob)hubofhubs/**/problems.csv",
+code_paths = ["hubofhubs", "evaluation", ":(exclude,glob)**/*.md", ":(exclude,glob)hubofhubs/**/problems.csv",
               ":(exclude,glob)hubofhubs/**/ideals.csv", ":(exclude,glob)hubofhubs/**/solutions.csv", ":(exclude,glob)hubofhubs/**/implementations.csv",
               ":(exclude,glob)hubofhubs/**/metrics.csv"]
 
@@ -23,10 +22,10 @@ code_paths = ["hubofhubs", "evaluation", ":(exclude)hubofhubs/critique", ":(excl
 template_version = 4
 # Each solution's records live once, in the folder that holds its code (docs/reference/records-beside-code.md in the esoi repository).
 # The top intent stays in esoi/; `esoi records place --apply` moves records here, `esoi readmes` writes the page of each folder.
-beside_code = ["hubofhubs", "hubofhubs/*"]
-# The code folders of the arms (hubofhubs/models, recall, ...) hold no records: the records of their solutions are in the sub-intent folders
-# (hubofhubs/the_self, the_body, the_intelligence, the_world, the_consciousness). `esoi readmes` writes the page of each arm folder.
-arm_folders = ["hubofhubs/*"]
+beside_code = ["hubofhubs", "hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*"]
+# A folder of helper code that sits below a solution's folder and holds no records of its own (run_store, assemblers, overseer, ...) is covered by
+# a page `esoi readmes` writes. Folders: the five containers, a second-level solution, a third-level solution, and the helpers below them.
+arm_folders = ["hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*", "hubofhubs/*/*/*/*", "hubofhubs/*/*/*/*/*"]
 
 # Public evidence: others' measurements, shown beside our own results and never counted as one. The registry
 # hubofhubs/registry/hub_evidence.csv is the one source of truth; esoi/evidence.csv is derived from it by

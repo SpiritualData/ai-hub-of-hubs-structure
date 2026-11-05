@@ -1,8 +1,7 @@
 """The cascade's structural half: what escalates, how a verdict folds back, and the middle-out cut."""
-from hubofhubs.orchestrate.cascade import (
-    apply_review, escalation_spec, should_escalate, truncate_keep_both_ends, user_goal_fallback,
-)
-from hubofhubs.orchestrate.plan import PlanDecision
+from hubofhubs.the_intelligence.mind.planner.cascade import (
+    apply_review, escalation_spec, should_escalate, truncate_keep_both_ends, user_goal_fallback)
+from hubofhubs.the_intelligence.mind.planner.plan import PlanDecision
 
 GOAL, QUESTION = "A default goal.", "A default question?"
 

@@ -1,7 +1,7 @@
 # Install what your seats need
 
 Use this to install the Python packages, and see the keys and programs, for the seats you actually use and nothing else. The
-arms declare their needs beside the code (`REQUIRES`, shared pieces in `hubofhubs/arm_needs.py`); the full table is
+arms declare their needs beside the code (`REQUIRES`, shared pieces in `hubofhubs/the_self/assembler/arm_needs.py`); the full table is
 [requirements by arm](../reference/requirements-by-arm.md), generated from those declarations.
 
 ## Plan, then install

@@ -1,12 +1,12 @@
 """The parts of the Mind and of Critical Thinking that have arms: Context Intake, the Planner, Delegation, the Response Writer, Metric
 Translation and Goal Completion, offline, with recording workers."""
-from hubofhubs.card import Card
-from hubofhubs.critique.goal_completion import EvidenceStandard
-from hubofhubs.orchestrate.delegation import ToTools
-from hubofhubs.orchestrate.intake import OneView
-from hubofhubs.orchestrate.planning import CueRouter, OnePiece
-from hubofhubs.orchestrate.translation import GoalRecord
-from hubofhubs.orchestrate.writer import CitedResults
+from hubofhubs.the_body.internal_context.card_store.card import Card
+from hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion import EvidenceStandard
+from hubofhubs.the_intelligence.mind.delegation.delegation import ToTools
+from hubofhubs.the_intelligence.mind.context_intake.intake import OneView
+from hubofhubs.the_intelligence.mind.planner.planning import CueRouter, OnePiece
+from hubofhubs.the_intelligence.critical_thinking.metric_translation.translation import GoalRecord
+from hubofhubs.the_intelligence.mind.response_writer.writer import CitedResults
 
 
 class Piece:
@@ -95,7 +95,7 @@ def test_goal_completion_reads_coverage_requirements_and_refusals():
 
 
 def test_tools_refuses_data_outside_the_data_scope_of_the_authority(tmp_path):
-    from hubofhubs.flows import ToolsComposition
+    from hubofhubs.the_world.tools.flow import ToolsComposition
     (tmp_path / "n.txt").write_text("note")
 
     class Reader:

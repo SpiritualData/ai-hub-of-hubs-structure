@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from hubofhubs.resolution import HUB  # noqa: E402
+from hubofhubs.the_self.assembler.resolution import HUB  # noqa: E402
 
 
 def main(argv):

@@ -6,9 +6,10 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "evaluation"))
 
-from hubofhubs.retrieval.aware import AbstainingAffinity, AbstainingAware, AbstainingFenced, AbstainingRecency, LiveScan
-from hubofhubs.retrieval.lexical import Bm25Fielded
-from hubofhubs.retrieval.units import age_days, build_corpus, digest_of, parse_time
+from hubofhubs.the_intelligence.subconscious.context_retriever.aware import (
+    AbstainingAffinity, AbstainingAware, AbstainingFenced, AbstainingRecency, LiveScan)
+from hubofhubs.the_intelligence.subconscious.context_retriever.lexical import Bm25Fielded
+from hubofhubs.the_intelligence.subconscious.context_retriever.units import age_days, build_corpus, digest_of, parse_time
 
 FILES = {"old.txt": "The standing desk is blue.", "new.txt": "The standing desk is green now.", "other.txt": "The garden has tulips."}
 META = {"old.txt": dict(kind="message", author_role="requester", timestamp="2023-01-01T10:00:00", affinity_tags=["repo:a"], scope_tags=["owner:1"]),

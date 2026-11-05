@@ -1,4 +1,4 @@
-"""The subprocess goal runner (``hubofhubs.deep.subprocess_runner``) with every setting handed in: offline, the process is a fake.
+"""The subprocess goal runner (``hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner``) with every setting handed in: offline, the process is a fake.
 
 What a consumer supplies (the escalation marker, a usage-limit state, the name of the run-id variable, a requester hook, the
 environment a child starts from, the sessions directory) is passed as ``GoalSettings`` and observed at the process edge.
@@ -9,9 +9,9 @@ import json
 import subprocess
 from types import SimpleNamespace
 
-from hubofhubs.deep.settings import GoalSettings, UsageLimits
-from hubofhubs.deep.subprocess_runner import SubprocessGoalRunner
-from hubofhubs.deep.contract import SubprocessConfig
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings, UsageLimits
+from hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner import SubprocessGoalRunner
+from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig
 
 MARKER = "WORKER-ESCALATED:"
 
@@ -108,7 +108,7 @@ def test_a_refusal_that_states_a_limit_is_recorded_and_not_a_failed_goal(monkeyp
 
 
 def test_the_launch_flags_and_the_turn_cap_come_from_the_settings(monkeypatch):
-    from hubofhubs.deep.launch import DeepLaunchSettings
+    from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
     settings = GoalSettings(deep_launch=DeepLaunchSettings(strict_mcp=True, max_turns=6))
     _, proc = run(monkeypatch, (0, envelope("ok"), ""), settings)
     assert "--strict-mcp-config" in proc.cmd and proc.cmd[proc.cmd.index("--max-turns") + 1] == "6"

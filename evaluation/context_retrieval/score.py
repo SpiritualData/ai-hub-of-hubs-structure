@@ -44,7 +44,7 @@ KINDS = ("file", "topic", "orientation", "none", "topic_open", "grouping", "memo
 def world():
     """The main corpus (path to text), the history and the import links used for labels, read once."""
     if "main" not in STATE:
-        from hubofhubs.retrieval.units import import_links
+        from hubofhubs.the_intelligence.subconscious.context_retriever.units import import_links
         pin = pinned.load()
         files = {f: (pin.root / f).read_text(encoding="utf-8", errors="replace") for f in pin.files}
         history = topic_cases.load_history()
@@ -65,7 +65,7 @@ def main_meta(files, history):
 
 def world_for(case):
     """The world a case is asked in: the main corpus, the public repositories (``topic_open``, ``grouping``) or one user's history (``memory``)."""
-    from hubofhubs.retrieval.units import import_links
+    from hubofhubs.the_intelligence.subconscious.context_retriever.units import import_links
     if case["kind"] == "memory":
         if STATE.get("memory", {}).get("key") != case["id"]:
             files, meta = memory.world_of(case)
@@ -151,7 +151,8 @@ def needs_of(implementation, meter):
     found = {}
     if "provider" in inspect.signature(implementation).parameters:
         from esoi import runtime
-        from hubofhubs import seats  # noqa: F401
+        from hubofhubs import HUB
+        HUB.prepare()      # declares the seats
         provider = runtime.resolve("vendor-model-caller", scope="hubofhubs")(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
         found["provider"] = meter.wrap(provider, ("answer",))
     return found

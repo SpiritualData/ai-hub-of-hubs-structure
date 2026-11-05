@@ -1,4 +1,4 @@
-"""Sets the abstention floor (``hubofhubs.retrieval.abstain.CONFIDENCE_FLOOR``) before any arm is scored.
+"""Sets the abstention floor (``hubofhubs.the_intelligence.subconscious.context_retriever.abstain.CONFIDENCE_FLOOR``) before any arm is scored.
 
 Positives are the subjects of the 100 newest commits of the history that older cases may learn from (requests that do need the corpus);
 negatives are ``datasets/no_context_validation.json`` (requests that do not). The scored cases (the 150 newer commits and ``no_context.json``)
@@ -13,8 +13,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from context_retrieval.score import DATASETS, world  # noqa: E402
-from hubofhubs.retrieval.abstain import confidence  # noqa: E402
-from hubofhubs.retrieval.fusion import HybridRrf  # noqa: E402
+from hubofhubs.the_intelligence.subconscious.context_retriever.abstain import confidence  # noqa: E402
+from hubofhubs.the_intelligence.subconscious.context_retriever.fusion import HybridRrf  # noqa: E402
 
 
 def main():

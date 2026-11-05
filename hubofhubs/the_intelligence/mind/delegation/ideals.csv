@@ -1,0 +1,2 @@
+ideal_id,name,principle,state_description,hints_of_measurement,problem_ids,parent_ideal_ids
+hideal-every-handoff-carries-authority-and-done-standard,Every handoff carries authority and a standard,Each handoff names the authority it carries and the done-standard of its sub-goal.,"A worker does what it was allowed to, and everyone can tell when it is done.",A handoff without either is found.,hprob-handoff-loses-authority-and-done-standard,HI5

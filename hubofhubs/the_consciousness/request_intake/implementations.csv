@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+request-intake:every_declared_source,request-intake,Every declared source,"Pulls from each declared source (or the ones named), drops a request with no text, a duplicate and a request from another person, and keeps arrival order.",Nothing a person asked is lost or taken twice.,It only reads sources Body declared.,hubofhubs/the_consciousness/request_intake/intake.py,intake-sources,

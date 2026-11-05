@@ -1,6 +1,6 @@
 """Rewrite the generated blocks from the records: the seat summary, the evidence table and the list of what is not measured yet in
 docs/reference/status.md, the area detail in docs/reference/registry.md, and every arm of every check in docs/reference/evidence-by-arm.md. The evidence comes from
-esoi/results.csv, esoi/per_case.csv and esoi/evidence.csv (hubofhubs/evidence_summary.py); nothing is typed by hand.
+esoi/results.csv, esoi/per_case.csv and esoi/evidence.csv (hubofhubs/the_self/integrity/evidence_summary.py); nothing is typed by hand.
 Run: python3 scripts/status.py [--check]. The README is written by hand; the numbers live on docs/reference/status.md and the detail
 file lists every area."""
 import re
@@ -14,7 +14,7 @@ from esoi import config as esoi_config  # noqa: E402
 from esoi import registry as esoi_registry  # noqa: E402
 from esoi.intents import read_tree  # noqa: E402
 from esoi.tables import read_csv  # noqa: E402
-from hubofhubs import evidence_summary, render_docs, requirements_doc  # noqa: E402
+from hubofhubs.the_self.integrity import evidence_summary, render_docs, requirements_doc  # noqa: E402
 
 TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("docs/reference/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),

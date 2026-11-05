@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 import hubofhubs  # noqa: E402
-from hubofhubs import registry, tiers  # noqa: E402
+from hubofhubs.the_world.learning.research_freshness_reader import registry
+from hubofhubs.the_world.model_plumbing.model_tier_chooser import tiers  # noqa: E402
 
 QUESTION = "What is 2+2? Answer with the digit."
 EXPECTED = "4"

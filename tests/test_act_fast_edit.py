@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Optional
 import pytest
 
 from act_support import DirectoryWriter, FixedTiers
-from hubofhubs.act.fast_edit import FastEditConfig, FastEditRunner
+from hubofhubs.the_world.tools.file_editing.fast_edit import FastEditConfig, FastEditRunner
 
 SHORT_DOC = """# Project notes
 

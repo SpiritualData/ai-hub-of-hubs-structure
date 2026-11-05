@@ -5,7 +5,7 @@ already holds: stage 1 alone measured ~32,550 output tokens of nothing but paths
 it again for every card it proposes, including the 52% that dedup discards. An index costs two or
 three tokens where a path costs fifteen, and the grouping decision is identical.
 """
-from hubofhubs.recall.context_card_extraction import _numbered_tree, _resolve_file_refs
+from hubofhubs.the_body.internal_context.card_store.context_card_extraction import _numbered_tree, _resolve_file_refs
 
 ORDERED = ["src/alpha.py", "src/beta.py", "docs/guide.md"]
 ALLOWED = set(ORDERED)

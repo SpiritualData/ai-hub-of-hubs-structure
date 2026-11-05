@@ -20,7 +20,7 @@ def adapt(implementation, meter):
 
 
 def score_case(fn, case):
-    from hubofhubs.critique.evidence_check import EvidenceCheck
+    from hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check import EvidenceCheck
     text = fn(case["kind"], case["args"])
     want = case["expect"]
     if case["kind"] == "failure":

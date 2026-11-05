@@ -3,7 +3,7 @@ import time
 
 import pytest
 
-from hubofhubs.act.secret_redaction import redact
+from hubofhubs.the_world.tools.secret_redaction import redact
 
 
 def fake_key(prefix: str, body: str) -> str:

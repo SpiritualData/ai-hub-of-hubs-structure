@@ -4,8 +4,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs.science.openalex_keywords import OpenAlexKeywords, OpenAlexKeywordsModel, keyword_query  # noqa: E402
-from hubofhubs.science.openalex_semantic import OpenAlexSemantic  # noqa: E402
+from hubofhubs.the_world.science.openalex_keywords import OpenAlexKeywords, OpenAlexKeywordsModel, keyword_query  # noqa: E402
+from hubofhubs.the_world.science.openalex_semantic import OpenAlexSemantic  # noqa: E402
 
 BODY = json.loads((Path(__file__).resolve().parent / "fixtures" / "openalex_works_search.json").read_text(encoding="utf-8"))
 QUESTION = "Could you recommend a paper that explores predicting a reader's native language from eye movement patterns while reading?"
@@ -76,7 +76,7 @@ def test_the_model_arm_sends_what_the_model_wrote_and_falls_back_to_the_rewrite_
 
 def test_the_key_is_an_optional_environ_option_every_openalex_arm_inherits():
     from esoi.assemble import environ_declared, environ_fill, environ_lacking
-    from hubofhubs.science.openalex import OpenAlexWorks
+    from hubofhubs.the_world.science.openalex import OpenAlexWorks
     for arm in (OpenAlexWorks, OpenAlexSemantic, OpenAlexKeywords, OpenAlexKeywordsModel):
         assert environ_declared(arm) == {"api_key": ("OPENALEX_API_KEY",)}
         assert environ_fill(arm, {}, {"OPENALEX_API_KEY": "k"}) == {"api_key": "OPENALEX_API_KEY"} and environ_fill(arm, {}, {}) == {}
@@ -84,7 +84,7 @@ def test_the_key_is_an_optional_environ_option_every_openalex_arm_inherits():
 
 
 def test_the_combined_arm_interleaves_drops_duplicates_by_doi_or_title_and_keeps_the_limit():
-    from hubofhubs.science.openalex_semantic_and_web import interleave
+    from hubofhubs.the_world.science.openalex_semantic_and_web import interleave
     scholarly = [{"title": "A Paper", "doi": "10.1000/a"}, {"title": "B Paper", "doi": "10.1000/b"}, {"title": "C Paper"}]
     web = [{"title": "a  paper!"}, {"title": "W2"}, {"title": "10.1000/b is dup", "doi": "https://doi.org/10.1000/b"}, {"title": "W4"}]
     assert [h["title"] for h in interleave(scholarly, web, 5)] == ["A Paper", "B Paper", "W2", "C Paper", "W4"]
@@ -92,8 +92,8 @@ def test_the_combined_arm_interleaves_drops_duplicates_by_doi_or_title_and_keeps
 
 
 def test_the_combined_arm_survives_one_failing_arm_and_fails_when_both_fail():
-    from hubofhubs.ports.retrieval import Observation
-    from hubofhubs.science.openalex_semantic_and_web import SemanticAndWeb
+    from hubofhubs.the_world.observation import Observation
+    from hubofhubs.the_world.science.openalex_semantic_and_web import SemanticAndWeb
 
     class Arm:
         def __init__(self, obs):

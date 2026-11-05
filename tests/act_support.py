@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 from typing import Optional
 
-from hubofhubs.ports.deep import WriteResult
+from hubofhubs.the_world.tools.deep import WriteResult
 
 SECRETISH = (".env", ".pem", ".key")
 

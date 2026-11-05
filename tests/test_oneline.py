@@ -10,11 +10,11 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import hubofhubs  # noqa: E402
 from esoi.entry import Pending  # noqa: E402
-from hubofhubs import cli  # noqa: E402
-from hubofhubs.seats import CardStore  # noqa: E402
-from hubofhubs.card import Card  # noqa: E402
-from hubofhubs.cardstore import LocalCardStore  # noqa: E402
-from hubofhubs.ports.events import EVENT_DONE, EVENT_RESULT, EVENT_WORK_TRACE  # noqa: E402
+from hubofhubs.the_self.assembler import cli  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.interface import CardStore  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore  # noqa: E402
+from hubofhubs.the_world.tools.events import EVENT_DONE, EVENT_RESULT, EVENT_WORK_TRACE  # noqa: E402
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 

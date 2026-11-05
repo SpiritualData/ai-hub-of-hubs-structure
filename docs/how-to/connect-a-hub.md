@@ -10,7 +10,7 @@ the hub grows, not when the consumer gains code.
 ## Connections by configuration
 
 - **Tools and data sources (MCP).** One `[[mcp_servers]]` table in the consumer's lane file. Prefer one aggregator over one
-  entry per app. `hubofhubs/examples/lane-world-hub.toml` is the shape: a placeholder URL, and `token_env` naming the
+  entry per app. `docs/reference/lane-world-hub.toml` is the shape: a placeholder URL, and `token_env` naming the
   environment variable that holds the bearer token (the token never sits in a file).
 - **Agents.** Any agent that speaks the Agent Client Protocol can do the deep work when the consumer is told its command.
 - **Models.** Any OpenAI-compatible gateway (LiteLLM, vLLM, Ollama): a base URL, and the model-id prefixes it serves.

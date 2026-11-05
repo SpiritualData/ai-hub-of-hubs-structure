@@ -6,8 +6,9 @@ import pytest
 from esoi import runtime
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-import hubofhubs.seats  # noqa: E402,F401  (declared once, before any test snapshots the registry)
-import hubofhubs.tiers  # noqa: E402,F401
+from hubofhubs import HUB  # noqa: E402
+
+HUB.prepare()  # declares every seat once, before any test snapshots the registry
 
 
 @pytest.fixture(autouse=True)

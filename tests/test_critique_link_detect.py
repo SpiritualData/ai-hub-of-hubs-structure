@@ -1,5 +1,5 @@
 """Deterministic URL detection: the links in a message, found by pattern, and what each one is, from its address alone."""
-from hubofhubs.critique.link_detect import describe_link, extract_urls
+from hubofhubs.the_intelligence.critical_thinking.response_quality.link_detect import describe_link, extract_urls
 
 ID = "1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789"
 

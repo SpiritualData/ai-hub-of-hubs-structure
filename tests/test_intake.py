@@ -1,8 +1,8 @@
 """Intake Sources (Body) and Request Intake (Consciousness): requests are taken in once, with their person."""
 import json
 
-from hubofhubs.consciousness.intake import EveryDeclaredSource
-from hubofhubs.intake.queue import FolderQueue
+from hubofhubs.the_consciousness.request_intake.intake import EveryDeclaredSource
+from hubofhubs.the_body.intake_sources.queue import FolderQueue
 
 
 def queue(tmp_path, rows):

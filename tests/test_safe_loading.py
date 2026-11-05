@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from hubofhubs import AssemblyError, resolve  # noqa: E402
-from hubofhubs.resolution import HUB  # noqa: E402
+from hubofhubs.the_self.assembler.resolution import HUB  # noqa: E402
 
 SNAPSHOT = json.loads((Path(__file__).resolve().parent.parent / "hubofhubs" / "esoi_selection.json").read_text())
 

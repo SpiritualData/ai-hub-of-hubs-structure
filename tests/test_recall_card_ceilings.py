@@ -1,5 +1,5 @@
 """The card ceilings are deterministic gates in front of every write; the per-folder number is an argument."""
-from hubofhubs.recall.context_card_ceilings import apply_card_ceilings, card_folder_key
+from hubofhubs.the_body.internal_context.card_store.context_card_ceilings import apply_card_ceilings, card_folder_key
 
 
 def topic(cid, *paths):

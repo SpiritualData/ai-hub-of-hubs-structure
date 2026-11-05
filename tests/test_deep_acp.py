@@ -11,32 +11,15 @@ from contextlib import asynccontextmanager
 from types import SimpleNamespace
 from typing import Any, Dict, List, Optional
 
-from hubofhubs.deep import acp_config, acp_runner
-from hubofhubs.deep.acp_config import (
-    ALLOW,
-    HUMAN,
-    REJECT,
-    AcpConfig,
-    AcpSettings,
-    EscalationAsk,
-    build_agent_argv,
-    classify_permission,
-    permission_response,
-    resolve_agent_entry,
-    resolve_node_binary,
-    select_option,
-)
-from hubofhubs.deep.acp_protocol import (
-    PHASE_DONE,
-    PHASE_MESSAGE,
-    PHASE_TOOL_RESULT,
-    landed_file_change,
-    translate_session_update,
-    usage_from_prompt_response,
-)
-from hubofhubs.deep.acp_runner import AcpDeepRunner, acp_model_family
-from hubofhubs.deep.settings import GoalSettings
-from hubofhubs.ports.events import EVENT_EXEC
+from hubofhubs.the_world.tools.delegated_agent_sessions import acp_config, acp_runner
+from hubofhubs.the_world.tools.delegated_agent_sessions.acp_config import (
+    ALLOW, HUMAN, REJECT, AcpConfig, AcpSettings, EscalationAsk, build_agent_argv, classify_permission, permission_response, resolve_agent_entry,
+    resolve_node_binary, select_option)
+from hubofhubs.the_world.tools.delegated_agent_sessions.acp_protocol import (
+    PHASE_DONE, PHASE_MESSAGE, PHASE_TOOL_RESULT, landed_file_change, translate_session_update, usage_from_prompt_response)
+from hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner import AcpDeepRunner, acp_model_family
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings
+from hubofhubs.the_world.tools.events import EVENT_EXEC
 
 
 def ns(**kwargs: Any) -> SimpleNamespace:

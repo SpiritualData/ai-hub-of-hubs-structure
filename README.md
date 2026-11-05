@@ -90,7 +90,7 @@ Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. 
 ```pycon
 >>> import hubofhubs
 >>> from hubofhubs.seats import CardStore
->>> from hubofhubs.card import Card
+>>> from hubofhubs.the_body.internal_context.card_store.card import Card
 >>> store = hubofhubs.run(CardStore)          # the typed, ready handle
 >>> store.add(Card("rust-1-91", "Rust 1.91 was released on 2025-10-30."))
 'rust-1-91'

@@ -5,7 +5,8 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs.science.citations import PLACEHOLDER, doi_candidates, dois_in, strip_unlisted_dois, unlisted_dois  # noqa: E402
+from hubofhubs.the_intelligence.critical_thinking.response_quality.citations import (
+    PLACEHOLDER, doi_candidates, dois_in, strip_unlisted_dois, unlisted_dois)  # noqa: E402
 
 RETURNED = ("1. Easy cycling. Author One, 2021. Journal of Demos. DOI 10.5555/demo.one (https://doi.org/10.5555/demo.one). Cited by 12.\n"
             "2. Other work. DOI 10.1016/S0140-6736(20)30183-5 (https://doi.org/10.1016/S0140-6736(20)30183-5).")

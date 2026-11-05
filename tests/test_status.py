@@ -6,10 +6,10 @@ import status  # noqa: E402
 
 
 def test_readme_table_lists_every_seat_with_its_area_count():
-    from hubofhubs import registry
+    from hubofhubs.the_world.learning.research_freshness_reader import registry
     block = status.build()
     hubs = registry.read("hubs.csv")
-    from hubofhubs import evidence_summary
+    from hubofhubs.the_self.integrity import evidence_summary
     assert len(status.seats()) == len(evidence_summary.MIND_TREE), "every part of the tree is a solution of the records"
     assert len([1 for _sid, inside in evidence_summary.MIND_TREE if not inside]) == 5, "five containers at the top"
     for seat, part, inside in status.seats():
@@ -21,7 +21,7 @@ def test_readme_table_lists_every_seat_with_its_area_count():
 
 def test_every_solution_of_the_records_has_one_place_in_the_tree():
     from esoi.intents import read_tree
-    from hubofhubs import evidence_summary
+    from hubofhubs.the_self.integrity import evidence_summary
     placed = [sid for sid, _inside in evidence_summary.MIND_TREE]
     recorded = {r["solution_id"] for r in read_tree(status.ROOT / "esoi", "solutions.csv")}
     assert len(placed) == len(set(placed)) and set(placed) == recorded
@@ -35,7 +35,7 @@ def test_the_containers_table_names_each_container_with_its_parts():
 
 
 def test_the_detail_file_lists_every_area():
-    from hubofhubs import registry
+    from hubofhubs.the_world.learning.research_freshness_reader import registry
     detail = status.build_detail()
     for row in registry.read("hubs.csv"):
         assert f"| {row['area']} |" in detail
@@ -64,7 +64,7 @@ def test_readme_stays_small():
 
 
 def test_the_detail_file_shows_each_areas_call():
-    from hubofhubs import registry
+    from hubofhubs.the_world.learning.research_freshness_reader import registry
     detail = status.build_detail()
     assert "| Call |" in detail
     for row in registry.read("hubs.csv"):

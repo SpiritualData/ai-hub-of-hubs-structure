@@ -6,11 +6,11 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs.models import family, layers, outage, retry  # noqa: E402
-from hubofhubs.models.anthropic import AnthropicProvider, build_cached_system, thinking_kwargs  # noqa: E402
-from hubofhubs.models.gemini import GeminiProvider, split_layers_for_gemini  # noqa: E402
-from hubofhubs.models.openai import DEEPSEEK_BASE_URL, DeepSeekProvider, OpenAIProvider  # noqa: E402
-from hubofhubs.models.router import MultiProvider  # noqa: E402
+from hubofhubs.the_world.model_plumbing.vendor_model_caller import family, layers, outage, retry  # noqa: E402
+from hubofhubs.the_world.model_plumbing.vendor_model_caller.anthropic import AnthropicProvider, build_cached_system, thinking_kwargs  # noqa: E402
+from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider, split_layers_for_gemini  # noqa: E402
+from hubofhubs.the_world.model_plumbing.vendor_model_caller.openai import DEEPSEEK_BASE_URL, DeepSeekProvider, OpenAIProvider  # noqa: E402
+from hubofhubs.the_world.model_plumbing.vendor_model_caller.router import MultiProvider  # noqa: E402
 
 BLOCKS = [{"text": "HEAD", "cache": True}, {"text": "CTX", "cache": True}, {"text": "TAIL", "cache": False}]
 TOOL = {"name": "decide", "input_schema": {"type": "object"}}
@@ -446,7 +446,7 @@ def test_gemini_fetch_url_and_web_search_count_their_calls_and_tokens(monkeypatc
 # ---- prompt specs (collaborators injected) ----------------------------------------------------------------------------
 
 def test_prompt_spec_renders_with_injected_tiers_and_hook_and_the_no_em_dash_rule():
-    from hubofhubs.models.prompt_spec import NO_EM_DASH_RULE, PromptRegistry, bind_spec_class
+    from hubofhubs.the_world.model_plumbing.prompt_spec import NO_EM_DASH_RULE, PromptRegistry, bind_spec_class
     seen = []
     spec_class = bind_spec_class(("fast", "best"), seen.append)
     registry = PromptRegistry(spec_class)

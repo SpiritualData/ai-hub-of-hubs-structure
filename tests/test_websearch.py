@@ -3,8 +3,8 @@ import pytest
 
 import hubofhubs
 from hubofhubs import AssemblyConfig, AssemblyError, assemble, names
-from hubofhubs.ports.search import SearchBackendError
-from hubofhubs.websearch.backends import FallbackSearchBackend, load_file_specs
+from hubofhubs.the_world.tools.web_search.search_port import SearchBackendError
+from hubofhubs.the_world.tools.web_search.backends import FallbackSearchBackend, load_file_specs
 
 ARMS = ["brave", "gemini", "provider", "searxng", "serper", "tavily"]
 
@@ -74,7 +74,7 @@ def test_a_failing_arm_raises_the_seat_error_and_a_chain_moves_on():
         name = "up"
 
         def search(self, query, *, max_results=5):
-            return hubofhubs.websearch.backends.SearchResponse(hits=[hubofhubs.websearch.backends.SearchHit("t", "u")])
+            return hubofhubs.the_world.tools.web_search.backends.SearchResponse(hits=[hubofhubs.the_world.tools.web_search.backends.SearchHit("t", "u")])
 
     assert FallbackSearchBackend([Down(), Up()]).search("q").hits[0].url == "u"
     with pytest.raises(SearchBackendError, match="HTTP 500"):
@@ -92,7 +92,7 @@ def test_a_missing_library_names_the_extra_to_install(monkeypatch):
 
     monkeypatch.setattr(builtins, "__import__", refuse)
     with pytest.raises(SearchBackendError, match=r"hubofhubs\[web\]"):
-        hubofhubs.websearch.backends.default_http("GET", "http://x.invalid")
+        hubofhubs.the_world.tools.web_search.backends.default_http("GET", "http://x.invalid")
 
 
 def test_a_bad_apis_file_loads_nothing(tmp_path):

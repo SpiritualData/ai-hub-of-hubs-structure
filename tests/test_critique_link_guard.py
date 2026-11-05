@@ -1,4 +1,4 @@
-"""Link guard: no reply leaves with a link nobody checked (hubofhubs/critique/link_guard.py).
+"""Link guard: no reply leaves with a link nobody checked (hubofhubs/the_intelligence/critical_thinking/response_quality/link_guard.py).
 
 Every test here is offline. The one network seam is ``LinkGuard(fetcher=...)``, so these run with
 no sockets and no spend.
@@ -9,17 +9,8 @@ import json
 
 import pytest
 
-from hubofhubs.critique.link_guard import (
-    DEAD,
-    OK,
-    UNKNOWN,
-    LinkGuard,
-    LinkPolicy,
-    build_link_guard,
-    evidence_text,
-    route_to_regex,
-    trim_url,
-)
+from hubofhubs.the_intelligence.critical_thinking.response_quality.link_guard import (
+    DEAD, OK, UNKNOWN, LinkGuard, LinkPolicy, build_link_guard, evidence_text, route_to_regex, trim_url)
 
 
 def fetcher_for(statuses):
@@ -355,7 +346,7 @@ def test_build_link_guard_returns_none_when_switched_off():
 def test_http_probe_asks_for_html_like_the_browser_that_will_open_the_link(monkeypatch):
     """A proxied single-page app serves its screens only to a request that accepts HTML."""
     import urllib.request
-    from hubofhubs.critique import link_guard
+    from hubofhubs.the_intelligence.critical_thinking.response_quality import link_guard
 
     seen = {}
 
@@ -405,7 +396,7 @@ def test_http_probe_reports_the_content_type_of_a_gated_answer_from_a_real_serve
     """No stub: a stdlib server on loopback answers 401 as JSON and 403 as an HTML page."""
     import threading
     from http.server import BaseHTTPRequestHandler, HTTPServer
-    from hubofhubs.critique.link_guard import http_probe
+    from hubofhubs.the_intelligence.critical_thinking.response_quality.link_guard import http_probe
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):  # noqa: N802

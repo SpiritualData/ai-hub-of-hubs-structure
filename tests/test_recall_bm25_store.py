@@ -27,7 +27,7 @@ def store_class(monkeypatch):
     fake.BM25 = FakeBM25
     fake.tokenize = lambda texts, stopwords=None, stemmer=None: [text.split() for text in texts]
     monkeypatch.setitem(sys.modules, "bm25s", fake)
-    from hubofhubs.recall.bm25_store import BM25ContentStore
+    from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.bm25_store import BM25ContentStore
     return BM25ContentStore
 
 
@@ -101,7 +101,7 @@ def test_the_default_query_prompt_is_the_standard_text(store_class, tmp_path):
 
 def test_a_missing_library_raises_with_the_hubs_install_hint(monkeypatch, tmp_path):
     monkeypatch.setitem(sys.modules, "bm25s", None)
-    from hubofhubs.recall.bm25_store import BM25ContentStore
+    from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.bm25_store import BM25ContentStore
     with pytest.raises(ImportError, match=r"hubofhubs\[bm25\]"):
         BM25ContentStore(root=str(tmp_path))
 
@@ -125,7 +125,7 @@ def test_analyzer_defaults_keep_tokens_and_english_stems_and_drops_stop_words(tm
     stemmer_module = types.ModuleType("Stemmer")
     stemmer_module.Stemmer = lambda language: ("stemmer", language)
     monkeypatch.setitem(sys.modules, "Stemmer", stemmer_module)
-    from hubofhubs.recall.bm25_store import BM25ContentStore
+    from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.bm25_store import BM25ContentStore
     (tmp_path / "a.md").write_text("running abstracts\n")
     BM25ContentStore(root=str(tmp_path)).assemble("running")
     assert set(seen) == {(None, None)}

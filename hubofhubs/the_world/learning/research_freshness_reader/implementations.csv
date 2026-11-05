@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+research-freshness-reader:registry_scan,research-freshness-reader,Registry date scan,"Reads the last researched date of each area in the registry and reports days since, with a 90 day staleness bar and the stale areas.","Free, offline and deterministic.","Reads the date someone recorded, not the quality of the research.",hubofhubs/the_world/learning/research_freshness_reader/registry.py,,

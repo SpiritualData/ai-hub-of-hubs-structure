@@ -2,10 +2,10 @@
 import json
 from pathlib import Path
 
-from hubofhubs.recall import card_store_hygiene as hygiene
-from hubofhubs.recall import card_store_tidy as tidy
-from hubofhubs.recall.card_repository import FilesystemCardRepository
-from hubofhubs.recall.card_store_tidy_plan import rekey_target
+from hubofhubs.the_body.internal_context.card_store import card_store_hygiene as hygiene
+from hubofhubs.the_body.internal_context.card_store import card_store_tidy as tidy
+from hubofhubs.the_body.internal_context.card_store.card_repository import FilesystemCardRepository
+from hubofhubs.the_body.internal_context.card_store.card_store_tidy_plan import rekey_target
 
 COMPOUNDED = "alpha-aaaaaa--root-bbbbbb--topic"
 

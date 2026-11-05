@@ -1,8 +1,8 @@
 """The loop defaults are pinned, and the two result predicates read structure only."""
 from types import SimpleNamespace as NS
 
-from hubofhubs.orchestrate import limits
-from hubofhubs.orchestrate.limits import result_landed_work, result_reports_something
+from hubofhubs.the_intelligence.mind.delegation import limits
+from hubofhubs.the_intelligence.mind.delegation.limits import result_landed_work, result_reports_something
 
 
 def test_the_defaults_are_pinned():

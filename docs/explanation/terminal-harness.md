@@ -56,7 +56,7 @@ A run is a stream of `ProgressEvent` objects (`type`, `text`, `step`, `data`). T
 functions `render(event, state) -> list[Block]` with no UI import. A `Block` is a small dataclass (kind, text, rows, state,
 fold-key). A frontend only draws blocks. The same functions drive layer 1's plain text mode and the tests.
 
-What the renderers must handle (types from `hubofhubs.ports.events`; the work trace shape from `docs/reference/work-trace-event.schema.json`):
+What the renderers must handle (types from `hubofhubs.the_world.tools.events`; the work trace shape from `docs/reference/work-trace-event.schema.json`):
 
 | Event | Block | Rule |
 |---|---|---|
@@ -178,7 +178,7 @@ What the table says, with its limits:
 
 ## 5. How QAR reuses it
 
-The test for the design is how many lines QAR needs. Target: `hubofhubs.terminal.run(profile=QUEST_PROFILE)`, where the profile
+The test for the design is how many lines QAR needs. Target: `hubofhubs.the_consciousness.terminal.run(profile=QUEST_PROFILE)`, where the profile
 holds only what is QAR's own.
 
 **The customization surface (a `TerminalProfile`):**

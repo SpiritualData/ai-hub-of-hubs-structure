@@ -10,8 +10,8 @@ zero-results case). Without a deadline, behavior is unchanged.
 """
 import time
 
-from hubofhubs.recall.hybrid_assembler import HybridContextAssembler
-from hubofhubs.ports.context import AssembledContext
+from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.hybrid_assembler import HybridContextAssembler
+from hubofhubs.the_body.internal_context.context import AssembledContext
 
 
 class StubArm:

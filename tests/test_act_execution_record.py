@@ -1,5 +1,5 @@
 """The per-turn execution record: what actually executed, told apart from what was only requested."""
-from hubofhubs.act.execution_record import ExecutionFact, ExecutionRecord, classify_exec_phase
+from hubofhubs.the_body.internal_context.run_store.execution_record import ExecutionFact, ExecutionRecord, classify_exec_phase
 
 
 def test_an_empty_record_says_nothing_executed():

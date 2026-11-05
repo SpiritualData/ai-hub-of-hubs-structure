@@ -1,6 +1,6 @@
 """The tool-call ledger: what each call answered, kept by the runner; repeated unrecovered failures are told from fresh ones."""
-from hubofhubs.act.tool_ledger import (FileToolLedger, alike, changed_something, describe_failure, failure_signature,
-                                       outcome_from_result, repeated_failure, unrecovered_failures)
+from hubofhubs.the_body.internal_context.run_store.tool_ledger import (
+    FileToolLedger, alike, changed_something, describe_failure, failure_signature, outcome_from_result, repeated_failure, unrecovered_failures)
 
 
 def test_a_failure_signature_blanks_ids_and_numbers_but_keeps_the_status():

@@ -29,7 +29,7 @@ SETTINGS = {
 
 
 def gemini_arm(model):
-    from hubofhubs.models.gemini import GeminiProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
 
     def build(meter):
         provider = priced(GeminiProvider, price_of("gemini", model))(api_key=first_env("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"))
@@ -46,7 +46,7 @@ def gemini_arm(model):
 
 def chat_arm(vendor, model, provider_name, variables, provider_options=None, **options):
     """OpenAI-compatible chat completion on the hub's OpenAI or DeepSeek provider; ``options`` are request keyword arguments."""
-    import hubofhubs.models.openai as hub
+    import hubofhubs.the_world.model_plumbing.vendor_model_caller.openai as hub
 
     def build(meter):
         provider = priced(getattr(hub, provider_name), price_of(vendor, model))(api_key=first_env(*variables), **(provider_options or {}))

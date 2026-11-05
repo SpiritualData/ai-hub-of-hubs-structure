@@ -13,5 +13,5 @@ Does a model-call arm still answer when its primary provider fails? Offline: fak
 - **Run the free stage**: `PYTHONPATH=.:../evolvable-structure/implementations/python python3 -m esoi run provider_failover --impl multi_provider`
   (add `--record` to log it).
 - Why: production Quest AI stopped answering on 2026-10-22 when the Anthropic balance ran out, because the router only stepped down
-  on quota and rate-limit errors. `hubofhubs/models/outage.py` and `router.py` now treat billing, timeout and outage errors as
+  on quota and rate-limit errors. `hubofhubs/the_world/model_plumbing/vendor_model_caller/outage.py` and `router.py` now treat billing, timeout and outage errors as
   reasons to ask the next configured model.

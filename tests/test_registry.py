@@ -7,8 +7,10 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs import Binding, cases, evaluate, evaluate_seats, registry, render_docs, scan  # noqa: E402
-from hubofhubs.measure import KINDS, check  # noqa: E402
+from hubofhubs import Binding, evaluate, evaluate_seats
+from hubofhubs.the_self.integrity import cases, render_docs, scan
+from hubofhubs.the_world.learning.research_freshness_reader import registry  # noqa: E402
+from hubofhubs.the_self.integrity.measure import KINDS, check  # noqa: E402
 
 
 def write(path, header, rows):
@@ -138,7 +140,7 @@ def test_findings_join_by_prefix_without_crossing_areas():
 
 
 def test_the_example_lane_is_one_aggregator_with_no_secret():
-    text = (Path(registry.DATA).parent / "examples" / "lane-world-hub.toml").read_text()
+    text = (Path(registry.DATA).parents[1] / "docs" / "reference" / "lane-world-hub.toml").read_text()
     assert text.count("[[mcp_servers]]") == 1 and "token_env" in text and "Bearer" not in text
 
 
@@ -176,7 +178,7 @@ def test_seam_and_selectable_shares_are_over_the_areas_that_should_be_connected(
 
 
 def test_connection_checks_are_cases_only_for_seats_with_an_area_that_should_be_connected():
-    from hubofhubs import cases
+    from hubofhubs.the_self.integrity import cases
     hubs = registry.read("hubs.csv")
     have = {(c["args"]["seat"], c["kind"]) for c in cases.cases() if "seat" in c["args"]}
     for seat in registry.seat_ids(hubs):

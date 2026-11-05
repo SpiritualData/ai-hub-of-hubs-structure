@@ -1,7 +1,7 @@
 """File Reading: lists and reads the text files of a folder, never outside it."""
 import pytest
 
-from hubofhubs.act.read_files import FolderReader
+from hubofhubs.the_world.tools.file_reading.read_files import FolderReader
 
 
 def test_lists_and_reads_text_files_and_skips_what_is_not_text(tmp_path):

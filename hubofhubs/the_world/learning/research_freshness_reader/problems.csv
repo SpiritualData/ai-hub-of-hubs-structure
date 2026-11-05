@@ -1,0 +1,2 @@
+problem_id,name,problem,who_has_it,why_it_matters,why_hard,existing_attempts,solution_ids,ideal_ids,parent_problem_ids
+hprob-research-dates-are-read-by-hand,Research dates read by hand,"How old each area's research is has to be worked out by hand, so stale recommendations go unnoticed.",Anyone who relies on the hub's recommendations.,A recommendation can be months out of date and still be followed.,The dates sit in many rows and each area has its own bar.,Reading the registry by eye.,research-freshness-reader,HI3,HP3

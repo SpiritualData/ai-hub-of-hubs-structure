@@ -10,7 +10,7 @@ Licensed under the Apache License, Version 2.0. See the LICENSE file for terms.
 Third-party code included in this product
 --------------------------------------------------------------------------------
 
-hubofhubs/act/editblock.py contains code copied and MODIFIED from
+hubofhubs/the_world/tools/file_editing/editblock.py contains code copied and MODIFIED from
 Aider (https://github.com/Aider-AI/aider), specifically
 aider/coders/editblock_coder.py and aider/coders/wholefile_coder.py at commit
 5dc9490bb35f9729ef2c95d00a19ccd30c26339c (2026-05-22), vendored 2026-08-13 by a

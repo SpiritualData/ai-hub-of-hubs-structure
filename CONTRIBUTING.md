@@ -5,7 +5,7 @@ This page covers adding an implementation to an existing interface. Terms are in
 ## 1. The files
 
 - The class, in its module under `hubofhubs/`, decorated `@implementation("<solution-id>", "<name>")`, with `REQUIRES = (...)` built from
-  `hubofhubs/arm_needs.py` (`()` if it needs nothing). Constructor parameters typed with an interface from `hubofhubs/seats.py` are its needs.
+  `hubofhubs/the_self/assembler/arm_needs.py` (`()` if it needs nothing). Constructor parameters typed with an interface from `hubofhubs/seats.py` are its needs.
 - A row in the `implementations.csv` beside the code (`hubofhubs/<area>/implementations.csv`, or `hubofhubs/implementations.csv` for an arm that spans areas; `esoi records place --apply` puts it where it belongs). Run `python3 scripts/sync_uses.py` to fill `uses_solution_ids`, and `python3 scripts/sync_uses.py --check` to verify.
 - The evaluation folder entry `evaluation/<component>/impls/<name>.py`, which builds the implementation for the cases.
 - Third-party libraries go in a per-implementation extra of `pyproject.toml`, never in the core.

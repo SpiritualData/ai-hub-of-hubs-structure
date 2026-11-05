@@ -1,7 +1,8 @@
 """Directory pruning for the file-indexing walks: the baseline, .gitignore names, the consumer's extras, mounted subtrees."""
 import os
 
-from hubofhubs.recall.walk import effective_skip_dirs, is_claude_state_file, parse_gitignore_names, prune_dirnames, skip_subtrees
+from hubofhubs.the_body.internal_context.card_store.walk import (
+    effective_skip_dirs, is_claude_state_file, parse_gitignore_names, prune_dirnames, skip_subtrees)
 
 
 def test_gitignore_names_keep_only_bare_directory_names(tmp_path):

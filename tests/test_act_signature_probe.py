@@ -1,7 +1,7 @@
 """Signature probes: which keywords an installed callable accepts, and the filter that drops the rest."""
 import dataclasses
 
-from hubofhubs.act.signature_probe import accepted_fields, accepted_keywords, filter_keywords
+from hubofhubs.the_world.model_plumbing.signature_probe import accepted_fields, accepted_keywords, filter_keywords
 
 
 def test_signature_probes():

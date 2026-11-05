@@ -2,7 +2,7 @@
 describes each file, so a baseline differs from the floor only in how it groups and in the order of the files inside a card."""
 from pathlib import Path
 
-from hubofhubs.recall.cards_from_files import file_card, group_card
+from hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files import file_card, group_card
 
 
 def grouped(root, groups):

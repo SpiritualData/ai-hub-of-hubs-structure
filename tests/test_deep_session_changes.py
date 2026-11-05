@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional
 
 import pytest
 
-from hubofhubs.deep.session import FILE_CHANGE_TOOLS, landed_file_changes
+from hubofhubs.the_world.tools.delegated_agent_sessions.session import FILE_CHANGE_TOOLS, landed_file_changes
 
 SESSION = "11111111-2222-3333-4444-555555555555"
 

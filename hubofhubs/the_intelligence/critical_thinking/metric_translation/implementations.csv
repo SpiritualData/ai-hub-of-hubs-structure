@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+metric-translation:goal_record,metric-translation,Goal record with default budget,"Turns a request into a goal record: met when the response addresses the request, within the default budget or what its parent has left.","Every request gets a target, a done-standard and a budget that cannot exceed its parent.","A rule, not a judgment of the right target for a request.",hubofhubs/the_intelligence/critical_thinking/metric_translation/translation.py,,

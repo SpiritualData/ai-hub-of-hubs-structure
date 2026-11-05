@@ -5,9 +5,9 @@ call is what OOM-killed a runner mid-task: a transformer's attention tensor is `
 serving it grows to the high-water mark. These tests pin the bound (the embedder never sees more than one batch at a time)
 without a real model, and pin that no environment variable moves any setting.
 """
-from hubofhubs.recall.embedders import EMBED_BATCH_DEFAULT, EMBED_MAX_CHARS_DEFAULT, FASTEMBED_EMBEDDER_ID
-from hubofhubs.recall.qdrant_store import QdrantVectorStore, point_id, scope_hash
-from hubofhubs.recall.vector_scopes import CARD_SEED_SCOPE, SeedItems
+from hubofhubs.the_body.internal_context.card_store.embedders import EMBED_BATCH_DEFAULT, EMBED_MAX_CHARS_DEFAULT, FASTEMBED_EMBEDDER_ID
+from hubofhubs.the_body.internal_context.card_store.qdrant_store import QdrantVectorStore, point_id, scope_hash
+from hubofhubs.the_body.internal_context.card_store.vector_scopes import CARD_SEED_SCOPE, SeedItems
 
 
 class FakeQdrant:

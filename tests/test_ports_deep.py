@@ -1,7 +1,7 @@
 """The deep-work ports: the run result, the progress event, the writer and sink Protocols, and the runner bases."""
 import pytest
 
-from hubofhubs.ports import deep, events
+from hubofhubs.the_world.tools import deep, events
 
 
 class Runner(deep.DeepRunnerBase):
@@ -56,7 +56,7 @@ def test_the_modes_and_the_surfacing_events():
 
 
 def test_a_run_control_defaults_to_no_messages_no_cancel_no_pause():
-    from hubofhubs.ports.control import ControlMessage, RunControl
+    from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
     control = RunControl()
     assert control.claim_inputs() == [] and not control.cancel_requested() and not control.pause_requested()
     control.mark_seen(["m1"], "deep_worker")

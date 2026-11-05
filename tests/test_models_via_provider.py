@@ -6,7 +6,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import hubofhubs  # noqa: E402
-from hubofhubs.models.via_provider import BudgetSpent, ViaVendor  # noqa: E402
+from hubofhubs.the_world.model_plumbing.via_vendor import BudgetSpent, ViaVendor  # noqa: E402
 
 
 class NoChooser:

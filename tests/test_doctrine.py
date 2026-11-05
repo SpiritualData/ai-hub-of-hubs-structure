@@ -1,6 +1,6 @@
 """Situational doctrine: rules as data, a situation as facts, an ordered prompt with its size and the ids in and out."""
-import hubofhubs.doctrine as doctrine
-from hubofhubs.doctrine import Rule, applies, assemble_doctrine, check_rules, estimate_tokens
+import hubofhubs.the_self.integrity.doctrine as doctrine
+from hubofhubs.the_self.integrity.doctrine import Rule, applies, assemble_doctrine, check_rules, estimate_tokens
 
 RULES = (
     Rule("core", "CORE\n"),

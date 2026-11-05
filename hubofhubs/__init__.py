@@ -10,11 +10,11 @@ module takes a mapping and reads none.
     result = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")   # best-measured arm of every part, no wiring
     from hubofhubs import Binding, evaluate, AssemblyConfig, assemble, register, resolve
 """
-from .binding import Binding
-from .measure import evaluate, evaluate_seats, check, metrics
+from hubofhubs.the_self.integrity.binding import Binding
+from hubofhubs.the_self.integrity.measure import evaluate, evaluate_seats, check, metrics
 from esoi.assemble import Assembly, AssemblyConfig, AssemblyError
-from .oneline import Result, needs
-from .resolution import HUB, assemble, assembler, choice, names, register, resolve
+from hubofhubs.the_self.assembler.oneline import Result, needs
+from hubofhubs.the_self.assembler.resolution import HUB, assemble, assembler, choice, names, register, resolve
 from esoi import entry
 
 run = entry.runner(HUB)   # run(id, input): any solution or intent of the hub, the same call at every level (esoi.entry)

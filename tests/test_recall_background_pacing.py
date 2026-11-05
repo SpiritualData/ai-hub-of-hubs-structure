@@ -15,8 +15,8 @@ from typing import List
 
 import pytest
 
-from hubofhubs.recall import background_pacing
-from hubofhubs.recall.background_pacing import PAUSE_SECONDS, WORK_SECONDS, Pacer
+from hubofhubs.the_body.internal_context.card_store import background_pacing
+from hubofhubs.the_body.internal_context.card_store.background_pacing import PAUSE_SECONDS, WORK_SECONDS, Pacer
 
 
 class FakeClock:

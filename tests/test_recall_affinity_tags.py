@@ -1,8 +1,8 @@
 """affinity_tags: the soft sibling of scope_tags. It reorders visible items, never hides one, and is inert by default."""
-from hubofhubs.ports.context import VectorHit
-from hubofhubs.recall.affinity_tags import affinity_factor, affinity_label, affinity_tags_of
-from hubofhubs.recall.record_assembler import RecordContextAssembler, rank_records
-from hubofhubs.recall.vector_assembler import VectorContextAssembler
+from hubofhubs.the_body.internal_context.context import VectorHit
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags import affinity_factor, affinity_label, affinity_tags_of
+from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.record_assembler import RecordContextAssembler, rank_records
+from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.vector_assembler import VectorContextAssembler
 from tests.test_recall_vector_assembler import FakeStore, hit
 
 

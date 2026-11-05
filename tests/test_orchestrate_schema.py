@@ -1,6 +1,6 @@
 """Tool-schema compaction and closed-vocabulary normalizing."""
-from hubofhubs.orchestrate.plan import PlanDecision
-from hubofhubs.orchestrate.schema import compact_schema, normalize_choice, strip_schema_descriptions
+from hubofhubs.the_intelligence.mind.planner.plan import PlanDecision
+from hubofhubs.the_intelligence.mind.planner.schema import compact_schema, normalize_choice, strip_schema_descriptions
 
 TOOL = {"name": "decide", "description": "d", "input_schema": {"type": "object", "properties": {
     "a": {"type": "string", "description": "about a"},

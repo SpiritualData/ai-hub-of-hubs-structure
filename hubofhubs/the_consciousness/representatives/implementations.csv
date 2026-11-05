@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+the-representatives:declared_authority,the-representatives,Declared authority,Each person's representative is what that person declared; a person with no declaration gets the least authority over their own data only.,Never lends one person's authority to another.,Only what was declared; it does not learn preferences.,hubofhubs/the_consciousness/representatives/representatives.py,,

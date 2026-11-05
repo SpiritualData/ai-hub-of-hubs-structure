@@ -1,19 +1,12 @@
-"""The stream-json deep runner's protocol helpers and its steering bookkeeping (``hubofhubs.deep.stream_runner``): offline, no process."""
+"""The stream-json deep runner's protocol helpers and its steering bookkeeping (``hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner``): offline, no process."""
 from __future__ import annotations
 
 import json
 import subprocess
 
-from hubofhubs.deep.stream_runner import (
-    MIN_STREAM_CONTROL_VERSION,
-    Sent,
-    StreamRun,
-    cli_version,
-    echo_text,
-    interrupt_line,
-    user_line,
-)
-from hubofhubs.ports.control import ControlMessage, RunControl
+from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import (
+    MIN_STREAM_CONTROL_VERSION, Sent, StreamRun, cli_version, echo_text, interrupt_line, user_line)
+from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
 
 
 def test_stdin_lines_are_one_json_object_each():

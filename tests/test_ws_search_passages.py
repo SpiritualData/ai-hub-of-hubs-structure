@@ -7,12 +7,11 @@ from typing import Any, Dict
 
 import pytest
 
-from hubofhubs.ports.search import SearchHit
-from hubofhubs.seats import SearchBackend
-from hubofhubs.websearch.backends import (
-    BraveBackend, FallbackSearchBackend, ProviderNativeBackend, SearxngBackend, SerperBackend, TavilyBackend,
-)
-from hubofhubs.websearch.gemini import GeminiGroundingBackend
+from hubofhubs.the_world.tools.web_search.search_port import SearchHit
+from hubofhubs.the_world.tools.web_search.interface import SearchBackend
+from hubofhubs.the_world.tools.web_search.backends import (
+    BraveBackend, FallbackSearchBackend, ProviderNativeBackend, SearxngBackend, SerperBackend, TavilyBackend)
+from hubofhubs.the_world.tools.web_search.gemini import GeminiGroundingBackend
 
 
 class Reply:
@@ -151,7 +150,7 @@ def anthropic_recording():
 
 def test_anthropic_provider_gives_verbatim_passages_and_page_age_and_takes_instruction():
     pytest.importorskip("anthropic")
-    from hubofhubs.models.anthropic import AnthropicProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.anthropic import AnthropicProvider
     provider = object.__new__(AnthropicProvider)
     sent = []
     provider.create = lambda **kw: (sent.append(kw), anthropic_recording())[1]
@@ -169,7 +168,7 @@ def test_anthropic_provider_gives_verbatim_passages_and_page_age_and_takes_instr
 
 def test_gemini_provider_supports_become_attributed_passages_without_a_date():
     pytest.importorskip("google.genai")
-    from hubofhubs.models.gemini import GeminiProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
     provider = object.__new__(GeminiProvider)
     prompts = []
     provider.request = lambda model, contents, config, *rest: (prompts.append(contents), gemini_recording())[1]

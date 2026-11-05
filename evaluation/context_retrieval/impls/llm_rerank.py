@@ -1,6 +1,6 @@
 """LlmRerank measured on the context-retrieval case set (see hubofhubs/retrieval)."""
 from context_retrieval.score import adapt
-from hubofhubs.retrieval.abstain import LlmRerank
+from hubofhubs.the_intelligence.subconscious.context_retriever.abstain import LlmRerank
 
 
 def build(meter):

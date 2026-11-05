@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from hubofhubs.recall.card_selection import consolidate_context
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import consolidate_context
 
 
 # ---------------------------------------------------------------------------

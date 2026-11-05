@@ -7,9 +7,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from hubofhubs import AssemblyConfig, assemble, resolve  # noqa: E402
-from hubofhubs.card import Card  # noqa: E402
-from hubofhubs.cardstore import LocalCardStore  # noqa: E402
-from hubofhubs.seats import CardStore  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.interface import CardStore  # noqa: E402
 
 
 @pytest.fixture
@@ -75,6 +75,6 @@ def test_it_is_the_hub_default_and_takes_its_path_from_the_config(tmp_path):
 def test_importing_the_module_creates_no_file(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     import importlib
-    import hubofhubs.cardstore
-    importlib.reload(hubofhubs.cardstore)
+    import hubofhubs.the_body.internal_context.card_store.cardstore
+    importlib.reload(hubofhubs.the_body.internal_context.card_store.cardstore)
     assert list(tmp_path.iterdir()) == []

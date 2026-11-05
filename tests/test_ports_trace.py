@@ -3,8 +3,9 @@ import json
 
 import pytest
 
-from hubofhubs.ports import events, trace
-from hubofhubs.ports.trace import WorkTrace, WorkTraceError, project, validate
+from hubofhubs.the_world.tools import events
+from hubofhubs.the_consciousness.terminal import trace
+from hubofhubs.the_consciousness.terminal.trace import WorkTrace, WorkTraceError, project, validate
 
 
 def raw(**over):
@@ -132,7 +133,7 @@ def test_redacting_an_already_projected_event_is_stable():
 
 
 def test_a_sources_item_keeps_whether_the_page_was_read_or_only_found():
-    from hubofhubs.ports.trace import project_item
+    from hubofhubs.the_consciousness.terminal.trace import project_item
     assert project_item({"ref": "https://a.example/x?q=1", "label": "A", "kind": "read"}, "sources") == {"ref": "a.example", "label": "A", "kind": "read"}
     assert project_item({"ref": "b.example", "kind": "found"}, "sources") == {"ref": "b.example", "label": "b.example", "kind": "found"}
     assert "kind" not in project_item({"ref": "c.example", "kind": "weird"}, "sources")

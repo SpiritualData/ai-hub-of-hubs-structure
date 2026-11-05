@@ -8,18 +8,13 @@ from typing import Dict, List
 
 import pytest
 
-from hubofhubs.websearch import link_access as wla
-from hubofhubs.websearch import research as wr
-from hubofhubs.websearch.cache import WebCache
-from hubofhubs.websearch.link_access import (
-    ALL_REASONS,
-    REASON_MESSAGES,
-    extract_pdf_text,
-    link_not_read_error,
-    rewrite_for_export,
-)
-from hubofhubs.websearch.fetch import MAX_PAGE_BYTES, MAX_PDF_BYTES, FetchedPage, PageFetchError, UnsupportedContentTypeError, default_page_fetcher
-from hubofhubs.websearch.research import WebResearchAdapter
+from hubofhubs.the_world.tools.web_search import link_access as wla
+from hubofhubs.the_world.tools.web_search import research as wr
+from hubofhubs.the_world.tools.web_search.cache import WebCache
+from hubofhubs.the_world.tools.web_search.link_access import ALL_REASONS, REASON_MESSAGES, extract_pdf_text, link_not_read_error, rewrite_for_export
+from hubofhubs.the_world.tools.web_search.fetch import (
+    MAX_PAGE_BYTES, MAX_PDF_BYTES, FetchedPage, PageFetchError, UnsupportedContentTypeError, default_page_fetcher)
+from hubofhubs.the_world.tools.web_search.research import WebResearchAdapter
 
 ID = "1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789"
 
@@ -27,7 +22,7 @@ ID = "1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789"
 @pytest.fixture(autouse=True)
 def public_dns(monkeypatch):
     """Fake hosts resolve to a public address, so the real SSRF logic runs without a DNS query."""
-    from hubofhubs.websearch import page_extract as web_page_extract
+    from hubofhubs.the_world.tools.web_search import page_extract as web_page_extract
 
     monkeypatch.setattr(web_page_extract, "default_resolver", lambda host: ["93.184.216.34"])
 
@@ -204,7 +199,7 @@ class FakeStream:
 def patch_stream(monkeypatch, script: Dict[str, FakeStream]):
     import httpx
 
-    from hubofhubs.websearch import page_extract as web_page_extract
+    from hubofhubs.the_world.tools.web_search import page_extract as web_page_extract
 
     monkeypatch.setattr(web_page_extract, "default_resolver", lambda host: ["93.184.216.34"])
     seen: List[str] = []

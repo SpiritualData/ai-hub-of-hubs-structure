@@ -1,5 +1,5 @@
 """The overseer wake-up gate fires on a stuck read loop, a repeated plan or budget pressure, and fails closed."""
-from hubofhubs.orchestrate.watch import worth_a_look
+from hubofhubs.the_intelligence.mind.delegation.overseer.watch import worth_a_look
 
 CALM = dict(consecutive_reads=1, plan_repeats_prev=False, elapsed_seconds=10.0, max_elapsed_seconds=90.0,
             gathered_chars=1000, max_gathered_chars=150000, min_consecutive_reads=5, gate_repeat_plan=True,

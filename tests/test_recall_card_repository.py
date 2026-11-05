@@ -1,7 +1,8 @@
 """The filesystem card repository: one JSON file per card, atomic writes, sidecars and quarantine excluded, never raises."""
 import json
 
-from hubofhubs.recall.card_repository import QUARANTINE_DIR_NAME, CardRepository, FilesystemCardRepository, card_embed_text
+from hubofhubs.the_body.internal_context.card_store.card_repository import (
+    QUARANTINE_DIR_NAME, CardRepository, FilesystemCardRepository, card_embed_text)
 
 
 def test_the_repository_satisfies_the_port(tmp_path):

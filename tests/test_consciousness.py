@@ -1,6 +1,6 @@
 """Representatives carry what a person declared and never another person's authority; Judgment Calls decides and times its asks."""
-from hubofhubs.consciousness.judgment import AskEveryTime, SeverityPolicy
-from hubofhubs.consciousness.representatives import DeclaredAuthority
+from hubofhubs.the_consciousness.judgment_calls.judgment import AskEveryTime, SeverityPolicy
+from hubofhubs.the_consciousness.representatives.representatives import DeclaredAuthority
 
 
 def test_a_declared_person_keeps_their_authority_and_an_undeclared_person_gets_the_least():

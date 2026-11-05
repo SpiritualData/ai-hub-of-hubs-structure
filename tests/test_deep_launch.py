@@ -1,4 +1,4 @@
-"""The deep worker's launch parameters (``hubofhubs.deep.launch``): offline, no process, no model call.
+"""The deep worker's launch parameters (``hubofhubs.the_world.tools.delegated_agent_sessions.launch``): offline, no process, no model call.
 
 The default settings must give byte for byte the argv the runner built before the lean flags became parameters; each parameter
 adds exactly its flag.
@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from hubofhubs.deep.launch import DeepLaunchSettings, build_deep_argv, lean_flags
+from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings, build_deep_argv, lean_flags
 
 SID = "11111111-1111-4111-8111-111111111111"
 

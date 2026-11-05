@@ -8,9 +8,9 @@ import pytest
 from esoi import entry
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs.science import crossref  # noqa: E402
-from hubofhubs.science.openalex import OpenAlexWorks  # noqa: E402
-from hubofhubs.science.transport import default_transport, guard_in  # noqa: E402
+from hubofhubs.the_world.science import crossref  # noqa: E402
+from hubofhubs.the_world.science.openalex import OpenAlexWorks  # noqa: E402
+from hubofhubs.the_world.science.transport import default_transport, guard_in  # noqa: E402
 
 
 def refuse(*args, **kwargs):
@@ -37,7 +37,7 @@ def test_default_transport_reraises_the_guard_but_wraps_a_real_network_failure(m
     with pytest.raises(entry.Offline):
         default_transport("https://example.invalid", params={}, headers={}, timeout=1)
     monkeypatch.setattr(httpx, "get", lambda *a, **k: (_ for _ in ()).throw(httpx.ConnectError("down")))
-    from hubofhubs.science.transport import TransportError
+    from hubofhubs.the_world.science.transport import TransportError
     with pytest.raises(TransportError) as raised:
         default_transport("https://example.invalid", params={}, headers={}, timeout=1)
     assert raised.value.kind == "network"

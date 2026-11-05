@@ -1,8 +1,8 @@
 """The composite context assembler: several assemblers run as one, and a broken member never breaks the turn. Offline."""
 from hubofhubs import AssemblyConfig, assemble, resolve
-from hubofhubs.ports.context import AssembledContext
-from hubofhubs.recall.composite_assembler import CompositeContextAssembler, find_assembler
-from hubofhubs.ports.context import ContextAssembler
+from hubofhubs.the_body.internal_context.context import AssembledContext
+from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.composite_assembler import CompositeContextAssembler, find_assembler
+from hubofhubs.the_body.internal_context.context import ContextAssembler
 
 
 class Member:

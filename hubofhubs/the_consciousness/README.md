@@ -14,10 +14,10 @@ Consciousness is where the system adapts to the humans and policies it works for
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Representatives | `the-representatives` | `hubofhubs.run("the-representatives", '')` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Feedback Learning | `feedback-learning` | `hubofhubs.run("feedback-learning", {'person': '', 'feedback': {}})` | none selected | A correction given once is followed afterwards |
-| Judgment Calls | `judgment-calls` | `hubofhubs.run("judgment-calls", {'signal': {'signal': 'proceed'}, 'person': ''})` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
 | Prioritization | `prioritization` | `hubofhubs.run("prioritization", ...)` | none selected | Weights match the priorities the person confirms |
+| Judgment Calls | `judgment-calls` | `hubofhubs.run("judgment-calls", {'signal': {'signal': 'proceed'}, 'person': ''})` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
+| Representatives | `the-representatives` | `hubofhubs.run("the-representatives", '')` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Request Intake | `request-intake` | `hubofhubs.run("request-intake", {'person': ''})` | Every declared source (`every_declared_source`) | Requests taken in once with their person |
 
 ## Problems and ideals
@@ -39,17 +39,18 @@ Consciousness is where the system adapts to the humans and policies it works for
 
 ## Metrics and their leaders
 
-- Authority that stays with its person (`metric-the-representatives`)
 - A correction given once is followed afterwards (`metric-feedback-learning`)
-- Asked when a person should be asked (`metric-judgment-calls`): leader `severity_policy`, 72 of 72 cases
 - Weights match the priorities the person confirms (`metric-human-prioritization`)
+- Asked when a person should be asked (`metric-judgment-calls`): leader `severity_policy`, 72 of 72 cases
+- Authority that stays with its person (`metric-the-representatives`)
 - Requests taken in once with their person (`metric-request-intake`)
 
 ## Where to go next
 
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [implementations.csv](implementations.csv), [metrics.csv](metrics.csv)
+- Records beside the code: [hubofhubs/the_consciousness/judgment_calls](judgment_calls/README.md), [hubofhubs/the_consciousness/representatives](representatives/README.md), [hubofhubs/the_consciousness/request_intake](request_intake/README.md)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
 
 ---
 
@@ -74,25 +75,25 @@ Consciousness is where the system adapts to the humans and policies it works for
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Representatives | `the-representatives` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Feedback Learning | `feedback-learning` | none selected | A correction given once is followed afterwards |
-| Judgment Calls | `judgment-calls` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
 | Prioritization | `prioritization` | none selected | Weights match the priorities the person confirms |
+| Judgment Calls | `judgment-calls` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
+| Representatives | `the-representatives` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Request Intake | `request-intake` | Every declared source (`every_declared_source`) | Requests taken in once with their person |
 
 ### Implementations
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
-| Ask about every risk | `judgment-calls:ask_every_time` | [hubofhubs/consciousness/judgment.py](../consciousness/judgment.py) |  |
-| Per-person severity policy | `judgment-calls:severity_policy` | [hubofhubs/consciousness/judgment.py](../consciousness/judgment.py) |  |
-| Every declared source | `request-intake:every_declared_source` | [hubofhubs/consciousness/intake.py](../consciousness/intake.py) |  |
-| Declared authority | `the-representatives:declared_authority` | [hubofhubs/consciousness/representatives.py](../consciousness/representatives.py) |  |
+| Ask about every risk | `judgment-calls:ask_every_time` | [hubofhubs/the_consciousness/judgment_calls/judgment.py](judgment_calls/judgment.py) |  |
+| Per-person severity policy | `judgment-calls:severity_policy` | [hubofhubs/the_consciousness/judgment_calls/judgment.py](judgment_calls/judgment.py) |  |
+| Declared authority | `the-representatives:declared_authority` | [hubofhubs/the_consciousness/representatives/representatives.py](representatives/representatives.py) |  |
+| Every declared source | `request-intake:every_declared_source` | [hubofhubs/the_consciousness/request_intake/intake.py](request_intake/intake.py) |  |
 
 ### Metrics
 
-- Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest tests/test_consciousness.py`
 - A correction given once is followed afterwards (`metric-feedback-learning`): `none`
-- Asked when a person should be asked (`metric-judgment-calls`): `esoi run judgment_calls --impl severity_policy; esoi run judgment_calls --impl ask_every_time`
 - Weights match the priorities the person confirms (`metric-human-prioritization`): `none`
+- Asked when a person should be asked (`metric-judgment-calls`): `esoi run judgment_calls --impl severity_policy; esoi run judgment_calls --impl ask_every_time`
+- Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest tests/test_consciousness.py`
 - Requests taken in once with their person (`metric-request-intake`): `python3 -m pytest tests/test_intake.py`

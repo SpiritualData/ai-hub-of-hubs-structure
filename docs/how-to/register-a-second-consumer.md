@@ -5,10 +5,10 @@ as `tests/test_quickstart.py`: if it stops working, a test fails.
 
 ```python
 import hubofhubs
-from hubofhubs.card import Card
+from hubofhubs.the_body.internal_context.card_store.card import Card
 
 
-class ListCardStore:                     # a part the consumer owns; it satisfies hubofhubs.seats.CardStore
+class ListCardStore:                     # a part the consumer owns; it satisfies hubofhubs.the_body.internal_context.card_store.interface.CardStore
     def __init__(self):
         self.cards = {}
 

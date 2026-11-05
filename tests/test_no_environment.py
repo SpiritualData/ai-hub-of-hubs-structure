@@ -27,8 +27,8 @@ def test_no_module_reads_the_environment_except_the_one_entry_point():
                 bad.append(f"{path.relative_to(ROOT)}:{node.lineno}")
             if isinstance(node, ast.ImportFrom) and node.module == "os" and {a.name for a in node.names} & {"environ", "getenv"}:
                 bad.append(f"{path.name}:{node.lineno}")
-    assert len(bad) == 1 and bad[0].startswith("hubofhubs/resolution.py:"), f"environment reads in the hub: {bad}"
-    source = (ROOT / "hubofhubs" / "resolution.py").read_text()
+    assert len(bad) == 1 and bad[0].startswith("hubofhubs/the_self/assembler/resolution.py:"), f"environment reads in the hub: {bad}"
+    source = (ROOT / "hubofhubs" / "the_self" / "assembler" / "resolution.py").read_text()
     assert source.count("os.environ") == 1 and "def process_environment" in source
 
 

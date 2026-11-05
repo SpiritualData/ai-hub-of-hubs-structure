@@ -1,6 +1,6 @@
 """One card per file, described by its docstrings and symbols: an index of files, not a card builder."""
 from cards_from_files.score import adapt
-from hubofhubs.recall.cards_from_files import PerFileSymbols
+from hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files import PerFileSymbols
 
 
 def build(meter):

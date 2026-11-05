@@ -21,7 +21,7 @@ class CountingProvider:
         self.tokens_in = self.tokens_out = 0
 
     def search(self, query, **kwargs):
-        from hubofhubs.websearch.backends import ProviderNativeBackend
+        from hubofhubs.the_world.tools.web_search.backends import ProviderNativeBackend
         before = (self.provider.tokens_in, self.provider.tokens_out)
         try:
             return ProviderNativeBackend(self.provider, MODEL).search(query, **kwargs)
@@ -34,6 +34,6 @@ def build(meter):
     key = next((os.environ[n] for n in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY") if os.environ.get(n)), "")
     if not key:
         raise NoCredential("not measured: no credential (GEMINI_API_KEY, GOOGLE_API_KEY or GOOGLE_AI_API_KEY is not set)")
-    from hubofhubs.models.gemini import GeminiProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
     backend = priced(CountingProvider(GeminiProvider(api_key=key)), meter)
     return lambda kind, args: [(h.url, h.title) for h in backend.search(args["question"], max_results=TOP).hits[:TOP]]

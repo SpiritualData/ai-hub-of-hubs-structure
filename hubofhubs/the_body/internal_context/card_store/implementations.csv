@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+card-store:local_card_store,card-store,Local card store,"Keeps the hub's cards in SQLite, in memory or in one file; search matches every word of the query as a substring.","Standard library only, offline and deterministic.","No ranking and no embeddings, and a linear scan, so it is for small stores.",hubofhubs/the_body/internal_context/card_store/cardstore.py,,

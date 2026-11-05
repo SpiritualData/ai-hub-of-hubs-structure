@@ -2,9 +2,9 @@
 vector points answered to, and a second run changing nothing. Settings are arguments."""
 from pathlib import Path
 
-from hubofhubs.recall import card_store_merge as merge
-from hubofhubs.recall.card_repository import FilesystemCardRepository
-from hubofhubs.recall.card_store_identity import read_meta, write_meta
+from hubofhubs.the_body.internal_context.card_store import card_store_merge as merge
+from hubofhubs.the_body.internal_context.card_store.card_repository import FilesystemCardRepository
+from hubofhubs.the_body.internal_context.card_store.card_store_identity import read_meta, write_meta
 
 NARROW_ID, WIDE_ID = "st_aaaaaaaaaaaaaaaa", "st_bbbbbbbbbbbbbbbb"
 

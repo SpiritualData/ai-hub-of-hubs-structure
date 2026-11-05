@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+read-files:folder_reader,read-files,Folder reader,"Lists and reads the text files of one folder, never outside it, skipping what is not text or too large.","Local, free and safe by construction.",Local files only.,hubofhubs/the_world/tools/file_reading/read_files.py,,

@@ -4,8 +4,8 @@ These never spawn the real ``claude`` binary, ``_invoke`` is monkeypatched, so t
 network, no API key, and no CLI installed. They lock down the two things that can silently break:
 the lenient JSON extraction (the CLI can't force tool_choice) and the tier->CLI-alias mapping.
 """
-from hubofhubs.models import claude_cli as ccp
-from hubofhubs.models.claude_cli import ClaudeCliProvider, cli_model, extract_json_object
+from hubofhubs.the_world.model_plumbing.vendor_model_caller import claude_cli as ccp
+from hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli import ClaudeCliProvider, cli_model, extract_json_object
 
 DECIDE_TOOL = {"name": "decide", "input_schema": {"type": "object", "properties": {"action": {"type": "string"}}, "required": ["action"]}}
 
@@ -376,7 +376,7 @@ def test_a_missing_worker_binary_is_retried_not_fatal():
     bootstrap, each failing instantly, and the run reported completion having produced almost
     nothing.
     """
-    from hubofhubs.models.retry import is_transient_error, retry_transient
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.retry import is_transient_error, retry_transient
 
     assert is_transient_error(FileNotFoundError(2, "No such file or directory", "/x/claude")) is True
 
@@ -396,7 +396,7 @@ def test_a_missing_worker_binary_is_retried_not_fatal():
 def test_a_genuinely_wrong_path_still_fails_with_the_filename():
     # Retrying must not turn a misconfiguration into a mystery: the final error still names it.
     import pytest
-    from hubofhubs.models.retry import retry_transient
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.retry import retry_transient
 
     @retry_transient(max_retries=1, base_delay=0.001)
     def always_missing():
@@ -537,7 +537,7 @@ def test_a_usage_limit_is_a_typed_error_from_the_collaborator():
 
 
 def test_the_arm_is_declared_and_needs_only_the_claude_executable():
-    from hubofhubs.arm_needs import CLAUDE_BINARY
+    from hubofhubs.the_self.assembler.arm_needs import CLAUDE_BINARY
     assert ClaudeCliProvider.REQUIRES == (CLAUDE_BINARY,)
 
 

@@ -1,0 +1,130 @@
+"""Renders generated blocks between markers, in place and never appended (the idea of ``esoi check --write-docs``).
+
+``seat_table`` states facts from the registry: area, seat, hubs a consumer builds on, candidates, last researched.
+``metric_lines`` states a consumer's reading, from its ``Binding``. ``rewrite`` swaps the text between a begin and an end
+marker; ``--check`` style use compares the result with the file."""
+import re
+
+from hubofhubs.the_world.learning.research_freshness_reader import registry
+
+STATUS_BEGIN, STATUS_END = "<!-- seats:start -->", "<!-- seats:end -->"
+CONTAINERS_BEGIN, CONTAINERS_END = "<!-- containers:start -->", "<!-- containers:end -->"
+DETAIL_BEGIN, DETAIL_END = "<!-- registry:start -->", "<!-- registry:end -->"
+
+
+def names(cell):
+    return ", ".join(n for n, _url, _lic in registry.parse_hubs(cell)) or "none"
+
+
+def seat_table(folder=None, facts=None, areas=None):
+    """A markdown table of areas. With ``facts`` (from a consumer) it adds what the consumer hand-wires and whether research is
+    fresh. With ``areas`` (a collection of area names) it lists only those."""
+    head = ["Area", "Seat", "Built on", "Candidates", "Researched"]
+    if facts:
+        head += ["Freshness", "Hand-wired where a hub covers it"]
+    lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+    for row in registry.read("hubs.csv", folder):
+        if areas is not None and row["area"] not in areas:
+            continue
+        cells = [row["area"], row["seat"], names(row["current_hubs"]), "; ".join(registry.split(row["candidate_hubs"])),
+                 row["last_researched"]]
+        if facts:
+            f = facts[row["area"]]
+            cells += ["fresh" if f["fresh"] else "STALE", ", ".join(f["reinvented"]) or "none"]
+        lines.append("| " + " | ".join(cells) + " |")
+    return "\n".join(lines)
+
+
+def seat_summary(folder=None, seats=None, link="../reference/registry.md"):
+    """One row per seat with its area count, so the table stays the size of the mind and not of the registry. ``seats`` is the
+    ordered list of ``(seat id, part of the mind)``; a seat with no researched area shows 0. Without it, the seats of the
+    registry in order of first appearance."""
+    hubs = registry.read("hubs.csv", folder)
+    findings = registry.read("hub_findings.csv", folder)
+    seats = seats or [(s, s, "") for s in dict.fromkeys(r["seat"] for r in hubs)]
+    lines = ["| Part of the mind | Inside | Areas | Built on now | Candidates researched | Oldest research | Call with |", "|---|---|---|---|---|---|---|"]
+    for seat, part, inside in (tuple(s) + ("",) * (3 - len(s)) for s in seats):
+        mine = [r for r in hubs if r["seat"] == seat]
+        found = sum(len(registry.findings_of(r, findings)) for r in mine)
+        built = sum(1 for r in mine if registry.parse_hubs(r["current_hubs"]))
+        oldest = min((r["last_researched"] for r in mine), default="none")
+        lines.append(f"| {part} | {inside or 'the hub'} | {len(mine)} | {built} | {found} | {oldest} | `{seat}` |")
+    lines.append(f"\n{len(hubs)} areas and {len(findings)} researched candidates in all; every area is listed in [{link}]({link}).")
+    return "\n".join(lines)
+
+
+def container_summary(containers):
+    """One row per container, name first: what kind of evolution it holds, the parts it holds and the id that calls it. ``containers`` is
+    an ordered list of ``(container name, id, kind of evolution, [names of the parts it holds])``."""
+    lines = ["| Container | What it evolves | Parts | Call with |", "|---|---|---|---|"]
+    for name, sid, evolves, parts in containers:
+        lines.append(f"| {name} | {evolves} | {', '.join(parts)} | `{sid}` |")
+    return "\n".join(lines)
+
+
+def area_detail(folder=None, seats=None):
+    """Every area, grouped by seat, with its candidates and the evidence count: the generated body of ``docs/reference/registry.md``."""
+    hubs = registry.read("hubs.csv", folder)
+    findings = registry.read("hub_findings.csv", folder)
+    evidence = registry.read("hub_evidence.csv", folder)
+    seats = seats or [(s, s, "") for s in dict.fromkeys(r["seat"] for r in hubs)]
+    out = []
+    for seat, part, _inside in (tuple(s) + ("",) * (3 - len(s)) for s in seats):
+        mine = [r for r in hubs if r["seat"] == seat]
+        if not mine:
+            continue
+        out += [f"### {part} (`{seat}`)", "", "| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |", "|---|---|---|---|---|---|---|---|---|"]
+        for r in mine:
+            out.append("| " + " | ".join([r["area"], r["serves"], r["status"], r.get("call") or "-", names(r["current_hubs"]),
+                                          "; ".join(registry.split(r["candidate_hubs"])) or "none",
+                                          str(len(registry.findings_of(r, findings))), str(len(registry.evidence_of(r["area"], evidence))),
+                                          r["last_researched"]]) + " |")
+        out.append("")
+    return "\n".join(out).rstrip()
+
+
+def seat_reading(seat_facts):
+    """One row per seat for a consumer: how many areas the seat owns, how many of them its arms cover, the arm gaps (adopt or
+    coexist areas no arm covers), and the four seat-level checks (seam, selectable, by configuration, fake hub)."""
+    mark = lambda ok: "yes" if ok else "no"  # noqa: E731
+    lines = ["| Seat | Areas | Should connect | Arms cover | Arm gaps | Seam | Selectable | By config | Fake hub |", "|---|---|---|---|---|---|---|---|---|"]
+    for f in seat_facts.values():
+        if f["expected"]:
+            cells = [mark(f["seam"]), mark(f["selectable"]), mark(f["config_ok"]), mark(f["probe"] is not None)]
+        else:
+            cells = ["-"] * 4
+        lines.append("| " + " | ".join([f["seat"], str(len(f["areas"])), str(len(f["to_connect"])), str(len(f["covered"])),
+                                        str(len(f["arm_gaps"]))] + cells) + " |")
+    return "\n".join(lines)
+
+
+def metric_lines(m, facts):
+    stale = [a for a, f in facts.items() if not f["fresh"]]
+    seats = "seats_to_connect" in m
+    lines = [
+        f"- coverage (areas with a hub or a recorded decision): {m['coverage']:.2f}",
+        f"- integration by configuration (share of wired hub connections that need no code): {m['config_share']:.2f}",
+        f"- research freshness: share of areas researched within {registry.STALENESS_DAYS} days {m['fresh_share']:.2f}; "
+        f"stale: {', '.join(stale) or 'none'}",
+        f"- reinvented integrations (single services hand-wired where a hub covers them, no waiver): {m['reinvented']} "
+        f"({m['waived']} more waived with a reason); areas free of them {m['reinvented_free_share']:.2f}"]
+    if seats:
+        lines += [
+            f"- code, once per seat: of the {m['seats_to_connect']} seats with an adopt or coexist area, share with one seam {m['seam_share']:.2f} "
+            f"and selectable by metric {m['selectable_share']:.2f}; vendor branches in core {m['vendor_branches']}",
+            f"- seats with no seam: {', '.join(m['unconnected_seats']) or 'none'}",
+            f"- arm gaps (adopt or coexist areas no arm covers; research to build or connect, not missing bindings): "
+            f"{len(m['arm_gaps'])} of {m['to_connect']}"]
+    else:
+        lines += [
+            f"- code: of the {m.get('to_connect', len(facts))} areas whose call is adopt or coexist, share with one seam {m['seam_share']:.2f} "
+            f"and selectable by metric {m['selectable_share']:.2f}; vendor branches in core {m['vendor_branches']}",
+            f"- real gaps (call adopt or coexist, no seam): {', '.join(m.get('unconnected') or []) or 'none'}"]
+    return "\n".join(lines + [f"- score: {m['score']:.3f}"])
+
+
+def rewrite(text, begin, end, block):
+    pattern = re.compile(re.escape(begin) + r".*?" + re.escape(end), re.S)
+    if not pattern.search(text):
+        raise ValueError(f"no generated block between {begin} and {end}")
+    return pattern.sub(lambda _m: f"{begin}\n{block}\n{end}", text)

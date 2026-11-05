@@ -1,7 +1,7 @@
 """The phase chain stops at the first terminal result and passes one shared state."""
 from types import SimpleNamespace
 
-from hubofhubs.orchestrate.phases import run_phases
+from hubofhubs.the_intelligence.mind.phases import run_phases
 
 
 def test_phases_run_in_order_on_one_state_until_a_result():

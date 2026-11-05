@@ -1,5 +1,5 @@
 """Status-line text helpers cut on sensible boundaries."""
-from hubofhubs.orchestrate.text import clip_head_and_tail, ellipsize, sentence
+from hubofhubs.the_intelligence.mind.text import clip_head_and_tail, ellipsize, sentence
 
 
 def test_ellipsize_leaves_short_text_and_collapses_whitespace():

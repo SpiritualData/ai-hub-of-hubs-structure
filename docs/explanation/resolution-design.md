@@ -1,7 +1,7 @@
 # Resolution design: name-based parts, done safely, for mass adoption
 
 **Status 2026-10-30:** the generic parts of this design (name validation, safe loading, the cascade, needs from typed parameters, the
-`uses_solution_ids` check, build order, startup failure) now live in the esoi library as `esoi.assemble`; `hubofhubs.resolution`
+`uses_solution_ids` check, build order, startup failure) now live in the esoi library as `esoi.assemble`; `hubofhubs.the_self.assembler.resolution`
 binds one `Assembler` to scope `hubofhubs`. Where this page says `needs.py`, `graph.py` or `assembly.py`, read `esoi.assemble`.
 What stays here is the seats, the arms, the registry and the scorer.
 
@@ -137,13 +137,13 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
 7. **Per-seat import check, then the port move.** Moving ports "as they are" is impossible: 65 of the consumer's 106
    adapter modules import its core. For each seat, compute its imports first; move the Protocol and neutral helpers only;
    everything else arrives through `assemble`. The consumer keeps re-exports at the old paths. The seats to move are
-   measured in the consumer before the move. Done for the first pass (2026-10-29): `hubofhubs.ports.scope`, `.model` and `.context`
+   measured in the consumer before the move. Done for the first pass (2026-10-29): `hubofhubs.the_world.model_plumbing.scope`, `.model` and `.context`
    (usage scoping, `ModelProvider` and the step-hint helpers, the context assembler, conversation store and vector store Protocols) moved
    verbatim from the consumer, comments made consumer-free; the consumer's modules re-export them. The progress events, channels,
    guidance and value objects stay in the consumer (they carry its vocabulary or fields).
    Second pass (2026-10-29), the web-search seat: `hubofhubs.websearch` holds the `web-search` arms (SearXNG, JSON search APIs
    described as data, Gemini grounding, a provider's own search), the cache, the daily limiter, SSRF-guarded fetching and
-   extraction, and the research adapter; `hubofhubs.ports.search` and `.retrieval` hold the neutral values. The convention for
+   extraction, and the research adapter; `hubofhubs.the_world.tools.web_search.search_port` and `.retrieval` hold the neutral values. The convention for
    moving a seat, to follow for the next one: (1) compute each module's imports and move a module only if it is generic;
    (2) the hub reads no environment, so a function that read one takes the mapping and the names of its settings as arguments
    (`SelectionKeys`), and the consumer's one-call constructor from its own settings stays in the consumer; (3) the hub resolves

@@ -5,7 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from offline import judge  # noqa: E402
 
-from hubofhubs.card import Card  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E402
 
 
 def run(build, args):

@@ -1,5 +1,5 @@
 """SEARCH/REPLACE and whole-file edit parsing, and content-anchored application, with no filesystem and no network."""
-from hubofhubs.act import editblock
+from hubofhubs.the_world.tools.file_editing import editblock
 
 
 def test_a_search_replace_block_is_parsed_with_its_filename():

@@ -23,7 +23,7 @@ import pytest
 
 pytest.importorskip("qdrant_client")
 
-from hubofhubs.recall.qdrant_store import QdrantVectorStore
+from hubofhubs.the_body.internal_context.card_store.qdrant_store import QdrantVectorStore
 
 VEC_SIZE = 8
 

@@ -1,0 +1,1 @@
+"""Vendor Model Caller."""

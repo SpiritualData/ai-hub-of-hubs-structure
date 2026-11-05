@@ -1,5 +1,5 @@
 """done_evidence: coverage as data, the gap, the stop or continue rule and the code-written lines. No model call."""
-from hubofhubs.critique import done_evidence as de
+from hubofhubs.the_intelligence.critical_thinking.goal_completion import done_evidence as de
 
 
 def test_nothing_declared_is_never_a_gap():

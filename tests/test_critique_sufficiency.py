@@ -2,13 +2,8 @@
 check compares that declaration with the reads that actually ran."""
 from typing import Any, Dict
 
-from hubofhubs.critique.sufficiency import (
-    AbridgedTurnState,
-    collect_abridged_items,
-    render_abridged_notice,
-    spec_covers,
-    unfetched_abridged,
-)
+from hubofhubs.the_intelligence.critical_thinking.goal_completion.sufficiency import (
+    AbridgedTurnState, collect_abridged_items, render_abridged_notice, spec_covers, unfetched_abridged)
 
 SUMMARY = "Notes on the remaining gaps"
 FETCH_SPEC: Dict[str, Any] = {"query": {"kind": "document", "id": "d1", "include_notes": True}}

@@ -9,12 +9,8 @@ this turn (e.g. re-reading the same conversation) without it leaking into a repl
 """
 from datetime import datetime, timezone
 
-from hubofhubs.recall.conversation_format import (
-    conversation_timestamp,
-    conversation_title,
-    format_conversation_date,
-    select_related,
-)
+from hubofhubs.the_intelligence.subconscious.cards_from_files.conversation_format import (
+    conversation_timestamp, conversation_title, format_conversation_date, select_related)
 
 
 def _conv(id_, title=None, updated_at=None, messages=None):

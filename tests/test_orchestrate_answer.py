@@ -2,8 +2,8 @@
 import logging
 from types import SimpleNamespace as NS
 
-from hubofhubs.orchestrate.answer import AnswerKit, AnsweringMixin
-from hubofhubs.orchestrate.plan import PlanDecision
+from hubofhubs.the_intelligence.mind.response_writer.answer import AnswerKit, AnsweringMixin
+from hubofhubs.the_intelligence.mind.planner.plan import PlanDecision
 
 VOICE = "VOICE"
 

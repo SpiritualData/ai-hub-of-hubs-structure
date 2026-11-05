@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+system-integrity:prompts_as_data,system-integrity,"Audit of vendor wording, staleness and configuration",Scans the hub for vendor-name branches and reports how stale its research is and how much of it connects by configuration.,The same audit runs for every consumer.,It finds the terms it is given and no others.,hubofhubs/the_self/integrity/audit.py,the-learning,

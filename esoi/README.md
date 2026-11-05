@@ -117,12 +117,12 @@ flowchart LR
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
 | Hand-wired general agent framework | `the-self:hand_wired_agent_framework` |  |  |
-| Responds through every container | `the-self:composition` | [hubofhubs/whole.py](../hubofhubs/whole.py) |  |
-| Declared sources and enduring integrations | `the-body:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_body](the_body/README.md) |
-| One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_intelligence](the_intelligence/README.md) |
-| Representative, priorities and feedback | `the-consciousness:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_consciousness](the_consciousness/README.md) |
+| Responds through every container | `the-self:composition` | [hubofhubs/the_self/respond.py](../hubofhubs/the_self/respond.py) |  |
+| Declared sources and enduring integrations | `the-body:composition` | [hubofhubs/the_body/flow.py](../hubofhubs/the_body/flow.py) | [the_body](the_body/README.md) |
+| One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [hubofhubs/the_intelligence/flow.py](../hubofhubs/the_intelligence/flow.py) | [the_intelligence](the_intelligence/README.md) |
+| Representative, priorities and feedback | `the-consciousness:composition` | [hubofhubs/the_consciousness/flow.py](../hubofhubs/the_consciousness/flow.py) | [the_consciousness](the_consciousness/README.md) |
 | The parts of the system | `the-self:parts` |  | [the_self](the_self/README.md) |
-| Search and papers through the tools | `the-world:composition` | [hubofhubs/areas.py](../hubofhubs/areas.py) | [the_world](the_world/README.md) |
+| Search and papers through the tools | `the-world:composition` | [hubofhubs/the_world/flow.py](../hubofhubs/the_world/flow.py) | [the_world](the_world/README.md) |
 
 ### Metrics
 

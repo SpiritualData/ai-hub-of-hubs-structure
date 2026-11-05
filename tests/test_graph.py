@@ -7,26 +7,29 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hubofhubs import AssemblyConfig, AssemblyError, assemble, registry, resolve  # noqa: E402
-from hubofhubs.resolution import HUB  # noqa: E402
+from hubofhubs import AssemblyConfig, AssemblyError, assemble, resolve
+from hubofhubs.the_world.learning.research_freshness_reader import registry  # noqa: E402
+from hubofhubs.the_self.assembler.resolution import HUB  # noqa: E402
 from esoi.intents import read_tree  # noqa: E402
-from hubofhubs import seats  # noqa: E402
-from hubofhubs.card import Card  # noqa: E402
-from hubofhubs.cardstore import LocalCardStore  # noqa: E402
+import importlib  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E402
+from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore  # noqa: E402
 from support import ROOT  # noqa: E402
 
-SEATS = {HUB.solution_of(c): c for c in vars(seats).values() if isinstance(c, type) and HUB.solution_of(c)}
+HUB.prepare()
+SEATS = {HUB.solution_of(c): c for module in HUB.modules for c in vars(importlib.import_module(module)).values() if isinstance(c, type) and HUB.solution_of(c)}
 SOLUTIONS = read_tree(ROOT / "esoi", "solutions.csv")
 IMPLEMENTATIONS = read_tree(ROOT / "esoi", "implementations.csv")
 
 
-def test_the_seats_module_holds_only_protocol_classes_and_imports():
-    tree = ast.parse((ROOT / "hubofhubs" / "seats.py").read_text())
-    for node in tree.body:
-        assert isinstance(node, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.Expr)), ast.dump(node)[:80]
-        if isinstance(node, ast.ClassDef):
-            assert [ast.unparse(b) for b in node.bases][-1] == "typing.Protocol"   # a seat may extend a port Protocol first
-            assert all(isinstance(n, (ast.FunctionDef, ast.Expr)) for n in node.body)
+def test_the_interface_modules_hold_only_protocol_classes_and_imports():
+    assert HUB.modules, "no interface module was found"
+    for interface in sorted((ROOT / "hubofhubs").rglob("interface.py")) + [ROOT / "hubofhubs" / "the_world" / "tools" / "goal_running.py"]:
+        for node in ast.parse(interface.read_text()).body:
+            assert isinstance(node, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.Expr)), (interface, ast.dump(node)[:80])
+            if isinstance(node, ast.ClassDef):
+                assert [ast.unparse(b) for b in node.bases][-1] == "typing.Protocol"   # a seat may extend a port Protocol first
+                assert all(isinstance(n, (ast.FunctionDef, ast.Expr)) for n in node.body)
 
 
 def test_every_seat_is_a_runtime_protocol_with_a_record():
@@ -101,7 +104,7 @@ def test_sync_uses_check_passes_on_the_repository():
 
 
 def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend():
-    from hubofhubs.ports.search import SearchHit, SearchResponse
+    from hubofhubs.the_world.tools.web_search.search_port import SearchHit, SearchResponse
 
     class Backend:
         name = "toy"
@@ -114,7 +117,7 @@ def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend():
     config = AssemblyConfig(solutions=("the-science",), selections={"the-science": "web_research"})
     system = assemble(config, provided={"web-search": Backend()})
     arm = system["the-science"]
-    assert isinstance(arm, seats.WorldKnowing) and arm.describe() == "web search via toy"
+    assert isinstance(arm, SEATS["the-science"]) and arm.describe() == "web search via toy"
     observation = arm.search("a question")
     assert observation.kind != "error" and "https://example.com/a" in observation.text
     assert "gemini" in assemble(config)["the-science"].describe()   # with none provided the need falls to the hub's selected search arm

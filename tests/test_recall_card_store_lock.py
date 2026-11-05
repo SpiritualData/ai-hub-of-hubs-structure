@@ -1,7 +1,7 @@
 """One lock per card folder: re-entrant in a thread, exclusive across threads, with a generation counter. Offline."""
 import threading
 
-from hubofhubs.recall.card_store_lock import StoreLock
+from hubofhubs.the_body.internal_context.card_store.card_store_lock import StoreLock
 
 
 def test_one_lock_object_per_folder_and_name(tmp_path):

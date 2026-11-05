@@ -1,0 +1,2 @@
+metric_id,name,purpose,record,disadvantages,cascading_conditionals,expiration,solution_ids,ideal_ids,command,parent_metric_ids
+metric-connected-system-operations,The operation is carried out and nothing else,A called operation does what was asked and nothing else.,Draft: no cases or runs exist yet.,"A draft: it names what to measure, and no cases are written yet.",,,connected-system-operations,hideal-tools-chosen-by-category,,metric-the-tools

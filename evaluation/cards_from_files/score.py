@@ -168,7 +168,8 @@ def needs(implementation, meter):
         found["saved_build"] = True
     if "provider" in parameters:
         from esoi import runtime
-        from hubofhubs import seats  # noqa: F401  (declares the seats)
+        from hubofhubs import HUB
+        HUB.prepare()      # declares the seats
         provider_class = runtime.resolve("vendor-model-caller", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
         provider = provider_class(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
         found["provider"] = meter.wrap(provider, ("answer",))

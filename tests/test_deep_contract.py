@@ -1,4 +1,4 @@
-"""The goal contract of the deep runners (``hubofhubs.deep.contract``): offline, no process, no model call.
+"""The goal contract of the deep runners (``hubofhubs.the_world.tools.delegated_agent_sessions.contract``): offline, no process, no model call.
 
 Settings are arguments, so each rule is exercised with a value in hand and no environment.
 """
@@ -9,27 +9,13 @@ import subprocess
 
 import pytest
 
-from hubofhubs.deep.contract import (
-    GoalRunner,
-    SubprocessConfig,
-    cli_safe_model,
-    compose_goal_prompt,
-    compose_goal_prompt_fitted,
-    envelope_reports_no_work,
-    extract_escalation_id,
-    is_claude_model,
-    parse_deep_review,
-    parse_worker_output,
-    resolve_deep_launch,
-    resolve_deep_review_interval_seconds,
-    resolve_deep_timeout_seconds,
-    resume_target_missing,
-    run_goal_accepts,
-    stop_process_group,
-)
-from hubofhubs.deep.launch import DeepLaunchSettings
-from hubofhubs.deep.settings import GoalSettings, resolve_goal_settings
-from hubofhubs.ports.deep import DeepResult
+from hubofhubs.the_world.tools.delegated_agent_sessions.contract import (
+    GoalRunner, SubprocessConfig, cli_safe_model, compose_goal_prompt, compose_goal_prompt_fitted, envelope_reports_no_work, extract_escalation_id,
+    is_claude_model, parse_deep_review, parse_worker_output, resolve_deep_launch, resolve_deep_review_interval_seconds,
+    resolve_deep_timeout_seconds, resume_target_missing, run_goal_accepts, stop_process_group)
+from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings, resolve_goal_settings
+from hubofhubs.the_world.tools.deep import DeepResult
 
 MARKER = "WORKER-ESCALATED:"
 

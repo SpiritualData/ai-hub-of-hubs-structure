@@ -47,7 +47,7 @@ class SandboxWriter:
             return None
 
     def write_file(self, rel_path, content):
-        from hubofhubs.ports.deep import WriteResult
+        from hubofhubs.the_world.tools.deep import WriteResult
         target = self.resolve(rel_path)
         if target is None:
             return WriteResult(ok=False, rel_path=rel_path, error="outside the writable root")
@@ -64,15 +64,15 @@ class TierIsModel:
 
 
 def gemini_provider(meter):
-    from hubofhubs.models.gemini import GeminiProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
     provider = priced(GeminiProvider, price_of("gemini", GEMINI_MODEL))(api_key=first_env("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"))
     meter.model = GEMINI_MODEL
     return meter.wrap(provider, ("answer",))
 
 
 def agent_config(root):
-    from hubofhubs.deep.contract import SubprocessConfig
-    from hubofhubs.deep.launch import DeepLaunchSettings
+    from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig
+    from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
     # No user, project or local settings and no ambient MCP servers, so the run does not depend on this machine's configuration.
     return SubprocessConfig(working_dir=str(root), review_interval_seconds=0, timeout_seconds=AGENT_SECONDS,
                             launch=DeepLaunchSettings(setting_sources="", strict_mcp=True))
@@ -80,7 +80,7 @@ def agent_config(root):
 
 def agent_settings():
     """The worker starts from HOME and PATH only (its login lives under HOME); nothing else of this machine's environment reaches it."""
-    from hubofhubs.deep.settings import GoalSettings
+    from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings
     env = {name: os.environ[name] for name in ("HOME", "PATH") if name in os.environ}
     return GoalSettings(environment=lambda: dict(env))
 

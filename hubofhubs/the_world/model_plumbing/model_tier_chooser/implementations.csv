@@ -1,0 +1,2 @@
+implementation_id,solution_id,name,description,advantages,disadvantages,filepath,uses_solution_ids,sub_intent
+model-tier-chooser:tier_selector,model-tier-chooser,Passing work per cost selector,"Ranks each provider and model by passing work per dollar on shared cases at the prices on file, counting prepaid credits as cost.","Free, offline and deterministic, with the prices and their dates in a registry file.",Only as good as the cases and prices it is given; a stale price moves the ranking unseen.,hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py,,

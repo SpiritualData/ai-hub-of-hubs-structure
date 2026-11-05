@@ -1,9 +1,9 @@
-"""Why a quiet parent session is not idle: a subagent is working (``hubofhubs.deep.session``). Offline."""
+"""Why a quiet parent session is not idle: a subagent is working (``hubofhubs.the_world.tools.delegated_agent_sessions.session``). Offline."""
 import json
 import os
 import time
 
-from hubofhubs.deep.session import subagent_work_in_flight
+from hubofhubs.the_world.tools.delegated_agent_sessions.session import subagent_work_in_flight
 
 
 def _write(path, recs):

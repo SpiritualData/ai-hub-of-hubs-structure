@@ -15,9 +15,9 @@ sys.path.insert(0, str(ROOT))
 
 from cards_from_files import corpus as pinned  # noqa: E402
 from cards_from_files.broken import one_card, one_card_per_folder, two_cards  # noqa: E402
-from hubofhubs.recall import cards_from_files as file_arms  # noqa: E402
-from hubofhubs.recall import cards_from_topics as topic_arms  # noqa: E402
-from hubofhubs.recall import topic_clusters  # noqa: E402
+from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_from_files as file_arms  # noqa: E402
+from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_from_topics as topic_arms  # noqa: E402
+from hubofhubs.the_intelligence.subconscious.cards_from_files import topic_clusters  # noqa: E402
 from cards_from_files import mix, orientation_kind as orientation, score, topic_kind as topic  # noqa: E402
 from cards_from_files import topic_cases as needed_cases  # noqa: E402
 
@@ -181,6 +181,6 @@ def test_the_saved_build_is_the_llm_arms_output_charged_with_what_it_cost(corpus
 
 
 def test_the_saved_build_is_refused_on_another_corpus(corpus):
-    from hubofhubs.recall import cards_dataset
+    from hubofhubs.the_intelligence.subconscious.cards_from_files import cards_dataset
     with pytest.raises(cards_dataset.DatasetError):
         file_arms.LlmTopicCards(provider=None, saved_build=True, pin=dict(pinned.read_pin(), qar_commit="deadbeef"))

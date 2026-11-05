@@ -65,7 +65,7 @@ def render(digest):
 
 def make_provider(meter):
     """The Gemini arm over the cheapest Gemini model, priced from the registry; the meter counts its calls, tokens and dollars."""
-    from hubofhubs.models.gemini import GeminiProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
 
     provider = priced(GeminiProvider, price_of("gemini", MODEL))(api_key=first_env("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"))
     meter.model = MODEL

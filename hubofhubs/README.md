@@ -34,7 +34,7 @@ Bring in what is outside the system and let the AI act on it through the best av
 - Entry call: `hubofhubs.run("the-world", 'latest Rust release')`
 - Selected implementation: Search and papers through the tools (`composition`)
 - Metric: Task pass rate and cost per passing task
-- Implemented by: [`hubofhubs/areas.py`](areas.py), [`hubofhubs/terminal/__init__.py`](terminal/__init__.py), [`hubofhubs/terminal/asks.py`](terminal/asks.py), [`hubofhubs/terminal/blocks.py`](terminal/blocks.py), [`hubofhubs/terminal/render.py`](terminal/render.py), [`hubofhubs/terminal/stopped.py`](terminal/stopped.py), [`hubofhubs/terminal/strings.py`](terminal/strings.py), [`hubofhubs/terminal/trail.py`](terminal/trail.py) and 3 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](the_world/__init__.py), [`hubofhubs/the_world/flow.py`](the_world/flow.py), [`hubofhubs/the_world/interface.py`](the_world/interface.py), [`hubofhubs/the_world/learning/__init__.py`](the_world/learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](the_world/learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](the_world/learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](the_world/learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](the_world/learning/research_freshness_reader/interface.py) and 120 more
 
 ## The Self (`the-self`)
 
@@ -43,7 +43,7 @@ Keep every part working as one whole for one request.
 - Entry call: `hubofhubs.run("the-self", ...)`
 - Selected implementation: Responds through every container (`composition`)
 - Metric: The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
+- Implemented by: [`hubofhubs/the_self/__init__.py`](the_self/__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](the_self/assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](the_self/assembler/arm_needs.py), [`hubofhubs/the_self/assembler/cli.py`](the_self/assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](the_self/assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](the_self/assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](the_self/assembler/resolution.py), [`hubofhubs/the_self/assembler/zero_config.py`](the_self/assembler/zero_config.py) and 21 more
 
 ## Body (`the-body`)
 
@@ -52,7 +52,7 @@ Let the hub apply to one particular system by declaring where its data lives, wh
 - Entry call: `hubofhubs.run("the-body", '')`
 - Selected implementation: Declared sources and enduring integrations (`composition`)
 - Metric: A system applies the hub to itself
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
+- Implemented by: [`hubofhubs/the_body/__init__.py`](the_body/__init__.py), [`hubofhubs/the_body/filemodes.py`](the_body/filemodes.py), [`hubofhubs/the_body/flow.py`](the_body/flow.py), [`hubofhubs/the_body/hands/__init__.py`](the_body/hands/__init__.py), [`hubofhubs/the_body/hands/interface.py`](the_body/hands/interface.py), [`hubofhubs/the_body/intake_sources/__init__.py`](the_body/intake_sources/__init__.py), [`hubofhubs/the_body/intake_sources/interface.py`](the_body/intake_sources/interface.py), [`hubofhubs/the_body/intake_sources/queue.py`](the_body/intake_sources/queue.py) and 61 more
 
 ## Intelligence (`the-intelligence`)
 
@@ -61,7 +61,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](the_intelligence/critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](the_intelligence/critical_thinking/goal_completion/goal_completion.py) and 133 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -70,7 +70,7 @@ Keep the system aligned with the humans and policies it works for.
 - Entry call: `hubofhubs.run("the-consciousness", '')`
 - Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py), [`hubofhubs/the_consciousness/judgment_calls/__init__.py`](the_consciousness/judgment_calls/__init__.py), [`hubofhubs/the_consciousness/judgment_calls/interface.py`](the_consciousness/judgment_calls/interface.py) and 24 more
 
 ## Diagram
 
@@ -94,12 +94,12 @@ flowchart LR
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
 | Hand-wired general agent framework | `the-self:hand_wired_agent_framework` | no code yet |  |
-| Responds through every container | `the-self:composition` | [`hubofhubs/whole.py`](whole.py) | selected |
-| Declared sources and enduring integrations | `the-body:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
-| One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
-| Representative, priorities and feedback | `the-consciousness:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
+| Responds through every container | `the-self:composition` | [`hubofhubs/the_self/respond.py`](the_self/respond.py) | selected |
+| Declared sources and enduring integrations | `the-body:composition` | [`hubofhubs/the_body/flow.py`](the_body/flow.py) | selected |
+| One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [`hubofhubs/the_intelligence/flow.py`](the_intelligence/flow.py) | selected |
+| Representative, priorities and feedback | `the-consciousness:composition` | [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py) | selected |
 | The parts of the system | `the-self:parts` | no code yet |  |
-| Search and papers through the tools | `the-world:composition` | [`hubofhubs/areas.py`](areas.py) | selected |
+| Search and papers through the tools | `the-world:composition` | [`hubofhubs/the_world/flow.py`](the_world/flow.py) | selected |
 
 ## Metrics
 
@@ -132,4 +132,31 @@ flowchart LR
 ## Where to go next
 
 - Intent: [The best parts for AI intelligence, assembled and proven](../esoi/README.md)
+- Down: [hubofhubs/the_body/intake_sources](the_body/intake_sources/README.md)
+- Down: [hubofhubs/the_body/internal_context](the_body/internal_context/README.md)
+- Down: [hubofhubs/the_consciousness/judgment_calls](the_consciousness/judgment_calls/README.md)
+- Down: [hubofhubs/the_consciousness/representatives](the_consciousness/representatives/README.md)
+- Down: [hubofhubs/the_consciousness/request_intake](the_consciousness/request_intake/README.md)
+- Down: [hubofhubs/the_intelligence/nervous_system](the_intelligence/nervous_system/README.md)
+- Down: [hubofhubs/the_intelligence/proactivity](the_intelligence/proactivity/README.md)
+- Down: [hubofhubs/the_self/assembler](the_self/assembler/README.md)
+- Down: [hubofhubs/the_self/integrity](the_self/integrity/README.md)
+- Down: [hubofhubs/the_world/learning](the_world/learning/README.md)
+- Down: [hubofhubs/the_world/science](the_world/science/README.md)
+- Down: [hubofhubs/the_intelligence/critical_thinking/goal_completion](the_intelligence/critical_thinking/goal_completion/README.md)
+- Down: [hubofhubs/the_intelligence/critical_thinking/metric_translation](the_intelligence/critical_thinking/metric_translation/README.md)
+- Down: [hubofhubs/the_intelligence/critical_thinking/response_quality](the_intelligence/critical_thinking/response_quality/README.md)
+- Down: [hubofhubs/the_intelligence/mind/context_intake](the_intelligence/mind/context_intake/README.md)
+- Down: [hubofhubs/the_intelligence/mind/delegation](the_intelligence/mind/delegation/README.md)
+- Down: [hubofhubs/the_intelligence/mind/planner](the_intelligence/mind/planner/README.md)
+- Down: [hubofhubs/the_intelligence/mind/response_writer](the_intelligence/mind/response_writer/README.md)
+- Down: [hubofhubs/the_intelligence/subconscious/cards_from_files](the_intelligence/subconscious/cards_from_files/README.md)
+- Down: [hubofhubs/the_intelligence/subconscious/context_retriever](the_intelligence/subconscious/context_retriever/README.md)
+- Down: [hubofhubs/the_world/model_plumbing/model_tier_chooser](the_world/model_plumbing/model_tier_chooser/README.md)
+- Down: [hubofhubs/the_world/model_plumbing/vendor_model_caller](the_world/model_plumbing/vendor_model_caller/README.md)
+- Down: [hubofhubs/the_world/tools/connected_system_operations](the_world/tools/connected_system_operations/README.md)
+- Down: [hubofhubs/the_world/tools/delegated_agent_sessions](the_world/tools/delegated_agent_sessions/README.md)
+- Down: [hubofhubs/the_world/tools/file_editing](the_world/tools/file_editing/README.md)
+- Down: [hubofhubs/the_world/tools/file_reading](the_world/tools/file_reading/README.md)
+- Down: [hubofhubs/the_world/tools/web_search](the_world/tools/web_search/README.md)
 - Repository: [top README](../README.md)

@@ -1,4 +1,4 @@
-"""Offline tests for the raw MCP protocol client (``hubofhubs.act.mcp_client``).
+"""Offline tests for the raw MCP protocol client (``hubofhubs.the_world.tools.connected_system_operations.mcp_client``).
 
 Fully offline by construction: the optional ``mcp`` package is never imported, no subprocess is
 spawned, no socket is touched. The client concentrates all of that behind ONE module-level seam --
@@ -22,7 +22,7 @@ from typing import Any, Dict, List, Optional
 
 import pytest
 
-from hubofhubs.act import mcp_client as mc
+from hubofhubs.the_world.tools.connected_system_operations import mcp_client as mc
 
 
 def ns(**kwargs: Any) -> SimpleNamespace:

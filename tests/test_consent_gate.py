@@ -3,8 +3,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs.consent_gate import CLEAR, FLAG, UNSURE, ConsentGate, TwoStage, judge, parse_digest  # noqa: E402
-from hubofhubs.risk import build_digest  # noqa: E402
+from hubofhubs.the_intelligence.nervous_system.consent_gate import CLEAR, FLAG, UNSURE, ConsentGate, TwoStage, judge, parse_digest  # noqa: E402
+from hubofhubs.the_intelligence.mind.delegation.overseer.risk import build_digest  # noqa: E402
 
 
 def digest(action, goal, rationale="", operations=()):

@@ -31,14 +31,14 @@ def test_matching_rule(url, title, expected):
 def test_an_arm_without_its_credential_is_not_measured(monkeypatch):
     for name in ("SEARXNG_URL", "BRAVE_SEARCH_API_KEY", "BRAVE_API_KEY"):
         monkeypatch.delenv(name, raising=False)
-    from hubofhubs.websearch.backends import BraveBackend, SearxngBackend
+    from hubofhubs.the_world.tools.web_search.backends import BraveBackend, SearxngBackend
     for arm in (BraveBackend, SearxngBackend):
         with pytest.raises(sources.NoCredential, match="not measured: no credential"):
             sources.settings_for(arm)
 
 
 def test_a_title_in_the_question_is_not_a_find():
-    from hubofhubs.ports.retrieval import Observation
+    from hubofhubs.the_world.observation import Observation
     case = dict(question="Is there a paper called Attention Is All You Need?", gold_title="Attention Is All You Need")
     echoed = Observation(kind="query", text='WORKS for "Is there a paper called Attention Is All You Need?": no matching works.')
     found = Observation(kind="query", text="1. Attention is all you need. Vaswani 2017", hits=[{"title": "Attention Is All You Need"}])

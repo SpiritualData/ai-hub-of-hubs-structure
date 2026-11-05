@@ -1,10 +1,10 @@
 """The limit's notice and report: counted from the cards, fitted to a screen, worded by the consumer's Voice."""
 from pathlib import Path
 
-from hubofhubs.recall import card_limit
-from hubofhubs.recall import card_limit_report as report
-from hubofhubs.recall.card_limit_report import Breakdown, Voice
-from hubofhubs.recall.card_repository import FilesystemCardRepository
+from hubofhubs.the_body.internal_context.card_store import card_limit
+from hubofhubs.the_body.internal_context.card_store import card_limit_report as report
+from hubofhubs.the_body.internal_context.card_store.card_limit_report import Breakdown, Voice
+from hubofhubs.the_body.internal_context.card_store.card_repository import FilesystemCardRepository
 
 
 def voice(**kw):

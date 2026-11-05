@@ -6,7 +6,7 @@ import re
 
 import pytest
 
-from hubofhubs.terminal import strings
+from hubofhubs.the_consciousness.terminal import strings
 
 
 @pytest.fixture(autouse=True)

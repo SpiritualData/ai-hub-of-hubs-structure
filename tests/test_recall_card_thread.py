@@ -1,24 +1,10 @@
-"""Per-idea threading, where THE IDEA IS THE CARD (hubofhubs.recall.card_thread): the fail-safe parse, the duplicate-label guard,
+"""Per-idea threading, where THE IDEA IS THE CARD (hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_thread): the fail-safe parse, the duplicate-label guard,
 the candidate prior, the planner hint and the priority blending of a transcript. Pure, offline, no consumer."""
 import pytest
 
-from hubofhubs.recall.card_thread import (
-    ACTION_CONTINUE,
-    ACTION_NEW,
-    ACTION_SWITCH,
-    CardCandidate,
-    CardThreadContext,
-    find_duplicate_label,
-    lifecycle_note,
-    merge_candidates,
-    normalize_label,
-    parse_card_thread,
-    penalized_budget,
-    rank_card_first,
-    render_thread_hint,
-    select_thread_floor,
-    split_by_card,
-)
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_thread import (
+    ACTION_CONTINUE, ACTION_NEW, ACTION_SWITCH, CardCandidate, CardThreadContext, find_duplicate_label, lifecycle_note, merge_candidates,
+    normalize_label, parse_card_thread, penalized_budget, rank_card_first, render_thread_hint, select_thread_floor, split_by_card)
 
 
 # --------------------------------------------------------------------------------------------
