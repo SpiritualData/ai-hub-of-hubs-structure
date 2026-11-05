@@ -1,6 +1,6 @@
 # The best parts for AI intelligence, assembled and proven
 
-Anyone building AI intelligence can assemble a working system from the best open-source parts available, chosen by measurement and kept current every week, without writing the glue themselves.
+AI builders have consistent interfaces for whatever the current best AI solutions are, to adapt only what is unique to their project.
 
 *ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
 
@@ -51,7 +51,7 @@ flowchart LR
 
 **Ideals**
 
-- The best option for each case is in use (`HI1`): Each seat holds the part that measures best on shared cases.
+- The best option for each case is in use (`HI1`): The implementations selected for solutions always reflect the best alternative available across all known resources and methods.
 - One-step assembly (`HI2`): Anyone gets a working system from the best parts without writing glue code.
 - Always current (`HI3`): What the hub recommends reflects the best parts available now.
 - Swappable parts (`HI4`): When a better part appears or a part fails, the system keeps working with the better or the working one, and no caller changes.
@@ -69,9 +69,9 @@ flowchart LR
 
 ## Where to go next
 
-- Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md) (The AI system has a form and its own internal context, and the hub applies to a particular system by providing adapters or declaring the system's internal APIs, databases and files.)
+- Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md) (The AI system fits the particular system it lives in.)
 - Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI representatives of a team learn each person's way: which authority they carry, when to ask that person and when not to, which priorities the person implies, and how that person wants the work done, from the person's own feedback.)
-- Sub-intent: [How the AI processes information](../hubofhubs/the_intelligence/README.md) (One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the result is checked for goal completion and response quality.)
+- Sub-intent: [How the AI processes information](../hubofhubs/the_intelligence/README.md) (AI requests are handled in the best way possible, given all relevant information.)
 - Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md) (The parts of the system work as one whole: each part knows its role, what the system claims matches its evidence, its records match its code, and one call builds the parts from configuration.)
 - Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and keeps its own research current.)
 - Repository: [top README](../README.md)
@@ -95,7 +95,7 @@ flowchart LR
 
 ### Ideals
 
-- The best option for each case is in use (`HI1`): Each seat holds the part that measures best on shared cases.
+- The best option for each case is in use (`HI1`): The implementations selected for solutions always reflect the best alternative available across all known resources and methods.
 - One-step assembly (`HI2`): Anyone gets a working system from the best parts without writing glue code.
 - Always current (`HI3`): What the hub recommends reflects the best parts available now.
 - Swappable parts (`HI4`): When a better part appears or a part fails, the system keeps working with the better or the working one, and no caller changes.

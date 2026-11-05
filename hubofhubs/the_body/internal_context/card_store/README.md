@@ -2,7 +2,7 @@
 
 *ESOI records kept beside the code in `hubofhubs/the_body/internal_context/card_store`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-The AI system has a form and its own internal context, and the hub applies to a particular system by providing adapters or declaring the system's internal APIs, databases and files.
+The AI system fits the particular system it lives in.
 
 These are the solutions of [The form and internal context of a system](../../README.md).
 

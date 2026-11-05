@@ -2,7 +2,7 @@
 
 *ESOI records kept beside the code in `hubofhubs/the_intelligence/nervous_system`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the result is checked for goal completion and response quality.
+AI requests are handled in the best way possible, given all relevant information.
 
 These are the solutions of [How the AI processes information](../README.md).
 

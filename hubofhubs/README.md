@@ -2,7 +2,7 @@
 
 *ESOI records kept beside the code in `hubofhubs`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-Anyone building AI intelligence can assemble a working system from the best open-source parts available, chosen by measurement and kept current every week, without writing the glue themselves.
+AI builders have consistent interfaces for whatever the current best AI solutions are, to adapt only what is unique to their project.
 
 These are the solutions of [The best parts for AI intelligence, assembled and proven](../esoi/README.md).
 
@@ -121,7 +121,7 @@ flowchart LR
 
 ## Ideals
 
-- The best option for each case is in use (`HI1`): Each seat holds the part that measures best on shared cases.
+- The best option for each case is in use (`HI1`): The implementations selected for solutions always reflect the best alternative available across all known resources and methods.
 - One-step assembly (`HI2`): Anyone gets a working system from the best parts without writing glue code.
 - Always current (`HI3`): What the hub recommends reflects the best parts available now.
 - Swappable parts (`HI4`): When a better part appears or a part fails, the system keeps working with the better or the working one, and no caller changes.
