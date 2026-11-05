@@ -1,0 +1,495 @@
+[
+ {
+  "id": "memory-topical-match",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "t",
+     "text": "The tax return needs the donation receipts from March",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "r",
+     "text": "Booked the train to the coast for the second weekend of August",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "how many tomato seedlings did we choose",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "g"
+  ]
+ },
+ {
+  "id": "memory-second-topic",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "t",
+     "text": "The tax return needs the donation receipts from March",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "r",
+     "text": "Booked the train to the coast for the second weekend of August",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "which receipts does the tax return need",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "t"
+  ]
+ },
+ {
+  "id": "memory-unrelated-recalls-nothing",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "t",
+     "text": "The tax return needs the donation receipts from March",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "r",
+     "text": "Booked the train to the coast for the second weekend of August",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "explain how volcanoes erupt",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "memory-content-free-follow-up",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "t",
+     "text": "The tax return needs the donation receipts from March",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "r",
+     "text": "Booked the train to the coast for the second weekend of August",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "what about it",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "memory-empty-store",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [],
+   "query": "tomato seedlings",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "memory-newer-leads-on-equal-relevance",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "old",
+     "text": "Ordered tomato seedlings from the nursery",
+     "at": "2026-05-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "new",
+     "text": "Ordered tomato seedlings from the market",
+     "at": "2026-07-10T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato seedlings order",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "new",
+   "old"
+  ]
+ },
+ {
+  "id": "memory-better-match-outranks-weaker-newer",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "strong",
+     "text": "Quarterly budget review: marketing budget, hiring budget and travel budget",
+     "at": "2026-06-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "weak",
+     "text": "Budget meeting moved to Friday",
+     "at": "2026-07-11T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "marketing budget review hiring travel",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "strong",
+   "weak"
+  ]
+ },
+ {
+  "id": "memory-other-person-never-recalled",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "g2",
+     "text": "Planted tomato seedlings along the fence",
+     "at": "2026-07-05T10:00:00Z",
+     "person": "ben"
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "g"
+  ]
+ },
+ {
+  "id": "memory-other-person-sees-only-their-own",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "g2",
+     "text": "Planted tomato seedlings along the fence",
+     "at": "2026-07-05T10:00:00Z",
+     "person": "ben"
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "ben",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "g2"
+  ]
+ },
+ {
+  "id": "memory-unknown-person-recalls-nothing",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "t",
+     "text": "The tax return needs the donation receipts from March",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "cho",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "memory-past-retention-is-gone",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "ancient",
+     "text": "Chose tomato seedlings for the garden",
+     "at": "2025-12-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "fresh",
+     "text": "Watered the tomato seedlings",
+     "at": "2026-07-09T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "fresh"
+  ]
+ },
+ {
+  "id": "memory-limit-holds",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "i1",
+     "text": "Tomato seedlings batch number 1",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "i2",
+     "text": "Tomato seedlings batch number 2",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "i3",
+     "text": "Tomato seedlings batch number 3",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "i4",
+     "text": "Tomato seedlings batch number 4",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "i5",
+     "text": "Tomato seedlings batch number 5",
+     "at": "2026-07-05T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato seedlings batch",
+   "person": "ana",
+   "limit": 2,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "i5",
+   "i4"
+  ]
+ },
+ {
+  "id": "memory-same-id-is-one-item",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "x",
+     "text": "Tomato seedlings need sun",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "x",
+     "text": "Tomato seedlings need sun and water",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato seedlings sun",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "x"
+  ]
+ },
+ {
+  "id": "memory-partial-overlap-still-recalled",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "g",
+     "text": "We planned the vegetable garden beds and chose tomato seedlings",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "t",
+     "text": "The tax return needs the donation receipts from March",
+     "at": "2026-07-02T10:00:00Z",
+     "person": "ana"
+    },
+    {
+     "id": "r",
+     "text": "Booked the train to the coast for the second weekend of August",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato advice for this weekend",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "r",
+   "g"
+  ]
+ },
+ {
+  "id": "memory-unreadable-time-ranks-oldest",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "odd",
+     "text": "Tomato seedlings note",
+     "at": "not a date",
+     "person": "ana"
+    },
+    {
+     "id": "ok",
+     "text": "Tomato seedlings note",
+     "at": "2026-07-01T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "tomato seedlings note",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "ok"
+  ]
+ },
+ {
+  "id": "memory-word-inside-another-word-is-not-a-match",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "pty",
+     "text": "Planned the party menu and the guest list",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "art classes",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "memory-paraphrase-shares-no-word",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "p",
+     "text": "The vegetable patch is ready for its first sowing",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "ana"
+    }
+   ],
+   "query": "when do we begin planting the garden",
+   "person": "ana",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "p"
+  ]
+ }
+]
