@@ -23,7 +23,7 @@ The Self keeps the parts of the system working as one whole through the Assemble
 **Problems**
 
 - One product leaks into shared code (`HP6`): One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
-- Assembly judged part by part (`hprob-assembly-judged-part-by-part`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before...
+- Assembly judged part by part (`hprob-assembly-judged-part-by-part`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before anything irreversible and say truthfully what it did.
 - Parts forget their role (`hprob-parts-forget-their-role`): Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole.
 
 **Ideals**

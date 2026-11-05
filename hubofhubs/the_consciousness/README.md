@@ -27,7 +27,7 @@ Consciousness is where the system adapts to the humans and policies it works for
 - Asking by one fixed rule (`hprob-ai-asks-on-one-fixed-rule`): The AI asks by a fixed rule, so one person is interrupted for steps they would have allowed and another is surprised by steps they would have wanted to approve.
 - Feedback forgotten (`hprob-feedback-is-forgotten`): A person's correction changes one reply and is forgotten, so the same correction is needed again.
 - Priorities implied, not stated (`hprob-priorities-are-implied-not-stated`): People imply their priorities instead of stating them, so an AI weighs everything the same or guesses.
-- Requests from unseen places (`hprob-requests-come-from-places-the-system-cannot-see`): People make requests where they already work (a chat, a task list, the action items of a meeting), and a system that only answers one input cannot take them in, so requests are lost, answered twice...
+- Requests from unseen places (`hprob-requests-come-from-places-the-system-cannot-see`): People make requests where they already work (a chat, a task list, the action items of a meeting), and a system that only answers one input cannot take them in, so requests are lost, answered twice or answered to the wrong person.
 
 **Ideals**
 

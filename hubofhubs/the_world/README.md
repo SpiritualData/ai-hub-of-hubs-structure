@@ -33,13 +33,13 @@ flowchart LR
     s1 -->|"A mapping from each tier to the chosen provider and model"| s2
     s1 -->|"A mapping from each tier to the chosen provider and model"| s8
     s2 -->|"The model's answer to a prompt at a tier"| s5
-    s4 -->|"Days since the date, or the combined freshness reading with..."| s3
-    s6 -->|"A response of hits (title, link, snippet, date, passages..."| s5
-    s6 -->|"A response of hits (title, link, snippet, date, passages..."| s7
-    s8 -->|"A report of the file change, or the reason it was declined..."| s7
+    s4 -->|"Days since the date, or the combined freshness reading with the stale areas named"| s3
+    s6 -->|"A response of hits (title, link, snippet, date, passages and their kind), an optional direct answer and the queries issued; raises SearchBackendError on failure"| s5
+    s6 -->|"A response of hits (title, link, snippet, date, passages and their kind), an optional direct answer and the queries issued; raises SearchBackendError on failure"| s7
+    s8 -->|"A report of the file change, or the reason it was declined; nothing changes when it declines"| s7
     s9 -->|"The result of the operation, or the reason it was declined"| s7
-    s10 -->|"A result that says whether the goal was met, with the..."| s7
-    s11 -->|"The file paths of a folder, and the text of the files asked..."| s7
+    s10 -->|"A result that says whether the goal was met, with the reason"| s7
+    s11 -->|"The file paths of a folder, and the text of the files asked for"| s7
 ```
 
 ## Solutions at a glance
@@ -66,7 +66,7 @@ flowchart LR
 - Every part picks its own model (`hprob-every-part-picks-its-own-model`): Each part that needs a model chooses and calls it its own way, so tier choice, cost and failover are repeated and drift apart.
 - One public benchmark trusted alone (`hprob-public-evals-relied-on-singly`): One public benchmark is trusted alone to rank parts, although it may measure a different task, be saturated or leaked into training data, and its source is rarely checked.
 - Best pick ignores circumstance (`hprob-one-best-pick-ignores-circumstance`): A part is ranked best overall, but which part is best depends on the circumstance (a cost limit, a speed limit, a language, the size of the input), so the single winner is wrong for many users.
-- Harness dear and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents...
+- Harness dear and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
 - Every product wires its own tools (`hprob-each-product-wires-its-own-tools`): Each product wires its own integrations and finds a person's data its own way, so a new kind of integration means new code and a person's data locations are asked for again by every product.
 - Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer cites a web page instead of the papers and data that bear on it, so the reader cannot check it.
 - Small edits pay for an agent (`hprob-small-edits-pay-for-an-agent`): A change to one file is routed to an agent session that costs and takes far more than the edit needs, or is hand-written for each product.

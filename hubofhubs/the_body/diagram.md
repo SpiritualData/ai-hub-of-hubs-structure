@@ -10,5 +10,5 @@ An arrow runs from the solution that provides to the solution that builds on it;
 flowchart LR
     s0["Card Store<br/><i>card-store</i>"]
     s1["Internal Context<br/><i>internal-context</i>"]
-    s0 -->|"The id of an added card, a card or nothing for an id, the..."| s1
+    s0 -->|"The id of an added card, a card or nothing for an id, the cards matching a query or a tag, whether a delete removed one, and the count"| s1
 ```

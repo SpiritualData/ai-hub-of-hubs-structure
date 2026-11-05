@@ -35,21 +35,21 @@ flowchart LR
     s16["Goal Completion<br/><i>goal-completion</i>"]
     s17["Response Quality<br/><i>response-quality</i>"]
     s18["Cards From Files<br/><i>cards-from-files</i>"]
-    s0 -->|"One signal: proceed, redirect, answer_now, escalate_deep or..."| s4
-    s3 -->|"Hits: unit id, file, first line, score, tokens and text..."| s2
+    s0 -->|"One signal: proceed, redirect, answer_now, escalate_deep or escalate_human; it never raises"| s4
+    s3 -->|"Hits: unit id, file, first line, score, tokens and text, best first; an empty list means no context is needed"| s2
     s6 -->|"Remembered events that bear on a request"| s5
     s7 -->|"The objectives in progress, their hierarchy and their state"| s5
     s8 -->|"Items offered to the Mind for a request"| s2
     s9 -->|"One view of the information for a request"| s4
-    s10 -->|"The pieces of a request, each with the sub-goal it must..."| s4
+    s10 -->|"The pieces of a request, each with the sub-goal it must meet"| s4
     s11 -->|"The result of a piece, from the worker that did it"| s4
     s12 -->|"The written plan, request or communication"| s4
-    s13 -->|"A nudge for the Planner, or nothing when none is due, and..."| s5
+    s13 -->|"A nudge for the Planner, or nothing when none is due, and context-specific quality criteria"| s5
     s14 -->|"Edited specs and metrics, and a run of the improvement loop"| s1
-    s15 -->|"A metric with a target value or improvement for a request..."| s1
+    s15 -->|"A metric with a target value or improvement for a request or a sub-goal"| s1
     s16 -->|"Whether the goal was met, with the reason"| s1
-    s17 -->|"The findings against each criterion of the profile; an..."| s1
-    s18 -->|"Cards in the card-store record shape (grouping, summary..."| s2
+    s17 -->|"The findings against each criterion of the profile; an empty list means the response held"| s1
+    s18 -->|"Cards in the card-store record shape (grouping, summary, keywords, files with their hashes), and the ids of kept cards whose files changed"| s2
 ```
 
 ## Solutions at a glance

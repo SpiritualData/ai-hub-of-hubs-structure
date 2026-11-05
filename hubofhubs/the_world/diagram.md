@@ -25,11 +25,11 @@ flowchart LR
     s1 -->|"A mapping from each tier to the chosen provider and model"| s2
     s1 -->|"A mapping from each tier to the chosen provider and model"| s8
     s2 -->|"The model's answer to a prompt at a tier"| s5
-    s4 -->|"Days since the date, or the combined freshness reading with..."| s3
-    s6 -->|"A response of hits (title, link, snippet, date, passages..."| s5
-    s6 -->|"A response of hits (title, link, snippet, date, passages..."| s7
-    s8 -->|"A report of the file change, or the reason it was declined..."| s7
+    s4 -->|"Days since the date, or the combined freshness reading with the stale areas named"| s3
+    s6 -->|"A response of hits (title, link, snippet, date, passages and their kind), an optional direct answer and the queries issued; raises SearchBackendError on failure"| s5
+    s6 -->|"A response of hits (title, link, snippet, date, passages and their kind), an optional direct answer and the queries issued; raises SearchBackendError on failure"| s7
+    s8 -->|"A report of the file change, or the reason it was declined; nothing changes when it declines"| s7
     s9 -->|"The result of the operation, or the reason it was declined"| s7
-    s10 -->|"A result that says whether the goal was met, with the..."| s7
-    s11 -->|"The file paths of a folder, and the text of the files asked..."| s7
+    s10 -->|"A result that says whether the goal was met, with the reason"| s7
+    s11 -->|"The file paths of a folder, and the text of the files asked for"| s7
 ```

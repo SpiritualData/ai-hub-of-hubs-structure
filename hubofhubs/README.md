@@ -21,10 +21,10 @@ flowchart LR
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
     s4["Consciousness<br/><i>the-consciousness</i>"]
-    s0 -->|"Material from outside the system, with its sources, and the..."| s1
-    s2 -->|"What a particular system declares about its own data and..."| s1
-    s3 -->|"A response to one request, with the step of every part that..."| s1
-    s4 -->|"The person's Representative, and what the system learned..."| s1
+    s0 -->|"Material from outside the system, with its sources, and the result of using an outside tool"| s1
+    s2 -->|"What a particular system declares about its own data and integrations"| s1
+    s3 -->|"A response to one request, with the step of every part that took part"| s1
+    s4 -->|"The person's Representative, and what the system learned from that person"| s1
 ```
 
 ## World (`the-world`)
@@ -47,7 +47,7 @@ Keep every part working as one whole for one request.
 
 ## Body (`the-body`)
 
-Let the hub apply to one particular system by declaring where its data lives, where its requests come from and which of its integrations the AI may use, and keep the run record, the configuration...
+Let the hub apply to one particular system by declaring where its data lives, where its requests come from and which of its integrations the AI may use, and keep the run record, the configuration, the environment variables, the secrets and the stored authentication the tools need.
 
 - Entry call: `hubofhubs.run("the-body", '')`
 - Selected implementation: Declared sources and enduring integrations (`composition`)
@@ -83,10 +83,10 @@ flowchart LR
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
     s4["Consciousness<br/><i>the-consciousness</i>"]
-    s0 -->|"Material from outside the system, with its sources, and the..."| s1
-    s2 -->|"What a particular system declares about its own data and..."| s1
-    s3 -->|"A response to one request, with the step of every part that..."| s1
-    s4 -->|"The person's Representative, and what the system learned..."| s1
+    s0 -->|"Material from outside the system, with its sources, and the result of using an outside tool"| s1
+    s2 -->|"What a particular system declares about its own data and integrations"| s1
+    s3 -->|"A response to one request, with the step of every part that took part"| s1
+    s4 -->|"The person's Representative, and what the system learned from that person"| s1
 ```
 
 ## Implementations

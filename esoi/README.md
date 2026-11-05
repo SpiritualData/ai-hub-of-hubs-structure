@@ -21,10 +21,10 @@ flowchart LR
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
     s4["Consciousness<br/><i>the-consciousness</i>"]
-    s0 -->|"Material from outside the system, with its sources, and the..."| s1
-    s2 -->|"What a particular system declares about its own data and..."| s1
-    s3 -->|"A response to one request, with the step of every part that..."| s1
-    s4 -->|"The person's Representative, and what the system learned..."| s1
+    s0 -->|"Material from outside the system, with its sources, and the result of using an outside tool"| s1
+    s2 -->|"What a particular system declares about its own data and integrations"| s1
+    s3 -->|"A response to one request, with the step of every part that took part"| s1
+    s4 -->|"The person's Representative, and what the system learned from that person"| s1
 ```
 
 ## Solutions at a glance
@@ -70,10 +70,10 @@ flowchart LR
 ## Where to go next
 
 - Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md) (The AI system has a form and its own internal context, and the hub applies to a particular system by providing adapters or declaring the system's internal APIs, databases and files.)
-- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI representatives of a team learn each person's way: which authority they carry, when to ask that person and when not to, which priorities the person implies, and how that person wants the work...)
-- Sub-intent: [Processing information for one request](../hubofhubs/the_intelligence/README.md) (One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the...)
+- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI representatives of a team learn each person's way: which authority they carry, when to ask that person and when not to, which priorities the person implies, and how that person wants the work done, from the person's own feedback.)
+- Sub-intent: [Processing information for one request](../hubofhubs/the_intelligence/README.md) (One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the result is checked for goal completion and response quality.)
 - Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md) (The parts of the system work as one whole: each part knows its role, what the system claims matches its evidence, its records match its code, and one call builds the parts from configuration.)
-- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and...)
+- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and keeps its own research current.)
 - Repository: [top README](../README.md)
 - Records beside the code: [hubofhubs](../hubofhubs/README.md)
 - Records: [intent.csv](intent.csv)
