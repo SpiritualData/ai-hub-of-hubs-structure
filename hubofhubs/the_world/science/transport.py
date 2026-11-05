@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Mapping, Optional
 
-from esoi.entry import Offline
+from esoi import Offline
 
 from hubofhubs.the_world.science.scholarly import ScholarlyError
 

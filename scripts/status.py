@@ -12,8 +12,8 @@ sys.path.insert(0, str(ROOT))
 
 from esoi import config as esoi_config  # noqa: E402
 from esoi import registry as esoi_registry  # noqa: E402
-from esoi.intents import read_tree  # noqa: E402
-from esoi.tables import read_csv  # noqa: E402
+from esoi import read_tree  # noqa: E402
+from esoi import read_csv  # noqa: E402
 from hubofhubs.the_self.integrity import evidence_summary, render_docs, requirements_doc  # noqa: E402
 
 TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
@@ -45,7 +45,7 @@ def names_by_id():
 
 def seats():
     """``(seat id, part of the mind, the part it is inside)`` for each part in ``evidence_summary.MIND_TREE``, in the order of the tree, named by
-    the records tree (``esoi.intents.read_tree``). A part with no researched area still appears, with 0."""
+    the records tree (``esoi.read_tree``). A part with no researched area still appears, with 0."""
     names = names_by_id()
     return [(sid, names[sid], names[inside] if inside else "") for sid, inside in evidence_summary.MIND_TREE if sid in names]
 

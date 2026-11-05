@@ -20,7 +20,7 @@ def test_readme_table_lists_every_seat_with_its_area_count():
 
 
 def test_every_solution_of_the_records_has_one_place_in_the_tree():
-    from esoi.intents import read_tree
+    from esoi import read_tree
     from hubofhubs.the_self.integrity import evidence_summary
     placed = [sid for sid, _inside in evidence_summary.MIND_TREE]
     recorded = {r["solution_id"] for r in read_tree(status.ROOT / "esoi", "solutions.csv")}

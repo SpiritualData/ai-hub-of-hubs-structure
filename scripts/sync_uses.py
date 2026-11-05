@@ -1,6 +1,6 @@
 """Write (or with --check, verify) the uses_solution_ids column of the implementations.csv records from the constructor parameters
 typed with a seat Protocol, and check the graph (no cycles, every need resolves or is consumer-provided). The work is the
-library's (``esoi.assemble``); this binds it to the hub's records.
+library's (``esoi.runtime.assemble_by_name.assemble``); this binds it to the hub's records.
 
     python3 scripts/sync_uses.py --check     # exit 1 and print each disagreement
     python3 scripts/sync_uses.py             # rewrite the column

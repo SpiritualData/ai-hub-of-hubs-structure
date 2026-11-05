@@ -56,7 +56,7 @@ who ran it, whether the method is disclosed, its `n`, and its known confounds (`
 ## Circumstances
 
 The best arm can depend on the model and the harness. Each run records both, and a seat may select a different arm per
-circumstance when the results show it (`esoi.circumstances`). "No add-on" is always an arm of an additive seat, so an
+circumstance when the results show it (`esoi.optimization.leaderboard.circumstances`). "No add-on" is always an arm of an additive seat, so an
 add-on has to earn its place over the model and harness as they are.
 
 ## What counts as an alternative

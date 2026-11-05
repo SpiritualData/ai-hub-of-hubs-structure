@@ -1,7 +1,7 @@
 """CriticalThinkingComposition."""
 from typing import Any, Mapping, Optional
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_consciousness.representatives.quality import resolve_profile
 from hubofhubs.the_intelligence.critical_thinking.esoi_application.interface import EsoiApplying
 from hubofhubs.the_intelligence.critical_thinking.goal_completion.interface import GoalCompleting

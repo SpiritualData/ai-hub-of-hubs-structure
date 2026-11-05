@@ -10,9 +10,9 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from esoi import cascade, evidence, evidence_table, leaderboard
-from esoi.config import Config
-from esoi.registry import Registry, harness_arms
-from esoi.tables import ids, read_csv
+from esoi import Config
+from esoi import Registry, harness_arms
+from esoi import split_ids as ids, read_csv
 
 EVIDENCE_BEGIN, EVIDENCE_END = "<!-- evidence:start -->", "<!-- evidence:end -->"
 UNMEASURED_BEGIN, UNMEASURED_END = "<!-- unmeasured:start -->", "<!-- unmeasured:end -->"

@@ -1,7 +1,7 @@
 """IntelligenceComposition."""
 from typing import Any, Callable, List, Mapping, Optional, Sequence
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_consciousness.representatives.quality import resolve_profile
 from hubofhubs.the_intelligence.critical_thinking.interface import CriticalThinking
 from hubofhubs.the_intelligence.higher_mind.interface import HigherMind

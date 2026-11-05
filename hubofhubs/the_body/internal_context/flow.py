@@ -3,7 +3,7 @@ run records of the flow kept apart in the run store."""
 from typing import Any, Dict, Mapping, Sequence
 
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 
 from hubofhubs.the_body.internal_context.card_store.card import Card
 from hubofhubs.the_body.internal_context.card_store.interface import CardStore

@@ -69,7 +69,7 @@ system = hubofhubs.assemble(arms={"vendor-model-caller": "anthropic"}, options={
 `run(id, input, **overrides)` is the single entry point (the `ahohs run` command wraps it). The id is a solution id or `hub-of-hubs` for the whole hub, which
 answers from the live web and returns a `Result` whose items are its sources. `hubofhubs.run(CardStore)` (a Protocol from `hubofhubs.seats`) returns the typed ready handle.
 Keywords override only what differs: `arms=`, `options=`, `provided=`, `lock=`, `environ=`. `hubofhubs.needs(id)` lists what your setup still lacks, and a call that cannot run
-raises `esoi.entry.Pending` with those lines.
+raises `esoi.Pending` with those lines.
 
  whose selected arm needs nothing more from you. Today that is `vendor-model-caller`, `card-store`, `model-tier-chooser`, `model-call`,
 `research-freshness-reader`, and `nervous-system`; the other seats are in `system.pending`, one line each saying what to pass:

@@ -9,8 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
-from esoi.assemble import AssemblyError
-from esoi.entry import declared
+from esoi import AssemblyError
+from esoi import declared_entry as declared
 
 DONE, PENDING, SKIPPED = "done", "pending", "skipped"
 NO_ARM = "no arm yet"

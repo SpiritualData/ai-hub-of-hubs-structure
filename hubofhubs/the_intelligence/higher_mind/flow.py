@@ -1,7 +1,7 @@
 """HigherMindComposition."""
 from typing import Any, Mapping
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_intelligence.higher_mind.long_term_memory.interface import LongTermMemory
 from hubofhubs.the_intelligence.higher_mind.objectives.interface import Objectives
 from hubofhubs.the_intelligence.higher_mind.guidance.interface import Guiding

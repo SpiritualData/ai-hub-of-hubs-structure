@@ -1,4 +1,4 @@
-"""The hub's binding of esoi.assemble: its default arm, its name for the default layer, its refusal to be shadowed.
+"""The hub's binding of esoi.runtime.assemble_by_name.assemble: its default arm, its name for the default layer, its refusal to be shadowed.
 The generic behaviour (names, cascade, build order, cycles, safe loading) is tested in the esoi library."""
 import sys
 from pathlib import Path
@@ -57,7 +57,7 @@ def test_assemble_overrides_name_only_what_differs():
 
 
 def test_a_child_assembler_builds_on_the_hub_and_the_hub_is_unchanged_by_it(tmp_path):
-    from esoi.assemble import Assembler
+    from esoi import Assembler
     from hubofhubs import assembler
     child = Assembler("childpkg", tmp_path, parent=assembler())
     assert child.choice("card-store").layer == "hubofhubs default" and assembler().choice("card-store").name == "local_card_store"

@@ -4,7 +4,7 @@ from datetime import date
 from pathlib import Path
 
 from esoi import implementation
-from esoi.tables import ids, read_csv
+from esoi import split_ids as ids, read_csv
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 DATA = Path(__file__).resolve().parents[3] / "registry"

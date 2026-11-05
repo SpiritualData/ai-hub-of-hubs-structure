@@ -7,7 +7,7 @@ import json
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 
 from hubofhubs.the_intelligence.mind.planner.planning import sub_goal, unmet_pieces
 from hubofhubs.the_intelligence.mind.planner.schema import normalize_choice

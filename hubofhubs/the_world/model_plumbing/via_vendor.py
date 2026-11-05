@@ -4,7 +4,7 @@ Standard library only."""
 from typing import Any, Mapping, MutableMapping, Optional
 
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 
 from hubofhubs.the_world.model_plumbing.vendor_model_caller.interface import ModelCalling
 from hubofhubs.the_world.model_plumbing.model_tier_chooser.interface import TierSelection

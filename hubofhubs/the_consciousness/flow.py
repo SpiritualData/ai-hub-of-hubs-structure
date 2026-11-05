@@ -1,7 +1,7 @@
 """ConsciousnessComposition."""
 from typing import Any, Mapping, Optional, Sequence
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_intelligence.critical_thinking.esoi_application.interface import EsoiApplying
 from hubofhubs.the_consciousness.feedback_learning.interface import FeedbackLearning
 from hubofhubs.the_consciousness.judgment_calls.interface import JudgmentCalling

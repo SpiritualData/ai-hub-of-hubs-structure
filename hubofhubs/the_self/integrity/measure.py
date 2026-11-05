@@ -1,7 +1,7 @@
 """Reads the registry together with one consumer's code (a ``Binding``) and answers, per area, whether the hub-of-hubs idea
 holds. ``evaluate`` returns the per-area facts and the combined numbers; ``check`` answers one case. It is the code of a metric (the share of
 connections that need no code, a metric of Tools and of Hands), not a solution with arms."""
-from esoi.intents import read_tree
+from esoi import read_tree
 
 from hubofhubs.the_world.learning.research_freshness_reader import registry
 from hubofhubs.the_self.integrity import scan

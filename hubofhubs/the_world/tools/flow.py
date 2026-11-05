@@ -3,8 +3,8 @@ import functools
 import inspect
 from typing import Any, Callable, Mapping, Optional
 from esoi import implementation
-from esoi.assemble import Lazy
-from esoi.entry import call_entry, declared
+from esoi import Lazy
+from esoi import call_entry, declared_entry as declared
 from hubofhubs.the_self.assembler.resolution import HUB
 from hubofhubs.the_world.tools.delegated_agent_sessions.interface import AgentSessions
 from hubofhubs.the_world.tools.connected_system_operations.interface import ConnectedOperating

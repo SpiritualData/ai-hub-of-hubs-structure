@@ -8,7 +8,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hubofhubs  # noqa: E402
-from esoi.entry import Pending  # noqa: E402
+from esoi import Pending  # noqa: E402
 from hubofhubs.the_consciousness.representatives import quality  # noqa: E402
 from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal  # noqa: E402
 from hubofhubs.the_self.steps import NO_ARM  # noqa: E402
@@ -123,7 +123,7 @@ def test_the_mind_checks_the_risk_signal_and_the_persons_decision_before_it_dele
 class Absent:
     """A seat that has no arm: reading any method of it fails the way an unbuilt seat does."""
     def __getattr__(self, name):
-        from esoi.assemble import AssemblyError
+        from esoi import AssemblyError
         raise AssemblyError("no arm yet for this seat")
 
 

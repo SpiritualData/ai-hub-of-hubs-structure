@@ -1,11 +1,11 @@
-"""The hub's binding of the generic ``esoi.assemble``: one ``Assembler`` for scope ``hubofhubs``, and the public names a consumer
+"""The hub's binding of the generic ``esoi.runtime.assemble_by_name.assemble``: one ``Assembler`` for scope ``hubofhubs``, and the public names a consumer
 imports. Name validation, safe loading, the cascade, needs from typed parameters, build order and startup failure are the
 library's (``esoi/docs/explanation/what-belongs-where.md``); the seats are in ``hubofhubs.seats``.
 """
 import os
 from pathlib import Path
 
-from esoi.assemble import Assembler, AssemblyConfig
+from esoi import Assembler, AssemblyConfig
 
 SCOPE = "hubofhubs"
 PACKAGE_DIR = Path(__file__).resolve().parents[2]

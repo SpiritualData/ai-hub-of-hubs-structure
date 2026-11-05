@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from esoi import requirements as needs
-from esoi.assemble import AssemblyConfig
+from esoi import AssemblyConfig
 
 from hubofhubs.the_self.assembler.resolution import assembler
 
@@ -55,7 +55,7 @@ def arm_cells(items) -> Dict[str, List[str]]:
 
 def arm_names() -> Dict[str, str]:
     """``{solution id:arm: "Part name, Arm name"}`` from the records of a checkout, so the table is read by names; empty in an installed package."""
-    from esoi.intents import read_tree
+    from esoi import read_tree
     root = Path(__file__).resolve().parents[3] / "esoi"
     try:
         parts = {r["solution_id"]: r["name"] for r in read_tree(root, "solutions.csv")}

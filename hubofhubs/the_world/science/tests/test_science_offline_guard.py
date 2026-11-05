@@ -63,6 +63,6 @@ def test_crossref_does_not_swallow_the_guard():
 def test_the_entry_check_never_counts_know_the_world_ok():
     import subprocess
     root = Path(__file__).resolve().parents[4]
-    done = subprocess.run([sys.executable, "-m", "esoi.entry"], cwd=root, capture_output=True, text=True, timeout=240)
+    done = subprocess.run([sys.executable, "-m", "esoi.runtime.assemble_by_name.entry_cli"], cwd=root, capture_output=True, text=True, timeout=240)
     line = [one for one in done.stdout.splitlines() if "the-science" in one and one.startswith(("ok", "live", "pending"))]
     assert line and not line[0].startswith("ok"), done.stdout[-600:]

@@ -6,7 +6,7 @@ order. This page is the plain list; nothing here is done by a script.
 ## What must be true first
 
 1. The working tree is clean and `main` holds the release (`pyproject.toml` `version`, a `CHANGELOG.md` entry with the same number).
-2. These pass: `python3 scripts/status.py`, `esoi check`, `python3 -m esoi.coherence --gate`, `esoi docs check`, `esoi hygiene`,
+2. These pass: `python3 scripts/status.py`, `esoi check`, `python3 -m esoi.structure.structure_check.coherence --gate`, `esoi docs check`, `esoi hygiene`,
    and the tests of the files you touched (by file, never the whole suite).
 3. `from hubofhubs.api import ...` resolves every public name: `python3 -m pytest tests/test_public_api.py`.
 4. Quest AI Runner and quest-backend import only from `hubofhubs.api` and `hubofhubs.run`, so they are ready for the new layout

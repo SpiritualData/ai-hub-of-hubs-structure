@@ -31,7 +31,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Mapping, Optional
 
 from esoi import implementation
-from esoi.requirements import env
+from esoi import requirements
 
 from hubofhubs.the_world.tools.web_search.search_port import SearchBackendError, SearchHit, SearchResponse
 from hubofhubs.the_world.tools.web_search.interface import SearchBackend  # noqa: F401  (the seat Protocol, importable from here)
@@ -125,9 +125,9 @@ class ConfiguredJsonBackend:
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
         if cls.spec.get("key_env"):
-            names = tuple(cls.spec["key_env"])      # option <- the variable names the description lists (esoi.assemble)
+            names = tuple(cls.spec["key_env"])      # option <- the variable names the description lists (esoi.runtime.assemble_by_name.assemble)
             declared = KEY_APIS.get(cls.spec.get("name"))
-            cls.REQUIRES = (needs.WEB_SEARCH_NETWORK, declared or env(names[0], option="api_key", secret=True, also=names[1:]), needs.HTTPX)
+            cls.REQUIRES = (needs.WEB_SEARCH_NETWORK, declared or requirements.env(names[0], option="api_key", secret=True, also=names[1:]), needs.HTTPX)
 
     def __init__(self, api_key: str = "", http: HttpCallable = default_http) -> None:
         self.api_key = api_key

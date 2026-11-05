@@ -1,7 +1,7 @@
 """BodyComposition."""
 from typing import Any, Mapping
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_body.internal_context.interface import InternalContexting
 from hubofhubs.the_body.intake_sources.interface import IntakeSourcing
 from hubofhubs.the_body.hands.interface import Connecting

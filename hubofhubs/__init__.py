@@ -12,7 +12,7 @@ module takes a mapping and reads none.
 """
 from hubofhubs.the_self.integrity.binding import Binding
 from hubofhubs.the_self.integrity.measure import evaluate, evaluate_seats, check, metrics
-from esoi.assemble import Assembly, AssemblyConfig, AssemblyError
+from esoi import Assembly, AssemblyConfig, AssemblyError
 from hubofhubs.the_self.assembler.oneline import Result, needs
 from hubofhubs.the_self.assembler.resolution import HUB, assemble, assembler, choice, names, register, resolve
 from esoi import entry

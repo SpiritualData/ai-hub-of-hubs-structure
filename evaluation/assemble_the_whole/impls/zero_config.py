@@ -4,7 +4,7 @@ import re
 import sys
 from pathlib import Path
 
-from esoi.entry import Pending
+from esoi import Pending
 
 import hubofhubs
 

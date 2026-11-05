@@ -1,5 +1,5 @@
 """The folder a keyed JSON-lines ledger is kept in. The file-per-key store itself is esoi's ``RunFiles``
-(``esoi.metric_results``): a tool-call ledger and a metric ledger both use it, because both are records "kept by the runner and
+(``esoi.optimization.keep_metric_record.metric_results``): a tool-call ledger and a metric ledger both use it, because both are records "kept by the runner and
 never by a model", written by two processes at once (the brain, and a worker's shell command). This module adds only where
 such a ledger lives."""
 from __future__ import annotations

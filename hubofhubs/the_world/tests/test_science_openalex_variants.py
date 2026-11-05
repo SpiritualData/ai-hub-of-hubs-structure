@@ -75,7 +75,7 @@ def test_the_model_arm_sends_what_the_model_wrote_and_falls_back_to_the_rewrite_
 
 
 def test_the_key_is_an_optional_environ_option_every_openalex_arm_inherits():
-    from esoi.assemble import environ_declared, environ_fill, environ_lacking
+    from esoi import environ_declared, environ_fill, environ_lacking
     from hubofhubs.the_world.science.openalex import OpenAlexWorks
     for arm in (OpenAlexWorks, OpenAlexSemantic, OpenAlexKeywords, OpenAlexKeywordsModel):
         assert environ_declared(arm) == {"api_key": ("OPENALEX_API_KEY",)}

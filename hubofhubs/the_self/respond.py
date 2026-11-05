@@ -3,7 +3,7 @@ run store and has Integrity audit it. Standard library plus the hub and ``esoi``
 import time
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_self.assembler.oneline import Result
 from hubofhubs.the_body.interface import FormAndContext
 from hubofhubs.the_self.integrity.interface import Genericity

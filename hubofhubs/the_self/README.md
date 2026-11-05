@@ -80,4 +80,4 @@ The Self keeps the parts of the system working as one whole. To respond to a req
 - Behaviour matches the stated role (`metric-role-understanding`): `none`
 - Whole assembly (`metric-the-assembler`): `none`
 - Consumer-specific strings found by scan (`metric-system-integrity`): `none`
-- Intents whose solutions one paragraph and one diagram explain as the code builds them (`metric-solution-coherence`): `python3 -m esoi.coherence --gate`
+- Intents whose solutions one paragraph and one diagram explain as the code builds them (`metric-solution-coherence`): `python3 -m esoi.structure.structure_check.coherence --gate`

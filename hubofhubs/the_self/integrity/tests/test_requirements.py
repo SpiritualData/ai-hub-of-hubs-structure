@@ -8,8 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 from support import ROOT  # noqa: E402
 
 from esoi import requirements as needs  # noqa: E402
-from esoi.assemble import AssemblyConfig  # noqa: E402
-from esoi.installer import assembly_plan  # noqa: E402
+from esoi import AssemblyConfig  # noqa: E402
+from esoi import assembly_plan  # noqa: E402
 
 from hubofhubs import assembler
 from hubofhubs.the_self.integrity import requirements_doc  # noqa: E402

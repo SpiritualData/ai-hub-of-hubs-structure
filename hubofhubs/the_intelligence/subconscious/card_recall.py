@@ -6,7 +6,7 @@ first use, so recall alone never asks for what building cards needs (a model).""
 from typing import Any, List, Mapping, Optional, Sequence
 
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 
 from hubofhubs.the_body.internal_context.card_store.card import Card
 from hubofhubs.the_intelligence.subconscious.cards_from_files.interface import CardsFromFiles

@@ -17,7 +17,7 @@ def test_an_account_that_cannot_write_the_shared_folder_gets_its_own(tmp_path, m
 
 def test_the_tool_ledger_keeps_its_files_with_esois_run_files(tmp_path):
     """The file-per-key store is esoi's: one implementation, not a copy beside it."""
-    from esoi.metric_results import RunFiles
+    from esoi import RunFiles
     from hubofhubs.the_body.internal_context.run_store.tool_ledger import FileToolLedger
     ledger = FileToolLedger(str(tmp_path))
     assert type(ledger.files) is RunFiles and not hasattr(jsonl_ledger, "KeyedJsonlFiles")

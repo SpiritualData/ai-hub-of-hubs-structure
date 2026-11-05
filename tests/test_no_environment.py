@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 from esoi import config as esoi_config
-from esoi import runtime
+from esoi import selection
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -98,7 +98,7 @@ def test_the_hubs_own_esoi_toml_has_no_selection_table():
 def test_the_packaged_snapshot_equals_the_records():
     packaged = json.loads((ROOT / "hubofhubs" / "esoi_selection.json").read_text())
     intents = packaged.pop("@intents")      # the one-line entry's map of intents to their root solutions, beside the arm defaults
-    assert packaged == runtime.snapshot(esoi_config.load(ROOT))
+    assert packaged == selection.snapshot(esoi_config.load(ROOT))
     assert intents["intents"]["hub-of-hubs"]["root"] == "the-self"
 
 

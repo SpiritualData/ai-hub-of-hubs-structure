@@ -17,7 +17,7 @@ from __future__ import annotations
 from typing import Any, Mapping, Optional
 from urllib.parse import quote
 
-from esoi.entry import Offline
+from esoi import Offline
 
 from hubofhubs.the_world.science.scholarly import ScholarlyError, Work, WorksResult
 from hubofhubs.the_world.science.openalex import doi_of, one_line, web_url

@@ -23,7 +23,7 @@ import time
 from dataclasses import asdict, dataclass
 from typing import Dict, Iterable, List, Optional
 
-from esoi.metric_results import RunFiles
+from esoi import RunFiles
 
 from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import default_directory
 

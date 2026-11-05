@@ -1,7 +1,7 @@
 """WorldComposition."""
 from typing import Any, Mapping, Sequence
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 from hubofhubs.the_self.assembler.oneline import hit_items
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 from hubofhubs.the_world.learning.interface import Staying

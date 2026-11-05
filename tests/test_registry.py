@@ -190,7 +190,7 @@ def test_connection_checks_are_cases_only_for_seats_with_an_area_that_should_be_
 
 
 def test_every_area_maps_to_a_seat_of_the_mind():
-    from esoi.intents import read_tree
+    from esoi import read_tree
     root = Path(__file__).resolve().parent.parent
     solutions = {r["solution_id"] for r in read_tree(root / "esoi", "solutions.csv")}
     hubs = registry.read("hubs.csv")

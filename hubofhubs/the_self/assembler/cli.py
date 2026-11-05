@@ -8,7 +8,7 @@ import json
 import sys
 from typing import List, Optional
 
-from esoi.entry import EntryError, Pending
+from esoi import EntryError, Pending
 
 from hubofhubs.the_self.assembler.oneline import Result
 

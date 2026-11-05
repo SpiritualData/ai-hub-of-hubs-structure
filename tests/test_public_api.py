@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from support import ROOT  # noqa: E402
 
 import hubofhubs  # noqa: E402
-from esoi import runtime  # noqa: E402
+from esoi import selection  # noqa: E402
 from hubofhubs import api  # noqa: E402
 
 INTERNAL_IMPORT = re.compile(r"^\s*(?:>>> |\.\.\. )?(?:from|import) hubofhubs\.(?!api\b)[A-Za-z_]", re.M)
@@ -26,7 +26,7 @@ def test_every_public_name_resolves():
 def test_every_interface_of_the_records_is_exported():
     hubofhubs.HUB.prepare()
     unexported = []
-    for key, entry in runtime.REGISTRY.items():
+    for key, entry in selection.REGISTRY.items():
         if entry.interface is None or key[0] != "hubofhubs":
             continue
         name = entry.interface.__name__

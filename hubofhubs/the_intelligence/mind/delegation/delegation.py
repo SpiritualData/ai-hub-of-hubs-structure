@@ -9,7 +9,7 @@ Standard library plus the hub and ``esoi``."""
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 
 from hubofhubs.the_world.tools.interface import Tooling
 from hubofhubs.the_world.science.interface import WorldKnowing

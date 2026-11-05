@@ -70,7 +70,7 @@ print(hubofhubs.needs("web-search", environ={}))
 `hubofhubs.run(id, input)` is the one function for a script, a terminal and a recorded replay. The id is a solution id such as
 `card-store`, `web-search` or `the-subconscious`, or `hub-of-hubs` for the whole hub, which answers from the live web through the
 selected `web-search` arm and returns a `Result` (`str(result)` is the answer; it also carries items with sources, a trace, the
-arms used, a note and `events`). A call that cannot run yet raises `esoi.entry.Pending` whose message names the key or install. A live
+arms used, a note and `events`). A call that cannot run yet raises `esoi.Pending` whose message names the key or install. A live
 run on 2026-11-01 of `hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")` answered "The latest stable release of Rust is
 version 1.99.1", citing https://blog.rust-lang.org/releases/latest/ and https://releases.rs/. The first line above prints the card found;
 the second prints what `web-search` still needs: the line names `GEMINI_API_KEY` with the signup link.

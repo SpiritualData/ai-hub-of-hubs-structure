@@ -4,7 +4,7 @@ and returns the text. A piece that was refused or failed is said so plainly, nev
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
-from esoi.assemble import Lazy
+from esoi import Lazy
 
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 

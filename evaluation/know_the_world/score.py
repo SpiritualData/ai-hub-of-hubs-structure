@@ -42,7 +42,7 @@ def optional_settings(arm_class):
     """The options the arm's ``ENVIRON`` declares and the process environment supplies, filled the way esoi's consumer environ fills
     them (``environ_fill``); an option with no variable set is left out, so the arm runs keyless. Values are never printed."""
     import os
-    from esoi.assemble import environ_fill
+    from esoi import environ_fill
     return {option: os.environ[name] for option, name in environ_fill(arm_class, {}, os.environ).items()}
 
 

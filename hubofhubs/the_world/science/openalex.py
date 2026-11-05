@@ -38,7 +38,7 @@ from urllib.parse import urlparse
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Union
 
 from esoi import implementation
-from esoi.entry import Offline
+from esoi import Offline
 
 from hubofhubs.the_world.observation import Observation
 from hubofhubs.the_world.science.scholarly import ScholarlyError, Work, WorksResult

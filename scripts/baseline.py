@@ -12,7 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from esoi.intents import read_tree
+from esoi import read_tree
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "reference" / "baseline.json"

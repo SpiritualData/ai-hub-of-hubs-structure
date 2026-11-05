@@ -23,7 +23,7 @@ Next:
 1. Call any id the same way, `hubofhubs.run("card-store", "rust release")`; compare with other frameworks in [compared](docs/explanation/compared.md). `hubofhubs.needs("hub-of-hubs")` lists what your setup lacks, and `result.steps` of the whole hub lists what every part did.
 2. Override only what differs: `arms={"web-search": "serper"}`, `options={...}` or `provided={"card-store": obj}`; pin the defaults with `lock="esoi.lock.json"`, made by `esoi lock`.
 
-A question that needs the live web (for example `what is the latest Rust version?`) uses the web-search part, which needs a free Gemini key (`GEMINI_API_KEY`, from https://aistudio.google.com/apikey); the default context retriever needs only the standard library. A call that cannot run yet raises `esoi.entry.Pending` naming the exact key, install or network access (every arm that reaches a service declares `network(...)`, so an offline run, with `ESOI_OFFLINE=1`, is pending instead of attempting the call).
+A question that needs the live web (for example `what is the latest Rust version?`) uses the web-search part, which needs a free Gemini key (`GEMINI_API_KEY`, from https://aistudio.google.com/apikey); the default context retriever needs only the standard library. A call that cannot run yet raises `esoi.Pending` naming the exact key, install or network access (every arm that reaches a service declares `network(...)`, so an offline run, with `ESOI_OFFLINE=1`, is pending instead of attempting the call).
 
 ## The hub as a mind
 

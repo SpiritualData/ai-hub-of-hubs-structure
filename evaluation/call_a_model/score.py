@@ -34,7 +34,7 @@ def final_number(text):
 
 
 def adapt(implementation, meter):
-    from esoi.harness import RunError
+    from esoi import RunError
     name = implementation.__name__
     if name == "ClaudeCliProvider":
         # Runs on the Claude Code subscription: no key, no per-token price. Tokens are those the CLI reports; cost is the CLI's own list-price figure.

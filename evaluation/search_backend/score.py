@@ -53,7 +53,7 @@ def from_gold_source(url, gold_urls, title=""):
 
 def settings_for(arm_class):
     """The constructor keywords the arm's declared environment variables name, read from the environment; NoCredential when one is unset."""
-    from esoi.assemble import environ_declared
+    from esoi import environ_declared
     found = {}
     for option, names in environ_declared(arm_class).items():
         names = (names,) if isinstance(names, str) else names

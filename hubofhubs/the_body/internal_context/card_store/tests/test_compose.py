@@ -8,7 +8,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[5]))
 import hubofhubs  # noqa: E402
-from esoi.entry import Pending  # noqa: E402
+from esoi import Pending  # noqa: E402
 from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E402
 from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore  # noqa: E402
 from hubofhubs.the_body.internal_context.card_store.interface import CardStore  # noqa: E402

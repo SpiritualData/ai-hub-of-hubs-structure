@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from hubofhubs import AssemblyConfig, AssemblyError, assemble, resolve
 from hubofhubs.the_world.learning.research_freshness_reader import registry  # noqa: E402
 from hubofhubs.the_self.assembler.resolution import HUB  # noqa: E402
-from esoi.intents import read_tree  # noqa: E402
+from esoi import read_tree  # noqa: E402
 import importlib  # noqa: E402
 from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E402
 from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore  # noqa: E402
