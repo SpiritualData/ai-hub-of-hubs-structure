@@ -70,7 +70,7 @@ flowchart TB
 - **Subconscious**: finds and prepares the information a request needs, without crossing into another person's data: Context Retriever, Cards From Files and Intuition (useful things that surface unasked).
 - **Critical Thinking**: says what success means and checks it was reached: Metric Translation, Goal Completion, Response Quality and ESOI Application (keeps the system's own specs and scores improving).
 - **Nervous System**: one risk signal before steps that cannot be undone or that belong to a person.
-- **Proactivity**: starts standing work when it is due, without being asked.
+- **Proactivity**: starts standing work when it is due, without being asked: by calendar period in the person's own time zone, a requested run, an event or elapsed time. With Prioritization it is the foundation of an autopilot ([build one](docs/how-to/build-an-autopilot-on-the-hub.md)).
 
 **World**
 - **Tools**: the best tool of each kind (web search, reading and editing files, connected systems, agent sessions) without wiring each one.
@@ -82,7 +82,7 @@ flowchart TB
 - **Representatives**: an AI acts for a person within the authority that person gave.
 - **Judgment Calls**: asks a person only when they would want to be asked, and decides how.
 - **Feedback Learning**: a correction given once changes behaviour afterwards.
-- **Prioritization**: turns the priorities a person implies into scores the system can optimize.
+- **Prioritization**: turns the priorities a person states or implies into scores the system can optimize, and puts the work that competes for attention in order with a reason for each place.
 - **Request Intake**: takes in each request once, from wherever the system listens.
 
 Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. The full table of parts, with their research, is on [the mind map](docs/explanation/the-mind-map.md).
