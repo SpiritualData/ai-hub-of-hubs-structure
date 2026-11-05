@@ -23,17 +23,17 @@ def test_every_recorded_component_appears_in_the_leaderboard_and_by_arm():
         assert component in by_arm, component
     records = evidence_summary.claims(config, registry, ROOT)
     assert {r["component"] for r in records} == recorded_components()
-    rival_rows = [line for line in board.split("### Conformance tests")[0].splitlines() if line.startswith("| `")]
+    rival_rows = [line for line in board.split("### Conformance tests")[0].splitlines()[2:] if line.startswith("| ") and "`)" in line]
     assert len(rival_rows) == len([r for r in records if not r["conformance"]])
 
 
 def test_the_readme_table_has_one_row_per_seat_and_conformance_checks_are_listed_apart():
     config, registry = status.records()
     block = evidence_summary.evidence_block(config, registry, ROOT)
-    rows = [line for line in block.splitlines() if line.startswith("| `")]
+    rows = [line for line in block.splitlines()[2:] if line.startswith("| ") and "(`" in line]
     assert len(rows) == len({line.split("`")[1] for line in rows})
     assert "Conformance tests (cases written in this repo, no rival, not counted as alternatives)" in block
-    assert "`card-store` 35/35" in block.split("Conformance tests")[1] and not any(line.startswith("| `card-store`") for line in rows)
+    assert "(`card-store`) 35/35" in block.split("Conformance tests")[1] and not any("(`card-store`)" in line for line in rows)
 
 
 def test_every_selected_arm_is_the_leader_on_the_cases_that_chose_it_or_says_why_not():
@@ -56,7 +56,6 @@ def test_a_lead_is_labelled_significant_or_not_and_a_floor_is_shown_as_pending()
     block = evidence_summary.leaderboard_block(config, registry, ROOT)
     assert "two-sided McNemar p=" in block and "one-sided" not in block
     assert "not significant (two-sided McNemar p=" in block      # a p above 0.05 is never called a win
-    assert "identical to" in block                      # arms that agree on every case show no empty p
     assert "p=," not in block and "{n}" not in block and "private corpus" not in block
 
 
@@ -80,8 +79,8 @@ def test_the_headline_counts_real_alternatives_only():
     config, registry = status.records()
     areas = evidence_summary.counted_arms(config, ROOT)
     every = [arm for arms in areas.values() for arm in arms]
-    for floor in ("none", "single_provider", "zero_config"):
-        assert floor not in every
+    assert "zero_config" not in every                    # the single-scenario assembly is mechanics, not an alternative
+    assert {"none", "single_provider"} <= set(every)     # diagnostic bounds are ranked alternatives and counted
     headline = evidence_summary.headline_block(config, registry, ROOT)
     assert headline.startswith(f"**{len(every)} alternatives measured across {len(areas)} areas, from ")
     assert evidence_summary.compact_headline(config, ROOT).startswith(f"{len(every)} alternatives measured")

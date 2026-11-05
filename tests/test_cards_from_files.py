@@ -97,13 +97,15 @@ def test_the_builder_runs_once_and_its_cost_lands_on_the_first_case(corpus):
         return arms.PerFileSymbols().build(root, files, existing)
     fn = score.view_function(builder, None)
     first, second = score.score_case(fn, corpus.cases[0]), score.score_case(fn, corpus.cases[1])
-    assert len(calls) == 1 and "build" in first and "build" not in second
-    assert set(first["build"]) == {"cards", "id", "calls", "tokens", "cost", "seconds"}
+    assert len(calls) == 2 and "build" in first      # the build, then one refresh from its own cards over the unchanged corpus
+    assert "build" in first and "build" not in second
+    assert set(first["build"]) == {"cards", "id", "calls", "tokens", "cost", "seconds", "reads", "refresh"}
 
 
 def test_aggregate_reports_the_details_the_metric_names(corpus):
     rows = [dict(kind="file", raw=True, ok=True, top1=True, top10=True, anywhere=True, penalty=0.0, stored=5, view=10,
-                 build=dict(cards=5, id="ab", calls=0, tokens=0, cost=0.0, seconds=1.0)),
+                 build=dict(cards=5, id="ab", calls=0, tokens=0, cost=0.0, seconds=1.0,
+                            reads=dict(opens=5, files=5, mb=0.1, per_item=1.0), refresh=dict(reads=0, seconds=0.1, share=0.0))),
             dict(kind="file", raw=False, ok=False, top1=False, top10=False, anywhere=True, penalty=0.0, view=30)]
     got = score.aggregate(rows)
     assert (got["file_raw"], got["file_counted"], got["file_top1"], got["file_top10"], got["cards"], got["build"]) == ("1/2", 1, 1, 1, 5, "ab")

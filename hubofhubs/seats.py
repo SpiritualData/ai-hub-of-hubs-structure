@@ -403,18 +403,6 @@ class ResponseJudging(typing.Protocol):
     def critique(self, answer: str, evidence: str = "") -> Sequence[str]: ...
 
 
-@solution("watch-for-risk", kind="event", entry="watch", example="delete the old backup folder")
-@runtime_checkable
-class RiskWatching(typing.Protocol):
-    """Watches a run through a cheap digest and sends at most one small signal (proceed, redirect, answer_now, escalate_deep,
-    escalate_human). Never raises. The consumer's prompt is data passed to the arm, not part of the hub. ``watch`` reads a digest
-    of one step with the arm's own model provider; ``oversee`` is the same with the provider and model you pass."""
-
-    def digest(self, **fields: Any) -> str: ...
-    def oversee(self, provider: Any, model: str, digest: str) -> Any: ...
-    def watch(self, digest: str, model: str = "") -> Any: ...
-
-
 # ------------------------------------------------------------------ World
 
 @solution("take-in-the-world", kind="event", entry="take_in", example="latest Rust release")

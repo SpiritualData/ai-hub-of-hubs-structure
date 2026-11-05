@@ -38,22 +38,22 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | context_assembler_paraphrase | hybrid | 300 | 85.7% (81.2% to 89.2%), 257/300 | $1.167e-06 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | context_assembler_paraphrase | hybrid@vector_weight=1.0 | 300 | 94.7% (91.5% to 96.7%), 284/300 | $1.056e-06 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | context_assembler_paraphrase | vector | 300 | 98.3% (96.2% to 99.3%), 295/300 | $1.017e-06 | 0.1 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_retrieval | abstaining_hybrid (selected) | 395 | 42.3% (37.5% to 47.2%), 167/395 | $0 | 0 (median) | selected | none recorded |
-| context_retrieval | abstaining_affinity | 395 | 42.0% (37.3% to 46.9%), 166/395 | $0 | 0 (median) | ahead of abstaining_affinity, not significant (two-sided sign test p=1) | none recorded |
-| context_retrieval | abstaining_aware | 395 | 41.8% (37.0% to 46.7%), 165/395 | $0 | 0 (median) | ahead of abstaining_aware, not significant (two-sided sign test p=1) | none recorded |
-| context_retrieval | abstaining_fenced | 395 | 40.8% (36.0% to 45.7%), 161/395 | $0 | 0 (median) | ahead of abstaining_fenced, not significant (two-sided sign test p=1) | none recorded |
-| context_retrieval | abstaining_learned | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of abstaining_learned (two-sided sign test p=0.00844) | none recorded |
-| context_retrieval | abstaining_recency | 395 | 41.8% (37.0% to 46.7%), 165/395 | $0 | 0 (median) | ahead of abstaining_recency, not significant (two-sided sign test p=1) | none recorded |
-| context_retrieval | bm25_body | 395 | 51.4% (46.5% to 56.3%), 203/395 | $0 | 0 (median) | bm25_body beats it (two-sided sign test p=6.23e-32; 203/395, $0 per pass) | none recorded |
-| context_retrieval | bm25_fielded | 395 | 47.3% (42.5% to 52.3%), 187/395 | $0 | 0 (median) | bm25_fielded beats it (two-sided sign test p=1.38e-30; 187/395, $0 per pass) | none recorded |
-| context_retrieval | bm25_whole_files | 395 | 30.1% (25.8% to 34.8%), 119/395 | $0 | 0 (median) | ahead of bm25_whole_files (two-sided sign test p=0.000147) | none recorded |
-| context_retrieval | dense_bge_small | 395 | 44.3% (39.5% to 49.2%), 175/395 | $0 | 0 (median) | ahead of dense_bge_small (two-sided sign test p=3.55e-14) | none recorded |
-| context_retrieval | feature_rerank | 395 | 42.8% (38.0% to 47.7%), 169/395 | $0 | 0 (median) | feature_rerank beats it (two-sided sign test p=2.03e-09; 169/395, $0 per pass) | none recorded |
-| context_retrieval | feature_rerank_no_priors | 395 | 41.0% (36.3% to 45.9%), 162/395 | $0 | 0 (median) | ahead of feature_rerank_no_priors (two-sided sign test p=2.48e-11) | none recorded |
-| context_retrieval | hybrid_rrf | 395 | 42.8% (38.0% to 47.7%), 169/395 | $0 | 0 (median) | hybrid_rrf beats it (two-sided sign test p=5.85e-21; 169/395, $0 per pass) | none recorded |
-| context_retrieval | learned_rerank | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of learned_rerank (two-sided sign test p=1.78e-06) | none recorded |
-| context_retrieval | live_scan | 395 | 20.3% (16.6% to 24.5%), 80/395 | $1.609 | 1.9 (median) | ahead of live_scan (two-sided sign test p=1.52e-83) | none recorded |
-| context_retrieval | lsi | 395 | 45.8% (41.0% to 50.8%), 181/395 | $0 | 0 (median) | ahead of lsi (two-sided sign test p=6.91e-12) | none recorded |
+| context_retrieval | bm25_body (selected) | 395 | 51.4% (46.5% to 56.3%), 203/395 | $0 | 0 (median) | selected | none recorded |
+| context_retrieval | abstaining_affinity | 395 | 42.0% (37.3% to 46.9%), 166/395 | $0 | 0 (median) | ahead of abstaining_affinity (two-sided sign test p=8.32e-32) | none recorded |
+| context_retrieval | abstaining_aware | 395 | 41.8% (37.0% to 46.7%), 165/395 | $0 | 0 (median) | ahead of abstaining_aware (two-sided sign test p=5.64e-31) | none recorded |
+| context_retrieval | abstaining_fenced | 395 | 40.8% (36.0% to 45.7%), 161/395 | $0 | 0 (median) | ahead of abstaining_fenced (two-sided sign test p=8.32e-32) | none recorded |
+| context_retrieval | abstaining_hybrid | 395 | 42.3% (37.5% to 47.2%), 167/395 | $0 | 0 (median) | ahead of abstaining_hybrid (two-sided sign test p=5.79e-32) | none recorded |
+| context_retrieval | abstaining_learned | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of abstaining_learned (two-sided sign test p=3.5e-35) | none recorded |
+| context_retrieval | abstaining_recency | 395 | 41.8% (37.0% to 46.7%), 165/395 | $0 | 0 (median) | ahead of abstaining_recency (two-sided sign test p=5.79e-32) | none recorded |
+| context_retrieval | bm25_fielded | 395 | 47.3% (42.5% to 52.3%), 187/395 | $0 | 0 (median) | ahead of bm25_fielded (two-sided sign test p=0.00779) | none recorded |
+| context_retrieval | bm25_whole_files | 395 | 30.1% (25.8% to 34.8%), 119/395 | $0 | 0 (median) | ahead of bm25_whole_files (two-sided sign test p=2.83e-29) | none recorded |
+| context_retrieval | dense_bge_small | 395 | 44.3% (39.5% to 49.2%), 175/395 | $0 | 0 (median) | ahead of dense_bge_small (two-sided sign test p=2.29e-16) | none recorded |
+| context_retrieval | feature_rerank | 395 | 42.8% (38.0% to 47.7%), 169/395 | $0 | 0 (median) | ahead of feature_rerank (two-sided sign test p=7.14e-26) | none recorded |
+| context_retrieval | feature_rerank_no_priors | 395 | 41.0% (36.3% to 45.9%), 162/395 | $0 | 0 (median) | ahead of feature_rerank_no_priors (two-sided sign test p=1.34e-23) | none recorded |
+| context_retrieval | hybrid_rrf | 395 | 42.8% (38.0% to 47.7%), 169/395 | $0 | 0 (median) | ahead of hybrid_rrf (two-sided sign test p=5.09e-17) | none recorded |
+| context_retrieval | learned_rerank | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of learned_rerank (two-sided sign test p=1.35e-24) | none recorded |
+| context_retrieval | live_scan | 395 | 20.3% (16.6% to 24.5%), 80/395 | $1.609 | 1.9 (median) | ahead of live_scan (two-sided sign test p=1.07e-103) | none recorded |
+| context_retrieval | lsi | 395 | 45.8% (41.0% to 50.8%), 181/395 | $0 | 0 (median) | ahead of lsi (two-sided sign test p=1.53e-19) | none recorded |
 | file_edit_goals | fast_edit (selected) | 30 | 96.7% (83.3% to 99.4%), 29/30 | $0.0001793 | 1.8 (median) | selected | none recorded |
 | file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972) | none recorded |
 | file_edit_goals | stream_json_goal_runner | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.005207 | 20.4 (median) | stream_json_goal_runner: best guess, no per-case rows to test (stream_json_goal_runner 0.938 against fast_edit 0.972) | none recorded |

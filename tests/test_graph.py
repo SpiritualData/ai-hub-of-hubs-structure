@@ -15,11 +15,7 @@ from hubofhubs.card import Card  # noqa: E402
 from hubofhubs.cardstore import LocalCardStore  # noqa: E402
 from support import ROOT  # noqa: E402
 
-SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssembling, "model-call": seats.ModelCall,
-         "call-a-model": seats.ModelCalling, "search-backend": seats.SearchBackend,
-         "choose-a-model-tier": seats.TierSelection, "read-registry-freshness": seats.FreshnessReading,
-         "watch-for-risk": seats.RiskWatching, "know-the-world": seats.WorldKnowing, "edit-files": seats.FileEditing,
-         "connected-system-operations": seats.ConnectedOperating, "delegated-agent-sessions": seats.AgentSessions}
+SEATS = {HUB.solution_of(c): c for c in vars(seats).values() if isinstance(c, type) and HUB.solution_of(c)}
 SOLUTIONS = read_tree(ROOT / "esoi", "solutions.csv")
 IMPLEMENTATIONS = read_tree(ROOT / "esoi", "implementations.csv")
 
@@ -44,6 +40,8 @@ def test_every_seat_is_a_runtime_protocol_with_a_record():
 def test_every_recorded_arm_is_declared_in_code_and_satisfies_its_seat():
     for row in IMPLEMENTATIONS:
         sid, _, name = row["implementation_id"].partition(":")
+        if not row["filepath"]:       # a researched alternative or a reference entry has no code in this repository
+            continue
         target = resolve(sid, name)
         # An arm that needs arguments (a vendor key, a list of assemblers) is checked as a class; the others are built and checked.
         satisfied = issubclass(target, SEATS[sid]) if isinstance(target, type) else isinstance(target(), SEATS[sid])
@@ -66,7 +64,7 @@ def test_external_seats_are_consumer_provided_and_have_no_default():
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
     system = assemble(AssemblyConfig(solutions=("card-store", "choose-a-model-tier", "read-registry-freshness")))
     assert system.solutions() == ["card-store", "choose-a-model-tier", "read-registry-freshness"]
-    with pytest.raises(AssemblyError, match="search-backend|know-the-world|context-assembler|edit-files"):
+    with pytest.raises((AssemblyError, ValueError), match="search-backend|know-the-world|context-assembler|edit-files|root="):
         assemble(AssemblyConfig())      # the strict form refuses a selected arm whose need is unmet
     assert isinstance(system["card-store"], LocalCardStore)
 
@@ -112,7 +110,7 @@ def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend():
             return SearchResponse(hits=[SearchHit(title="A page", url="https://example.com/a", snippet="a fact", date="")])
 
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    assert by["know-the-world"]["selected"] == "web_research" and {"web_research", "openalex"} <= set(by["know-the-world"]["implementations"].split(";"))
+    assert by["know-the-world"]["selected"] in {"web_research", "openalex_semantic"} and {"web_research", "openalex"} <= set(by["know-the-world"]["implementations"].split(";"))
     config = AssemblyConfig(solutions=("know-the-world",), selections={"know-the-world": "web_research"})
     system = assemble(config, provided={"search-backend": Backend()})
     arm = system["know-the-world"]

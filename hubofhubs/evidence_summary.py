@@ -390,7 +390,7 @@ def unmeasured_block(config: Config, registry: Registry, root: Path) -> str:
 def counted_arms(config: Config, root: Path) -> Dict[str, List[str]]:
     """``{area: [arm, ...]}``: the distinct real alternatives with a recorded whole run, by the area label of their check
     (``docs/reference/evidence-labels.csv``). Left out: a check with no area label (mechanics such as the single-scenario assembly), and any arm
-    that marks itself a baseline, floor, ablation or validity reference in its module docstring (``none``, ``single_provider``)."""
+    that marks itself an ablation or validity reference in its module docstring. Diagnostic bounds (``none``, ``single_provider``) are ranked alternatives and counted."""
     history = leaderboard.all_results(config.results_path)
     out: Dict[str, List[str]] = {}
     for label in labels(root):
@@ -416,8 +416,8 @@ def headline_block(config: Config, registry: Registry, root: Path) -> str:
     order = [x.get("area", "") for x in labels(root) if x["kind"] == "check"]
     for area in sorted(areas, key=lambda a: order.index(a)):
         lines.append(f"| {area} | {len(areas[area])} | {', '.join('`' + a + '`' for a in areas[area])} |")
-    lines += ["", seat_sentence(config, registry, root) + " Counted: distinct arms with a recorded run on the same cases as their rivals. Not counted: baselines and floors "
-              "(such as `none` and `single_provider`) and conformance tests, which have no rival ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative))."]
+    lines += ["", seat_sentence(config, registry, root) + " Counted: distinct arms with a recorded run on the same cases as their rivals. Diagnostic bounds (such as `none` and `single_provider`) are counted, "
+              "because they are ranked on the same number as every arm; conformance tests, which have no rival, are not ([how we measure](docs/explanation/how-we-measure.md#what-counts-as-an-alternative))."]
     return "\n".join(lines)
 
 

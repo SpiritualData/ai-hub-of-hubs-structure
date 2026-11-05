@@ -22,7 +22,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
 
-from .cards_from_files import file_card, group_card
+from .cards_from_files import changed_cards, file_card, group_card
 from .topic_clusters import add_pair, agglomerate, folder_chunks
 
 HISTORY_FILE = Path(__file__).resolve().parents[2] / "evaluation" / "cards_from_files" / "datasets" / "topic_cases" / "cochange_history.json"
@@ -86,6 +86,9 @@ class CochangeTopicCards:
             cards += topic_cards(Path(root), folder_chunks([f for f in files if f not in listed], self.cap), "folder")
         return cards
 
+    def changed(self, root: str, cards: Mapping[str, Mapping[str, Any]]) -> List[str]:
+        return changed_cards(root, cards)
+
 
 def module_name(path: str) -> str:
     parts = path[:-3].split("/")
@@ -138,3 +141,6 @@ class ImportGraphTopicCards:
         if self.backfill:
             cards += topic_cards(base, folder_chunks([f for f in files if f not in listed], self.cap), "folder")
         return cards
+
+    def changed(self, root: str, cards: Mapping[str, Mapping[str, Any]]) -> List[str]:
+        return changed_cards(root, cards)
