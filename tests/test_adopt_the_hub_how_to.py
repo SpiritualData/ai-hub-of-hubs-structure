@@ -16,6 +16,6 @@ def test_the_adopt_the_hub_how_to_runs_and_prints_what_it_says():
     with contextlib.redirect_stdout(out):
         exec(compile(code, "how-to", "exec"), {"__name__": "how_to"})
     lines = out.getvalue().splitlines()
-    assert len(lines) == 5
+    assert len(lines) == 7
     assert lines[0].startswith("['S53 note-search: the library hub has no solution no-such-solution']")
-    assert lines[1:] == ["True", "n1", "['n2', 'n1']", "['n1', 'n2']"]
+    assert lines[1:] == ["True", "n1", "['a2', 'a3'] ['a1']", "['m1', 'm2']", "['n2', 'n1']", "['n1', 'n2']"]

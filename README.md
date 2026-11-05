@@ -82,7 +82,7 @@ flowchart TB
 - **Representatives**: an AI acts for a person within the authority that person gave.
 - **Judgment Calls**: asks a person only when they would want to be asked, and decides how.
 - **Feedback Learning**: a correction given once changes behaviour afterwards.
-- **Prioritization**: turns the priorities a person states or implies into scores the system can optimize, and puts the work that competes for attention in order with a reason for each place.
+- **Prioritization**: turns the priorities a person states or implies into scores the system can optimize, and orders three things for them with a reason for each place: the work the AI starts unasked, the asks it puts to the person (what they unblock first, no more at once than a batch limit) and the person's goals (the milestones of their solutions).
 - **Request Intake**: takes in each request once, from wherever the system listens.
 
 Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. The full table of parts, with their research, is on [the mind map](docs/explanation/the-mind-map.md).

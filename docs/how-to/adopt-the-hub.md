@@ -61,6 +61,20 @@ print(hubofhubs.run("prioritization", {"candidates": [{"id": "n1"}]})["ordered"]
 
 It prints `True` and then `n1`: the score of your integration is read from your records and code, and the part answers with the arm the hub's metric selected.
 
+Prioritization orders three things for a person, named by `subject`: your work (`work`, the default), the asks you put to them (`asks`, with a `batch_limit` for how many
+to show at once; the rest come back in `held` with their place) and their goals (`goals`, which are solution milestones). Each reads the fields your data carries, and a
+field a candidate lacks is skipped.
+
+```python
+asks = [{"id": "a1", "kind": "ask"}, {"id": "a2", "kind": "ask", "unblocks": ["t1", "t2"]}, {"id": "a3", "kind": "ask", "unblocks": ["t1"]}]
+shown = hubofhubs.run("prioritization", {"candidates": asks, "subject": "asks", "batch_limit": 2})
+print([i["id"] for i in shown["ordered"]], [h["id"] for h in shown["held"]])
+goals = [{"id": "m2", "kind": "milestone", "solution": "s1", "blocked_by": ["m1"]}, {"id": "m1", "kind": "milestone", "solution": "s1", "metric": 0.8}]
+print([i["id"] for i in hubofhubs.run("prioritization", {"candidates": goals, "subject": "goals"})["ordered"]])
+```
+
+It prints `['a2', 'a3'] ['a1']` (the ask that unblocks the most first, the last one held for a later batch) and `['m1', 'm2']` (a milestone before the one that depends on it).
+
 ## 4. Add your own arm, and build your metric on the hub's
 
 Your arm of an adopted solution declares the hub's solution id and follows its interface, so the hub's seat reaches it. It competes under the hub's metric on

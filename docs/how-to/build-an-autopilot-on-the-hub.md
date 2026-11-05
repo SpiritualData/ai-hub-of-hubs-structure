@@ -4,7 +4,8 @@ An autopilot is a loop that wakes up, asks what is due, picks what matters first
 that decide this, so you write only the loop and your own sources.
 
 - **Proactivity** says what is due: standing schedules by calendar period in their own time zone, a run someone requested, or an event since the last run.
-- **Prioritization** says what matters first among that work and the other work waiting (open asks, standing work, ideas), for this person.
+- **Prioritization** says what matters first among that work and the other work waiting (open asks, standing work, ideas), for this person. It is also the one part that
+  orders the asks you put to the person and the person's own goals, shown below.
 
 The autopilot is the consumer. The hub holds no consumer words, prompts or settings: you hand it your schedules, your waiting work and your event source.
 
@@ -74,6 +75,40 @@ order when the person said the weekly report must wait (it is held back), then t
 
 To run the work too, call `system["the-self"].act_unasked(schedules, now, person="ana", candidates=waiting, events=events)`: it responds to each trigger, in
 this order, as a request through the whole hub (that needs a model key, see the tutorial).
+
+## The asks you put to the person, and the person's goals
+
+Prioritization orders three things, named by `subject`: the work you start unasked (`work`, the default), the asks you put to the person (`asks`) and the person's
+goals (`goals`). A person's attention is scarce, so for asks Judgment Calls first decides which are worth asking, and Prioritization then orders them by what answering
+each one unblocks, its deadline, its effort and what the person stated, and with a `batch_limit` puts only that many in front of the person and holds the rest, each with
+its place and why. A goal is a solution milestone as the ESOI specification defines it: a priority of one solution of an intent, with a target time, dependencies on other
+milestones and what reaching it unblocks. A milestone may have no metric value; it is ordered by the same fields. A milestone that is met, or whose end condition has
+passed, is held back. What the person said about a milestone's solution or intent counts for its milestones.
+
+```python
+asks = [
+    {"id": "colour", "severity": "medium", "reason": "pick a colour"},
+    {"id": "plan", "severity": "medium", "reason": "approve the plan", "unblocks": ["draft", "review"], "deadline": "2026-07-13T00:00:00Z"},
+    {"id": "typo", "severity": "none"},
+    {"id": "name", "severity": "medium", "reason": "pick a name", "unblocks": ["draft"]},
+]
+put = system["the-consciousness"].order_asks(asks, "ana", batch_limit=2, now=now)
+print([a["id"] for a in put["asks"]], [h["id"] for h in put["held"]], [n["id"] for n in put["not_asked"]])
+
+milestones = [
+    {"id": "ship", "kind": "milestone", "solution": "reader", "intent": "launch", "deadline": "2026-08-01T00:00:00Z", "blocked_by": ["build"], "metric": 0.9},
+    {"id": "build", "kind": "milestone", "solution": "reader", "intent": "launch", "deadline": "2026-07-20T00:00:00Z"},
+    {"id": "polish", "kind": "milestone", "solution": "style", "intent": "launch", "deadline": "2026-07-25T00:00:00Z"},
+    {"id": "survey", "kind": "milestone", "solution": "style", "intent": "launch", "met": "2026-06-01T00:00:00Z"},
+]
+goals = system["prioritization"].prioritize(candidates=milestones, subject="goals", stated={"feedback": [{"about": "style", "direction": "later"}]}, now=now)
+print(ordered_ids(goals["ordered"]), [h["id"] for h in goals["held"]])
+```
+
+It prints the two asks put in front of the person (the plan that unblocks two items and is due first, then the name that unblocks one), the ask held for a later batch, and
+the ask Judgment Calls decided needs no asking; then the milestones in order (`build` unblocks `ship` and is due first, `polish` waits because the person's feedback implies
+later for its solution, `ship` follows its dependency) with the met `survey` held back. Judgment Calls decides whether to ask and Prioritization decides the order and the
+batch. `Objectives` and Higher Mind read the order of the milestones the same way, through `system["higher-mind"].view(request, person, objectives=...)`.
 
 ## What your system adds
 

@@ -8,7 +8,7 @@ This sub-intent arises as the implementation `higher-mind:composition` of its pa
 
 ## How the solutions fit together
 
-Higher Mind is the long view across requests. Objectives keeps the live hierarchy of intents and goals and their state. Long-Term Memory keeps what is remembered and says what bears on a request. Guidance gives an infrequent, longer-term nudge to the planning of a request, and the quality criteria that belong to the context.
+Higher Mind is the long view across requests. Objectives keeps the live hierarchy of intents and goals and their state, as the solution milestones of the person's intents. Which of those matter most to the person is read from Prioritization, so the order of the goals is known to the rest of the system. Long-Term Memory keeps what is remembered and says what bears on a request. Guidance gives an infrequent, longer-term nudge to the planning of a request, and the quality criteria that belong to the context.
 
 ## One level below
 

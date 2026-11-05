@@ -19,3 +19,5 @@ def test_the_autopilot_how_to_runs_and_prints_what_it_says():
     assert lines[0] == "['product-events']"
     assert [line.split()[1] for line in lines[1:5]] == ["ask-7", "daily-review", "weekly-report", "on-answer"]      # the ask (the person's kind order), the deadlines nearest first, then the reactive schedule
     assert lines[5] == "['ask-7', 'daily-review', 'on-answer']" and lines[6] == "1"      # the weekly report was held back
+    assert lines[7] == "['plan', 'name'] ['colour'] ['typo']"      # the asks in front of the person by what they unblock, the held one, the one Judgment Calls did not ask about
+    assert lines[8] == "['build', 'ship', 'polish'] ['survey']"      # the milestones: the dependency first, the person's 'later' on a solution, the met one held back
