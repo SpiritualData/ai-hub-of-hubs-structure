@@ -14,8 +14,7 @@ from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal  # noqa
 from hubofhubs.the_self.steps import NO_ARM  # noqa: E402
 from test_oneline import FakeProvider, whole_hub  # noqa: E402
 
-NO_ARM_SOLUTIONS = ("feedback-learning", "esoi-application", "long-term-memory", "live-objectives", "guidance",
-                    "the-intuition", "role-understanding", "the-hands")
+NO_ARM_SOLUTIONS = ("feedback-learning", "esoi-application", "the-hands")
 
 
 def walk(steps):
@@ -28,13 +27,14 @@ def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(t
     result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?", **whole_hub(tmp_path))
     assert "1.90.0" in result.answer and "https://blog.rust-lang.org/" in result.answer      # what the Response Writer wrote from the delegated search
     top = [(s["solution"], s["status"]) for s in result.steps]
-    assert top == [("the-consciousness", "done"), ("the-body", "done"), ("the-intelligence", "done"), ("role-understanding", "pending"), ("the-body", "done"),
+    assert top == [("the-consciousness", "done"), ("the-body", "done"), ("the-intelligence", "done"), ("role-understanding", "done"), ("the-body", "done"),
                    ("system-integrity", "done"), ("the-consciousness", "done")]
     assert result.steps[-1]["steps"] == [{"solution": "feedback-learning", "status": "skipped", "reason": "no feedback was given"}]   # nothing to learn from
     every = {s["solution"]: s for s in walk(result.steps)}
-    for sid in ("planner", "delegation", "response-writer", "context-intake", "higher-mind", "metric-translation", "goal-completion"):
+    for sid in ("planner", "delegation", "response-writer", "context-intake", "higher-mind", "metric-translation", "goal-completion",
+                "long-term-memory", "live-objectives", "guidance", "the-intuition"):
         assert every[sid]["status"] == "done", (sid, every[sid])
-    for sid in ("long-term-memory", "live-objectives", "guidance", "the-hands", "esoi-application"):
+    for sid in ("the-hands", "esoi-application"):
         assert every[sid]["status"] == "pending" and every[sid]["reason"] == NO_ARM, (sid, every[sid])
     assert result.note == "" and result.items[0]["url"].startswith("https://blog.rust-lang.org/")
     assert result.to_dict()["steps"] == list(result.steps)

@@ -217,6 +217,19 @@
    "nonempty": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion"
   }
  },
+ "guidance": {
+  "default": "rule_gate",
+  "evidence": {
+   "detail": "rule_gate is better than always_nudge (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.53e-05, 18 of 24 cases disagree); rule_gate is better than overlap_only (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000122, 14 of 24 cases disagree)",
+   "p": 1.5e-05,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "always_nudge": "hubofhubs.the_intelligence.higher_mind.guidance.nudging",
+   "overlap_only": "hubofhubs.the_intelligence.higher_mind.guidance.nudging",
+   "rule_gate": "hubofhubs.the_intelligence.higher_mind.guidance.nudging"
+  }
+ },
  "higher-mind": {
   "default": "composition",
   "modules": {
@@ -245,6 +258,31 @@
   "modules": {
    "ask_every_time": "hubofhubs.the_consciousness.judgment_calls.judgment",
    "severity_policy": "hubofhubs.the_consciousness.judgment_calls.judgment"
+  }
+ },
+ "live-objectives": {
+  "default": "rolled_up",
+  "evidence": {
+   "detail": "rolled_up is better than flat_list (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000488, 12 of 20 cases disagree)",
+   "p": 0.000488,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "flat_list": "hubofhubs.the_intelligence.higher_mind.objectives.hierarchy",
+   "rolled_up": "hubofhubs.the_intelligence.higher_mind.objectives.hierarchy"
+  }
+ },
+ "long-term-memory": {
+  "default": "file_recall",
+  "evidence": {
+   "detail": "file_recall leads card_store_recall (card_store_recall 0.918 against file_recall 0.959; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 1 of 17 cases disagree); file_recall leads recent_window (recent_window 0.712 against file_recall 0.959; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.141, 8 of 17 cases disagree)",
+   "p": 0.140625,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "card_store_recall": "hubofhubs.the_intelligence.higher_mind.long_term_memory.recall",
+   "file_recall": "hubofhubs.the_intelligence.higher_mind.long_term_memory.recall",
+   "recent_window": "hubofhubs.the_intelligence.higher_mind.long_term_memory.recall"
   }
  },
  "metric-translation": {
@@ -302,8 +340,8 @@
  "prioritization": {
   "default": "stated_fields",
   "evidence": {
-   "detail": "stated_fields is better than as_given (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000488, 12 of 13 cases disagree)",
-   "p": 0.000488,
+   "detail": "stated_fields is better than as_given (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=6.1e-05, 15 of 15 cases disagree)",
+   "p": 6.1e-05,
    "verdict": "WIN"
   },
   "modules": {
@@ -364,6 +402,18 @@
    "model_synthesis": "hubofhubs.the_intelligence.mind.response_writer.writer"
   }
  },
+ "role-understanding": {
+  "default": "checked_role",
+  "evidence": {
+   "detail": "checked_role leads recorded_role (recorded_role 0.785 against checked_role 1; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.125, 4 of 13 cases disagree)",
+   "p": 0.125,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "checked_role": "hubofhubs.the_self.role_understanding.roles",
+   "recorded_role": "hubofhubs.the_self.role_understanding.roles"
+  }
+ },
  "system-integrity": {
   "default": "prompts_as_data",
   "modules": {
@@ -392,6 +442,18 @@
   "default": "composition",
   "modules": {
    "composition": "hubofhubs.the_intelligence.flow"
+  }
+ },
+ "the-intuition": {
+  "default": "co_taken",
+  "evidence": {
+   "detail": "co_taken is better than nearest_cards (two-sided exact McNemar test, Holm-adjusted p=0.00195, 10 of 20 cases disagree)",
+   "p": 0.001953,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "co_taken": "hubofhubs.the_intelligence.subconscious.intuition.co_taken",
+   "nearest_cards": "hubofhubs.the_intelligence.subconscious.intuition.nearest_cards"
   }
  },
  "the-learning": {

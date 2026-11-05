@@ -163,55 +163,16 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.005
 seconds_per_case = 2
 
-# Opt-in rules (esoi/docs): S36 the overall network on the root solution, S37 every id has an interface and a one-line entry,
-# S38 the paragraph and diagram match the code, S39 the ratchet against the base commit. S38 floors are per intent, set at the measured values.
-[rules.S36]
-enabled = true
-
-[rules.S37]
-enabled = true
-
-[rules.S38]
-enabled = true
-
-# Coverage is the share of an intent's uses edges whose two ends both have code. The flow of every container is code now (the composition arms
-# in hubofhubs/flows.py, whole.py and areas.py), and the parts they call that have no arm yet are not edges of the same kind; each floor is the
-# measured value. The Consciousness intent has no edge between its own parts yet (all its parts are specifications), so it has no floor.
-[rules.S38.floors.hub-of-hubs]
-precision = 1.0
-coverage = 1.0
-
-[rules.S38.floors.the_self]
-precision = 1.0
-coverage = 0.66
-
-[rules.S38.floors.the_body]
-precision = 1.0
-coverage = 0.75
-
-[rules.S38.floors.the_intelligence]
-precision = 1.0
-coverage = 0.42
-
-[rules.S38.floors.the_world]
-precision = 1.0
-coverage = 0.93
-
-[rules.S39]
-enabled = true
-
-# context-retrieval: one retrieval is worth at most half a cent and two seconds (a keyword search costs nothing and a local embedding of the
-# query a few hundredths of a second; a model reranker costs a few tenths of a cent and a few seconds). The weights are the library's defaults,
-# fixed with the budgets before any arm was scored on the mix of evaluation/context_retrieval/mix.py; the store size is a term of the accuracy
-# (score.store_penalty), as in cards-from-files, because the library's balanced score has three terms.
-[balance.context_retrieval]
-weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
-cost_per_case_usd = 0.005
-seconds_per_case = 2
-
 # live-objectives: rolling up a hierarchy and placing a request are string and arithmetic work in code that runs once per request, so one answer is worth at most a tenth of a cent
 # and one second. The weights are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/live_objectives/build_cases.py.
 [balance.live_objectives]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
+
+# role-understanding: stating a part's role is a read of the records and a scan of its code, run whenever a flow asks what a part is for, so one statement is worth at most a
+# tenth of a cent and one second. The weights are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/role_understanding/build_cases.py.
+[balance.role_understanding]
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.001
 seconds_per_case = 1

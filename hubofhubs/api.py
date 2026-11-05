@@ -359,6 +359,10 @@ LOCATIONS = {
     "HigherMind": "hubofhubs.the_intelligence.higher_mind.interface:HigherMind",
     # hubofhubs.the_intelligence.higher_mind.long_term_memory.interface
     "LongTermMemory": "hubofhubs.the_intelligence.higher_mind.long_term_memory.interface:LongTermMemory",
+    # hubofhubs.the_intelligence.higher_mind.long_term_memory.recall
+    "CardStoreRecall": "hubofhubs.the_intelligence.higher_mind.long_term_memory.recall:CardStoreRecall",
+    "FileRecall": "hubofhubs.the_intelligence.higher_mind.long_term_memory.recall:FileRecall",
+    "RecentWindow": "hubofhubs.the_intelligence.higher_mind.long_term_memory.recall:RecentWindow",
     # hubofhubs.the_intelligence.higher_mind.objectives.interface
     "Objectives": "hubofhubs.the_intelligence.higher_mind.objectives.interface:Objectives",
     # hubofhubs.the_intelligence.interface
@@ -594,8 +598,12 @@ LOCATIONS = {
     "Bm25WholeFiles": "hubofhubs.the_intelligence.subconscious.context_retriever.lexical:Bm25WholeFiles",
     # hubofhubs.the_intelligence.subconscious.interface
     "Remembering": "hubofhubs.the_intelligence.subconscious.interface:Remembering",
+    # hubofhubs.the_intelligence.subconscious.intuition.co_taken
+    "CoTaken": "hubofhubs.the_intelligence.subconscious.intuition.co_taken:CoTaken",
     # hubofhubs.the_intelligence.subconscious.intuition.interface
     "Intuiting": "hubofhubs.the_intelligence.subconscious.intuition.interface:Intuiting",
+    # hubofhubs.the_intelligence.subconscious.intuition.nearest_cards
+    "NearestCards": "hubofhubs.the_intelligence.subconscious.intuition.nearest_cards:NearestCards",
     # hubofhubs.the_self.assembler
     "arm_needs": "hubofhubs.the_self.assembler.arm_needs",
     # hubofhubs.the_self.assembler.interface
