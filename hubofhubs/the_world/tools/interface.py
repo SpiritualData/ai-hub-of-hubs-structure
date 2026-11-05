@@ -4,7 +4,7 @@ from typing import Any, Callable, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("the-tools", kind="event", entry="use", example={"category": "web-search", "request": "latest Rust release"})
+@solution("the-tools", kind="event", entry="use", example={"category": "web-search", "request": "latest Rust version"})
 @runtime_checkable
 class Tooling(typing.Protocol):
     """Uses the tool of one category (``web-search``, ``read-files``, ``file-editing``, ``connected-system-operations`` or

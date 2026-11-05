@@ -56,13 +56,15 @@ class MindComposition:
             decision = take(self.judgment, "judgment-calls", signal={"severity": risk.severity, "reason": risk.reason},
                             person=str(authority.get("person", "")))
             log.append(decision)
-            if (done(decision) or {}).get("decision", "proceed") == "proceed":
+            if decision.status != DONE:      # no decision is not a yes: a piece nobody decided on is not handed on, like one whose risk was not checked
+                asked.append({**piece, "refused": "no decision could be made"})
+            elif (done(decision) or {}).get("decision") == "proceed":
                 allowed.append(piece)
             else:
                 asked.append({**piece, "refused": "asked", "decision": done(decision)})
         if not done(planned):
             log += [skipped("nervous-system", "no piece to check yet"), skipped("judgment-calls", "no piece to decide on yet")]
-        handed = take(self.delegation, "delegation", pieces=allowed, authority=authority, budget=budget, cancelled=cancelled)
+        handed = take(self.delegation, "delegation", pieces=allowed, authority=authority, budget=budget, cancelled=cancelled, context=done(log[0]))
         results = list(done(handed) or []) + [{"piece": str(p.get("piece", "")), "tool": str(p.get("tool", "")), "refused": p["refused"], "items": [], "text": ""}
                                               for p in asked]
         written = take(self.writer, "response-writer", results=results, profile=profile)

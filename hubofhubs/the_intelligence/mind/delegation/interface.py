@@ -10,7 +10,9 @@ class Delegating(typing.Protocol):
     """Hands each piece to the right worker, only when necessary, carrying the Representative's ``authority`` and the sub-goal's done-standard;
     returns one result per piece. It enforces three limits and owns the last: the authority (a worker category not allowed is refused), the
     goal record's ``budget`` (pieces and dollars) and cancellation (``cancelled`` is checked before each piece and reaches a running agent session
-    through the worker's own stop hook). A piece it did not run comes back with ``refused`` and the reason."""
+    through the worker's own stop hook). A piece it did not run comes back with ``refused`` and the reason. A piece that names no worker is answered
+    from ``context`` (the view Context Intake built): its text is what the view holds, and when the view holds nothing the piece comes back with
+    ``met`` false and says so."""
 
     def delegate(self, pieces: Sequence[Mapping[str, Any]], authority: Optional[Mapping[str, Any]] = None, budget: Optional[Mapping[str, Any]] = None,
-                 cancelled: Optional[Callable[[], bool]] = None) -> Sequence[Mapping[str, Any]]: ...
+                 cancelled: Optional[Callable[[], bool]] = None, context: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]: ...

@@ -4,7 +4,7 @@ from typing import Any, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 
-@solution("guidance", kind="event", entry="nudge", example={"request": "what is the latest Rust release?", "objectives": []})
+@solution("guidance", kind="event", entry="nudge", example={"request": "what is the latest Rust version?", "objectives": []})
 @runtime_checkable
 class Guiding(typing.Protocol):
     """An infrequent longer-term nudge for the Planner, with the context-specific quality criteria; ``None`` when none is due."""

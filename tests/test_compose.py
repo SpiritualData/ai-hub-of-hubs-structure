@@ -54,9 +54,10 @@ def test_the_default_recall_runs_offline_without_a_model(store):
     assert {card.id for card in found} >= {"rust-1-91", "py-3-14"}
 
 
-def test_the_whole_hub_asks_only_for_what_its_answer_path_needs():
+def test_the_whole_hub_asks_for_nothing_up_front():
+    assert hubofhubs.needs("hub-of-hubs", environ={}) == ()      # every part, World included, is built on first use: a request that needs no key runs with none
     with pytest.raises(Pending) as caught:
-        hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", environ={})
+        hubofhubs.run("web-search", "latest Rust version", environ={})
     message = str(caught.value)
     assert "GEMINI_API_KEY" in message
-    assert "claude" not in message.lower() and "HUBOFHUBS_WRITE_ROOT" not in message     # built on first use, so not asked for here
+    assert "claude" not in message.lower() and "HUBOFHUBS_WRITE_ROOT" not in message

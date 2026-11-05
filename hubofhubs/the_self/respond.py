@@ -1,4 +1,5 @@
-"""sources_of, SelfComposition."""
+"""The Self's own flow, ``respond``: the whole answers a request by calling Consciousness, Body and Intelligence in order, records the run in Body's
+run store and has Integrity audit it. Standard library plus the hub and ``esoi``."""
 import time
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 from esoi import implementation
@@ -27,10 +28,10 @@ class SelfComposition:
     Intelligence processes the request with the Representative's authority (World's tools do the outside work from there), Body keeps the run
     record and Integrity audits it, and Consciousness learns from feedback when there is some. The result lists the step of every part and says
     which have no arm yet. World is asked, in ``health``, how current the research is. ``serve`` takes the waiting requests in through Consciousness; ``act_unasked`` responds to what Proactivity says is due.
-    World is needed to build The Self (the outside is the hub's foundation, and its key is asked for up front); every other part is built on first use, so a seat that cannot be built is a pending step, not a failure of the rest."""
+    Every part, World included, is built on first use, so a seat that cannot be built is a pending step, not a failure of the rest, and a request that needs no key runs with none."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, world: TakingIn, assembler: Lazy[WholeAssembling], integrity: Lazy[Genericity], body: Lazy[FormAndContext], intelligence: Lazy[InformationProcessing],
+    def __init__(self, world: Lazy[TakingIn], assembler: Lazy[WholeAssembling], integrity: Lazy[Genericity], body: Lazy[FormAndContext], intelligence: Lazy[InformationProcessing],
                  consciousness: Lazy[HumanAdapting]):
         self.world, self.assembler, self.integrity = world, assembler, integrity
         self.body, self.intelligence, self.consciousness = body, intelligence, consciousness
@@ -45,7 +46,8 @@ class SelfComposition:
                          priorities=who.get("priorities"), cancelled=cancelled)
         thought = (processed.output or {}) if processed.status == DONE else {}
         log = [known, context, processed]
-        run = {"id": int(began * 1000), "request": request, "person": person, "steps": listing(log), "answer": thought.get("answer", ""),
+        run = {"id": int(began * 1000), "request": request, "person": person, "sources": (context.output or {}).get("sources", []) if context.status == DONE else [],
+               "steps": listing(log), "answer": thought.get("answer", ""),
                "attempts": thought.get("attempts", 0), "stopped": thought.get("stopped", "")}
         recorded = take(self.body, "the-body", method="record_run", run=run)
         audited = take(self.integrity, "system-integrity", method="audit_run", run=run)

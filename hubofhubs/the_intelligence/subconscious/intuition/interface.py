@@ -4,7 +4,7 @@ from typing import Any, Mapping, Sequence, runtime_checkable
 from esoi import solution
 
 
-@solution("the-intuition", kind="event", entry="offer", example={"request": "what is the latest Rust release?"})
+@solution("the-intuition", kind="event", entry="offer", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class Intuiting(typing.Protocol):
     """What surfaces for a request unasked: the items closest to it, within a limit, for the Mind to take or ignore."""

@@ -18,7 +18,7 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 | Delegated Agent Sessions | `delegated-agent-sessions` | `hubofhubs.run("delegated-agent-sessions", ...)` | Claude Code, steerable session (`stream_json_goal_runner`) | Harness, context, sub-agents and recursion ranked, Goal met by its own tests (agent sessions) |
 | File Editing | `file-editing` | `hubofhubs.run("file-editing", ...)` | One-call file edit (`fast_edit`) | Goal met by its own tests |
 | File Reading | `read-files` | `hubofhubs.run("read-files", {'root': '.', 'paths': []})` | Folder reader (`folder_reader`) | Files read inside the folder |
-| Web Search | `web-search` | `hubofhubs.run("web-search", 'latest Rust release')` | Gemini grounding (`gemini`) | Search finds the source |
+| Web Search | `web-search` | `hubofhubs.run("web-search", 'latest Rust version')` | Gemini grounding (`gemini`) | Search finds the source |
 
 ## Problems and ideals
 

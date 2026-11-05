@@ -4,7 +4,7 @@ from typing import Any, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 
-@solution("planner", kind="event", entry="plan", example={"request": "what is the latest Rust release?"})
+@solution("planner", kind="event", entry="plan", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class Planning(typing.Protocol):
     """Breaks a request into pieces (a list of mappings with ``piece``, ``sub_goal`` and ``tool``, the worker category that fits it or empty).

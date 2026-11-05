@@ -58,8 +58,6 @@ at the repository root.
 | Model Plumbing, Tier chooser then vendor (`model-plumbing:via_vendor`) | none | none | none | none | no |
 | Model Tier Chooser, Passing work per cost selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
 | Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
-| Nervous System, Digest-driven overseer (`nervous-system:overseer`) | none | none | none | none | no |
-| Nervous System, Gate then overseer (`nervous-system:two_stage`) | none | none | none | none | no |
 | Planner, Split and route by cues (`planner:cue_router`) | none | none | none | none | no |
 | Planner, One piece, no worker (`planner:one_piece`) | none | none | none | none | no |
 | Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |

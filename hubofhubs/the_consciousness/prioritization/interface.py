@@ -4,7 +4,7 @@ from typing import Any, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("prioritization", kind="event", entry="prioritize", example={"person": "", "request": "what is the latest Rust release?"})
+@solution("prioritization", kind="event", entry="prioritize", example={"person": "", "request": "what is the latest Rust version?"})
 @runtime_checkable
 class Prioritizing(typing.Protocol):
     """Translates the priorities a person states or implies into ESOI milestones and weights, including quality profile weights."""

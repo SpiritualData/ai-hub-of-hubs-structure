@@ -4,7 +4,7 @@ from typing import Any, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("metric-translation", kind="event", entry="translate", example={"request": "what is the latest Rust release?"})
+@solution("metric-translation", kind="event", entry="translate", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class MetricTranslating(typing.Protocol):
     """Turns a request into a metric with a target value or improvement, adjustable in real time, applied to each sub-goal."""

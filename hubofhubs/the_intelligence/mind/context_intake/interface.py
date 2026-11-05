@@ -4,7 +4,7 @@ from typing import Any, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("context-intake", kind="event", entry="take", example={"request": "what is the latest Rust release?"})
+@solution("context-intake", kind="event", entry="take", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class ContextTaking(typing.Protocol):
     """The one intake of the Mind: takes what the Subconscious prepared and what the World brought and returns one view."""

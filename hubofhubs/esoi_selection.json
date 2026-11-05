@@ -278,14 +278,12 @@
  "nervous-system": {
   "default": "consent_gate",
   "evidence": {
-   "detail": "consent_gate is better than none (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000102, 31 of 60 cases disagree); consent_gate leads overseer (overseer 0.917 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.479, overseer passed 33 of 36, consent_gate 36 of 36); consent_gate leads two_stage (two_stage 0.944 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.493, two_stage passed 34 of 36, consent_gate 36 of 36)",
-   "p": 0.000102,
+   "detail": "consent_gate leads none (none 0.65 against consent_gate 0.743; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.718, 52 of 60 cases disagree); consent_gate leads overseer (overseer 0.917 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.718, overseer passed 33 of 36, consent_gate 36 of 36); consent_gate leads two_stage (two_stage 0.944 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.718, two_stage passed 34 of 36, consent_gate 36 of 36)",
+   "p": 0.71831,
    "verdict": "WIN"
   },
   "modules": {
-   "consent_gate": "hubofhubs.the_intelligence.nervous_system.consent_gate",
-   "overseer": "hubofhubs.the_intelligence.mind.delegation.overseer.risk",
-   "two_stage": "hubofhubs.the_intelligence.nervous_system.consent_gate"
+   "consent_gate": "hubofhubs.the_intelligence.nervous_system.consent_gate"
   }
  },
  "planner": {

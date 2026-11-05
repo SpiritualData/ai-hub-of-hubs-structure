@@ -4,7 +4,7 @@ from typing import Any, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("critical-thinking", kind="event", entry="evaluate", example={"request": "what is the latest Rust release?"})
+@solution("critical-thinking", kind="event", entry="evaluate", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class CriticalThinking(typing.Protocol):
     """Critical Thinking: ``translate`` turns a request into a target, ``evaluate`` checks the goal and judges the response against the

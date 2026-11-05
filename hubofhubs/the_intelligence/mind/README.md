@@ -14,9 +14,9 @@ Context Intake takes in what was prepared for a request and what the workers bro
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Context Intake | `context-intake` | `hubofhubs.run("context-intake", {'request': 'what is the latest Rust release?'})` | Merge into one labelled view (`one_view`) | One view with every source named |
+| Context Intake | `context-intake` | `hubofhubs.run("context-intake", {'request': 'what is the latest Rust version?'})` | Merge into one labelled view (`one_view`) | One view with every source named |
 | Delegation | `delegation` | `hubofhubs.run("delegation", {'pieces': [], 'authority': {}})` | Route to Tools and Science (`to_tools`) | Handoffs keep authority, budget and cancellation |
-| Planner | `planner` | `hubofhubs.run("planner", {'request': 'what is the latest Rust release?'})` | Split and route by cues (`cue_router`) | Requests routed to the right worker |
+| Planner | `planner` | `hubofhubs.run("planner", {'request': 'what is the latest Rust version?'})` | Split and route by cues (`cue_router`) | Requests routed to the right worker |
 | Response Writer | `response-writer` | `hubofhubs.run("response-writer", {'results': [], 'profile': None})` | Cited results (`cited_results`) | Responses that say what the results hold |
 
 ## Problems and ideals

@@ -4,7 +4,7 @@ from typing import Any, Callable, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 
-@solution("the-self", kind="event", entry="respond", example={"request": "what is the latest Rust release?", "person": ""})
+@solution("the-self", kind="event", entry="respond", example={"request": "what is the latest Rust version?", "person": ""})
 @runtime_checkable
 class SelfAnswering(typing.Protocol):
     """The Self responds to a request as the whole: Consciousness represents the person, Body says where the data lives, Intelligence processes the

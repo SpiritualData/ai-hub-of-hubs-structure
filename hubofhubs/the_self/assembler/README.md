@@ -17,7 +17,7 @@ Build the whole from the best-measured arm of every seat and report its coverage
 - Entry call: `hubofhubs.run("the-assembler", {})`
 - Selected implementation: One-call assembly of the whole hub (`zero_config`)
 - Metric: Whole assembly
-- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`esoi.toml`](../../../esoi.toml) and 228 more
+- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`esoi.toml`](../../../esoi.toml) and 229 more
 
 ## Implementations
 

@@ -4,7 +4,7 @@ from typing import Any, Mapping, runtime_checkable
 from esoi import solution
 
 
-@solution("higher-mind", kind="event", entry="view", example={"request": "what is the latest Rust release?"})
+@solution("higher-mind", kind="event", entry="view", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class HigherMind(typing.Protocol):
     """The long view for one request: the objectives it serves, what is remembered and the guidance for the Planner, one step each."""

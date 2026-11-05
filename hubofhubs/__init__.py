@@ -7,7 +7,7 @@ functions (``run``, ``needs`` and ``assemble``) read the process environment whe
 module takes a mapping and reads none.
 
     import hubofhubs
-    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")   # best-measured arm of every part, no wiring
+    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?")   # best-measured arm of every part, no wiring
     from hubofhubs import Binding, evaluate, AssemblyConfig, assemble, register, resolve
 """
 from hubofhubs.the_self.integrity.binding import Binding

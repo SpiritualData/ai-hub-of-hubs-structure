@@ -22,8 +22,8 @@ def test_context_intake_merges_and_names_each_source():
 
 
 def test_the_planner_splits_routes_and_replans_only_what_failed():
-    plan = CueRouter().plan("1. Find the latest Rust release.\n2. Implement the function parse_version so that its docstring holds.")
-    assert [p["tool"] for p in plan] == ["web-search", "file-editing"] and plan[0]["sub_goal"]["goal"] == "Find the latest Rust release."
+    plan = CueRouter().plan("1. Find the latest Rust version.\n2. Implement the function parse_version so that its docstring holds.")
+    assert [p["tool"] for p in plan] == ["web-search", "file-editing"] and plan[0]["sub_goal"]["goal"] == "Find the latest Rust version."
     assert CueRouter().plan("Thanks, that worked.")[0]["tool"] == ""
     assert CueRouter().plan("Find papers on eye movement and native language")[0]["tool"] == "the-science"
     again = CueRouter().plan("Look up the latest release; then implement the function f", unmet={"failed_pieces": ["Look up the latest release"]})

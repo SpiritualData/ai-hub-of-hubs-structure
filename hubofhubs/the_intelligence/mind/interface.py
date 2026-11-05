@@ -4,7 +4,7 @@ from typing import Any, Callable, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("the-mind", kind="event", entry="think", example={"request": "what is the latest Rust release?"})
+@solution("the-mind", kind="event", entry="think", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class Reasoning(typing.Protocol):
     """The Mind: takes in context, plans, delegates and writes for one request. ``authority`` is the Representative's, ``target`` the metric

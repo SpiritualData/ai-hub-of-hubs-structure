@@ -18,7 +18,7 @@ An arrow runs from the solution that provides to the solution that builds on it;
 flowchart LR
     s0["Nervous System<br/><i>nervous-system</i>"]
     s1["Mind<br/><i>the-mind</i>"]
-    s0 -->|"One signal: proceed, redirect, answer_now, escalate_deep or escalate_human; it never raises"| s1
+    s0 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s1
 ```
 
 ## Solutions at a glance
@@ -26,10 +26,10 @@ flowchart LR
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | Nervous System | `nervous-system` | `hubofhubs.run("nervous-system", 'delete the old backup folder')` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
-| Critical Thinking | `critical-thinking` | `hubofhubs.run("critical-thinking", {'request': 'what is the latest Rust release?'})` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
+| Critical Thinking | `critical-thinking` | `hubofhubs.run("critical-thinking", {'request': 'what is the latest Rust version?'})` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
 | Subconscious | `the-subconscious` | `hubofhubs.run("the-subconscious", 'rust release')` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
-| Mind | `the-mind` | `hubofhubs.run("the-mind", {'request': 'what is the latest Rust release?'})` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
-| Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust release?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
+| Mind | `the-mind` | `hubofhubs.run("the-mind", {'request': 'what is the latest Rust version?'})` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
+| Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust version?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ## Problems and ideals
@@ -107,19 +107,17 @@ flowchart LR
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
-| Digest-driven overseer | `nervous-system:overseer` | [hubofhubs/the_intelligence/mind/delegation/overseer/risk.py](mind/delegation/overseer/risk.py) |  |
 | Cards drawn by relevance from a store | `the-subconscious:card_recall` | [hubofhubs/the_intelligence/subconscious/card_recall.py](subconscious/card_recall.py) | [subconscious](subconscious/README.md) |
 | Objectives, memory and guidance for one request | `higher-mind:composition` | [hubofhubs/the_intelligence/higher_mind/flow.py](higher_mind/flow.py) | [higher_mind](higher_mind/README.md) |
 | The four parts of the Mind in order | `the-mind:composition` | [hubofhubs/the_intelligence/mind/flow.py](mind/flow.py) | [mind](mind/README.md) |
 | Target, goal and quality in order | `critical-thinking:composition` | [hubofhubs/the_intelligence/critical_thinking/flow.py](critical_thinking/flow.py) | [critical_thinking](critical_thinking/README.md) |
 | Consent gate | `nervous-system:consent_gate` | [hubofhubs/the_intelligence/nervous_system/consent_gate.py](nervous_system/consent_gate.py) |  |
-| Gate then overseer | `nervous-system:two_stage` | [hubofhubs/the_intelligence/nervous_system/consent_gate.py](nervous_system/consent_gate.py) |  |
 | Calendar periods and events | `proactivity:calendar_and_events` | [hubofhubs/the_intelligence/proactivity/triggers.py](proactivity/triggers.py) |  |
 | Elapsed hours | `proactivity:elapsed_hours` | [hubofhubs/the_intelligence/proactivity/triggers.py](proactivity/triggers.py) |  |
 
 ### Metrics
 
-- Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl overseer; esoi run watch_for_risk --impl none; esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl two_stage`
+- Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest tests/test_risk.py`
 - Requests with a named problem, ideal and metric (`metric-critical-thinking`): `none`
 - Answer quality per dollar and per second (`metric-the-mind`): `none`

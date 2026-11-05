@@ -63,14 +63,15 @@ def whole_hub(tmp_path, **extra):
 
 
 def test_run_the_whole_hub_answers_with_sources_and_holds_the_answer_to_them(tmp_path):
-    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", **whole_hub(tmp_path))
+    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?", **whole_hub(tmp_path))
     assert result.seat == "the-self" and "1.90.0" in result.answer and result.note == ""
     assert result.items[0]["url"].startswith("https://blog.rust-lang.org/") and json.dumps(result.to_dict()) and str(result) == result.answer
 
 
-def test_the_whole_hub_without_a_key_says_exactly_what_to_set():
+def test_the_whole_hub_needs_no_key_up_front_and_the_part_that_needs_one_says_exactly_what_to_set():
+    assert hubofhubs.needs("hub-of-hubs", environ={}) == ()      # World and the tools are built on first use, so a request that needs no key runs with none
     with pytest.raises(Pending) as raised:
-        hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", environ={})
+        hubofhubs.run("web-search", "latest Rust version", environ={})
     text = str(raised.value)
     assert "GEMINI_API_KEY" in text and "HUBOFHUBS_WRITE_ROOT" not in text      # nothing is attempted; the file seats are built on first use
     assert {r.kind for r in raised.value.reasons} <= {"key", "install", "needs"}      # keys, installs and the seats waiting on them: no option to pass
@@ -143,7 +144,7 @@ def test_assemble_takes_no_required_argument_and_a_lock():
 
 
 def test_the_cli_is_a_thin_wrapper(capsys):
-    code = cli.main(["run", "latest Rust release", "--json"])
+    code = cli.main(["run", "latest Rust version", "--json"])
     assert code == 2 or code == 0   # 2 without a key in this environment
     out = capsys.readouterr()
     assert code == 2 and "GEMINI_API_KEY" in out.err or json.loads(out.out.strip().splitlines()[-1]).get("type") == "run"
@@ -158,19 +159,19 @@ def test_live_grounded_run_and_a_model_question():
     """RUN LIVE on 2026-11-01 (passed, through the earlier question-first call): the Gemini key from the environment, the search arm
     gemini; the model through the Claude Code subscription (claude_cli, haiku), never the paid API. The whole hub answered
     "The latest stable release of Rust is version 1.99.1" with four sources, and the version matched the stable line of releases.rs."""
-    grounded = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")
+    grounded = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?")
     assert grounded.answer and grounded.items and not grounded.note
     alone = hubofhubs.run("model-plumbing", {"prompt": "Reply with the single word: ok", "tier": "cheap"})
     assert alone
 
 
 def test_the_readme_blocks_run_as_written(monkeypatch):
-    """The first block pends on its key and the second runs offline as written: the README's one function, proven here."""
+    """Both blocks run offline as written: the whole flow over the hub's own records, and a card store: the README's examples, proven here."""
     import re
     from esoi import entry
     text = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
-    blocks = [b for b in re.findall(r"```pycon\n(.*?)```", text, flags=re.S) if "hubofhubs.run(" in b]
+    blocks = [b for b in re.findall(r"```pycon\n(.*?)```", text, flags=re.S) if ">>> import hubofhubs" in b]
     for name in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY"):
-        monkeypatch.delenv(name, raising=False)      # the first block pends on its key; it must never make a live call from a developer's shell
+        monkeypatch.delenv(name, raising=False)      # no block may make a live call from a developer's shell
     first, second = entry.run_block(blocks[0], guard=False), entry.run_block(blocks[1], guard=False)
-    assert not first["problems"] and not second["problems"] and not second["pending"], (first, second)
+    assert not first["problems"] and not first["pending"] and not second["problems"] and not second["pending"], (first, second)

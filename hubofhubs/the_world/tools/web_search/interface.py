@@ -5,7 +5,7 @@ from esoi import solution
 from hubofhubs.the_world.tools.web_search.search_port import SearchResponse
 
 
-@solution("web-search", kind="event", entry="search", example="latest Rust release")
+@solution("web-search", kind="event", entry="search", example="latest Rust version")
 @runtime_checkable
 class SearchBackend(typing.Protocol):
     """Runs one web search and returns a ``SearchResponse`` (hits with title, url, snippet, date, the separate ``passages`` and

@@ -4,7 +4,7 @@ from typing import Any, Mapping, Sequence, runtime_checkable
 from esoi import solution
 
 
-@solution("the-world", kind="event", entry="take_in", example="latest Rust release")
+@solution("the-world", kind="event", entry="take_in", example="latest Rust version")
 @runtime_checkable
 class TakingIn(typing.Protocol):
     """Brings the outside world in for a query: a web search, and with ``scholarly=True`` the papers of the world-knowing seat too.

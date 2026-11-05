@@ -25,7 +25,7 @@ def walk(steps):
 
 
 def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(tmp_path):
-    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", **whole_hub(tmp_path))
+    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?", **whole_hub(tmp_path))
     assert "1.90.0" in result.answer and "https://blog.rust-lang.org/" in result.answer      # what the Response Writer wrote from the delegated search
     top = [(s["solution"], s["status"]) for s in result.steps]
     assert top == [("the-consciousness", "done"), ("the-body", "done"), ("the-intelligence", "done"), ("the-body", "done"), ("system-integrity", "done"),
@@ -40,16 +40,20 @@ def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(t
     assert result.to_dict()["steps"] == list(result.steps)
 
 
-def test_without_a_key_the_whole_says_what_to_set_and_no_answer_is_made_up():
-    with pytest.raises(Pending) as raised:
-        hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", environ={})
-    assert "GEMINI_API_KEY" in str(raised.value)
+def test_without_a_key_a_question_that_needs_the_web_reports_the_failed_piece_and_makes_no_answer_up():
+    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?", environ={})
+    assert "failed" in result.answer and "no Gemini API key" in result.answer and "1.9" not in result.answer      # the writer says the step failed; nothing is invented
+    assert result.note == "stopped for budget: ask human"      # the failure is never "met": the replan loop spent its budget and Judgment Calls was asked
 
 
-def test_the_run_is_recorded_and_integrity_audits_it(tmp_path):
+def test_the_run_is_recorded_in_the_run_store_and_never_in_the_cards(tmp_path):
     store = hubofhubs.run(hubofhubs.the_body.internal_context.card_store.interface.CardStore)
-    result = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?", **whole_hub(tmp_path, provided={"vendor-model-caller": FakeProvider(), "card-store": store}))
-    assert [c.source for c in store.search("", limit=10)] == ["run record"]
+    keywords = whole_hub(tmp_path, provided={"vendor-model-caller": FakeProvider(), "card-store": store})
+    system = hubofhubs.assemble(**keywords)
+    result = system["the-self"].respond("what is the latest Rust version?")
+    assert store.count() == 0                                         # a run is not knowledge: recall can never return it
+    runs = system["internal-context"].runs_so_far()
+    assert len(runs) == 1 and runs[0]["request"] == "what is the latest Rust version?" and runs[0]["answer"] == result.answer
     audit = hubofhubs.resolve("system-integrity", "prompts_as_data")
     assert audit.audit_run(audit, {"answer": "x", "steps": [{"solution": "a", "status": "pending"}]}) == [
         "step a is pending and does not say why", "an answer was given but the Response Writer did not run"]
@@ -72,7 +76,7 @@ class Delegation:
     def __init__(self):
         self.handed = []
 
-    def delegate(self, pieces, authority=None, budget=None, cancelled=None):
+    def delegate(self, pieces, authority=None, budget=None, cancelled=None, context=None):
         self.handed.append((list(pieces), authority))
         return [{"piece": p["piece"], "result": "done"} for p in pieces]
 
@@ -261,3 +265,25 @@ def test_feedback_is_applied_by_esoi_application_with_no_approval_unless_judgmen
     asking = ConsciousnessComposition(Absent(), Absent(), Quiet(), Feedback(), Esoi(), Absent())
     held = asking.learn("p1", {"text": "too long"})
     assert held["decision"]["decision"] == "ask" and held["steps"][-1]["status"] == "skipped"
+
+
+def test_a_failed_worker_is_never_met_and_a_refused_one_is_not_either():
+    failed = hubofhubs.run("goal-completion", {"goal": "g", "done_standard": "a cited answer", "outcome": {"text": "it failed: SearchBackendError", "error": "SearchBackendError: down"}})
+    assert failed["met"] is False and "failed" in failed["reason"]
+    assert hubofhubs.run("goal-completion", {"goal": "g", "done_standard": "x", "outcome": {"text": "ok", "refused": "authority"}})["met"] is False
+    nonempty = hubofhubs.resolve("goal-completion", "nonempty")()
+    assert nonempty.check("g", "x", {"text": "it failed", "error": "boom"})["met"] is False
+
+
+def test_a_piece_nobody_decided_on_is_not_handed_on_and_a_missing_judgment_is_never_proceed():
+    delegation = Delegation()
+    mind = hubofhubs.resolve("the-mind", "composition")(Intake(), Planner(), delegation, Writer(), Watch(), Absent())
+    out = mind.think("tidy up")
+    assert delegation.handed == [([], {})]
+    assert [r["refused"] for r in out["results"] if r.get("refused")] == ["no decision could be made", "no decision could be made"]
+
+
+def test_an_unsure_step_is_medium_and_the_default_person_is_asked_about_it():
+    signal = hubofhubs.run("nervous-system", "Run the tidy script")
+    assert signal.severity == "medium"
+    assert hubofhubs.run("judgment-calls", {"signal": {"reason": "no severity named"}, "person": ""})["decision"] == "ask"      # no severity is never none

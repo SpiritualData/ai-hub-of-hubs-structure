@@ -10,5 +10,5 @@ An arrow runs from the solution that provides to the solution that builds on it;
 flowchart LR
     s0["Nervous System<br/><i>nervous-system</i>"]
     s1["Mind<br/><i>the-mind</i>"]
-    s0 -->|"One signal: proceed, redirect, answer_now, escalate_deep or escalate_human; it never raises"| s1
+    s0 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s1
 ```

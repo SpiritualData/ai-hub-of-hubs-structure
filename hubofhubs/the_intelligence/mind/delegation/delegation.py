@@ -22,6 +22,16 @@ def allowed(category: str, authority: Mapping[str, Any]) -> bool:
     return category in (authority.get("allow") or READ_ONLY)
 
 
+def from_view(context: Optional[Mapping[str, Any]]) -> Dict[str, Any]:
+    """The result of a piece answered with no worker: what the view holds, with the sources of the view that name a link, or an honest
+    ``met`` false when the view holds nothing."""
+    view = str((context or {}).get("view") or "").strip()
+    if not view:
+        return {"text": "", "items": [], "met": False, "error": "nothing is known about this yet: no worker was needed and the context held nothing"}
+    items = [{"title": s.get("title") or s["url"], "url": s["url"]} for s in (context or {}).get("sources") or () if s.get("url")]
+    return {"text": view, "items": items, "met": True}
+
+
 def worker_request(category: str, piece: Mapping[str, Any]) -> Any:
     if piece.get("request") is not None:
         return piece["request"]
@@ -49,7 +59,8 @@ class ToTools:
         self.tools, self.science = tools, science
 
     def delegate(self, pieces: Sequence[Mapping[str, Any]], authority: Optional[Mapping[str, Any]] = None,
-                 budget: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Sequence[Mapping[str, Any]]:
+                 budget: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None,
+                 context: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]:
         authority, budget = authority or {}, budget or {}
         results: List[Dict[str, Any]] = []
         spent = 0.0
@@ -60,8 +71,8 @@ class ToTools:
             if cancelled is not None and cancelled():
                 results.append({**base, "refused": "cancelled"})
                 continue
-            if not category:       # no worker is needed: the piece is answered from the context already taken in
-                results.append(base)
+            if not category:       # no worker is needed: the piece is answered from the view Context Intake built
+                results.append({**base, **from_view(context)})
                 continue
             if not allowed(category, authority):
                 results.append({**base, "refused": "authority"})

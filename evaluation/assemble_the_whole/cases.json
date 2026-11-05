@@ -861,7 +861,7 @@
   "kind": "run",
   "args": {
    "seat": "hub-of-hubs",
-   "input": "what is the latest Rust release?",
+   "input": "what is the latest Rust version?",
    "environ": {}
   },
   "expect": "raised Pending naming GEMINI_API_KEY"

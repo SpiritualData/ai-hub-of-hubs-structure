@@ -4,7 +4,7 @@ from typing import Any, Callable, Mapping, Optional, Sequence, runtime_checkable
 from esoi import solution
 
 
-@solution("the-intelligence", kind="event", entry="process", example={"request": "what is the latest Rust release?", "person": ""})
+@solution("the-intelligence", kind="event", entry="process", example={"request": "what is the latest Rust version?", "person": ""})
 @runtime_checkable
 class InformationProcessing(typing.Protocol):
     """Processes one request: the long view is read, the request becomes a target with a budget, the Mind plans, delegates and writes, and the
