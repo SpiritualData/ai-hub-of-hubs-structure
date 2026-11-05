@@ -3,7 +3,7 @@
 An autopilot is a loop that wakes up, asks what is due, picks what matters first and does it, without anyone asking. The hub gives you the two parts
 that decide this, so you write only the loop and your own sources.
 
-- **Proactivity** says what is due: standing schedules by calendar period in their own time zone, a run someone requested, or an event since the last run.
+- **Proactivity** says what is due: standing schedules by calendar period in their own time zone, on the days and at the time of day they keep, a run someone requested, or an event since the last run.
 - **Prioritization** says what matters first among that work and the other work waiting (open asks, standing work, ideas), for this person. It is also the one part that
   orders the asks you put to the person and the person's own goals, shown below.
 
@@ -13,7 +13,7 @@ The autopilot is the consumer. The hub holds no consumer words, prompts or setti
 
 A **schedule** is a mapping with `name`, `request`, `cadence` (`daily`, `weekly` or `monthly`), `zone` (an IANA zone), `last_run`, `run_requested_at` and, for
 a reactive one, `event_source`. Proactivity returns one **trigger** for each schedule that is due: `schedule`, `kind` (`requested`, `event`, `period` or
-`elapsed`, the names in `TRIGGER_KINDS`), `reason` and the `request` to run.
+`elapsed` or `window`, the names in `TRIGGER_KINDS`), `reason` and the `request` to run.
 
 A **candidate** is anything that competes for attention: `id`, `kind` (`ask`, `standing-work` or your own) and the fields your data
 carries (`CANDIDATE_FIELDS`: the person's own rank, deadline, who is waiting, what blocks it, when it was asked, when the person was last nudged). What the
@@ -109,6 +109,29 @@ It prints the two asks put in front of the person (the plan that unblocks two it
 the ask Judgment Calls decided needs no asking; then the milestones in order (`build` unblocks `ship` and is due first, `polish` waits because the person's feedback implies
 later for its solution, `ship` follows its dependency) with the met `survey` held back. Judgment Calls decides whether to ask and Prioritization decides the order and the
 batch. `Objectives` and Higher Mind read the order of the milestones the same way, through `system["higher-mind"].view(request, person, objectives=...)`.
+
+## Work that keeps days and a time of day
+
+Recurring work for a person often falls on certain days and at a time of day in their own time zone, which a period or an interval cannot say. Give the schedule
+a `window`: `days` (`mon` to `sun`), `run_time` (`HH:MM` on the local clock), `time_zone` (an IANA zone) and `grace_minutes` (how long after `run_time` a start
+still counts). The schedule is due once in each occasion, from the local time of day until the grace window ends, and not again until the next occasion; the
+local clock is kept across daylight-saving changes. An unreadable window is an error naming the problem, never a guess. `Window` (also exported from `hubofhubs.api`)
+checks the fields when you build one.
+
+```python
+from hubofhubs.api import Window
+
+mornings = {"name": "morning-review", "request": "do the morning review",
+            "window": Window(days=("mon", "tue", "wed", "thu", "fri"), run_time="09:00", time_zone="America/New_York", grace_minutes=60)}
+for label, at, last in [("before", "2026-07-13T12:30:00Z", ""), ("open", "2026-07-13T13:30:00Z", ""), ("done", "2026-07-13T13:30:00Z", "2026-07-13T13:05:00Z"),
+                        ("late", "2026-07-13T15:00:00Z", ""), ("weekend", "2026-07-12T13:30:00Z", "")]:
+    got = system["the-intelligence"].proactive([dict(mornings, last_run=last)], at)
+    print(label, [(t["schedule"], t["kind"]) for t in got])
+```
+
+It prints that the review is not due at 08:30 New York time, due at 09:30 as a `window` trigger, not due again once it ran in this occasion, not due at 11:00 after the
+grace window ended, and not due on a Sunday. The window rides on the same `due` entry as every other schedule, and a schedule's `requested` run is still due whatever its
+window says.
 
 ## What your system adds
 
