@@ -2,7 +2,7 @@
 
 *ESOI records kept beside the code in `hubofhubs/the_consciousness/request_intake`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-The AI representatives of a team learn each person's way: which authority they carry, when to ask that person and when not to, which priorities the person implies, and how that person wants the work done, from the person's own feedback.
+The AI system works in alignment with the humans it serves.
 
 These are the solutions of [Adapting to the humans the system works with](../README.md).
 

@@ -1,6 +1,6 @@
 # Awareness of the outside and interaction with it
 
-The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and keeps its own research current.
+The AI system optimally learns and interacts with the world outside of it.
 
 *ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
 

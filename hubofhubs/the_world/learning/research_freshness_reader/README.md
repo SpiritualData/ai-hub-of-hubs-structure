@@ -2,7 +2,7 @@
 
 *ESOI records kept beside the code in `hubofhubs/the_world/learning/research_freshness_reader`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and keeps its own research current.
+The AI system optimally learns and interacts with the world outside of it.
 
 These are the solutions of [Awareness of the outside and interaction with it](../../README.md).
 

@@ -2,7 +2,7 @@
 
 *ESOI records kept beside the code in `hubofhubs/the_self/integrity`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-The parts of the system work as one whole: each part knows its role, what the system claims matches its evidence, its records match its code, and one call builds the parts from configuration.
+The parts of the AI system work together as one whole.
 
 These are the solutions of [The parts working as one whole](../README.md).
 

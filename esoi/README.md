@@ -70,10 +70,10 @@ flowchart LR
 ## Where to go next
 
 - Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md) (The AI system fits the particular system it lives in.)
-- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI representatives of a team learn each person's way: which authority they carry, when to ask that person and when not to, which priorities the person implies, and how that person wants the work done, from the person's own feedback.)
+- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI system works in alignment with the humans it serves.)
 - Sub-intent: [How the AI processes information](../hubofhubs/the_intelligence/README.md) (AI requests are handled in the best way possible, given all relevant information.)
-- Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md) (The parts of the system work as one whole: each part knows its role, what the system claims matches its evidence, its records match its code, and one call builds the parts from configuration.)
-- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and keeps its own research current.)
+- Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md) (The parts of the AI system work together as one whole.)
+- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI system optimally learns and interacts with the world outside of it.)
 - Repository: [top README](../README.md)
 - Records beside the code: [hubofhubs](../hubofhubs/README.md)
 - Records: [intent.csv](intent.csv)
