@@ -11,9 +11,11 @@ class InformationProcessing(typing.Protocol):
     goal and the response quality are checked. When the goal is unmet the flow returns to the Planner within the budget; when the budget or the
     authority runs out it goes to Judgment Calls. Returns a mapping with ``answer``, ``attempts``, ``escalation`` (Judgment Calls' decision, when
     the flow stopped unmet) and ``steps``. ``proactive`` returns the triggers Proactivity says are due together with the
-    other waiting work, most important first as Prioritization orders it for the person (each with its ``rank``, ``priority_reason`` and ``metric``)."""
+    other waiting work, most important first as Prioritization orders it for the person (each with its ``rank``, ``priority_reason`` and ``metric``). Given the person's recorded ``objectives`` (solution milestones) to
+    ``process``, the one the person cares about most, as Prioritization orders them, is the parent the request is translated under."""
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
-                priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]: ...
+                priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None,
+                objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "") -> Mapping[str, Any]: ...
     def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "", candidates: Sequence[Mapping[str, Any]] = (),
                   stated: Optional[Mapping[str, Any]] = None, events: Sequence[Mapping[str, Any]] = ()) -> Sequence[Mapping[str, Any]]: ...

@@ -36,6 +36,20 @@ class ConsciousnessComposition:
         found = take(self.judgment, "judgment-calls", signal=signal, person=person)
         return {"decision": done(found), "steps": listing([found])}
 
+    def order_asks(self, asks: Sequence[Mapping[str, Any]], person: str = "", stated: Optional[Mapping[str, Any]] = None, batch_limit: int = 0,
+                   now: str = "") -> Mapping[str, Any]:
+        """The asks to put in front of the person, in order. Judgment Calls decides for each ``ask`` (``id``, a risk ``severity`` and ``reason`` and the fields
+        Prioritization reads) whether to ask at all; those it will ask go to Prioritization, which orders them by what they unblock, their deadline and what the
+        person stated, and with a ``batch_limit`` puts only that many in front of the person and holds the rest with why. The others are listed with the decision."""
+        decided = [(a, take(self.judgment, "judgment-calls", signal=a, person=person)) for a in asks]
+        will_ask = [dict(a, kind=str(a.get("kind") or "ask")) for a, d in decided if (done(d) or {}).get("decision") == "ask"]
+        others = [{"id": str(a.get("id")), "decision": (done(d) or {}).get("decision"), "reason": d.reason} for a, d in decided if (done(d) or {}).get("decision") != "ask"]
+        ordered = (take(self.priorities, "prioritization", person=person, candidates=will_ask, subject="asks", stated=stated, batch_limit=batch_limit, now=now)
+                   if will_ask else skipped("prioritization", "Judgment Calls decided to ask about nothing"))
+        answer = done(ordered) or {}
+        return {"asks": list(answer.get("ordered") or []), "held": list(answer.get("held") or []), "not_asked": others,
+                "steps": listing([step for _, step in decided] + [ordered])}
+
     def learn(self, person: str = "", feedback: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
         if not feedback:
             return {"proposed": None, "steps": listing([skipped("feedback-learning", "no feedback was given")])}

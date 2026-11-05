@@ -16,6 +16,13 @@ from hubofhubs.the_self.steps import done
 from hubofhubs.the_intelligence.mind.flow import failed_pieces, outside_of
 
 
+def most_important(long_view: Mapping[str, Any]) -> Optional[Mapping[str, Any]]:
+    """The objective the person cares about most, as Prioritization ordered them; with no order, the first of the hierarchy."""
+    rows = long_view.get("objectives") or []
+    first = ((long_view.get("priority") or {}).get("ordered") or [{}])[0].get("id")
+    return next((r for r in rows if str(r.get("id")) == str(first)), rows[0] if rows else None)
+
+
 @implementation("the-intelligence", "composition")
 class IntelligenceComposition:
     """One request through Intelligence: Higher Mind gives the long view, Critical Thinking translates the request into a target with a budget,
@@ -42,10 +49,11 @@ class IntelligenceComposition:
         return in_priority_order(triggers, candidates, done(ordered))
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
-                priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]:
-        view = take(self.higher, "higher-mind", request=request, person=person)
+                priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None,
+                objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "") -> Mapping[str, Any]:
+        view = take(self.higher, "higher-mind", request=request, person=person, objectives=objectives, stated=stated, now=now)
         long_view = done(view) or {}
-        translated = take(self.critical, "critical-thinking", method="translate", request=request, parent=(long_view.get("objectives") or [None])[0])
+        translated = take(self.critical, "critical-thinking", method="translate", request=request, parent=most_important(long_view))
         target = (done(translated) or {}).get("target")
         prepared = take(self.subconscious, "the-subconscious", method="prepare", request=request)
         profile_inputs = {"representative": representative, "guidance": long_view.get("guidance"), "priorities": priorities}

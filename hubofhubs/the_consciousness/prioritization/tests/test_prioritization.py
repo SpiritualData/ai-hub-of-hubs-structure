@@ -73,3 +73,51 @@ def test_the_seat_is_reached_by_its_id_and_by_its_typed_handle():
     got = hubofhubs.run("prioritization", {"person": "p", "candidates": ITEMS, "now": NOW, "stated": KINDS})
     assert ordered_ids(got["ordered"]) == ["ask", "goal-soon", "goal-late", "idea"]
     assert isinstance(hubofhubs.run(Prioritizing), Prioritizing)
+
+
+ASKS = [{"id": "old", "kind": "ask", "asked_at": "2026-07-01T00:00:00Z"}, {"id": "frees-three", "kind": "ask", "unblocks": ["t1", "t2", "t3"], "effort": 5},
+        {"id": "due-soon", "kind": "ask", "unblocks": ["t4"], "deadline": "2026-07-13T00:00:00Z"}]
+
+
+def test_asks_come_in_the_order_of_what_they_unblock_then_the_deadline_not_the_order_they_arrived():
+    out = StatedFields().prioritize(candidates=ASKS, now=NOW, subject="asks")
+    assert ordered_ids(out["ordered"]) == ["frees-three", "due-soon", "old"] and out["subject"] == "asks"
+    assert "frees 3 waiting items" in out["ordered"][0]["reason"]
+    assert ordered_ids(AsGiven().prioritize(candidates=ASKS, subject="asks")["ordered"]) == ["old", "frees-three", "due-soon"]
+
+
+def test_a_batch_limit_puts_only_that_many_asks_in_front_of_the_person_and_holds_the_rest_with_why():
+    out = StatedFields().prioritize(candidates=ASKS, now=NOW, subject="asks", batch_limit=2)
+    assert ordered_ids(out["ordered"]) == ["frees-three", "due-soon"]
+    assert out["held"] == [{"id": "old", "rank": 3, "reason": "held for a later batch: 2 are put in front of the person at once and this one is place 3"}]
+    assert sum(r["metric"]["weight"] for r in out["ordered"]) == pytest.approx(1.0, abs=1e-3)
+
+
+def test_the_person_s_own_order_still_comes_before_what_an_ask_unblocks():
+    out = StatedFields().prioritize(candidates=ASKS, now=NOW, subject="asks", stated={"order": ["old"]})
+    assert ordered_ids(out["ordered"])[0] == "old"
+
+
+MILESTONES = [{"id": "m-ship", "kind": "milestone", "solution": "s-a", "intent": "i-1", "deadline": "2026-08-01T00:00:00Z", "blocked_by": ["m-build"], "metric": 0.9},
+              {"id": "m-build", "kind": "milestone", "solution": "s-a", "intent": "i-1", "deadline": "2026-07-20T00:00:00Z", "unblocks": ["m-ship"]},
+              {"id": "m-done", "kind": "milestone", "solution": "s-b", "intent": "i-1", "met": "2026-06-01T00:00:00Z"},
+              {"id": "m-old", "kind": "milestone", "solution": "s-b", "intent": "i-2", "ends_at": "2026-07-01T00:00:00Z"},
+              {"id": "m-other", "kind": "milestone", "solution": "s-c", "intent": "i-2", "deadline": "2026-07-15T00:00:00Z"}]
+
+
+def test_milestones_are_ordered_by_dependency_and_target_time_with_or_without_a_metric_and_the_met_and_ended_are_held():
+    out = StatedFields().prioritize(candidates=MILESTONES, now=NOW, subject="goals")
+    assert ordered_ids(out["ordered"]) == ["m-build", "m-other", "m-ship"]      # m-build has no metric value and is first: it unblocks m-ship and is due before it
+    assert {h["id"] for h in out["held"]} == {"m-done", "m-old"}
+
+
+def test_what_the_person_said_about_a_solution_or_intent_counts_for_its_milestones():
+    out = StatedFields().prioritize(candidates=MILESTONES, now=NOW, subject="goals", stated={"order": ["s-c"]})
+    assert ordered_ids(out["ordered"])[0] == "m-other"
+    out = StatedFields().prioritize(candidates=MILESTONES, now=NOW, subject="goals", stated={"feedback": [{"about": "s-a", "direction": "later"}]})
+    assert ordered_ids(out["ordered"]) == ["m-other", "m-build", "m-ship"]
+
+
+def test_a_subject_the_seat_does_not_know_is_refused():
+    with pytest.raises(ValueError):
+        StatedFields().prioritize(candidates=ASKS, subject="chores")

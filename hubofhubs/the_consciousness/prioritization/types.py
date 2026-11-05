@@ -1,8 +1,15 @@
 """The types Prioritization takes and returns. Standard library only; a consumer builds these from its own rows (tasks, asks, standing work)
 and the seat also accepts the same fields as plain mappings, so ``hubofhubs.run("prioritization", {...})`` needs no import.
 
-A candidate is anything that competes for attention: ``id`` and ``kind`` (any kind the consumer names, such as ``ask`` or ``standing-work``) and the fields
-the consumer's own data carries (``FIELDS``). Prioritization never invents a field: one a candidate does not carry is skipped, not guessed.
+A candidate is anything that competes for attention: ``id`` and ``kind`` (any kind the consumer names, such as ``ask``, ``goal`` or ``standing-work``) and the
+fields the consumer's own data carries (``FIELDS``). Prioritization never invents a field: one a candidate does not carry is skipped, not guessed.
+
+Prioritization orders three things for a person, named by the ``subject`` of a call (``SUBJECTS``): ``work`` is what the AI is about to start unasked, ``asks`` is what
+the AI puts to the person (questions, decisions and approvals waiting for them) and ``goals`` is the person's own goals. In the hub a goal is a solution milestone, as
+the ESOI specification defines it: a priority of one solution (``solution``, in an ``intent``) with a target completion time (``deadline``), dependencies on other
+milestones (``blocked_by``), what reaching it ``unblocks``, whether it is ``met`` and an end condition (``ends_at``); a candidate of kind ``milestone``.  A milestone may have
+no metric value (``metric`` absent): a person can state a milestone that is not strictly measured, and it is ordered by the same fields.
+Each subject reads the shared fields and the signals of its own: an ask carries what answering it ``unblocks`` and the ``effort`` of answering.
 
 ``Stated`` is what the Representative knows about the person: an explicit ordering, what must go first or wait, what the person's feedback implies, and the weights
 of the quality profile. ``Ranked`` is one item of the answer: its place, the reason in words and the priority in the form Metric Translation and the Planner use."""
@@ -10,13 +17,23 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Sequence
 
 #: The fields a candidate may carry.
+#: What a call orders: the work the AI starts unasked, the asks it puts to the person, and the person's goals.
+SUBJECTS = ("work", "asks", "goals")
+
 FIELDS: Mapping[str, str] = {
     "rank": "the person's own rank for the item, 0 is highest, absent is unranked",
     "deadline": "ISO time the item is due by",
-    "blocked_by": "ids of items that must be done first",
+    "blocked_by": "ids of items that must be done first (for a milestone, the milestones it depends on)",
     "waiting": "people who are waiting on this item",
     "asked_at": "ISO time the person asked for it, oldest first (an open ask)",
-    "last_nudged_at": "ISO time the person was last reminded about it",
+    "last_nudged_at": "ISO time the person was last reminded or asked about it",
+    "unblocks": "ids of the waiting items that an answer to this ask, or reaching this milestone, frees",
+    "effort": "minutes the item takes the person to answer or do, absent is unknown",
+    "solution": "id of the solution whose milestone this is (a milestone's)",
+    "intent": "id of the intent that solution serves (a milestone's)",
+    "met": "true, or the ISO time, when the milestone has been reached; a met milestone is no longer a priority",
+    "metric": "the metric value the milestone targets; absent for a milestone that is not strictly measured (it is ordered all the same)",
+    "ends_at": "ISO time after which the milestone is no longer a priority (its end condition)",
     "request": "what to run for it when it is chosen",
     "title": "what it is, for the reason and the milestone",
 }

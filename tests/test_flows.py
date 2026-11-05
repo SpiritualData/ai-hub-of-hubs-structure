@@ -197,7 +197,7 @@ class Thinker:
 
 
 class Quiet:
-    def view(self, request, person=""):
+    def view(self, request, person="", objectives=(), stated=None, now=""):
         return {"objectives": [], "guidance": None, "steps": []}
 
     def prepare(self, request, files=None, budget_tokens=4000):
@@ -330,3 +330,30 @@ def test_without_prioritization_the_due_order_stays_and_no_work_is_made_up():
     from hubofhubs.the_intelligence.proactivity.triggers import CalendarAndEvents
     part = IntelligenceComposition(Absent(), Absent(), Absent(), Absent(), Absent(), CalendarAndEvents(), Absent())
     assert [t["schedule"] for t in part.proactive(SCHEDULES[:2], NOW)] == ["weekly-report", "daily-review"]
+
+
+def test_the_asks_judgment_calls_decides_on_go_to_prioritization_for_their_order_and_batch():
+    from hubofhubs.the_consciousness.flow import ConsciousnessComposition
+    from hubofhubs.the_consciousness.judgment_calls.judgment import SeverityPolicy
+    from hubofhubs.the_consciousness.prioritization.ordering import StatedFields
+    flow = ConsciousnessComposition(Absent(), StatedFields(), SeverityPolicy(), Absent(), Absent(), Absent())
+    asks = [{"id": "minor", "severity": "medium", "reason": "pick a colour"}, {"id": "frees-two", "severity": "medium", "reason": "approve the plan", "unblocks": ["a", "b"]},
+            {"id": "safe", "severity": "none", "reason": "nothing risky"}, {"id": "third", "severity": "medium", "reason": "pick a name"}]
+    out = flow.order_asks(asks, "p", batch_limit=2)
+    assert [a["id"] for a in out["asks"]] == ["frees-two", "minor"] and [h["id"] for h in out["held"]] == ["third"]
+    assert [n["id"] for n in out["not_asked"]] == ["safe"] and out["steps"][-1]["solution"] == "prioritization"
+    missing = ConsciousnessComposition(Absent(), Absent(), SeverityPolicy(), Absent(), Absent(), Absent()).order_asks(asks)
+    assert missing["asks"] == [] and missing["steps"][-1]["status"] == "pending"      # no arm of Prioritization: nothing is made up
+
+
+def test_higher_mind_reads_which_milestones_matter_most_from_prioritization_and_the_request_is_translated_under_the_first():
+    from hubofhubs.the_consciousness.prioritization.ordering import StatedFields
+    from hubofhubs.the_intelligence.flow import most_important
+    from hubofhubs.the_intelligence.higher_mind.flow import HigherMindComposition
+    from hubofhubs.the_intelligence.higher_mind.objectives.hierarchy import RolledUp
+
+    goals = [{"id": "m-a", "title": "Write the guide", "deadline": "2026-09-01T00:00:00Z"}, {"id": "m-b", "title": "Run the pilot", "deadline": "2026-08-01T00:00:00Z"},
+             {"id": "m-c", "title": "Done already", "met": True}]
+    view = HigherMindComposition(Absent(), RolledUp(), Absent(), StatedFields()).view("plan", "p", objectives=goals, now="2026-07-12T09:00:00Z")
+    assert [r["id"] for r in view["priority"]["ordered"]] == ["m-b", "m-a"] and [h["id"] for h in view["priority"]["held"]] == ["m-c"]
+    assert most_important(view)["id"] == "m-b" and most_important({"objectives": [{"id": "x"}]})["id"] == "x" and most_important({}) is None
