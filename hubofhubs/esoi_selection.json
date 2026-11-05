@@ -50,7 +50,6 @@
    "model-tier-chooser": "hubofhubs",
    "nervous-system": "hubofhubs",
    "planner-guidance": "hubofhubs",
-   "proactivity": "hubofhubs",
    "read-files": "hubofhubs",
    "request-intake": "hubofhubs",
    "request-planner": "hubofhubs",
@@ -67,6 +66,7 @@
    "the-intuition": "hubofhubs",
    "the-learning": "hubofhubs",
    "the-mind": "hubofhubs",
+   "the-proactivity": "hubofhubs",
    "the-representatives": "hubofhubs",
    "the-science": "hubofhubs",
    "the-self": "hubofhubs",
@@ -258,18 +258,6 @@
    "two_stage": "hubofhubs.consent_gate"
   }
  },
- "proactivity": {
-  "default": "calendar_and_events",
-  "evidence": {
-   "detail": "calendar_and_events is better than elapsed_hours (two-sided exact McNemar test, Holm-adjusted p=0.00781, 8 of 18 cases disagree)",
-   "p": 0.007812,
-   "verdict": "WIN"
-  },
-  "modules": {
-   "calendar_and_events": "hubofhubs.proactivity.triggers",
-   "elapsed_hours": "hubofhubs.proactivity.triggers"
-  }
- },
  "read-files": {
   "default": "folder_reader",
   "modules": {
@@ -363,6 +351,18 @@
   "default": "composition",
   "modules": {
    "composition": "hubofhubs.flows"
+  }
+ },
+ "the-proactivity": {
+  "default": "calendar_and_events",
+  "evidence": {
+   "detail": "calendar_and_events is better than elapsed_hours (two-sided exact McNemar test, Holm-adjusted p=0.00781, 8 of 18 cases disagree)",
+   "p": 0.007812,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "calendar_and_events": "hubofhubs.proactivity.triggers",
+   "elapsed_hours": "hubofhubs.proactivity.triggers"
   }
  },
  "the-representatives": {

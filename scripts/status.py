@@ -1,7 +1,7 @@
 """Rewrite the generated blocks from the records: the seat summary, the evidence table and the list of what is not measured yet in
-README.md, the area detail in docs/reference/registry.md, and every arm of every check in docs/reference/evidence-by-arm.md. The evidence comes from
+docs/reference/status.md, the area detail in docs/reference/registry.md, and every arm of every check in docs/reference/evidence-by-arm.md. The evidence comes from
 esoi/results.csv, esoi/per_case.csv and esoi/evidence.csv (hubofhubs/evidence_summary.py); nothing is typed by hand.
-Run: python3 scripts/status.py [--check]. The README shows one row per seat so it does not grow with the registry; the detail
+Run: python3 scripts/status.py [--check]. The README is written by hand; the numbers live on docs/reference/status.md and the detail
 file lists every area."""
 import re
 import sys
@@ -18,12 +18,12 @@ from hubofhubs import evidence_summary, render_docs, requirements_doc  # noqa: E
 
 TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("docs/reference/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
-           ("README.md", render_docs.CONTAINERS_BEGIN, render_docs.CONTAINERS_END),
-           ("README.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
+           ("docs/reference/status.md", render_docs.CONTAINERS_BEGIN, render_docs.CONTAINERS_END),
+           ("docs/reference/status.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
            ("drafts/announcement-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
            ("drafts/medium-draft.md", evidence_summary.COMPACT_BEGIN, evidence_summary.COMPACT_END),
-           ("README.md", evidence_summary.EVIDENCE_BEGIN, evidence_summary.EVIDENCE_END),
-           ("README.md", evidence_summary.UNMEASURED_BEGIN, evidence_summary.UNMEASURED_END),
+           ("docs/reference/status.md", evidence_summary.EVIDENCE_BEGIN, evidence_summary.EVIDENCE_END),
+           ("docs/reference/status.md", evidence_summary.UNMEASURED_BEGIN, evidence_summary.UNMEASURED_END),
            ("docs/reference/evidence-by-arm.md", evidence_summary.ARMS_BEGIN, evidence_summary.ARMS_END),
            ("docs/reference/leaderboard.md", evidence_summary.LEADERBOARD_BEGIN, evidence_summary.LEADERBOARD_END),
            ("docs/reference/requirements-by-arm.md", requirements_doc.BEGIN, requirements_doc.END))

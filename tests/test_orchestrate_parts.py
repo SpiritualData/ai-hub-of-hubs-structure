@@ -35,7 +35,7 @@ class Tools:
     def __init__(self):
         self.calls = []
 
-    def use(self, category, request, cancel_check=None):
+    def use(self, category, request, cancel_check=None, authority=None):
         self.calls.append((category, request, cancel_check))
         return type("Got", (), {"met": True, "output": "done", "error": None, "cost_usd": 0.0})() if category == "file-editing" else \
             type("Resp", (), {"hits": [type("Hit", (), {"title": "T", "url": "https://e.org/x", "snippet": "S"})()], "answer": "found"})()
@@ -68,7 +68,7 @@ def test_delegation_enforces_authority_budget_and_cancellation():
 
 def test_a_failing_worker_is_a_result_not_a_crash():
     class Broken(Tools):
-        def use(self, category, request, cancel_check=None):
+        def use(self, category, request, cancel_check=None, authority=None):
             raise RuntimeError("down")
     results = ToTools(Broken(), Science()).delegate([{"piece": "search", "tool": "web-search"}])
     assert results[0]["error"] == "RuntimeError: down"
@@ -92,3 +92,20 @@ def test_goal_completion_reads_coverage_requirements_and_refusals():
     assert check("g", "the outcome must contain: a; b", "has a and b")["met"] is True
     assert check("g", "the outcome must contain: a; b", "has a")["met"] is False
     assert check("g", "std", {"text": "", "refused": "budget"})["met"] is False
+
+
+def test_tools_refuses_data_outside_the_data_scope_of_the_authority(tmp_path):
+    from hubofhubs.flows import ToolsComposition
+    (tmp_path / "n.txt").write_text("note")
+
+    class Reader:
+        def read(self, root, paths=()):
+            return {"n.txt": "note"}
+
+    tools = ToolsComposition.__new__(ToolsComposition)
+    tools.parts = {"read-files": Reader()}
+    mine = {"data_scope": ["ana"]}
+    assert tools.use("read-files", {"root": str(tmp_path), "owner": "ana"}, authority=mine) == {"n.txt": "note"}
+    import pytest
+    with pytest.raises(PermissionError, match="outside the data scope"):
+        tools.use("read-files", {"root": str(tmp_path), "owner": "bo"}, authority=mine)

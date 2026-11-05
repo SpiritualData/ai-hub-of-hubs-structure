@@ -75,7 +75,7 @@ flowchart LR
 | Goal Completion | `goal-completion` | `hubofhubs.run("goal-completion", ...)` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Response Quality | `response-quality` | `hubofhubs.run("response-quality", ...)` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Cards From Files | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Proactivity | `the-proactivity` | `hubofhubs.run("the-proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ## Problems and ideals
 
@@ -179,7 +179,7 @@ flowchart LR
 | Goal Completion | `goal-completion` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Response Quality | `response-quality` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Cards From Files | `cards-from-files` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Proactivity | `proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Proactivity | `the-proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
 
 ### Implementations
 
@@ -221,8 +221,8 @@ flowchart LR
 | Evidence standard | `goal-completion:evidence_standard` | [hubofhubs/critique/goal_completion.py](../critique/goal_completion.py) |  |
 | Outcome is not empty | `goal-completion:nonempty` | [hubofhubs/critique/goal_completion.py](../critique/goal_completion.py) |  |
 | Goal record with default budget | `metric-translation:goal_record` | [hubofhubs/orchestrate/translation.py](../orchestrate/translation.py) |  |
-| Calendar periods and events | `proactivity:calendar_and_events` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
-| Elapsed hours | `proactivity:elapsed_hours` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
+| Calendar periods and events | `the-proactivity:calendar_and_events` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
+| Elapsed hours | `the-proactivity:elapsed_hours` | [hubofhubs/proactivity/triggers.py](../proactivity/triggers.py) |  |
 | Split and route by cues | `request-planner:cue_router` | [hubofhubs/orchestrate/planning.py](../orchestrate/planning.py) |  |
 | One piece, no worker | `request-planner:one_piece` | [hubofhubs/orchestrate/planning.py](../orchestrate/planning.py) |  |
 | Cited results | `response-writer:cited_results` | [hubofhubs/orchestrate/writer.py](../orchestrate/writer.py) |  |

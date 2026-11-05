@@ -17,7 +17,7 @@ Keep every part working as one whole for one request.
 
 - Entry call: `hubofhubs.run("the-self", ...)`
 - Selected implementation: Responds through every container (`composition`)
-- Metric: The assembled whole answers a real request, Integrated efficiency, Integrated efficiency
+- Metric: The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole
 - Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
 
 ## Body (`the-body`)
@@ -83,7 +83,7 @@ flowchart LR
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
 - A representative asks when the person would want to be asked (`metric-the-consciousness`)
-- Integrated efficiency (`metric-integrated-efficiency`)
+- Integrated efficiency of the whole (`metric-integrated-efficiency`)
 
 ## Problems
 

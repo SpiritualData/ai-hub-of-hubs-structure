@@ -39,7 +39,7 @@ def trigger(schedule: Mapping[str, Any], why: str) -> Dict[str, Any]:
     return {"schedule": str(schedule.get("name", "")), "reason": why, "request": str(schedule.get("request", ""))}
 
 
-@implementation("proactivity", "calendar_and_events")
+@implementation("the-proactivity", "calendar_and_events")
 class CalendarAndEvents:
     """Due by calendar period in the schedule's zone, by a later run request, or by a later event for a reactive schedule."""
     REQUIRES = ()     # standard library
@@ -73,7 +73,7 @@ class CalendarAndEvents:
         return then.isocalendar()[:2] < here.isocalendar()[:2]
 
 
-@implementation("proactivity", "elapsed_hours")
+@implementation("the-proactivity", "elapsed_hours")
 class ElapsedHours:
     """Due when the cadence's hours have passed since the last run: the reading that lets one late run skip the next morning's."""
     REQUIRES = ()     # standard library

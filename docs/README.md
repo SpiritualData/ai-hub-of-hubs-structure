@@ -34,6 +34,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 ## Reference
 
 - [Registry, area by area](reference/registry.md) (generated)
+- [What is measured today](reference/status.md) (generated: containers, headline, evidence, what has no recorded run)
 - [Evidence by arm](reference/evidence-by-arm.md) (generated)
 - [Requirements by arm](reference/requirements-by-arm.md) (generated)
 - [Public benchmarks and standard reporting](reference/public-benchmarks.md)

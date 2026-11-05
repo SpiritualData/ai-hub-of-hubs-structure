@@ -92,9 +92,15 @@ class ToolsComposition:
         self.parts = {"web-search": search, "read-files": reader, "file-editing": files, "connected-system-operations": operations,
                       "delegated-agent-sessions": sessions}
 
-    def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None) -> Any:
+    def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None, authority: Optional[Mapping[str, Any]] = None) -> Any:
         if category not in self.parts:
             raise ValueError(f"no tool category {category!r}; the categories are {', '.join(self.parts)}")
+        owner = str(request.get("owner", "")) if isinstance(request, Mapping) else ""
+        scope = (authority or {}).get("data_scope")
+        if owner and scope is not None and owner not in scope:      # data scope: the Representative's authority names whose data the AI may read
+            raise PermissionError(f"the data of {owner!r} is outside the data scope of this request")
+        if isinstance(request, Mapping) and "owner" in request:
+            request = {key: value for key, value in request.items() if key != "owner"}
         found = declared(HUB, category)
         call = getattr(self.parts[category], found.entry)
         if cancel_check is not None and "cancel_check" in inspect.signature(call).parameters:      # a worker that can be stopped is given the hook
@@ -220,7 +226,7 @@ class IntelligenceComposition:
         self.judgment, self.proactivity = judgment, proactivity
 
     def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "") -> Sequence[Mapping[str, Any]]:
-        return list(done(take(self.proactivity, "proactivity", schedules=schedules, now=now)) or [])
+        return list(done(take(self.proactivity, "the-proactivity", schedules=schedules, now=now)) or [])
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
                 priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]:

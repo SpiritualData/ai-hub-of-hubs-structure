@@ -413,7 +413,7 @@ class ResponseJudging(typing.Protocol):
     def critique(self, answer: str, evidence: str = "") -> Sequence[str]: ...
 
 
-@solution("proactivity", kind="event", entry="due", example={"schedules": [], "now": "2026-07-12T09:00:00Z"})
+@solution("the-proactivity", kind="event", entry="due", example={"schedules": [], "now": "2026-07-12T09:00:00Z"})
 @runtime_checkable
 class Proactive(typing.Protocol):
     """Lets the system act without being asked: given its standing schedules and the time, returns the triggers that are due (each a mapping
@@ -440,9 +440,10 @@ class TakingIn(typing.Protocol):
 class Tooling(typing.Protocol):
     """Uses the tool of one category (``web-search``, ``read-files``, ``file-editing``, ``connected-system-operations`` or
     ``delegated-agent-sessions``) by calling that category's entry point with the request. A category the Representative's authority does not
-    allow, or data outside its ``data_scope``, is refused here as well as by the caller: data scope is enforced by Tools and Body's adapters."""
+    allow is refused by Work Delegation, and a request that names the ``owner`` of the data it reads (a person) outside the ``data_scope`` of the
+    ``authority`` it is given is refused here: data scope is enforced by Tools and by Body's adapters, which declare whose each source is."""
 
-    def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None) -> Any: ...
+    def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None, authority: Optional[Mapping[str, Any]] = None) -> Any: ...
 
 
 @solution("read-files", kind="event", entry="read", example={"root": ".", "paths": []})

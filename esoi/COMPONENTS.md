@@ -23,4 +23,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | Terminal renderers | `hub-terminal` | core | : pure renderers from run events to framework-free blocks for any terminal frontend (work trace, interim folding, asks, stopped reason),  moved in from a consumer | the-world |
 | Consciousness code | `hub-consciousness` | core | Representatives, Judgment Calls and Request Intake: the person's authority, the decision to ask and the requests taken in. | the-representatives, judgment-calls, request-intake |
 | Intake adapters | `hub-intake` | core | The adapters that say where a system's requests come from. | intake-sources |
-| Proactivity code | `hub-proactivity` | core | Which standing schedules are due, by calendar period, requested run or event. | proactivity |
+| Proactivity code | `hub-proactivity` | core | Which standing schedules are due, by calendar period, requested run or event. | the-proactivity |

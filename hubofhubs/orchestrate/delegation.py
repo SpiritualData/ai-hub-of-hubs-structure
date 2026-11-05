@@ -74,7 +74,7 @@ class ToTools:
                     got = self.science.search(base["piece"])
                     results.append({**base, "text": str(getattr(got, "text", "")), "met": getattr(got, "kind", "") != "error"})
                     continue
-                got = self.tools.use(category=category, request=worker_request(category, piece), cancel_check=cancelled)
+                got = self.tools.use(category=category, request=worker_request(category, piece), cancel_check=cancelled, authority=authority)
                 spent += float(getattr(got, "cost_usd", 0.0) or 0.0)
                 results.append({**base, **outcome(category, got)})
             except Exception as error:      # noqa: BLE001  a failing worker is a result, not a crash of the flow

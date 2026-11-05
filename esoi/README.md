@@ -32,7 +32,7 @@ flowchart LR
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | World | `the-world` | `hubofhubs.run("the-world", 'latest Rust release')` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency, Integrated efficiency |
+| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole |
 | Body | `the-body` | `hubofhubs.run("the-body", '')` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | `hubofhubs.run("the-intelligence", ...)` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
 | Consciousness | `the-consciousness` | `hubofhubs.run("the-consciousness", '')` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
@@ -65,7 +65,7 @@ flowchart LR
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
 - A representative asks when the person would want to be asked (`metric-the-consciousness`)
-- Integrated efficiency (`metric-integrated-efficiency`)
+- Integrated efficiency of the whole (`metric-integrated-efficiency`)
 
 ## Where to go next
 
@@ -107,7 +107,7 @@ flowchart LR
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
 | World | `the-world` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency, Integrated efficiency |
+| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole, Integrated efficiency of the whole |
 | Body | `the-body` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
 | Consciousness | `the-consciousness` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
@@ -131,4 +131,4 @@ flowchart LR
 - A system applies the hub to itself (`metric-the-body`): `none`
 - A request is answered from what bears on it (`metric-the-intelligence`): `none`
 - A representative asks when the person would want to be asked (`metric-the-consciousness`): `none`
-- Integrated efficiency (`metric-integrated-efficiency`): `none`
+- Integrated efficiency of the whole (`metric-integrated-efficiency`): `none`

@@ -59,8 +59,6 @@ at the repository root.
 | Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
 | Nervous System, Digest-driven overseer (`nervous-system:overseer`) | none | none | none | none | no |
 | Nervous System, Gate then overseer (`nervous-system:two_stage`) | none | none | none | none | no |
-| Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
-| Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
 | Request Intake, Every declared source (`request-intake:every_declared_source`) | none | none | none | none | no |
 | Request Planner, Split and route by cues (`request-planner:cue_router`) | none | none | none | none | no |
@@ -76,6 +74,8 @@ at the repository root.
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
 | Learning, Stale areas from the registry dates (`the-learning:registry_research`) | none | none | none | none | no |
 | Mind, The four parts of the Mind in order (`the-mind:composition`) | none | none | none | none | no |
+| Proactivity, Calendar periods and events (`the-proactivity:calendar_and_events`) | none | none | none | none | no |
+| Proactivity, Elapsed hours (`the-proactivity:elapsed_hours`) | none | none | none | none | no |
 | Representatives, Declared authority (`the-representatives:declared_authority`) | none | none | none | none | no |
 | Science, OpenAlex keyword search (`the-science:openalex`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
 | Science, OpenAlex keywords, rule rewrite (`the-science:openalex_keywords`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |

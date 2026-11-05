@@ -17,4 +17,4 @@ hub-evaluation,Evaluation code,evaluation,evaluation/*.md;evaluation/*.py;evalua
 hub-terminal,Terminal renderers,core,hubofhubs/terminal/*.py;tests/test_terminal_*.py,": pure renderers from run events to framework-free blocks for any terminal frontend (work trace, interim folding, asks, stopped reason); moved in from a consumer",the-world
 hub-consciousness,Consciousness code,core,hubofhubs/consciousness/*.py;tests/test_consciousness.py;tests/test_intake.py,"Representatives, Judgment Calls and Request Intake: the person's authority, the decision to ask and the requests taken in.",the-representatives;judgment-calls;request-intake
 hub-intake,Intake adapters,core,hubofhubs/intake/*.py,The adapters that say where a system's requests come from.,intake-sources
-hub-proactivity,Proactivity code,core,hubofhubs/proactivity/*.py,"Which standing schedules are due, by calendar period, requested run or event.",proactivity
+hub-proactivity,Proactivity code,core,hubofhubs/proactivity/*.py,"Which standing schedules are due, by calendar period, requested run or event.",the-proactivity

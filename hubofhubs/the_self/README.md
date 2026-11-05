@@ -14,7 +14,7 @@ The Self keeps the parts of the system working as one whole through the Assemble
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Assembler | `the-assembler` | `hubofhubs.run("the-assembler", {})` | One-call assembly of the whole hub (`zero_config`) | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
+| Assembler | `the-assembler` | `hubofhubs.run("the-assembler", {})` | One-call assembly of the whole hub (`zero_config`) | Whole assembly |
 | Integrity | `system-integrity` | `hubofhubs.run("system-integrity", ['examplevendor'])` | Audit of vendor wording, staleness and configuration (`prompts_as_data`) | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
 | Role Understanding | `role-understanding` | `hubofhubs.run("role-understanding", 'the-assembler')` | none selected | Behaviour matches the stated role |
 
@@ -23,21 +23,18 @@ The Self keeps the parts of the system working as one whole through the Assemble
 **Problems**
 
 - One product leaks into shared code (`HP6`): One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
-- Assembly judged part by part (`hprob-assembly-not-jarvis-from-the-users-seat`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before...
+- Assembly judged part by part (`hprob-assembly-judged-part-by-part`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before...
 - Parts forget their role (`hprob-parts-forget-their-role`): Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole.
 
 **Ideals**
 
-- Capable from the user's seat (`hideal-jarvis-from-the-users-seat`): The assembled hub is judged as the user meets it: one capable assistant that gets real work done, asks before it does anything that cannot be undone, and reports only what it did.
+- Capable from the user's seat (`hideal-capable-from-the-users-seat`): The assembled hub is judged as the user meets it: one capable assistant that gets real work done, asks before it does anything that cannot be undone, and reports only what it did.
 - Every part knows its role (`hideal-every-part-knows-its-role`): Each part knows what it is for, what it hands on and what it leaves to the others.
 
 ## Metrics and their leaders
 
 - Whole assembly (`metric-the-assembler`)
 - Consumer-specific strings found by scan (`metric-system-integrity`)
-- Capability of the whole from the user's seat (`metric-hub-jarvis-ness`)
-- Consent floor (`metric-hub-jarvis-floor-consent`)
-- Honesty floor (`metric-hub-jarvis-floor-honesty`)
 - Intents whose solutions one paragraph and one diagram explain as the code builds them (`metric-solution-coherence`)
 - Behaviour matches the stated role (`metric-role-understanding`)
 
@@ -54,19 +51,19 @@ The Self keeps the parts of the system working as one whole through the Assemble
 ### Problems
 
 - One product leaks into shared code (`HP6`): One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
-- Assembly judged part by part (`hprob-assembly-not-jarvis-from-the-users-seat`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before anything irreversible and say truthfully what it did.
+- Assembly judged part by part (`hprob-assembly-judged-part-by-part`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before anything irreversible and say truthfully what it did.
 - Parts forget their role (`hprob-parts-forget-their-role`): Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole.
 
 ### Ideals
 
-- Capable from the user's seat (`hideal-jarvis-from-the-users-seat`): The assembled hub is judged as the user meets it: one capable assistant that gets real work done, asks before it does anything that cannot be undone, and reports only what it did.
+- Capable from the user's seat (`hideal-capable-from-the-users-seat`): The assembled hub is judged as the user meets it: one capable assistant that gets real work done, asks before it does anything that cannot be undone, and reports only what it did.
 - Every part knows its role (`hideal-every-part-knows-its-role`): Each part knows what it is for, what it hands on and what it leaves to the others.
 
 ### Solutions
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Assembler | `the-assembler` | One-call assembly of the whole hub (`zero_config`) | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
+| Assembler | `the-assembler` | One-call assembly of the whole hub (`zero_config`) | Whole assembly |
 | Integrity | `system-integrity` | Audit of vendor wording, staleness and configuration (`prompts_as_data`) | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
 | Role Understanding | `role-understanding` | none selected | Behaviour matches the stated role |
 
@@ -81,8 +78,5 @@ The Self keeps the parts of the system working as one whole through the Assemble
 
 - Whole assembly (`metric-the-assembler`): `none`
 - Consumer-specific strings found by scan (`metric-system-integrity`): `none`
-- Capability of the whole from the user's seat (`metric-hub-jarvis-ness`): `none`
-- Consent floor (`metric-hub-jarvis-floor-consent`): `none`
-- Honesty floor (`metric-hub-jarvis-floor-honesty`): `none`
 - Intents whose solutions one paragraph and one diagram explain as the code builds them (`metric-solution-coherence`): `python3 -m esoi.coherence --gate`
 - Behaviour matches the stated role (`metric-role-understanding`): `none`
