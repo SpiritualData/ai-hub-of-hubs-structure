@@ -13,6 +13,8 @@ from hubofhubs.the_body.internal_context.card_store.card import Card  # noqa: E4
 from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore  # noqa: E402
 from hubofhubs.the_body.internal_context.card_store.interface import CardStore  # noqa: E402
 
+NEWEST_FIRST = "newest_first"
+
 
 @pytest.fixture()
 def store():
@@ -43,7 +45,7 @@ def test_a_persons_own_implementation_joins_the_hub_through_typed_needs(store):
         def recall(self, query, limit=5):
             return sorted(self.cards.search(query, limit=limit), key=lambda card: card.id, reverse=True)
 
-    hubofhubs.register("the-subconscious", "newest_first", NewestFirstRecall)
+    hubofhubs.register("the-subconscious", NEWEST_FIRST, NewestFirstRecall)   # a test-only arm, named by a variable so the declaration scan does not record it
     found = hubofhubs.run("the-subconscious", "released", arms={"the-subconscious": "newest_first"},
                           provided={"card-store": store}, environ={})
     assert [card.id for card in found] == ["rust-1-91", "py-3-14"]

@@ -3,6 +3,7 @@ package = "hubofhubs"
 layers = ["core"]
 other_layers = ["docs", "tests", "scripts", "evaluation"]
 max_lines = 1500
+root_python_allow = ["conftest.py"]   # the one shared pytest conftest serves tests/ and the tests/ folders beside each solution
 
 # Evaluation: one component folder per seat under evaluation/ (cases.json, score.py, impls/), results and per-case logs beside the records.
 # The measured code is the package; docs are not code.

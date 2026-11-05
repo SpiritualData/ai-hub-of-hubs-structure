@@ -31,7 +31,7 @@ Keep what the hub recommends current with the outside.
 - Entry call: `hubofhubs.run("the-learning", '2026-11-03')`
 - Selected implementation: Stale areas from the registry dates (`registry_research`)
 - Metric: Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../__init__.py), [`hubofhubs/the_world/flow.py`](../flow.py), [`hubofhubs/the_world/interface.py`](../interface.py), [`hubofhubs/the_world/learning/__init__.py`](__init__.py), [`hubofhubs/the_world/learning/interface.py`](interface.py), [`hubofhubs/the_world/learning/registry_research.py`](registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](research_freshness_reader/interface.py) and 121 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../__init__.py), [`hubofhubs/the_world/flow.py`](../flow.py), [`hubofhubs/the_world/interface.py`](../interface.py), [`hubofhubs/the_world/learning/__init__.py`](__init__.py), [`hubofhubs/the_world/learning/interface.py`](interface.py), [`hubofhubs/the_world/learning/registry_research.py`](registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](research_freshness_reader/interface.py) and 122 more
 
 ## Diagram
 

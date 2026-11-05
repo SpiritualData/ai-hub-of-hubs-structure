@@ -7,7 +7,9 @@ PROJECT = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
 
 
 def test_the_default_install_brings_esoi_only():
-    assert PROJECT["dependencies"] == ["esoi"]
+    """esoi is a sibling library that is on no package index: the one core dependency is its direct git URL, the same string every
+    consumer uses (tests/test_pins.py pins the exact string)."""
+    assert len(PROJECT["dependencies"]) == 1 and PROJECT["dependencies"][0].startswith("esoi @ git+https://")
 
 
 def test_distribution_import_name_and_esoi_package_agree():
