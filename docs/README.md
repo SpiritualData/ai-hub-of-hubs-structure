@@ -14,6 +14,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Install what your seats need](how-to/install-what-your-seats-need.md)
 - [Refresh the registry](how-to/refresh-the-registry.md)
 - [Register a second consumer](how-to/register-a-second-consumer.md)
+- [Adopt the hub](how-to/adopt-the-hub.md)
 - [Emit a work trace](how-to/emit-a-work-trace.md)
 - [Iterate on card builders without repeating model calls](how-to/iterate-on-card-builders-without-repeating-model-calls.md)
 - [Build an autopilot on the hub](how-to/build-an-autopilot-on-the-hub.md)
