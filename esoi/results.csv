@@ -220,3 +220,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-05,long_term_memory,file_recall,17,16,16/17,0/0,0,0,0,0.0,0.0,0.9588,e8958c4-dirty,754d197b,,none,
 2026-11-05,long_term_memory,card_store_recall,17,15,15/17,0/0,0,0,0,0.0,0.0,0.9176,e8958c4-dirty,754d197b,,none,
 2026-11-05,long_term_memory,recent_window,17,10,10/17,0/0,0,0,0,0.0,0.0,0.7118,e8958c4-dirty,754d197b,,none,
+2026-11-05,live_objectives,rolled_up,20,20,20/20,0/0,0,0,0,0.0,0.0,1.0,d990e11-dirty,a96b7ae1,,none,place_passed=11/11; rollup_passed=9/9
+2026-11-05,live_objectives,flat_list,20,8,8/20,0/0,0,0,0,0.0,0.0,0.58,d990e11-dirty,a96b7ae1,,none,place_passed=6/11; rollup_passed=2/9

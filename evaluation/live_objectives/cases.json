@@ -1,0 +1,914 @@
+[
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a harvest of tomatoes is eaten"
+      }
+     ],
+     "id": "garden",
+     "parent": "",
+     "title": "Grow vegetables for the summer"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "four beds are filled with soil"
+      },
+      {
+       "met": false,
+       "text": "a watering line reaches the beds"
+      }
+     ],
+     "id": "beds",
+     "parent": "garden",
+     "title": "Build the raised beds"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "tomato and basil seeds arrive"
+      }
+     ],
+     "id": "seeds",
+     "parent": "garden",
+     "title": "Order the seeds"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "garden",
+    0,
+    "in progress",
+    0.5
+   ],
+   [
+    "beds",
+    1,
+    "in progress",
+    0.5
+   ],
+   [
+    "seeds",
+    1,
+    "met",
+    1.0
+   ]
+  ],
+  "id": "objectives-rollup-goal-rolls-up-to-parent",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "the old flat is handed back"
+      }
+     ],
+     "id": "move",
+     "parent": "",
+     "title": "Move to the new house"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "all boxes are labelled"
+      },
+      {
+       "met": true,
+       "text": "the van is booked"
+      }
+     ],
+     "id": "pack",
+     "parent": "move",
+     "title": "Pack the books and the kitchen"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "the electricity contract is moved"
+      },
+      {
+       "met": false,
+       "text": "the internet is connected"
+      }
+     ],
+     "id": "utilities",
+     "parent": "move",
+     "title": "Transfer the electricity and internet"
+    },
+    {
+     "done_when": [],
+     "id": "broadband",
+     "met": true,
+     "parent": "utilities",
+     "title": "Choose an internet provider"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "move",
+    0,
+    "in progress",
+    0.4444
+   ],
+   [
+    "pack",
+    1,
+    "met",
+    1.0
+   ],
+   [
+    "utilities",
+    1,
+    "in progress",
+    0.3333
+   ],
+   [
+    "broadband",
+    2,
+    "met",
+    1.0
+   ]
+  ],
+  "id": "objectives-rollup-met-needs-every-unit",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a practice paper scores above 70 percent"
+      }
+     ],
+     "id": "exam",
+     "parent": "",
+     "title": "Pass the chemistry exam"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "every reaction card is reviewed"
+      }
+     ],
+     "id": "organic",
+     "parent": "exam",
+     "title": "Revise organic reactions"
+    },
+    {
+     "done_when": [],
+     "id": "lab",
+     "met": true,
+     "parent": "",
+     "title": "Finish the lab report"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "exam",
+    0,
+    "not started",
+    0.0
+   ],
+   [
+    "organic",
+    1,
+    "not started",
+    0.0
+   ],
+   [
+    "lab",
+    0,
+    "met",
+    1.0
+   ]
+  ],
+  "id": "objectives-rollup-no-criteria-no-children-says-so",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [],
+     "id": "trip",
+     "parent": "",
+     "title": "Walk the coastal path in May"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "boots are bought"
+      },
+      {
+       "met": false,
+       "text": "boots are worn in"
+      }
+     ],
+     "id": "gear",
+     "parent": "trip",
+     "title": "Buy walking boots"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "trip",
+    0,
+    "not started",
+    0.0
+   ],
+   [
+    "gear",
+    1,
+    "not started",
+    0.0
+   ]
+  ],
+  "id": "objectives-rollup-empty-objective-is-not-started",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "four beds are filled with soil"
+      },
+      {
+       "met": false,
+       "text": "a watering line reaches the beds"
+      }
+     ],
+     "id": "beds",
+     "parent": "garden",
+     "title": "Build the raised beds"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a harvest of tomatoes is eaten"
+      }
+     ],
+     "id": "garden",
+     "parent": "",
+     "title": "Grow vegetables for the summer"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "garden",
+    0,
+    "in progress",
+    0.25
+   ],
+   [
+    "beds",
+    1,
+    "in progress",
+    0.5
+   ]
+  ],
+  "id": "objectives-rollup-children-listed-before-parent",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "a loaf is baked"
+      }
+     ],
+     "id": "orphan",
+     "parent": "gone",
+     "title": "Learn to bake bread"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "orphan",
+    0,
+    "met",
+    1.0
+   ]
+  ],
+  "id": "objectives-rollup-unknown-parent-becomes-a-root",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": []
+  },
+  "expect": [],
+  "id": "objectives-rollup-no-objectives",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [],
+     "id": "a",
+     "parent": "",
+     "title": "Declutter the garage"
+    },
+    {
+     "done_when": [],
+     "id": "b",
+     "met": true,
+     "parent": "a",
+     "title": "Sort the tools"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "a",
+    0,
+    "met",
+    1.0
+   ],
+   [
+    "b",
+    1,
+    "met",
+    1.0
+   ]
+  ],
+  "id": "objectives-rollup-parent-with-only-met-children-is-met",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "one"
+      }
+     ],
+     "id": "x",
+     "parent": "y",
+     "title": "First"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "two"
+      }
+     ],
+     "id": "y",
+     "parent": "x",
+     "title": "Second"
+    }
+   ]
+  },
+  "expect": [
+   [
+    "x",
+    0,
+    "in progress",
+    0.5
+   ],
+   [
+    "y",
+    1,
+    "not started",
+    0.0
+   ]
+  ],
+  "id": "objectives-rollup-a-cycle-is-listed-once-from-its-first-member",
+  "kind": "rollup",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a harvest of tomatoes is eaten"
+      }
+     ],
+     "id": "garden",
+     "parent": "",
+     "title": "Grow vegetables for the summer"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "four beds are filled with soil"
+      },
+      {
+       "met": false,
+       "text": "a watering line reaches the beds"
+      }
+     ],
+     "id": "beds",
+     "parent": "garden",
+     "title": "Build the raised beds"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "tomato and basil seeds arrive"
+      }
+     ],
+     "id": "seeds",
+     "parent": "garden",
+     "title": "Order the seeds"
+    }
+   ],
+   "request": "Where should I buy the tomato seeds this week?"
+  },
+  "expect": [
+   "garden",
+   [
+    "garden"
+   ]
+  ],
+  "id": "objectives-place-a-met-child-is-not-live-so-its-parent-takes-it",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a harvest of tomatoes is eaten"
+      }
+     ],
+     "id": "garden",
+     "parent": "",
+     "title": "Grow vegetables for the summer"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "four beds are filled with soil"
+      },
+      {
+       "met": false,
+       "text": "a watering line reaches the beds"
+      }
+     ],
+     "id": "beds",
+     "parent": "garden",
+     "title": "Build the raised beds"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "tomato and basil seeds arrive"
+      }
+     ],
+     "id": "seeds",
+     "parent": "garden",
+     "title": "Order the seeds"
+    }
+   ],
+   "request": "Plan the watering line for the beds"
+  },
+  "expect": [
+   "beds",
+   [
+    "garden",
+    "beds"
+   ]
+  ],
+  "id": "objectives-place-deeper-wins-a-tie",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "the old flat is handed back"
+      }
+     ],
+     "id": "move",
+     "parent": "",
+     "title": "Move to the new house"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "all boxes are labelled"
+      },
+      {
+       "met": true,
+       "text": "the van is booked"
+      }
+     ],
+     "id": "pack",
+     "parent": "move",
+     "title": "Pack the books and the kitchen"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "the electricity contract is moved"
+      },
+      {
+       "met": false,
+       "text": "the internet is connected"
+      }
+     ],
+     "id": "utilities",
+     "parent": "move",
+     "title": "Transfer the electricity and internet"
+    },
+    {
+     "done_when": [],
+     "id": "broadband",
+     "met": true,
+     "parent": "utilities",
+     "title": "Choose an internet provider"
+    }
+   ],
+   "request": "Is the electricity contract transferred yet?"
+  },
+  "expect": [
+   "utilities",
+   [
+    "move",
+    "utilities"
+   ]
+  ],
+  "id": "objectives-place-path-runs-from-the-top",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "the old flat is handed back"
+      }
+     ],
+     "id": "move",
+     "parent": "",
+     "title": "Move to the new house"
+    },
+    {
+     "done_when": [],
+     "id": "broadband",
+     "met": true,
+     "parent": "utilities",
+     "title": "Choose an internet provider"
+    }
+   ],
+   "request": "Choose an internet provider"
+  },
+  "expect": [
+   "",
+   []
+  ],
+  "id": "objectives-place-met-objective-is-not-live",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a harvest of tomatoes is eaten"
+      }
+     ],
+     "id": "garden",
+     "parent": "",
+     "title": "Grow vegetables for the summer"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "four beds are filled with soil"
+      },
+      {
+       "met": false,
+       "text": "a watering line reaches the beds"
+      }
+     ],
+     "id": "beds",
+     "parent": "garden",
+     "title": "Build the raised beds"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "tomato and basil seeds arrive"
+      }
+     ],
+     "id": "seeds",
+     "parent": "garden",
+     "title": "Order the seeds"
+    }
+   ],
+   "request": "What is the capital of Peru?"
+  },
+  "expect": [
+   "",
+   []
+  ],
+  "id": "objectives-place-no-shared-word",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a harvest of tomatoes is eaten"
+      }
+     ],
+     "id": "garden",
+     "parent": "",
+     "title": "Grow vegetables for the summer"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "four beds are filled with soil"
+      },
+      {
+       "met": false,
+       "text": "a watering line reaches the beds"
+      }
+     ],
+     "id": "beds",
+     "parent": "garden",
+     "title": "Build the raised beds"
+    },
+    {
+     "done_when": [
+      {
+       "met": true,
+       "text": "tomato and basil seeds arrive"
+      }
+     ],
+     "id": "seeds",
+     "parent": "garden",
+     "title": "Order the seeds"
+    }
+   ],
+   "request": "What should I do about the"
+  },
+  "expect": [
+   "",
+   []
+  ],
+  "id": "objectives-place-stop-words-do-not-count",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a practice paper scores above 70 percent"
+      }
+     ],
+     "id": "exam",
+     "parent": "",
+     "title": "Pass the chemistry exam"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "every reaction card is reviewed"
+      }
+     ],
+     "id": "organic",
+     "parent": "exam",
+     "title": "Revise organic reactions"
+    },
+    {
+     "done_when": [],
+     "id": "lab",
+     "met": true,
+     "parent": "",
+     "title": "Finish the lab report"
+    }
+   ],
+   "request": "Review every reaction for organic chemistry"
+  },
+  "expect": [
+   "organic",
+   [
+    "exam",
+    "organic"
+   ]
+  ],
+  "id": "objectives-place-plural-matches-singular",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a practice paper scores above 70 percent"
+      }
+     ],
+     "id": "exam",
+     "parent": "",
+     "title": "Pass the chemistry exam"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "every reaction card is reviewed"
+      }
+     ],
+     "id": "organic",
+     "parent": "exam",
+     "title": "Revise organic reactions"
+    },
+    {
+     "done_when": [],
+     "id": "lab",
+     "met": true,
+     "parent": "",
+     "title": "Finish the lab report"
+    }
+   ],
+   "request": "Revise organic reactions before the exam"
+  },
+  "expect": [
+   "organic",
+   [
+    "exam",
+    "organic"
+   ]
+  ],
+  "id": "objectives-place-most-shared-words-wins",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "a practice paper scores above 70 percent"
+      }
+     ],
+     "id": "exam",
+     "parent": "",
+     "title": "Pass the chemistry exam"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "every reaction card is reviewed"
+      }
+     ],
+     "id": "organic",
+     "parent": "exam",
+     "title": "Revise organic reactions"
+    },
+    {
+     "done_when": [],
+     "id": "lab",
+     "met": true,
+     "parent": "",
+     "title": "Finish the lab report"
+    }
+   ],
+   "request": "Book a practice paper for next week"
+  },
+  "expect": [
+   "exam",
+   [
+    "exam"
+   ]
+  ],
+  "id": "objectives-place-top-level-by-its-criteria",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [
+    {
+     "done_when": [],
+     "id": "trip",
+     "parent": "",
+     "title": "Walk the coastal path in May"
+    },
+    {
+     "done_when": [
+      {
+       "met": false,
+       "text": "boots are bought"
+      },
+      {
+       "met": false,
+       "text": "boots are worn in"
+      }
+     ],
+     "id": "gear",
+     "parent": "trip",
+     "title": "Buy walking boots"
+    }
+   ],
+   "request": "How do I wear in new walking boots?"
+  },
+  "expect": [
+   "gear",
+   [
+    "trip",
+    "gear"
+   ]
+  ],
+  "id": "objectives-place-boots",
+  "kind": "place",
+  "origin": "rule"
+ },
+ {
+  "args": {
+   "objectives": [],
+   "request": "Anything at all about gardens"
+  },
+  "expect": [
+   "",
+   []
+  ],
+  "id": "objectives-place-no-objectives",
+  "kind": "place",
+  "origin": "rule"
+ }
+]
