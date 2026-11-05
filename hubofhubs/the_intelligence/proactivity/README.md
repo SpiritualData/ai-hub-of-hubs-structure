@@ -29,10 +29,12 @@ Part of [How the AI processes information](../README.md)
 ## Problems
 
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
+- Recurring work falls on days and times (`hprob-recurring-work-has-days-and-times`): Standing work for a person often falls on certain days of the week and a time of day in that person's own time zone (a review on weekday mornings, a report on Friday afternoons), and a late start is still worth doing for a while but not forever.
 
 ## Ideals
 
 - The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
+- Recurring work keeps its days and times (`hideal-recurring-work-keeps-its-days-and-times`): Recurring work starts on the days and at the time of day its person keeps, in their own time zone, once per occasion, and a start that is a little late still counts.
 
 ## Where to go next
 
