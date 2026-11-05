@@ -39,15 +39,21 @@ file = "esoi/evidence.csv"
 "bm25s" = "bm25"
 "Claude Code CLI (claude -p stream-json)" = "stream_json_goal_runner"
 
-# The balanced score of the file-edit check (esoi/balance.py), measured for File Editing and Delegated Agent Sessions: accuracy 70%, cost 15%, time 15%. Arms of this seat reach
-# nearly the same pass rate at very different prices (one model call in about 2.5 s for half a cent against a Claude Code session in about
-# 20 s for about fifteen cents), so cost and speed count through the metric and not through a separate rule. A small file edit is worth at
-# most ten cents and a minute; an arm that spends the whole of either gets zero for it. The weights are the library's defaults, not fitted to
-# these results. The Claude Code runners run on a subscription: their dollars are the CLI's own estimate at list price, counted as cost here.
+# The balanced score of the file-edit check (esoi/balance.py), measured for File Editing only (single-file coding edits): accuracy 70%, cost 15%, time 15%. A small
+# file edit is worth at most ten cents and a minute; an arm that spends the whole of either gets zero for it. The weights are the library's defaults, not fitted to
+# these results. Delegated Agent Sessions has its own score below: an agent session is not a file edit and shares no case set with it.
 [balance.file_edit_goals]
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.10
 seconds_per_case = 60
+
+# The balanced score of Delegated Agent Sessions (esoi/balance.py), measured on general tasks that are not coding (read files and report, compare, count,
+# put in order): accuracy 70%, cost 15%, time 15%, the library's defaults. A task of this kind is worth at most ten cents and two minutes. The Claude Code runners
+# run on a subscription: their dollars are the CLI's own estimate at list price, counted as cost here.
+[balance.agent_sessions]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.10
+seconds_per_case = 120
 
 # The balanced score of cards-from-files (esoi/balance.py). One case is finding the file one task needs, which is part of a
 # small file edit (worth at most ten cents and a minute, [balance.file_edit_goals]) and what a worker without cards spends a

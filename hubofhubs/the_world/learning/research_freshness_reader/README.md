@@ -31,7 +31,7 @@ Read the registry's recorded dates and report how old each area's research is.
 - Entry call: `hubofhubs.run("research-freshness-reader", '2026-10-01')`
 - Selected implementation: Registry date scan (`registry_scan`)
 - Metric: Registry freshness reading
-- Implemented by: [`docs/explanation/compared.md`](../../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../../docs/explanation/terminal-harness.md) and 176 more
+- Implemented by: [`docs/explanation/compared.md`](../../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../../docs/explanation/terminal-harness.md) and 177 more
 
 ## Implementations
 

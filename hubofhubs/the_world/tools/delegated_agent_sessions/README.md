@@ -17,7 +17,7 @@ Get open-ended work done by an agent in its own session.
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: Claude Code, steerable session (`stream_json_goal_runner`)
 - Metric: Harness, context, sub-agents and recursion ranked, Goal met by its own tests (agent sessions)
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 120 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 121 more
 
 ## Implementations
 
@@ -30,7 +30,7 @@ Get open-ended work done by an agent in its own session.
 ## Metrics
 
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): leader `fast_edit`, 29 of 30 cases
+- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): leader `none`, 0 of 12 cases
 
 ## Where to go next
 

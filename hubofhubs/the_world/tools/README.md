@@ -32,7 +32,7 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 
 - The operation is carried out and nothing else (`metric-connected-system-operations`)
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): leader `fast_edit`, 29 of 30 cases
+- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): leader `none`, 0 of 12 cases
 - Goal met by its own tests (`metric-file-editing`): leader `fast_edit`, 29 of 30 cases
 - Files read inside the folder (`metric-read-files`)
 - Search finds the source (`metric-web-search`): leader `gemini`, 32 of 40 cases
@@ -85,7 +85,7 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 
 - The operation is carried out and nothing else (`metric-connected-system-operations`): `none`
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`): `python3 -m pytest tests/test_deep_session_subagents.py`
-- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): `esoi run file_edit_goals --impl subprocess_goal_runner; esoi run file_edit_goals --impl stream_json_goal_runner; esoi run file_edit_goals --impl acp_deep_runner; esoi run file_edit_goals --impl none`
+- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): `esoi run agent_sessions --impl stream_json_goal_runner; esoi run agent_sessions --impl subprocess_goal_runner; esoi run agent_sessions --impl acp_deep_runner; esoi run agent_sessions --impl none`
 - Goal met by its own tests (`metric-file-editing`): `esoi run file_edit_goals --impl fast_edit; esoi run file_edit_goals --impl none`
 - Files read inside the folder (`metric-read-files`): `python3 -m pytest tests/test_act_read_files.py`
 - Search finds the source (`metric-web-search`): `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`

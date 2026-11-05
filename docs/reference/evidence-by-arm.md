@@ -8,6 +8,7 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 <!-- arms:start -->
 | Component | Arm | Cases (held-out part when split) | Pass rate (95% Wilson) | Cost per passing case | Seconds per case | Versus the selected arm | Public evidence (not in our numbers) |
 |---|---|---|---|---|---|---|---|
+| agent_sessions | none | 12 | 0.0% (0.0% to 24.2%), 0/12 | no passing case | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | assemble_the_whole | zero_config | 68 | 100.0% (94.7% to 100.0%), 68/68 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | call_a_model | gemini (selected) | 50 | 100.0% (92.9% to 100.0%), 50/50 | $0.000158 | 0.85 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | claude_cli | 3 | 100.0% (43.9% to 100.0%), 3/3 | $0.0002333 | 2.6 (median) | complementary arm, not ranked | none recorded |
@@ -41,10 +42,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | context_retrieval | learned_rerank | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of learned_rerank (two-sided sign test p=1.35e-24) | none recorded |
 | context_retrieval | live_scan | 395 | 20.3% (16.6% to 24.5%), 80/395 | $1.609 | 1.9 (median) | ahead of live_scan (two-sided sign test p=1.07e-103) | none recorded |
 | context_retrieval | lsi | 395 | 45.8% (41.0% to 50.8%), 181/395 | $0 | 0 (median) | ahead of lsi (two-sided sign test p=1.53e-19) | none recorded |
-| file_edit_goals | stream_json_goal_runner (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.005207 | 20.4 (median) | selected | public, grade D: cost Cache tokens written on an identical file-summarise task, Claude Sonnet 4.5 on OpenCode 1003: 53839 tokens (lower is better), grade D; flags: single_source, stale, confounded; needs an own run; public, grade D: quality SWE-bench Verified resolve rate, Claude Opus 4.8 on mini-swe-agent with same model: 88.6: 0.858 fraction (higher is better), grade D; flags: single_source, saturated, confounded; needs an own run; public, grade D: speed SWE-bench Verified duration per test, Claude Opus 4.8 on mini-swe-agent with same model: 567 (9m27s): 135 seconds_per_task (lower is better), grade D; flags: single_source, saturated, confounded; needs an own run; public, grade D: token_efficiency Tokens sent before the user prompt on the first request, Claude Sonnet 4.5 on OpenCode 7000: 33000 tokens (lower is better), grade D; flags: single_source, confounded; needs an own run |
-| file_edit_goals | fast_edit | 30 | 96.7% (83.3% to 99.4%), 29/30 | $0.0001793 | 1.8 (median) | fast_edit: best guess, no per-case rows to test (fast_edit 0.972 against stream_json_goal_runner 0.938) | none recorded |
-| file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against stream_json_goal_runner 0.938) | none recorded |
-| file_edit_goals | subprocess_goal_runner | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.004987 | 24.4 (median) | subprocess_goal_runner: best guess, no per-case rows to test (subprocess_goal_runner 0.923 against stream_json_goal_runner 0.938) | none recorded |
+| file_edit_goals | fast_edit (selected) | 30 | 96.7% (83.3% to 99.4%), 29/30 | $0.0001793 | 1.8 (median) | selected | none recorded |
+| file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972) | none recorded |
 | goal_completion | evidence_standard (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
 | goal_completion | nonempty | 14 | 78.6% (52.4% to 92.4%), 11/14 | $0 | 0 (median) | ahead of nonempty, not significant (two-sided McNemar p=0.25) | none recorded |
 | judgment_calls | severity_policy (selected) | 72 | 100.0% (94.9% to 100.0%), 72/72 | $0 | 0 (median) | selected | none recorded |

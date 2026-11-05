@@ -1,0 +1,143 @@
+[
+ {
+  "id": "agent-notes-city",
+  "files": {
+   "notes.txt": "Meeting with the grant team.\nPlace: Rotterdam.\nBring the budget sheet.\n"
+  },
+  "goal": "Read notes.txt and tell me which city the meeting is in.",
+  "expect": [
+   "rotterdam"
+  ]
+ },
+ {
+  "id": "agent-two-prices",
+  "files": {
+   "offer_a.txt": "Offer A: 14 licences at 30 euros each.\n",
+   "offer_b.txt": "Offer B: 10 licences at 41 euros each.\n"
+  },
+  "goal": "Compare the two offers in this folder and tell me which is cheaper in total and by how much.",
+  "expect": [
+   "offer a",
+   "10"
+  ]
+ },
+ {
+  "id": "agent-count-files",
+  "files": {
+   "a.md": "x",
+   "b.md": "y",
+   "c.txt": "z",
+   "d.md": "w"
+  },
+  "goal": "How many markdown (.md) files are in this folder? Report the number and list their names.",
+  "expect": [
+   "3",
+   "a.md",
+   "b.md",
+   "d.md"
+  ]
+ },
+ {
+  "id": "agent-deadline",
+  "files": {
+   "plan.txt": "Phase one ends on 12 March.\nPhase two ends 20 days later.\nPhase three starts the day after phase two ends.\n"
+  },
+  "goal": "Work out the date phase three starts, using plan.txt, and tell me.",
+  "expect": [
+   "2 april"
+  ]
+ },
+ {
+  "id": "agent-who-owns",
+  "files": {
+   "owners.csv": "area,owner\nbilling,Sana\nsupport,Idris\nonboarding,Mei\n",
+   "request.txt": "A customer cannot update the card on file.\n"
+  },
+  "goal": "Using the two files, tell me who should receive the request and why.",
+  "expect": [
+   "sana",
+   "billing"
+  ]
+ },
+ {
+  "id": "agent-summary-one-line",
+  "files": {
+   "article.txt": "The council approved a new cycling lane on Mill Street. Work starts in May and lasts six weeks. Parking on the north side will be removed during the work.\n"
+  },
+  "goal": "Summarise article.txt in one sentence that includes the street name and when work starts.",
+  "expect": [
+   "mill street",
+   "may"
+  ]
+ },
+ {
+  "id": "agent-tidy-names",
+  "files": {
+   "Report FINAL (2).txt": "r",
+   "report draft.txt": "d",
+   "Notes_old.TXT": "n"
+  },
+  "goal": "Propose lowercase names with hyphens instead of spaces for every file in this folder, as a list of old name to new name, and do not rename anything.",
+  "expect": [
+   "report-final",
+   "notes-old"
+  ]
+ },
+ {
+  "id": "agent-totals",
+  "files": {
+   "sales.csv": "month,units\njan,120\nfeb,95\nmar,143\n"
+  },
+  "goal": "Add up the units in sales.csv and report the total and the best month.",
+  "expect": [
+   "358",
+   "mar"
+  ]
+ },
+ {
+  "id": "agent-contradiction",
+  "files": {
+   "a.txt": "The workshop is on Tuesday at 10:00.\n",
+   "b.txt": "Reminder: the workshop is on Wednesday at 10:00.\n"
+  },
+  "goal": "The two files disagree about something. Say what they disagree about.",
+  "expect": [
+   "tuesday",
+   "wednesday"
+  ]
+ },
+ {
+  "id": "agent-missing",
+  "files": {
+   "todo.txt": "1. Book the room\n2. Send the agenda\n"
+  },
+  "goal": "Does todo.txt have a task about catering? Reply 'none found' if not, and quote the last task in the list.",
+  "expect": [
+   "none found",
+   "send the agenda"
+  ]
+ },
+ {
+  "id": "agent-order",
+  "files": {
+   "steps.txt": "C: serve\nA: boil water\nB: add the pasta\n"
+  },
+  "goal": "Put the steps in steps.txt in the right order by their letters and report the order.",
+  "expect": [
+   "boil water",
+   "add the pasta",
+   "serve"
+  ]
+ },
+ {
+  "id": "agent-names",
+  "files": {
+   "people.txt": "Ana Silva, Bo Chen, Cleo Park\n"
+  },
+  "goal": "How many people are listed in people.txt and which one has the surname Chen?",
+  "expect": [
+   "3",
+   "bo"
+  ]
+ }
+]

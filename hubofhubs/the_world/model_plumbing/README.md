@@ -15,7 +15,7 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | Model Tier Chooser | `model-tier-chooser` | `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})` | Passing work per cost selector (`tier_selector`) | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
-| Vendor Model Caller | `vendor-model-caller` | `hubofhubs.run("vendor-model-caller", ...)` | Claude Code CLI (`claude_cli`) | Provider failover |
+| Vendor Model Caller | `vendor-model-caller` | `hubofhubs.run("vendor-model-caller", ...)` | Multi-provider router (`multi_provider`) | Provider failover |
 
 ## Problems and ideals
 
@@ -51,7 +51,7 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
 | Model Tier Chooser | `model-tier-chooser` | Passing work per cost selector (`tier_selector`) | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
-| Vendor Model Caller | `vendor-model-caller` | Claude Code CLI (`claude_cli`) | Provider failover |
+| Vendor Model Caller | `vendor-model-caller` | Multi-provider router (`multi_provider`) | Provider failover |
 
 ### Implementations
 
