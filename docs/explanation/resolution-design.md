@@ -103,7 +103,7 @@ Sources: the repo-utils sections and GAP entries of the evolvable-structure skil
 | Inert import | No code, network, thread or file write at import | `tests/test_import_is_inert.py`: subprocess with sockets blocked, read-only directory, empty environment |
 | Reproducible resolution | Same inputs, same result, in any directory, any registration order | `tests/test_resolution_order.py`, plus the hostile-directory and vendored-copy tests (R2) |
 | Clear errors | Every error names solution id, scope, layer, available names and a remedy | `tests/test_errors.py` |
-| Safe loading | Section 2 rules | The library's `tests/test_assemble.py` (config value `os:system`, snapshot module `os`, filepath `../x.py`, a look-alike module earlier on `sys.path`, all rejected); the hub's `tests/test_safe_loading.py` checks that every module its snapshot names is its own file |
+| Safe loading | Section 2 rules | The library's `tests/test_assemble.py` (config value `os:system`, snapshot module `os`, filepath `../x.py`, a look-alike module earlier on `sys.path`, all rejected); the hub's `hubofhubs/the_self/assembler/tests/test_safe_loading.py` checks that every module its snapshot names is its own file |
 | Quickstart | A second consumer with no Quest content: register a toy part, assemble, print the reason | `docs/how-to/register-a-second-consumer.md` run as `tests/test_quickstart.py` |
 | Types | `py.typed`, hints on the public API, a Protocol per seat | type-check of the package in CI |
 | Public API | Solution ids and implementation names ARE the public API. The `(solution id, name)` pairs are pinned in a stored list; removal without a deprecated alias is a breaking change. Deprecated names warn and name the replacement for at least one minor release | `tests/test_public_api.py` |
@@ -129,7 +129,7 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    The hole that was left with `esoi` (a hostile `esoi.toml` in a parent folder found by its upward walk) is closed by
    `esoi.assemble.Assembler`, which never walks up.
 5. **Resolve wrapper and `assemble`**: cascade, refusal of `replace` on hub names, reason line, name validation, safe
-   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py`, `tests/test_safe_loading.py` and `test_example_consumer.py` (a second consumer and a leak detector); the generic tests are the library's `test_assemble.py`.
+   loading. Done: `hubofhubs.resolve`, `register`, `assemble`; `tests/test_resolution.py`, `hubofhubs/the_self/assembler/tests/test_safe_loading.py` and `test_example_consumer.py` (a second consumer and a leak detector); the generic tests are the library's `test_assemble.py`.
 6. **Needs from typed constructor parameters**, the `uses_solution_ids` check and the graph checks (no cycles, every need
    resolves, external-seat rule). Done: `hubofhubs.seats`, `esoi.assemble`, `scripts/sync_uses.py --check`,
    `tests/test_graph.py`; the default card store `LocalCardStore` is the first executing arm. Eight seats have no natural

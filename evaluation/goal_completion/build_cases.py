@@ -1,4 +1,4 @@
-"""Rebuild cases.json for Goal Completion from the coverage cases the repository's own done-evidence tests assert (tests/test_critique_done_evidence.py:
+"""Rebuild cases.json for Goal Completion from the coverage cases the repository's own done-evidence tests assert (hubofhubs/the_intelligence/critical_thinking/goal_completion/tests/test_critique_done_evidence.py:
 a known total above processed is a gap, an explicit complete flag wins, a capped read of unknown size is a gap, and anything undeclared or malformed
 never blocks) and from the other ways an outcome can fail a done-standard: empty, refused, or missing a requirement the standard names.
 

@@ -68,7 +68,7 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 ### Metrics
 
 - Tier choice by passing work per cost (`metric-model-tier-chooser`): `esoi run reason_and_answer --impl tier_selector`
-- Tier passing work per cost (`metric-tier-passing-work-per-cost`): `python3 -m pytest tests/test_tiers.py`
+- Tier passing work per cost (`metric-tier-passing-work-per-cost`): `python3 -m pytest hubofhubs/the_world/tests/test_tiers.py`
 - Model quality on hard maths (`metric-model-quality`): `esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
 - Vendor arms answer (`metric-vendor-answers`): `esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run call_a_model --impl claude_cli`
 - Provider failover (`metric-vendor-model-caller`): `esoi run provider_failover --impl multi_provider`

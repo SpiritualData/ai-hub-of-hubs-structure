@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hubofhubs"
-version = "0.2.0"
+version = "0.3.0"
 description = "A registry of the best AI-intelligence hubs and the scorer that reads it with a consumer's code"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -32,6 +32,11 @@ graphify = ["graphifyy==0.9.102"]                           # cards-from-files: 
 
 [tool.setuptools.packages.find]
 include = ["hubofhubs*"]
+exclude = ["hubofhubs*.tests", "hubofhubs*.tests.*"]   # tests sit beside the code they test and are not shipped
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "hubofhubs"]
+python_files = ["test_*.py"]
 
 [tool.setuptools.package-data]
 hubofhubs = ["registry/*.csv", "esoi_selection.json"]

@@ -52,7 +52,7 @@ answer found; the selector is keyword IDF, not production's hybrid.
    The details give each kind's raw and counted results, the store, the topic numbers and the build.
 
 A builder that puts many files in one card pushes the needed file past the third position and fills the view, so `broken/` holds three
-degenerate builders (every file in one card, two cards, one card per folder) that must be right on no topic case; `tests/test_topic_cards.py`
+degenerate builders (every file in one card, two cards, one card per folder) that must be right on no topic case; `hubofhubs/the_intelligence/subconscious/cards_from_files/tests/test_topic_cards.py`
 proves it on the real corpus, and proves that a card per file, right on many cases, counts none.
 
 ## Arms

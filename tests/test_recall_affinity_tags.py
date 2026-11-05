@@ -3,7 +3,7 @@ from hubofhubs.the_body.internal_context.context import VectorHit
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags import affinity_factor, affinity_label, affinity_tags_of
 from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.record_assembler import RecordContextAssembler, rank_records
 from hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.vector_assembler import VectorContextAssembler
-from tests.test_recall_vector_assembler import FakeStore, hit
+from test_recall_vector_assembler import FakeStore, hit
 
 
 def test_factor_is_neutral_without_tags_and_boosts_home_and_discounts_away():

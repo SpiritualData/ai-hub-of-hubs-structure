@@ -16,17 +16,17 @@ from esoi.intents import read_tree
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "reference" / "baseline.json"
-TESTS = ["tests/test_registry.py", "tests/test_status.py", "tests/test_tiers.py", "tests/test_no_environment.py",
-         "tests/test_resolution.py", "tests/test_safe_loading.py", "tests/test_example_consumer.py",
-         "tests/test_graph.py", "tests/test_cardstore.py", "tests/test_quickstart.py", "tests/test_metadata.py",
-         "tests/test_recall_background_pacing.py", "tests/test_recall_card_content.py", "tests/test_recall_card_store_lock.py",
-         "tests/test_recall_card_thread.py", "tests/test_recall_composite_assembler.py", "tests/test_recall_conversation_format.py",
-         "tests/test_recall_text_sampling.py", "tests/test_recall_walk.py",
-         "tests/test_recall_bootstrap_support.py", "tests/test_recall_card_ceilings.py", "tests/test_recall_card_limit.py", "tests/test_recall_card_limit_report.py", "tests/test_recall_card_origin.py", "tests/test_recall_card_repository.py", "tests/test_recall_card_store_identity.py", "tests/test_recall_card_store_merge.py", "tests/test_recall_card_store_mounts.py", "tests/test_recall_card_store_tidy.py", "tests/test_recall_folder_review.py", "tests/test_recall_index_file_refs.py", "tests/test_recall_scope_tags.py",
-         "tests/test_critique_jsonl_ledger.py", "tests/test_critique_link_detect.py", "tests/test_critique_link_guard.py",
-         "tests/test_critique_specificity.py", "tests/test_critique_sufficiency.py",
-         "tests/test_ports_deep.py", "tests/test_act_execution_record.py", "tests/test_act_editblock.py", "tests/test_act_mcp_client.py", "tests/test_act_tool_ledger.py",
-         "tests/test_act_fast_edit.py", "tests/test_act_mcp_operations.py"]
+TESTS = ["tests/test_registry.py", "tests/test_status.py", "hubofhubs/the_world/tests/test_tiers.py", "tests/test_no_environment.py",
+         "tests/test_resolution.py", "hubofhubs/the_self/assembler/tests/test_safe_loading.py", "tests/test_example_consumer.py",
+         "tests/test_graph.py", "hubofhubs/the_body/internal_context/card_store/tests/test_cardstore.py", "tests/test_quickstart.py", "tests/test_metadata.py",
+         "hubofhubs/the_body/internal_context/card_store/tests/test_recall_background_pacing.py", "hubofhubs/the_intelligence/subconscious/context_retriever/context_cards/tests/test_recall_card_content.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_store_lock.py",
+         "hubofhubs/the_intelligence/subconscious/context_retriever/context_cards/tests/test_recall_card_thread.py", "tests/test_recall_composite_assembler.py", "hubofhubs/the_intelligence/subconscious/cards_from_files/tests/test_recall_conversation_format.py",
+         "tests/test_recall_text_sampling.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_walk.py",
+         "hubofhubs/the_body/internal_context/card_store/tests/test_recall_bootstrap_support.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_ceilings.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_limit.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_limit_report.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_origin.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_repository.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_store_identity.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_store_merge.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_store_mounts.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_card_store_tidy.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_folder_review.py", "hubofhubs/the_body/internal_context/card_store/tests/test_recall_index_file_refs.py", "hubofhubs/the_intelligence/subconscious/context_retriever/context_cards/tests/test_recall_scope_tags.py",
+         "hubofhubs/the_body/internal_context/run_store/tests/test_critique_jsonl_ledger.py", "hubofhubs/the_intelligence/critical_thinking/response_quality/tests/test_critique_link_detect.py", "hubofhubs/the_intelligence/critical_thinking/response_quality/tests/test_critique_link_guard.py",
+         "hubofhubs/the_intelligence/subconscious/context_retriever/tests/test_critique_specificity.py", "hubofhubs/the_intelligence/critical_thinking/goal_completion/tests/test_critique_sufficiency.py",
+         "hubofhubs/the_world/tools/tests/test_ports_deep.py", "hubofhubs/the_body/internal_context/run_store/tests/test_act_execution_record.py", "hubofhubs/the_world/tools/file_editing/tests/test_act_editblock.py", "hubofhubs/the_world/tools/connected_system_operations/tests/test_act_mcp_client.py", "hubofhubs/the_body/internal_context/run_store/tests/test_act_tool_ledger.py",
+         "hubofhubs/the_world/tools/file_editing/tests/test_act_fast_edit.py", "hubofhubs/the_world/tools/tests/test_act_mcp_operations.py"]
 TOLERANCE = 1.0  # percentage points
 
 

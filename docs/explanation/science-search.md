@@ -79,6 +79,6 @@ the URL.
 
 ## Tests
 
-`tests/test_science_openalex.py` uses recorded responses in `tests/fixtures/` (OpenAlex works search and DOI lookup, Crossref
+`hubofhubs/the_world/tests/test_science_openalex.py` uses recorded responses in `tests/fixtures/` (OpenAlex works search and DOI lookup, Crossref
 work, all recorded 2026-10-30 with author names replaced by placeholders). Error replies the recording did not capture are shaped
 from the documented error pages and say so in the test. No test touches the network.

@@ -122,5 +122,5 @@ flowchart LR
 - Right context admitted, none from another scope (`metric-the-subconscious`): `none`
 - The long view survives between requests (`metric-higher-mind`): `none`
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
-- Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest tests/test_risk.py`
+- Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest hubofhubs/the_intelligence/mind/delegation/overseer/tests/test_risk.py`
 - Schedules due when they should be (`metric-proactivity`): `esoi run proactivity --impl calendar_and_events; esoi run proactivity --impl elapsed_hours`

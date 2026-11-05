@@ -40,7 +40,7 @@ def offenders(source: str) -> set[str]:
 
 
 def test_every_package_import_is_allowed():
-    files = [p for d in PACKAGE_DIRS if (ROOT / d).is_dir() for p in (ROOT / d).rglob("*.py")]
+    files = [p for d in PACKAGE_DIRS if (ROOT / d).is_dir() for p in (ROOT / d).rglob("*.py") if "tests" not in p.parts]   # tests beside the code may use pytest and the shared test support
     assert files, "no package files found"
     bad = {str(p.relative_to(ROOT)): sorted(offenders(p.read_text())) for p in files if offenders(p.read_text())}
     assert not bad, f"imports outside stdlib, the package and esoi: {bad}"

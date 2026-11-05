@@ -32,5 +32,5 @@ esoi requirements --package hubofhubs --coherence
 ```
 
 Exit code 1 means the selected arms need package versions that cannot coexist; the output shows the resolution ladder's
-proposed fix. `tests/test_requirements.py` runs the offline form on every change; add `--online` to let pip check in a
+proposed fix. `hubofhubs/the_self/integrity/tests/test_requirements.py` runs the offline form on every change; add `--online` to let pip check in a
 temporary virtualenv. The explanation is in the esoi page on environment needs.

@@ -14,6 +14,8 @@ ALLOWLIST: set = set()   # relative paths that may name the word, with a reason;
 def test_hub_python_files_never_say_quest():
     hits = []
     for path in sorted(ROOT.rglob("*.py")):
+        if "tests" in path.relative_to(ROOT).parts:
+            continue
         rel = path.relative_to(ROOT.parent).as_posix()
         if rel in ALLOWLIST:
             continue

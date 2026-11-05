@@ -1,6 +1,6 @@
 """The hub's public API: the one place a consumer imports from.
 
-A consumer (Quest AI Runner, quest-backend, your own package) never imports a hub module path such as
+A consumer (any package built on the hub) never imports a hub module path such as
 ``hubofhubs.the_world.tools.deep``. It imports a name from here, or calls ``hubofhubs.run("<id>", input)`` for any part by its id,
 or ``hubofhubs.run(Interface)`` for a typed handle. When a part moves inside the hub, the entry for its name in ``LOCATIONS`` changes
 and no consumer file does.

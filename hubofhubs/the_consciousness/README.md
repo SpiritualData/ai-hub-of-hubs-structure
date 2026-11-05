@@ -95,5 +95,5 @@ Consciousness is where the system adapts to the humans and policies it works for
 - A correction given once is followed afterwards (`metric-feedback-learning`): `none`
 - Weights match the priorities the person confirms (`metric-human-prioritization`): `none`
 - Asked when a person should be asked (`metric-judgment-calls`): `esoi run judgment_calls --impl severity_policy; esoi run judgment_calls --impl ask_every_time`
-- Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest tests/test_consciousness.py`
+- Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest hubofhubs/the_consciousness/tests/test_consciousness.py`
 - Requests taken in once with their person (`metric-request-intake`): `python3 -m pytest tests/test_intake.py`

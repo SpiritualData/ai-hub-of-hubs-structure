@@ -5,7 +5,7 @@ and for web search, OpenAlex for all the scholarly arms) is declared here once, 
 and rate-limit statement is copied from the vendor's own page and dated ``AS_OF``; a fact that could not be confirmed on the
 official page is left out. Nothing here reads the environment and nothing contacts a service: these are data.
 
-Python requirements name the owning package's extra (``pyproject.toml``); ``tests/test_requirements.py`` checks that every
+Python requirements name the owning package's extra (``pyproject.toml``); ``hubofhubs/the_self/integrity/tests/test_requirements.py`` checks that every
 declared module is provided by that extra.
 """
 from esoi.requirements import api, binary, download, env, isolatable, network, python, resource, service

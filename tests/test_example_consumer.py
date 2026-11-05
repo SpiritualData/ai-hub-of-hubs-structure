@@ -32,6 +32,8 @@ def test_the_example_consumer_has_no_content_of_the_first_consumer():
 def test_the_hub_code_holds_no_name_of_the_second_consumer_and_no_content_of_the_first():
     leaks = []
     for path in (ROOT / "hubofhubs").rglob("*.py"):
+        if "tests" in path.parts:   # the tests beside each solution test the package; they are not shipped
+            continue
         text = path.read_text()
         if SECOND_CONSUMER_TERMS.search(text):
             leaks.append(f"{path.name}: second consumer")

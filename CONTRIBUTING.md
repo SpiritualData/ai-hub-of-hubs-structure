@@ -23,7 +23,7 @@ python3 scripts/status.py
 python3 -m esoi requirements --package hubofhubs --env-template .env.example
 ```
 
-Then run the specific test files for what you changed (for example `tests/test_requirements.py`, `tests/test_import_boundary.py` and the
+Then run the specific test files for what you changed (for example `hubofhubs/the_self/integrity/tests/test_requirements.py`, `tests/test_import_boundary.py` and the
 tests of your module), never the whole suite.
 
 ## 3. How the row gets measured

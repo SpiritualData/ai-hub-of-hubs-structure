@@ -25,5 +25,5 @@ decides; no provider or model is a default by preference.
   cheapest priced available arm, with that reason, because nothing else can run.
 - **Rule**: highest passing cases per cost wins, the cheaper arm on a tie, and the reason is recorded. Nothing switches without a
   measurement of both the held arm and the winner.
-- **Proof**: `tests/test_tiers.py` separates the rule from two broken baselines (always the most expensive model, always the
+- **Proof**: `hubofhubs/the_world/tests/test_tiers.py` separates the rule from two broken baselines (always the most expensive model, always the
   cheapest whatever its quality).
