@@ -1,4 +1,4 @@
-"""Scores an act-in-the-world arm that changes files: the goal is to make a test file pass, and the check is that test file, run afresh.
+"""Scores an edit-files or delegated-agent-sessions arm that changes files: the goal is to make a test file pass, and the check is that test file, run afresh.
 
 Each case is one HumanEval problem (MIT). A fresh temporary folder holds ``solution.py`` (the signature and docstring with a ``pass``
 body) and ``test_solution.py`` (the benchmark's own tests). The arm gets the goal and the folder as its writable root and nothing else.

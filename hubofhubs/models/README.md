@@ -14,5 +14,5 @@
 
 ## Where to go next
 
-- Owning intent: [The parts working as one whole](../the_self/README.md)
+- Owning intent: [Awareness of the outside and interaction with it](../the_world/README.md)
 - Repository: [top README](../../README.md)

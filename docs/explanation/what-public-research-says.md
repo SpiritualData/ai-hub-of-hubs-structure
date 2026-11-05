@@ -102,7 +102,7 @@ in direction with public results and are not a contradiction.
   **needs authorization**.
 - **Drop:** nothing.
 
-## act-in-the-world (coding and file-edit goals)
+## edit-files and delegated-agent-sessions (coding and file-edit goals)
 
 Our task: 30 HumanEval-size goals. Arms: `fast_edit` (30 of 30, $0.005, 77 s), `subprocess_goal_runner` (30 of 30, $0.147, 641 s),
 `stream_json_goal_runner`, `acp_deep_runner` (not measurable here).
@@ -165,20 +165,20 @@ chase vector store leaderboards without a cardinality that needs one.
   98 percent lower cost (`EV-routellm-cost`, `EV-frugalgpt-cost`; both grade D: the authors' own methods on older models).
 - **Favoured, weakly:** try the cheapest sufficient tier and escalate on a failed check. Our `tier_selector` (36 of 36) is a
   rule-based selector on authored cases, so it is a mechanics test and cannot agree or disagree.
-- **Add:** a cascade arm that escalates when a checker rejects the answer (about 80 lines, reuses the think-critically checker;
+- **Add:** a cascade arm that escalates when a checker rejects the answer (about 80 lines, reuses the response-quality checker;
   small paid calls). **Consider later:** a learned router like RouteLLM once logged outcomes exist (needs training data). **Keep:**
   `tier_selector`. **Drop:** nothing.
 
 ## Seats where no public evidence applies
 
-- **model-call, read-registry-freshness, score-hub-connections, assemble-the-whole.** Each checks the hub's own mechanics (a tier is
-  answered, a date is read, a connection is counted, a seat builds). No public task resembles them, so there is nothing to compare;
+- **model-call, read-registry-freshness, assemble-the-whole.** Each checks the hub's own mechanics (a tier is
+  answered, a date is read, a seat builds). No public task resembles them, so there is nothing to compare;
   the recorded results stand on our own cases alone.
 
 ## Mind seats with no arm yet
 
 - **reason-and-answer (the Mind itself).** Specified; implemented in Quest AI Runner, moving here. Only its tier choice is measured here.
-- **think-critically.** [MiniCheck](https://arxiv.org/abs/2404.10774) (EMNLP 2024) reports a 770M-parameter checker at GPT-4
+- **response-quality.** [MiniCheck](https://arxiv.org/abs/2404.10774) (EMNLP 2024) reports a 770M-parameter checker at GPT-4
   accuracy with about 400 times lower cost on LLM-AggreFact (`EV-minicheck-cost`; grade D, the authors' own model). **Add** a
   MiniCheck arm (or Vectara HHEM-2.1-Open, an existing candidate), a CPU-capable extra, about 60 lines, scored on a small
   LLM-AggreFact subset. The model download is large, not an embedding run.

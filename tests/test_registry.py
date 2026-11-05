@@ -228,4 +228,4 @@ def test_a_seat_with_no_probe_is_unproven_and_probes_of_its_arms_must_all_hold(c
                     probes={"channels": lambda: (True, "a"), "integration_aggregators": lambda: (False, "b")})
     _, seat_facts, _, _ = evaluate_seats(mixed)
     assert not check(seat_facts["take-in-the-world"], "fake_hub")["holds"]
-    assert not check(seat_facts["act-in-the-world"], "fake_hub")["holds"]
+    assert not check(seat_facts["delegated-agent-sessions"], "fake_hub")["holds"]

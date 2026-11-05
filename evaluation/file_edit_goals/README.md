@@ -1,6 +1,6 @@
 # file_edit_goals
 
-Can an arm that changes files meet a goal that has a written done-standard? The act-in-the-world seat (the Body), file-changing arms only.
+Can an arm that changes files meet a goal that has a written done-standard? The edit-files seat (File Editing, in World) and the delegated-agent-sessions seat, file-changing arms only.
 
 - **Cases** (`cases.json`, 30): small, self-contained coding goals drawn with a fixed seed (`build_cases.py`, seed 20261031) from the 164
   problems of HumanEval (MIT licence, https://github.com/openai/human-eval, data file read 2026-10-31). Each is "make this function pass its

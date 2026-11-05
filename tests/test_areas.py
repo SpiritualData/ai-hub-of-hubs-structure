@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import hubofhubs  # noqa: E402
 from hubofhubs.act.folder_writer import FolderWriter  # noqa: E402
 from hubofhubs.act.tier_registry import TierRegistry  # noqa: E402
-from hubofhubs.areas import CatalogEntries, ModelCalls, PromptsAsData, RegistryResearch, SearchBackends  # noqa: E402
+from hubofhubs.areas import ModelCalls, PromptsAsData, RegistryResearch, WorldComposition, config_share  # noqa: E402
 from hubofhubs.critique.evidence_check import EvidenceCheck  # noqa: E402
 from hubofhubs.tiers import TierSelector  # noqa: E402
 
@@ -45,20 +45,24 @@ class RecordingModel:
 
 
 def test_take_in_the_world_returns_the_answer_with_its_sources_and_adds_papers_when_asked():
-    arm = SearchBackends(FakeSearch(), FakePapers())
+    class FakeTools:
+        def use(self, category, request):
+            assert category == "search-backend"
+            return FakeSearch().search(request)
+    arm = WorldComposition(FakeTools(), FakePapers(), None, None)
     plain = arm.take_in("Rust")
     assert plain["answer"] == "1.90.0" and [i["url"] for i in plain["items"]] == ["https://blog.rust-lang.org/"]
     scholarly = arm.take_in("Rust", scholarly=True)
     assert [i["title"] for i in scholarly["items"]] == ["Rust", "A paper on Rust"]
 
 
-def test_reason_and_answer_asks_the_model_the_tier_chooser_measured_best():
+def test_model_plumbing_asks_the_model_the_tier_chooser_measured_best():
     model = RecordingModel()
     arm = ModelCalls(model, TierSelector())
-    assert arm.reason("hello", "cheap") == "ok"
+    assert arm.ask("hello", "cheap") == "ok"
     chosen = TierSelector().choose()["cheap"]["arm"][1]
     assert model.asked == [("hello", chosen)]
-    arm.reason("hello", "my-own-model")                         # a name the chooser does not list is passed on as the model
+    arm.ask("hello", "my-own-model")                         # a name the chooser does not list is passed on as the model
     assert model.asked[-1] == ("hello", "my-own-model")
 
 
@@ -68,14 +72,13 @@ def test_stay_current_lists_the_areas_older_than_ninety_days():
     assert len(arm.stale_areas("2027-06-01")) == len(hubofhubs.registry.read("hubs.csv"))
 
 
-def test_connect_any_integration_reports_the_share_that_needs_no_code():
-    arm = CatalogEntries(hubofhubs.measure.HubScorer())
-    assert 0.0 <= arm.config_share() <= 1.0 and arm.config_share("no-such-area") == 0.0
+def test_the_connection_metric_reports_the_share_that_needs_no_code():
+    assert 0.0 <= config_share() <= 1.0 and config_share("no-such-area") == 0.0
 
 
 def test_keep_it_generic_finds_a_vendor_branch_in_the_hub_and_reports_the_rest():
     stay = RegistryResearch(hubofhubs.registry.RegistryScan())
-    arm = PromptsAsData(stay, CatalogEntries(hubofhubs.measure.HubScorer()))
+    arm = PromptsAsData(stay)
     report = arm.audit(["gemini"])
     assert set(report) == {"vendor_branches", "stale_areas", "config_share"}
     assert arm.audit([])["vendor_branches"] == []
@@ -100,20 +103,3 @@ def test_the_tier_registry_maps_a_runner_tier_to_the_chosen_model():
     assert registry.resolve_tier("balanced") == TierSelector().choose()["mid"]["arm"][1]
     with pytest.raises(KeyError):
         registry.resolve_tier("no-such-tier")
-
-
-def test_the_whole_acts_only_when_the_risk_watch_lets_the_step_through(tmp_path):
-    class Acting:
-        def __init__(self):
-            self.goals = []
-
-        def run_goal(self, *, goal, brief):
-            self.goals.append(goal)
-            return "done"
-    from hubofhubs.consent_gate import ConsentGate
-    from hubofhubs.whole import ZeroConfig
-    acting = Acting()
-    whole = ZeroConfig(take_in=None, recall=None, critic=EvidenceCheck(), reason=None, watch=ConsentGate(), act=acting, generic=None)
-    assert whole.act("tidy the notes") == "done" and acting.goals == ["tidy the notes"]
-    blocked = whole.act("pay the invoice with the saved card")
-    assert getattr(blocked, "signal", "") == "escalate_human" and acting.goals == ["tidy the notes"]

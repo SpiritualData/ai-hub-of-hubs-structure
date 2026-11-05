@@ -29,7 +29,7 @@ print(sorted(system.pending))
 
 `assemble()` builds every seat whose selected arm needs nothing more from you and leaves the others in `system.pending`, one
 line each saying what to pass. `assemble()` takes no required argument and reads your process environment for keys; pass
-`environ={...}` to replace it (tests and sandboxes). The seats printed are the ones still waiting for you, for example `search-backend` (a key such as `GEMINI_API_KEY`) and `act-in-the-world` (no arm is selected yet). `call-a-model` is already built: its default arm is `claude_cli`, which runs `claude -p` on your Claude Code subscription and needs no key.
+`environ={...}` to replace it (tests and sandboxes). The seats printed are the ones still waiting for you, for example `search-backend` (a key such as `GEMINI_API_KEY`) and `edit-files` (a folder it may write in, `HUBOFHUBS_WRITE_ROOT`). `call-a-model` is already built: its default arm is `claude_cli`, which runs `claude -p` on your Claude Code subscription and needs no key.
 
 ## 3. Use the first seat
 

@@ -4,10 +4,10 @@
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| One-call file edit | `act-in-the-world:fast_edit` | [`hubofhubs/act/fast_edit.py`](fast_edit.py) | selected |
-| One-call MCP write | `act-in-the-world:mcp_operations` | [`hubofhubs/act/mcp_operations.py`](mcp_operations.py) |  |
+| One-call MCP write | `connected-system-operations:mcp_operations` | [`hubofhubs/act/mcp_operations.py`](mcp_operations.py) |  |
+| One-call file edit | `edit-files:fast_edit` | [`hubofhubs/act/fast_edit.py`](fast_edit.py) | selected |
 
 ## Where to go next
 
-- Owning intent: [The form and internal context of a system](../the_body/README.md)
+- Owning intent: [Awareness of the outside and interaction with it](../the_world/README.md)
 - Repository: [top README](../../README.md)

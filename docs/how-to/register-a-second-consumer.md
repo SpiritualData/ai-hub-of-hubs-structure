@@ -72,7 +72,7 @@ Keywords override only what differs: `arms=`, `options=`, `provided=`, `lock=`, 
 raises `esoi.entry.Pending` with those lines.
 
  whose selected arm needs nothing more from you. Today that is `call-a-model`, `card-store`, `choose-a-model-tier`, `model-call`,
-`read-registry-freshness`, `score-hub-connections` and `watch-for-risk`; the other seats are in `system.pending`, one line each saying what to pass:
+`read-registry-freshness`, and `watch-for-risk`; the other seats are in `system.pending`, one line each saying what to pass:
 `arms={seat: <arm>}` where no arm is selected yet (several arms await the measurement of their seat), `options={seat: {argument: ...}}`,
 `provided={seat: <your object>}`, or the variable to set (`set ANTHROPIC_API_KEY (option 'api_key')`).
 

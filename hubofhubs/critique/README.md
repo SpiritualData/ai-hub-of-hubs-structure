@@ -4,7 +4,7 @@
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| Links held to their evidence | `think-critically:evidence_check` | [`hubofhubs/critique/evidence_check.py`](evidence_check.py) | selected |
+| Links held to their evidence | `response-quality:evidence_check` | [`hubofhubs/critique/evidence_check.py`](evidence_check.py) | selected |
 
 ## Where to go next
 

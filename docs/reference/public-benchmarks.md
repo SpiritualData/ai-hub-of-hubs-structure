@@ -36,7 +36,7 @@ honest result of this survey.
 | model-call | Artificial Analysis price and speed columns, sourced with date | none |
 | call-a-model | none | Arena (style preference), LiveBench (nothing verified) |
 | assemble-the-whole | none | tau2-bench (vendor board, paid user simulator), GAIA (page unreadable) |
-| act-in-the-world | SWE-bench Pro rows for model shortlisting under one scaffold | Terminal-Bench (version moved to 4.0, 2.0 rows not mixable), Aider polyglot (eleven months old), METR (not updated), OSWorld (unread); SWE-bench Verified saturated, WebArena stale |
+| edit-files, delegated-agent-sessions, connected-system-operations | SWE-bench Pro rows for model shortlisting under one scaffold | Terminal-Bench (version moved to 4.0, 2.0 rows not mixable), Aider polyglot (eleven months old), METR (not updated), OSWorld (unread); SWE-bench Verified saturated, WebArena stale |
 | connect-any-integration | MCP-Atlas model pass rates, triangulated with BFCL | BFCL V4 (call format is the minority of failures), Toolathlon (no primary source) |
 | take-in-the-world | none | BrowseComp (vendor), DeepResearch Bench (changing paid judge), browser-agent vendor figures |
 | search-backend | none | single-source search accuracy table, one topic |

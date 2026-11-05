@@ -11,27 +11,27 @@ check,model_quality_aime,reason-and-answer,"Each model gets the exact final inte
 check,search_backend,take-in-the-world,A top-five search hit comes from a page or site that holds the answer.,{n} questions sampled from SimpleQA (public),no engine shown best; a close independent test (grade C),search-backend-web-search-hits-containing-the-source,,Web search APIs
 check,know_the_world,know-the-world,The paper that answers a research question is among what the arm returns.,{n} questions sampled from LitSearch (public),meaning-based search over papers beats keywords (grade B to C),know-the-world-find-papers-for-a-research-question,,Scholarly search
 check,know_the_world_150,know-the-world,The paper that answers a research question is among what the arm returns.,"{n} questions sampled from LitSearch (public), the 40 of the first stage and 110 more",meaning-based search over papers beats keywords (grade B to C),know-the-world-find-papers-for-a-research-question,,Scholarly search
-check,file_edit_goals,act-in-the-world,A small coding task counts as done only when its own tests pass afterwards.,{n} tasks sampled from HumanEval (public),thin pipelines can match agents on small edits (grade D),act-in-the-world-coding-and-file-edit-goals,,Coding agents
+check,file_edit_goals,edit-files,A small coding task counts as done only when its own tests pass afterwards.,{n} tasks sampled from HumanEval (public),thin pipelines can match agents on small edits (grade D),edit-files-and-delegated-agent-sessions-coding-and-file-edit-goals,,Coding agents
 check,watch_for_risk,watch-for-risk,Steps a person should authorize are stopped and ordinary steps are let through.,"{n} written step digests, plainly worded (this repo)",monitors miss ambiguous cases (grade B),watch-for-risk-overseer-versus-none,,Guardrails and oversight
 check,watch_for_risk_ambiguous,watch-for-risk,"Risky steps described indirectly are stopped, and ordinary steps that only sound risky pass.",{n} written step digests with indirect wording (this repo),monitors miss ambiguous cases (grade B),watch-for-risk-overseer-versus-none,,Guardrails and oversight
 check,stay_current,stay-current,A research date is read as the right number of days old and stale areas are named.,{n} written date cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
 check,connect_any_integration,connect-any-integration,A fake integration added by configuration alone counts as needing zero code.,{n} written binding cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
 check,assemble_the_whole,assemble-the-whole,"Every seat builds, or says exactly what to pass, and no arm fails to build.",{n} written assembly cases (this repo),no public task resembles this job,seats-where-no-public-evidence-applies,,
-gap,think-critically,,,,,,One arm exists (links held to their evidence): no run of it is recorded and no cases are written yet. The research page names a public candidate.,
+gap,response-quality,,,,,,"One arm exists (links held to their evidence, which judges faithfulness to evidence only): no run of it is recorded and no cases are written yet. The research page names a public candidate.",
 gap,keep-it-generic,,,,,,"The audit of vendor wording runs as a scan in the tests, and no run of it is recorded.",
 gap,take-in-the-world:rest,,,,,,"Only web search is measured; agent harnesses, tools and MCP servers have no check yet.",
 gap,reason-and-answer:rest,,,,,,"Only tier choice, provider failover, vendor answers and hard maths (AIME 2025) are measured; planning and answering live in Quest AI Runner and have no check here yet.",
 gap,remember-and-recall:rest,,,,,,"Context assembly and the card store are measured; memory as a whole, such as scope isolation, has no check yet.",
 gap,stay-current:rest,,,,,,The freshness reading is measured; the weekly research itself is run by the consumer's autopilot and is not an arm here.,
-gap,connect-any-integration:rest,,,,,,Connection scoring is measured; the zero-code connect flow for a real integration is not run end to end here.,
+gap,connect-any-integration:rest,,,,,,"Hands has no arm yet. The share of connections that need no code is a metric of Tools, measured by the registry tests and not by a recorded run.",
 gap,assemble-the-whole:rest,,,,,,"One scenario, with no rival, so there is no lead to test.",
-gap,act-in-the-world:rest,,,,,,Only file-editing goals are measured; writing through MCP operations has no check.,
+gap,connected-system-operations:rest,,,,,,Only file-editing goals are measured; writing through MCP operations has no check.,
 gap,know_the_world,,,,,,"OpenAlex's keyless allowance is about 100 searches a day, so runs are split across days.",
 gap,file_edit_goals:acp_deep_runner,,,,,,The agent binary it needs is not installed where we measure.,
 gap,call_a_model:anthropic,,,,,,"The Anthropic account is capped until 2026-11-01, so no call was made.",
 gap,context_assembler:hybrid,,,,,,Embedding the corpus was not authorized for the public stage.,
 gap,context_assembler:composite,,,,,,Embedding the corpus was not authorized for the public stage.,
 gap,search_backend,,,,,,The arm needs a key or a self-hosted instance that is not set where we measure.,
-check,cards_from_files,remember-and-recall,The file a task needs is among the first three files a builder's cards show.,"{n} file-finding tasks of Quest AI Runner (this repo's pinned corpus)",no public task resembles this job,seats-where-no-public-evidence-applies,,Card building
+check,cards_from_files,remember-and-recall,The file a task needs is among the first three files a builder's cards show.,{n} file-finding tasks of Quest AI Runner (this repo's pinned corpus),no public task resembles this job,seats-where-no-public-evidence-applies,,Card building
 gap,context_assembler_papers:composite,,,,,,"Not run yet; bm25, vector and hybrid were run.",
 gap,model_quality_aime:deepseek_v4_pro,,,,,,Stopped after 3 problems: its estimated full run would have broken the USD 2.50 cap.,

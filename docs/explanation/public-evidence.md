@@ -40,5 +40,5 @@ becomes a space). The derived file is committed so a package that builds on the 
 `tests/test_export_evidence.py` fails when it differs from the export, so edit the registry and re-run the script, never the
 derived file. `esoi.toml` names it under `[evidence]` and maps the candidates that match one of our arms under
 `[evidence.aliases]`; `esoi evidence list|grade|rank|table` and `esoi cascade` read it. The `public` stage of the
-`context-assembler` and `act-in-the-world` metrics is satisfied only when graded evidence for an arm is at grade C or better, and it
+`context-assembler` and `edit-files` metrics is satisfied only when graded evidence for an arm is at grade C or better, and it
 never replaces our own first-stage result.

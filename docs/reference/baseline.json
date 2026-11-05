@@ -1,10 +1,10 @@
 {
- "act-in-the-world:fast_edit": {
+ "edit-files:fast_edit": {
   "executed": 200,
   "statements": 227,
   "percent": 88.1
  },
- "act-in-the-world:mcp_operations": {
+ "connected-system-operations:mcp_operations": {
   "executed": 78,
   "statements": 87,
   "percent": 89.7
@@ -33,11 +33,6 @@
   "executed": 44,
   "statements": 44,
   "percent": 100.0
- },
- "score-hub-connections:hub_of_hubs_scorer": {
-  "executed": 53,
-  "statements": 58,
-  "percent": 91.4
  },
  "context-assembler:composite": {
   "executed": 76,

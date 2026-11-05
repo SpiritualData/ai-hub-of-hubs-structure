@@ -18,8 +18,8 @@ from support import ROOT  # noqa: E402
 SEATS = {"card-store": seats.CardStore, "context-assembler": seats.ContextAssembling, "model-call": seats.ModelCall,
          "call-a-model": seats.ModelCalling, "search-backend": seats.SearchBackend,
          "choose-a-model-tier": seats.TierSelection, "read-registry-freshness": seats.FreshnessReading,
-         "score-hub-connections": seats.HubScoring, "watch-for-risk": seats.RiskWatching,
-         "know-the-world": seats.WorldKnowing, "act-in-the-world": seats.Acting}
+         "watch-for-risk": seats.RiskWatching, "know-the-world": seats.WorldKnowing, "edit-files": seats.FileEditing,
+         "connected-system-operations": seats.ConnectedOperating, "delegated-agent-sessions": seats.AgentSessions}
 SOLUTIONS = read_tree(ROOT / "esoi", "solutions.csv")
 IMPLEMENTATIONS = read_tree(ROOT / "esoi", "implementations.csv")
 
@@ -64,9 +64,9 @@ def test_external_seats_are_consumer_provided_and_have_no_default():
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
-    system = assemble(AssemblyConfig(solutions=("card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections")))
-    assert system.solutions() == ["card-store", "choose-a-model-tier", "read-registry-freshness", "score-hub-connections"]
-    with pytest.raises(AssemblyError, match="search-backend|know-the-world|context-assembler|act-in-the-world"):
+    system = assemble(AssemblyConfig(solutions=("card-store", "choose-a-model-tier", "read-registry-freshness")))
+    assert system.solutions() == ["card-store", "choose-a-model-tier", "read-registry-freshness"]
+    with pytest.raises(AssemblyError, match="search-backend|know-the-world|context-assembler|edit-files"):
         assemble(AssemblyConfig())      # the strict form refuses a selected arm whose need is unmet
     assert isinstance(system["card-store"], LocalCardStore)
 

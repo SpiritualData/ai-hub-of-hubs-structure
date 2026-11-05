@@ -1,10 +1,28 @@
 [
  {
-  "id": "seat-act-in-the-world",
+  "id": "seat-edit-files",
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "act-in-the-world"
+   "seat": "edit-files"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-connected-system-operations",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "connected-system-operations"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-delegated-agent-sessions",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "delegated-agent-sessions"
   },
   "expect": "ok"
  },
@@ -23,15 +41,6 @@
   "kind": "seat",
   "args": {
    "seat": "card-store"
-  },
-  "expect": "ok"
- },
- {
-  "id": "seat-score-hub-connections",
-  "area": "seat",
-  "kind": "seat",
-  "args": {
-   "seat": "score-hub-connections"
   },
   "expect": "ok"
  },
@@ -106,18 +115,6 @@
    "seat": "read-registry-freshness",
    "arms": {
     "read-registry-freshness": "registry_scan"
-   }
-  },
-  "expect": "ok"
- },
- {
-  "id": "arm-score-hub-connections-hub_of_hubs_scorer",
-  "area": "arm",
-  "kind": "seat",
-  "args": {
-   "seat": "score-hub-connections",
-   "arms": {
-    "score-hub-connections": "hub_of_hubs_scorer"
    }
   },
   "expect": "ok"
@@ -315,25 +312,25 @@
   "expect": "ok"
  },
  {
-  "id": "arm-act-in-the-world-fast_edit",
+  "id": "arm-edit-files-fast_edit",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "act-in-the-world",
+   "seat": "edit-files",
    "arms": {
-    "act-in-the-world": "fast_edit"
+    "edit-files": "fast_edit"
    }
   },
   "expect": "ok"
  },
  {
-  "id": "arm-act-in-the-world-mcp_operations",
+  "id": "arm-connected-system-operations-mcp_operations",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "act-in-the-world",
+   "seat": "connected-system-operations",
    "arms": {
-    "act-in-the-world": "mcp_operations"
+    "connected-system-operations": "mcp_operations"
    }
   },
   "expect": "ok"
@@ -387,37 +384,37 @@
   "expect": "ok"
  },
  {
-  "id": "arm-act-in-the-world-subprocess_goal_runner",
+  "id": "arm-delegated-agent-sessions-subprocess_goal_runner",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "act-in-the-world",
+   "seat": "delegated-agent-sessions",
    "arms": {
-    "act-in-the-world": "subprocess_goal_runner"
+    "delegated-agent-sessions": "subprocess_goal_runner"
    }
   },
   "expect": "ok"
  },
  {
-  "id": "arm-act-in-the-world-stream_json_goal_runner",
+  "id": "arm-delegated-agent-sessions-stream_json_goal_runner",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "act-in-the-world",
+   "seat": "delegated-agent-sessions",
    "arms": {
-    "act-in-the-world": "stream_json_goal_runner"
+    "delegated-agent-sessions": "stream_json_goal_runner"
    }
   },
   "expect": "ok"
  },
  {
-  "id": "arm-act-in-the-world-acp_deep_runner",
+  "id": "arm-delegated-agent-sessions-acp_deep_runner",
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "act-in-the-world",
+   "seat": "delegated-agent-sessions",
    "arms": {
-    "act-in-the-world": "acp_deep_runner"
+    "delegated-agent-sessions": "acp_deep_runner"
    }
   },
   "expect": "ok"
@@ -868,5 +865,284 @@
    "environ": {}
   },
   "expect": "raised Pending naming GEMINI_API_KEY"
+ },
+ {
+  "id": "seat-ai-representatives",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "ai-representatives"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-assemble-the-whole",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "assemble-the-whole"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-cards-from-files",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "cards-from-files"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-connect-any-integration",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "connect-any-integration"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-context-intake",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "context-intake"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-delegation",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "delegation"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-esoi-application",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "esoi-application"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-feedback-learning",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "feedback-learning"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-goal-completion",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "goal-completion"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-guidance",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "guidance"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-higher-mind",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "higher-mind"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-hold-objectives",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "hold-objectives"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-internal-context",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "internal-context"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-judgment-calls",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "judgment-calls"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-keep-it-generic",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "keep-it-generic"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-long-term-memory",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "long-term-memory"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-metric-translation",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "metric-translation"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-model-plumbing",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "model-plumbing"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-offer-intuition",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "offer-intuition"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-personal-data-locations",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "personal-data-locations"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-planner",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "planner"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-prioritization",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "prioritization"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-reason-and-answer",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "reason-and-answer"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-remember-and-recall",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "remember-and-recall"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-response-quality",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "response-quality"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-response-writer",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "response-writer"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-retrieve-context",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "retrieve-context"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-role-understanding",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "role-understanding"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-stay-current",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "stay-current"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-think-critically",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "think-critically"
+  },
+  "expect": "ok"
+ },
+ {
+  "id": "seat-use-tools",
+  "area": "seat",
+  "kind": "seat",
+  "args": {
+   "seat": "use-tools"
+  },
+  "expect": "ok"
  }
 ]

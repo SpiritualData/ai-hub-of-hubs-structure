@@ -18,7 +18,7 @@ INDEPENDENT = {"yes", "no", "vendor"}
 COVERS = {"yes", "partly", "no"}
 USABLE_PREFIXES = ("yes:", "prior-only:", "no:")
 SEATS_THAT_MUST_APPEAR = ["take-in-the-world", "remember-and-recall", "reason-and-answer", "know-the-world",
-                          "think-critically", "act-in-the-world", "watch-for-risk", "assemble-the-whole", "stay-current",
+                          "response-quality", "edit-files", "connected-system-operations", "delegated-agent-sessions", "watch-for-risk", "assemble-the-whole", "stay-current",
                           "keep-it-generic", "connect-any-integration"]
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
 MACHINE_PATH = re.compile(r"(/home/|/Users/|/tmp/|C:\\)")

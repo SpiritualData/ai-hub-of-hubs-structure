@@ -54,7 +54,7 @@ class FakeProvider:
 
 def whole_hub(tmp_path, **extra):
     """The whole hub with the search arm on a recorded response and a fake model: no key, no program, no network."""
-    keywords = dict(arms={"search-backend": "serper", "act-in-the-world": "fast_edit"},
+    keywords = dict(arms={"search-backend": "serper"},
                     options={"search-backend": {"http": serper_http}},
                     provided={"call-a-model": FakeProvider()},
                     environ={"SERPER_API_KEY": "k", "HUBOFHUBS_WRITE_ROOT": str(tmp_path)})
@@ -84,7 +84,7 @@ def test_the_critic_reports_a_link_the_sources_do_not_hold(tmp_path):
                       "answerBox": {"answer": "Read https://example.org/made-up and https://blog.rust-lang.org/"}})
     result = hubofhubs.run("hub-of-hubs", "Rust", **whole_hub(tmp_path, options={"search-backend": {"http": invented}}))
     assert "link not in the evidence" not in result.note      # both links are in the sources' text
-    stranger = hubofhubs.run("think-critically", {"answer": "See https://other.example/x", "evidence": "https://blog.rust-lang.org/"})
+    stranger = hubofhubs.run("response-quality", {"response": "See https://other.example/x", "evidence": "https://blog.rust-lang.org/"})
     assert stranger == ["link not in the evidence: https://other.example/x"]
 
 
@@ -92,7 +92,7 @@ def test_the_model_alone_is_a_separate_call_that_says_it_has_no_sources(tmp_path
     whole = hubofhubs.run(WholeAnswering, **whole_hub(tmp_path))
     result = whole.model_only("Reply with the single word: ok", "cheap")
     assert result.note.startswith("answered from the model only") and result.items == ()
-    assert result.answer == "echo[claude-haiku-5-5]: Reply with the single word: ok" and result.seat == "reason-and-answer"
+    assert result.answer == "echo[claude-haiku-5-5]: Reply with the single word: ok" and result.seat == "model-plumbing"
 
 
 def test_one_function_at_every_level(tmp_path):
