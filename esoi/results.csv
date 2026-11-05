@@ -217,6 +217,8 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-05,prioritization,stated_fields,13,13,13/13,0/0,0,0,0,0.0,0.0,1.0,b3b9026-dirty,98e28943,,none,goal-ladder_passed=2/2; open-asks_passed=1/1; quest-list_passed=5/5; work-order_passed=5/5; mean_pairwise_agreement=1.0
 2026-11-05,proactivity,calendar_and_events,18,18,18/18,0/0,0,0,0,0.0,0.0,,b3b9026-dirty,5ad0325b,,none,
 2026-11-05,proactivity,elapsed_hours,18,10,10/18,0/0,0,0,0,0.0,0.0,,b3b9026-dirty,5ad0325b,,none,
+2026-11-05,prioritization,stated_fields,15,15,15/15,0/0,0,0,0,0.0,0.0,1.0,e8958c4-dirty,25684dd3,,none,carried_passed=6/6; rank_passed=3/3; stated_passed=6/6; mean_pairwise_agreement=1.0
+2026-11-05,prioritization,as_given,15,0,0/15,0/0,0,0,0,0.0,0.0,0.3,e8958c4-dirty,25684dd3,,none,carried_passed=0/6; rank_passed=0/3; stated_passed=0/6; mean_pairwise_agreement=0.3667
 2026-11-05,long_term_memory,file_recall,17,16,16/17,0/0,0,0,0,0.0,0.0,0.9588,e8958c4-dirty,754d197b,,none,
 2026-11-05,long_term_memory,card_store_recall,17,15,15/17,0/0,0,0,0,0.0,0.0,0.9176,e8958c4-dirty,754d197b,,none,
 2026-11-05,long_term_memory,recent_window,17,10,10/17,0/0,0,0,0,0.0,0.0,0.7118,e8958c4-dirty,754d197b,,none,

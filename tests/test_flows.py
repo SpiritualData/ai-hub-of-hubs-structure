@@ -292,10 +292,10 @@ def test_an_unsure_step_is_medium_and_the_default_person_is_asked_about_it():
 # --- an autopilot built on Proactivity and Prioritization: what is due, and what matters first -------------------------------------------------------------------
 
 SCHEDULES = [
-    {"name": "weekly-report", "request": "write the weekly report", "cadence": "weekly", "kind": "standing-work", "horizon": "week"},
-    {"name": "daily-review", "request": "do the daily review", "cadence": "daily", "kind": "standing-work", "horizon": "today"},
+    {"name": "weekly-report", "request": "write the weekly report", "cadence": "weekly", "kind": "standing-work", "deadline": "2026-07-20T00:00:00Z"},
+    {"name": "daily-review", "request": "do the daily review", "cadence": "daily", "kind": "standing-work", "deadline": "2026-07-12T12:00:00Z"},
     {"name": "done-today", "request": "already ran", "cadence": "daily", "last_run": "2026-07-12T08:00:00Z"},
-    {"name": "on-event", "request": "react to the event", "reactive": False, "event_source": "quest-events", "last_run": "2026-07-01T00:00:00Z", "horizon": "month"},
+    {"name": "on-event", "request": "react to the event", "reactive": False, "event_source": "product-events", "last_run": "2026-07-01T00:00:00Z", "deadline": "2026-08-12T00:00:00Z"},
 ]
 NOW = "2026-07-12T09:00:00Z"
 
@@ -303,9 +303,9 @@ NOW = "2026-07-12T09:00:00Z"
 def test_the_unasked_work_comes_back_due_and_most_important_first_through_the_whole_flow(tmp_path):
     system = hubofhubs.assemble(**whole_hub(tmp_path))
     out = system["the-intelligence"].proactive(
-        SCHEDULES, NOW, person="p", candidates=[{"id": "open-ask", "kind": "ask", "request": "answer the ask", "asked_at": "2026-07-10T09:00:00Z"}],
-        events=[{"source": "quest-events", "at": "2026-07-05T00:00:00Z"}])
-    assert [t["schedule"] for t in out] == ["open-ask", "daily-review", "weekly-report", "on-event"]      # the ask, then the horizons shortest first
+        SCHEDULES, NOW, person="p", stated={"kind_order": ["ask"]}, candidates=[{"id": "open-ask", "kind": "ask", "request": "answer the ask", "asked_at": "2026-07-10T09:00:00Z"}],
+        events=[{"source": "product-events", "at": "2026-07-05T00:00:00Z"}])
+    assert [t["schedule"] for t in out] == ["open-ask", "daily-review", "weekly-report", "on-event"]      # the ask (the person's kind order), then the deadlines nearest first
     assert [t["rank"] for t in out] == [1, 2, 3, 4] and all(t["priority_reason"] and t["metric"]["milestone"] for t in out)
     assert [t["kind"] for t in out] == ["waiting", "period", "period", "event"]      # what each was due for; the pulled event made the reactive schedule due
     assert sum(t["metric"]["weight"] for t in out) == pytest.approx(1.0, abs=1e-3)

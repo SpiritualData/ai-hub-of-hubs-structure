@@ -21,15 +21,15 @@ def test_each_trigger_says_why_it_is_due_by_kind():
 
 
 def test_events_pulled_from_intake_sources_make_the_schedule_that_names_the_source_due():
-    schedules = [{"name": "s", "event_source": "quest-events", "last_run": "2026-07-01T00:00:00Z"}]
-    pulled = [{"source": "quest-events", "at": "2026-07-05T00:00:00Z"}, {"source": "other", "at": "2026-07-06T00:00:00Z"}, {"source": "quest-events", "at": "junk"}]
+    schedules = [{"name": "s", "event_source": "product-events", "last_run": "2026-07-01T00:00:00Z"}]
+    pulled = [{"source": "product-events", "at": "2026-07-05T00:00:00Z"}, {"source": "other", "at": "2026-07-06T00:00:00Z"}, {"source": "product-events", "at": "junk"}]
     assert attach_events(schedules, pulled)[0]["events"] == ["2026-07-05T00:00:00Z"] and "events" not in schedules[0]
     assert [t["schedule"] for t in CalendarAndEvents().due(attach_events(schedules, pulled), NOW)] == ["s"]
     assert CalendarAndEvents().due(attach_events(schedules, pulled[1:]), NOW) == []
 
 
 def test_the_entry_takes_a_prioritization_answer_and_returns_the_due_work_in_its_order():
-    schedules = [{"name": "a", "request": "ra", "cadence": "weekly", "horizon": "week"}, {"name": "b", "request": "rb", "cadence": "weekly", "horizon": "today"},
+    schedules = [{"name": "a", "request": "ra", "cadence": "weekly", "deadline": "2026-07-20T00:00:00Z"}, {"name": "b", "request": "rb", "cadence": "weekly", "deadline": "2026-07-12T12:00:00Z"},
                  {"name": "c", "request": "rc", "cadence": "weekly"}]
     seat = hubofhubs.run("prioritization", {"candidates": [candidate_of({"schedule": s["name"], "request": s["request"]}, schedules) for s in schedules], "now": NOW,
                                            "stated": {"not_before": {"c": "2027-01-01T00:00:00Z"}}})

@@ -1,18 +1,17 @@
 """Prioritization arms. Both take the candidates and what the person stated and return the answer of the seat: ``ordered`` (each item with its place,
 reason and metric-ready priority), ``held`` (items the person's constraints keep back, with why), ``quality_weights`` and ``constraints``. Neither calls a model.
 
-``stated_fields`` orders by the fields real Quest and autopilot data carry, in the order of the rules those systems state: the person's pins first and what
-they deferred last, what their feedback implies next to those, then the kind (what a person asked for before the goals of the periods running before the
-system's own ideas, the autopilot's default instructions), a blocked item after the unblocked of its kind, the person's own rank (ranked first, ascending, a
-person's own entry before the legacy rank of the item's owner, unranked after in the order given: the quest list rule), the shorter horizon, the earlier deadline,
-the earlier ask, the more people waiting, and the longer since a nudge. Ties keep the order given. ``as_given`` keeps the order given: the bound the first arm has to beat.
+``stated_fields`` orders by the fields a candidate carries and what the person stated: the person's pins first and what they deferred last, what their
+feedback implies next to those, then the kind in the order the person or consumer gave, a blocked item after the unblocked, the person's own rank (ranked
+first, ascending, unranked after in the order given), the earlier deadline, the earlier ask, the more people waiting, and the longer since a nudge. Ties keep
+the order given. ``as_given`` keeps the order given: the bound the first arm has to beat.
 Standard library plus the hub and ``esoi``."""
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 from esoi import implementation
 
-from hubofhubs.the_consciousness.prioritization.types import DEFAULT_KIND_ORDER, HORIZONS, Ranked, Stated
+from hubofhubs.the_consciousness.prioritization.types import Ranked, Stated
 
 NEVER = datetime.max.replace(tzinfo=timezone.utc)
 
@@ -33,7 +32,7 @@ def metric_form(item: Mapping[str, Any], place: int, count: int) -> Dict[str, An
     weighs most), by when, and the criterion that says it is done."""
     weight = round((count - place + 1) / (count * (count + 1) / 2), 4)
     return {"milestone": str(item.get("title") or item.get("id")), "weight": weight,
-            "due": str(item.get("deadline") or item.get("horizon") or ""), "criterion": "the item is done and the person can see it is"}
+            "due": str(item.get("deadline") or ""), "criterion": "the item is done and the person can see it is"}
 
 
 def ranked(items: Sequence[Mapping[str, Any]], reasons: Sequence[str]) -> List[Dict[str, Any]]:
@@ -66,7 +65,7 @@ class StatedFields:
                    stated: Any = None, now: str = "") -> Mapping[str, Any]:
         said = Stated.of(stated if stated is not None else implied)
         at = moment(now) or datetime.now(timezone.utc)
-        kinds = tuple(said.kind_order) or DEFAULT_KIND_ORDER
+        kinds = tuple(said.kind_order)
         held: List[Dict[str, Any]] = []
         kept: List[Tuple[Tuple, Mapping[str, Any], List[str]]] = []
         present = {str(c.get("id")) for c in candidates}
@@ -101,22 +100,16 @@ class StatedFields:
             stance = {"sooner": 1, "later": 3}.get(direction, 2)
             if stance != 2:
                 why.append(f"the person's feedback implies {direction}")
-        tier = kinds.index(kind) if kind in kinds else (kinds.index("goal") if "goal" in kinds else len(kinds))
+        tier = kinds.index(kind) if kind in kinds else len(kinds)
         if kind in kinds:
             why.append(f"kind {kind} is {tier + 1} of {len(kinds)} in the order of kinds")
         blocked = any(str(b) in present for b in item.get("blocked_by") or ())
         if blocked:
             why.append("it waits for " + ", ".join(str(b) for b in item["blocked_by"] if str(b) in present))
-        own = (item.get("rank_by_person") or {}).get(person) if person else None
-        if own is None and (not person or str(item.get("owner") or "") in ("", person)):
-            own = item.get("rank")
+        own = item.get("rank")
         rank_key = (0, int(own)) if isinstance(own, int) and not isinstance(own, bool) else (1, 0)
         if rank_key[0] == 0:
-            why.append(f"ranked {own} by the person")
-        horizon = str(item.get("horizon") or "")
-        horizon_key = HORIZONS.index(horizon) if horizon in HORIZONS else len(HORIZONS)
-        if horizon in HORIZONS:
-            why.append(f"horizon {horizon}")
+            why.append(f"ranked {own}")
         deadline = moment(item.get("deadline"))
         if deadline is not None:
             why.append(f"due {item['deadline']}" + (" and overdue" if deadline < now else ""))
@@ -127,4 +120,4 @@ class StatedFields:
         if waiting:
             why.append(f"{waiting} waiting")
         nudged = moment(item.get("last_nudged_at")) or datetime.min.replace(tzinfo=timezone.utc)
-        return (stance, spot, tier, blocked, rank_key, horizon_key, deadline or NEVER, asked or NEVER, -waiting, nudged, index), why
+        return (stance, spot, tier, blocked, rank_key, deadline or NEVER, asked or NEVER, -waiting, nudged, index), why

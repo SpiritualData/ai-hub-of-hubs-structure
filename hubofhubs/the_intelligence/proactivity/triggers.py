@@ -23,7 +23,7 @@ from esoi import implementation
 HOURS = {"daily": 24, "weekly": 24 * 7, "monthly": 24 * 30}
 KINDS = ("requested", "event", "period", "elapsed")
 #: The fields of a schedule that Prioritization reads when it puts due work in order (see ``hubofhubs.the_consciousness.prioritization.types.FIELDS``).
-PRIORITY_FIELDS = ("rank", "rank_by_person", "owner", "horizon", "deadline", "asked_at", "blocked_by", "waiting", "last_nudged_at")
+PRIORITY_FIELDS = ("rank", "deadline", "asked_at", "blocked_by", "waiting", "last_nudged_at")
 
 
 def parse(raw: Any) -> Optional[datetime]:

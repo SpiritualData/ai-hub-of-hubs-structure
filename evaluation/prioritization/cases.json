@@ -1,426 +1,28 @@
 [
  {
-  "id": "prioritize-quest-cap-keeps-highest-priority",
-  "kind": "quest-list",
-  "origin": "verbatim test_quest_ranking_all.py",
+  "id": "prioritize-rank-ascending-unranked-after",
+  "kind": "rank",
+  "origin": "rule: ranked items first by ascending rank, unranked after in the order given",
   "args": {
-   "person": "u",
-   "candidates": [
-    {
-     "id": "q0",
-     "kind": "quest",
-     "rank": 0,
-     "owner": "u"
-    },
-    {
-     "id": "q1",
-     "kind": "quest",
-     "rank": 1,
-     "owner": "u"
-    },
-    {
-     "id": "q2",
-     "kind": "quest",
-     "rank": 2,
-     "owner": "u"
-    },
-    {
-     "id": "q3",
-     "kind": "quest",
-     "rank": 3,
-     "owner": "u"
-    },
-    {
-     "id": "q4",
-     "kind": "quest",
-     "rank": 4,
-     "owner": "u"
-    },
-    {
-     "id": "q5",
-     "kind": "quest",
-     "rank": 5,
-     "owner": "u"
-    },
-    {
-     "id": "q6",
-     "kind": "quest",
-     "rank": 6,
-     "owner": "u"
-    },
-    {
-     "id": "q7",
-     "kind": "quest",
-     "rank": 7,
-     "owner": "u"
-    },
-    {
-     "id": "q8",
-     "kind": "quest",
-     "rank": 8,
-     "owner": "u"
-    },
-    {
-     "id": "q9",
-     "kind": "quest",
-     "rank": 9,
-     "owner": "u"
-    },
-    {
-     "id": "q10",
-     "kind": "quest",
-     "rank": 10,
-     "owner": "u"
-    },
-    {
-     "id": "q11",
-     "kind": "quest",
-     "rank": 11,
-     "owner": "u"
-    },
-    {
-     "id": "q12",
-     "kind": "quest",
-     "rank": 12,
-     "owner": "u"
-    },
-    {
-     "id": "q13",
-     "kind": "quest",
-     "rank": 13,
-     "owner": "u"
-    },
-    {
-     "id": "q14",
-     "kind": "quest",
-     "rank": 14,
-     "owner": "u"
-    },
-    {
-     "id": "q15",
-     "kind": "quest",
-     "rank": 15,
-     "owner": "u"
-    },
-    {
-     "id": "q16",
-     "kind": "quest",
-     "rank": 16,
-     "owner": "u"
-    },
-    {
-     "id": "q17",
-     "kind": "quest",
-     "rank": 17,
-     "owner": "u"
-    },
-    {
-     "id": "q18",
-     "kind": "quest",
-     "rank": 18,
-     "owner": "u"
-    },
-    {
-     "id": "q19",
-     "kind": "quest",
-     "rank": 19,
-     "owner": "u"
-    },
-    {
-     "id": "q20",
-     "kind": "quest",
-     "rank": 20,
-     "owner": "u"
-    },
-    {
-     "id": "q21",
-     "kind": "quest",
-     "rank": 21,
-     "owner": "u"
-    },
-    {
-     "id": "q22",
-     "kind": "quest",
-     "rank": 22,
-     "owner": "u"
-    },
-    {
-     "id": "q23",
-     "kind": "quest",
-     "rank": 23,
-     "owner": "u"
-    },
-    {
-     "id": "q24",
-     "kind": "quest",
-     "rank": 24,
-     "owner": "u"
-    },
-    {
-     "id": "q25",
-     "kind": "quest",
-     "rank": 25,
-     "owner": "u"
-    },
-    {
-     "id": "q26",
-     "kind": "quest",
-     "rank": 26,
-     "owner": "u"
-    },
-    {
-     "id": "q27",
-     "kind": "quest",
-     "rank": 27,
-     "owner": "u"
-    },
-    {
-     "id": "q28",
-     "kind": "quest",
-     "rank": 28,
-     "owner": "u"
-    },
-    {
-     "id": "q29",
-     "kind": "quest",
-     "rank": 29,
-     "owner": "u"
-    },
-    {
-     "id": "q30",
-     "kind": "quest",
-     "rank": 30,
-     "owner": "u"
-    },
-    {
-     "id": "q31",
-     "kind": "quest",
-     "rank": 31,
-     "owner": "u"
-    },
-    {
-     "id": "q32",
-     "kind": "quest",
-     "rank": 32,
-     "owner": "u"
-    },
-    {
-     "id": "q33",
-     "kind": "quest",
-     "rank": 33,
-     "owner": "u"
-    },
-    {
-     "id": "q34",
-     "kind": "quest",
-     "rank": 34,
-     "owner": "u"
-    },
-    {
-     "id": "q35",
-     "kind": "quest",
-     "rank": 35,
-     "owner": "u"
-    },
-    {
-     "id": "q36",
-     "kind": "quest",
-     "rank": 36,
-     "owner": "u"
-    },
-    {
-     "id": "q37",
-     "kind": "quest",
-     "rank": 37,
-     "owner": "u"
-    },
-    {
-     "id": "q38",
-     "kind": "quest",
-     "rank": 38,
-     "owner": "u"
-    },
-    {
-     "id": "q39",
-     "kind": "quest",
-     "rank": 39,
-     "owner": "u"
-    },
-    {
-     "id": "q40",
-     "kind": "quest",
-     "rank": 40,
-     "owner": "u"
-    },
-    {
-     "id": "q41",
-     "kind": "quest",
-     "rank": 41,
-     "owner": "u"
-    },
-    {
-     "id": "q42",
-     "kind": "quest",
-     "rank": 42,
-     "owner": "u"
-    },
-    {
-     "id": "q43",
-     "kind": "quest",
-     "rank": 43,
-     "owner": "u"
-    },
-    {
-     "id": "q44",
-     "kind": "quest",
-     "rank": 44,
-     "owner": "u"
-    },
-    {
-     "id": "q45",
-     "kind": "quest",
-     "rank": 45,
-     "owner": "u"
-    },
-    {
-     "id": "q46",
-     "kind": "quest",
-     "rank": 46,
-     "owner": "u"
-    },
-    {
-     "id": "q47",
-     "kind": "quest",
-     "rank": 47,
-     "owner": "u"
-    },
-    {
-     "id": "q48",
-     "kind": "quest",
-     "rank": 48,
-     "owner": "u"
-    },
-    {
-     "id": "q49",
-     "kind": "quest",
-     "rank": 49,
-     "owner": "u"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "q0",
-   "q1",
-   "q2",
-   "q3",
-   "q4",
-   "q5",
-   "q6",
-   "q7",
-   "q8",
-   "q9",
-   "q10",
-   "q11",
-   "q12",
-   "q13",
-   "q14",
-   "q15",
-   "q16",
-   "q17",
-   "q18",
-   "q19",
-   "q20",
-   "q21",
-   "q22",
-   "q23",
-   "q24",
-   "q25",
-   "q26",
-   "q27",
-   "q28",
-   "q29",
-   "q30",
-   "q31",
-   "q32",
-   "q33",
-   "q34",
-   "q35",
-   "q36",
-   "q37",
-   "q38",
-   "q39",
-   "q40",
-   "q41",
-   "q42",
-   "q43",
-   "q44",
-   "q45",
-   "q46",
-   "q47",
-   "q48",
-   "q49"
-  ]
- },
- {
-  "id": "prioritize-quest-member-ranks-team-quest-above-own",
-  "kind": "quest-list",
-  "origin": "verbatim test_accessible_quests.py",
-  "args": {
-   "person": "member",
-   "candidates": [
-    {
-     "id": "member-quest",
-     "kind": "quest",
-     "owner": "member",
-     "rank_by_person": {
-      "member": 1
-     }
-    },
-    {
-     "id": "team-quest",
-     "kind": "quest",
-     "owner": "creator",
-     "rank_by_person": {
-      "member": 0
-     }
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "team-quest",
-   "member-quest"
-  ]
- },
- {
-  "id": "prioritize-quest-unranked-after-ranked",
-  "kind": "quest-list",
-  "origin": "rule order_quests_by_user_priority",
-  "args": {
-   "person": "u",
+   "person": "",
    "candidates": [
     {
      "id": "u1",
-     "kind": "quest",
-     "owner": "u"
+     "kind": "task"
     },
     {
      "id": "r2",
-     "kind": "quest",
-     "owner": "u",
+     "kind": "task",
      "rank": 2
     },
     {
      "id": "r0",
-     "kind": "quest",
-     "owner": "u",
+     "kind": "task",
      "rank": 0
     },
     {
      "id": "u2",
-     "kind": "quest",
-     "owner": "u"
+     "kind": "task"
     }
    ],
    "now": "2026-07-12T09:00:00Z"
@@ -433,367 +35,527 @@
   ]
  },
  {
-  "id": "prioritize-quest-legacy-rank-is-the-creators-only",
-  "kind": "quest-list",
-  "origin": "rule priority field of the quest model",
+  "id": "prioritize-rank-many",
+  "kind": "rank",
+  "origin": "rule: ascending rank over a long list",
   "args": {
-   "person": "p",
+   "person": "",
    "candidates": [
     {
-     "id": "other-creators",
-     "kind": "quest",
-     "owner": "o",
-     "rank": 0
+     "id": "t11",
+     "kind": "task",
+     "rank": 11
     },
     {
-     "id": "mine",
-     "kind": "quest",
-     "owner": "p",
+     "id": "t10",
+     "kind": "task",
+     "rank": 10
+    },
+    {
+     "id": "t9",
+     "kind": "task",
+     "rank": 9
+    },
+    {
+     "id": "t8",
+     "kind": "task",
+     "rank": 8
+    },
+    {
+     "id": "t7",
+     "kind": "task",
+     "rank": 7
+    },
+    {
+     "id": "t6",
+     "kind": "task",
+     "rank": 6
+    },
+    {
+     "id": "t5",
+     "kind": "task",
+     "rank": 5
+    },
+    {
+     "id": "t4",
+     "kind": "task",
+     "rank": 4
+    },
+    {
+     "id": "t3",
+     "kind": "task",
      "rank": 3
+    },
+    {
+     "id": "t2",
+     "kind": "task",
+     "rank": 2
+    },
+    {
+     "id": "t1",
+     "kind": "task",
+     "rank": 1
+    },
+    {
+     "id": "t0",
+     "kind": "task",
+     "rank": 0
     }
    ],
    "now": "2026-07-12T09:00:00Z"
   },
   "expect": [
-   "mine",
-   "other-creators"
+   "t0",
+   "t1",
+   "t2",
+   "t3",
+   "t4",
+   "t5",
+   "t6",
+   "t7",
+   "t8",
+   "t9",
+   "t10",
+   "t11"
   ]
  },
  {
-  "id": "prioritize-quest-own-entry-beats-legacy-rank",
-  "kind": "quest-list",
-  "origin": "rule priority_by_user field of the quest model",
+  "id": "prioritize-rank-before-deadline",
+  "kind": "rank",
+  "origin": "rule: a ranked item comes before an unranked one that is due sooner",
   "args": {
-   "person": "p",
+   "person": "",
    "candidates": [
     {
-     "id": "y",
-     "kind": "quest",
-     "owner": "o",
-     "rank": 0,
-     "rank_by_person": {
-      "p": 5
-     }
+     "id": "due-soon",
+     "kind": "task",
+     "deadline": "2026-07-13T00:00:00Z"
     },
+    {
+     "id": "ranked",
+     "kind": "task",
+     "rank": 5,
+     "deadline": "2026-08-01T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "ranked",
+   "due-soon"
+  ]
+ },
+ {
+  "id": "prioritize-deadline-nearest-first",
+  "kind": "carried",
+  "origin": "rule: the nearest deadline first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "d20",
+     "kind": "task",
+     "deadline": "2026-07-20T00:00:00Z"
+    },
+    {
+     "id": "d19",
+     "kind": "task",
+     "deadline": "2026-07-19T00:00:00Z"
+    },
+    {
+     "id": "d18",
+     "kind": "task",
+     "deadline": "2026-07-18T00:00:00Z"
+    },
+    {
+     "id": "d17",
+     "kind": "task",
+     "deadline": "2026-07-17T00:00:00Z"
+    },
+    {
+     "id": "d16",
+     "kind": "task",
+     "deadline": "2026-07-16T00:00:00Z"
+    },
+    {
+     "id": "d15",
+     "kind": "task",
+     "deadline": "2026-07-15T00:00:00Z"
+    },
+    {
+     "id": "d14",
+     "kind": "task",
+     "deadline": "2026-07-14T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "d14",
+   "d15",
+   "d16",
+   "d17",
+   "d18",
+   "d19",
+   "d20"
+  ]
+ },
+ {
+  "id": "prioritize-deadline-undated-last-in-given-order",
+  "kind": "carried",
+  "origin": "rule: undated items after the dated, in the order given",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "n1",
+     "kind": "task"
+    },
+    {
+     "id": "late",
+     "kind": "task",
+     "deadline": "2026-07-30T00:00:00Z"
+    },
+    {
+     "id": "n2",
+     "kind": "task"
+    },
+    {
+     "id": "soon",
+     "kind": "task",
+     "deadline": "2026-07-14T00:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "soon",
+   "late",
+   "n1",
+   "n2"
+  ]
+ },
+ {
+  "id": "prioritize-ask-oldest-first",
+  "kind": "carried",
+  "origin": "rule: the earlier ask first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "new",
+     "kind": "ask",
+     "asked_at": "2026-07-10T09:00:00Z"
+    },
+    {
+     "id": "old",
+     "kind": "ask",
+     "asked_at": "2026-07-01T12:00:00Z"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "old",
+   "new"
+  ]
+ },
+ {
+  "id": "prioritize-more-people-waiting-first",
+  "kind": "carried",
+  "origin": "rule: the item more people wait on first",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "one",
+     "kind": "task",
+     "waiting": [
+      "a"
+     ]
+    },
+    {
+     "id": "three",
+     "kind": "task",
+     "waiting": [
+      "a",
+      "b",
+      "c"
+     ]
+    },
+    {
+     "id": "none",
+     "kind": "task"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "three",
+   "one",
+   "none"
+  ]
+ },
+ {
+  "id": "prioritize-longest-since-nudge-first",
+  "kind": "carried",
+  "origin": "rule: never nudged first, then the longest since a nudge",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "recent",
+     "kind": "task",
+     "last_nudged_at": "2026-07-11T00:00:00Z"
+    },
+    {
+     "id": "old",
+     "kind": "task",
+     "last_nudged_at": "2026-07-01T00:00:00Z"
+    },
+    {
+     "id": "never",
+     "kind": "task"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "never",
+   "old",
+   "recent"
+  ]
+ },
+ {
+  "id": "prioritize-blocked-after-unblocked",
+  "kind": "carried",
+  "origin": "rule: an item that waits for a present item comes after the unblocked",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "b",
+     "kind": "task",
+     "blocked_by": [
+      "a"
+     ]
+    },
+    {
+     "id": "a",
+     "kind": "task"
+    },
+    {
+     "id": "c",
+     "kind": "task"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "a",
+   "c",
+   "b"
+  ]
+ },
+ {
+  "id": "prioritize-person-orders-kinds",
+  "kind": "stated",
+  "origin": "rule: kinds come in the order the person gave",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "n1",
+     "kind": "note"
+    },
+    {
+     "id": "t1",
+     "kind": "task"
+    },
+    {
+     "id": "a1",
+     "kind": "ask"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "stated": {
+    "kind_order": [
+     "ask",
+     "note"
+    ]
+   }
+  },
+  "expect": [
+   "a1",
+   "n1",
+   "t1"
+  ]
+ },
+ {
+  "id": "prioritize-person-order-then-deferral",
+  "kind": "stated",
+  "origin": "rule: the person's order first, what they deferred last",
+  "args": {
+   "person": "",
+   "candidates": [
     {
      "id": "x",
-     "kind": "quest",
-     "owner": "p",
-     "rank": 3
+     "kind": "task"
+    },
+    {
+     "id": "y",
+     "kind": "task"
+    },
+    {
+     "id": "z",
+     "kind": "task"
+    },
+    {
+     "id": "w",
+     "kind": "task"
     }
    ],
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "stated": {
+    "order": [
+     "z"
+    ],
+    "deferred": [
+     "x"
+    ]
+   }
   },
   "expect": [
-   "x",
-   "y"
+   "z",
+   "y",
+   "w",
+   "x"
   ]
  },
  {
-  "id": "prioritize-work-asks-then-horizons-then-ideas",
-  "kind": "work-order",
-  "origin": "rule default quest instructions",
+  "id": "prioritize-feedback-sooner-moves-an-item",
+  "kind": "stated",
+  "origin": "rule: feedback that implies sooner moves the item up",
   "args": {
    "person": "",
    "candidates": [
     {
-     "id": "i1",
-     "kind": "idea"
+     "id": "a",
+     "kind": "task"
     },
     {
-     "id": "g-year",
-     "kind": "goal",
-     "horizon": "year"
+     "id": "b",
+     "kind": "task"
     },
     {
-     "id": "g-today",
-     "kind": "goal",
-     "horizon": "today"
+     "id": "c",
+     "kind": "task"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "stated": {
+    "feedback": [
+     {
+      "about": "c",
+      "direction": "sooner"
+     }
+    ]
+   }
+  },
+  "expect": [
+   "c",
+   "a",
+   "b"
+  ]
+ },
+ {
+  "id": "prioritize-feedback-later-moves-a-kind",
+  "kind": "stated",
+  "origin": "rule: feedback that implies later moves the whole kind down",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "t1",
+     "kind": "task"
     },
+    {
+     "id": "n1",
+     "kind": "note"
+    },
+    {
+     "id": "t2",
+     "kind": "task"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "stated": {
+    "feedback": [
+     {
+      "about": "task",
+      "direction": "later"
+     }
+    ]
+   }
+  },
+  "expect": [
+   "n1",
+   "t1",
+   "t2"
+  ]
+ },
+ {
+  "id": "prioritize-not-before-holds-an-item-back",
+  "kind": "stated",
+  "origin": "rule: an item the person said not before a later time is held back",
+  "args": {
+   "person": "",
+   "candidates": [
+    {
+     "id": "a",
+     "kind": "task"
+    },
+    {
+     "id": "b",
+     "kind": "task"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z",
+   "stated": {
+    "not_before": {
+     "b": "2026-08-01T00:00:00Z"
+    }
+   }
+  },
+  "expect": [
+   "a"
+  ]
+ },
+ {
+  "id": "prioritize-only-kinds-holds-the-rest-back",
+  "kind": "stated",
+  "origin": "rule: only the kinds the person limited the work to are ordered",
+  "args": {
+   "person": "",
+   "candidates": [
     {
      "id": "a1",
      "kind": "ask"
     },
     {
-     "id": "g-week",
-     "kind": "goal",
-     "horizon": "week"
+     "id": "n1",
+     "kind": "note"
     }
    ],
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "stated": {
+    "only_kinds": [
+     "ask"
+    ]
+   }
   },
   "expect": [
-   "a1",
-   "g-today",
-   "g-week",
-   "g-year",
-   "i1"
-  ]
- },
- {
-  "id": "prioritize-work-asks-keep-the-order-given",
-  "kind": "work-order",
-  "origin": "rule default quest instructions",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "g-today",
-     "kind": "goal",
-     "horizon": "today"
-    },
-    {
-     "id": "a1",
-     "kind": "ask"
-    },
-    {
-     "id": "a2",
-     "kind": "ask"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "a1",
-   "a2",
-   "g-today"
-  ]
- },
- {
-  "id": "prioritize-work-month-before-quarter",
-  "kind": "work-order",
-  "origin": "rule default quest instructions",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "g-quarter",
-     "kind": "goal",
-     "horizon": "quarter"
-    },
-    {
-     "id": "g-month",
-     "kind": "goal",
-     "horizon": "month"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "g-month",
-   "g-quarter"
-  ]
- },
- {
-  "id": "prioritize-work-a-goal-before-an-idea",
-  "kind": "work-order",
-  "origin": "rule default quest instructions",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "i1",
-     "kind": "idea"
-    },
-    {
-     "id": "g-quarter",
-     "kind": "goal",
-     "horizon": "quarter"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "g-quarter",
-   "i1"
-  ]
- },
- {
-  "id": "prioritize-ladder-nearest-deadline-first",
-  "kind": "goal-ladder",
-  "origin": "verbatim test_autopilot_goal_ladder.py",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "m20",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-20"
-    },
-    {
-     "id": "m19",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-19"
-    },
-    {
-     "id": "m18",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-18"
-    },
-    {
-     "id": "m17",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-17"
-    },
-    {
-     "id": "m16",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-16"
-    },
-    {
-     "id": "m15",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-15"
-    },
-    {
-     "id": "m14",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-14"
-    },
-    {
-     "id": "m13",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-13"
-    },
-    {
-     "id": "m12",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-12"
-    },
-    {
-     "id": "m11",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-11"
-    },
-    {
-     "id": "m10",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-10"
-    },
-    {
-     "id": "m9",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-09"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "m9",
-   "m10",
-   "m11",
-   "m12",
-   "m13",
-   "m14",
-   "m15",
-   "m16",
-   "m17",
-   "m18",
-   "m19",
-   "m20"
-  ]
- },
- {
-  "id": "prioritize-ladder-undated-last-in-plan-order",
-  "kind": "goal-ladder",
-  "origin": "verbatim test_autopilot_goal_ladder.py",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "m1",
-     "kind": "goal",
-     "horizon": "month"
-    },
-    {
-     "id": "m2",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-30"
-    },
-    {
-     "id": "m3",
-     "kind": "goal",
-     "horizon": "month"
-    },
-    {
-     "id": "m4",
-     "kind": "goal",
-     "horizon": "month",
-     "deadline": "2026-07-14"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "m4",
-   "m2",
-   "m1",
-   "m3"
-  ]
- },
- {
-  "id": "prioritize-asks-oldest-first",
-  "kind": "open-asks",
-  "origin": "test data of test_quest_asks_brief.py, listed newest first",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "k_new",
-     "kind": "ask",
-     "asked_at": "2026-10-15T09:00:00Z"
-    },
-    {
-     "id": "k_open",
-     "kind": "ask",
-     "asked_at": "2026-10-12T12:00:00Z"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "k_open",
-   "k_new"
-  ]
- },
- {
-  "id": "prioritize-work-horizon-before-deadline",
-  "kind": "work-order",
-  "origin": "rule default quest instructions with the goal ladder",
-  "args": {
-   "person": "",
-   "candidates": [
-    {
-     "id": "g-week-late",
-     "kind": "goal",
-     "horizon": "week",
-     "deadline": "2026-07-18"
-    },
-    {
-     "id": "g-today",
-     "kind": "goal",
-     "horizon": "today",
-     "deadline": "2026-07-13"
-    }
-   ],
-   "now": "2026-07-12T09:00:00Z"
-  },
-  "expect": [
-   "g-today",
-   "g-week-late"
+   "a1"
   ]
  }
 ]

@@ -1,22 +1,16 @@
-"""Rebuild cases.json for Prioritization from the ordering rules that Quest and Quest AI Runner (QAR) state in their own code and tests. Each case names its
-source and whether its candidates are the test's own data (``verbatim``) or written to exercise a rule the source states (``rule``). The expected order is
-written by hand from the stated rule, never produced by an arm.
+"""Rebuild cases.json for Prioritization: invented, neutral cases that each exercise one generic ordering rule of the hub's arm. A consumer's own ordering rules
+(its data model, its autopilot's instructions) are not here: the consumer adds an arm that competes under this metric, with cases built on it from its own
+code and tests. The expected order is written by hand from the rule, never produced by an arm.
 
-Sources (paths are inside the Quest repositories):
-  quest list     quest-backend ``order_quests_by_user_priority`` and the ``priority`` and ``priority_by_user`` fields of the quest model: ranked ascending first
-                 (0 is highest), then unranked in the order given; a person's own entry in ``priority_by_user``, else the legacy ``priority`` only for the quest's
-                 creator. Test data: ``tests/test_quest_ranking_all.py`` (the cap keeps the highest priority quests) and ``tests/business/test_accessible_quests.py``
-                 (a member ranks a team quest above their own).
-  work order     quest-backend ``prompts/autopilot_prompts.py``, the default quest instructions: the open asks first, then the goals of the periods running now,
-                 shortest horizon first (today, this week, this month, the quarter, the year), then anything the run thought of itself.
-  goal ladder    QAR ``autopilot_periods._ladder_order_key``: inside a horizon nearest deadline first, undated last, payload order breaks ties. Test data:
-                 ``tests/test_autopilot_goal_ladder.py``.
-  open asks      QAR ``quest_asks_brief.asks_brief_section``: open asks ordered by when they were asked, oldest first. Test data: ``tests/test_quest_asks_brief.py``.
+Families (the ``kind`` of a case, reported separately):
+  rank      the person's own rank: ranked first ascending (0 is highest), unranked after in the order given, and before the deadline.
+  carried   fields the data carries: nearest deadline first (undated last), oldest ask first, more people waiting first, longest since a nudge first, a blocked
+            item after the unblocked.
+  stated    what the person said: the order of kinds, an explicit order with a deferral, feedback that implies sooner or later, a not-before time, only some kinds.
 
     python3 evaluation/prioritization/build_cases.py
 
-Standard library only. No case covers a person's explicit order, deferral, feedback or ``not_before``: no repository holds real ordered examples of those, so the
-unit tests of the seat cover them and this metric does not."""
+Standard library only."""
 import json
 from pathlib import Path
 
@@ -24,54 +18,48 @@ HERE = Path(__file__).resolve().parent
 NOW = "2026-07-12T09:00:00Z"
 
 
-def case(name, source, origin, person, candidates, expect, now=NOW):
-    return {"id": "prioritize-" + name, "kind": source, "origin": origin, "args": {"person": person, "candidates": candidates, "now": now}, "expect": expect}
+def case(name, family, rule, candidates, expect, stated=None, person=""):
+    args = {"person": person, "candidates": candidates, "now": NOW}
+    if stated is not None:
+        args["stated"] = stated
+    return {"id": "prioritize-" + name, "kind": family, "origin": "rule: " + rule, "args": args, "expect": expect}
 
 
-def quest(ident, **fields):
-    return dict({"id": ident, "kind": "quest"}, **fields)
+def item(ident, kind="task", **fields):
+    return dict({"id": ident, "kind": kind}, **fields)
 
 
 def main():
     cases = []
-    # quest list: test data
-    fifty = [quest(f"q{i}", rank=i, owner="u") for i in range(50)]
-    cases.append(case("quest-cap-keeps-highest-priority", "quest-list", "verbatim test_quest_ranking_all.py", "u", fifty, [f"q{i}" for i in range(50)]))
-    cases.append(case("quest-member-ranks-team-quest-above-own", "quest-list", "verbatim test_accessible_quests.py", "member",
-                      [quest("member-quest", owner="member", rank_by_person={"member": 1}), quest("team-quest", owner="creator", rank_by_person={"member": 0})],
-                      ["team-quest", "member-quest"]))
-    # quest list: the stated rule
-    cases.append(case("quest-unranked-after-ranked", "quest-list", "rule order_quests_by_user_priority", "u",
-                      [quest("u1", owner="u"), quest("r2", owner="u", rank=2), quest("r0", owner="u", rank=0), quest("u2", owner="u")], ["r0", "r2", "u1", "u2"]))
-    cases.append(case("quest-legacy-rank-is-the-creators-only", "quest-list", "rule priority field of the quest model", "p",
-                      [quest("other-creators", owner="o", rank=0), quest("mine", owner="p", rank=3)], ["mine", "other-creators"]))
-    cases.append(case("quest-own-entry-beats-legacy-rank", "quest-list", "rule priority_by_user field of the quest model", "p",
-                      [quest("y", owner="o", rank=0, rank_by_person={"p": 5}), quest("x", owner="p", rank=3)], ["x", "y"]))
-    # work order: the stated rule
-    cases.append(case("work-asks-then-horizons-then-ideas", "work-order", "rule default quest instructions", "",
-                      [{"id": "i1", "kind": "idea"}, {"id": "g-year", "kind": "goal", "horizon": "year"}, {"id": "g-today", "kind": "goal", "horizon": "today"},
-                       {"id": "a1", "kind": "ask"}, {"id": "g-week", "kind": "goal", "horizon": "week"}], ["a1", "g-today", "g-week", "g-year", "i1"]))
-    cases.append(case("work-asks-keep-the-order-given", "work-order", "rule default quest instructions", "",
-                      [{"id": "g-today", "kind": "goal", "horizon": "today"}, {"id": "a1", "kind": "ask"}, {"id": "a2", "kind": "ask"}], ["a1", "a2", "g-today"]))
-    cases.append(case("work-month-before-quarter", "work-order", "rule default quest instructions", "",
-                      [{"id": "g-quarter", "kind": "goal", "horizon": "quarter"}, {"id": "g-month", "kind": "goal", "horizon": "month"}], ["g-month", "g-quarter"]))
-    cases.append(case("work-a-goal-before-an-idea", "work-order", "rule default quest instructions", "",
-                      [{"id": "i1", "kind": "idea"}, {"id": "g-quarter", "kind": "goal", "horizon": "quarter"}], ["g-quarter", "i1"]))
-    # goal ladder: test data
-    month = [{"id": f"m{i}", "kind": "goal", "horizon": "month", "deadline": f"2026-07-{i:02d}"} for i in range(20, 8, -1)]
-    cases.append(case("ladder-nearest-deadline-first", "goal-ladder", "verbatim test_autopilot_goal_ladder.py", "", month, [f"m{i}" for i in range(9, 21)]))
-    cases.append(case("ladder-undated-last-in-plan-order", "goal-ladder", "verbatim test_autopilot_goal_ladder.py", "",
-                      [{"id": "m1", "kind": "goal", "horizon": "month"}, {"id": "m2", "kind": "goal", "horizon": "month", "deadline": "2026-07-30"},
-                       {"id": "m3", "kind": "goal", "horizon": "month"}, {"id": "m4", "kind": "goal", "horizon": "month", "deadline": "2026-07-14"}],
-                      ["m4", "m2", "m1", "m3"]))
-    # open asks: test data
-    cases.append(case("asks-oldest-first", "open-asks", "test data of test_quest_asks_brief.py, listed newest first", "",
-                      [{"id": "k_new", "kind": "ask", "asked_at": "2026-10-15T09:00:00Z"}, {"id": "k_open", "kind": "ask", "asked_at": "2026-10-12T12:00:00Z"}],
-                      ["k_open", "k_new"]))
-    # the two stated rules together: the horizon decides before the deadline
-    cases.append(case("work-horizon-before-deadline", "work-order", "rule default quest instructions with the goal ladder", "",
-                      [{"id": "g-week-late", "kind": "goal", "horizon": "week", "deadline": "2026-07-18"}, {"id": "g-today", "kind": "goal", "horizon": "today", "deadline": "2026-07-13"}],
-                      ["g-today", "g-week-late"]))
+    cases.append(case("rank-ascending-unranked-after", "rank", "ranked items first by ascending rank, unranked after in the order given",
+                      [item("u1"), item("r2", rank=2), item("r0", rank=0), item("u2")], ["r0", "r2", "u1", "u2"]))
+    cases.append(case("rank-many", "rank", "ascending rank over a long list", [item(f"t{i}", rank=i) for i in range(11, -1, -1)], [f"t{i}" for i in range(12)]))
+    cases.append(case("rank-before-deadline", "rank", "a ranked item comes before an unranked one that is due sooner",
+                      [item("due-soon", deadline="2026-07-13T00:00:00Z"), item("ranked", rank=5, deadline="2026-08-01T00:00:00Z")], ["ranked", "due-soon"]))
+    cases.append(case("deadline-nearest-first", "carried", "the nearest deadline first",
+                      [item(f"d{i}", deadline=f"2026-07-{i:02d}T00:00:00Z") for i in range(20, 13, -1)], [f"d{i}" for i in range(14, 21)]))
+    cases.append(case("deadline-undated-last-in-given-order", "carried", "undated items after the dated, in the order given",
+                      [item("n1"), item("late", deadline="2026-07-30T00:00:00Z"), item("n2"), item("soon", deadline="2026-07-14T00:00:00Z")], ["soon", "late", "n1", "n2"]))
+    cases.append(case("ask-oldest-first", "carried", "the earlier ask first",
+                      [item("new", "ask", asked_at="2026-07-10T09:00:00Z"), item("old", "ask", asked_at="2026-07-01T12:00:00Z")], ["old", "new"]))
+    cases.append(case("more-people-waiting-first", "carried", "the item more people wait on first",
+                      [item("one", waiting=["a"]), item("three", waiting=["a", "b", "c"]), item("none")], ["three", "one", "none"]))
+    cases.append(case("longest-since-nudge-first", "carried", "never nudged first, then the longest since a nudge",
+                      [item("recent", last_nudged_at="2026-07-11T00:00:00Z"), item("old", last_nudged_at="2026-07-01T00:00:00Z"), item("never")], ["never", "old", "recent"]))
+    cases.append(case("blocked-after-unblocked", "carried", "an item that waits for a present item comes after the unblocked",
+                      [item("b", blocked_by=["a"]), item("a"), item("c")], ["a", "c", "b"]))
+    cases.append(case("person-orders-kinds", "stated", "kinds come in the order the person gave",
+                      [item("n1", "note"), item("t1"), item("a1", "ask")], ["a1", "n1", "t1"], stated={"kind_order": ["ask", "note"]}))
+    cases.append(case("person-order-then-deferral", "stated", "the person's order first, what they deferred last",
+                      [item("x"), item("y"), item("z"), item("w")], ["z", "y", "w", "x"], stated={"order": ["z"], "deferred": ["x"]}))
+    cases.append(case("feedback-sooner-moves-an-item", "stated", "feedback that implies sooner moves the item up",
+                      [item("a"), item("b"), item("c")], ["c", "a", "b"], stated={"feedback": [{"about": "c", "direction": "sooner"}]}))
+    cases.append(case("feedback-later-moves-a-kind", "stated", "feedback that implies later moves the whole kind down",
+                      [item("t1"), item("n1", "note"), item("t2")], ["n1", "t1", "t2"], stated={"feedback": [{"about": "task", "direction": "later"}]}))
+    cases.append(case("not-before-holds-an-item-back", "stated", "an item the person said not before a later time is held back",
+                      [item("a"), item("b")], ["a"], stated={"not_before": {"b": "2026-08-01T00:00:00Z"}}))
+    cases.append(case("only-kinds-holds-the-rest-back", "stated", "only the kinds the person limited the work to are ordered",
+                      [item("a1", "ask"), item("n1", "note")], ["a1"], stated={"only_kinds": ["ask"]}))
     (HERE / "cases.json").write_text(json.dumps(cases, indent=1) + "\n")
     print(len(cases), "cases")
 

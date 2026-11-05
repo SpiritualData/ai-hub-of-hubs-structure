@@ -283,8 +283,6 @@ LOCATIONS = {
     "Stated": "hubofhubs.the_consciousness.prioritization.types:Stated",
     "Ranked": "hubofhubs.the_consciousness.prioritization.types:Ranked",
     "CANDIDATE_FIELDS": "hubofhubs.the_consciousness.prioritization.types:FIELDS",
-    "HORIZONS": "hubofhubs.the_consciousness.prioritization.types:HORIZONS",
-    "DEFAULT_KIND_ORDER": "hubofhubs.the_consciousness.prioritization.types:DEFAULT_KIND_ORDER",
     "ordered_ids": "hubofhubs.the_consciousness.prioritization.types:ids_of",
     # hubofhubs.the_consciousness.representatives.interface
     "Representing": "hubofhubs.the_consciousness.representatives.interface:Representing",

@@ -114,4 +114,4 @@ Each implementation is scored on the cases of its own solution, and the highest 
 
 Install, register a part you own and score your integration: [register a second consumer](docs/how-to/register-a-second-consumer.md).
 To use the hub's solutions as your application's own jobs, adopt them by reference, specialize the ones that need your data and add your own arms: [adopt the hub](docs/how-to/adopt-the-hub.md).
-To add an implementation, see [CONTRIBUTING.md](CONTRIBUTING.md). All documentation: [docs/README.md](docs/README.md). Apache-2.0, matching Quest AI Runner (`LICENSE`).
+To add an implementation, see [CONTRIBUTING.md](CONTRIBUTING.md). All documentation: [docs/README.md](docs/README.md). Apache-2.0 (`LICENSE`).

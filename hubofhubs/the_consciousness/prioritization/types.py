@@ -1,20 +1,17 @@
-"""The types Prioritization takes and returns. Standard library only; a consumer builds these from its own rows (quests, tasks, asks, standing work)
+"""The types Prioritization takes and returns. Standard library only; a consumer builds these from its own rows (tasks, asks, standing work)
 and the seat also accepts the same fields as plain mappings, so ``hubofhubs.run("prioritization", {...})`` needs no import.
 
-A candidate is anything that competes for attention: ``id`` and ``kind`` (``ask``, ``goal``, ``standing-work``, ``idea`` or a kind the consumer names) and the fields
+A candidate is anything that competes for attention: ``id`` and ``kind`` (any kind the consumer names, such as ``ask`` or ``standing-work``) and the fields
 the consumer's own data carries (``FIELDS``). Prioritization never invents a field: one a candidate does not carry is skipped, not guessed.
 
 ``Stated`` is what the Representative knows about the person: an explicit ordering, what must go first or wait, what the person's feedback implies, and the weights
 of the quality profile. ``Ranked`` is one item of the answer: its place, the reason in words and the priority in the form Metric Translation and the Planner use."""
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Mapping, Sequence, Tuple
+from typing import Any, Dict, List, Mapping, Sequence
 
-#: The fields a candidate may carry, each as the real Quest and autopilot data carries it.
+#: The fields a candidate may carry.
 FIELDS: Mapping[str, str] = {
-    "rank": "explicit priority rank, 0 is highest, absent is unranked (a quest's legacy priority, the rank of its creator)",
-    "rank_by_person": "mapping of person to that person's own rank (a quest in several people's lists)",
-    "owner": "who the legacy rank belongs to (the creator)",
-    "horizon": "today, week, month, quarter or year: the period a goal is set for (shortest first)",
+    "rank": "the person's own rank for the item, 0 is highest, absent is unranked",
     "deadline": "ISO time the item is due by",
     "blocked_by": "ids of items that must be done first",
     "waiting": "people who are waiting on this item",
@@ -24,10 +21,6 @@ FIELDS: Mapping[str, str] = {
     "title": "what it is, for the reason and the milestone",
 }
 
-HORIZONS: Tuple[str, ...] = ("today", "week", "month", "quarter", "year")
-#: The order the autopilot's default instructions give: what a person asked for first, then the goals of the periods running, then the system's own ideas.
-DEFAULT_KIND_ORDER: Tuple[str, ...] = ("ask", "goal", "idea")
-
 
 @dataclass(frozen=True)
 class Stated:
@@ -36,7 +29,7 @@ class Stated:
     deferred: Sequence[str] = ()                    # ids that must wait
     not_before: Mapping[str, str] = field(default_factory=dict)      # id -> ISO time before which it waits
     only_kinds: Sequence[str] = ()                  # when set, other kinds are held back
-    kind_order: Sequence[str] = ()                  # replaces DEFAULT_KIND_ORDER
+    kind_order: Sequence[str] = ()                  # kinds in the order they come, first first; a kind not listed comes after
     feedback: Sequence[Mapping[str, Any]] = ()      # {"about": id or kind, "direction": "sooner" or "later"}: what the person's reactions imply
     quality_weights: Mapping[str, float] = field(default_factory=dict)
 
