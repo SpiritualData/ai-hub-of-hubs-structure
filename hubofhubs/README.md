@@ -2,6 +2,31 @@
 
 *ESOI records kept beside the code in `hubofhubs`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
+Anyone building AI intelligence can assemble a working system from the best open-source parts available, chosen by measurement and kept current every week, without writing the glue themselves.
+
+These are the solutions of [The best parts for AI intelligence, assembled and proven](../esoi/README.md).
+
+## How the solutions fit together
+
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and asks World how current the research is. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback.
+
+## Overview diagram
+
+An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
+
+```mermaid
+flowchart LR
+    s0["World<br/><i>the-world</i>"]
+    s1["The Self<br/><i>the-self</i>"]
+    s2["Body<br/><i>the-body</i>"]
+    s3["Intelligence<br/><i>the-intelligence</i>"]
+    s4["Consciousness<br/><i>the-consciousness</i>"]
+    s0 -->|"Material from outside the system, with its sources, and the..."| s1
+    s2 -->|"What a particular system declares about its own data and..."| s1
+    s3 -->|"A response to one request, with the step of every part that..."| s1
+    s4 -->|"The person's Representative, and what the system learned..."| s1
+```
+
 ## World (`the-world`)
 
 Bring in what is outside the system and let the AI act on it through the best available tool.
