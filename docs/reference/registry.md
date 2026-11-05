@@ -9,7 +9,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 [the weekly refresh](../how-to/refresh-the-registry.md); how the files join is in [connect a hub](../how-to/connect-a-hub.md).
 
 <!-- registry:start -->
-### Integrity (`keep-it-generic`)
+### Integrity (`system-integrity`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -17,7 +17,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | observability | Seeing what a run did, what it cost and why | compared | adopt | none | OpenTelemetry GenAI conventions; Langfuse; Arize Phoenix | 3 | 0 | 2026-10-30 |
 | config | Typed, validated configuration per deployment | compared | coexist | QAR config modules | pydantic-settings; Hydra | 2 | 0 | 2026-10-30 |
 
-### Assembler (`assemble-the-whole`)
+### Assembler (`the-assembler`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -25,7 +25,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | assembly_observability | Seeing what each step of a turn did and cost | compared | adopt | none | OpenTelemetry GenAI semantic conventions; Langfuse | 2 | 0 | 2026-10-30 |
 | assembly_protocols | Standard edges of the whole: tools, agents, UI events, model API shape | compared | watch | Model Context Protocol servers (already wired) | AG-UI; Agent2Agent (A2A) protocol; Open Responses | 3 | 0 | 2026-10-30 |
 
-### Mind (`reason-and-answer`)
+### Mind (`the-mind`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -38,7 +38,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | prompt_cache | Reusing prompt prefixes to cut cost and time | compared | keep | QAR stable render order | Anthropic prompt caching; LMCache | 3 | 0 | 2026-10-30 |
 | model_quality | Knowing how well each model does hard exact-answer maths, to choose a model per tier | compared | keep | none | GPT-5-nano; GPT-5-mini; Gemini 2.5 Flash; DeepSeek-v3.2 (Think); Claude-Sonnet-4.5 (Think) | 5 | 6 | 2026-10-31 |
 
-### Subconscious (`remember-and-recall`)
+### Subconscious (`the-subconscious`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -63,7 +63,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 3 | 0 | 2026-10-30 |
 | response_quality | Judging a response against the quality profile of the person and situation, with a researched default | compared | watch | Evidence check (links held to their evidence) | RAGAS; MT-Bench LLM-as-a-judge; G-Eval; Prometheus 2; HELM; FActScore; Anthropic HHH criteria; Chatbot Arena | 8 | 0 | 2026-11-04 |
 
-### Nervous System (`watch-for-risk`)
+### Nervous System (`nervous-system`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -73,7 +73,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | run_supervision | Watching a run and sending at most one small signal | compared | keep | hubofhubs/risk.py (297 lines) engine plus core/overseer.py and orchestrator_oversee.py (425 lines), five signals | Claude Code auto mode classifier; LlamaFirewall AlignmentCheck; Patronus Percival | 4 | 5 | 2026-10-30 |
 | secrets_hygiene | Keeping secrets and real identifiers out of public code | compared | coexist | esoi.hygiene scanner in the esoi library, 35-case keep_secrets_out set | Gitleaks | 1 | 0 | 2026-10-30 |
 
-### World (`take-in-the-world`)
+### World (`the-world`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -85,7 +85,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | vendor_mcp | First-party hosted MCP servers of the apps SD already uses | compared | coexist | none | Google Workspace MCP servers; Notion hosted MCP server; makenotion notion-mcp-server | 3 | 0 | 2026-10-30 |
 | inbound_events | Being told when something happens in an app instead of polling | compared | watch | none | Nango webhooks; Composio triggers; Pipedream triggers; Claude Code channels; MCP Tasks extension; Svix | 6 | 0 | 2026-10-30 |
 
-### Science (`know-the-world`)
+### Science (`the-science`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -100,7 +100,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | science_graph | Representing papers, constructs and theories as a graph | compared | adopt | none | SemOpenAlex; ORKG; Microsoft GraphRAG; LightRAG; Graphiti; Cognee; rdflib and pySHACL | 7 | 0 | 2026-10-30 |
 | science_estimate_truth | Estimating how likely a hypothesis is to hold | compared | keep | none | BrainBench; Co-Scientist tournament pattern; automated multi-model review of AI scientists | 3 | 0 | 2026-10-30 |
 
-### File Editing (`edit-files`)
+### File Editing (`file-editing`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
@@ -135,7 +135,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | agent_bench | Choosing a harness by measured results | compared | keep | none | SWE-bench Verified bash-only (Vals); Terminal-Bench 2.0; Aider polyglot; SWE-bench Pro; Holistic Agent Leaderboard | 6 | 7 | 2026-10-30 |
 | science_run_analysis | Designing and running analyses on data with code | compared | adopt | none | K-Dense Scientific Agent Skills; ToolUniverse; Biomni; Edison Analysis; AstaBench and Asta agents; ScienceAgentBench; Jupyter AI; E2B code interpreter | 9 | 0 | 2026-10-30 |
 
-### Learning (`stay-current`)
+### Learning (`the-learning`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|

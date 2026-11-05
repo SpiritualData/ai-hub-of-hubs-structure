@@ -8,7 +8,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from hubofhubs import AssemblyConfig, AssemblyError, assemble, choice, names, register, resolve  # noqa: E402
 
-SEAT = "choose-a-model-tier"
+SEAT = "model-tier-chooser"
 
 
 def test_replacing_or_shadowing_a_hub_declared_name_raises():
@@ -37,14 +37,13 @@ def test_the_hub_default_builds_without_a_consumer():
 def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
     system = assemble(environ={})
     built = set(system.solutions())
-    assert {"call-a-model", "card-store", "cards-from-files", "choose-a-model-tier", "context-assembler", "model-call", "read-registry-freshness",
-            "reason-and-answer", "remember-and-recall", "think-critically"} <= built
+    assert {"vendor-model-caller", "card-store", "cards-from-files", "model-tier-chooser", "model-plumbing", "research-freshness-reader",
+            "the-mind", "the-subconscious", "critical-thinking"} <= built
     assert built.isdisjoint(system.pending)
     assert all(line.startswith(seat + ":") or line.startswith(seat + " (") for seat, line in system.pending.items())
-    assert "GEMINI_API_KEY" in system.pending["search-backend"] and "HUBOFHUBS_WRITE_ROOT" in system.pending["edit-files"]
-    assert "context-assembler" not in system.pending     # the default context assembler has no corpus: it answers with an empty context
-    assert "call-a-model" not in system.pending and "model-call" not in system.pending     # the default call-a-model arm is claude -p on the subscription
-    assert "call-a-model (multi_provider)" in assemble(arms={"call-a-model": "multi_provider"}, environ={}).pending["call-a-model"]
+    assert "GEMINI_API_KEY" in system.pending["web-search"] and "HUBOFHUBS_WRITE_ROOT" in system.pending["file-editing"]
+    assert "vendor-model-caller" not in system.pending and "model-plumbing" not in system.pending     # the default vendor-model-caller arm is claude -p on the subscription
+    assert "vendor-model-caller (multi_provider)" in assemble(arms={"vendor-model-caller": "multi_provider"}, environ={}).pending["vendor-model-caller"]
 
 
 def test_assemble_overrides_name_only_what_differs():

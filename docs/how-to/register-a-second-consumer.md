@@ -47,7 +47,7 @@ What to know:
 
 - A seat is a Protocol in `hubofhubs.seats`; an arm's constructor parameters typed with a seat are its needs, and
   `assemble` builds them first. A cycle or an unmet need stops startup and names the chain.
-- `provided={"model-call": my_model}` hands the hub an object you already have; it wins for that seat. `model-call` is an external seat: you always provide it. `search-backend` is external too, but the hub ships arms for it
+- `provided={"model-plumbing": my_model}` hands the hub an object you already have; it wins for that seat. `web-search` is external too, but the hub ships arms for it
   (`searxng`, `serper`, `brave`, `tavily`, `gemini`, `provider`; extras `web`, `gemini`); none is selected by default, so name one or provide your own.
 - A name is lower-case letters, digits, `_` and `-`. A value with `:` or `.` is refused before anything is imported.
 - Only the entry functions (`assemble`, `run`, `stream`, `needs`) read the process environment, and only when you give no `environ`. Settings (`options`, `selections`, `selection_environ`) are fields of `AssemblyConfig`.
@@ -63,7 +63,7 @@ By path or git: `pip install -e ../ai-hub-of-hubs-structure`, or `pip install "h
 import hubofhubs
 answer = hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")   # one input in, one Result out; the best-measured implementation of every part
 system = hubofhubs.assemble()                                 # every seat with a selected arm; system.pending says what the rest need
-system = hubofhubs.assemble(arms={"call-a-model": "anthropic"}, options={"card-store": {"path": "cards.db"}}, lock="esoi.lock.json")   # only what differs
+system = hubofhubs.assemble(arms={"vendor-model-caller": "anthropic"}, options={"card-store": {"path": "cards.db"}}, lock="esoi.lock.json")   # only what differs
 ```
 
 `run(id, input, **overrides)` is the single entry point (the `ahohs run` command wraps it). The id is a solution id or `hub-of-hubs` for the whole hub, which
@@ -71,17 +71,17 @@ answers from the live web and returns a `Result` whose items are its sources. `h
 Keywords override only what differs: `arms=`, `options=`, `provided=`, `lock=`, `environ=`. `hubofhubs.needs(id)` lists what your setup still lacks, and a call that cannot run
 raises `esoi.entry.Pending` with those lines.
 
- whose selected arm needs nothing more from you. Today that is `call-a-model`, `card-store`, `choose-a-model-tier`, `model-call`,
-`read-registry-freshness`, and `watch-for-risk`; the other seats are in `system.pending`, one line each saying what to pass:
+ whose selected arm needs nothing more from you. Today that is `vendor-model-caller`, `card-store`, `model-tier-chooser`, `model-call`,
+`research-freshness-reader`, and `nervous-system`; the other seats are in `system.pending`, one line each saying what to pass:
 `arms={seat: <arm>}` where no arm is selected yet (several arms await the measurement of their seat), `options={seat: {argument: ...}}`,
 `provided={seat: <your object>}`, or the variable to set (`set ANTHROPIC_API_KEY (option 'api_key')`).
 
 `environ` defaults to your process environment; pass a mapping to replace it (tests, sandboxes). An arm declares as data which of its options come from
 which variable (`ENVIRON = {"api_key": "ANTHROPIC_API_KEY"}` on the arm), `options` always win over it, and the reason line names
-the variables used, never their values. `model-call` has the arm `via_call_a_model`, selected by its metric: it asks whichever
-`call-a-model` arm you choose, so `arms={"call-a-model": "anthropic"}` plus `ANTHROPIC_API_KEY` in `environ` gives both.
+the variables used, never their values. `model-plumbing` has the arm `via_vendor`, selected by its metric: it asks whichever
+`vendor-model-caller` arm you choose, so `arms={"vendor-model-caller": "anthropic"}` plus `ANTHROPIC_API_KEY` in `environ` gives both.
 
-`call-a-model` defaults to `claude_cli`: it runs `claude -p` (Claude Code) on your subscription login, with no API key, and needs only
-the `claude` executable on PATH. It also looks in `~/.local/bin/claude` and `~/.claude/local/claude` when PATH has none. When the `environment` the provider is given sets `ESOI_OFFLINE=1`, it raises `OfflineRefusal` (naming the variable) before it resolves any binary or starts any process, `claude --help` included; the provider reads no process environment, so a consumer that builds it with no `environment` relies on esoi's harness, which blocks the process itself in an offline run. Every other vendor stays selectable with one argument: `hubofhubs.assemble(arms={"call-a-model": "gemini"})`
-(or `anthropic`, `openai`, `deepseek`), and `arms={"call-a-model": "multi_provider"}` with `options={"call-a-model": {"primary": ...}}` routes
+`vendor-model-caller` defaults to `claude_cli`: it runs `claude -p` (Claude Code) on your subscription login, with no API key, and needs only
+the `claude` executable on PATH. It also looks in `~/.local/bin/claude` and `~/.claude/local/claude` when PATH has none. When the `environment` the provider is given sets `ESOI_OFFLINE=1`, it raises `OfflineRefusal` (naming the variable) before it resolves any binary or starts any process, `claude --help` included; the provider reads no process environment, so a consumer that builds it with no `environment` relies on esoi's harness, which blocks the process itself in an offline run. Every other vendor stays selectable with one argument: `hubofhubs.assemble(arms={"vendor-model-caller": "gemini"})`
+(or `anthropic`, `openai`, `deepseek`), and `arms={"vendor-model-caller": "multi_provider"}` with `options={"vendor-model-caller": {"primary": ...}}` routes
 among several. A consumer's own default (a `Binding` selection) sits between the hub's and a per-call `arms=`.

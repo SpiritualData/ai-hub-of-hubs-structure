@@ -1,11 +1,10 @@
-"""A context assembler that reads a folder's files through the ``retrieve-context`` seat: the units that answer the task, within a token budget."""
+"""A context assembler that reads a folder's files through the ``context-retriever`` seat: the units that answer the task, within a token budget."""
 from __future__ import annotations
 
 import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from esoi import implementation
 
 from ..ports.context import AssembledContext
 from ..seats import ContextRetrieval
@@ -31,11 +30,10 @@ def read_files(root: str) -> Dict[str, str]:
     return found
 
 
-@implementation("context-assembler", "file_retrieval")
 class FileRetrievalAssembler:
-    """Assembles the context for a task from the files under ``root``, picked by whichever ``retrieve-context`` arm the hub selected. It
+    """Assembles the context for a task from the files under ``root``, picked by whichever ``context-retriever`` arm the hub selected. It
     renders each returned unit under its file and first line, and returns an empty view when the arm judges the task needs no context."""
-    REQUIRES = ()     # the retrieve-context seat supplies the ranking; this reads the folder
+    REQUIRES = ()     # the context-retriever seat supplies the ranking; this reads the folder
 
     def __init__(self, retriever: ContextRetrieval, root: str = "", budget_tokens: int = 4000) -> None:
         self.retriever, self.root, self.budget_tokens = retriever, root, budget_tokens

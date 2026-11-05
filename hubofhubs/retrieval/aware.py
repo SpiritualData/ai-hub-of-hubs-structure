@@ -90,31 +90,31 @@ class AwareHybrid(AbstainingHybrid):
         return within_budget(self.corpus, self.reranked(query), budget_tokens)
 
 
-@implementation("retrieve-context", "abstaining_recency")
+@implementation("context-retriever", "abstaining_recency")
 class AbstainingRecency(AwareHybrid):
     """The abstaining hybrid with a recency factor: an item loses up to a fifth of its score by its age relative to the request (half-life 180 days)."""
     recency = True
 
 
-@implementation("retrieve-context", "abstaining_affinity")
+@implementation("context-retriever", "abstaining_affinity")
 class AbstainingAffinity(AwareHybrid):
     """The abstaining hybrid with soft affinity: an item at home in the request's focus times 1.3, an item from elsewhere times 0.8, never hidden."""
     home = True
 
 
-@implementation("retrieve-context", "abstaining_aware")
+@implementation("context-retriever", "abstaining_aware")
 class AbstainingAware(AwareHybrid):
     """Recency, soft affinity and supersession together: of two near-identical items the older one is halved."""
     recency = home = supersede = True
 
 
-@implementation("retrieve-context", "abstaining_fenced")
+@implementation("context-retriever", "abstaining_fenced")
 class AbstainingFenced(AwareHybrid):
     """The hard-fence comparison: items outside the request's focus are removed from the candidates, as a scope fence would."""
     fence = True
 
 
-@implementation("retrieve-context", "live_scan")
+@implementation("context-retriever", "live_scan")
 class LiveScan(Retriever):
     """The diagnostic bound for source access: no index, every request reads every source (one call and one record each) and ranks whole files
     by how often the request's terms occur. It shows what reading live costs; it is accurate only as far as counting words is."""

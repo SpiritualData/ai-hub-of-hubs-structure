@@ -1,8 +1,8 @@
 """The composition arms of the areas that have callers: each takes the seats it uses as typed constructor parameters (the esoi
 Assembler injects them) and offers the one operation a caller of the whole area wants.
 
-``take-in-the-world`` (search and papers through the tools, the model through Model Plumbing, research freshness through Learning),
-``model-plumbing`` (a model at a measured tier), ``stay-current`` (stale research) and ``keep-it-generic`` (an audit that reads Learning and
+``the-world`` (search and papers through the tools, the model through Model Plumbing, research freshness through Learning),
+``model-plumbing`` (a model at a measured tier), ``the-learning`` (stale research) and ``system-integrity`` (an audit that reads Learning and
 the share of connections that need no code, a metric of Tools). Standard library plus the hub and ``esoi``; nothing here reads the environment."""
 from datetime import date
 from pathlib import Path
@@ -14,10 +14,10 @@ from esoi.assemble import Lazy
 from . import registry, scan
 from .measure import metrics as connection_metrics
 from .oneline import hit_items
-from .seats import FreshnessReading, ModelCall, ModelPlumbing, Staying, Tooling, TierSelection, WorldKnowing
+from .seats import FreshnessReading, ModelPlumbing, Staying, Tooling, TierSelection, WorldKnowing
 
 
-@implementation("take-in-the-world", "composition")
+@implementation("the-world", "composition")
 class WorldComposition:
     """The outside world for a query: the answer and sources of Web Search, reached through Tools, and with ``scholarly=True`` the papers of
     Science as well (built on first use, so a plain search never asks for it). The same arm reaches the model through Model Plumbing (``ask``) and
@@ -28,7 +28,7 @@ class WorldComposition:
         self.tools, self.papers, self.plumbing, self.learning = tools, papers, plumbing, learning
 
     def take_in(self, query: str, scholarly: bool = False) -> Mapping[str, Any]:
-        response = self.tools.use("search-backend", query)
+        response = self.tools.use("web-search", query)
         items = hit_items(response.hits)
         answer = response.answer or "\n".join(f"{i.get('title', '')}: {i.get('snippet', '')}".strip(": ") for i in items)
         if scholarly:
@@ -43,22 +43,7 @@ class WorldComposition:
         return self.learning.stale_areas(today)
 
 
-@implementation("model-plumbing", "composition")
-class ModelCalls:
-    """A prompt asked of the model the tier chooser measured best for the tier; a name the chooser does not list is passed on as the model name
-    itself. The chooser is built on first use, so a prompt with no tier never asks for it."""
-    REQUIRES = ()     # the seats it is handed
-
-    def __init__(self, model: ModelCall, chooser: Lazy[TierSelection]):
-        self.model = model
-        self.chooser = chooser
-
-    def ask(self, prompt: str, tier: str = "") -> str:
-        arm = (self.chooser.choose().get(tier) or {}).get("arm") if tier else None
-        return self.model.complete(prompt, arm[1] if arm else tier)
-
-
-@implementation("stay-current", "registry_research")
+@implementation("the-learning", "registry_research")
 class RegistryResearch:
     """The areas whose last research is older than the registry's ninety day bar, read through the freshness seat."""
     REQUIRES = ()     # the seat it is handed
@@ -82,7 +67,7 @@ def config_share(area: str = "") -> float:
     return float(connection_metrics({}, rows)["config_share"])
 
 
-@implementation("keep-it-generic", "prompts_as_data")
+@implementation("system-integrity", "prompts_as_data")
 class PromptsAsData:
     """An audit of the hub for consumer wording: the vendor-name branches in its own code for the terms given, beside how stale its
     research is and how much of it connects by configuration."""
@@ -95,3 +80,26 @@ class PromptsAsData:
         package = Path(__file__).resolve().parent
         branches = scan.scan_core({"hub": list(terms)}, package, package.parent)["hub"] if terms else []
         return {"vendor_branches": branches, "stale_areas": list(self.stay.stale_areas()), "config_share": config_share()}
+
+    def audit_run(self, run: Mapping[str, Any]) -> Sequence[str]:
+        """What the run says about itself, checked against what it did (a finding per claim the record does not support): every step names a
+        status, a pending or skipped step says why, and an answer exists only when the Response Writer ran. Integrity audits what the system says
+        about itself and what it did; Response Quality judges answers to people."""
+        found: List[str] = []
+
+        def walk(rows: Sequence[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
+            flat: List[Mapping[str, Any]] = []
+            for row in rows:
+                flat.append(row)
+                flat += walk(row.get("steps") or ())
+            return flat
+
+        every = walk(run.get("steps") or ())
+        for row in every:
+            if row.get("status") not in ("done", "pending", "skipped"):
+                found.append(f"step {row.get('solution', '?')} has no status")
+            elif row["status"] != "done" and not row.get("reason"):
+                found.append(f"step {row.get('solution', '?')} is {row['status']} and does not say why")
+        if run.get("answer") and not any(r.get("solution") == "response-writer" and r.get("status") == "done" for r in every):
+            found.append("an answer was given but the Response Writer did not run")
+        return found

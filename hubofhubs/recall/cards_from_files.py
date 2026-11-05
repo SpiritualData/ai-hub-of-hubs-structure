@@ -5,7 +5,7 @@ and ``files`` (each ``{"path", "symbols", "sha256"}``). A builder proposes cards
 ``changed`` names the cards whose files differ on disk from what the card recorded, so a consumer rebuilds only those.
 
 ``PerFileSymbols`` is the free floor: one card per file, described by the file's docstrings and symbols. ``LlmTopicCards`` groups
-files into topic cards with a model (the model is a constructor need, the ``call-a-model`` seat) and is a paid arm.
+files into topic cards with a model (the model is a constructor need, the ``vendor-model-caller`` seat) and is a paid arm.
 
 Two free arms use the persisted paid build (``cards_dataset``): ``TopicCardsReplay`` returns its cards as they were recorded, and
 ``FilePlusTopicCards`` adds them to the one-card-per-file floor. Neither calls a model.
@@ -108,7 +108,7 @@ class LlmTopicCards:
     """Model-written topic cards: the files are cut into chunks, a model names the areas of each chunk, then writes topic cards for
     each area from a sample of its files; cards that cover mostly the same files are merged into one.
 
-    The model is a constructor need typed with the call-a-model seat (``hubofhubs.seats.ModelCalling``); every build spends calls.
+    The model is a constructor need typed with the vendor-model-caller seat (``hubofhubs.seats.ModelCalling``); every build spends calls.
 
     With ``saved_build`` the arm returns the cards of the one persisted build (``datasets/replays``) instead of building, when the
     corpus pin matches, and ``charged()`` gives the cost that build had, which the scoring run charges to itself. No model is called."""

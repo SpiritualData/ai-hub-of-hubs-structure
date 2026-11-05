@@ -29,7 +29,7 @@ print(sorted(system.pending))
 
 `assemble()` builds every seat whose selected arm needs nothing more from you and leaves the others in `system.pending`, one
 line each saying what to pass. `assemble()` takes no required argument and reads your process environment for keys; pass
-`environ={...}` to replace it (tests and sandboxes). The seats printed are the ones still waiting for you, for example `search-backend` (a key such as `GEMINI_API_KEY`) and `edit-files` (a folder it may write in, `HUBOFHUBS_WRITE_ROOT`). `call-a-model` is already built: its default arm is `claude_cli`, which runs `claude -p` on your Claude Code subscription and needs no key.
+`environ={...}` to replace it (tests and sandboxes). The seats printed are the ones still waiting for you, for example `web-search` (a key such as `GEMINI_API_KEY`) and `file-editing` (a folder it may write in, `HUBOFHUBS_WRITE_ROOT`). `vendor-model-caller` is already built: its default arm is `claude_cli`, which runs `claude -p` on your Claude Code subscription and needs no key.
 
 ## 3. Use the first seat
 
@@ -64,16 +64,16 @@ declarations.
 
 ```python
 print(hubofhubs.run("card-store", "one arm", provided={"card-store": store}))
-print(hubofhubs.needs("search-backend", environ={}))
+print(hubofhubs.needs("web-search", environ={}))
 ```
 
 `hubofhubs.run(id, input)` is the one function for a script, a terminal and a recorded replay. The id is a solution id such as
-`card-store`, `search-backend` or `remember-and-recall`, or `hub-of-hubs` for the whole hub, which answers from the live web through the
-selected `search-backend` arm and returns a `Result` (`str(result)` is the answer; it also carries items with sources, a trace, the
+`card-store`, `web-search` or `the-subconscious`, or `hub-of-hubs` for the whole hub, which answers from the live web through the
+selected `web-search` arm and returns a `Result` (`str(result)` is the answer; it also carries items with sources, a trace, the
 arms used, a note and `events`). A call that cannot run yet raises `esoi.entry.Pending` whose message names the key or install. A live
 run on 2026-11-01 of `hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")` answered "The latest stable release of Rust is
 version 1.99.1", citing https://blog.rust-lang.org/releases/latest/ and https://releases.rs/. The first line above prints the card found;
-the second prints what `search-backend` still needs: the line names `GEMINI_API_KEY` with the signup link.
+the second prints what `web-search` still needs: the line names `GEMINI_API_KEY` with the signup link.
 
 
 

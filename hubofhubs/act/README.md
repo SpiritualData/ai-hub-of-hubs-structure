@@ -5,7 +5,8 @@
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
 | One-call MCP write | `connected-system-operations:mcp_operations` | [`hubofhubs/act/mcp_operations.py`](mcp_operations.py) |  |
-| One-call file edit | `edit-files:fast_edit` | [`hubofhubs/act/fast_edit.py`](fast_edit.py) | selected |
+| One-call file edit | `file-editing:fast_edit` | [`hubofhubs/act/fast_edit.py`](fast_edit.py) | selected |
+| Folder reader | `read-files:folder_reader` | [`hubofhubs/act/read_files.py`](read_files.py) | selected |
 
 ## Where to go next
 

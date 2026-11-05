@@ -36,7 +36,7 @@ def is_failover_error(exc: Exception) -> bool:
     return is_quota_or_rate_limit_error(exc) or outage.is_billing_error(exc) or outage.is_outage(exc) or outage.is_timeout(exc)
 
 
-@implementation("call-a-model", "multi_provider")
+@implementation("vendor-model-caller", "multi_provider")
 class MultiProvider(ModelProvider):
     REQUIRES = ()     # routes among the providers it is handed; nothing of its own
     # Per usage scope (ThreadLocalCounter): this instance is shared by tasks that run concurrently, and a turn resets and reads

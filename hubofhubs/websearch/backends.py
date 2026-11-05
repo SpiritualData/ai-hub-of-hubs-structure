@@ -1,4 +1,4 @@
-"""backends -- pluggable SERP backends behind one small search-backend contract (``search(query, max_results=) -> SearchResponse``).
+"""backends -- pluggable SERP backends behind one small web-search contract (``search(query, max_results=) -> SearchResponse``).
 
 Why several backends instead of one: dedicated SERP APIs (Serper, Brave, Tavily, a self-hosted
 SearXNG) return real title+url+snippet results in well under a second and are cheap at volume;
@@ -170,17 +170,17 @@ def backend_class_for(spec: Dict[str, Any]) -> type:
     return type(f"{spec['name'].title()}Backend", (ConfiguredJsonBackend,), {"spec": spec})
 
 
-@implementation("search-backend", "serper")
+@implementation("web-search", "serper")
 class SerperBackend(ConfiguredJsonBackend):
     spec = next(x for x in SPECS if x["name"] == "serper")
 
 
-@implementation("search-backend", "brave")
+@implementation("web-search", "brave")
 class BraveBackend(ConfiguredJsonBackend):
     spec = next(x for x in SPECS if x["name"] == "brave")
 
 
-@implementation("search-backend", "tavily")
+@implementation("web-search", "tavily")
 class TavilyBackend(ConfiguredJsonBackend):
     spec = next(x for x in SPECS if x["name"] == "tavily")
 
@@ -214,7 +214,7 @@ def load_file_specs(path: str) -> Dict[str, type]:
 # ---------------------------------------------------------------------------
 
 
-@implementation("search-backend", "searxng")
+@implementation("web-search", "searxng")
 class SearxngBackend:
     """A self-hosted SearXNG instance. ``instruction`` is accepted and ignored (not model-backed)."""
     REQUIRES = (needs.SEARXNG_NETWORK, needs.SEARXNG_URL, needs.SEARXNG_SERVICE, needs.HTTPX)
@@ -262,7 +262,7 @@ def provider_hit(row: Dict[str, Any]) -> SearchHit:
                      date=row.get("date", "") or "", passages=passages, passage_kind=kind)
 
 
-@implementation("search-backend", "provider")
+@implementation("web-search", "provider")
 class ProviderNativeBackend:
     """Wraps any ``ModelProvider`` exposing ``web_search(query, model=, max_results=)``.
 
@@ -371,10 +371,10 @@ class SelectionKeys:
 
 
 def hub_resolver(name: str) -> Any:
-    """The default way a name becomes a backend class: the hub's own resolution for the ``search-backend`` seat. Raises
+    """The default way a name becomes a backend class: the hub's own resolution for the ``web-search`` seat. Raises
     ``ValueError`` (``AssemblyError``) for an unknown name."""
     from ..resolution import resolve
-    return resolve("search-backend", name)
+    return resolve("web-search", name)
 
 
 def select_search_backend(

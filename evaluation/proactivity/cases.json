@@ -1,0 +1,326 @@
+[
+ {
+  "id": "proactive-never-run",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "weekly",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-weekly-same-week",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "weekly",
+     "last_run": "2026-07-10T09:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-weekly-later-week",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "weekly",
+     "last_run": "2026-07-01T09:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-daily-late-yesterday",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "daily",
+     "last_run": "2026-07-11T16:11:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-daily-already-today",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "daily",
+     "last_run": "2026-07-12T08:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-monthly-last-month",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "monthly",
+     "last_run": "2026-06-20T09:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-monthly-this-month",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "monthly",
+     "last_run": "2026-07-01T09:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-monthly-year-boundary",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "monthly",
+     "last_run": "2025-12-31T09:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-01-01T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-weekly-year-boundary",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "weekly",
+     "last_run": "2025-12-29T09:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-01-05T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-unreadable-time-fails-open",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "weekly",
+     "last_run": "not-a-date",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-evening-run-in-its-own-zone",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "daily",
+     "zone": "America/Los_Angeles",
+     "last_run": "2026-08-21T05:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-08-21T20:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-run-requested-after-last-run",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "daily",
+     "last_run": "2026-07-12T08:00:00Z",
+     "run_requested_at": "2026-07-12T08:55:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-run-requested-before-last-run",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "cadence": "daily",
+     "last_run": "2026-07-12T08:00:00Z",
+     "run_requested_at": "2026-07-12T07:00:00Z",
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-reactive-event-after-last-run",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "reactive": true,
+     "last_run": "2026-07-01T00:00:00Z",
+     "events": [
+      "2026-07-05T00:00:00Z"
+     ],
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-reactive-event-before-last-run",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "reactive": true,
+     "last_run": "2026-07-01T00:00:00Z",
+     "events": [
+      "2026-06-20T00:00:00Z"
+     ],
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-reactive-never-run-with-event",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "reactive": true,
+     "events": [
+      "2026-01-01T00:00:00Z"
+     ],
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": [
+   "s"
+  ]
+ },
+ {
+  "id": "proactive-reactive-never-run-no-event",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "reactive": true,
+     "events": [],
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ },
+ {
+  "id": "proactive-reactive-unreadable-events-ignored",
+  "kind": "schedule",
+  "args": {
+   "schedules": [
+    {
+     "reactive": true,
+     "last_run": "2026-07-01T00:00:00Z",
+     "events": [
+      null,
+      "not a date"
+     ],
+     "name": "s",
+     "request": "do the standing work"
+    }
+   ],
+   "now": "2026-07-12T09:00:00Z"
+  },
+  "expect": []
+ }
+]

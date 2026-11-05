@@ -140,9 +140,9 @@ def combine(facts, connections, seats=None):
     return out
 
 
-@implementation("read-registry-freshness", "registry_scan")
+@implementation("research-freshness-reader", "registry_scan")
 class RegistryScan:
-    """The registry freshness reading as one registered implementation of the read-registry-freshness solution."""
+    """The registry freshness reading as one registered implementation of the research-freshness-reader solution."""
     REQUIRES = ()     # pure functions over the registry files
     days_since = staticmethod(days_since)
     combine = staticmethod(combine)

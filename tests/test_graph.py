@@ -54,17 +54,17 @@ def test_uses_solution_ids_equals_the_constructor_parameters_and_the_graph_is_so
 
 def test_external_seats_are_consumer_provided_and_have_no_default():
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    # search-backend and call-a-model are external systems, but a metric selected a default arm for each (it still needs a key or an option)
-    assert "external" in registry.split(by["search-backend"]["tags"]) and by["search-backend"]["selected"] == "gemini"
-    # model-call is external but the hub ships an arm over call-a-model, which is the consumer-provided seat it needs
-    assert "external" in registry.split(by["model-call"]["tags"]) and by["model-call"]["selected"] == "via_call_a_model"
-    assert "external" in registry.split(by["call-a-model"]["tags"]) and by["call-a-model"]["selected"] == "claude_cli"
+    # web-search and vendor-model-caller are external systems, but a metric selected a default arm for each (it still needs a key or an option)
+    assert "external" in registry.split(by["web-search"]["tags"]) and by["web-search"]["selected"] == "gemini"
+    # model-plumbing: the hub ships an arm over vendor-model-caller, which is the consumer-provided seat it needs
+    assert by["model-plumbing"]["selected"] == "via_vendor"
+    assert "external" in registry.split(by["vendor-model-caller"]["tags"]) and by["vendor-model-caller"]["selected"] == "claude_cli"
 
 
 def test_the_default_install_builds_every_seat_that_has_a_default_arm():
-    system = assemble(AssemblyConfig(solutions=("card-store", "choose-a-model-tier", "read-registry-freshness")))
-    assert system.solutions() == ["card-store", "choose-a-model-tier", "read-registry-freshness"]
-    with pytest.raises((AssemblyError, ValueError), match="search-backend|know-the-world|context-assembler|edit-files|root="):
+    system = assemble(AssemblyConfig(solutions=("card-store", "model-tier-chooser", "research-freshness-reader")))
+    assert system.solutions() == ["card-store", "model-tier-chooser", "research-freshness-reader"]
+    with pytest.raises((AssemblyError, ValueError), match="web-search|the-science|context-assembler|file-editing|root="):
         assemble(AssemblyConfig())      # the strict form refuses a selected arm whose need is unmet
     assert isinstance(system["card-store"], LocalCardStore)
 
@@ -86,10 +86,10 @@ def test_a_consumer_provided_card_store_wins():
 
 
 def test_external_seats_fail_at_startup_unless_provided():
-    assert type(assemble(AssemblyConfig(solutions=("call-a-model",)))["call-a-model"]).__name__ == "ClaudeCliProvider"   # the default arm needs only the claude executable
-    with pytest.raises(AssemblyError, match="call-a-model .multi_provider. needs option"):
-        assemble(AssemblyConfig(solutions=("call-a-model",), selections={"call-a-model": "multi_provider"}))
-    assert "gemini" in assemble(AssemblyConfig(solutions=("search-backend",))).reasons[0]   # a default arm is built lazily; its key is read when it searches
+    assert type(assemble(AssemblyConfig(solutions=("vendor-model-caller",)))["vendor-model-caller"]).__name__ == "ClaudeCliProvider"   # the default arm needs only the claude executable
+    with pytest.raises(AssemblyError, match="vendor-model-caller .multi_provider. needs option"):
+        assemble(AssemblyConfig(solutions=("vendor-model-caller",), selections={"vendor-model-caller": "multi_provider"}))
+    assert "gemini" in assemble(AssemblyConfig(solutions=("web-search",))).reasons[0]   # a default arm is built lazily; its key is read when it searches
 
 
 def test_sync_uses_check_passes_on_the_repository():
@@ -110,11 +110,11 @@ def test_know_the_world_is_a_seat_whose_arm_needs_a_search_backend():
             return SearchResponse(hits=[SearchHit(title="A page", url="https://example.com/a", snippet="a fact", date="")])
 
     by = {s["solution_id"]: s for s in SOLUTIONS}
-    assert by["know-the-world"]["selected"] in {"web_research", "openalex_semantic"} and {"web_research", "openalex"} <= set(by["know-the-world"]["implementations"].split(";"))
-    config = AssemblyConfig(solutions=("know-the-world",), selections={"know-the-world": "web_research"})
-    system = assemble(config, provided={"search-backend": Backend()})
-    arm = system["know-the-world"]
+    assert by["the-science"]["selected"] in {"web_research", "openalex_semantic"} and {"web_research", "openalex"} <= set(by["the-science"]["implementations"].split(";"))
+    config = AssemblyConfig(solutions=("the-science",), selections={"the-science": "web_research"})
+    system = assemble(config, provided={"web-search": Backend()})
+    arm = system["the-science"]
     assert isinstance(arm, seats.WorldKnowing) and arm.describe() == "web search via toy"
     observation = arm.search("a question")
     assert observation.kind != "error" and "https://example.com/a" in observation.text
-    assert "gemini" in assemble(config)["know-the-world"].describe()   # with none provided the need falls to the hub's selected search arm
+    assert "gemini" in assemble(config)["the-science"].describe()   # with none provided the need falls to the hub's selected search arm

@@ -54,7 +54,7 @@ def load_model(name: str):
         return TextEmbedding(model_name=name, threads=THREADS)
 
 
-@implementation("retrieve-context", "dense_bge_small")
+@implementation("context-retriever", "dense_bge_small")
 class DenseBgeSmall(Retriever):
     """Cosine over bge-small vectors of the chunks' first 900 characters (title line first), the model run locally through fastembed."""
     REQUIRES = (needs.FASTEMBED_LOCAL, needs.FASTEMBED_MODEL, needs.NUMPY)
@@ -97,7 +97,7 @@ class DenseBgeSmall(Retriever):
         return int(self.matrix.nbytes)
 
 
-@implementation("retrieve-context", "lsi")
+@implementation("context-retriever", "lsi")
 class LatentSemantic(Retriever):
     """TF-IDF over chunk text projected to 128 latent dimensions by a truncated SVD (LSI), cosine in the latent space: free, no model."""
     REQUIRES = (needs.SKLEARN,)

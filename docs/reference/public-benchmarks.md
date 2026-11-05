@@ -32,22 +32,22 @@ honest result of this survey.
 
 | Seat | Worth using | Prior only or not useful |
 |---|---|---|
-| reason-and-answer | Artificial Analysis index as a sourced shortlist stage, gated by tier sanity cases | HELM (maintenance mode), GPQA, HLE, SimpleQA: exam or recall tests, no decision turns on them |
+| the-mind | Artificial Analysis index as a sourced shortlist stage, gated by tier sanity cases | HELM (maintenance mode), GPQA, HLE, SimpleQA: exam or recall tests, no decision turns on them |
 | model-call | Artificial Analysis price and speed columns, sourced with date | none |
-| call-a-model | none | Arena (style preference), LiveBench (nothing verified) |
-| assemble-the-whole | none | tau2-bench (vendor board, paid user simulator), GAIA (page unreadable) |
-| edit-files, delegated-agent-sessions, connected-system-operations | SWE-bench Pro rows for model shortlisting under one scaffold | Terminal-Bench (version moved to 4.0, 2.0 rows not mixable), Aider polyglot (eleven months old), METR (not updated), OSWorld (unread); SWE-bench Verified saturated, WebArena stale |
-| connect-any-integration | MCP-Atlas model pass rates, triangulated with BFCL | BFCL V4 (call format is the minority of failures), Toolathlon (no primary source) |
-| take-in-the-world | none | BrowseComp (vendor), DeepResearch Bench (changing paid judge), browser-agent vendor figures |
-| search-backend | none | single-source search accuracy table, one topic |
-| know-the-world | run the page-extraction benchmark in full (offline, no model); SciFact as a 20-pair sanity set | LAB-Bench and AstaBench (entrant is the operator), BrainBench, ScienceAgentBench; BixBench stale |
-| remember-and-recall | LongMemEval retrieval recall on a small random subset (no model) | LoCoMo not useful (ceiling and lenient judge, reported by a self-published audit); BEAM and DolphinBench vendor; MTEB and BEIR shortlist only |
-| context-assembler | none | RULER, context rot (threshold is per model and ours) |
+| vendor-model-caller | none | Arena (style preference), LiveBench (nothing verified) |
+| the-assembler | none | tau2-bench (vendor board, paid user simulator), GAIA (page unreadable) |
+| file-editing, delegated-agent-sessions, connected-system-operations | SWE-bench Pro rows for model shortlisting under one scaffold | Terminal-Bench (version moved to 4.0, 2.0 rows not mixable), Aider polyglot (eleven months old), METR (not updated), OSWorld (unread); SWE-bench Verified saturated, WebArena stale |
+| the-hands | MCP-Atlas model pass rates, triangulated with BFCL | BFCL V4 (call format is the minority of failures), Toolathlon (no primary source) |
+| the-world | none | BrowseComp (vendor), DeepResearch Bench (changing paid judge), browser-agent vendor figures |
+| web-search | none | single-source search accuracy table, one topic |
+| the-science | run the page-extraction benchmark in full (offline, no model); SciFact as a 20-pair sanity set | LAB-Bench and AstaBench (entrant is the operator), BrainBench, ScienceAgentBench; BixBench stale |
+| the-subconscious | LongMemEval retrieval recall on a small random subset (no model) | LoCoMo not useful (ceiling and lenient judge, reported by a self-published audit); BEAM and DolphinBench vendor; MTEB and BEIR shortlist only |
+| context-retriever | none | RULER, context rot (threshold is per model and ours) |
 | card-store | none | BEIR (generic lexical versus dense) |
-| think-critically | LLM-AggreFact subset scored by a CPU checker | Vectara board (vendor evaluator, private set), FACTS Grounding (unread), judge-reliability sets |
-| watch-for-risk | AgentDojo and InjecAgent strings as offline injection cases | garak and content-harm suites not useful (content, not irreversible actions); OWASP list as a checklist |
-| stay-current | Epoch hub rows (internal versus external, source cited) as the weekly feed | Papers with Code closed |
-| keep-it-generic | none | IFEval: the seat's rule is a scan of our own files |
+| critical-thinking | LLM-AggreFact subset scored by a CPU checker | Vectara board (vendor evaluator, private set), FACTS Grounding (unread), judge-reliability sets |
+| nervous-system | AgentDojo and InjecAgent strings as offline injection cases | garak and content-harm suites not useful (content, not irreversible actions); OWASP list as a checklist |
+| the-learning | Epoch hub rows (internal versus external, source cited) as the weekly feed | Papers with Code closed |
+| system-integrity | none | IFEval: the seat's rule is a scan of our own files |
 
 Costs are in the CSV `cost_to_run` column; where a page gave no price it says "not priced". No cost here is estimated.
 

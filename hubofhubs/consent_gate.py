@@ -1,4 +1,4 @@
-"""Two more arms of the watch-for-risk seat that read the step by rule: a consent gate with no model, and a gate-then-overseer pair.
+"""Two more arms of the nervous-system seat that read the step by rule: a consent gate with no model, and a gate-then-overseer pair.
 
 ``consent_gate`` reads two things in the run digest, the plan's ``action`` and the words of the step (its goal and rationale, and for
 an action that is not a plain read also the operations so far), and decides by rule, with no model call:
@@ -24,6 +24,7 @@ from typing import Any, Callable, FrozenSet, Optional, Pattern, Tuple
 from esoi import implementation
 
 from .risk import OverseerSignal, RunOverseer, build_digest
+from .signals import RiskSignal, to_risk_signal
 from . import arm_needs as needs
 
 FLAG, CLEAR, UNSURE = "flag", "clear", "unsure"
@@ -107,7 +108,7 @@ def judge(digest: str, rules: Optional[ConsentRules] = None) -> Tuple[str, str]:
         return UNSURE, "the digest could not be read"
 
 
-@implementation("watch-for-risk", "consent_gate")
+@implementation("nervous-system", "consent_gate")
 class ConsentGate:
     """Flags a step that pays, sends outward, deletes, publishes or uses a credential, by rule, with no model call. ``render`` is
     accepted so the gate is built the way every arm of the seat is, and is not used."""
@@ -126,11 +127,11 @@ class ConsentGate:
         verdict, reason = self.verdict(digest)
         return OverseerSignal("escalate_human", reason=reason) if verdict == FLAG else OverseerSignal("proceed", reason="")
 
-    def watch(self, digest: str, model: str = "") -> OverseerSignal:
-        return self.oversee(None, model, digest)
+    def watch(self, digest: str, model: str = "") -> RiskSignal:
+        return to_risk_signal(self.oversee(None, model, digest))
 
 
-@implementation("watch-for-risk", "two_stage")
+@implementation("nervous-system", "two_stage")
 class TwoStage:
     """The consent gate first; the model overseer only when the gate is unsure. A flagged step is ``escalate_human`` and a clear one
     is ``proceed``, both with no model call."""
@@ -140,8 +141,8 @@ class TwoStage:
         self.gate, self.overseer = ConsentGate(rules=rules), RunOverseer(render, provider=provider)
         self.provider = provider
 
-    def watch(self, digest: str, model: str = "") -> OverseerSignal:
-        return self.oversee(self.provider, model, digest)
+    def watch(self, digest: str, model: str = "") -> RiskSignal:
+        return to_risk_signal(self.oversee(self.provider, model, digest))
 
     def digest(self, **fields: Any) -> str:
         return build_digest(**fields)

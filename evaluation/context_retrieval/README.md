@@ -1,6 +1,6 @@
 # context_retrieval
 
-Which retrieval arm shows a task the context it needs and little else? One component, one number: the arms of the `retrieve-context` seat
+Which retrieval arm shows a task the context it needs and little else? One component, one number: the arms of the `context-retriever` seat
 (`hubofhubs/retrieval`) are compared on the same corpus, the same token budget and the same requests, and every arm competes (no arm is
 excluded by a mark; the weakest ones are diagnostic bounds that show what a method adds).
 
@@ -81,7 +81,7 @@ excluded by a mark; the weakest ones are diagnostic bounds that show what a meth
   hybrid), so on the broader mix `abstaining_hybrid` is beaten by `bm25_body`, `bm25_fielded`, `hybrid_rrf` and `feature_rerank` (esoi leaderboard);
   the recency, affinity and supersession arms move knowledge-update memory (0.80 to 0.83 for `abstaining_aware`) and `topic_open` by a few hundredths but
   lose elsewhere, the hard fence scores 0 on `grouping` where the soft arms keep their score, and `live_scan` gives up cases on the source limits.
-- **One number, no gates.** The stages of `metric-retrieve-context` compare arms on the balanced score alone. Risk (source calls, full scans, reads outside the scope) is a limit inside each case's score, the kinds count by the weights of `mix.MIX`, and the pins are checked by the case loaders.
+- **One number, no gates.** The stages of `metric-context-retriever` compare arms on the balanced score alone. Risk (source calls, full scans, reads outside the scope) is a limit inside each case's score, the kinds count by the weights of `mix.MIX`, and the pins are checked by the case loaders.
 - **Limits**: one benchmark of chat memory (English, one style, sessions as turns) and four Python repositories with commit-subject wording; the mix is set by value and a sample of real requests should calibrate it; file
   labels stand for relevance, so the right passage inside a needed file is not told from the rest; the cold embedding time is not in the seconds
   per request.

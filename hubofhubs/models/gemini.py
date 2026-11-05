@@ -35,7 +35,7 @@ def image_part(block: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     return {"inline_data": {"mime_type": source.get("media_type") or "image/png", "data": source["data"]}}
 
 
-@implementation("call-a-model", "gemini")
+@implementation("vendor-model-caller", "gemini")
 class GeminiProvider(ModelProviderBase):
     REQUIRES = (needs.GEMINI_NETWORK, needs.gemini_api("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"), needs.GOOGLE_GENAI)
 

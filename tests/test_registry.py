@@ -201,22 +201,22 @@ def test_one_row_per_seat_binds_every_area_that_seat_owns_and_the_rest_are_arm_g
     by_seat = {}
     for r in hubs:
         by_seat.setdefault(r["seat"], []).append(r["area"])
-    one_row = [dict(seat="reason-and-answer", areas="model_providers", seam_solution_id="seam-a", vendor_terms="acmevendor", code_paths="")]
+    one_row = [dict(seat="the-mind", areas="model_providers", seam_solution_id="seam-a", vendor_terms="acmevendor", code_paths="")]
     seat_consumer = Binding(consumer="quest-ai-runner", root=consumer.root, seats=one_row, core_dir=consumer.core_dir,
                             records_dir=consumer.records_dir, names_of=consumer.names_of, probes={"model_providers": lambda: (True, "ok")})
     facts, seat_facts, _, numbers = evaluate_seats(seat_consumer)
-    mine = seat_facts["reason-and-answer"]
+    mine = seat_facts["the-mind"]
     assert mine["seam"] and mine["selectable"] and mine["probe"] is not None and mine["vendor_branches"]
     assert mine["covered"] == ["model_providers"] and "structured_output" in mine["arm_gaps"], "an uncovered adopt area is an arm gap"
-    assert not seat_facts["know-the-world"]["seam"] and not seat_facts["know-the-world"]["bound"]
-    assert "reason-and-answer" not in numbers["unconnected_seats"] and "know-the-world" in numbers["unconnected_seats"]
+    assert not seat_facts["the-science"]["seam"] and not seat_facts["the-science"]["bound"]
+    assert "the-mind" not in numbers["unconnected_seats"] and "the-science" in numbers["unconnected_seats"]
     assert facts["structured_output"]["seam"] is False and facts["model_providers"]["seam"] is True, "per-area data stays in the facts"
     assert numbers["seam_share"] == pytest.approx(1 / numbers["seats_to_connect"])
     assert {a for a in numbers["arm_gaps"]} == {a for a, f in facts.items() if f["expected"] and not f["covered"]}
 
 
 def test_a_row_that_puts_an_area_under_the_wrong_seat_is_refused(consumer):
-    bad = Binding(consumer="quest-ai-runner", root=consumer.root, seats=[dict(seat="know-the-world", areas="model_providers")],
+    bad = Binding(consumer="quest-ai-runner", root=consumer.root, seats=[dict(seat="the-science", areas="model_providers")],
                   core_dir=consumer.core_dir, records_dir=consumer.records_dir, names_of=consumer.names_of)
     with pytest.raises(ValueError, match="belongs to seat"):
         evaluate(bad)
@@ -224,8 +224,8 @@ def test_a_row_that_puts_an_area_under_the_wrong_seat_is_refused(consumer):
 
 def test_a_seat_with_no_probe_is_unproven_and_probes_of_its_arms_must_all_hold(consumer):
     mixed = Binding(consumer="quest-ai-runner", root=consumer.root, core_dir=consumer.core_dir, records_dir=consumer.records_dir,
-                    names_of=consumer.names_of, seats=[dict(seat="take-in-the-world", areas="channels;integration_aggregators")],
+                    names_of=consumer.names_of, seats=[dict(seat="the-world", areas="channels;integration_aggregators")],
                     probes={"channels": lambda: (True, "a"), "integration_aggregators": lambda: (False, "b")})
     _, seat_facts, _, _ = evaluate_seats(mixed)
-    assert not check(seat_facts["take-in-the-world"], "fake_hub")["holds"]
+    assert not check(seat_facts["the-world"], "fake_hub")["holds"]
     assert not check(seat_facts["delegated-agent-sessions"], "fake_hub")["holds"]

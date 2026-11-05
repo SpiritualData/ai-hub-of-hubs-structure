@@ -1,6 +1,6 @@
 """The whole hub's answer: ``hubofhubs.run("hub-of-hubs", "what is the latest Rust release?")`` returns a ``Result``.
 
-``Result`` is what the composition arm of ``assemble-the-whole`` returns: the answer, the sources and remembered cards behind it
+``Result`` is what the composition arm of ``the-assembler`` returns: the answer, the sources and remembered cards behind it
 (``items``), the work trace, the arms that ran and the events in order, so a script, a terminal and a recorded replay all read the
 same value. ``needs`` lists what a setup still lacks for any id of the hub, the same lines ``run`` raises as ``Pending``. Keywords
 of ``run`` override only what differs: ``arms``, ``options``, ``provided``, ``lock``, ``environ`` (which defaults to the process

@@ -8,7 +8,7 @@ This sub-intent arises as the implementation `the-body:composition` of its paren
 
 ## How the solutions fit together
 
-Body is the form of the system and the context that belongs to it, and it lets anyone apply the hub to their own system by declaring where the data lives and which enduring integrations the AI may use. Internal Context declares where the system's data lives and which outside tool reads it, keeps what the system knows in Card Store, and proposes the cards a folder of files needs through Cards From Files. Hands makes sure that the system's own AI tool registry, LLM platform and guardrails are accessible to the AI and used by it.
+Body is the form of the system and the context that belongs to it, and it lets anyone apply the hub to their own system by declaring where the data lives, where requests come from and which enduring integrations the AI may use. Internal Context declares where the system's data lives, whether each source belongs to the system or to a person, and which outside tool reads it, keeps what the system knows in Card Store and keeps the run record. Intake Sources declares where the requests come from. Hands makes sure that the system's own AI tool registry, LLM platform and guardrails are accessible to the AI and used by it.
 
 ## Diagram
 
@@ -16,32 +16,29 @@ An arrow runs from the solution that provides to the solution that builds on it;
 
 ```mermaid
 flowchart LR
-    s0["Cards From Files<br/><i>cards-from-files</i>"]
-    s1["Card Store<br/><i>card-store</i>"]
-    s2["Internal Context<br/><i>internal-context</i>"]
-    s0 -->|"Cards in the card-store record shape (grouping, summary..."| s2
-    s1 -->|"The id of an added card, a card or nothing for an id, the..."| s2
+    s0["Card Store<br/><i>card-store</i>"]
+    s1["Internal Context<br/><i>internal-context</i>"]
+    s0 -->|"The id of an added card, a card or nothing for an id, the..."| s1
 ```
 
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Cards From Files | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Hands | `connect-any-integration` | `hubofhubs.run("connect-any-integration", '')` | none selected | Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user, Share of connections that need no code, Share of connections that need no code |
+| Hands | `the-hands` | `hubofhubs.run("the-hands", '')` | none selected | Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user, Share of connections that need no code, Share of connections that need no code |
 | Card Store | `card-store` | `hubofhubs.run("card-store", 'rust release')` | Local card store (`local_card_store`) | Cards found again, none lost |
 | Internal Context | `internal-context` | `hubofhubs.run("internal-context", 'rust release')` | Declared sources, cards kept and built from files (`composition`) | An internal source reaches the AI through one declaration |
+| Intake Sources | `intake-sources` | `hubofhubs.run("intake-sources", {'source': '', 'limit': 10})` | Folder of queued requests (`folder_queue`) | Requests read from a declared source, once |
 
 ## Problems and ideals
 
 **Problems**
 
-- Hubs go stale. (`HP3`)
-- Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it. (`HP7`)
-- One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest. (`hprob-one-integration-needs-several-hubs`)
-- A consumer whose knowledge lives in files has no cards for it until something writes them, and cards written once go stale as the files change. (`hprob-files-without-cards`)
-- A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system. (`hprob-system-context-not-declared`)
-- A system already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them. (`hprob-enduring-integrations-unused`)
+- Stale picks (`HP3`): Hubs go stale.
+- App connections rebuilt by every product (`HP7`): Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it.
+- One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest.
+- System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
+- Enduring integrations unused (`hprob-enduring-integrations-unused`): A system already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
 
 **Ideals**
 
@@ -61,8 +58,8 @@ flowchart LR
 - Integration credentials stay with their user (`metric-integration-credential-isolation`)
 - Cards found again, none lost (`metric-card-store`): leader `local_card_store`, 35 of 35 cases
 - Integration served by combined hubs (`metric-integration-served-by-combined-hubs`)
-- Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): leader `import_graph_topic_cards`, 112 of 252 cases
 - An internal source reaches the AI through one declaration (`metric-internal-context`)
+- Requests read from a declared source, once (`metric-intake-sources`)
 
 ## Where to go next
 
@@ -77,12 +74,11 @@ flowchart LR
 
 ### Problems
 
-- Hubs go stale. (`HP3`)
-- Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it. (`HP7`)
-- One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest. (`hprob-one-integration-needs-several-hubs`)
-- A consumer whose knowledge lives in files has no cards for it until something writes them, and cards written once go stale as the files change. (`hprob-files-without-cards`)
-- A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system. (`hprob-system-context-not-declared`)
-- A system already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them. (`hprob-enduring-integrations-unused`)
+- Stale picks (`HP3`): Hubs go stale.
+- App connections rebuilt by every product (`HP7`): Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it.
+- One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest.
+- System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
+- Enduring integrations unused (`hprob-enduring-integrations-unused`): A system already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
 
 ### Ideals
 
@@ -99,24 +95,18 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Cards From Files | `cards-from-files` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
-| Hands | `connect-any-integration` | none selected | Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user, Share of connections that need no code, Share of connections that need no code |
+| Hands | `the-hands` | none selected | Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user, Share of connections that need no code, Share of connections that need no code |
 | Card Store | `card-store` | Local card store (`local_card_store`) | Cards found again, none lost |
 | Internal Context | `internal-context` | Declared sources, cards kept and built from files (`composition`) | An internal source reaches the AI through one declaration |
+| Intake Sources | `intake-sources` | Folder of queued requests (`folder_queue`) | Requests read from a declared source, once |
 
 ### Implementations
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
 | Local card store | `card-store:local_card_store` | [hubofhubs/cardstore.py](../cardstore.py) |  |
-| Model-written topic cards | `cards-from-files:llm_topic_cards` | [hubofhubs/recall/cards_from_files.py](../recall/cards_from_files.py) |  |
-| One card per file | `cards-from-files:per_file_symbols` | [hubofhubs/recall/cards_from_files.py](../recall/cards_from_files.py) |  |
-| Graphify file groups | `cards-from-files:graphify_files` | [hubofhubs/recall/cards_from_graphify.py](../recall/cards_from_graphify.py) |  |
-| File plus topic cards | `cards-from-files:file_plus_topic_cards` | [hubofhubs/recall/cards_from_files.py](../recall/cards_from_files.py) |  |
-| Topic cards replay | `cards-from-files:topic_cards_replay` | [hubofhubs/recall/cards_from_files.py](../recall/cards_from_files.py) |  |
-| Cochange topic cards | `cards-from-files:cochange_topic_cards` | [hubofhubs/recall/cards_from_topics.py](../recall/cards_from_topics.py) |  |
-| Import graph topic cards | `cards-from-files:import_graph_topic_cards` | [hubofhubs/recall/cards_from_topics.py](../recall/cards_from_topics.py) |  |
 | Declared sources, cards kept and built from files | `internal-context:composition` | [hubofhubs/flows.py](../flows.py) |  |
+| Folder of queued requests | `intake-sources:folder_queue` | [hubofhubs/intake/queue.py](../intake/queue.py) |  |
 
 ### Metrics
 
@@ -125,5 +115,5 @@ flowchart LR
 - Integration credentials stay with their user (`metric-integration-credential-isolation`): `none`
 - Cards found again, none lost (`metric-card-store`): `esoi run card_store --impl local_card_store`
 - Integration served by combined hubs (`metric-integration-served-by-combined-hubs`): `none`
-- Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
 - An internal source reaches the AI through one declaration (`metric-internal-context`): `none`
+- Requests read from a declared source, once (`metric-intake-sources`): `python3 -m pytest tests/test_intake.py`

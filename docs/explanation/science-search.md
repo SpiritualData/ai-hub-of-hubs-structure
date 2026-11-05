@@ -1,11 +1,11 @@
-# Scholarly search: the OpenAlex arm of the know-the-world seat
+# Scholarly search: the OpenAlex arm of the the-science seat
 
 Status 2026-10-30: built and tested offline, **not selected** (no measurement yet), not measured against the baseline.
 Descriptive wording in the records stays the owner's; the implementation row reads "unconfirmed: for Joshua to confirm."
 
 ## What it is
 
-`hubofhubs.science.openalex.OpenAlexWorks` is an implementation of the `know-the-world` seat (`@implementation("know-the-world",
+`hubofhubs.science.openalex.OpenAlexWorks` is an implementation of the `the-science` seat (`@implementation("the-science",
 "openalex")`), beside `web_research`. It finds scholarly works and returns what a citation needs: title, authors, year, venue, DOI,
 citation count, an abstract rebuilt from OpenAlex's inverted index, and a landing link. `hubofhubs.science.crossref.lookup_doi`
 is a small helper that asks Crossref whether a DOI exists and what it is registered as. Port values (`Work`, `WorksResult`,

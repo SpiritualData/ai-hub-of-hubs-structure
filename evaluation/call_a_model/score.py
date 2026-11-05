@@ -1,4 +1,4 @@
-"""Scores a vendor arm of the call-a-model seat on grade-school maths word problems: quality per dollar at the vendor's cheapest current model.
+"""Scores a vendor arm of the vendor-model-caller seat on grade-school maths word problems: quality per dollar at the vendor's cheapest current model.
 
 Cases are a fixed-seed sample of the GSM8K test split (see README.md). The model is asked for the answer on a last line
 ``Final answer: <number>``; pass = that number equals the gold answer exactly. Tokens, thinking tokens included, are metered from the

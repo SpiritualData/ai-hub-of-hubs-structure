@@ -1,4 +1,4 @@
-"""Scores a reason-and-answer arm: the (provider, model) chosen for a tier from recorded measurements, prices and credits."""
+"""Scores a the-mind arm: the (provider, model) chosen for a tier from recorded measurements, prices and credits."""
 import sys
 from pathlib import Path
 

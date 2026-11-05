@@ -1,4 +1,4 @@
-"""Offline tests for the hub's keyless ``claude_cli`` arm of the call-a-model seat.
+"""Offline tests for the hub's keyless ``claude_cli`` arm of the vendor-model-caller seat.
 
 These never spawn the real ``claude`` binary, ``_invoke`` is monkeypatched, so they run with no
 network, no API key, and no CLI installed. They lock down the two things that can silently break:

@@ -42,7 +42,7 @@ def thinking_kwargs(create, enabled: bool = False) -> Dict[str, Any]:
         return {}
 
 
-@implementation("call-a-model", "anthropic")
+@implementation("vendor-model-caller", "anthropic")
 class AnthropicProvider(ModelProviderBase):
     REQUIRES = (needs.ANTHROPIC_NETWORK, needs.ANTHROPIC_API, needs.ANTHROPIC_SDK)
 

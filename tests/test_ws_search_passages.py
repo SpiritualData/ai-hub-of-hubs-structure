@@ -1,4 +1,4 @@
-"""Passages, passage kind, date and the caller's instruction on the search-backend seat, from recorded fixtures (no network)."""
+"""Passages, passage kind, date and the caller's instruction on the web-search seat, from recorded fixtures (no network)."""
 from __future__ import annotations
 
 import inspect

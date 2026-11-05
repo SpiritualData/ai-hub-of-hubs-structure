@@ -34,7 +34,7 @@ EVOLVES = {
     "the-self": "The integration, coherence and role understanding of all the parts.",
     "the-body": "The AI system's form and its internal context.",
     "the-intelligence": "How information is processed for one request.",
-    "take-in-the-world": "Awareness of the outside and interaction with it.",
+    "the-world": "Awareness of the outside and interaction with it.",
     "the-consciousness": "The humans who interact with the system.",
 }
 

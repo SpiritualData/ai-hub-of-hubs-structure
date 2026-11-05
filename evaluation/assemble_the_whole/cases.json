@@ -4,7 +4,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "edit-files"
+   "seat": "file-editing"
   },
   "expect": "ok"
  },
@@ -31,7 +31,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "call-a-model"
+   "seat": "vendor-model-caller"
   },
   "expect": "ok"
  },
@@ -58,7 +58,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "know-the-world"
+   "seat": "the-science"
   },
   "expect": "ok"
  },
@@ -76,7 +76,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "choose-a-model-tier"
+   "seat": "model-tier-chooser"
   },
   "expect": "ok"
  },
@@ -85,7 +85,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "search-backend"
+   "seat": "web-search"
   },
   "expect": "ok"
  },
@@ -94,7 +94,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "read-registry-freshness"
+   "seat": "research-freshness-reader"
   },
   "expect": "ok"
  },
@@ -103,7 +103,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "watch-for-risk"
+   "seat": "nervous-system"
   },
   "expect": "ok"
  },
@@ -112,9 +112,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "read-registry-freshness",
+   "seat": "research-freshness-reader",
    "arms": {
-    "read-registry-freshness": "registry_scan"
+    "research-freshness-reader": "registry_scan"
    }
   },
   "expect": "ok"
@@ -124,9 +124,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "choose-a-model-tier",
+   "seat": "model-tier-chooser",
    "arms": {
-    "choose-a-model-tier": "tier_selector"
+    "model-tier-chooser": "tier_selector"
    }
   },
   "expect": "ok"
@@ -148,9 +148,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "watch-for-risk",
+   "seat": "nervous-system",
    "arms": {
-    "watch-for-risk": "overseer"
+    "nervous-system": "overseer"
    }
   },
   "expect": "ok"
@@ -160,9 +160,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "brave"
+    "web-search": "brave"
    }
   },
   "expect": "ok"
@@ -172,9 +172,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "gemini"
+    "web-search": "gemini"
    }
   },
   "expect": "ok"
@@ -184,9 +184,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "provider"
+    "web-search": "provider"
    }
   },
   "expect": "ok"
@@ -196,9 +196,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "searxng"
+    "web-search": "searxng"
    }
   },
   "expect": "ok"
@@ -208,9 +208,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "serper"
+    "web-search": "serper"
    }
   },
   "expect": "ok"
@@ -220,9 +220,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "tavily"
+    "web-search": "tavily"
    }
   },
   "expect": "ok"
@@ -232,9 +232,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "anthropic"
+    "vendor-model-caller": "anthropic"
    }
   },
   "expect": "ok"
@@ -244,9 +244,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "deepseek"
+    "vendor-model-caller": "deepseek"
    }
   },
   "expect": "ok"
@@ -256,9 +256,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "gemini"
+    "vendor-model-caller": "gemini"
    }
   },
   "expect": "ok"
@@ -268,9 +268,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "multi_provider"
+    "vendor-model-caller": "multi_provider"
    }
   },
   "expect": "ok"
@@ -280,9 +280,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "openai"
+    "vendor-model-caller": "openai"
    }
   },
   "expect": "ok"
@@ -304,9 +304,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "know-the-world",
+   "seat": "the-science",
    "arms": {
-    "know-the-world": "web_research"
+    "the-science": "web_research"
    }
   },
   "expect": "ok"
@@ -316,9 +316,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "edit-files",
+   "seat": "file-editing",
    "arms": {
-    "edit-files": "fast_edit"
+    "file-editing": "fast_edit"
    }
   },
   "expect": "ok"
@@ -340,9 +340,9 @@
   "area": "arm",
   "kind": "seat",
   "args": {
-   "seat": "know-the-world",
+   "seat": "the-science",
    "arms": {
-    "know-the-world": "openalex"
+    "the-science": "openalex"
    }
   },
   "expect": "ok"
@@ -436,9 +436,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "anthropic"
+    "vendor-model-caller": "anthropic"
    },
    "variables": [
     "ANTHROPIC_API_KEY"
@@ -451,9 +451,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "anthropic"
+    "vendor-model-caller": "anthropic"
    },
    "environ": {
     "ANTHROPIC_API_KEY": "value-not-logged"
@@ -469,9 +469,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "gemini"
+    "vendor-model-caller": "gemini"
    },
    "variables": [
     "GOOGLE_API_KEY",
@@ -485,9 +485,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "gemini"
+    "vendor-model-caller": "gemini"
    },
    "environ": {
     "GOOGLE_API_KEY": "value-not-logged"
@@ -504,9 +504,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "openai"
+    "vendor-model-caller": "openai"
    },
    "variables": [
     "OPENAI_API_KEY",
@@ -520,9 +520,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "openai"
+    "vendor-model-caller": "openai"
    },
    "environ": {
     "OPENAI_API_KEY": "value-not-logged"
@@ -539,9 +539,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "deepseek"
+    "vendor-model-caller": "deepseek"
    },
    "variables": [
     "DEEPSEEK_API_KEY"
@@ -554,9 +554,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "call-a-model",
+   "seat": "vendor-model-caller",
    "arms": {
-    "call-a-model": "deepseek"
+    "vendor-model-caller": "deepseek"
    },
    "environ": {
     "DEEPSEEK_API_KEY": "value-not-logged"
@@ -572,9 +572,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "serper"
+    "web-search": "serper"
    },
    "variables": [
     "SERPER_API_KEY"
@@ -587,9 +587,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "serper"
+    "web-search": "serper"
    },
    "environ": {
     "SERPER_API_KEY": "value-not-logged"
@@ -605,9 +605,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "brave"
+    "web-search": "brave"
    },
    "variables": [
     "BRAVE_SEARCH_API_KEY",
@@ -621,9 +621,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "brave"
+    "web-search": "brave"
    },
    "environ": {
     "BRAVE_SEARCH_API_KEY": "value-not-logged"
@@ -640,9 +640,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "tavily"
+    "web-search": "tavily"
    },
    "variables": [
     "TAVILY_API_KEY",
@@ -656,9 +656,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "tavily"
+    "web-search": "tavily"
    },
    "environ": {
     "TAVILY_API_KEY": "value-not-logged"
@@ -675,9 +675,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "searxng"
+    "web-search": "searxng"
    },
    "variables": [
     "SEARXNG_URL"
@@ -690,9 +690,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "searxng"
+    "web-search": "searxng"
    },
    "environ": {
     "SEARXNG_URL": "value-not-logged"
@@ -708,9 +708,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "gemini"
+    "web-search": "gemini"
    },
    "variables": [
     "GEMINI_API_KEY",
@@ -724,9 +724,9 @@
   "area": "variable",
   "kind": "variable",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "gemini"
+    "web-search": "gemini"
    },
    "environ": {
     "GEMINI_API_KEY": "value-not-logged"
@@ -743,7 +743,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "environ": {}
   },
   "expect": "needs GEMINI_API_KEY"
@@ -753,9 +753,9 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "serper"
+    "web-search": "serper"
    },
    "environ": {}
   },
@@ -766,9 +766,9 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "arms": {
-    "search-backend": "serper"
+    "web-search": "serper"
    },
    "environ": {
     "SERPER_API_KEY": "value-not-logged"
@@ -781,7 +781,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "environ": {
     "GOOGLE_API_KEY": "value-not-logged"
    }
@@ -793,7 +793,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "know-the-world",
+   "seat": "the-science",
    "environ": {}
   },
   "expect": "needs GEMINI_API_KEY"
@@ -803,9 +803,9 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "know-the-world",
+   "seat": "the-science",
    "arms": {
-    "know-the-world": "openalex"
+    "the-science": "openalex"
    },
    "environ": {}
   },
@@ -816,7 +816,7 @@
   "area": "one-line",
   "kind": "needs",
   "args": {
-   "seat": "remember-and-recall",
+   "seat": "the-subconscious",
    "environ": {},
    "provided_model": true
   },
@@ -827,7 +827,7 @@
   "area": "one-line",
   "kind": "run",
   "args": {
-   "seat": "remember-and-recall",
+   "seat": "the-subconscious",
    "input": "anything",
    "environ": {},
    "provided_model": true
@@ -839,7 +839,7 @@
   "area": "one-line",
   "kind": "run",
   "args": {
-   "seat": "search-backend",
+   "seat": "web-search",
    "input": "anything",
    "environ": {}
   },
@@ -871,7 +871,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "ai-representatives"
+   "seat": "the-representatives"
   },
   "expect": "ok"
  },
@@ -880,7 +880,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "assemble-the-whole"
+   "seat": "the-assembler"
   },
   "expect": "ok"
  },
@@ -898,7 +898,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "connect-any-integration"
+   "seat": "the-hands"
   },
   "expect": "ok"
  },
@@ -916,7 +916,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "delegation"
+   "seat": "work-delegation"
   },
   "expect": "ok"
  },
@@ -952,7 +952,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "guidance"
+   "seat": "planner-guidance"
   },
   "expect": "ok"
  },
@@ -970,7 +970,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "hold-objectives"
+   "seat": "live-objectives"
   },
   "expect": "ok"
  },
@@ -997,7 +997,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "keep-it-generic"
+   "seat": "system-integrity"
   },
   "expect": "ok"
  },
@@ -1033,7 +1033,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "offer-intuition"
+   "seat": "the-intuition"
   },
   "expect": "ok"
  },
@@ -1051,7 +1051,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "planner"
+   "seat": "request-planner"
   },
   "expect": "ok"
  },
@@ -1060,7 +1060,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "prioritization"
+   "seat": "human-prioritization"
   },
   "expect": "ok"
  },
@@ -1069,7 +1069,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "reason-and-answer"
+   "seat": "the-mind"
   },
   "expect": "ok"
  },
@@ -1078,7 +1078,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "remember-and-recall"
+   "seat": "the-subconscious"
   },
   "expect": "ok"
  },
@@ -1105,7 +1105,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "retrieve-context"
+   "seat": "context-retriever"
   },
   "expect": "ok"
  },
@@ -1123,7 +1123,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "stay-current"
+   "seat": "the-learning"
   },
   "expect": "ok"
  },
@@ -1132,7 +1132,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "think-critically"
+   "seat": "critical-thinking"
   },
   "expect": "ok"
  },
@@ -1141,7 +1141,7 @@
   "area": "seat",
   "kind": "seat",
   "args": {
-   "seat": "use-tools"
+   "seat": "the-tools"
   },
   "expect": "ok"
  }

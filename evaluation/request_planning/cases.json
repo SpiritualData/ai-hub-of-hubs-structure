@@ -1,0 +1,653 @@
+[
+ {
+  "id": "plan-search-simpleqa-0267",
+  "kind": "search",
+  "args": {
+   "request": "What was Conrad Schintz's dog's full name on Dimension 20's Mentopolis?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0336",
+  "kind": "search",
+  "args": {
+   "request": "Which architect was tasked with finishing the chapel in the newly built Papal apartment when its construction remained incomplete after Pope Paul IV moved in, in October 1556?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0346",
+  "kind": "search",
+  "args": {
+   "request": "What was the name of the indoor scrambler ride themed around the Battle of Hastings that was an opening day attraction when Busch Gardens, The Old Country in Williamsburg, Virginia, first opened in 1975?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0360",
+  "kind": "search",
+  "args": {
+   "request": "Into which Hall of Fame was Zippo Pine Bar inducted in 1992?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0599",
+  "kind": "search",
+  "args": {
+   "request": "Who received an honorable mention at the 1996 Frank and Brennie Morgan Prize for Outstanding Research in Mathematics by an Undergraduate Student?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0650",
+  "kind": "search",
+  "args": {
+   "request": "Who won the Kalinga Prize for the Popularization of Science in 1969?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0871",
+  "kind": "search",
+  "args": {
+   "request": "How many assists did Kostas Tsimikas have across all competitions in the 2021-2022 season?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0886",
+  "kind": "search",
+  "args": {
+   "request": "What is the surname of the individual who won the Gibson-Fawcett Award in 2018?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-0961",
+  "kind": "search",
+  "args": {
+   "request": "What is the first name and surname of the food scientist who received the first IFT Industrial Scientist Award in 1994?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1303",
+  "kind": "search",
+  "args": {
+   "request": "In August 2012, what was the address of the First Church of Christ, Scientist that W. V. Grant purchased?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1310",
+  "kind": "search",
+  "args": {
+   "request": "Adil Hussain was the artistic director and trainer of which organization from 2004 to 2007?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1502",
+  "kind": "search",
+  "args": {
+   "request": "In which year did Dina Nath Walli (an Indian watercolor artist and poet from Srinagar city) return to Srinagar, where he concentrated on landscape painting in watercolors?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1526",
+  "kind": "search",
+  "args": {
+   "request": "In 1992, with whom did Monica Lewinsky have a five-year affair?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1717",
+  "kind": "search",
+  "args": {
+   "request": "How many people were killed when a tractor-trolley returning from a temple fell into a pond in Kanpur on October 2, 2022?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1819",
+  "kind": "search",
+  "args": {
+   "request": "What is the surname of the individual who won the Perkin Medal, an award given annually by the Society of Chemical Industry (American Section) to a scientist residing in America for an \"innovation in applied chemistry resulting in outstanding commercial development,\" in 1918?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1880",
+  "kind": "search",
+  "args": {
+   "request": "What year was the municipality of Paya, Boyac\u00e1, Colombia, founded?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1882",
+  "kind": "search",
+  "args": {
+   "request": "What is the name of the astronomer who discovered 86 Semele?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1971",
+  "kind": "search",
+  "args": {
+   "request": "What is the list entry name for the National Heritage List entry number 1090695 in Stonehouse, Stroud, Gloucestershire?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-1989",
+  "kind": "search",
+  "args": {
+   "request": "How many days was school out after the fire in 1961 at Tomball High School in Harris County, Texas?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-search-simpleqa-2032",
+  "kind": "search",
+  "args": {
+   "request": "Who was awarded the IEEE/RSE James Clerk Maxwell Medal in 2021?"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-science-litsearch-027",
+  "kind": "science",
+  "args": {
+   "request": "Could you direct me towards a study that explores the potential to predict a reader's native language based on their eye movement patterns while reading English texts?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-033",
+  "kind": "science",
+  "args": {
+   "request": "Could you recommend datasets that include SQL annotations over WikiTQ?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-034",
+  "kind": "science",
+  "args": {
+   "request": "Could you recommend studies that provide a baseline for experiments using supervised constituency parsers with a focus on few-shot learning settings and have also reported on the use of pre-training and data augmentation techniques for parser performance improvement?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-035",
+  "kind": "science",
+  "args": {
+   "request": "Could you suggest a paper that introduces an approach to relation extraction that involves learning syntax dependency structures using a tree LSTM model?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-058",
+  "kind": "science",
+  "args": {
+   "request": "In the context of Named Entity Recognition tasks across multiple languages, which work highlights the necessity of retrieving related knowledge to aid in the annotation of ambiguous named entities?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-060",
+  "kind": "science",
+  "args": {
+   "request": "In the context of natural language processing, I am looking for research that explores the relationship between a model's prediction entropy and its tendencies to copy existing text versus generating novel content. Can you recommend a paper?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-062",
+  "kind": "science",
+  "args": {
+   "request": "In the field of reinforcement learning models for multi-hop reasoning, what issue involves an agent erroneously correlating a successful outcome with irrelevant or coincidental actions, and are there any papers discussing this phenomenon?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-085",
+  "kind": "science",
+  "args": {
+   "request": "Where can I find a paper that discusses annotating events in text with degrees of factuality, including categories such as certain, probable, and underspecified?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-089",
+  "kind": "science",
+  "args": {
+   "request": "Where can I find multilingual datasets used for the task of intended sarcasm detection, particularly involving English and Arabic?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-103",
+  "kind": "science",
+  "args": {
+   "request": "Are there any studies investigating sentiment analysis through text-to-graph conversion models that incorporate contextual embeddings?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-145",
+  "kind": "science",
+  "args": {
+   "request": "Could you recommend a study that uses feedback-driven decoding for producing mathematical proofs using language models?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-174",
+  "kind": "science",
+  "args": {
+   "request": "Could you recommend research that investigates techniques for creating counterfactual examples to enhance question-answering systems, such as training a T5 model augmented with retrieval?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-184",
+  "kind": "science",
+  "args": {
+   "request": "Could you recommend studies that tackle the issue of popularity bias within news recommendation engines and offer techniques to distinguish between user interests and the popularity of news items?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-209",
+  "kind": "science",
+  "args": {
+   "request": "Could you suggest research that examines a system for multimodal annotation intended to assist people in analyzing dialogues within video content?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-225",
+  "kind": "science",
+  "args": {
+   "request": "Could you suggest research that explores the drawbacks of dense retrieval systems especially with large-scale indices?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-238",
+  "kind": "science",
+  "args": {
+   "request": "Could you suggest research that investigates how cross-attention mechanisms improve the interplay between token and syntax data within automated program repair systems?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-252",
+  "kind": "science",
+  "args": {
+   "request": "Has any research explored using other off-the-shelf summarization techniques to improve neural abstractive summarization?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-253",
+  "kind": "science",
+  "args": {
+   "request": "Has any research tried to mitigate overfitting in weakly-supervised settings by introducing an adversarial framework where the influence of the labeling function is a hyperparameter for the feature representation?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-258",
+  "kind": "science",
+  "args": {
+   "request": "Have any papers tried to address the background-shift problem in named entity recognition by identifying non-entity type tokens belonging to old entity types through knowledge distillation from an old model?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-science-litsearch-260",
+  "kind": "science",
+  "args": {
+   "request": "Have any research efforts been made to gather dialogue data via crowdworkers to enhance conversational information retrieval systems?"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-edit-he-008",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function sum_product so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-010",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function make_palindrome so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-018",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function how_many_times so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-020",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function find_closest_elements so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-027",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function flip_case so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-040",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function triples_sum_to_zero so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-046",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function fib4 so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-053",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function add so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-056",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function correct_bracketing so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-058",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function common so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-061",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function correct_bracketing so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-063",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function fibfib so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-069",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function search so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-078",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function hex_key so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-092",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function any_int so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-096",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function count_up_to so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-106",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function f so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-108",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function count_nums so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-121",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function solution so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-edit-he-131",
+  "kind": "edit",
+  "args": {
+   "request": "Implement the function digits so that its docstring holds."
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-none-NONE-00",
+  "kind": "none",
+  "args": {
+   "request": "Thanks, that worked."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-01",
+  "kind": "none",
+  "args": {
+   "request": "Hello! Are you there?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-02",
+  "kind": "none",
+  "args": {
+   "request": "What is the capital of Australia?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-03",
+  "kind": "none",
+  "args": {
+   "request": "Write a haiku about autumn rain."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-04",
+  "kind": "none",
+  "args": {
+   "request": "Explain in two sentences what a mutex is."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-05",
+  "kind": "none",
+  "args": {
+   "request": "Convert 72 degrees Fahrenheit to Celsius."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-06",
+  "kind": "none",
+  "args": {
+   "request": "Can you summarise the paragraph I pasted above in one line?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-07",
+  "kind": "none",
+  "args": {
+   "request": "What does the acronym API stand for?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-08",
+  "kind": "none",
+  "args": {
+   "request": "Translate 'good morning' into French and Spanish."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-09",
+  "kind": "none",
+  "args": {
+   "request": "Give me three names for a pet goldfish."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-10",
+  "kind": "none",
+  "args": {
+   "request": "What is the difference between a list and a tuple in general?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-11",
+  "kind": "none",
+  "args": {
+   "request": "Remind me what time zone Tokyo is in."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-12",
+  "kind": "none",
+  "args": {
+   "request": "How many days are there in a leap year?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-13",
+  "kind": "none",
+  "args": {
+   "request": "Please be more concise from now on."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-14",
+  "kind": "none",
+  "args": {
+   "request": "Which is heavier, a kilogram of feathers or a kilogram of iron?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-15",
+  "kind": "none",
+  "args": {
+   "request": "Suggest a polite way to decline a meeting invitation."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-16",
+  "kind": "none",
+  "args": {
+   "request": "Explain the Pythagorean theorem to a ten year old."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-17",
+  "kind": "none",
+  "args": {
+   "request": "What is 17 times 23?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-18",
+  "kind": "none",
+  "args": {
+   "request": "Tell me a joke about programmers."
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-none-NONE-19",
+  "kind": "none",
+  "args": {
+   "request": "What is the plural of 'index'?"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-steps-01",
+  "kind": "steps",
+  "args": {
+   "request": "1. Find the latest Rust release.\n2. Implement the function parse_version so that its docstring holds."
+  },
+  "expect": [
+   "web-search",
+   "file-editing"
+  ]
+ }
+]

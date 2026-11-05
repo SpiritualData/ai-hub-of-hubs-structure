@@ -8,34 +8,23 @@ This sub-intent arises as the implementation `the-self:parts` of its parent inte
 
 ## How the solutions fit together
 
-The Self keeps the parts of the system working as one whole, and Role Understanding states what each part is for so that no part does another's work. The Assembler builds the whole from configuration in one call and answers a request with the arms the hub selected, and it asks Integrity whether the hub still stays generic, with claims that match evidence and records that match code.
-
-## Diagram
-
-An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
-
-```mermaid
-flowchart LR
-    s0["Assembler<br/><i>assemble-the-whole</i>"]
-    s1["Integrity<br/><i>keep-it-generic</i>"]
-    s1 -->|"Consumer-specific strings found, stale areas and the share..."| s0
-```
+The Self keeps the parts of the system working as one whole through the Assembler and Integrity. The Assembler builds the whole from configuration in one call and reports which seats are built and what the rest need. Integrity audits what the system says about itself and what it did, including the run record, and checks that the hub stays generic, with claims that match evidence and records that match code. Role Understanding states what each part is for, so that no part does another's work.
 
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Assembler | `assemble-the-whole` | `hubofhubs.run("assemble-the-whole", 'what is the latest Rust release?')` | One-call assembly of the whole hub (`zero_config`) | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
-| Integrity | `keep-it-generic` | `hubofhubs.run("keep-it-generic", ['examplevendor'])` | Audit of vendor wording, staleness and configuration (`prompts_as_data`) | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
-| Role Understanding | `role-understanding` | `hubofhubs.run("role-understanding", 'assemble-the-whole')` | none selected | Behaviour matches the stated role |
+| Assembler | `the-assembler` | `hubofhubs.run("the-assembler", {})` | One-call assembly of the whole hub (`zero_config`) | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
+| Integrity | `system-integrity` | `hubofhubs.run("system-integrity", ['examplevendor'])` | Audit of vendor wording, staleness and configuration (`prompts_as_data`) | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
+| Role Understanding | `role-understanding` | `hubofhubs.run("role-understanding", 'the-assembler')` | none selected | Behaviour matches the stated role |
 
 ## Problems and ideals
 
 **Problems**
 
-- One product's prompts and settings leak into shared code, so it cannot be reused by anyone else. (`HP6`)
-- An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before... (`hprob-assembly-not-jarvis-from-the-users-seat`)
-- Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole. (`hprob-parts-forget-their-role`)
+- One product leaks into shared code (`HP6`): One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
+- Assembly judged part by part (`hprob-assembly-not-jarvis-from-the-users-seat`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before...
+- Parts forget their role (`hprob-parts-forget-their-role`): Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole.
 
 **Ideals**
 
@@ -44,8 +33,8 @@ flowchart LR
 
 ## Metrics and their leaders
 
-- Whole assembly (`metric-assemble-the-whole`)
-- Consumer-specific strings found by scan (`metric-keep-it-generic`)
+- Whole assembly (`metric-the-assembler`)
+- Consumer-specific strings found by scan (`metric-system-integrity`)
 - Capability of the whole from the user's seat (`metric-hub-jarvis-ness`)
 - Consent floor (`metric-hub-jarvis-floor-consent`)
 - Honesty floor (`metric-hub-jarvis-floor-honesty`)
@@ -57,7 +46,6 @@ flowchart LR
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [implementations.csv](implementations.csv), [metrics.csv](metrics.csv)
-- Diagram page: [diagram.md](diagram.md)
 
 ---
 
@@ -65,9 +53,9 @@ flowchart LR
 
 ### Problems
 
-- One product's prompts and settings leak into shared code, so it cannot be reused by anyone else. (`HP6`)
-- An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before anything irreversible and say truthfully what it did. (`hprob-assembly-not-jarvis-from-the-users-seat`)
-- Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole. (`hprob-parts-forget-their-role`)
+- One product leaks into shared code (`HP6`): One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
+- Assembly judged part by part (`hprob-assembly-not-jarvis-from-the-users-seat`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before anything irreversible and say truthfully what it did.
+- Parts forget their role (`hprob-parts-forget-their-role`): Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and nobody owns the coherence of the whole.
 
 ### Ideals
 
@@ -78,21 +66,21 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Assembler | `assemble-the-whole` | One-call assembly of the whole hub (`zero_config`) | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
-| Integrity | `keep-it-generic` | Audit of vendor wording, staleness and configuration (`prompts_as_data`) | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
+| Assembler | `the-assembler` | One-call assembly of the whole hub (`zero_config`) | Whole assembly, Capability of the whole from the user's seat, Consent floor, Honesty floor |
+| Integrity | `system-integrity` | Audit of vendor wording, staleness and configuration (`prompts_as_data`) | Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them |
 | Role Understanding | `role-understanding` | none selected | Behaviour matches the stated role |
 
 ### Implementations
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
-| One-call assembly of the whole hub | `assemble-the-whole:zero_config` | [hubofhubs/whole.py](../whole.py) |  |
-| Audit of vendor wording, staleness and configuration | `keep-it-generic:prompts_as_data` | [hubofhubs/areas.py](../areas.py) |  |
+| One-call assembly of the whole hub | `the-assembler:zero_config` | [hubofhubs/whole.py](../whole.py) |  |
+| Audit of vendor wording, staleness and configuration | `system-integrity:prompts_as_data` | [hubofhubs/areas.py](../areas.py) |  |
 
 ### Metrics
 
-- Whole assembly (`metric-assemble-the-whole`): `none`
-- Consumer-specific strings found by scan (`metric-keep-it-generic`): `none`
+- Whole assembly (`metric-the-assembler`): `none`
+- Consumer-specific strings found by scan (`metric-system-integrity`): `none`
 - Capability of the whole from the user's seat (`metric-hub-jarvis-ness`): `none`
 - Consent floor (`metric-hub-jarvis-floor-consent`): `none`
 - Honesty floor (`metric-hub-jarvis-floor-honesty`): `none`

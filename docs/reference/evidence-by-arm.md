@@ -25,19 +25,6 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | cards_from_files | topic_cards_replay | 252 | 16.7% (12.6% to 21.8%), 42/252 | $0 | 0 (median) | ahead of topic_cards_replay (two-sided sign test p=0.00328) | none recorded |
 | cards_from_files | two_cards | 252 | 0.0% (0.0% to 1.5%), 0/252 | no passing case | 0.2 (median) | ahead of two_cards (two-sided sign test p=2.76e-70) | none recorded |
 | connect_any_integration | hub_of_hubs_scorer | 33 | 100.0% (89.6% to 100.0%), 33/33 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler | bm25@analyzer=english (selected) | 323 | 64.4% (59.0% to 69.4%), 208/323 | $0 | 0.3 (median) | selected | public, grade D: cost RAM after indexing on NQ (2M+ documents), memory-mapped load on in-memory load 4.36: 0.49 gigabytes (lower is better), grade D; flags: single_source, vendor_only, confounded; needs an own run; public, grade B: quality BEIR NFCorpus nDCG@10, BM25 baseline, test split on docT5query 0.328; TAS-B 0.319; GenQ 0.319; ColBERT 0.305; ANCE 0.237; DPR 0.189: 0.325 score (higher is better), grade B; flags: single_source, stale, confounded; needs an own run; public, grade D: speed BEIR arguana queries per second, single thread on Elasticsearch 13.67: 573.91 queries_per_second (higher is better), grade D; flags: single_source, vendor_only, confounded; needs an own run |
-| context_assembler | bm25 | 323 | 61.9% (56.5% to 67.0%), 200/323 | $0 | 0.3 (median) | ahead of bm25, not significant (two-sided McNemar p=0.154) | public, grade D: cost RAM after indexing on NQ (2M+ documents), memory-mapped load on in-memory load 4.36: 0.49 gigabytes (lower is better), grade D; flags: single_source, vendor_only, confounded; needs an own run; public, grade B: quality BEIR NFCorpus nDCG@10, BM25 baseline, test split on docT5query 0.328; TAS-B 0.319; GenQ 0.319; ColBERT 0.305; ANCE 0.237; DPR 0.189: 0.325 score (higher is better), grade B; flags: single_source, stale, confounded; needs an own run; public, grade D: speed BEIR arguana queries per second, single thread on Elasticsearch 13.67: 573.91 queries_per_second (higher is better), grade D; flags: single_source, vendor_only, confounded; needs an own run |
-| context_assembler | vector | 323 | 63.5% (58.1% to 68.5%), 205/323 | $0 | 0.1 (median) | ahead of vector, not significant (two-sided McNemar p=0.78) | none recorded |
-| context_assembler_papers | bm25 | 300 | 100.0% (98.7% to 100.0%), 300/300 | $0 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_papers | bm25@analyzer=english | 300 | 100.0% (98.7% to 100.0%), 300/300 | $0 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_papers | hybrid | 300 | 100.0% (98.7% to 100.0%), 300/300 | $6.667e-07 | 0.4 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_papers | vector | 300 | 99.0% (97.1% to 99.7%), 297/300 | $6.734e-07 | 0.1 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_paraphrase | bm25 | 300 | 85.7% (81.2% to 89.2%), 257/300 | $0 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_paraphrase | bm25@analyzer=english | 300 | 90.0% (86.1% to 92.9%), 270/300 | $0 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_paraphrase | composite | 300 | 85.7% (81.2% to 89.2%), 257/300 | $1.167e-06 | 0.4 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_paraphrase | hybrid | 300 | 85.7% (81.2% to 89.2%), 257/300 | $1.167e-06 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_paraphrase | hybrid@vector_weight=1.0 | 300 | 94.7% (91.5% to 96.7%), 284/300 | $1.056e-06 | 0.3 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| context_assembler_paraphrase | vector | 300 | 98.3% (96.2% to 99.3%), 295/300 | $1.017e-06 | 0.1 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | context_retrieval | bm25_body (selected) | 395 | 51.4% (46.5% to 56.3%), 203/395 | $0 | 0 (median) | selected | none recorded |
 | context_retrieval | abstaining_affinity | 395 | 42.0% (37.3% to 46.9%), 166/395 | $0 | 0 (median) | ahead of abstaining_affinity (two-sided sign test p=8.32e-32) | none recorded |
 | context_retrieval | abstaining_aware | 395 | 41.8% (37.0% to 46.7%), 165/395 | $0 | 0 (median) | ahead of abstaining_aware (two-sided sign test p=5.64e-31) | none recorded |
@@ -58,13 +45,17 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972) | none recorded |
 | file_edit_goals | stream_json_goal_runner | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.005207 | 20.4 (median) | stream_json_goal_runner: best guess, no per-case rows to test (stream_json_goal_runner 0.938 against fast_edit 0.972) | none recorded |
 | file_edit_goals | subprocess_goal_runner | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.004987 | 24.4 (median) | subprocess_goal_runner: best guess, no per-case rows to test (subprocess_goal_runner 0.923 against fast_edit 0.972) | none recorded |
+| goal_completion | evidence_standard (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
+| goal_completion | nonempty | 14 | 78.6% (52.4% to 92.4%), 11/14 | $0 | 0 (median) | ahead of nonempty, not significant (two-sided McNemar p=0.25) | none recorded |
+| judgment_calls | severity_policy (selected) | 72 | 100.0% (94.9% to 100.0%), 72/72 | $0 | 0 (median) | selected | none recorded |
+| judgment_calls | ask_every_time | 72 | 94.4% (86.6% to 97.8%), 68/72 | $0 | 0 (median) | ahead of ask_every_time, not significant (two-sided McNemar p=0.125) | none recorded |
 | know_the_world | openalex_semantic (selected) | 150 | 34.7% (27.5% to 42.6%), 52/150 | $0 | 2 (median) | selected | none recorded |
 | know_the_world | openalex | 40 | 5.0% (1.4% to 16.5%), 2/40 | $0 | 0.3 (median) | ahead of openalex, not significant (two-sided McNemar p=0.019) | none recorded |
 | know_the_world | openalex_keywords | 40 | 7.5% (2.6% to 19.9%), 3/40 | $0 | 0.4 (median) | ahead of openalex_keywords, not significant (two-sided McNemar p=0.0234) | none recorded |
 | know_the_world | openalex_keywords_model | 40 | 7.5% (2.6% to 19.9%), 3/40 | $0.0001667 | 0.7 (median) | ahead of openalex_keywords_model, not significant (two-sided McNemar p=0.0234) | none recorded |
 | know_the_world | openalex_semantic_and_web | 150 | 32.7% (25.7% to 40.5%), 49/150 | $0.0002612 | 3.6 (median) | ahead of openalex_semantic_and_web (two-sided sign test p=6.2e-31) | none recorded |
 | know_the_world | web_research | 150 | 12.0% (7.7% to 18.2%), 18/150 | $0.0007 | 2.5 (median) | ahead of web_research (two-sided sign test p=1.12e-25) | none recorded |
-| model_call | via_call_a_model (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
+| model_call | via_vendor (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | model_quality_aime | claude_haiku (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | 1 model calls (no price) | 14.8 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | claude_opus | 30 | 96.7% (83.3% to 99.4%), 29/30 | 1.03 model calls (no price) | 10.5 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | claude_sonnet | 30 | 90.0% (74.4% to 96.5%), 27/30 | 1.11 model calls (no price) | 9.6 (median) | complementary arm, not ranked | none recorded |
@@ -74,9 +65,14 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | model_quality_aime | gemini_2_5_flash_lite | 30 | 56.7% (39.2% to 72.6%), 17/30 | $0.01591 | 58.9 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | gpt_5_mini | 30 | 90.0% (74.4% to 96.5%), 27/30 | $0.01458 | 44.9 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | gpt_5_nano | 30 | 66.7% (48.8% to 80.8%), 20/30 | $0.006135 | 25.7 (median) | complementary arm, not ranked | none recorded |
+| proactivity | calendar_and_events (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
+| proactivity | elapsed_hours | 18 | 55.6% (33.7% to 75.4%), 10/18 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=0.00781) | none recorded |
 | provider_failover | multi_provider (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | provider_failover | single_provider | 30 | 40.0% (24.6% to 57.7%), 12/30 | $0 | 0 (median) | ahead of single_provider (two-sided McNemar p=7.63e-06) | none recorded |
 | reason_and_answer | tier_selector (selected) | 36 | 100.0% (90.4% to 100.0%), 36/36 | $0 | 0 (median) | selected | none recorded |
+| request_planning | cue_router (selected) | 81 | 79.0% (68.9% to 86.5%), 64/81 | $0 | 0 (median) | selected | none recorded |
+| request_planning | one_piece | 81 | 24.7% (16.6% to 35.1%), 20/81 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=1.05e-08) | none recorded |
+| response_writing | cited_results (selected) | 44 | 100.0% (92.0% to 100.0%), 44/44 | $0 | 0 (median) | selected | none recorded |
 | search_backend | gemini (selected) | 40 | 80.0% (65.2% to 89.5%), 32/40 | $5.625e-05 | 2 (median) | selected | none recorded |
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |

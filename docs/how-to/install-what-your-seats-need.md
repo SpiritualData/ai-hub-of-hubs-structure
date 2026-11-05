@@ -7,7 +7,7 @@ arms declare their needs beside the code (`REQUIRES`, shared pieces in `hubofhub
 ## Plan, then install
 
 ```bash
-esoi install --package hubofhubs --solution know-the-world
+esoi install --package hubofhubs --solution the-science
 ```
 
 This prints the closure (the selected arm, the arms that fill its needs, the modules each imports, each with the reason it is

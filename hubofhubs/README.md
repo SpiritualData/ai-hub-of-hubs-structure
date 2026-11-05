@@ -2,11 +2,11 @@
 
 *ESOI records kept beside the code in `hubofhubs`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
 
-## World (`take-in-the-world`)
+## World (`the-world`)
 
 Bring in what is outside the system and let the AI act on it through the best available tool.
 
-- Entry call: `hubofhubs.run("take-in-the-world", 'latest Rust release')`
+- Entry call: `hubofhubs.run("the-world", 'latest Rust release')`
 - Selected implementation: Search and papers through the tools (`composition`)
 - Metric: Task pass rate and cost per passing task
 - Implemented by: [`hubofhubs/areas.py`](areas.py), [`hubofhubs/terminal/__init__.py`](terminal/__init__.py), [`hubofhubs/terminal/asks.py`](terminal/asks.py), [`hubofhubs/terminal/blocks.py`](terminal/blocks.py), [`hubofhubs/terminal/render.py`](terminal/render.py), [`hubofhubs/terminal/stopped.py`](terminal/stopped.py), [`hubofhubs/terminal/strings.py`](terminal/strings.py), [`hubofhubs/terminal/trail.py`](terminal/trail.py) and 3 more
@@ -18,16 +18,16 @@ Keep every part working as one whole for one request.
 - Entry call: `hubofhubs.run("the-self", ...)`
 - Selected implementation: Responds through every container (`composition`)
 - Metric: The assembled whole answers a real request, Integrated efficiency, Integrated efficiency
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 46 more
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
 
 ## Body (`the-body`)
 
-Let the hub apply to one particular system by declaring where its data lives and which of its integrations the AI may use.
+Let the hub apply to one particular system by declaring where its data lives, where its requests come from and which of its integrations the AI may use, and keep the run record, the configuration...
 
-- Entry call: `hubofhubs.run("the-body", {'person': ''})`
+- Entry call: `hubofhubs.run("the-body", '')`
 - Selected implementation: Declared sources and enduring integrations (`composition`)
 - Metric: A system applies the hub to itself
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 46 more
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
 
 ## Intelligence (`the-intelligence`)
 
@@ -36,16 +36,16 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 46 more
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
 
 ## Consciousness (`the-consciousness`)
 
 Keep the system aligned with the humans and policies it works for.
 
-- Entry call: `hubofhubs.run("the-consciousness", {'person': ''})`
+- Entry call: `hubofhubs.run("the-consciousness", '')`
 - Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
-- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 46 more
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 47 more
 
 ## Diagram
 
@@ -53,7 +53,7 @@ An arrow runs from the solution that provides to the solution that builds on it;
 
 ```mermaid
 flowchart LR
-    s0["World<br/><i>take-in-the-world</i>"]
+    s0["World<br/><i>the-world</i>"]
     s1["The Self<br/><i>the-self</i>"]
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
@@ -74,11 +74,11 @@ flowchart LR
 | One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
 | Representative, priorities and feedback | `the-consciousness:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
 | The parts of the system | `the-self:parts` | no code yet |  |
-| Search and papers through the tools | `take-in-the-world:composition` | [`hubofhubs/areas.py`](areas.py) | selected |
+| Search and papers through the tools | `the-world:composition` | [`hubofhubs/areas.py`](areas.py) | selected |
 
 ## Metrics
 
-- Task pass rate and cost per passing task (`metric-take-in-the-world`)
+- Task pass rate and cost per passing task (`metric-the-world`)
 - The assembled whole answers a real request (`metric-the-self`)
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
@@ -87,13 +87,13 @@ flowchart LR
 
 ## Problems
 
-- Every team re-researches and re-glues the same AI parts, and the private copies drift apart. (`HP1`)
-- Lists of hubs say what exists, not which works best or fits together. (`HP2`)
-- One hub's outage, price change or shutdown stops the system, and switching needs code changes. (`HP4`)
-- Parts that are best alone can fail when assembled, and nobody tests the whole. (`HP5`)
-- The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts. (`hprob-system-form-wired-to-one-product`)
-- A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer. (`hprob-one-request-answered-from-too-much-or-too-little`)
-- An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked. (`hprob-ai-treats-every-person-alike`)
+- Parts re-glued by every team (`HP1`): Every team re-researches and re-glues the same AI parts, and the private copies drift apart.
+- No evaluation of the parts (`HP2`): Lists of hubs say what exists, not which works best or fits together.
+- One hub outage stops the system (`HP4`): One hub's outage, price change or shutdown stops the system, and switching needs code changes.
+- The whole is never tested (`HP5`): Parts that are best alone can fail when assembled, and nobody tests the whole.
+- Form wired to one product (`hprob-system-form-wired-to-one-product`): The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts.
+- Too much or too little context (`hprob-one-request-answered-from-too-much-or-too-little`): A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer.
+- Every person treated alike (`hprob-ai-treats-every-person-alike`): An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked.
 
 ## Ideals
 

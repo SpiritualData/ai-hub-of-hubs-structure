@@ -384,7 +384,7 @@
     "validation",
     "tool call",
     "hallucinated id",
-    "planner",
+    "request-planner",
     "precheck",
     "safety",
     "write protection"
@@ -720,7 +720,7 @@
    "keywords": [
     "done evidence",
     "verifier",
-    "planner",
+    "request-planner",
     "work shape",
     "finish job",
     "reporting",
@@ -1148,11 +1148,11 @@
     "anthropic",
     "gemini",
     "openai",
-    "call-a-model",
+    "vendor-model-caller",
     "provider registry"
    ],
-   "summary": "Package entry point that defines the model-provider arms of the call-a-model seat as thin wrappers over individual vendor SDKs installed via optional extras.",
-   "description": "Model-provider arms of the call-a-model seat: thin wrappers over one vendor SDK each (extras ``anthropic``, ``gemini``, AnthropicProvider: plan (one forced-tool call), answer, web search through the native server tool, and the live model li. Key: build_cached_system -- Prompt-layer blocks as an Anthropic ``system`` array plus the volatile tail text, ``(system_array, tail_text)``., thinking_kwargs -- Request kwargs that turn extended thinking off for one ``messages.create``., AnthropicProvider",
+   "summary": "Package entry point that defines the model-provider arms of the vendor-model-caller seat as thin wrappers over individual vendor SDKs installed via optional extras.",
+   "description": "Model-provider arms of the vendor-model-caller seat: thin wrappers over one vendor SDK each (extras ``anthropic``, ``gemini``, AnthropicProvider: plan (one forced-tool call), answer, web search through the native server tool, and the live model li. Key: build_cached_system -- Prompt-layer blocks as an Anthropic ``system`` array plus the volatile tail text, ``(system_array, tail_text)``., thinking_kwargs -- Request kwargs that turn extended thinking off for one ``messages.create``., AnthropicProvider",
    "files": [
     {
      "path": "hubofhubs/models/__init__.py",
@@ -1216,7 +1216,7 @@
     "policy",
     "context",
     "applicable",
-    "guidance"
+    "planner-guidance"
    ],
    "summary": "Builds prompts that include only the doctrine rules applicable to the specific situation they are constructed for.",
    "description": "Situational doctrine: a prompt carries only the rules that apply to the situation it is built for.. Key: Rule -- One rule of a prompt: ``text`` is included when ``applies_when`` holds for the situation., Doctrine -- The assembled prompt text with its estimated size and which rules it holds., clauses -- The rule's condition as a list of alternatives (empty when it always applies)., matches, applies, estimate_tokens -- A tokenizer-free estimate: characters over ``chars_per_token``, rounded up., assemble_doctrine -- The rules that apply to ``situation``, joined in the order given, with their size and the ids in and out., check_rules -- Problems in a rule set: an empty or repeated id, or a condition naming a fact the situation does not declare",
@@ -1253,7 +1253,7 @@
     "bootstrap"
    ],
    "summary": "Provides the single startup integration point where QAR connects Quest to the hubofhubs hub of hubs.",
-   "description": "QAR is Quest's connector to the hub of hubs: this is the one place QAR meets ``hubofhubs`` at startup.. Key: child -- QAR's Assembler, a child of the hub's., register_with_hub -- Make QAR's arms known to its Assembler (importing the adapter declares ``qar-card-repository``)., seats -- The solution ids the hub declares: the seats QAR assembles through the hub (QAR's other records are not hub seats)., assemble -- QAR's whole hub assembly: every hub seat built from QAR's choice, else the hub's default., card_repository_of -- The repository QAR's ``card-store`` seat holds, obtained through the hub assembly., flag, make_provider -- The hub's ``call-a-model`` arm ``name`` (anthropic, gemini, openai or deepseek), built by the hub assembly from ``enviro quest-ai-runner — the orchestrator BRAIN (core) + the queued-task EXECUTOR (runner).. Key: _config_builder -- Late-bound lookup in ``config`` so patching ``config.<name>`` still takes effect., assembler -- QAR's hub Assembler (scope ``quest_ai_runner``), the entry point ``esoi requirements --package quest_ai_runner`` and, load_client -- A ``QuestClient`` for this deployment's Quest account — the front door for API scripting., load_config -- Build a ``RunnerConfig`` from a TOML file layered under the environment",
+   "description": "QAR is Quest's connector to the hub of hubs: this is the one place QAR meets ``hubofhubs`` at startup.. Key: child -- QAR's Assembler, a child of the hub's., register_with_hub -- Make QAR's arms known to its Assembler (importing the adapter declares ``qar-card-repository``)., seats -- The solution ids the hub declares: the seats QAR assembles through the hub (QAR's other records are not hub seats)., assemble -- QAR's whole hub assembly: every hub seat built from QAR's choice, else the hub's default., card_repository_of -- The repository QAR's ``card-store`` seat holds, obtained through the hub assembly., flag, make_provider -- The hub's ``vendor-model-caller`` arm ``name`` (anthropic, gemini, openai or deepseek), built by the hub assembly from ``enviro quest-ai-runner — the orchestrator BRAIN (core) + the queued-task EXECUTOR (runner).. Key: _config_builder -- Late-bound lookup in ``config`` so patching ``config.<name>`` still takes effect., assembler -- QAR's hub Assembler (scope ``quest_ai_runner``), the entry point ``esoi requirements --package quest_ai_runner`` and, load_client -- A ``QuestClient`` for this deployment's Quest account — the front door for API scripting., load_config -- Build a ``RunnerConfig`` from a TOML file layered under the environment",
    "files": [
     {
      "path": "quest_ai_runner/hub.py",
@@ -1612,8 +1612,8 @@
     "approval",
     "safety"
    ],
-   "summary": "Implements rule-based arms of the watch-for-risk seat, including a model-free consent gate and a gate-then-overseer pair that evaluate steps.",
-   "description": "Two more arms of the watch-for-risk seat that read the step by rule: a consent gate with no model, and a gate-then-overs. Key: words -- A case-insensitive pattern that finds any of these words (or phrases) with a common ending, at a word start., ConsentRules -- What the gate looks for; a consumer replaces any field to carry its own policy., parse_digest -- ``(action, goal, rationale, operations)`` read from a digest built by ``build_digest``; a missing part is empty., classes_named, judge -- ``(verdict, reason)`` for one digest: ``flag``, ``clear`` or ``unsure``., ConsentGate -- Flags a step that pays, sends outward, deletes, publishes or uses a credential, by rule, with no model call., TwoStage -- The consent gate first; the model overseer only when the gate is unsure",
+   "summary": "Implements rule-based arms of the nervous-system seat, including a model-free consent gate and a gate-then-overseer pair that evaluate steps.",
+   "description": "Two more arms of the nervous-system seat that read the step by rule: a consent gate with no model, and a gate-then-overs. Key: words -- A case-insensitive pattern that finds any of these words (or phrases) with a common ending, at a word start., ConsentRules -- What the gate looks for; a consumer replaces any field to carry its own policy., parse_digest -- ``(action, goal, rationale, operations)`` read from a digest built by ``build_digest``; a missing part is empty., classes_named, judge -- ``(verdict, reason)`` for one digest: ``flag``, ``clear`` or ``unsure``., ConsentGate -- Flags a step that pays, sends outward, deletes, publishes or uses a credential, by rule, with no model call., TwoStage -- The consent gate first; the model overseer only when the gate is unsure",
    "files": [
     {
      "path": "hubofhubs/consent_gate.py",
@@ -1792,8 +1792,8 @@
     "text sampling",
     "context cards"
    ],
-   "summary": "Defines the remember-and-recall package entry point that ties together text sampling, date bounds, pacing, card threading, assembler composition, and conversation and card handling.",
-   "description": "The remember-and-recall seat: text sampling, date bounds, pacing, card threading, assembler composition, conversation an",
+   "summary": "Defines the the-subconscious package entry point that ties together text sampling, date bounds, pacing, card threading, assembler composition, and conversation and card handling.",
+   "description": "The the-subconscious seat: text sampling, date bounds, pacing, card threading, assembler composition, conversation an",
    "files": [
     {
      "path": "hubofhubs/recall/__init__.py",
@@ -1996,7 +1996,7 @@
   {
    "id": "guidance-provider-adapter",
    "keywords": [
-    "guidance",
+    "planner-guidance",
     "guidanceprovider",
     "instructions",
     "adapter",
@@ -2779,7 +2779,7 @@
     "verification"
    ],
    "summary": "Structurally checks that work is actually finished with supporting evidence before it is reported as done.",
-   "description": "done_evidence -- the STRUCTURAL half of \"finish the job before reporting\".. Key: _whole -- A non-negative integer, or None for anything else (a bool, a float, a string, a negative)., CoverageRecord -- A runner's declared coverage of a set, parsed., parse_coverage -- The declared coverage as a ``CoverageRecord``, or None when nothing usable was declared., CoverageGap -- What is missing from a declared set., coverage_gap -- The gap in a declared coverage, or None when it is complete or nothing was declared., coverage_progress -- True when ``current`` covers more than ``previous`` (or there was no previous record)., continue_decision -- ``(verdict, why)``: whether to run again on a coverage gap., clean_requirements -- A planner's ``done_evidence`` as at most ``MAX_REQUIREMENTS`` short non-empty strings The think-critically seat: link honesty (detecting links and checking them before a reply leaves), the abridged-read gat",
+   "description": "done_evidence -- the STRUCTURAL half of \"finish the job before reporting\".. Key: _whole -- A non-negative integer, or None for anything else (a bool, a float, a string, a negative)., CoverageRecord -- A runner's declared coverage of a set, parsed., parse_coverage -- The declared coverage as a ``CoverageRecord``, or None when nothing usable was declared., CoverageGap -- What is missing from a declared set., coverage_gap -- The gap in a declared coverage, or None when it is complete or nothing was declared., coverage_progress -- True when ``current`` covers more than ``previous`` (or there was no previous record)., continue_decision -- ``(verdict, why)``: whether to run again on a coverage gap., clean_requirements -- A planner's ``done_evidence`` as at most ``MAX_REQUIREMENTS`` short non-empty strings The critical-thinking seat: link honesty (detecting links and checking them before a reply leaves), the abridged-read gat",
    "files": [
     {
      "path": "hubofhubs/critique/done_evidence.py",
@@ -2969,7 +2969,7 @@
     "recall"
    ],
    "summary": "Paces low-priority background recall work that no caller is actively waiting on.",
-   "description": "Pacing for work that nobody is waiting on.. Key: Pacer -- Call it inside a loop as often as is convenient (it costs a clock read); it pauses once enough work has run The remember-and-recall seat: text sampling, date bounds, pacing, card threading, assembler composition, conversation an",
+   "description": "Pacing for work that nobody is waiting on.. Key: Pacer -- Call it inside a loop as often as is convenient (it costs a clock read); it pauses once enough work has run The the-subconscious seat: text sampling, date bounds, pacing, card threading, assembler composition, conversation an",
    "files": [
     {
      "path": "hubofhubs/recall/background_pacing.py",
@@ -3115,8 +3115,8 @@
     "reply review",
     "honesty"
    ],
-   "summary": "Provides the think-critically seat that detects and checks links before a reply leaves and gates abridged reads.",
-   "description": "The think-critically seat: link honesty (detecting links and checking them before a reply leaves), the abridged-read gat",
+   "summary": "Provides the critical-thinking seat that detects and checks links before a reply leaves and gates abridged reads.",
+   "description": "The critical-thinking seat: link honesty (detecting links and checking them before a reply leaves), the abridged-read gat",
    "files": [
     {
      "path": "hubofhubs/critique/__init__.py",
@@ -3142,7 +3142,7 @@
     "grounding"
    ],
    "summary": "Compares the DOIs cited in a reply against the DOIs that were actually available during the turn to detect unsupported citations.",
-   "description": "citations -- compare the DOIs in a reply with the DOIs a turn actually had.. Key: doi_candidates -- Each DOI in ``text`` as ``(start, end, doi)``, the DOI lower case without trailing punctuation or an unmatched ``)``., dois_in -- Every DOI that appears in the given texts (strings, or lists and dicts of them), lower case., unlisted_dois -- The DOIs in ``text`` that are not in ``known`` (lower case DOIs), in order of first appearance., strip_unlisted_dois -- ``text`` with every DOI not in ``known`` replaced by ``placeholder``, and the DOIs replaced Scholarly search that executes: an OpenAlex arm of the ``know-the-world`` seat (works search with year and open-access",
+   "description": "citations -- compare the DOIs in a reply with the DOIs a turn actually had.. Key: doi_candidates -- Each DOI in ``text`` as ``(start, end, doi)``, the DOI lower case without trailing punctuation or an unmatched ``)``., dois_in -- Every DOI that appears in the given texts (strings, or lists and dicts of them), lower case., unlisted_dois -- The DOIs in ``text`` that are not in ``known`` (lower case DOIs), in order of first appearance., strip_unlisted_dois -- ``text`` with every DOI not in ``known`` replaced by ``placeholder``, and the DOIs replaced Scholarly search that executes: an OpenAlex arm of the ``the-science`` seat (works search with year and open-access",
    "files": [
     {
      "path": "hubofhubs/science/citations.py",
@@ -3213,8 +3213,8 @@
     "publication year",
     "science"
    ],
-   "summary": "Provides scholarly search that queries OpenAlex for works with year and open-access filtering as part of the know-the-world seat.",
-   "description": "Scholarly search that executes: an OpenAlex arm of the ``know-the-world`` seat (works search with year and open-access",
+   "summary": "Provides scholarly search that queries OpenAlex for works with year and open-access filtering as part of the the-science seat.",
+   "description": "Scholarly search that executes: an OpenAlex arm of the ``the-science`` seat (works search with year and open-access",
    "files": [
     {
      "path": "hubofhubs/science/__init__.py",
@@ -3488,7 +3488,7 @@
     "timeout",
     "select",
     "hang",
-    "guidance",
+    "planner-guidance",
     "turn",
     "deadline",
     "blocking",

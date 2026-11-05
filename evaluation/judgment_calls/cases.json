@@ -1,0 +1,984 @@
+[
+ {
+  "id": "judge-risk-01",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "pay a supplier invoice"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-02",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "refund to a customer card"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-03",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "mail every subscriber"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-04",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "send figures to the board"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-05",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "drop old records"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-06",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "wipe a shared folder"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-07",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "publish a post live"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-08",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "post to social accounts"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-09",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "buy a licence"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-10",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "move funds"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-11",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "public reply to a review"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-12",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "remove user accounts"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-13",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "rewrite shared history"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-14",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "cancel subscriptions in bulk"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-15",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "submit a grant form"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-16",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "text a customer list"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-17",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "send a job offer"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-risk-18",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "purge backups"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-safe-01",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "read a document"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-02",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "summarise notes"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-03",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "draft but do not send"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-04",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "draft a post for review"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-05",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "search the docs"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-06",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "rename a variable"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-07",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "add up a column"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-08",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "dry run of a deletion"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-09",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "run tests"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-10",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "explain a process"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-11",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "translate a paragraph"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-12",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "tidy own scratch file"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-13",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "compare public prices"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-14",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "format a table"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-15",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "reply to the user"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-16",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "edit a draft heading"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-17",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "find who owns a file"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-safe-18",
+  "kind": "explicit",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "outline a plan for a purchase"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-risk-01",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "script with a drop inside"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-02",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "change where money goes"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-03",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "apply staged changes that charge cards"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-04",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "start a scheduled campaign"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-05",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "link sharing on a private folder"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-06",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "cleanup of other people's files"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-07",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "saved password in the notes"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-08",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "auto confirmation to customers"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-09",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "merge that deploys"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-10",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "move then clear the source"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-11",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "reply on a customer thread"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-risk-12",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "auto renewal spend"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-amb-safe-01",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "reading about refunds"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-02",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "preview an email"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-03",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "dry run of a delete"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-04",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "payment tests on a mock"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-05",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "check token expiry"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-06",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "local commit"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-07",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "draft pull request"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-08",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "whitespace cleanup"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-09",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "test of a publish rule"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-10",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "price arithmetic"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-11",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "answer in chat"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-amb-safe-12",
+  "kind": "ambiguous",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": "stop own process"
+   },
+   "person": "",
+   "context": {}
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-stopped-budget-none",
+  "kind": "stopped",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": ""
+   },
+   "person": "",
+   "context": {
+    "stopped": "budget"
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-stopped-budget-low",
+  "kind": "stopped",
+  "args": {
+   "signal": {
+    "severity": "low",
+    "reason": ""
+   },
+   "person": "",
+   "context": {
+    "stopped": "budget"
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-stopped-authority-none",
+  "kind": "stopped",
+  "args": {
+   "signal": {
+    "severity": "none",
+    "reason": ""
+   },
+   "person": "",
+   "context": {
+    "stopped": "authority"
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-stopped-authority-low",
+  "kind": "stopped",
+  "args": {
+   "signal": {
+    "severity": "low",
+    "reason": ""
+   },
+   "person": "",
+   "context": {
+    "stopped": "authority"
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-person-proceeds-up-to-own-limit",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "medium",
+    "reason": "proceeds-up-to-own-limit"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {
+     "proceed_up_to": "medium"
+    }
+   }
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-person-asks-above-own-limit",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "asks-above-own-limit"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {
+     "proceed_up_to": "medium"
+    }
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-person-declines-from-own-limit",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "declines-from-own-limit"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {
+     "proceed_up_to": "low",
+     "decline_from": "high"
+    }
+   }
+  },
+  "expect": "decline"
+ },
+ {
+  "id": "judge-person-asks-between-limits",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "medium",
+    "reason": "asks-between-limits"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {
+     "proceed_up_to": "low",
+     "decline_from": "high"
+    }
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-person-default-person-asks-on-medium",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "medium",
+    "reason": "default-person-asks-on-medium"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {}
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-person-default-person-proceeds-on-low",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "low",
+    "reason": "default-person-proceeds-on-low"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {}
+   }
+  },
+  "expect": "proceed"
+ },
+ {
+  "id": "judge-person-a-careful-person-asks-on-low",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "low",
+    "reason": "a-careful-person-asks-on-low"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {
+     "proceed_up_to": "none"
+    }
+   }
+  },
+  "expect": "ask"
+ },
+ {
+  "id": "judge-person-a-trusting-person-proceeds-on-high",
+  "kind": "person",
+  "args": {
+   "signal": {
+    "severity": "high",
+    "reason": "a-trusting-person-proceeds-on-high"
+   },
+   "person": "p1",
+   "context": {},
+   "policies": {
+    "p1": {
+     "proceed_up_to": "high"
+    }
+   }
+  },
+  "expect": "proceed"
+ }
+]

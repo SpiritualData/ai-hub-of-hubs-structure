@@ -23,7 +23,7 @@ style command or a hub test) writes it from those parameters and validates it on
 
 **`hubofhubs.assemble(config, provided={...})`** builds objects in dependency order. For each seat a consumer-provided
 object wins; otherwise the hub default (the cascade below) is built. A cycle or an unmet need fails at startup with the
-chain named (`a -> b -> a`; `a needs search-backend: no arm, not provided`). Resolution happens inside `assemble`, then
+chain named (`a -> b -> a`; `a needs web-search: no arm, not provided`). Resolution happens inside `assemble`, then
 the result is frozen (no resolving at call time, so no locks are needed).
 
 **External systems** (web search, an integration, a paper index) are seats with an `external` tag. The justification is
@@ -35,8 +35,8 @@ default arm or is consumer-provided.
 consumer and puts the rest in `result.pending`, one line per seat saying what to pass (`arms`, `options` or `provided`); it raises
 only for an unknown name or a cycle. A consumer names only what differs: `assemble(arms={seat: arm}, options={seat: {...}},
 provided={seat: object})`. Passing an `AssemblyConfig` stays the strict form. The mechanic is `esoi.assemble.Assembler.assemble_defaults`;
-the hub only supplies its scope. Today the seats with a selected arm are `card-store`, `choose-a-model-tier`, `read-registry-freshness` and `model-call`
-(the last needs the `call-a-model` seat, which stays pending until its arm is named); every other seat is reported as pending until
+the hub only supplies its scope. Today the seats with a selected arm are `card-store`, `model-tier-chooser`, `research-freshness-reader` and `model-call`
+(the last needs the `vendor-model-caller` seat, which stays pending until its arm is named); every other seat is reported as pending until
 a metric selects an arm or the consumer provides an object. `assemble(environ=mapping)` (the process environment when omitted; `{}` for none) fills the options an arm declares in its
 `ENVIRON` attribute from that mapping (`esoi.assemble`).
 
@@ -46,7 +46,7 @@ fall-through. Consumers register into scope `hubofhubs` under names they own; th
 hub-declared name. Selections live on the consumer's assemble object, never process-wide, so two consumers in one
 process do not see each other.
 
-**Reason line.** Startup logs one line per seat: `search-backend -> searxng (layer: consumer selections, package
+**Reason line.** Startup logs one line per seat: `web-search -> searxng (layer: consumer selections, package
 version, config hash)`; the version is the arm's package version, the hash covers its config.
 
 **Kept from repo-utils.** (1) A consumer manifest listing the seats it uses (the assemble config); it drives the extras
@@ -141,7 +141,7 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    (usage scoping, `ModelProvider` and the step-hint helpers, the context assembler, conversation store and vector store Protocols) moved
    verbatim from the consumer, comments made consumer-free; the consumer's modules re-export them. The progress events, channels,
    guidance and value objects stay in the consumer (they carry its vocabulary or fields).
-   Second pass (2026-10-29), the web-search seat: `hubofhubs.websearch` holds the `search-backend` arms (SearXNG, JSON search APIs
+   Second pass (2026-10-29), the web-search seat: `hubofhubs.websearch` holds the `web-search` arms (SearXNG, JSON search APIs
    described as data, Gemini grounding, a provider's own search), the cache, the daily limiter, SSRF-guarded fetching and
    extraction, and the research adapter; `hubofhubs.ports.search` and `.retrieval` hold the neutral values. The convention for
    moving a seat, to follow for the next one: (1) compute each module's imports and move a module only if it is generic;
@@ -154,7 +154,7 @@ Each step ends with its tests and one local commit by explicit path; nothing is 
    get ids, paths and `unconfirmed: for the owner to confirm.` text, and `selected` stays empty until a metric result chooses.
    Not moved: the Tavily retrieval adapter (a duplicate of the `tavily` arm plus the research adapter; a deletion candidate in
    the consumer), and the consumer's one-call research constructor. `WebResearchAdapter` is library code, not yet a seat arm:
-   `know-the-world` has no Protocol, which is a decision for the seat's owner.
+   `the-science` has no Protocol, which is a decision for the seat's owner.
 8. **Docs**: quickstart (done: `docs/how-to/register-a-second-consumer.md`, run by `tests/test_quickstart.py`); versioning, releasing and
    changelog remain.
 

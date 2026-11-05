@@ -16,7 +16,7 @@ MAX_TRAINING_QUERIES = 400
 RECENT = FEATURES.index("recent")
 
 
-@implementation("retrieve-context", "learned_rerank")
+@implementation("context-retriever", "learned_rerank")
 class LearnedRerank(Retriever):
     """The top 100 of the hybrid (and the neighbours of its best hits) reranked by a logistic regression trained on past commits. Recency
     is not learned (a past commit's own recency would leak its label), so its weight is zero."""

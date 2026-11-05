@@ -1,4 +1,4 @@
-"""The search-backend and know-the-world components: the matching rules, the baselines they must fail, and the cases."""
+"""The web-search and the-science components: the matching rules, the baselines they must fail, and the cases."""
 import importlib
 import json
 import sys

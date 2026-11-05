@@ -55,20 +55,20 @@ class FieldedBm25(Retriever):
         return sum(i.size() for i in self.indexes.values())
 
 
-@implementation("retrieve-context", "bm25_body")
+@implementation("context-retriever", "bm25_body")
 class Bm25Body(FieldedBm25):
     """BM25 over each chunk's text alone, with no descriptor, title or path field."""
     REQUIRES = ()
     weights = {"body": 1.0}
 
 
-@implementation("retrieve-context", "bm25_fielded")
+@implementation("context-retriever", "bm25_fielded")
 class Bm25Fielded(FieldedBm25):
     """BM25F over chunks: the file's path and generated descriptor, the chunk's own names and docstring, and its text, weighed 2, 3 and 1."""
     REQUIRES = ()
 
 
-@implementation("retrieve-context", "bm25_whole_files")
+@implementation("context-retriever", "bm25_whole_files")
 class Bm25WholeFiles(FieldedBm25):
     """The same fielded BM25 with whole files as the unit, so a file costs all its tokens: the ablation of cutting at natural boundaries."""
     REQUIRES = ()

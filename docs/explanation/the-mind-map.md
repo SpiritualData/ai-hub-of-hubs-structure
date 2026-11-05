@@ -82,53 +82,54 @@ The table below is generated from the records. Names lead, each part says what i
 | Part of the mind | Inside | Areas | Built on now | Candidates researched | Oldest research | Call with |
 |---|---|---|---|---|---|---|
 | The Self | the hub | 0 | 0 | 0 | none | `the-self` |
-| Integrity | The Self | 3 | 2 | 12 | 2026-10-30 | `keep-it-generic` |
+| Integrity | The Self | 3 | 2 | 12 | 2026-10-30 | `system-integrity` |
 | Role Understanding | The Self | 0 | 0 | 0 | none | `role-understanding` |
-| Assembler | The Self | 3 | 1 | 6 | 2026-10-30 | `assemble-the-whole` |
+| Assembler | The Self | 3 | 1 | 6 | 2026-10-30 | `the-assembler` |
 | Body | the hub | 0 | 0 | 0 | none | `the-body` |
 | Internal Context | Body | 0 | 0 | 0 | none | `internal-context` |
 | Card Store | Internal Context | 0 | 0 | 0 | none | `card-store` |
-| Cards From Files | Internal Context | 0 | 0 | 0 | none | `cards-from-files` |
-| Hands | Body | 0 | 0 | 0 | none | `connect-any-integration` |
+| Intake Sources | Body | 0 | 0 | 0 | none | `intake-sources` |
+| Hands | Body | 0 | 0 | 0 | none | `the-hands` |
 | Intelligence | the hub | 0 | 0 | 0 | none | `the-intelligence` |
-| Mind | Intelligence | 8 | 1 | 55 | 2026-10-30 | `reason-and-answer` |
+| Mind | Intelligence | 8 | 1 | 55 | 2026-10-30 | `the-mind` |
 | Context Intake | Mind | 0 | 0 | 0 | none | `context-intake` |
-| Planner | Mind | 0 | 0 | 0 | none | `planner` |
-| Delegation | Mind | 0 | 0 | 0 | none | `delegation` |
+| Request Planner | Mind | 0 | 0 | 0 | none | `request-planner` |
+| Work Delegation | Mind | 0 | 0 | 0 | none | `work-delegation` |
 | Response Writer | Mind | 0 | 0 | 0 | none | `response-writer` |
 | Higher Mind | Intelligence | 0 | 0 | 0 | none | `higher-mind` |
 | Long-Term Memory | Higher Mind | 0 | 0 | 0 | none | `long-term-memory` |
-| Objectives | Higher Mind | 0 | 0 | 0 | none | `hold-objectives` |
-| Guidance | Higher Mind | 0 | 0 | 0 | none | `guidance` |
-| Subconscious | Intelligence | 10 | 8 | 69 | 2026-10-30 | `remember-and-recall` |
-| Intuition | Subconscious | 0 | 0 | 0 | none | `offer-intuition` |
-| Context Assembler | Subconscious | 0 | 0 | 0 | none | `context-assembler` |
-| Context Retriever | Subconscious | 0 | 0 | 0 | none | `retrieve-context` |
-| Critical Thinking | Intelligence | 0 | 0 | 0 | none | `think-critically` |
+| Objectives | Higher Mind | 0 | 0 | 0 | none | `live-objectives` |
+| Planner Guidance | Higher Mind | 0 | 0 | 0 | none | `planner-guidance` |
+| Subconscious | Intelligence | 10 | 8 | 69 | 2026-10-30 | `the-subconscious` |
+| Intuition | Subconscious | 0 | 0 | 0 | none | `the-intuition` |
+| Cards From Files | Subconscious | 0 | 0 | 0 | none | `cards-from-files` |
+| Context Retriever | Subconscious | 0 | 0 | 0 | none | `context-retriever` |
+| Critical Thinking | Intelligence | 0 | 0 | 0 | none | `critical-thinking` |
 | ESOI Application | Critical Thinking | 0 | 0 | 0 | none | `esoi-application` |
 | Metric Translation | Critical Thinking | 0 | 0 | 0 | none | `metric-translation` |
 | Goal Completion | Critical Thinking | 0 | 0 | 0 | none | `goal-completion` |
 | Response Quality | Critical Thinking | 5 | 5 | 26 | 2026-10-30 | `response-quality` |
-| Nervous System | Intelligence | 5 | 5 | 29 | 2026-10-30 | `watch-for-risk` |
-| World | the hub | 7 | 1 | 36 | 2026-10-30 | `take-in-the-world` |
-| Science | World | 10 | 2 | 73 | 2026-10-30 | `know-the-world` |
-| Tools | World | 0 | 0 | 0 | none | `use-tools` |
-| Web Search | Tools | 0 | 0 | 0 | none | `search-backend` |
-| File Editing | Tools | 2 | 2 | 10 | 2026-10-30 | `edit-files` |
+| Nervous System | Intelligence | 5 | 5 | 29 | 2026-10-30 | `nervous-system` |
+| Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
+| World | the hub | 7 | 1 | 36 | 2026-10-30 | `the-world` |
+| Science | World | 10 | 2 | 73 | 2026-10-30 | `the-science` |
+| Tools | World | 0 | 0 | 0 | none | `the-tools` |
+| Web Search | Tools | 0 | 0 | 0 | none | `web-search` |
+| File Reading | Tools | 0 | 0 | 0 | none | `read-files` |
+| File Editing | Tools | 2 | 2 | 10 | 2026-10-30 | `file-editing` |
 | Connected System Operations | Tools | 10 | 2 | 59 | 2026-10-30 | `connected-system-operations` |
 | Delegated Agent Sessions | Tools | 8 | 1 | 64 | 2026-10-30 | `delegated-agent-sessions` |
-| Personal Data Locations | Tools | 0 | 0 | 0 | none | `personal-data-locations` |
 | Model Plumbing | World | 0 | 0 | 0 | none | `model-plumbing` |
-| Model Tier Chooser | Model Plumbing | 0 | 0 | 0 | none | `choose-a-model-tier` |
-| Model Call | Model Plumbing | 0 | 0 | 0 | none | `model-call` |
-| Vendor Model Caller | Model Plumbing | 0 | 0 | 0 | none | `call-a-model` |
-| Learning | World | 3 | 2 | 17 | 2026-10-30 | `stay-current` |
-| Research Freshness Reader | Learning | 0 | 0 | 0 | none | `read-registry-freshness` |
+| Model Tier Chooser | Model Plumbing | 0 | 0 | 0 | none | `model-tier-chooser` |
+| Vendor Model Caller | Model Plumbing | 0 | 0 | 0 | none | `vendor-model-caller` |
+| Learning | World | 3 | 2 | 17 | 2026-10-30 | `the-learning` |
+| Research Freshness Reader | Learning | 0 | 0 | 0 | none | `research-freshness-reader` |
 | Consciousness | the hub | 0 | 0 | 0 | none | `the-consciousness` |
-| Representatives | Consciousness | 0 | 0 | 0 | none | `ai-representatives` |
+| Representatives | Consciousness | 0 | 0 | 0 | none | `the-representatives` |
 | Judgment Calls | Consciousness | 0 | 0 | 0 | none | `judgment-calls` |
 | Feedback Learning | Consciousness | 0 | 0 | 0 | none | `feedback-learning` |
-| Prioritization | Consciousness | 0 | 0 | 0 | none | `prioritization` |
+| Human Prioritization | Consciousness | 0 | 0 | 0 | none | `human-prioritization` |
+| Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
 
 74 areas and 456 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

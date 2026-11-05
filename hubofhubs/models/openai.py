@@ -14,7 +14,7 @@ from .. import arm_needs as needs
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 
 
-@implementation("call-a-model", "openai")
+@implementation("vendor-model-caller", "openai")
 class OpenAIProvider(ModelProviderBase):
     """``base_url`` points at any OpenAI-compatible endpoint (a proxy, vLLM, Ollama, a gateway); ``keyless`` allows a
     self-hosted one that takes no key. ``create_kwargs`` are extra keyword arguments for every completion; ``model_marker`` is the
@@ -96,7 +96,7 @@ class OpenAIProvider(ModelProviderBase):
         return self.listing.get(self.fetch_models, self.fallback_models)
 
 
-@implementation("call-a-model", "deepseek")
+@implementation("vendor-model-caller", "deepseek")
 class DeepSeekProvider(OpenAIProvider):
     """DeepSeek's OpenAI-compatible API. Thinking is off by default (slower, and more output tokens when on)."""
     REQUIRES = (needs.DEEPSEEK_NETWORK, needs.DEEPSEEK_API, needs.DEEPSEEK_BASE_URL, needs.OPENAI_SDK)     # the OpenAI SDK against DeepSeek's compatible endpoint

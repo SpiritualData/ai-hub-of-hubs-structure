@@ -72,7 +72,6 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
-from esoi import implementation
 from hubofhubs.ports.context import AssembledContext, ContextAssemblerBase, VectorHit, VectorStore, VectorStoreBase
 from hubofhubs.ports.model import STEP_SELECT, STEP_SUMMARIZE, answer_with_reasoning
 from hubofhubs.recall.card_content_render import (
@@ -246,7 +245,6 @@ class NoVectors(VectorStoreBase):
         return 0
 
 
-@implementation("context-assembler", "vector")
 class VectorContextAssembler(ContextAssemblerBase):
     """ContextAssembler that retrieves context via vector (semantic) search.
 

@@ -12,7 +12,7 @@ themselves is never above D. Most rows here are flagged `single_source` and `sta
 needs more than a few hundred new embeddings, or a large reranking run, is marked **needs authorization**; reading the existing
 production embeddings needs none. No model call was made to write this page.
 
-## context-assembler (find the passage a request needs)
+## context-retriever (find the passage a request needs)
 
 Our task: BEIR NFCorpus, 323 queries, a hit in the top five. Arms: `bm25`, `vector`, `hybrid`, `composite`.
 
@@ -52,7 +52,7 @@ authorized), so the main public prediction, that fusion beats both parts, is unt
 - **Drop as not worth measuring:** `composite` (concatenating two ranked lists) has no public support next to rank or score fusion;
   keep it only if production behaves that way. Late interaction (`PyLate`) is low priority on this corpus type.
 
-## call-a-model (vendor models; router failover)
+## vendor-model-caller (vendor models; router failover)
 
 - **Public evidence is thin.** We found no peer-reviewed or independent study of provider failover; it is engineering practice,
   not a research question. For choosing between vendor models, independent aggregate indexes exist (see `docs/reference/public-benchmarks.md`)
@@ -61,7 +61,7 @@ authorized), so the main public prediction, that fusion beats both parts, is unt
   outages. The three vendor arms on 50 cases passed 50, 46 and 47, a spread that 50 cases cannot separate.
 - **Recommendation.** Keep all current arms. Add nothing from public research. Drop nothing.
 
-## search-backend (web search hits containing the source)
+## web-search (web search hits containing the source)
 
 - **The independent comparison we found is close.** On 100 real queries, five results each, the [AIMultiple agent search
   benchmark](https://aimultiple.com/agentic-search) scored Brave 14.89, Exa 14.39, Parallel Search Pro 14.21, Tavily 13.67,
@@ -73,7 +73,7 @@ authorized), so the main public prediction, that fusion beats both parts, is unt
 - **Add:** a Brave Search API arm and an Exa arm, each a thin HTTP adapter (about 80 lines, a key each, 40 cases times one call:
   trivial cost). **Keep:** `gemini`, `provider`. **Drop:** nothing.
 
-## know-the-world (find papers for a research question)
+## the-science (find papers for a research question)
 
 Our task: 40 LitSearch questions, the gold paper among the observations. Arms: `web_research` (6 to 8 of 40), `openalex` (2 of 40).
 
@@ -102,7 +102,7 @@ in direction with public results and are not a contradiction.
   **needs authorization**.
 - **Drop:** nothing.
 
-## edit-files and delegated-agent-sessions (coding and file-edit goals)
+## file-editing and delegated-agent-sessions (coding and file-edit goals)
 
 Our task: 30 HumanEval-size goals. Arms: `fast_edit` (30 of 30, $0.005, 77 s), `subprocess_goal_runner` (30 of 30, $0.147, 641 s),
 `stream_json_goal_runner`, `acp_deep_runner` (not measurable here).
@@ -124,7 +124,7 @@ Our task: 30 HumanEval-size goals. Arms: `fast_edit` (30 of 30, $0.005, 77 s), `
   (whole file, search and replace, unified diff) per model. **Improve:** a harder case set (a SWE-bench Pro or Terminal-Bench style
   subset), which is paid model work and **needs authorization**. **Keep:** all current arms. **Drop:** nothing.
 
-## watch-for-risk (overseer versus none)
+## nervous-system (overseer versus none)
 
 Our task: 36 steps, 18 irreversible and 18 ordinary. `overseer` 35 of 36 (33 of 36 with the other cheap model), `none` 18 of 36.
 
@@ -155,10 +155,10 @@ unconfirmed, because no monitor is reliable on ambiguous cases.
 ## card-store
 
 No public task resembles a card store's job (correctness of store, merge and tidy). Retrieval quality over cards falls under
-context-assembler above. Our `local_card_store` passes 35 of 35. **Recommendation:** no change from public research; do not
+context-retriever above. Our `local_card_store` passes 35 of 35. **Recommendation:** no change from public research; do not
 chase vector store leaderboards without a cardinality that needs one.
 
-## choose-a-model-tier (tier selection)
+## model-tier-chooser (tier selection)
 
 - **Routing and cascades cut cost, per their authors.** [RouteLLM](https://arxiv.org/abs/2406.18665) reports cost down by over 2
   times in certain cases without hurting quality; [FrugalGPT](https://arxiv.org/abs/2305.05176) reports matching GPT-4 at up to
@@ -171,19 +171,19 @@ chase vector store leaderboards without a cardinality that needs one.
 
 ## Seats where no public evidence applies
 
-- **model-call, read-registry-freshness, assemble-the-whole.** Each checks the hub's own mechanics (a tier is
+- **model-call, research-freshness-reader, the-assembler.** Each checks the hub's own mechanics (a tier is
   answered, a date is read, a seat builds). No public task resembles them, so there is nothing to compare;
   the recorded results stand on our own cases alone.
 
 ## Mind seats with no arm yet
 
-- **reason-and-answer (the Mind itself).** Specified; implemented in Quest AI Runner, moving here. Only its tier choice is measured here.
+- **the-mind (the Mind itself).** Specified; implemented in Quest AI Runner, moving here. Only its tier choice is measured here.
 - **response-quality.** [MiniCheck](https://arxiv.org/abs/2404.10774) (EMNLP 2024) reports a 770M-parameter checker at GPT-4
   accuracy with about 400 times lower cost on LLM-AggreFact (`EV-minicheck-cost`; grade D, the authors' own model). **Add** a
   MiniCheck arm (or Vectara HHEM-2.1-Open, an existing candidate), a CPU-capable extra, about 60 lines, scored on a small
   LLM-AggreFact subset. The model download is large, not an embedding run.
-- **keep-it-generic.** The check is a scan of our own files; no outside evidence applies.
-- **take-in-the-world.** Evidence gathered so far is vendor-run (search-engine BrowseComp tables); nothing graded above D, so no arm
+- **system-integrity.** The check is a scan of our own files; no outside evidence applies.
+- **the-world.** Evidence gathered so far is vendor-run (search-engine BrowseComp tables); nothing graded above D, so no arm
   recommendation from public research this round.
 
 ## Limits of this page

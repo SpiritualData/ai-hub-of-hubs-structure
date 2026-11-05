@@ -17,7 +17,7 @@ from typing import List
 from esoi import implementation
 
 from ..recall.text_sampling import keywords_from_text
-from ..seats import ModelCall
+from ..seats import ModelPlumbing
 from .openalex import OpenAlexWorks
 
 #: Words that fill a literature request without naming its subject (on top of the stop words of ``keywords_from_text``).
@@ -50,7 +50,7 @@ def keyword_query(question: str, max_terms: int = MAX_TERMS) -> str:
     return " ".join(w for w in seen if w in kept)
 
 
-@implementation("know-the-world", "openalex_keywords")
+@implementation("the-science", "openalex_keywords")
 class OpenAlexKeywords(OpenAlexWorks):
     """OpenAlex keyword search over a deterministic keyword rewrite of the question; no model is called."""
 
@@ -58,20 +58,20 @@ class OpenAlexKeywords(OpenAlexWorks):
         return keyword_query(query) or query
 
 
-@implementation("know-the-world", "openalex_keywords_model")
+@implementation("the-science", "openalex_keywords_model")
 class OpenAlexKeywordsModel(OpenAlexWorks):
-    """OpenAlex keyword search over a keyword query a model wrote; the model comes from the ``model-call`` seat.
+    """OpenAlex keyword search over a keyword query a model wrote; the model comes from the ``model-plumbing`` seat.
 
     ``tier`` is the tier asked of the seat. A failed or empty reply falls back to the deterministic rewrite.
     """
 
-    def __init__(self, model: ModelCall, *, tier: str = "", **settings) -> None:
+    def __init__(self, model: ModelPlumbing, *, tier: str = "", **settings) -> None:
         super().__init__(**settings)
         self.model, self.tier = model, tier
 
     def prepare(self, query: str) -> str:
         try:
-            written = " ".join(re.sub(r"[\"'`]", " ", str(self.model.complete(REWRITE_PROMPT.format(question=query.strip()), self.tier) or "")).split())
+            written = " ".join(re.sub(r"[\"'`]", " ", str(self.model.ask(REWRITE_PROMPT.format(question=query.strip()), self.tier) or "")).split())
         except Exception:  # noqa: BLE001  a model failure is a fallback, never a crash
             written = ""
         return written[:MAX_QUERY_CHARS] or keyword_query(query) or query

@@ -17,9 +17,9 @@ USES = {"metric-input", "run-subset", "run-full", "prior-only", "not-useful"}
 INDEPENDENT = {"yes", "no", "vendor"}
 COVERS = {"yes", "partly", "no"}
 USABLE_PREFIXES = ("yes:", "prior-only:", "no:")
-SEATS_THAT_MUST_APPEAR = ["take-in-the-world", "remember-and-recall", "reason-and-answer", "know-the-world",
-                          "response-quality", "edit-files", "connected-system-operations", "delegated-agent-sessions", "watch-for-risk", "assemble-the-whole", "stay-current",
-                          "keep-it-generic", "connect-any-integration"]
+SEATS_THAT_MUST_APPEAR = ["the-world", "the-subconscious", "the-mind", "the-science",
+                          "response-quality", "file-editing", "connected-system-operations", "delegated-agent-sessions", "nervous-system", "the-assembler", "the-learning",
+                          "system-integrity", "the-hands"]
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
 MACHINE_PATH = re.compile(r"(/home/|/Users/|/tmp/|C:\\)")
 ID_LIKE = re.compile(r"[0-9a-f]{24}|qsk_|sk-ant-|teamdec_")      # a database id, an API key or a decision id

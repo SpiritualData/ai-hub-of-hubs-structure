@@ -11,7 +11,7 @@ import hubofhubs  # noqa: E402
 from esoi.entry import Pending  # noqa: E402
 from hubofhubs.card import Card  # noqa: E402
 from hubofhubs.cardstore import LocalCardStore  # noqa: E402
-from hubofhubs.seats import CardStore, ContextAssembling  # noqa: E402
+from hubofhubs.seats import CardStore  # noqa: E402
 
 
 @pytest.fixture()
@@ -28,29 +28,29 @@ def test_one_part_alone_is_a_ready_typed_handle_and_answers_its_own_query(store)
     assert [card.id for card in found] == ["rust-1-91"]
 
 
-def test_the_same_part_takes_other_parameters(store):
-    english = hubofhubs.run("context-assembler", "rust release", arms={"context-assembler": "bm25@analyzer=english"},
-                            provided={"card-store": store}, environ={})
-    plain = hubofhubs.run("context-assembler", "rust release", arms={"context-assembler": "bm25"}, provided={"card-store": store}, environ={})
-    assert type(english).__name__ == type(plain).__name__ == "AssembledContext"     # the variant builds its base arm with the option and answers
+def test_the_same_part_takes_other_parameters():
+    files = {"rust.md": "Rust 1.91 was released with new lints.", "py.md": "Python 3.14 was released in October."}
+    plain = hubofhubs.run("context-retriever", {"query": "rust lints", "files": files}, arms={"context-retriever": "bm25_body"}, environ={})
+    fielded = hubofhubs.run("context-retriever", {"query": "rust lints", "files": files}, arms={"context-retriever": "bm25_fielded"}, environ={})
+    assert plain and fielded and plain[0].file == fielded[0].file == "rust.md"
 
 
 def test_a_persons_own_implementation_joins_the_hub_through_typed_needs(store):
     class NewestFirstRecall:
-        def __init__(self, cards: CardStore, ranker: ContextAssembling):
-            self.cards, self.ranker = cards, ranker
+        def __init__(self, cards: CardStore):
+            self.cards = cards
 
         def recall(self, query, limit=5):
             return sorted(self.cards.search(query, limit=limit), key=lambda card: card.id, reverse=True)
 
-    hubofhubs.register("remember-and-recall", "newest_first", NewestFirstRecall)
-    found = hubofhubs.run("remember-and-recall", "released", arms={"remember-and-recall": "newest_first"},
+    hubofhubs.register("the-subconscious", "newest_first", NewestFirstRecall)
+    found = hubofhubs.run("the-subconscious", "released", arms={"the-subconscious": "newest_first"},
                           provided={"card-store": store}, environ={})
     assert [card.id for card in found] == ["rust-1-91", "py-3-14"]
 
 
 def test_the_default_recall_runs_offline_without_a_model(store):
-    found = hubofhubs.run("remember-and-recall", "released", provided={"card-store": store}, environ={})
+    found = hubofhubs.run("the-subconscious", "released", provided={"card-store": store}, environ={})
     assert {card.id for card in found} >= {"rust-1-91", "py-3-14"}
 
 

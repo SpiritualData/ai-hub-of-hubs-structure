@@ -101,7 +101,7 @@ DAILY_LIMIT_FALLBACK_MESSAGE = (
 # ---------------------------------------------------------------------------
 
 
-@implementation("know-the-world", "web_research")
+@implementation("the-science", "web_research")
 class WebResearchAdapter:
     """Snippet-first web search + focus-scored page fetch, for the orchestrator's planner.
 
@@ -109,7 +109,7 @@ class WebResearchAdapter:
     wires in and calls directly from its read-spec handling (``{"web": "<query>"}`` and
     ``{"web_page": "<url>", "focus": "..."}``).
     """
-    REQUIRES = (needs.WEB_PAGES_NETWORK, needs.HTTPX, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the search; this reads the pages
+    REQUIRES = (needs.WEB_PAGES_NETWORK, needs.HTTPX, needs.TRAFILATURA, needs.PYPDF)     # the web-search seat supplies the search; this reads the pages
 
     def __init__(
         self,

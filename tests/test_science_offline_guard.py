@@ -64,5 +64,5 @@ def test_the_entry_check_never_counts_know_the_world_ok():
     import subprocess
     root = Path(__file__).resolve().parent.parent
     done = subprocess.run([sys.executable, "-m", "esoi.entry"], cwd=root, capture_output=True, text=True, timeout=240)
-    line = [one for one in done.stdout.splitlines() if "know-the-world" in one and one.startswith(("ok", "live", "pending"))]
+    line = [one for one in done.stdout.splitlines() if "the-science" in one and one.startswith(("ok", "live", "pending"))]
     assert line and not line[0].startswith("ok"), done.stdout[-600:]

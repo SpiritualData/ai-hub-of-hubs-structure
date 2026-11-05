@@ -1,4 +1,4 @@
-"""Scores a model-call arm against its adapter contract, with a recording stand-in for the call-a-model provider (no model, no network)."""
+"""Scores a Model Plumbing arm against its adapter contract, with a recording stand-in for the vendor-model-caller provider (no model, no network)."""
 import sys
 from pathlib import Path
 
@@ -25,12 +25,19 @@ class Recorder:
         return []
 
 
+class NoChooser:
+    """The tier chooser with no measured pick: every name the case gives is the model id."""
+
+    def choose(self):
+        return {}
+
+
 def adapt(implementation, meter):
     def run(kind, args):
         provider = Recorder(args.get("reply", "ok"), args.get("fail", False))
-        arm = implementation(provider, **args.get("build", {}))
+        arm = implementation(provider, NoChooser(), **args.get("build", {}))
         try:
-            text = arm.complete(args["prompt"], *args.get("tier", ()))
+            text = arm.ask(args["prompt"], *args.get("tier", ()))
             outcome = text
         except Exception as exc:
             outcome = type(exc).__name__

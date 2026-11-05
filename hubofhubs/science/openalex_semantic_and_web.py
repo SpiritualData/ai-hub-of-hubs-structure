@@ -1,4 +1,4 @@
-"""openalex_semantic_and_web -- the ``know-the-world`` arm that asks a scholarly semantic search and a broader web search and merges them.
+"""openalex_semantic_and_web -- the ``the-science`` arm that asks a scholarly semantic search and a broader web search and merges them.
 
 Public research favours combining a semantic paper search with a broader one (``docs/explanation/what-public-research-says.md``). Both arms answer the same
 question; their ranked hit lists are interleaved (scholarly first, then web, then the second of each, ...), duplicates are dropped
@@ -46,14 +46,14 @@ def interleave(first: List[dict], second: List[dict], limit: int) -> List[dict]:
     return merged[:max(1, limit)]
 
 
-@implementation("know-the-world", "openalex_semantic_and_web")
+@implementation("the-science", "openalex_semantic_and_web")
 class SemanticAndWeb:
     """Merges a scholarly semantic search and a web search into one observation."""
-    REQUIRES = (needs.OPENALEX_NETWORK, needs.OPENALEX_API, needs.HTTPX_SCIENCE, needs.HTTPX, needs.FILELOCK, needs.TRAFILATURA, needs.PYPDF)     # the search-backend seat supplies the web search
+    REQUIRES = (needs.OPENALEX_NETWORK, needs.OPENALEX_API, needs.HTTPX_SCIENCE, needs.HTTPX, needs.FILELOCK, needs.TRAFILATURA, needs.PYPDF)     # the web-search seat supplies the web search
 
     def __init__(self, backend: SearchBackend, *, api_key: str = "", mailto: str = "", max_results: int = MAX_RESULTS,
                  scholarly=None, web=None) -> None:
-        """The needs are the ``search-backend`` seat, which the web arm runs on, and the OpenAlex key and contact address. The two
+        """The needs are the ``web-search`` seat, which the web arm runs on, and the OpenAlex key and contact address. The two
         arms are built here from them; ``scholarly`` and ``web`` hand in ready arms instead (plain collaborators, not seat needs)."""
         self.scholarly = scholarly or OpenAlexSemantic(api_key=api_key, mailto=mailto)
         self.web = web or WebResearchAdapter(backend)

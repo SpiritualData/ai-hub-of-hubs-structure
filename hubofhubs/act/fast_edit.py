@@ -204,17 +204,17 @@ class FastEditConfig:
     max_retries: int = 1
 
 
-@implementation("edit-files", "fast_edit")
+@implementation("file-editing", "fast_edit")
 class FastEditRunner(DeepRunnerBase):
     """One-call file editing behind the ``DeepRunner`` interface.
 
     Args:
         provider: the model provider. MUST be the routing provider (the router in ``hubofhubs.models``, or the consumer's equivalent), so the model id
-            routes to whichever backend owns it. The hub fills it from the call-a-model seat.
+            routes to whichever backend owns it. The hub fills it from the vendor-model-caller seat.
         writer: the ``FileWriter`` granting write access. Nothing is writable until you grant it: pass a writer, or name the one folder
             with ``root`` (``HUBOFHUBS_WRITE_ROOT``) and the hub builds a ``FolderWriter`` confined to it. No writer and no root, no runner.
         registry: resolves ``config.tier`` to a model id when the caller does not pin a model (anything
-            with ``resolve_tier(tier)``). Without one, the hub's ``TierRegistry`` over the choose-a-model-tier seat (``chooser``).
+            with ``resolve_tier(tier)``). Without one, the hub's ``TierRegistry`` over the model-tier-chooser seat (``chooser``).
     """
     REQUIRES = (needs.WRITE_ROOT,)     # one model call through the provider it is handed, and a writer in the folder you name
 
@@ -234,7 +234,7 @@ class FastEditRunner(DeepRunnerBase):
             writer = FolderWriter(root)
         if registry is None:
             if chooser is None:
-                raise ValueError("no registry: pass registry=, or let the hub fill chooser= from the choose-a-model-tier seat")
+                raise ValueError("no registry: pass registry=, or let the hub fill chooser= from the model-tier-chooser seat")
             registry = TierRegistry(chooser)
         self.provider = provider
         self.writer = writer

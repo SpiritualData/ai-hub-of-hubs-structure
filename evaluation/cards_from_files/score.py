@@ -137,7 +137,7 @@ def view_function(builder, meter, replayed=None, saved=None):
 
 def adapt(implementation, meter):
     """The harness hands a declared arm's class: a builder that needs a model is given the meter-wrapped provider the hub resolves
-    for the ``call-a-model`` seat; one that needs nothing is simply built. An arm that returns a saved build of its own (``charged()``)
+    for the ``vendor-model-caller`` seat; one that needs nothing is simply built. An arm that returns a saved build of its own (``charged()``)
     is charged that build's model calls, tokens and cost on the meter, so the balanced score carries what the build cost."""
     instance = implementation(**needs(implementation, meter))
     replayed = instance.replayed() if hasattr(instance, "replayed") else None
@@ -169,7 +169,7 @@ def needs(implementation, meter):
     if "provider" in parameters:
         from esoi import runtime
         from hubofhubs import seats  # noqa: F401  (declares the seats)
-        provider_class = runtime.resolve("call-a-model", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
+        provider_class = runtime.resolve("vendor-model-caller", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
         provider = provider_class(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
         found["provider"] = meter.wrap(provider, ("answer",))
     return found

@@ -1,4 +1,4 @@
-"""gemini -- the Gemini Google Search grounding arm of the search-backend seat (key-light fallback beyond a Gemini key).
+"""gemini -- the Gemini Google Search grounding arm of the web-search seat (key-light fallback beyond a Gemini key).
 
 Third-party libraries are loaded lazily, only when this arm runs: ``google-genai`` (extra ``gemini``) for the client and
 ``httpx`` (extra ``web``) for resolving the redirect links Gemini returns. The hub reads no environment: the key is a
@@ -33,7 +33,7 @@ def location_header(resp: Any) -> str:
         return ""
 
 
-@implementation("search-backend", "gemini")
+@implementation("web-search", "gemini")
 class GeminiGroundingBackend:
     """Searches via Gemini's native Google Search grounding tool (``google.genai``).
 

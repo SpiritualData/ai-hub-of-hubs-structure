@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import hubofhubs  # noqa: E402
 from hubofhubs.act.folder_writer import FolderWriter  # noqa: E402
 from hubofhubs.act.tier_registry import TierRegistry  # noqa: E402
-from hubofhubs.areas import ModelCalls, PromptsAsData, RegistryResearch, WorldComposition, config_share  # noqa: E402
+from hubofhubs.areas import PromptsAsData, RegistryResearch, WorldComposition, config_share  # noqa: E402
 from hubofhubs.critique.evidence_check import EvidenceCheck  # noqa: E402
 from hubofhubs.tiers import TierSelector  # noqa: E402
 
@@ -47,7 +47,7 @@ class RecordingModel:
 def test_take_in_the_world_returns_the_answer_with_its_sources_and_adds_papers_when_asked():
     class FakeTools:
         def use(self, category, request):
-            assert category == "search-backend"
+            assert category == "web-search"
             return FakeSearch().search(request)
     arm = WorldComposition(FakeTools(), FakePapers(), None, None)
     plain = arm.take_in("Rust")
@@ -57,13 +57,23 @@ def test_take_in_the_world_returns_the_answer_with_its_sources_and_adds_papers_w
 
 
 def test_model_plumbing_asks_the_model_the_tier_chooser_measured_best():
-    model = RecordingModel()
-    arm = ModelCalls(model, TierSelector())
+    from hubofhubs.models.via_provider import ViaVendor
+
+    class Vendor:
+        def __init__(self):
+            self.asked = []
+
+        def answer(self, messages, *, model, system=None, layers=None):
+            self.asked.append((messages[-1]["content"], model))
+            return "ok"
+
+    vendor = Vendor()
+    arm = ViaVendor(vendor, TierSelector())
     assert arm.ask("hello", "cheap") == "ok"
     chosen = TierSelector().choose()["cheap"]["arm"][1]
-    assert model.asked == [("hello", chosen)]
+    assert vendor.asked == [("hello", chosen)]
     arm.ask("hello", "my-own-model")                         # a name the chooser does not list is passed on as the model
-    assert model.asked[-1] == ("hello", "my-own-model")
+    assert vendor.asked[-1] == ("hello", "my-own-model")
 
 
 def test_stay_current_lists_the_areas_older_than_ninety_days():

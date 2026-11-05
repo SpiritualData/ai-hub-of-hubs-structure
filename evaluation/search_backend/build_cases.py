@@ -1,4 +1,4 @@
-"""Rebuild cases.json for the search-backend seat from the public SimpleQA test set (MIT, OpenAI simple-evals).
+"""Rebuild cases.json for the web-search seat from the public SimpleQA test set (MIT, OpenAI simple-evals).
 
     python3 evaluation/search_backend/build_cases.py [path to simple_qa_test_set.csv]
 

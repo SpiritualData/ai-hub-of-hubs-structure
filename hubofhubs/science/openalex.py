@@ -1,4 +1,4 @@
-"""openalex -- the OpenAlex arm of the ``know-the-world`` seat: scholarly works search and a DOI lookup.
+"""openalex -- the OpenAlex arm of the ``the-science`` seat: scholarly works search and a DOI lookup.
 
 Facts this relies on, each read from OpenAlex's own documentation on 2026-10-30 (the pages end in ``.md`` for raw text):
   * Base ``https://api.openalex.org``. A key is sent as ``Authorization: Bearer <key>`` or ``?api_key=`` (identical).
@@ -159,7 +159,7 @@ def observation_of(result: WorksResult, *, abstract_chars: int = 700) -> Observa
     return Observation(kind="query", rel_path=locator, locator=result.source, text="\n".join(lines), hits=hits)
 
 
-@implementation("know-the-world", "openalex")
+@implementation("the-science", "openalex")
 class OpenAlexWorks:
     """Searches the scholarly literature through OpenAlex and returns works a reader can cite.
 
@@ -203,7 +203,7 @@ class OpenAlexWorks:
         """The text actually sent as the search; the base arm sends the query as given."""
         return query
 
-    # -- the know-the-world seat -------------------------------------------------------------------------------------
+    # -- the the-science seat -------------------------------------------------------------------------------------
 
     def describe(self) -> str:
         return "scholarly works search (OpenAlex, " + ("with a key" if self.api_key else "no key, small daily allowance") + ")"

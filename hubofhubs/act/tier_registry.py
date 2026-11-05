@@ -1,4 +1,4 @@
-"""A ``TierResolving`` over the choose-a-model-tier seat: a tier name becomes the model the chooser measured best for it."""
+"""A ``TierResolving`` over the model-tier-chooser seat: a tier name becomes the model the chooser measured best for it."""
 from ..seats import TierSelection
 
 #: the names a runner uses for a tier, and the chooser's tier each one means

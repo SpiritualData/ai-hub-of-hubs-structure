@@ -1,4 +1,4 @@
-"""openalex_semantic -- the OpenAlex arm of ``know-the-world`` that matches by meaning instead of keywords.
+"""openalex_semantic -- the OpenAlex arm of ``the-science`` that matches by meaning instead of keywords.
 
 Fact this relies on, read from OpenAlex's own documentation on 2026-10-31 (https://help.openalex.org/api/semantic-search.md and
 https://help.openalex.org/api/searching.md): ``GET /works?search.semantic=<text>`` embeds the title and abstract of every work with
@@ -19,7 +19,7 @@ MAX_QUERY_CHARS = 2000
 MIN_INTERVAL_SECONDS = 2.0   # documented limit is 1 request a second; a 40-case run at 1 s was answered with HTTP 429 for 11 cases, so the arm waits 2 s
 
 
-@implementation("know-the-world", "openalex_semantic")
+@implementation("the-science", "openalex_semantic")
 class OpenAlexSemantic(OpenAlexWorks):
     """Searches the scholarly literature by meaning (OpenAlex semantic search) and returns works a reader can cite."""
 

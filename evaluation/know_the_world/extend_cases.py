@@ -1,4 +1,4 @@
-"""Rebuild cases.json for the 150 questions of the know-the-world seat (the 40 of ``build_cases.py`` and 110 more).
+"""Rebuild cases.json for the 150 questions of the the-science seat (the 40 of ``build_cases.py`` and 110 more).
 
     python3 evaluation/know_the_world/extend_cases.py
 

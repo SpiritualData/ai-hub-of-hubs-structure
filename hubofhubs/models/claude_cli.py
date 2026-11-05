@@ -1,4 +1,4 @@
-"""ClaudeCliProvider: a KEYLESS ``call-a-model`` arm that drives the local ``claude`` CLI headless (``claude -p``).
+"""ClaudeCliProvider: a KEYLESS ``vendor-model-caller`` arm that drives the local ``claude`` CLI headless (``claude -p``).
 
 The Anthropic arm calls the SDK and needs an API key (per-token billing). This arm shells out to the installed ``claude``
 binary in print mode, so planning and answering run on the operator's Claude Code subscription login: no key, no per-token
@@ -369,12 +369,12 @@ class UsageLimitError(RuntimeError):
         self.limit = limit
 
 
-@implementation("call-a-model", "claude_cli")
+@implementation("vendor-model-caller", "claude_cli")
 class ClaudeCliProvider(ModelProviderBase):
     """Keyless ModelProvider backed by the ``claude`` CLI (subscription login).
 
     Drop-in for the Anthropic arm when the machine has Claude Code logged in but no API key. The default arm of the hub's
-    ``call-a-model`` seat, for every consumer that does not name another.
+    ``vendor-model-caller`` seat, for every consumer that does not name another.
     """
     REQUIRES = (needs.CLAUDE_BINARY,)
 

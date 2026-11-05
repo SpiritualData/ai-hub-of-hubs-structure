@@ -37,7 +37,7 @@ def scale(values: Dict[int, float]) -> Dict[int, float]:
     return {i: (v - low) / span for i, v in values.items()}
 
 
-@implementation("retrieve-context", "hybrid_rrf")
+@implementation("context-retriever", "hybrid_rrf")
 class HybridRrf(Retriever):
     """BM25F and the dense arm fused by reciprocal rank (k = 60): a unit either one ranks well comes up, one both rank well comes first."""
     REQUIRES = (needs.FASTEMBED_LOCAL, needs.FASTEMBED_MODEL, needs.NUMPY)
@@ -103,7 +103,7 @@ class Candidates:
                 math.log(u.tokens) / math.log(2000), 1.0 if u.header else 0.0])
 
 
-@implementation("retrieve-context", "feature_rerank")
+@implementation("context-retriever", "feature_rerank")
 class FeatureRerank(Retriever):
     """The top 100 of the hybrid reranked by a fixed linear combination of eleven local features (fused rank, BM25, cosine, term cover, name
     and path matches, import and co-change neighbours of the best hits, recency, length), written before scoring."""
@@ -129,7 +129,7 @@ class FeatureRerank(Retriever):
         return self.hybrid.index_bytes()
 
 
-@implementation("retrieve-context", "feature_rerank_no_priors")
+@implementation("context-retriever", "feature_rerank_no_priors")
 class FeatureRerankNoPriors(FeatureRerank):
     """The same reranker with the link, co-change and recency features switched off: the ablation of the non-text priors."""
     weights = RERANK_WEIGHTS[:6] + (0.0, 0.0, 0.0) + RERANK_WEIGHTS[9:]

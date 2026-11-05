@@ -292,7 +292,7 @@ def route_to_matcher(pattern: str) -> Tuple[re.Pattern, Tuple[str, ...]]:
 # Provenance: was this address in material the turn actually had?
 # ---------------------------------------------------------------------------------------------
 
-EVIDENCE_URL_RE = re.compile(r"(?:https?://|www\.)[^\s<>()\[\]\"'`]+", re.IGNORECASE)
+EVIDENCE_URL_RE = re.compile(r"(?:https?://|www\.)[^\s<>\[\]\"'`]+", re.IGNORECASE)      # parentheses stay: trim_url keeps balanced ones
 
 
 GOOGLE_DOC_HOSTS = ("docs.google.com", "drive.google.com", "sheets.google.com", "slides.google.com")

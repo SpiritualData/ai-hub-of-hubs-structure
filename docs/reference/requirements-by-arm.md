@@ -14,13 +14,6 @@ at the repository root.
 
 | Part and arm | Environment variables | Accounts and APIs | Python (extra of `hubofhubs`) | Programs, services, downloads | Can run out of process |
 |---|---|---|---|---|---|
-| Assembler, One-call assembly of the whole hub (`assemble-the-whole:zero_config`) | none | none | none | none | no |
-| Vendor Model Caller, Anthropic provider (`call-a-model:anthropic`) | none | Anthropic (`ANTHROPIC_API_KEY`) | `anthropic` via extra `anthropic` | none | no |
-| Vendor Model Caller, Claude Code CLI (`call-a-model:claude_cli`) | none | none | none | program `claude` | no |
-| Vendor Model Caller, DeepSeek provider (`call-a-model:deepseek`) | `DEEPSEEK_BASE_URL` (optional) | DeepSeek (`DEEPSEEK_API_KEY`) | `openai` via extra `openai` | none | no |
-| Vendor Model Caller, Gemini provider (`call-a-model:gemini`) | none | Gemini (`GOOGLE_API_KEY` or `GEMINI_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini` | none | no |
-| Vendor Model Caller, Multi-provider router (`call-a-model:multi_provider`) | none | none | none | none | no |
-| Vendor Model Caller, OpenAI provider (`call-a-model:openai`) | `OPENAI_API_KEY` (secret)<br>`OPENAI_BASE_URL` | OpenAI | `openai` via extra `openai` | none | no |
 | Card Store, Local card store (`card-store:local_card_store`) | none | none | none | none | no |
 | Cards From Files, Cochange topic cards (`cards-from-files:cochange_topic_cards`) | none | none | none | none | no |
 | Cards From Files, File plus topic cards (`cards-from-files:file_plus_topic_cards`) | none | none | none | none | no |
@@ -29,66 +22,84 @@ at the repository root.
 | Cards From Files, Model-written topic cards (`cards-from-files:llm_topic_cards`) | none | none | none | none | no |
 | Cards From Files, One card per file (`cards-from-files:per_file_symbols`) | none | none | none | none | no |
 | Cards From Files, Topic cards replay (`cards-from-files:topic_cards_replay`) | none | none | none | none | no |
-| Model Tier Chooser, Passing work per cost selector (`choose-a-model-tier:tier_selector`) | none | none | none | none | no |
 | Connected System Operations, One-call MCP write (`connected-system-operations:mcp_operations`) | none | none | `mcp` via extra `mcp` | none | no |
-| Context Assembler, BM25 over file text (`context-assembler:bm25`) | none | none | `bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | none | no |
-| Context Assembler, Composite retrieval (`context-assembler:composite`) | none | none | none | none | no |
-| Context Assembler, Files through the context retriever (`context-assembler:file_retrieval`) | none | none | none | none | no |
-| Context Assembler, Hybrid fusion (`context-assembler:hybrid`) | none | none | `qdrant_client` via extra `qdrant` (optional)<br>`fastembed` via extra `qdrant` (optional)<br>`bm25s` via extra `bm25`<br>`Stemmer` via extra `bm25` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional)<br>service Qdrant (`QDRANT_URL`, default http://localhost:6333) (optional) | no |
-| Context Assembler, Vector search (`context-assembler:vector`) | none | Voyage AI (`VOYAGE_API_KEY`) (optional) | `qdrant_client` via extra `qdrant` (optional)<br>`fastembed` via extra `qdrant` (optional)<br>`voyageai` via extra `voyage` (optional) | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional)<br>service Qdrant (`QDRANT_URL`, default http://localhost:6333) (optional) | no |
+| Context Intake, Merge into one labelled view (`context-intake:one_view`) | none | none | none | none | no |
+| Context Retriever, Hybrid with soft affinity to the request's focus (`context-retriever:abstaining_affinity`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Hybrid with recency, affinity and supersession (`context-retriever:abstaining_aware`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Hybrid behind a hard focus fence (`context-retriever:abstaining_fenced`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Hybrid that can say nothing (`context-retriever:abstaining_hybrid`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Learned reranker that can say nothing (`context-retriever:abstaining_learned`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Hybrid that prefers newer items (`context-retriever:abstaining_recency`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, BM25 over chunk text (`context-retriever:bm25_body`) | none | none | none | none | no |
+| Context Retriever, BM25F over path, title and body (`context-retriever:bm25_fielded`) | none | none | none | none | no |
+| Context Retriever, BM25F over whole files (`context-retriever:bm25_whole_files`) | none | none | none | none | no |
+| Context Retriever, Dense bge-small vectors (`context-retriever:dense_bge_small`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Local feature reranker (`context-retriever:feature_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Feature reranker without priors (`context-retriever:feature_rerank_no_priors`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, BM25F and dense by rank fusion (`context-retriever:hybrid_rrf`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Learned reranker (`context-retriever:learned_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Scan of the live sources (`context-retriever:live_scan`) | none | none | none | none | no |
+| Context Retriever, Model reranker (`context-retriever:llm_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Latent semantic index (`context-retriever:lsi`) | none | none | `sklearn` via extra `retrieval` | none | no |
+| Critical Thinking, Target, goal and quality in order (`critical-thinking:composition`) | none | none | none | none | no |
 | Delegated Agent Sessions, Agent Client Protocol runner (`delegated-agent-sessions:acp_deep_runner`) | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, one shot (`delegated-agent-sessions:subprocess_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
-| File Editing, One-call file edit (`edit-files:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
+| File Editing, One-call file edit (`file-editing:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
+| Goal Completion, Evidence standard (`goal-completion:evidence_standard`) | none | none | none | none | no |
+| Goal Completion, Outcome is not empty (`goal-completion:nonempty`) | none | none | none | none | no |
 | Higher Mind, Objectives, memory and guidance for one request (`higher-mind:composition`) | none | none | none | none | no |
+| Intake Sources, Folder of queued requests (`intake-sources:folder_queue`) | none | none | none | none | no |
 | Internal Context, Declared sources, cards kept and built from files (`internal-context:composition`) | none | none | none | none | no |
-| Integrity, Audit of vendor wording, staleness and configuration (`keep-it-generic:prompts_as_data`) | none | none | none | none | no |
-| Science, OpenAlex keyword search (`know-the-world:openalex`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
-| Science, OpenAlex keywords, rule rewrite (`know-the-world:openalex_keywords`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
-| Science, OpenAlex keywords, model rewrite (`know-the-world:openalex_keywords_model`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
-| Science, OpenAlex semantic search (`know-the-world:openalex_semantic`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
-| Science, Semantic and web paper search (`know-the-world:openalex_semantic_and_web`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional)<br>`trafilatura` via extra `pages` (optional)<br>`pypdf` via extra `pages` (optional) | none | no |
-| Science, Web research (`know-the-world:web_research`) | none | none | `httpx` via extra `web`<br>`trafilatura` via extra `pages` (optional)<br>`pypdf` via extra `pages` (optional) | none | no |
-| Model Call, Built on the vendor model caller (`model-call:via_call_a_model`) | none | none | none | none | no |
-| Model Plumbing, Answers through the measured model for the tier (`model-plumbing:composition`) | none | none | none | none | no |
-| Research Freshness Reader, Registry date scan (`read-registry-freshness:registry_scan`) | none | none | none | none | no |
-| Mind, The four parts of the Mind in order (`reason-and-answer:composition`) | none | none | none | none | no |
-| Subconscious, Cards drawn by relevance from a store (`remember-and-recall:card_recall`) | none | none | none | none | no |
+| Judgment Calls, Ask about every risk (`judgment-calls:ask_every_time`) | none | none | none | none | no |
+| Judgment Calls, Per-person severity policy (`judgment-calls:severity_policy`) | none | none | none | none | no |
+| Metric Translation, Goal record with default budget (`metric-translation:goal_record`) | none | none | none | none | no |
+| Model Plumbing, Tier chooser then vendor (`model-plumbing:via_vendor`) | none | none | none | none | no |
+| Model Tier Chooser, Passing work per cost selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
+| Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
+| Nervous System, Digest-driven overseer (`nervous-system:overseer`) | none | none | none | none | no |
+| Nervous System, Gate then overseer (`nervous-system:two_stage`) | none | none | none | none | no |
+| Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
+| Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |
+| File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
+| Request Intake, Every declared source (`request-intake:every_declared_source`) | none | none | none | none | no |
+| Request Planner, Split and route by cues (`request-planner:cue_router`) | none | none | none | none | no |
+| Request Planner, One piece, no worker (`request-planner:one_piece`) | none | none | none | none | no |
+| Research Freshness Reader, Registry date scan (`research-freshness-reader:registry_scan`) | none | none | none | none | no |
 | Response Quality, Links held to their evidence (`response-quality:evidence_check`) | none | none | none | none | no |
-| Context Retriever, Hybrid with soft affinity to the request's focus (`retrieve-context:abstaining_affinity`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Hybrid with recency, affinity and supersession (`retrieve-context:abstaining_aware`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Hybrid behind a hard focus fence (`retrieve-context:abstaining_fenced`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Hybrid that can say nothing (`retrieve-context:abstaining_hybrid`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Learned reranker that can say nothing (`retrieve-context:abstaining_learned`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Hybrid that prefers newer items (`retrieve-context:abstaining_recency`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, BM25 over chunk text (`retrieve-context:bm25_body`) | none | none | none | none | no |
-| Context Retriever, BM25F over path, title and body (`retrieve-context:bm25_fielded`) | none | none | none | none | no |
-| Context Retriever, BM25F over whole files (`retrieve-context:bm25_whole_files`) | none | none | none | none | no |
-| Context Retriever, Dense bge-small vectors (`retrieve-context:dense_bge_small`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Local feature reranker (`retrieve-context:feature_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Feature reranker without priors (`retrieve-context:feature_rerank_no_priors`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, BM25F and dense by rank fusion (`retrieve-context:hybrid_rrf`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Learned reranker (`retrieve-context:learned_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Scan of the live sources (`retrieve-context:live_scan`) | none | none | none | none | no |
-| Context Retriever, Model reranker (`retrieve-context:llm_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
-| Context Retriever, Latent semantic index (`retrieve-context:lsi`) | none | none | `sklearn` via extra `retrieval` | none | no |
-| Web Search, Brave Search API (`search-backend:brave`) | none | Brave Search (`BRAVE_SEARCH_API_KEY` or `BRAVE_API_KEY`) | `httpx` via extra `web` | none | no |
-| Web Search, Gemini grounding (`search-backend:gemini`) | none | Gemini (`GEMINI_API_KEY` or `GOOGLE_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional) | none | no |
-| Web Search, Provider-native search (`search-backend:provider`) | none | none | none | none | no |
-| Web Search, SearXNG metasearch (`search-backend:searxng`) | `SEARXNG_URL` | none | `httpx` via extra `web` | service SearXNG (`SEARXNG_URL`) | no |
-| Web Search, Serper Google search (`search-backend:serper`) | none | Serper (`SERPER_API_KEY`) | `httpx` via extra `web` | none | no |
-| Web Search, Tavily search API (`search-backend:tavily`) | none | Tavily (`TAVILY_API_KEY` or `WEB_SEARCH_API_KEY`) | `httpx` via extra `web` | none | no |
-| Learning, Stale areas from the registry dates (`stay-current:registry_research`) | none | none | none | none | no |
-| World, Search and papers through the tools (`take-in-the-world:composition`) | none | none | none | none | no |
+| Response Writer, Cited results (`response-writer:cited_results`) | none | none | none | none | no |
+| Response Writer, Model synthesis (`response-writer:model_synthesis`) | none | none | none | none | no |
+| Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
+| Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |
 | Consciousness, Representative, priorities and feedback (`the-consciousness:composition`) | none | none | none | none | no |
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
+| Learning, Stale areas from the registry dates (`the-learning:registry_research`) | none | none | none | none | no |
+| Mind, The four parts of the Mind in order (`the-mind:composition`) | none | none | none | none | no |
+| Representatives, Declared authority (`the-representatives:declared_authority`) | none | none | none | none | no |
+| Science, OpenAlex keyword search (`the-science:openalex`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
+| Science, OpenAlex keywords, rule rewrite (`the-science:openalex_keywords`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
+| Science, OpenAlex keywords, model rewrite (`the-science:openalex_keywords_model`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
+| Science, OpenAlex semantic search (`the-science:openalex_semantic`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
+| Science, Semantic and web paper search (`the-science:openalex_semantic_and_web`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional)<br>`trafilatura` via extra `pages` (optional)<br>`pypdf` via extra `pages` (optional) | none | no |
+| Science, Web research (`the-science:web_research`) | none | none | `httpx` via extra `web`<br>`trafilatura` via extra `pages` (optional)<br>`pypdf` via extra `pages` (optional) | none | no |
 | The Self, Responds through every container (`the-self:composition`) | none | none | none | none | no |
-| Critical Thinking, Target, goal and quality in order (`think-critically:composition`) | none | none | none | none | no |
-| Tools, Categories of tools (`use-tools:composition`) | none | none | none | none | no |
-| Nervous System, Consent gate (`watch-for-risk:consent_gate`) | none | none | none | none | no |
-| Nervous System, Digest-driven overseer (`watch-for-risk:overseer`) | none | none | none | none | no |
-| Nervous System, Gate then overseer (`watch-for-risk:two_stage`) | none | none | none | none | no |
+| Subconscious, Cards drawn by relevance from a store (`the-subconscious:card_recall`) | none | none | none | none | no |
+| Tools, Categories of tools (`the-tools:composition`) | none | none | none | none | no |
+| World, Search and papers through the tools (`the-world:composition`) | none | none | none | none | no |
+| Vendor Model Caller, Anthropic provider (`vendor-model-caller:anthropic`) | none | Anthropic (`ANTHROPIC_API_KEY`) | `anthropic` via extra `anthropic` | none | no |
+| Vendor Model Caller, Claude Code CLI (`vendor-model-caller:claude_cli`) | none | none | none | program `claude` | no |
+| Vendor Model Caller, DeepSeek provider (`vendor-model-caller:deepseek`) | `DEEPSEEK_BASE_URL` (optional) | DeepSeek (`DEEPSEEK_API_KEY`) | `openai` via extra `openai` | none | no |
+| Vendor Model Caller, Gemini provider (`vendor-model-caller:gemini`) | none | Gemini (`GOOGLE_API_KEY` or `GEMINI_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini` | none | no |
+| Vendor Model Caller, Multi-provider router (`vendor-model-caller:multi_provider`) | none | none | none | none | no |
+| Vendor Model Caller, OpenAI provider (`vendor-model-caller:openai`) | `OPENAI_API_KEY` (secret)<br>`OPENAI_BASE_URL` | OpenAI | `openai` via extra `openai` | none | no |
+| Web Search, Brave Search API (`web-search:brave`) | none | Brave Search (`BRAVE_SEARCH_API_KEY` or `BRAVE_API_KEY`) | `httpx` via extra `web` | none | no |
+| Web Search, Gemini grounding (`web-search:gemini`) | none | Gemini (`GEMINI_API_KEY` or `GOOGLE_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional) | none | no |
+| Web Search, Provider-native search (`web-search:provider`) | none | none | none | none | no |
+| Web Search, SearXNG metasearch (`web-search:searxng`) | `SEARXNG_URL` | none | `httpx` via extra `web` | service SearXNG (`SEARXNG_URL`) | no |
+| Web Search, Serper Google search (`web-search:serper`) | none | Serper (`SERPER_API_KEY`) | `httpx` via extra `web` | none | no |
+| Web Search, Tavily search API (`web-search:tavily`) | none | Tavily (`TAVILY_API_KEY` or `WEB_SEARCH_API_KEY`) | `httpx` via extra `web` | none | no |
+| Work Delegation, Route to Tools and Science (`work-delegation:to_tools`) | none | none | none | none | no |
 
 ### External services and accounts
 
@@ -102,5 +113,4 @@ at the repository root.
 | OpenAlex | `OPENALEX_API_KEY` | works | works with no key; a free key gives 10 times the keyless daily budget (each free account gets $1 a day, key works once its email is verified) | 10 requests per second with no key, 30 with a free key; semantic search 1 request per second; the daily budget resets at midnight UTC | [sign up](https://help.openalex.org/how-to-use-the-api/rate-limits-and-authentication), [docs](https://help.openalex.org/how-to-use-the-api/rate-limits-and-authentication), [pricing](https://help.openalex.org/how-to-use-the-api/rate-limits-and-authentication) | 2026-10-31 |
 | Serper | `SERPER_API_KEY` | needs the key | 2,500 free queries on signup, no credit card required | not stated here | [sign up](https://serper.dev/), [docs](https://serper.dev/), [pricing](https://serper.dev/) | 2026-10-31 |
 | Tavily | `TAVILY_API_KEY` or `WEB_SEARCH_API_KEY` | needs the key | 1,000 free API credits every month | not stated here | [sign up](https://app.tavily.com/), [docs](https://docs.tavily.com/), [pricing](https://docs.tavily.com/documentation/api-credits) | 2026-10-31 |
-| Voyage AI | `VOYAGE_API_KEY` | needs the key | new accounts get 200 million free tokens on the voyage-4 family; older models get none | not stated here | [sign up](https://dashboard.voyageai.com/), [docs](https://docs.voyageai.com/), [pricing](https://docs.voyageai.com/docs/pricing) | 2026-10-31 |
 <!-- requirements:end -->

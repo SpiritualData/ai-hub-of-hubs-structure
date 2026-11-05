@@ -1,5 +1,5 @@
 {
- "edit-files:fast_edit": {
+ "file-editing:fast_edit": {
   "executed": 200,
   "statements": 227,
   "percent": 88.1
@@ -9,22 +9,22 @@
   "statements": 87,
   "percent": 89.7
  },
- "call-a-model:anthropic": {
+ "vendor-model-caller:anthropic": {
   "executed": 26,
   "statements": 104,
   "percent": 25.0
  },
- "call-a-model:gemini": {
+ "vendor-model-caller:gemini": {
   "executed": 31,
   "statements": 133,
   "percent": 23.3
  },
- "call-a-model:multi_provider": {
+ "vendor-model-caller:multi_provider": {
   "executed": 28,
   "statements": 109,
   "percent": 25.7
  },
- "call-a-model:openai": {
+ "vendor-model-caller:openai": {
   "executed": 23,
   "statements": 64,
   "percent": 35.9
@@ -39,27 +39,27 @@
   "statements": 95,
   "percent": 80.0
  },
- "know-the-world:web_research": {
+ "the-science:web_research": {
   "executed": 107,
   "statements": 272,
   "percent": 39.3
  },
- "choose-a-model-tier:tier_selector": {
+ "model-tier-chooser:tier_selector": {
   "executed": 129,
   "statements": 132,
   "percent": 97.7
  },
- "search-backend:gemini": {
+ "web-search:gemini": {
   "executed": 19,
   "statements": 153,
   "percent": 12.4
  },
- "search-backend:tavily": {
+ "web-search:tavily": {
   "executed": 65,
   "statements": 247,
   "percent": 26.3
  },
- "read-registry-freshness:registry_scan": {
+ "research-freshness-reader:registry_scan": {
   "executed": 49,
   "statements": 51,
   "percent": 96.1
@@ -69,7 +69,7 @@
   "statements": 8747,
   "percent": 63.8
  },
- "watch-for-risk:overseer": {
+ "nervous-system:overseer": {
   "executed": 24,
   "statements": 120,
   "percent": 20.0

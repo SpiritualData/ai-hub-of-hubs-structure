@@ -1,4 +1,4 @@
-# search-backend: does a top-5 hit come from the source that holds the answer?
+# web-search: does a top-5 hit come from the source that holds the answer?
 
 The seat runs one web search and returns hits. This component asks 40 factual questions and passes an arm when one of its top
 five hits comes from a page or site that the dataset names as the question's supporting source.

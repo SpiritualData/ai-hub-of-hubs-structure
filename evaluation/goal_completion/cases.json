@@ -1,0 +1,198 @@
+[
+ {
+  "id": "goal-gap-known-total",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": 200,
+     "total": 344,
+     "unit": "entries",
+     "next_skip": 200
+    }
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "goal-covered-total",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": 344,
+     "total": 344
+    }
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-complete-flag-wins",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": 200,
+     "total": 344,
+     "complete": true
+    }
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-capped-unknown-size",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": 200,
+     "capped": true
+    }
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "goal-nothing-declared",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries."
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-malformed-string-count",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": "a"
+    }
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-malformed-negative-count",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": -1
+    }
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-malformed-bool-count",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": {
+     "processed": true
+    }
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-malformed-not-a-mapping",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "Processed the entries.",
+    "coverage": "x"
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-empty-outcome",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": ""
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "goal-refused",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": {
+    "text": "",
+    "refused": "authority"
+   }
+  },
+  "expect": false
+ },
+ {
+  "id": "goal-plain-text-outcome",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "every entry was processed",
+   "outcome": "Processed the entries."
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-requirement-held",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "the work is finished; the outcome must contain: notes.md; the tests",
+   "outcome": {
+    "text": "Updated notes.md and ran the tests."
+   }
+  },
+  "expect": true
+ },
+ {
+  "id": "goal-requirement-missing",
+  "kind": "outcome",
+  "args": {
+   "goal": "process every entry",
+   "done_standard": "the work is finished; the outcome must contain: notes.md; the tests",
+   "outcome": {
+    "text": "Updated notes.md."
+   }
+  },
+  "expect": false
+ }
+]

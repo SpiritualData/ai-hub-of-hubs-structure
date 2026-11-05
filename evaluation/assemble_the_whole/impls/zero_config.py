@@ -61,7 +61,7 @@ class StubModel:
 
 def one_line(kind, args):
     """The one function: what ``needs`` reports for an id, and a real zero-configuration ``run``. No model call."""
-    provided = {"call-a-model": StubModel()} if args.get("provided_model") else None
+    provided = {"vendor-model-caller": StubModel()} if args.get("provided_model") else None
     if kind == "needs":
         lines = hubofhubs.needs(args["seat"], arms=args.get("arms"), provided=provided, environ=args.get("environ", {}))
         names = sorted(set(re.findall(r"\b[A-Z][A-Z0-9]*_[A-Z0-9_]*KEY\b", " ".join(lines))))

@@ -1,7 +1,6 @@
 """Composite ContextAssembler: the hub's ``context-assembler`` arm that runs several assemblers as one. Standard library plus esoi."""
 import inspect
 from typing import Any, Dict, List, Optional
-from esoi import implementation
 from .. import arm_needs as needs
 
 
@@ -48,7 +47,6 @@ def find_assembler(assembler: Any, predicate: Any) -> Optional[Any]:
     return None
 
 
-@implementation("context-assembler", "composite")
 class CompositeContextAssembler:
     """Wraps multiple ContextAssembler instances into one.
 

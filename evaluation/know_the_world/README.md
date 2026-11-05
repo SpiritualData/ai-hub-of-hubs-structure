@@ -1,4 +1,4 @@
-# know-the-world: is the paper that answers a research question among what the arm returns?
+# the-science: is the paper that answers a research question among what the arm returns?
 
 The seat looks up what the world says and returns observations a reader can cite. This component asks 150 literature-search
 questions and passes an arm when the gold paper is among the observations it returns. It is one component with one number: accuracy,
@@ -31,7 +31,7 @@ summary mentions the title without the paper being one of its hits (counted as f
 
 | Arm | Runs on | Cost counted |
 |---|---|---|
-| web_research | the search-backend seat's `gemini` arm (Gemini 2.5 Flash-Lite with Google Search grounding); page fetching is not used | tokens at $0.10 in, $0.40 out per million; grounded prompts are free up to 1,500 a day (Google pricing page, read 2026-10-31) |
+| web_research | the web-search seat's `gemini` arm (Gemini 2.5 Flash-Lite with Google Search grounding); page fetching is not used | tokens at $0.10 in, $0.40 out per million; grounded prompts are free up to 1,500 a day (Google pricing page, read 2026-10-31) |
 | openalex | OpenAlex works search, no key and no contact address | $0 to us: no model is called; OpenAlex bills a search about $0.001 against its small keyless daily allowance (its documentation, read 2026-10-30, per `docs/explanation/science-search.md`) |
 | openalex_semantic | OpenAlex semantic search (`search.semantic`, GTE Large EN embeddings of titles and abstracts, computed by OpenAlex; we embed nothing), question sent whole | same as `openalex`; the documented limit is 1 request a second, so the arm waits 2 s between calls (1 s drew HTTP 429 on 11 of 40 cases in the first run, whose row is invalid and is superseded by the rerun) (https://help.openalex.org/api/semantic-search.md, read 2026-10-31) |
 | openalex_keywords | the same keyword search after a deterministic, model-free rewrite of the question into at most 5 specific terms | $0 model cost, search as `openalex` |

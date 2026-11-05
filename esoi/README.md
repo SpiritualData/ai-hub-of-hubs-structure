@@ -8,7 +8,7 @@ Opportunities: Any product that needs an AI grounded in a person or team's own g
 
 ## How the solutions fit together
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and reaches what is outside the system through World. The Self then asks Consciousness to learn from the person's feedback.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and asks World how current the research is. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback.
 
 ## Diagram
 
@@ -16,7 +16,7 @@ An arrow runs from the solution that provides to the solution that builds on it;
 
 ```mermaid
 flowchart LR
-    s0["World<br/><i>take-in-the-world</i>"]
+    s0["World<br/><i>the-world</i>"]
     s1["The Self<br/><i>the-self</i>"]
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
@@ -31,23 +31,23 @@ flowchart LR
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| World | `take-in-the-world` | `hubofhubs.run("take-in-the-world", 'latest Rust release')` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
+| World | `the-world` | `hubofhubs.run("the-world", 'latest Rust release')` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
 | The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency, Integrated efficiency |
-| Body | `the-body` | `hubofhubs.run("the-body", {'person': ''})` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
+| Body | `the-body` | `hubofhubs.run("the-body", '')` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | `hubofhubs.run("the-intelligence", ...)` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
-| Consciousness | `the-consciousness` | `hubofhubs.run("the-consciousness", {'person': ''})` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
+| Consciousness | `the-consciousness` | `hubofhubs.run("the-consciousness", '')` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
 
 ## Problems and ideals
 
 **Problems**
 
-- Every team re-researches and re-glues the same AI parts, and the private copies drift apart. (`HP1`)
-- Lists of hubs say what exists, not which works best or fits together. (`HP2`)
-- One hub's outage, price change or shutdown stops the system, and switching needs code changes. (`HP4`)
-- Parts that are best alone can fail when assembled, and nobody tests the whole. (`HP5`)
-- The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts. (`hprob-system-form-wired-to-one-product`)
-- A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer. (`hprob-one-request-answered-from-too-much-or-too-little`)
-- An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked. (`hprob-ai-treats-every-person-alike`)
+- Parts re-glued by every team (`HP1`): Every team re-researches and re-glues the same AI parts, and the private copies drift apart.
+- No evaluation of the parts (`HP2`): Lists of hubs say what exists, not which works best or fits together.
+- One hub outage stops the system (`HP4`): One hub's outage, price change or shutdown stops the system, and switching needs code changes.
+- The whole is never tested (`HP5`): Parts that are best alone can fail when assembled, and nobody tests the whole.
+- Form wired to one product (`hprob-system-form-wired-to-one-product`): The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts.
+- Too much or too little context (`hprob-one-request-answered-from-too-much-or-too-little`): A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer.
+- Every person treated alike (`hprob-ai-treats-every-person-alike`): An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked.
 
 **Ideals**
 
@@ -60,7 +60,7 @@ flowchart LR
 
 ## Metrics and their leaders
 
-- Task pass rate and cost per passing task (`metric-take-in-the-world`)
+- Task pass rate and cost per passing task (`metric-the-world`)
 - The assembled whole answers a real request (`metric-the-self`)
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
@@ -85,13 +85,13 @@ flowchart LR
 
 ### Problems
 
-- Every team re-researches and re-glues the same AI parts, and the private copies drift apart. (`HP1`)
-- Lists of hubs say what exists, not which works best or fits together. (`HP2`)
-- One hub's outage, price change or shutdown stops the system, and switching needs code changes. (`HP4`)
-- Parts that are best alone can fail when assembled, and nobody tests the whole. (`HP5`)
-- The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts. (`hprob-system-form-wired-to-one-product`)
-- A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer. (`hprob-one-request-answered-from-too-much-or-too-little`)
-- An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked. (`hprob-ai-treats-every-person-alike`)
+- Parts re-glued by every team (`HP1`): Every team re-researches and re-glues the same AI parts, and the private copies drift apart.
+- No evaluation of the parts (`HP2`): Lists of hubs say what exists, not which works best or fits together.
+- One hub outage stops the system (`HP4`): One hub's outage, price change or shutdown stops the system, and switching needs code changes.
+- The whole is never tested (`HP5`): Parts that are best alone can fail when assembled, and nobody tests the whole.
+- Form wired to one product (`hprob-system-form-wired-to-one-product`): The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts.
+- Too much or too little context (`hprob-one-request-answered-from-too-much-or-too-little`): A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer.
+- Every person treated alike (`hprob-ai-treats-every-person-alike`): An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked.
 
 ### Ideals
 
@@ -106,7 +106,7 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| World | `take-in-the-world` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
+| World | `the-world` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
 | The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency, Integrated efficiency |
 | Body | `the-body` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
@@ -122,11 +122,11 @@ flowchart LR
 | One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_intelligence](the_intelligence/README.md) |
 | Representative, priorities and feedback | `the-consciousness:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_consciousness](the_consciousness/README.md) |
 | The parts of the system | `the-self:parts` |  | [the_self](the_self/README.md) |
-| Search and papers through the tools | `take-in-the-world:composition` | [hubofhubs/areas.py](../hubofhubs/areas.py) | [the_world](the_world/README.md) |
+| Search and papers through the tools | `the-world:composition` | [hubofhubs/areas.py](../hubofhubs/areas.py) | [the_world](the_world/README.md) |
 
 ### Metrics
 
-- Task pass rate and cost per passing task (`metric-take-in-the-world`): `none`
+- Task pass rate and cost per passing task (`metric-the-world`): `none`
 - The assembled whole answers a real request (`metric-the-self`): `none`
 - A system applies the hub to itself (`metric-the-body`): `none`
 - A request is answered from what bears on it (`metric-the-intelligence`): `none`

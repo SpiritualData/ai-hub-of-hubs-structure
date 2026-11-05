@@ -205,9 +205,9 @@ def test_fetch_of_a_page_that_is_not_a_doi_is_an_error_observation_without_a_cal
 
 
 def test_the_arm_is_a_world_knowing_seat_assembled_by_name_with_no_needs_and_selected_by_no_record():
-    system = assemble(AssemblyConfig(solutions=("know-the-world",), selections={"know-the-world": "openalex"}))
-    assert isinstance(system["know-the-world"], seats.WorldKnowing)
-    assert system["know-the-world"].describe().startswith("scholarly works search")
+    system = assemble(AssemblyConfig(solutions=("the-science",), selections={"the-science": "openalex"}))
+    assert isinstance(system["the-science"], seats.WorldKnowing)
+    assert system["the-science"].describe().startswith("scholarly works search")
 
 
 def test_the_citation_line_never_shows_a_doi_the_record_does_not_have():

@@ -1,4 +1,4 @@
-"""The watch-for-risk seat's engine: a minimal-intervention overseer that watches a run and sends at most one tiny signal.
+"""The nervous-system seat's engine: a minimal-intervention overseer that watches a run and sends at most one tiny signal.
 
 A high-quality model reads a cheap, hard-capped digest of a run and answers with ONE of five signals. Nearly always it says
 ``proceed``. Any internal failure degrades to the safe default ``OverseerSignal("proceed", degraded=True)``, so wiring an
@@ -24,6 +24,7 @@ from esoi import implementation
 from .ports.model import STEP_JUDGE, plan_with_step
 from . import arm_needs as needs
 from .seats import ModelCalling
+from .signals import RiskSignal, to_risk_signal
 
 
 @dataclass
@@ -293,9 +294,9 @@ def oversee_with(provider: Any, model: str, digest: str, render: Optional[Callab
         return OverseerSignal("proceed", degraded=True)
 
 
-@implementation("watch-for-risk", "overseer")
+@implementation("nervous-system", "overseer")
 class RunOverseer:
-    """The digest-driven overseer as one registered implementation of the watch-for-risk seat.
+    """The digest-driven overseer as one registered implementation of the nervous-system seat.
 
     ``render`` is the consumer's prompt as data: a callable turning a digest into the prompt text. It is the only place a
     consumer's consent rules and wording enter; the hub carries none.
@@ -307,8 +308,8 @@ class RunOverseer:
         self.render = render
         self.provider = provider
 
-    def watch(self, digest: str, model: str = "") -> OverseerSignal:
-        return self.oversee(self.provider, model, digest)
+    def watch(self, digest: str, model: str = "") -> RiskSignal:
+        return to_risk_signal(self.oversee(self.provider, model, digest))
 
     def digest(self, **fields: Any) -> str:
         return build_digest(**fields)

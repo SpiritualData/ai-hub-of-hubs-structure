@@ -15,7 +15,7 @@ import hubofhubs  # noqa: E402
 from hubofhubs import AssemblyConfig, AssemblyError, choice, resolve  # noqa: E402
 from support import ROOT, run_vendored, vendor  # noqa: E402
 
-SEAT = "choose-a-model-tier"
+SEAT = "model-tier-chooser"
 HOSTILE = '[selection]\nchoose-a-model-tier = "evil"\n'
 
 
@@ -39,7 +39,7 @@ def test_the_hub_default_resolves_and_names_its_layer():
 
 
 def test_an_environment_variable_changes_nothing(monkeypatch, tmp_path):
-    monkeypatch.setenv("ESOI_SELECT_HUBOFHUBS_CHOOSE_A_MODEL_TIER", "evil")
+    monkeypatch.setenv("ESOI_SELECT_HUBOFHUBS_MODEL_TIER_CHOOSER", "evil")
     monkeypatch.setenv("ESOI_SELECT_CHOOSE_A_MODEL_TIER", "evil")
     monkeypatch.setenv("ESOI_ROOT", str(tmp_path))
     monkeypatch.setenv("ESOI_SNAPSHOT", str(tmp_path / "nope.json"))
@@ -48,9 +48,9 @@ def test_an_environment_variable_changes_nothing(monkeypatch, tmp_path):
 
 
 def test_selection_environ_is_the_only_control():
-    config = AssemblyConfig(selection_environ={"ESOI_SELECT_HUBOFHUBS_CHOOSE_A_MODEL_TIER": "tier_selector"})
+    config = AssemblyConfig(selection_environ={"ESOI_SELECT_HUBOFHUBS_MODEL_TIER_CHOOSER": "tier_selector"})
     assert choice(SEAT, config=config).layer == "selection environ"
-    for bad in ({"ESOI_ROOT": "/x"}, {"ESOI_SNAPSHOT": "/x"}, {"ESOI_SELECT_HUBOFHUBS_CHOOSE_A_MODEL_TIER": "os:system"}):
+    for bad in ({"ESOI_ROOT": "/x"}, {"ESOI_SNAPSHOT": "/x"}, {"ESOI_SELECT_HUBOFHUBS_MODEL_TIER_CHOOSER": "os:system"}):
         with pytest.raises(AssemblyError):
             choice(SEAT, config=AssemblyConfig(selection_environ=bad))
 
@@ -74,10 +74,10 @@ def test_resolve_from_a_vendored_copy_outside_any_repo(tmp_path):
 import json
 before = list(sys.path)
 import hubofhubs
-picked = hubofhubs.choice('choose-a-model-tier')
-obj = hubofhubs.resolve('choose-a-model-tier')
+picked = hubofhubs.choice('model-tier-chooser')
+obj = hubofhubs.resolve('model-tier-chooser')
 print(json.dumps(dict(name=picked.name, layer=picked.layer, cls=obj.__name__, file=hubofhubs.__file__,
-                      same_path=before == list(sys.path), names=hubofhubs.names('choose-a-model-tier'))))
+                      same_path=before == list(sys.path), names=hubofhubs.names('model-tier-chooser'))))
 """, work)
     assert out["file"].startswith(str(site)) and (out["name"], out["cls"]) == ("tier_selector", "TierSelector")
     assert out["same_path"] and out["names"] == ["tier_selector"]

@@ -4,7 +4,7 @@ They are written ``typing.Protocol`` on purpose: esoi's port scan (S7) does not 
 ``Protocol`` form is flagged as a port with no row. The seat is tied to its record by the solution id.
 
 An implementation's constructor parameters typed with one of these Protocols are its needs (``esoi.assemble``).
-``model-call`` is an external seat with no hub arm: the consumer provides it. ``search-backend`` is external too, but the hub executes
+``web-search`` is external too, but the hub executes
 its default arms (SearXNG, JSON search APIs described as data, Gemini grounding, a provider's own search); none is selected by default.
 """
 import typing
@@ -13,7 +13,6 @@ from typing import Any, Callable, List, Mapping, Optional, Sequence, Union, runt
 from esoi import solution
 
 from .card import Card
-from .ports.context import ContextAssembler
 from .ports.deep import DeepResult, ProgressEvent
 from .ports.model import ModelProvider
 from .ports.retrieval import Observation
@@ -32,29 +31,14 @@ class CardStore(typing.Protocol):
     def count(self) -> int: ...
 
 
-@solution("context-assembler", kind="event", entry="assemble", example="where does the card store tidy itself?")
-@runtime_checkable
-class ContextAssembling(ContextAssembler, typing.Protocol):
-    """Selects and renders the context a task needs into one view (and the ids of the cards it drew on); never raises. The hub ships
-    the composite arm, which runs several assemblers in order as one; a consumer's own retrieval arms are provided by the consumer."""
-
-
-@solution("model-call", kind="event", entry="complete", example={"prompt": "Reply with the single word: ok", "tier": "fast"})
-@runtime_checkable
-class ModelCall(typing.Protocol):
-    """Asks a model one question at a given tier and returns the text. External: the consumer provides it."""
-
-    def complete(self, prompt: str, tier: str = "") -> str: ...
-
-
-@solution("call-a-model", kind="event", entry="answer", example={"messages": [{"role": "user", "content": "Reply with the single word: ok"}], "model": "claude-haiku"})
+@solution("vendor-model-caller", kind="event", entry="answer", example={"messages": [{"role": "user", "content": "Reply with the single word: ok"}], "model": "claude-haiku"})
 @runtime_checkable
 class ModelCalling(ModelProvider, typing.Protocol):
     """Plans, answers and lists models for one vendor (or, as the router, for several). External system: the hub ships arms over
     the vendor SDKs (extras ``anthropic``, ``gemini``, ``openai``) and a router; the consumer passes keys and settings as arguments."""
 
 
-@solution("search-backend", kind="event", entry="search", example="latest Rust release")
+@solution("web-search", kind="event", entry="search", example="latest Rust release")
 @runtime_checkable
 class SearchBackend(typing.Protocol):
     """Runs one web search and returns a ``SearchResponse`` (hits with title, url, snippet, date, the separate ``passages`` and
@@ -66,13 +50,13 @@ class SearchBackend(typing.Protocol):
     def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse: ...
 
 
-@solution("know-the-world", kind="event", entry="search", example="meditation and attention")
+@solution("the-science", kind="event", entry="search", example="meditation and attention")
 @runtime_checkable
 class WorldKnowing(typing.Protocol):
     """Looks up what the world says now and returns it as ``Observation`` rows a reader can cite. ``search`` runs one or more queries
     and returns one compact observation (title, link and snippet per hit); ``fetch`` reads one page and returns the passages that bear
     on a focus, or the whole document one part at a time. Neither raises: a failure comes back as an observation of kind ``error``.
-    An arm's search need is the ``search-backend`` seat, which the consumer chooses."""
+    An arm's search need is the ``web-search`` seat, which the consumer chooses."""
 
     def describe(self) -> str: ...
     def search(self, queries: Union[str, List[str]], *, max_results: Optional[int] = None, fresh: bool = False) -> Observation: ...
@@ -80,7 +64,7 @@ class WorldKnowing(typing.Protocol):
               part: Optional[int] = None) -> Observation: ...
 
 
-@solution("choose-a-model-tier", kind="event", entry="choose", example={"available": ["anthropic"]})
+@solution("model-tier-chooser", kind="event", entry="choose", example={"available": ["anthropic"]})
 @runtime_checkable
 class TierSelection(typing.Protocol):
     """Per model tier, pick the (provider, model) arm with the most passing work per cost. ``choose`` reads the registry's own
@@ -93,7 +77,7 @@ class TierSelection(typing.Protocol):
                credits: Sequence[Mapping[str, str]] = (), defaults: Any = None, **bars: Any) -> Mapping[str, Any]: ...
 
 
-@solution("read-registry-freshness", kind="event", entry="days_since", example="2026-10-01")
+@solution("research-freshness-reader", kind="event", entry="days_since", example="2026-10-01")
 @runtime_checkable
 class FreshnessReading(typing.Protocol):
     """Reads the registry's recorded dates and reports how old each area's research is."""
@@ -114,7 +98,7 @@ class GoalRunning(typing.Protocol):
                  run_id: Optional[str] = None) -> DeepResult: ...
 
 
-@solution("edit-files", kind="event", entry="run_goal", example={"goal": "add a line to NOTES.md", "brief": "one line, then stop"})
+@solution("file-editing", kind="event", entry="run_goal", example={"goal": "add a line to NOTES.md", "brief": "one line, then stop"})
 @runtime_checkable
 class FileEditing(GoalRunning, typing.Protocol):
     """Changes a file by instruction and reports what changed (a ``DeepResult``). Every arm of this seat does that one job: a one-call
@@ -135,12 +119,14 @@ class AgentSessions(GoalRunning, typing.Protocol):
     agents, which are coding-oriented agents used as general ones; a general agent not tied to coding is a researched candidate with no arm yet."""
 
 
-@solution("watch-for-risk", kind="event", entry="watch", example="delete the old backup folder")
+@solution("nervous-system", kind="event", entry="watch", example="delete the old backup folder")
 @runtime_checkable
 class RiskWatching(typing.Protocol):
-    """Watches a run through a cheap digest and sends at most one small signal (proceed, redirect, answer_now, escalate_deep,
-    escalate_human). Never raises. The consumer's prompt is data passed to the arm, not part of the hub. ``watch`` reads a digest
-    of one step with the arm's own model provider; ``oversee`` is the same with the provider and model you pass."""
+    """Watches a run through a cheap digest and sends one signal: a ``RiskSignal`` (severity none, low, medium or high, and the reason). It does
+    not route: what to do with a signal belongs to Judgment Calls (ask, proceed or decline for a person) and to the Planner and Delegation
+    (answering now, handing work to an agent session, changing course). Never raises. The consumer's prompt is data passed to the arm, not part of
+    the hub. ``watch`` reads a digest of one step with the arm's own model provider; ``oversee`` is the engine's older five-way verdict, with the
+    provider and model you pass."""
 
     def digest(self, **fields: Any) -> str: ...
     def oversee(self, provider: Any, model: str, digest: str) -> Any: ...
@@ -156,7 +142,7 @@ class CardsFromFiles(typing.Protocol):
     def changed(self, root: str, cards: Mapping[str, Mapping[str, Any]]) -> List[str]: ...
 
 
-@solution("retrieve-context", kind="event", entry="retrieve", example={"query": "where is the retry delay computed?", "files": {"net.py": "def retry_delay(attempt):\n    return 2 ** attempt\n", "ui.py": "def draw():\n    pass\n"}})
+@solution("context-retriever", kind="event", entry="retrieve", example={"query": "where is the retry delay computed?", "files": {"net.py": "def retry_delay(attempt):\n    return 2 ** attempt\n", "ui.py": "def draw():\n    pass\n"}})
 @runtime_checkable
 class ContextRetrieval(typing.Protocol):
     """Picks, from a corpus of files, the pieces of text a task needs and returns them best first within a token budget (a list of hits: unit
@@ -166,7 +152,7 @@ class ContextRetrieval(typing.Protocol):
     def retrieve(self, query: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = 4000, history: Sequence[Mapping[str, Any]] = ()) -> Sequence[Any]: ...
 
 
-@solution("remember-and-recall", kind="event", entry="recall", example="rust release")
+@solution("the-subconscious", kind="event", entry="recall", example="rust release")
 @runtime_checkable
 class Remembering(typing.Protocol):
     """Recalls what is known about a query: the area every memory arm competes in, whether it is built from the hub's parts
@@ -176,29 +162,26 @@ class Remembering(typing.Protocol):
     def prepare(self, request: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = 4000) -> Mapping[str, Any]: ...
 
 
-@solution("assemble-the-whole", kind="event", entry="answer", example="what is the latest Rust release?")
+@solution("the-assembler", kind="event", entry="coverage", example={})
 @runtime_checkable
-class WholeAnswering(typing.Protocol):
-    """Answers free text with the best-measured arm of every seat it composes and returns a ``Result`` (answer, items with their
-    sources, trace, the arms used). It reports whether the hub itself stays generic and current (``health``); ``context_for`` picks the
-    pieces of a folder's files a task needs within a token budget; ``model_only`` is the model's own words with a note that no source was consulted."""
+class WholeAssembling(typing.Protocol):
+    """Builds the whole from the best-measured arm of every seat and reports its coverage: which seats are built and, for each that is not, what
+    exactly to pass or set. It runs nothing for a request; the flow of a request is The Self's."""
 
-    def answer(self, text: str) -> Any: ...
-    def model_only(self, prompt: str, tier: str = "") -> Any: ...
-    def context_for(self, task: str, files: Mapping[str, str], budget_tokens: int = 4000) -> Any: ...
-    def health(self) -> Mapping[str, Any]: ...
+    def coverage(self, environ: Optional[Mapping[str, str]] = None) -> Mapping[str, Any]: ...
 
 
-@solution("keep-it-generic", kind="event", entry="audit", example=["examplevendor"])
+@solution("system-integrity", kind="event", entry="audit", example=["examplevendor"])
 @runtime_checkable
 class Genericity(typing.Protocol):
     """Audits the hub for consumer wording: the vendor-name branches in its own code for the terms you give, with how stale its
     research is and how much of it connects by configuration."""
 
     def audit(self, terms: Sequence[str]) -> Mapping[str, Any]: ...
+    def audit_run(self, run: Mapping[str, Any]) -> Sequence[str]: ...
 
 
-@solution("role-understanding", kind="event", entry="state_role", example="assemble-the-whole")
+@solution("role-understanding", kind="event", entry="state_role", example="the-assembler")
 @runtime_checkable
 class RoleUnderstanding(typing.Protocol):
     """A seat defined and empty: states the role of a part (what it is responsible for, what it is not, who owns that) from its record, so a
@@ -212,41 +195,48 @@ class RoleUnderstanding(typing.Protocol):
 @solution("the-self", kind="event", entry="respond", example={"request": "what is the latest Rust release?", "person": ""})
 @runtime_checkable
 class SelfAnswering(typing.Protocol):
-    """The Self responds to a request as the whole: Consciousness represents the person, Intelligence processes the request with Body's context
-    and World's tools, the Assembler gives the answer the existing arms can give, and Consciousness learns from feedback. ``respond`` returns a
-    ``Result`` whose ``steps`` say, for every part, whether it ran, was skipped or has no arm yet. The other operations are those of
-    ``WholeAnswering`` and ``TakingIn``."""
+    """The Self responds to a request as the whole: Consciousness represents the person, Body says where the data lives, Intelligence processes the
+    request with the person's authority, World's tools do the outside work, the run is recorded and Integrity audits it, and Consciousness learns
+    from feedback. ``respond`` returns a ``Result`` whose ``steps`` say, for every part, whether it ran, was skipped or has no arm yet; no answer is
+    made up when a part is missing. ``serve`` takes the waiting requests in through Consciousness and responds to each; ``act_unasked`` responds to
+    what Proactivity says is due. ``cancelled`` stops the request, down to a running agent session. ``coverage`` and ``health`` report the assembly
+    and whether the system stays generic."""
 
-    def respond(self, request: str, person: str = "") -> Any: ...
-    def answer(self, text: str) -> Any: ...
-    def model_only(self, prompt: str, tier: str = "") -> Any: ...
-    def context_for(self, task: str, files: Mapping[str, str], budget_tokens: int = 4000) -> Any: ...
+    def respond(self, request: str, person: str = "", feedback: Optional[Mapping[str, Any]] = None,
+                cancelled: Optional[Callable[[], bool]] = None) -> Any: ...
+    def serve(self, person: str = "") -> Sequence[Any]: ...
+    def act_unasked(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "") -> Sequence[Any]: ...
+    def coverage(self) -> Mapping[str, Any]: ...
     def health(self) -> Mapping[str, Any]: ...
-    def take_in(self, query: str, scholarly: bool = False) -> Mapping[str, Any]: ...
 
 
 # ------------------------------------------------------------------ Body
 
-@solution("the-body", kind="event", entry="describe", example={"person": ""})
+@solution("the-body", kind="event", entry="describe", example="")
 @runtime_checkable
 class FormAndContext(typing.Protocol):
-    """The AI system's form and internal context: ``describe`` reports where the system's data lives and which enduring integrations the AI
-    may use, each declared by the system through an adapter."""
+    """The AI system's form and internal context: ``describe`` reports where the system's data lives (each source says whether it belongs to the
+    system or to a person), where its requests come from and which enduring integrations the AI may use, each declared by the system through an
+    adapter; ``record_run`` keeps the run record the flow wrote. Body also owns the configuration, environment variables, secrets and stored
+    authentication the tools need."""
 
     def describe(self, person: str = "") -> Mapping[str, Any]: ...
+    def record_run(self, run: Mapping[str, Any]) -> str: ...
 
 
 @solution("internal-context", kind="event", entry="read", example="rust release")
 @runtime_checkable
 class InternalContexting(typing.Protocol):
     """Reads a system's own context through the tool its declaration names (local files at a standard location by default) and returns it as
-    cards; ``declared`` lists the sources the system declared."""
+    cards; ``declared`` lists the sources the system declared, each with ``belongs_to`` (the system or a person) and the configuration, environment
+    variables, secrets and stored authentication its tool needs; ``record`` keeps the run record the flow wrote, which Integrity audits."""
 
     def read(self, query: str, limit: int = 5) -> Sequence[Card]: ...
     def declared(self) -> Sequence[Mapping[str, Any]]: ...
+    def record(self, run: Mapping[str, Any]) -> str: ...
 
 
-@solution("connect-any-integration", kind="event", entry="integrations", example="")
+@solution("the-hands", kind="event", entry="integrations", example="")
 @runtime_checkable
 class Connecting(typing.Protocol):
     """A seat defined and empty (Hands): lists a system's enduring integrations (its AI tool registry, LLM platform, guardrails) and says
@@ -255,28 +245,44 @@ class Connecting(typing.Protocol):
     def integrations(self, system: str = "") -> Sequence[Mapping[str, Any]]: ...
 
 
+@solution("intake-sources", kind="event", entry="pull", example={"source": "", "limit": 10})
+@runtime_checkable
+class IntakeSourcing(typing.Protocol):
+    """Body's intake adapters: ``sources`` lists where this system's requests come from (a chat, a task queue, a place meeting action items are
+    written; a system declares its own), and ``pull`` takes the requests waiting at one of them (each a mapping with ``text``, ``person`` and
+    ``source``), handing each over once."""
+
+    def sources(self) -> Sequence[Mapping[str, Any]]: ...
+    def pull(self, source: str = "", limit: int = 10) -> Sequence[Mapping[str, Any]]: ...
+
+
 # ------------------------------------------------------------------ Intelligence
 
 @solution("the-intelligence", kind="event", entry="process", example={"request": "what is the latest Rust release?", "person": ""})
 @runtime_checkable
 class InformationProcessing(typing.Protocol):
-    """Processes one request: the long view is read, the request becomes a target, the Mind plans and writes, and the goal and the response
-    quality are checked. Returns a mapping with ``answer`` (empty when the Response Writer has no arm) and ``steps``."""
+    """Processes one request: the long view is read, the request becomes a target with a budget, the Mind plans, delegates and writes, and the
+    goal and the response quality are checked. When the goal is unmet the flow returns to the Planner within the budget; when the budget or the
+    authority runs out it goes to Judgment Calls. Returns a mapping with ``answer``, ``attempts``, ``escalation`` (Judgment Calls' decision, when
+    the flow stopped unmet) and ``steps``. ``proactive`` returns the triggers Proactivity says are due."""
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
-                priorities: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
+                priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]: ...
+    def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "") -> Sequence[Mapping[str, Any]]: ...
 
 
-@solution("reason-and-answer", kind="event", entry="think", example={"request": "what is the latest Rust release?"})
+@solution("the-mind", kind="event", entry="think", example={"request": "what is the latest Rust release?"})
 @runtime_checkable
 class Reasoning(typing.Protocol):
     """The Mind: takes in context, plans, delegates and writes for one request. ``authority`` is the Representative's, ``target`` the metric
     the request was translated into, ``guidance`` the Planner's nudge and ``profile`` the resolved quality profile and ``prepared`` what the Subconscious prepared. Returns a mapping with
-    ``text`` (empty when the Response Writer has no arm) and ``steps``."""
+    ``text``, ``results`` (one per delegated piece), ``pieces`` and ``steps``. On a replan, ``unmet`` is what the last attempt failed and ``outside``
+    what its workers brought, which Context Intake takes in."""
 
     def think(self, request: str, authority: Optional[Mapping[str, Any]] = None, target: Optional[Mapping[str, Any]] = None,
-              guidance: Optional[Mapping[str, Any]] = None, profile: Optional[Any] = None,
-              prepared: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
+              guidance: Optional[Mapping[str, Any]] = None, profile: Optional[Any] = None, prepared: Optional[Mapping[str, Any]] = None,
+              unmet: Optional[Mapping[str, Any]] = None, outside: Optional[Mapping[str, Any]] = None, budget: Optional[Any] = None,
+              cancelled: Optional[Callable[[], bool]] = None) -> Mapping[str, Any]: ...
 
 
 @solution("context-intake", kind="event", entry="take", example={"request": "what is the latest Rust release?"})
@@ -287,22 +293,26 @@ class ContextTaking(typing.Protocol):
     def take(self, request: str, prepared: Optional[Mapping[str, Any]] = None, outside: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
 
 
-@solution("planner", kind="event", entry="plan", example={"request": "what is the latest Rust release?"})
+@solution("request-planner", kind="event", entry="plan", example={"request": "what is the latest Rust release?"})
 @runtime_checkable
 class Planning(typing.Protocol):
-    """Breaks a request into pieces, each with the sub-goal it must meet (a list of mappings with ``piece`` and ``sub_goal``)."""
+    """Breaks a request into pieces (a list of mappings with ``piece``, ``sub_goal`` and ``tool``, the worker category that fits it or empty).
+    On a replan, ``unmet`` carries the failed pieces and why, and a piece that already met its sub-goal is not planned again."""
 
     def plan(self, request: str, context: Optional[Mapping[str, Any]] = None, target: Optional[Mapping[str, Any]] = None,
-             guidance: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]: ...
+             guidance: Optional[Mapping[str, Any]] = None, unmet: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]: ...
 
 
-@solution("delegation", kind="event", entry="delegate", example={"pieces": [], "authority": {}})
+@solution("work-delegation", kind="event", entry="delegate", example={"pieces": [], "authority": {}})
 @runtime_checkable
 class Delegating(typing.Protocol):
     """Hands each piece to the right worker, only when necessary, carrying the Representative's ``authority`` and the sub-goal's done-standard;
-    returns one result per piece."""
+    returns one result per piece. It enforces three limits and owns the last: the authority (a worker category not allowed is refused), the
+    goal record's ``budget`` (pieces and dollars) and cancellation (``cancelled`` is checked before each piece and reaches a running agent session
+    through the worker's own stop hook). A piece it did not run comes back with ``refused`` and the reason."""
 
-    def delegate(self, pieces: Sequence[Mapping[str, Any]], authority: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]: ...
+    def delegate(self, pieces: Sequence[Mapping[str, Any]], authority: Optional[Mapping[str, Any]] = None, budget: Optional[Mapping[str, Any]] = None,
+                 cancelled: Optional[Callable[[], bool]] = None) -> Sequence[Mapping[str, Any]]: ...
 
 
 @solution("response-writer", kind="event", entry="write", example={"results": [], "profile": None})
@@ -330,7 +340,7 @@ class LongTermMemory(typing.Protocol):
     def retain(self, item: Mapping[str, Any], person: str = "") -> str: ...
 
 
-@solution("hold-objectives", kind="event", entry="current", example={"person": ""})
+@solution("live-objectives", kind="event", entry="current", example="")
 @runtime_checkable
 class Objectives(typing.Protocol):
     """The live hierarchy of intents and goals across requests: ``current`` returns it, ``place`` puts a request under the objective it serves."""
@@ -339,7 +349,7 @@ class Objectives(typing.Protocol):
     def place(self, request: str, person: str = "") -> Mapping[str, Any]: ...
 
 
-@solution("guidance", kind="event", entry="nudge", example={"request": "what is the latest Rust release?", "objectives": []})
+@solution("planner-guidance", kind="event", entry="nudge", example={"request": "what is the latest Rust release?", "objectives": []})
 @runtime_checkable
 class Guiding(typing.Protocol):
     """An infrequent longer-term nudge for the Planner, with the context-specific quality criteria; ``None`` when none is due."""
@@ -347,7 +357,7 @@ class Guiding(typing.Protocol):
     def nudge(self, request: str, objectives: Sequence[Mapping[str, Any]] = ()) -> Optional[Mapping[str, Any]]: ...
 
 
-@solution("offer-intuition", kind="event", entry="offer", example={"request": "what is the latest Rust release?"})
+@solution("the-intuition", kind="event", entry="offer", example={"request": "what is the latest Rust release?"})
 @runtime_checkable
 class Intuiting(typing.Protocol):
     """What surfaces for a request unasked: the items closest to it, within a limit, for the Mind to take or ignore."""
@@ -355,7 +365,7 @@ class Intuiting(typing.Protocol):
     def offer(self, request: str, limit: int = 5) -> Sequence[Mapping[str, Any]]: ...
 
 
-@solution("think-critically", kind="event", entry="evaluate", example={"request": "what is the latest Rust release?"})
+@solution("critical-thinking", kind="event", entry="evaluate", example={"request": "what is the latest Rust release?"})
 @runtime_checkable
 class CriticalThinking(typing.Protocol):
     """Critical Thinking: ``translate`` turns a request into a target, ``evaluate`` checks the goal and judges the response against the
@@ -364,7 +374,7 @@ class CriticalThinking(typing.Protocol):
     def translate(self, request: str, parent: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
     def evaluate(self, request: str, response: str = "", target: Optional[Mapping[str, Any]] = None, evidence: str = "",
                  representative: Optional[Mapping[str, Any]] = None, guidance: Optional[Mapping[str, Any]] = None,
-                 priorities: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
+                 priorities: Optional[Mapping[str, Any]] = None, outcome: Optional[Any] = None) -> Mapping[str, Any]: ...
 
 
 @solution("esoi-application", kind="event", entry="apply", example={"change": {}})
@@ -403,43 +413,57 @@ class ResponseJudging(typing.Protocol):
     def critique(self, answer: str, evidence: str = "") -> Sequence[str]: ...
 
 
+@solution("proactivity", kind="event", entry="due", example={"schedules": [], "now": "2026-07-12T09:00:00Z"})
+@runtime_checkable
+class Proactive(typing.Protocol):
+    """Lets the system act without being asked: given its standing schedules and the time, returns the triggers that are due (each a mapping
+    with ``schedule``, ``reason`` and the ``request`` to run), by calendar period, by a requested run or by an event."""
+
+    def due(self, schedules: Sequence[Mapping[str, Any]], now: str = "") -> Sequence[Mapping[str, Any]]: ...
+
+
 # ------------------------------------------------------------------ World
 
-@solution("take-in-the-world", kind="event", entry="take_in", example="latest Rust release")
+@solution("the-world", kind="event", entry="take_in", example="latest Rust release")
 @runtime_checkable
 class TakingIn(typing.Protocol):
     """Brings the outside world in for a query: a web search, and with ``scholarly=True`` the papers of the world-knowing seat too.
-    Returns ``{"answer": text, "items": [hits with their sources]}``."""
+    Returns ``{"answer": text, "items": [hits with their sources]}``. ``stale_areas`` names the areas of the hub's research that are out of date
+    (Learning's reading), which The Self reports in its health."""
 
     def take_in(self, query: str, scholarly: bool = False) -> Mapping[str, Any]: ...
+    def stale_areas(self, today: str = "") -> Sequence[str]: ...
 
 
-@solution("use-tools", kind="event", entry="use", example={"category": "search-backend", "request": "latest Rust release"})
+@solution("the-tools", kind="event", entry="use", example={"category": "web-search", "request": "latest Rust release"})
 @runtime_checkable
 class Tooling(typing.Protocol):
-    """Uses the tool of one category (``search-backend``, ``edit-files``, ``connected-system-operations``, ``delegated-agent-sessions`` or
-    ``personal-data-locations``) by calling that category's entry point with the request."""
+    """Uses the tool of one category (``web-search``, ``read-files``, ``file-editing``, ``connected-system-operations`` or
+    ``delegated-agent-sessions``) by calling that category's entry point with the request. A category the Representative's authority does not
+    allow, or data outside its ``data_scope``, is refused here as well as by the caller: data scope is enforced by Tools and Body's adapters."""
 
-    def use(self, category: str, request: Any) -> Any: ...
+    def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None) -> Any: ...
 
 
-@solution("personal-data-locations", kind="event", entry="locations", example="")
+@solution("read-files", kind="event", entry="read", example={"root": ".", "paths": []})
 @runtime_checkable
-class PersonalDataLocating(typing.Protocol):
-    """A seat defined and empty: where a person keeps their own data (calendar, drive, mailbox, notes), declared once as setup."""
+class FileReading(typing.Protocol):
+    """Reads and lists the text files of a folder, never outside it: the world-facing half of working with files that Cards From Files builds on."""
 
-    def locations(self, person: str = "") -> Sequence[Mapping[str, Any]]: ...
+    def list(self, root: str, suffixes: Sequence[str] = ()) -> Sequence[str]: ...
+    def read(self, root: str, paths: Sequence[str] = ()) -> Mapping[str, str]: ...
 
 
 @solution("model-plumbing", kind="event", entry="ask", example={"prompt": "Reply with the single word: ok", "tier": "cheap"})
 @runtime_checkable
 class ModelPlumbing(typing.Protocol):
-    """Asks a model for the answer to a prompt at a tier, using the model the tier chooser measured best for that tier."""
+    """Asks a model for the answer to a prompt at a tier, using the model the tier chooser measured best for that tier, through the vendor the
+    hub assembled. Also enforces the goal record's budget on the calls it makes: ``budget`` is the record's mutable ``budget`` mapping, and a call spends one of its ``model_calls``."""
 
-    def ask(self, prompt: str, tier: str = "") -> str: ...
+    def ask(self, prompt: str, tier: str = "", budget: Optional[Any] = None) -> str: ...
 
 
-@solution("stay-current", kind="event", entry="stale_areas", example="2026-11-03")
+@solution("the-learning", kind="event", entry="stale_areas", example="2026-11-03")
 @runtime_checkable
 class Staying(typing.Protocol):
     """Names the areas of the registry whose research is older than the ninety day bar on a given date (ISO, default today)."""
@@ -449,17 +473,27 @@ class Staying(typing.Protocol):
 
 # ------------------------------------------------------------------ Consciousness
 
-@solution("the-consciousness", kind="event", entry="represent", example={"person": ""})
+@solution("the-consciousness", kind="event", entry="represent", example="")
 @runtime_checkable
 class HumanAdapting(typing.Protocol):
     """Adapts the system to a person: ``represent`` returns the person's Representative (authority, preferences, quality profile and
-    priorities), ``learn`` applies the person's feedback to specs and metrics."""
+    priorities), ``receive`` takes in the requests people made, ``learn`` applies the person's feedback to specs and metrics."""
 
     def represent(self, person: str = "") -> Mapping[str, Any]: ...
+    def receive(self, person: str = "") -> Sequence[Mapping[str, Any]]: ...
     def learn(self, person: str = "", feedback: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
 
 
-@solution("ai-representatives", kind="event", entry="represent", example={"person": ""})
+@solution("request-intake", kind="event", entry="receive", example={"person": ""})
+@runtime_checkable
+class RequestIntaking(typing.Protocol):
+    """Takes in the requests people make, from every source Body declares, each attached to the person who made it; nothing a person asked is
+    lost or taken twice."""
+
+    def receive(self, person: str = "", sources: Sequence[str] = ()) -> Sequence[Mapping[str, Any]]: ...
+
+
+@solution("the-representatives", kind="event", entry="represent", example="")
 @runtime_checkable
 class Representing(typing.Protocol):
     """The AI persona that acts for a person: returns the person's authority, preferences and quality profile."""
@@ -470,10 +504,11 @@ class Representing(typing.Protocol):
 @solution("judgment-calls", kind="event", entry="decide", example={"signal": {"signal": "proceed"}, "person": ""})
 @runtime_checkable
 class JudgmentCalling(typing.Protocol):
-    """Decides for one person whether to ask, proceed or decline on a risk signal (severity and reason); the decision may be to a human,
-    another agent or a delegate."""
+    """Decides for one person whether to ask, proceed or decline on a risk signal (severity and reason) or on a flow that stopped (``context``
+    carries ``stopped``: budget or authority); the decision may be to a human, another agent or a delegate. It also owns ask timing: whether the
+    ask blocks or waits, whether it is batched, and what may continue meanwhile. It decides, too, whether a change to specs or learning needs an ask."""
 
-    def decide(self, signal: Mapping[str, Any], person: str = "") -> Mapping[str, Any]: ...
+    def decide(self, signal: Mapping[str, Any], person: str = "", context: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
 
 
 @solution("feedback-learning", kind="event", entry="learn", example={"person": "", "feedback": {}})
@@ -485,7 +520,7 @@ class FeedbackLearning(typing.Protocol):
     def learn(self, person: str = "", feedback: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
 
 
-@solution("prioritization", kind="event", entry="prioritize", example={"person": "", "request": "what is the latest Rust release?"})
+@solution("human-prioritization", kind="event", entry="prioritize", example={"person": "", "request": "what is the latest Rust release?"})
 @runtime_checkable
 class Prioritizing(typing.Protocol):
     """Translates the priorities a person states or implies into ESOI milestones and weights, including quality profile weights."""

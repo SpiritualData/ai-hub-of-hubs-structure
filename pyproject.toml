@@ -15,19 +15,19 @@ ahohs = "hubofhubs.cli:main"
 
 [project.optional-dependencies]
 # One extra per arm that needs a third-party library; the library is imported lazily, only when that arm runs.
-web = ["httpx>=0.28"]                      # search-backend arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching
-gemini = ["google-genai>=2.8", "httpx>=0.28"]   # search-backend arm: gemini; call-a-model arm: gemini
-locks = ["filelock>=3.20"]                 # search-backend arm: the daily limiter shares one spend across processes (degrades to per-process without it)
-anthropic = ["anthropic>=0.84"]               # call-a-model arm: anthropic
-openai = ["openai>=2.7"]                   # call-a-model arms: openai, deepseek (an OpenAI-compatible endpoint)
+web = ["httpx>=0.28"]                      # web-search arms: serper, brave, tavily, searxng, gemini (redirect links), page fetching
+gemini = ["google-genai>=2.8", "httpx>=0.28"]   # web-search arm: gemini; vendor-model-caller arm: gemini
+locks = ["filelock>=3.20"]                 # web-search arm: the daily limiter shares one spend across processes (degrades to per-process without it)
+anthropic = ["anthropic>=0.84"]               # vendor-model-caller arm: anthropic
+openai = ["openai>=2.7"]                   # vendor-model-caller arms: openai, deepseek (an OpenAI-compatible endpoint)
 mcp = ["mcp==2.0.0"]                # connected-system-operations helper: the MCP protocol client (the arms over it live in the consumer)
-science = ["httpx>=0.28"]                 # know-the-world arm: openalex (scholarly works search); the Crossref DOI helper
+science = ["httpx>=0.28"]                 # the-science arm: openalex (scholarly works search); the Crossref DOI helper
 pages = ["trafilatura>=2.0", "pypdf>=6.0"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
-qdrant = ["qdrant-client>=1.16", "fastembed>=0.8"]   # remember-and-recall: the Qdrant vector store (embedded or server) and its local default embedder
-voyage = ["voyageai>=0.3"]                # remember-and-recall: the Voyage AI embedder factory
+qdrant = ["qdrant-client>=1.16", "fastembed>=0.8"]   # the-subconscious: the Qdrant vector store (embedded or server) and its local default embedder
+voyage = ["voyageai>=0.3"]                # the-subconscious: the Voyage AI embedder factory
 acp = ["agent-client-protocol>=0.4"]      # delegated-agent-sessions arm: the Agent Client Protocol deep runner (imported inside one function)
-bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # remember-and-recall: the BM25 content store
-retrieval = ["numpy>=1.26", "scikit-learn>=1.4", "fastembed>=0.8"]   # retrieve-context: the dense arm (a local embedding model), the latent semantic index and the learned reranker
+bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # the-subconscious: the BM25 content store
+retrieval = ["numpy>=1.26", "scikit-learn>=1.4", "fastembed>=0.8"]   # context-retriever: the dense arm (a local embedding model), the latent semantic index and the learned reranker
 graphify = ["graphifyy==0.9.102"]                           # cards-from-files: the graphify_files builder (code-only extraction, no model)
 
 [tool.setuptools]

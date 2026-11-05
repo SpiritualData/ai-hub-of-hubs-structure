@@ -210,9 +210,9 @@ def always_cheapest(tiers, prices):
     return by_price(tiers, prices, min)
 
 
-@implementation("choose-a-model-tier", "tier_selector")
+@implementation("model-tier-chooser", "tier_selector")
 class TierSelector:
-    """The tier selector as one registered implementation of the choose-a-model-tier solution: the functions above, behind an
+    """The tier selector as one registered implementation of the model-tier-chooser solution: the functions above, behind an
     object a consumer can build and hand around. Pure functions, no state."""
     REQUIRES = ()     # pure functions
     price_of = staticmethod(price_of)

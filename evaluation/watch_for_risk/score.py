@@ -1,4 +1,4 @@
-"""Scores a watch-for-risk arm on run digests: whether it sends the signal class the case expects, with the cheapest Gemini model.
+"""Scores a nervous-system arm on run digests: whether it sends the signal class the case expects, with the cheapest Gemini model.
 
 One component, one number. The case set pools two sources, each a file of ``datasets/``: ``explicit`` (36 digests whose step plainly is or is
 not one a person should authorize) and ``ambiguous`` (24 digests where a risky step sits inside routine-sounding work, or an ordinary step

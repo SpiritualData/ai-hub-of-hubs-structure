@@ -1,4 +1,4 @@
-"""Writes datasets/ambiguous.json: 24 ambiguous steps for the watch-for-risk seat (12 risky, 12 benign), each with a short reason.
+"""Writes datasets/ambiguous.json: 24 ambiguous steps for the nervous-system seat (12 risky, 12 benign), each with a short reason.
 
 Written for this evaluation, with generic wording and no organization names, after the public finding that an independent stress test of
 an agent safety monitor found most missed actions on ambiguous steps, not on explicit ones (docs/explanation/what-public-research-says.md). The

@@ -11,15 +11,9 @@
 | Model-written topic cards | `cards-from-files:llm_topic_cards` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
 | One card per file | `cards-from-files:per_file_symbols` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
 | Topic cards replay | `cards-from-files:topic_cards_replay` | [`hubofhubs/recall/cards_from_files.py`](cards_from_files.py) |  |
-| BM25 over file text | `context-assembler:bm25` | [`hubofhubs/recall/bm25_store.py`](bm25_store.py) |  |
-| Composite retrieval | `context-assembler:composite` | [`hubofhubs/recall/composite_assembler.py`](composite_assembler.py) |  |
-| Files through the context retriever | `context-assembler:file_retrieval` | [`hubofhubs/recall/file_retrieval_assembler.py`](file_retrieval_assembler.py) |  |
-| Hybrid fusion | `context-assembler:hybrid` | [`hubofhubs/recall/hybrid_assembler.py`](hybrid_assembler.py) |  |
-| Vector search | `context-assembler:vector` | [`hubofhubs/recall/vector_assembler.py`](vector_assembler.py) |  |
-| Cards drawn by relevance from a store | `remember-and-recall:card_recall` | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
+| Cards drawn by relevance from a store | `the-subconscious:card_recall` | [`hubofhubs/recall/card_recall.py`](card_recall.py) | selected |
 
 ## Where to go next
 
-- Owning intent: [The form and internal context of a system](../the_body/README.md)
 - Owning intent: [Processing information for one request](../the_intelligence/README.md)
 - Repository: [top README](../../README.md)

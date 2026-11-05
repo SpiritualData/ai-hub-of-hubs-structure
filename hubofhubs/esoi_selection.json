@@ -23,80 +23,59 @@
    },
    "the_world": {
     "arm": "composition",
-    "root": "take-in-the-world"
+    "root": "the-world"
    }
   },
   "scopes": {
-   "ai-representatives": "hubofhubs",
-   "assemble-the-whole": "hubofhubs",
-   "call-a-model": "hubofhubs",
    "card-store": "hubofhubs",
    "cards-from-files": "hubofhubs",
-   "choose-a-model-tier": "hubofhubs",
-   "connect-any-integration": "hubofhubs",
    "connected-system-operations": "hubofhubs",
-   "context-assembler": "hubofhubs",
    "context-intake": "hubofhubs",
+   "context-retriever": "hubofhubs",
+   "critical-thinking": "hubofhubs",
    "delegated-agent-sessions": "hubofhubs",
-   "delegation": "hubofhubs",
-   "edit-files": "hubofhubs",
    "esoi-application": "hubofhubs",
    "feedback-learning": "hubofhubs",
+   "file-editing": "hubofhubs",
    "goal-completion": "hubofhubs",
-   "guidance": "hubofhubs",
    "higher-mind": "hubofhubs",
-   "hold-objectives": "hubofhubs",
+   "human-prioritization": "hubofhubs",
+   "intake-sources": "hubofhubs",
    "internal-context": "hubofhubs",
    "judgment-calls": "hubofhubs",
-   "keep-it-generic": "hubofhubs",
-   "know-the-world": "hubofhubs",
+   "live-objectives": "hubofhubs",
    "long-term-memory": "hubofhubs",
    "metric-translation": "hubofhubs",
-   "model-call": "hubofhubs",
    "model-plumbing": "hubofhubs",
-   "offer-intuition": "hubofhubs",
-   "personal-data-locations": "hubofhubs",
-   "planner": "hubofhubs",
-   "prioritization": "hubofhubs",
-   "read-registry-freshness": "hubofhubs",
-   "reason-and-answer": "hubofhubs",
-   "remember-and-recall": "hubofhubs",
+   "model-tier-chooser": "hubofhubs",
+   "nervous-system": "hubofhubs",
+   "planner-guidance": "hubofhubs",
+   "proactivity": "hubofhubs",
+   "read-files": "hubofhubs",
+   "request-intake": "hubofhubs",
+   "request-planner": "hubofhubs",
+   "research-freshness-reader": "hubofhubs",
    "response-quality": "hubofhubs",
    "response-writer": "hubofhubs",
-   "retrieve-context": "hubofhubs",
    "role-understanding": "hubofhubs",
-   "search-backend": "hubofhubs",
-   "stay-current": "hubofhubs",
-   "take-in-the-world": "hubofhubs",
+   "system-integrity": "hubofhubs",
+   "the-assembler": "hubofhubs",
    "the-body": "hubofhubs",
    "the-consciousness": "hubofhubs",
+   "the-hands": "hubofhubs",
    "the-intelligence": "hubofhubs",
+   "the-intuition": "hubofhubs",
+   "the-learning": "hubofhubs",
+   "the-mind": "hubofhubs",
+   "the-representatives": "hubofhubs",
+   "the-science": "hubofhubs",
    "the-self": "hubofhubs",
-   "think-critically": "hubofhubs",
-   "use-tools": "hubofhubs",
-   "watch-for-risk": "hubofhubs"
-  }
- },
- "assemble-the-whole": {
-  "default": "zero_config",
-  "modules": {
-   "zero_config": "hubofhubs.whole"
-  }
- },
- "call-a-model": {
-  "default": "claude_cli",
-  "evidence": {
-   "detail": "multi_provider is better than single_provider (two-sided exact McNemar test, Holm-adjusted p=7.63e-06, 18 of 30 cases disagree)",
-   "p": 8e-06,
-   "verdict": "WIN"
-  },
-  "modules": {
-   "anthropic": "hubofhubs.models.anthropic",
-   "claude_cli": "hubofhubs.models.claude_cli",
-   "deepseek": "hubofhubs.models.openai",
-   "gemini": "hubofhubs.models.gemini",
-   "multi_provider": "hubofhubs.models.router",
-   "openai": "hubofhubs.models.openai"
+   "the-subconscious": "hubofhubs",
+   "the-tools": "hubofhubs",
+   "the-world": "hubofhubs",
+   "vendor-model-caller": "hubofhubs",
+   "web-search": "hubofhubs",
+   "work-delegation": "hubofhubs"
   }
  },
  "card-store": {
@@ -127,143 +106,19 @@
    "topic_cards_replay": "hubofhubs.recall.cards_from_files"
   }
  },
- "choose-a-model-tier": {
-  "default": "tier_selector",
-  "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
-  },
-  "modules": {
-   "tier_selector": "hubofhubs.tiers"
-  }
- },
  "connected-system-operations": {
   "default": "",
   "modules": {
    "mcp_operations": "hubofhubs.act.mcp_operations"
   }
  },
- "context-assembler": {
-  "default": "bm25@analyzer=english",
-  "evidence": {
-   "detail": "bm25@analyzer=english leads bm25 (bm25 0.619 against bm25@analyzer=english 0.644; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.154, 16 of 323 cases disagree); bm25@analyzer=english leads vector (vector 0.635 against bm25@analyzer=english 0.644; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.78, 51 of 323 cases disagree)",
-   "p": 0.153625,
-   "verdict": "WIN"
-  },
+ "context-intake": {
+  "default": "one_view",
   "modules": {
-   "bm25": "hubofhubs.recall.bm25_store",
-   "composite": "hubofhubs.recall.composite_assembler",
-   "file_retrieval": "hubofhubs.recall.file_retrieval_assembler",
-   "hybrid": "hubofhubs.recall.hybrid_assembler",
-   "vector": "hubofhubs.recall.vector_assembler"
+   "one_view": "hubofhubs.orchestrate.intake"
   }
  },
- "delegated-agent-sessions": {
-  "default": "stream_json_goal_runner",
-  "evidence": {
-   "detail": "beaten by fast_edit: best guess, not yet significant: fast_edit 0.972 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: none 0.298 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test",
-   "p": null,
-   "verdict": "LOSS"
-  },
-  "modules": {
-   "acp_deep_runner": "hubofhubs.deep.acp_runner",
-   "stream_json_goal_runner": "hubofhubs.deep.stream_runner",
-   "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
-  }
- },
- "edit-files": {
-  "default": "fast_edit",
-  "evidence": {
-   "detail": "best guess, not yet significant: none 0.298 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: stream_json_goal_runner 0.938 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test",
-   "p": null,
-   "verdict": "WIN"
-  },
-  "modules": {
-   "fast_edit": "hubofhubs.act.fast_edit"
-  }
- },
- "higher-mind": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
-  }
- },
- "internal-context": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
-  }
- },
- "keep-it-generic": {
-  "default": "prompts_as_data",
-  "modules": {
-   "prompts_as_data": "hubofhubs.areas"
-  }
- },
- "know-the-world": {
-  "default": "openalex_semantic",
-  "evidence": {
-   "detail": "openalex_semantic leads openalex (openalex 0.05 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.019, 12 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic leads openalex_keywords (openalex_keywords 0.075 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.0234, 13 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic leads openalex_keywords_model (openalex_keywords_model 0.075 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.0234, 11 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic is better than openalex_semantic_and_web (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=6.2e-31, 150 of 150 cases disagree); openalex_semantic is better than web_research (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.12e-25, 150 of 150 cases disagree)",
-   "p": 0.0,
-   "verdict": "WIN"
-  },
-  "modules": {
-   "openalex": "hubofhubs.science.openalex",
-   "openalex_keywords": "hubofhubs.science.openalex_keywords",
-   "openalex_keywords_model": "hubofhubs.science.openalex_keywords",
-   "openalex_semantic": "hubofhubs.science.openalex_semantic",
-   "openalex_semantic_and_web": "hubofhubs.science.openalex_semantic_and_web",
-   "web_research": "hubofhubs.websearch.research"
-  }
- },
- "model-call": {
-  "default": "via_call_a_model",
-  "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
-  },
-  "modules": {
-   "via_call_a_model": "hubofhubs.models.via_provider"
-  }
- },
- "model-plumbing": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.areas"
-  }
- },
- "read-registry-freshness": {
-  "default": "registry_scan",
-  "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
-  },
-  "modules": {
-   "registry_scan": "hubofhubs.registry"
-  }
- },
- "reason-and-answer": {
-  "default": "composition",
-  "modules": {
-   "composition": "hubofhubs.flows"
-  }
- },
- "remember-and-recall": {
-  "default": "card_recall",
-  "modules": {
-   "card_recall": "hubofhubs.recall.card_recall"
-  }
- },
- "response-quality": {
-  "default": "evidence_check",
-  "modules": {
-   "evidence_check": "hubofhubs.critique.evidence_check"
-  }
- },
- "retrieve-context": {
+ "context-retriever": {
   "default": "bm25_body",
   "evidence": {
    "detail": "bm25_body is better than abstaining_affinity (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=8.32e-32, 270 of 395 cases disagree); bm25_body is better than abstaining_aware (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.64e-31, 266 of 395 cases disagree); bm25_body is better than abstaining_fenced (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=8.32e-32, 270 of 395 cases disagree); bm25_body is better than abstaining_hybrid (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.79e-32, 271 of 395 cases disagree); bm25_body is better than abstaining_learned (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=3.5e-35, 285 of 395 cases disagree); bm25_body is better than abstaining_recency (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.79e-32, 271 of 395 cases disagree); bm25_body is better than bm25_fielded (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00779, 52 of 395 cases disagree); bm25_body is better than bm25_whole_files (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.83e-29, 153 of 395 cases disagree); bm25_body is better than dense_bge_small (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.29e-16, 122 of 395 cases disagree); bm25_body is better than feature_rerank (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=7.14e-26, 144 of 395 cases disagree); bm25_body is better than feature_rerank_no_priors (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.34e-23, 127 of 395 cases disagree); bm25_body is better than hybrid_rrf (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.09e-17, 101 of 395 cases disagree); bm25_body is better than learned_rerank (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.35e-24, 135 of 395 cases disagree); bm25_body is better than live_scan (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.07e-103, 395 of 395 cases disagree); bm25_body is better than lsi (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.53e-19, 115 of 395 cases disagree)",
@@ -290,32 +145,194 @@
    "lsi": "hubofhubs.retrieval.dense"
   }
  },
- "search-backend": {
-  "default": "gemini",
+ "critical-thinking": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "delegated-agent-sessions": {
+  "default": "stream_json_goal_runner",
   "evidence": {
-   "detail": "gemini is better than provider (two-sided exact McNemar test, Holm-adjusted p=1.1e-05, 22 of 40 cases disagree)",
-   "p": 1.1e-05,
+   "detail": "beaten by fast_edit: best guess, not yet significant: fast_edit 0.972 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: none 0.298 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against stream_json_goal_runner 0.938 on the point estimate; no case counts or per-case rows allow a test",
+   "p": null,
+   "verdict": "LOSS"
+  },
+  "modules": {
+   "acp_deep_runner": "hubofhubs.deep.acp_runner",
+   "stream_json_goal_runner": "hubofhubs.deep.stream_runner",
+   "subprocess_goal_runner": "hubofhubs.deep.subprocess_runner"
+  }
+ },
+ "file-editing": {
+  "default": "fast_edit",
+  "evidence": {
+   "detail": "best guess, not yet significant: none 0.298 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: stream_json_goal_runner 0.938 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner 0.923 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test",
+   "p": null,
    "verdict": "WIN"
   },
   "modules": {
-   "brave": "hubofhubs.websearch.backends",
-   "gemini": "hubofhubs.websearch.gemini",
-   "provider": "hubofhubs.websearch.backends",
-   "searxng": "hubofhubs.websearch.backends",
-   "serper": "hubofhubs.websearch.backends",
-   "tavily": "hubofhubs.websearch.backends"
+   "fast_edit": "hubofhubs.act.fast_edit"
   }
  },
- "stay-current": {
-  "default": "registry_research",
+ "goal-completion": {
+  "default": "evidence_standard",
+  "evidence": {
+   "detail": "evidence_standard leads nonempty (nonempty 0.786 against evidence_standard 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.25, 3 of 14 cases disagree)",
+   "p": 0.25,
+   "verdict": "WIN"
+  },
   "modules": {
-   "registry_research": "hubofhubs.areas"
+   "evidence_standard": "hubofhubs.critique.goal_completion",
+   "nonempty": "hubofhubs.critique.goal_completion"
   }
  },
- "take-in-the-world": {
+ "higher-mind": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.areas"
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "intake-sources": {
+  "default": "folder_queue",
+  "modules": {
+   "folder_queue": "hubofhubs.intake.queue"
+  }
+ },
+ "internal-context": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "judgment-calls": {
+  "default": "severity_policy",
+  "evidence": {
+   "detail": "severity_policy leads ask_every_time (ask_every_time 0.944 against severity_policy 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.125, 4 of 72 cases disagree)",
+   "p": 0.125,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "ask_every_time": "hubofhubs.consciousness.judgment",
+   "severity_policy": "hubofhubs.consciousness.judgment"
+  }
+ },
+ "metric-translation": {
+  "default": "goal_record",
+  "modules": {
+   "goal_record": "hubofhubs.orchestrate.translation"
+  }
+ },
+ "model-plumbing": {
+  "default": "via_vendor",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "via_vendor": "hubofhubs.models.via_provider"
+  }
+ },
+ "model-tier-chooser": {
+  "default": "tier_selector",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "tier_selector": "hubofhubs.tiers"
+  }
+ },
+ "nervous-system": {
+  "default": "consent_gate",
+  "evidence": {
+   "detail": "consent_gate is better than none (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000102, 31 of 60 cases disagree); consent_gate leads overseer (overseer 0.917 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.479, overseer passed 33 of 36, consent_gate 36 of 36); consent_gate leads two_stage (two_stage 0.944 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.493, two_stage passed 34 of 36, consent_gate 36 of 36)",
+   "p": 0.000102,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "consent_gate": "hubofhubs.consent_gate",
+   "overseer": "hubofhubs.risk",
+   "two_stage": "hubofhubs.consent_gate"
+  }
+ },
+ "proactivity": {
+  "default": "calendar_and_events",
+  "evidence": {
+   "detail": "calendar_and_events is better than elapsed_hours (two-sided exact McNemar test, Holm-adjusted p=0.00781, 8 of 18 cases disagree)",
+   "p": 0.007812,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "calendar_and_events": "hubofhubs.proactivity.triggers",
+   "elapsed_hours": "hubofhubs.proactivity.triggers"
+  }
+ },
+ "read-files": {
+  "default": "folder_reader",
+  "modules": {
+   "folder_reader": "hubofhubs.act.read_files"
+  }
+ },
+ "request-intake": {
+  "default": "every_declared_source",
+  "modules": {
+   "every_declared_source": "hubofhubs.consciousness.intake"
+  }
+ },
+ "request-planner": {
+  "default": "cue_router",
+  "evidence": {
+   "detail": "cue_router is better than one_piece (two-sided exact McNemar test, Holm-adjusted p=1.05e-08, 62 of 81 cases disagree)",
+   "p": 0.0,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "cue_router": "hubofhubs.orchestrate.planning",
+   "one_piece": "hubofhubs.orchestrate.planning"
+  }
+ },
+ "research-freshness-reader": {
+  "default": "registry_scan",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "registry_scan": "hubofhubs.registry"
+  }
+ },
+ "response-quality": {
+  "default": "evidence_check",
+  "modules": {
+   "evidence_check": "hubofhubs.critique.evidence_check"
+  }
+ },
+ "response-writer": {
+  "default": "cited_results",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "cited_results": "hubofhubs.orchestrate.writer",
+   "model_synthesis": "hubofhubs.orchestrate.writer"
+  }
+ },
+ "system-integrity": {
+  "default": "prompts_as_data",
+  "modules": {
+   "prompts_as_data": "hubofhubs.areas"
+  }
+ },
+ "the-assembler": {
+  "default": "zero_config",
+  "modules": {
+   "zero_config": "hubofhubs.whole"
   }
  },
  "the-body": {
@@ -336,35 +353,100 @@
    "composition": "hubofhubs.flows"
   }
  },
+ "the-learning": {
+  "default": "registry_research",
+  "modules": {
+   "registry_research": "hubofhubs.areas"
+  }
+ },
+ "the-mind": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.flows"
+  }
+ },
+ "the-representatives": {
+  "default": "declared_authority",
+  "modules": {
+   "declared_authority": "hubofhubs.consciousness.representatives"
+  }
+ },
+ "the-science": {
+  "default": "openalex_semantic",
+  "evidence": {
+   "detail": "openalex_semantic leads openalex (openalex 0.05 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.019, 12 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic leads openalex_keywords (openalex_keywords 0.075 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.0234, 13 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic leads openalex_keywords_model (openalex_keywords_model 0.075 against openalex_semantic 0.3; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.0234, 11 of 40 cases disagree; one of 3 looks, alpha 0.0167); openalex_semantic is better than openalex_semantic_and_web (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=6.2e-31, 150 of 150 cases disagree); openalex_semantic is better than web_research (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.12e-25, 150 of 150 cases disagree)",
+   "p": 0.0,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "openalex": "hubofhubs.science.openalex",
+   "openalex_keywords": "hubofhubs.science.openalex_keywords",
+   "openalex_keywords_model": "hubofhubs.science.openalex_keywords",
+   "openalex_semantic": "hubofhubs.science.openalex_semantic",
+   "openalex_semantic_and_web": "hubofhubs.science.openalex_semantic_and_web",
+   "web_research": "hubofhubs.websearch.research"
+  }
+ },
  "the-self": {
   "default": "composition",
   "modules": {
    "composition": "hubofhubs.whole"
   }
  },
- "think-critically": {
+ "the-subconscious": {
+  "default": "card_recall",
+  "modules": {
+   "card_recall": "hubofhubs.recall.card_recall"
+  }
+ },
+ "the-tools": {
   "default": "composition",
   "modules": {
    "composition": "hubofhubs.flows"
   }
  },
- "use-tools": {
+ "the-world": {
   "default": "composition",
   "modules": {
-   "composition": "hubofhubs.flows"
+   "composition": "hubofhubs.areas"
   }
  },
- "watch-for-risk": {
-  "default": "consent_gate",
+ "vendor-model-caller": {
+  "default": "claude_cli",
   "evidence": {
-   "detail": "consent_gate is better than none (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000102, 31 of 60 cases disagree); consent_gate leads overseer (overseer 0.917 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.479, overseer passed 33 of 36, consent_gate 36 of 36); consent_gate leads two_stage (two_stage 0.944 against consent_gate 1; best guess, not yet significant, two-sided exact Fisher test on the pass counts (no per-case rows), Holm-adjusted p=0.493, two_stage passed 34 of 36, consent_gate 36 of 36)",
-   "p": 0.000102,
+   "detail": "multi_provider is better than single_provider (two-sided exact McNemar test, Holm-adjusted p=7.63e-06, 18 of 30 cases disagree)",
+   "p": 8e-06,
    "verdict": "WIN"
   },
   "modules": {
-   "consent_gate": "hubofhubs.consent_gate",
-   "overseer": "hubofhubs.risk",
-   "two_stage": "hubofhubs.consent_gate"
+   "anthropic": "hubofhubs.models.anthropic",
+   "claude_cli": "hubofhubs.models.claude_cli",
+   "deepseek": "hubofhubs.models.openai",
+   "gemini": "hubofhubs.models.gemini",
+   "multi_provider": "hubofhubs.models.router",
+   "openai": "hubofhubs.models.openai"
+  }
+ },
+ "web-search": {
+  "default": "gemini",
+  "evidence": {
+   "detail": "gemini is better than provider (two-sided exact McNemar test, Holm-adjusted p=1.1e-05, 22 of 40 cases disagree)",
+   "p": 1.1e-05,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "brave": "hubofhubs.websearch.backends",
+   "gemini": "hubofhubs.websearch.gemini",
+   "provider": "hubofhubs.websearch.backends",
+   "searxng": "hubofhubs.websearch.backends",
+   "serper": "hubofhubs.websearch.backends",
+   "tavily": "hubofhubs.websearch.backends"
+  }
+ },
+ "work-delegation": {
+  "default": "to_tools",
+  "modules": {
+   "to_tools": "hubofhubs.orchestrate.delegation"
   }
  }
 }

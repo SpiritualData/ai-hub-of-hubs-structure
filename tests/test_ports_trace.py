@@ -8,7 +8,7 @@ from hubofhubs.ports.trace import WorkTrace, WorkTraceError, project, validate
 
 
 def raw(**over):
-    base = {"step_id": "web-1", "solution_id": "search-backend", "kind": "sources", "label_key": "workTrace.web.reading",
+    base = {"step_id": "web-1", "solution_id": "web-search", "kind": "sources", "label_key": "workTrace.web.reading",
             "state": "running", "counts": {"found": 3, "read": 2}, "affects_user": False,
             "items": [{"url": "https://www.Example.org/a/b?token=SECRET#x", "label": "A page — Example"}]}
     base.update(over)
@@ -90,10 +90,10 @@ def test_helper_coalesces_but_always_sends_final_and_replaces_by_step():
     sent, clock = [], [0.0]
     wt = WorkTrace(sent.append, trace_id="t1", clock=lambda: clock[0])
     for n in range(10):
-        wt.update("web-1", solution_id="search-backend", kind="sources", label_key="workTrace.web.reading", counts={"read": n})
+        wt.update("web-1", solution_id="web-search", kind="sources", label_key="workTrace.web.reading", counts={"read": n})
         clock[0] += 0.05
     assert 1 <= len(sent) <= 3
-    wt.update("web-1", solution_id="search-backend", kind="sources", label_key="workTrace.web.reading", state="done", counts={"read": 10})
+    wt.update("web-1", solution_id="web-search", kind="sources", label_key="workTrace.web.reading", state="done", counts={"read": 10})
     assert sent[-1].data["state"] == "done" and sent[-1].data["counts"] == {"read": 10}
     assert sent[-1].type == events.EVENT_WORK_TRACE
     assert [e["counts"] for e in wt.summary()] == [{"read": 10}]

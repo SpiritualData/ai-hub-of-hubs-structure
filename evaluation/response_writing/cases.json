@@ -1,0 +1,1696 @@
+[
+ {
+  "id": "write-simpleqa-0267",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What was Conrad Schintz's dog's full name on Dimension 20's Mentopolis?",
+     "text": "Justin Fication",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://dimension20.fandom.com/wiki/Justin_Fication",
+       "snippet": "Justin Fication"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://dimension20.fandom.com/wiki/Conrad_Schintz",
+       "snippet": "Justin Fication"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://tvtropes.org/pmwiki/pmwiki.php/Characters/Dimension20Mentopolis",
+       "snippet": "Justin Fication"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Justin Fication",
+   "links": [
+    "https://dimension20.fandom.com/wiki/Justin_Fication",
+    "https://dimension20.fandom.com/wiki/Conrad_Schintz",
+    "https://tvtropes.org/pmwiki/pmwiki.php/Characters/Dimension20Mentopolis"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0336",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Which architect was tasked with finishing the chapel in the newly built Papal apartment when its construction remained incomplete after Pope Paul IV moved in, in October 1556?",
+     "text": "Pirro Ligorio",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Pirro_Ligorio",
+       "snippet": "Pirro Ligorio"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://library.brown.edu/projects/rome/people/0139/",
+       "snippet": "Pirro Ligorio"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Pirro Ligorio",
+   "links": [
+    "https://en.wikipedia.org/wiki/Pirro_Ligorio",
+    "https://library.brown.edu/projects/rome/people/0139/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0346",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What was the name of the indoor scrambler ride themed around the Battle of Hastings that was an opening day attraction when Busch Gardens, The Old Country in Williamsburg, Virginia, first opened in 1975?",
+     "text": "The Catapult",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://www.themeparkbrochures.net/busch-gardens-the-old-country-map-and-brochure/",
+       "snippet": "The Catapult"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://enchantedlaboratory.com/history/",
+       "snippet": "The Catapult"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://coasterpedia.net/wiki/Le_Catapult",
+       "snippet": "The Catapult"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://enchantedlaboratory.com/history/#:~:text=Busch%20Gardens%2C%20The%20Old%20Country,according%20to%20the%20park%20map.",
+       "snippet": "The Catapult"
+      },
+      {
+       "title": "Source 5",
+       "url": "https://coasterpedia.net/wiki/Le_Catapult",
+       "snippet": "The Catapult"
+      },
+      {
+       "title": "Source 6",
+       "url": "https://bgwmemories.com/tag/busch-gardens-history/",
+       "snippet": "The Catapult"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "The Catapult",
+   "links": [
+    "https://www.themeparkbrochures.net/busch-gardens-the-old-country-map-and-brochure/",
+    "https://enchantedlaboratory.com/history/",
+    "https://coasterpedia.net/wiki/Le_Catapult",
+    "https://enchantedlaboratory.com/history/#:~:text=Busch%20Gardens%2C%20The%20Old%20Country,according%20to%20the%20park%20map.",
+    "https://coasterpedia.net/wiki/Le_Catapult",
+    "https://bgwmemories.com/tag/busch-gardens-history/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0360",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Into which Hall of Fame was Zippo Pine Bar inducted in 1992?",
+     "text": "National Snaffle Bit Association",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Zippo_Pine_Bar",
+       "snippet": "National Snaffle Bit Association"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Zippo_Pine_Bar#:~:text=He%20was%20the%201972%20AQHA,Bit%20Association%20Hall%20of%20Fame.",
+       "snippet": "National Snaffle Bit Association"
+      },
+      {
+       "title": "Source 3",
+       "url": "http://www.barnmice.com/profiles/blogs/zippo-pine-bar-a-quarter-horse-history",
+       "snippet": "National Snaffle Bit Association"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.aceofclubsquarterhorses.com/horses_d.asp?HiD=2541&id=refs",
+       "snippet": "National Snaffle Bit Association"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "National Snaffle Bit Association",
+   "links": [
+    "https://en.wikipedia.org/wiki/Zippo_Pine_Bar",
+    "https://en.wikipedia.org/wiki/Zippo_Pine_Bar#:~:text=He%20was%20the%201972%20AQHA,Bit%20Association%20Hall%20of%20Fame.",
+    "http://www.barnmice.com/profiles/blogs/zippo-pine-bar-a-quarter-horse-history",
+    "https://www.aceofclubsquarterhorses.com/horses_d.asp?HiD=2541&id=refs"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0599",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Who received an honorable mention at the 1996 Frank and Brennie Morgan Prize for Outstanding Research in Mathematics by an Undergraduate Student?",
+     "text": "Lenhard Ng",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Morgan_Prize",
+       "snippet": "Lenhard Ng"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://news.mit.edu/1996/awards5-1120",
+       "snippet": "Lenhard Ng"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://maa.org/morgan-prize/",
+       "snippet": "Lenhard Ng"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Lenhard Ng",
+   "links": [
+    "https://en.wikipedia.org/wiki/Morgan_Prize",
+    "https://news.mit.edu/1996/awards5-1120",
+    "https://maa.org/morgan-prize/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0650",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Who won the Kalinga Prize for the Popularization of Science in 1969?",
+     "text": "Konrad Lorenz",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Kalinga_Prize",
+       "snippet": "Konrad Lorenz"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.unesco.org/en/prizes/popularization-science/laureates",
+       "snippet": "Konrad Lorenz"
+      },
+      {
+       "title": "Source 3",
+       "url": "http://www.kalingafoundationtrust.com/website/kalinga-prize-for-the-popularization-of-science.htm",
+       "snippet": "Konrad Lorenz"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Konrad Lorenz",
+   "links": [
+    "https://en.wikipedia.org/wiki/Kalinga_Prize",
+    "https://www.unesco.org/en/prizes/popularization-science/laureates",
+    "http://www.kalingafoundationtrust.com/website/kalinga-prize-for-the-popularization-of-science.htm"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0871",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "How many assists did Kostas Tsimikas have across all competitions in the 2021-2022 season?",
+     "text": "6",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/2021%E2%80%9322_Liverpool_F.C._season#Assists",
+       "snippet": "6"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.transfermarkt.co.uk/konstantinos-tsimikas/leistungsdaten/spieler/338070/plus/0?saison=2021",
+       "snippet": "6"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://lfchistory.net/Players/Player/Profile/1372",
+       "snippet": "6"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.footballdatabase.eu/en/player/details/243380-konstantinos-tsimikas",
+       "snippet": "6"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "6",
+   "links": [
+    "https://en.wikipedia.org/wiki/2021%E2%80%9322_Liverpool_F.C._season#Assists",
+    "https://www.transfermarkt.co.uk/konstantinos-tsimikas/leistungsdaten/spieler/338070/plus/0?saison=2021",
+    "https://lfchistory.net/Players/Player/Profile/1372",
+    "https://www.footballdatabase.eu/en/player/details/243380-konstantinos-tsimikas"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0886",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What is the surname of the individual who won the Gibson-Fawcett Award in 2018?",
+     "text": "Vignolini",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Gibson-Fawcett_Award#:~:text=2018,Silvia%20Vignolini",
+       "snippet": "Vignolini"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Gibson-Fawcett_Award",
+       "snippet": "Vignolini"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.rsc.org/news-events/articles/2018/may/prizes-and-awards-2018/",
+       "snippet": "Vignolini"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.ch.cam.ac.uk/news/royal-society-chemistry-honours-three-researchers",
+       "snippet": "Vignolini"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Vignolini",
+   "links": [
+    "https://en.wikipedia.org/wiki/Gibson-Fawcett_Award#:~:text=2018,Silvia%20Vignolini",
+    "https://en.wikipedia.org/wiki/Gibson-Fawcett_Award",
+    "https://www.rsc.org/news-events/articles/2018/may/prizes-and-awards-2018/",
+    "https://www.ch.cam.ac.uk/news/royal-society-chemistry-honours-three-researchers"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-0961",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What is the first name and surname of the food scientist who received the first IFT Industrial Scientist Award in 1994?",
+     "text": "Aaron Brody",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/IFT_Industrial_Scientist_Award",
+       "snippet": "Aaron Brody"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://web.archive.org/web/20100102091005/http://members.ift.org:80/IFT/Awards/AchievmentAwards/AwardWinners/pastawardwinners.htm",
+       "snippet": "Aaron Brody"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Aaron Brody",
+   "links": [
+    "https://en.wikipedia.org/wiki/IFT_Industrial_Scientist_Award",
+    "https://web.archive.org/web/20100102091005/http://members.ift.org:80/IFT/Awards/AchievmentAwards/AwardWinners/pastawardwinners.htm"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1303",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In August 2012, what was the address of the First Church of Christ, Scientist that W. V. Grant purchased?",
+     "text": "1508 Cadiz Street, Dallas, TX, 75201",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/W._V._Grant#Tax_evasion",
+       "snippet": "1508 Cadiz Street, Dallas, TX, 75201"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/W._V._Grant",
+       "snippet": "1508 Cadiz Street, Dallas, TX, 75201"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.dallasobserver.com/news/the-best-of-dallas-worst-televangelists-10367465",
+       "snippet": "1508 Cadiz Street, Dallas, TX, 75201"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://preservationdallas.org/location/first-church-of-christ-scientist-eagles-nest-1508-cadiz-st-downtown",
+       "snippet": "1508 Cadiz Street, Dallas, TX, 75201"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1508 Cadiz Street, Dallas, TX, 75201",
+   "links": [
+    "https://en.wikipedia.org/wiki/W._V._Grant#Tax_evasion",
+    "https://en.wikipedia.org/wiki/W._V._Grant",
+    "https://www.dallasobserver.com/news/the-best-of-dallas-worst-televangelists-10367465",
+    "https://preservationdallas.org/location/first-church-of-christ-scientist-eagles-nest-1508-cadiz-st-downtown"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1310",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Adil Hussain was the artistic director and trainer of which organization from 2004 to 2007?",
+     "text": "Society for Artists and Performers",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Adil_Hussain",
+       "snippet": "Society for Artists and Performers"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://in.bookmyshow.com/person/adil-hussain/30788#:",
+       "snippet": "Society for Artists and Performers"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://en.wikipedia.org/wiki/en:Adil_Hussain?variant=zh-tw",
+       "snippet": "Society for Artists and Performers"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.tring.co.in/popular-celebrities/adil-hussain",
+       "snippet": "Society for Artists and Performers"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Society for Artists and Performers",
+   "links": [
+    "https://en.wikipedia.org/wiki/Adil_Hussain",
+    "https://in.bookmyshow.com/person/adil-hussain/30788#:",
+    "https://en.wikipedia.org/wiki/en:Adil_Hussain?variant=zh-tw",
+    "https://www.tring.co.in/popular-celebrities/adil-hussain"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1502",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In which year did Dina Nath Walli (an Indian watercolor artist and poet from Srinagar city) return to Srinagar, where he concentrated on landscape painting in watercolors?",
+     "text": "1936",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Dina_Nath_Walli",
+       "snippet": "1936"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Dina_Nath_Walli#:~:text=In%201936%2C%20he%20returned%20to,landscape%20painting%20in%20water%20colours.",
+       "snippet": "1936"
+      },
+      {
+       "title": "Source 3",
+       "url": "http://m.koausa.org/dnwalli/index.html",
+       "snippet": "1936"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://en.wikipedia-on-ipfs.org/wiki/Dina_Nath_Walli",
+       "snippet": "1936"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1936",
+   "links": [
+    "https://en.wikipedia.org/wiki/Dina_Nath_Walli",
+    "https://en.wikipedia.org/wiki/Dina_Nath_Walli#:~:text=In%201936%2C%20he%20returned%20to,landscape%20painting%20in%20water%20colours.",
+    "http://m.koausa.org/dnwalli/index.html",
+    "https://en.wikipedia-on-ipfs.org/wiki/Dina_Nath_Walli"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1526",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In 1992, with whom did Monica Lewinsky have a five-year affair?",
+     "text": "Andy Bleiler",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Monica_Lewinsky",
+       "snippet": "Andy Bleiler"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Monica_Lewinsky#:~:text=Following%20her%20high%20school%20graduation,former%20high%20school%20drama%20instructor.",
+       "snippet": "Andy Bleiler"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://kids.kiddle.co/Monica_Lewinsky",
+       "snippet": "Andy Bleiler"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.washingtonpost.com/wp-srv/politics/special/clinton/stories/drama012898.htm",
+       "snippet": "Andy Bleiler"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Andy Bleiler",
+   "links": [
+    "https://en.wikipedia.org/wiki/Monica_Lewinsky",
+    "https://en.wikipedia.org/wiki/Monica_Lewinsky#:~:text=Following%20her%20high%20school%20graduation,former%20high%20school%20drama%20instructor.",
+    "https://kids.kiddle.co/Monica_Lewinsky",
+    "https://www.washingtonpost.com/wp-srv/politics/special/clinton/stories/drama012898.htm"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1717",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "How many people were killed when a tractor-trolley returning from a temple fell into a pond in Kanpur on October 2, 2022?",
+     "text": "27",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/2022_in_India",
+       "snippet": "27"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/2022_Kanpur_road_accident",
+       "snippet": "27"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.indiatoday.in/india/story/kanpur-road-accident-cm-yogi-meets-survivors-uttar-pradesh-2007448-2022-10-02",
+       "snippet": "27"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.newindianexpress.com/nation/2022/Oct/01/27devotees-returning-after-mundan-ceremony-killed-in-road-mishap-in-ups-kanpur-2503992.html",
+       "snippet": "27"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "27",
+   "links": [
+    "https://en.wikipedia.org/wiki/2022_in_India",
+    "https://en.wikipedia.org/wiki/2022_Kanpur_road_accident",
+    "https://www.indiatoday.in/india/story/kanpur-road-accident-cm-yogi-meets-survivors-uttar-pradesh-2007448-2022-10-02",
+    "https://www.newindianexpress.com/nation/2022/Oct/01/27devotees-returning-after-mundan-ceremony-killed-in-road-mishap-in-ups-kanpur-2503992.html"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1819",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What is the surname of the individual who won the Perkin Medal, an award given annually by the Society of Chemical Industry (American Section) to a scientist residing in America for an \"innovation in applied chemistry resulting in outstanding commercial development,\" in 1918?",
+     "text": "Rossi",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Perkin_Medal#:~:text=1918%20Auguste%20J.%20Rossi",
+       "snippet": "Rossi"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Perkin_Medal",
+       "snippet": "Rossi"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.soci.org/awards/past-recipients/perkin-medal",
+       "snippet": "Rossi"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Rossi",
+   "links": [
+    "https://en.wikipedia.org/wiki/Perkin_Medal#:~:text=1918%20Auguste%20J.%20Rossi",
+    "https://en.wikipedia.org/wiki/Perkin_Medal",
+    "https://www.soci.org/awards/past-recipients/perkin-medal"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1880",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What year was the municipality of Paya, Boyac\u00e1, Colombia, founded?",
+     "text": "1600",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Paya,_Boyac%C3%A1",
+       "snippet": "1600"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Paya,_Boyac%C3%A1#:~:text=Before%20the%20Spanish%20conquest%20in,founded%20on%20September%2014%2C%201600.",
+       "snippet": "1600"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.wikidata.org/wiki/Q2022761",
+       "snippet": "1600"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1600",
+   "links": [
+    "https://en.wikipedia.org/wiki/Paya,_Boyac%C3%A1",
+    "https://en.wikipedia.org/wiki/Paya,_Boyac%C3%A1#:~:text=Before%20the%20Spanish%20conquest%20in,founded%20on%20September%2014%2C%201600.",
+    "https://www.wikidata.org/wiki/Q2022761"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1882",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What is the name of the astronomer who discovered 86 Semele?",
+     "text": "Friedrich Tietjen",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/86_Semele",
+       "snippet": "Friedrich Tietjen"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://thesolarsystem.fandom.com/wiki/86_Semele",
+       "snippet": "Friedrich Tietjen"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.minorplanetcenter.net/iau/lists/NumberedMPs000001.html",
+       "snippet": "Friedrich Tietjen"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Friedrich Tietjen",
+   "links": [
+    "https://en.wikipedia.org/wiki/86_Semele",
+    "https://thesolarsystem.fandom.com/wiki/86_Semele",
+    "https://www.minorplanetcenter.net/iau/lists/NumberedMPs000001.html"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1971",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What is the list entry name for the National Heritage List entry number 1090695 in Stonehouse, Stroud, Gloucestershire?",
+     "text": "Bede Cottage",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://historicengland.org.uk/listing/the-list/list-entry/1090695?section=official-list-entry",
+       "snippet": "Bede Cottage"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://historicengland.org.uk/listing/the-list/list-entry/1090695",
+       "snippet": "Bede Cottage"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://britishlistedbuildings.co.uk/101090695-bede-cottage-stonehouse",
+       "snippet": "Bede Cottage"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Bede Cottage",
+   "links": [
+    "https://historicengland.org.uk/listing/the-list/list-entry/1090695?section=official-list-entry",
+    "https://historicengland.org.uk/listing/the-list/list-entry/1090695",
+    "https://britishlistedbuildings.co.uk/101090695-bede-cottage-stonehouse"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-1989",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "How many days was school out after the fire in 1961 at Tomball High School in Harris County, Texas?",
+     "text": "four days",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Tomball_High_School",
+       "snippet": "four days"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://ths.tomballisd.net/our-school#:~:text=School%20was%20dismissed%20for%20four,could%20complete%20the%20school%20year.&text=By%201974%2C%20students%20began%20attending,which%20later%20became%20Quinn%20Road.",
+       "snippet": "four days"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "four days",
+   "links": [
+    "https://en.wikipedia.org/wiki/Tomball_High_School",
+    "https://ths.tomballisd.net/our-school#:~:text=School%20was%20dismissed%20for%20four,could%20complete%20the%20school%20year.&text=By%201974%2C%20students%20began%20attending,which%20later%20became%20Quinn%20Road."
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2032",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Who was awarded the IEEE/RSE James Clerk Maxwell Medal in 2021?",
+     "text": "Evelyn Lynn Hu",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/IEEE_Frank_Rosenblatt_Award",
+       "snippet": "Evelyn Lynn Hu"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/IEEE/RSE_James_Clerk_Maxwell_Medal",
+       "snippet": "Evelyn Lynn Hu"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://rse.org.uk/funding-collaboration/ieee-rse-james-clerk-maxwell-medal/",
+       "snippet": "Evelyn Lynn Hu"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://ias.hkust.edu.hk/news-media/news/prof-evelyn-hu-receives-the-2021-ieeerse-james-clerk-maxwell-medal",
+       "snippet": "Evelyn Lynn Hu"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Evelyn Lynn Hu",
+   "links": [
+    "https://en.wikipedia.org/wiki/IEEE_Frank_Rosenblatt_Award",
+    "https://en.wikipedia.org/wiki/IEEE/RSE_James_Clerk_Maxwell_Medal",
+    "https://rse.org.uk/funding-collaboration/ieee-rse-james-clerk-maxwell-medal/",
+    "https://ias.hkust.edu.hk/news-media/news/prof-evelyn-hu-receives-the-2021-ieeerse-james-clerk-maxwell-medal"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2070",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What did CSA Brigadier General James Lusk Alcorn denounce as \"a cancer upon the body of the nation\"?",
+     "text": "slavery",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/James_L._Alcorn",
+       "snippet": "slavery"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.politico.com/story/2007/02/this-day-on-capitol-hill-february-23-002845",
+       "snippet": "slavery"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://historybynicklin.wordpress.com/reconstruction-in-mississippi/",
+       "snippet": "slavery"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "slavery",
+   "links": [
+    "https://en.wikipedia.org/wiki/James_L._Alcorn",
+    "https://www.politico.com/story/2007/02/this-day-on-capitol-hill-february-23-002845",
+    "https://historybynicklin.wordpress.com/reconstruction-in-mississippi/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2225",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Who was the first president of the Pakistan Cycling Federation?",
+     "text": "Muhammad Ali Jinnah",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Pakistan_Cycling_Federation",
+       "snippet": "Muhammad Ali Jinnah"
+      },
+      {
+       "title": "Source 2",
+       "url": "http://pcf.com.pk/",
+       "snippet": "Muhammad Ali Jinnah"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://dastaangoi.substack.com/p/your-weekly-stories-from-pakistan-213",
+       "snippet": "Muhammad Ali Jinnah"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Muhammad Ali Jinnah",
+   "links": [
+    "https://en.wikipedia.org/wiki/Pakistan_Cycling_Federation",
+    "http://pcf.com.pk/",
+    "https://dastaangoi.substack.com/p/your-weekly-stories-from-pakistan-213"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2516",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What was the first and last name of the Swiss painter who murdered his landlady, Anne King?",
+     "text": "Th\u00e9odore Gardelle",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Th%C3%A9odore_Gardelle",
+       "snippet": "Th\u00e9odore Gardelle"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Th%C3%A9odore_Gardelle#cite_note-2",
+       "snippet": "Th\u00e9odore Gardelle"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://books.google.sc/books?printsec=frontcover&dq=related:LCCN2006584856&id=DnY0AQAAMAAJ&output=text",
+       "snippet": "Th\u00e9odore Gardelle"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Th\u00e9odore Gardelle",
+   "links": [
+    "https://en.wikipedia.org/wiki/Th%C3%A9odore_Gardelle",
+    "https://en.wikipedia.org/wiki/Th%C3%A9odore_Gardelle#cite_note-2",
+    "https://books.google.sc/books?printsec=frontcover&dq=related:LCCN2006584856&id=DnY0AQAAMAAJ&output=text"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2729",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Who was the first fashion designer to stream a runway show online?",
+     "text": "Helmut Lang",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Helmut_Lang_(artist)",
+       "snippet": "Helmut Lang"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.highsnobiety.com/tag/helmut-lang/",
+       "snippet": "Helmut Lang"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://theaficionados.com/journal/makers/helmut-lang#:~:text=During%20his%20time%20in%20New,his%20revolutionary%20approach%20to%20fashion.",
+       "snippet": "Helmut Lang"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://icon.ink/articles/helmut-lang-first-to-stream-runway-fall-winter-1998/",
+       "snippet": "Helmut Lang"
+      },
+      {
+       "title": "Source 5",
+       "url": "https://www.vogue.com/article/from-the-archives-helmut-lang-technology",
+       "snippet": "Helmut Lang"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Helmut Lang",
+   "links": [
+    "https://en.wikipedia.org/wiki/Helmut_Lang_(artist)",
+    "https://www.highsnobiety.com/tag/helmut-lang/",
+    "https://theaficionados.com/journal/makers/helmut-lang#:~:text=During%20his%20time%20in%20New,his%20revolutionary%20approach%20to%20fashion.",
+    "https://icon.ink/articles/helmut-lang-first-to-stream-runway-fall-winter-1998/",
+    "https://www.vogue.com/article/from-the-archives-helmut-lang-technology"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2962",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In what year did conductor David Randolph marry Mildred Greenberg?",
+     "text": "1948",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://archives.nypl.org/mus/18559",
+       "snippet": "1948"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://archives.nypl.org/mus/18559#overview",
+       "snippet": "1948"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.bach-cantatas.com/Bio/Randolph-David.htm",
+       "snippet": "1948"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://archives.nypl.org/admin/collections/1447#description",
+       "snippet": "1948"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1948",
+   "links": [
+    "https://archives.nypl.org/mus/18559",
+    "https://archives.nypl.org/mus/18559#overview",
+    "https://www.bach-cantatas.com/Bio/Randolph-David.htm",
+    "https://archives.nypl.org/admin/collections/1447#description"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-2996",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What team drafted Sonny Wade in 1969?",
+     "text": "The Philadelphia Eagles",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Emory_and_Henry_College",
+       "snippet": "The Philadelphia Eagles"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://hof.ehc.edu/members/jesse-h-sonny-wade-jr/",
+       "snippet": "The Philadelphia Eagles"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "The Philadelphia Eagles",
+   "links": [
+    "https://en.wikipedia.org/wiki/Emory_and_Henry_College",
+    "https://hof.ehc.edu/members/jesse-h-sonny-wade-jr/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3031",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "By which year was nitrous oxide the largest ozone-depleting substance (ODS) emitted through human activities?",
+     "text": "2009",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Ozone_layer",
+       "snippet": "2009"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.sciencedaily.com/releases/2009/08/090827141344.htm",
+       "snippet": "2009"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.science.org/cms/asset/48f20a35-fe6d-4d0d-8bc4-fc605aea13b7/pap.pdf",
+       "snippet": "2009"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://pubmed.ncbi.nlm.nih.gov/19713491/",
+       "snippet": "2009"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "2009",
+   "links": [
+    "https://en.wikipedia.org/wiki/Ozone_layer",
+    "https://www.sciencedaily.com/releases/2009/08/090827141344.htm",
+    "https://www.science.org/cms/asset/48f20a35-fe6d-4d0d-8bc4-fc605aea13b7/pap.pdf",
+    "https://pubmed.ncbi.nlm.nih.gov/19713491/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3077",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In what year did Dr. Paris Pismis found the astrophysics program at the National Autonomous University of Mexico?",
+     "text": "1955",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://blogs.loc.gov/headlinesandheroes/2024/03/eclipsed-no-more-women-astronomers-you-should-know/",
+       "snippet": "1955"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://blogs.loc.gov/headlinesandheroes/2024/03/eclipsed-no-more-women-astronomers-you-should-know/#:~:text=Dr.,National%20Autonomous%20University%20of%20Mexico.",
+       "snippet": "1955"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://thisweekinarmenianhistory.blogspot.com/2017/01/birth-of-paris-marie-pishmish-january.html",
+       "snippet": "1955"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1955",
+   "links": [
+    "https://blogs.loc.gov/headlinesandheroes/2024/03/eclipsed-no-more-women-astronomers-you-should-know/",
+    "https://blogs.loc.gov/headlinesandheroes/2024/03/eclipsed-no-more-women-astronomers-you-should-know/#:~:text=Dr.,National%20Autonomous%20University%20of%20Mexico.",
+    "https://thisweekinarmenianhistory.blogspot.com/2017/01/birth-of-paris-marie-pishmish-january.html"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3095",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "How many spider monkeys escaped their enclosure at Orana Park in Christchurch, New Zealand, in November 2014?",
+     "text": "5",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://www.stuff.co.nz/the-press/10727195/Five-monkeys-escape-Orana-Park",
+       "snippet": "5"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.stuff.co.nz/the-press/10727195/Five-monkeys-escape-Orana-Park#:~:text=Anderson%20said%20spider%20monkeys%20were,of%20them%20left%20the%20enclosure.",
+       "snippet": "5"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://natlib.govt.nz/records/35326798?search%5Bil%5D%5Bsubject%5D=Orana+Park+Wildlife+Trust&search%5Bpath%5D=items",
+       "snippet": "5"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.nzherald.co.nz/nz/child-climbed-barrier-to-pat-cheetah/JOI4ZAHOZLGH2QPRJBJMRA227M/",
+       "snippet": "5"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "5",
+   "links": [
+    "https://www.stuff.co.nz/the-press/10727195/Five-monkeys-escape-Orana-Park",
+    "https://www.stuff.co.nz/the-press/10727195/Five-monkeys-escape-Orana-Park#:~:text=Anderson%20said%20spider%20monkeys%20were,of%20them%20left%20the%20enclosure.",
+    "https://natlib.govt.nz/records/35326798?search%5Bil%5D%5Bsubject%5D=Orana+Park+Wildlife+Trust&search%5Bpath%5D=items",
+    "https://www.nzherald.co.nz/nz/child-climbed-barrier-to-pat-cheetah/JOI4ZAHOZLGH2QPRJBJMRA227M/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3114",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What were the month and year when Telegram announced that the app had 60 million active users and delivered 12 billion daily messages?",
+     "text": "September 2015.",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Telegram_(software)",
+       "snippet": "September 2015."
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Telegram_(software)#:~:text=In%20September%202015%2C%20Telegram%20announced,delivering%2015%20billion%20messages%20daily.",
+       "snippet": "September 2015."
+      },
+      {
+       "title": "Source 3",
+       "url": "https://sites.google.com/view/telegram-messenger--beldalls3",
+       "snippet": "September 2015."
+      },
+      {
+       "title": "Source 4",
+       "url": "https://medium.com/@vaishnavmadhusoodanan/a-product-tear-down-on-telegram-b8869c3006f2",
+       "snippet": "September 2015."
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "September 2015.",
+   "links": [
+    "https://en.wikipedia.org/wiki/Telegram_(software)",
+    "https://en.wikipedia.org/wiki/Telegram_(software)#:~:text=In%20September%202015%2C%20Telegram%20announced,delivering%2015%20billion%20messages%20daily.",
+    "https://sites.google.com/view/telegram-messenger--beldalls3",
+    "https://medium.com/@vaishnavmadhusoodanan/a-product-tear-down-on-telegram-b8869c3006f2"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3193",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "According to the 2011 census of India, after Hindi, which is the second fastest growing language of India, followed by Meitei (Manipuri) in third place and Bengali in fourth place?",
+     "text": "Kashmiri",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Kashmiri_language",
+       "snippet": "Kashmiri"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Languages_of_India#:~:text=Hindi%20is%20the%20fastest%20growing,the%202011%20census%20of%20India.",
+       "snippet": "Kashmiri"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.jagranjosh.com/general-knowledge/list-of-fastest-growing-languages-in-india-other-than-hindi-1708433736-1",
+       "snippet": "Kashmiri"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://commons.wikimedia.org/wiki/File:Fastest_growing_languages_of_India_%E2%80%94_Hindi_(first),_Kashmiri_(second),_Gujarati_%26_Meitei_alias_Manipuri_(third),_Bengali_(fourth)_%E2%80%94_based_on_2011_census_of_India.jpg",
+       "snippet": "Kashmiri"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Kashmiri",
+   "links": [
+    "https://en.wikipedia.org/wiki/Kashmiri_language",
+    "https://en.wikipedia.org/wiki/Languages_of_India#:~:text=Hindi%20is%20the%20fastest%20growing,the%202011%20census%20of%20India.",
+    "https://www.jagranjosh.com/general-knowledge/list-of-fastest-growing-languages-in-india-other-than-hindi-1708433736-1",
+    "https://commons.wikimedia.org/wiki/File:Fastest_growing_languages_of_India_%E2%80%94_Hindi_(first),_Kashmiri_(second),_Gujarati_%26_Meitei_alias_Manipuri_(third),_Bengali_(fourth)_%E2%80%94_based_on_2011_census_of_India.jpg"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3252",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What crime was Pedro L\u00f3pez incarcerated for in 1969?",
+     "text": "auto theft",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Pedro_L%C3%B3pez_(serial_killer)",
+       "snippet": "auto theft"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.yahoo.com/entertainment/pedro-lopez-did-monster-andes-082025408.html",
+       "snippet": "auto theft"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "auto theft",
+   "links": [
+    "https://en.wikipedia.org/wiki/Pedro_L%C3%B3pez_(serial_killer)",
+    "https://www.yahoo.com/entertainment/pedro-lopez-did-monster-andes-082025408.html"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3419",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What year was the municipality of San Andr\u00e9s de Cuerquia, Antioquia, Colombia, founded?",
+     "text": "1761",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/San_Andr%C3%A9s_de_Cuerquia",
+       "snippet": "1761"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.familysearch.org/es/wiki/San_Andr%C3%A9s_de_Cuerquia,_Norte,_Antioquia,_Colombia_-_Genealog%C3%ADa#:~:text=El%20municipio%20de%20San%20Andr%C3%A9s%20de%20Cuerquia%20fue%20creado%20a,13%20de%20junio%20de%201853.",
+       "snippet": "1761"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.colombiaturismoweb.com/DEPARTAMENTOS/ANTIOQUIA/MUNICIPIOS/SAN%20ANDRES%20DE%20CUERQUIA/SAN%20ANDRES%20DE%20CUERQUIA.htm",
+       "snippet": "1761"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1761",
+   "links": [
+    "https://en.wikipedia.org/wiki/San_Andr%C3%A9s_de_Cuerquia",
+    "https://www.familysearch.org/es/wiki/San_Andr%C3%A9s_de_Cuerquia,_Norte,_Antioquia,_Colombia_-_Genealog%C3%ADa#:~:text=El%20municipio%20de%20San%20Andr%C3%A9s%20de%20Cuerquia%20fue%20creado%20a,13%20de%20junio%20de%201853.",
+    "https://www.colombiaturismoweb.com/DEPARTAMENTOS/ANTIOQUIA/MUNICIPIOS/SAN%20ANDRES%20DE%20CUERQUIA/SAN%20ANDRES%20DE%20CUERQUIA.htm"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3489",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In what year was *Hemidactylus boavistensis* elevated from a subspecies of *Hemidactylus bouvieri* to a separate species?",
+     "text": "2008",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Hemidactylus_boavistensis",
+       "snippet": "2008"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://kids.kiddle.co/Boa_Vista_leaf-toed_gecko#:~:text=It%20had%20long%20been%20considered%20a%20subspecies%20of%20Hemidactylus%20bouvieri%20but%20was%20re%2Delevated%20as%20a%20separate%20species%20in%202008.",
+       "snippet": "2008"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "2008",
+   "links": [
+    "https://en.wikipedia.org/wiki/Hemidactylus_boavistensis",
+    "https://kids.kiddle.co/Boa_Vista_leaf-toed_gecko#:~:text=It%20had%20long%20been%20considered%20a%20subspecies%20of%20Hemidactylus%20bouvieri%20but%20was%20re%2Delevated%20as%20a%20separate%20species%20in%202008."
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3574",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "What is the first name and surname of the actress who was the guest star that played the bride named Risa in Ally McBeal Season 3, Episode 1?",
+     "text": "Tracy Middendorf",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://allymcbeal.fandom.com/wiki/Car_Wash",
+       "snippet": "Tracy Middendorf"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://www.imdb.com/title/tt0510281/?ref_=tt_ch",
+       "snippet": "Tracy Middendorf"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://www.imdb.com/title/tt0510281/characters/nm0585429",
+       "snippet": "Tracy Middendorf"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://allymcbeal.fandom.com/wiki/Risa_Helms",
+       "snippet": "Tracy Middendorf"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Tracy Middendorf",
+   "links": [
+    "https://allymcbeal.fandom.com/wiki/Car_Wash",
+    "https://www.imdb.com/title/tt0510281/?ref_=tt_ch",
+    "https://www.imdb.com/title/tt0510281/characters/nm0585429",
+    "https://allymcbeal.fandom.com/wiki/Risa_Helms"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3750",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "How many people won the Arab Creativity Oscar before Mishary Alafasy?",
+     "text": "0",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Mishari_bin_Rashid_Alafasy",
+       "snippet": "0"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Mishari_bin_Rashid_Alafasy#Awards_and_recognition",
+       "snippet": "0"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://thecognate.com/shaikh-mishary-bin-rashid-alafasy/",
+       "snippet": "0"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.tuko.co.ke/facts-lifehacks/celebrity-biographies/503354-who-mishary-rashid-alafasy-wife-children-mosque/",
+       "snippet": "0"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "0",
+   "links": [
+    "https://en.wikipedia.org/wiki/Mishari_bin_Rashid_Alafasy",
+    "https://en.wikipedia.org/wiki/Mishari_bin_Rashid_Alafasy#Awards_and_recognition",
+    "https://thecognate.com/shaikh-mishary-bin-rashid-alafasy/",
+    "https://www.tuko.co.ke/facts-lifehacks/celebrity-biographies/503354-who-mishary-rashid-alafasy-wife-children-mosque/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3915",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "Which team was the first non-European team to enter the Battle of the Nations tournament?",
+     "text": "Team Quebec",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Battle_of_the_Nations_(Medieval_Tournament)",
+       "snippet": "Team Quebec"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://botn.info/botn-story/",
+       "snippet": "Team Quebec"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "Team Quebec",
+   "links": [
+    "https://en.wikipedia.org/wiki/Battle_of_the_Nations_(Medieval_Tournament)",
+    "https://botn.info/botn-story/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-3922",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "In which year did Sheikh Abdul Rashid, popularly known as Engineer Rashid (a Kashmiri politician), obtain a Bachelor of Science degree?",
+     "text": "1988",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Engineer_Rashid",
+       "snippet": "1988"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Engineer_Rashid#:~:text=Rashid%20obtained%20a%20Bachelor%20of,civil%20engineering%20two%20years%20later.",
+       "snippet": "1988"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://timesofindia.indiatimes.com/india/tihar-to-parliament-baramulla-mp-rashid-engineers-a-new-identity/articleshow/111522790.cms",
+       "snippet": "1988"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://theprint.in/opinion/security-code/engineer-rashids-election-victory-shows-kashmiri-secessionism-is-far-from-spent/2117896/",
+       "snippet": "1988"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "1988",
+   "links": [
+    "https://en.wikipedia.org/wiki/Engineer_Rashid",
+    "https://en.wikipedia.org/wiki/Engineer_Rashid#:~:text=Rashid%20obtained%20a%20Bachelor%20of,civil%20engineering%20two%20years%20later.",
+    "https://timesofindia.indiatimes.com/india/tihar-to-parliament-baramulla-mp-rashid-engineers-a-new-identity/articleshow/111522790.cms",
+    "https://theprint.in/opinion/security-code/engineer-rashids-election-victory-shows-kashmiri-secessionism-is-far-from-spent/2117896/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-4032",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "On what date, month, and year was Babar Awan suspended by the PPP, leading to the eventual dismissal of Zulfiqar Ali Bhutto's murder case following a series of hearings at the Supreme Court?",
+     "text": "2 May 2012",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Zulfikar_Ali_Bhutto#Trial_and_execution",
+       "snippet": "2 May 2012"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Zulfikar_Ali_Bhutto",
+       "snippet": "2 May 2012"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://en.wikipedia.org/wiki/Babar_Awan#:~:text=In%202011%2C%20he%20resigned%20as,PPP%20for%20another%20five%20years.",
+       "snippet": "2 May 2012"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://tribune.com.pk/story/372788/sidelined-babar-awan-stripped-of-all-ppp-posts/",
+       "snippet": "2 May 2012"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "2 May 2012",
+   "links": [
+    "https://en.wikipedia.org/wiki/Zulfikar_Ali_Bhutto#Trial_and_execution",
+    "https://en.wikipedia.org/wiki/Zulfikar_Ali_Bhutto",
+    "https://en.wikipedia.org/wiki/Babar_Awan#:~:text=In%202011%2C%20he%20resigned%20as,PPP%20for%20another%20five%20years.",
+    "https://tribune.com.pk/story/372788/sidelined-babar-awan-stripped-of-all-ppp-posts/"
+   ]
+  }
+ },
+ {
+  "id": "write-simpleqa-4222",
+  "kind": "answer",
+  "args": {
+   "results": [
+    {
+     "piece": "On what day, month, and year was Manuleleua Paletasala Tovale appointed Associate Minister for the Prime Minister and Cabinet?",
+     "text": "28 July 2021",
+     "items": [
+      {
+       "title": "Source 1",
+       "url": "https://en.wikipedia.org/wiki/Manuleleua_Paletasala_Tovale",
+       "snippet": "28 July 2021"
+      },
+      {
+       "title": "Source 2",
+       "url": "https://en.wikipedia.org/wiki/Manuleleua_Paletasala_Tovale#:~:text=On%2028%20July%202021%20he,the%20Prime%20Minister%20and%20Cabinet.",
+       "snippet": "28 July 2021"
+      },
+      {
+       "title": "Source 3",
+       "url": "https://dbpedia.org/page/Manuleleua_Paletasala_Tovale",
+       "snippet": "28 July 2021"
+      },
+      {
+       "title": "Source 4",
+       "url": "https://www.samoaobserver.ws/category/samoa/88195",
+       "snippet": "28 July 2021"
+      }
+     ],
+     "met": true
+    }
+   ]
+  },
+  "expect": {
+   "answer": "28 July 2021",
+   "links": [
+    "https://en.wikipedia.org/wiki/Manuleleua_Paletasala_Tovale",
+    "https://en.wikipedia.org/wiki/Manuleleua_Paletasala_Tovale#:~:text=On%2028%20July%202021%20he,the%20Prime%20Minister%20and%20Cabinet.",
+    "https://dbpedia.org/page/Manuleleua_Paletasala_Tovale",
+    "https://www.samoaobserver.ws/category/samoa/88195"
+   ]
+  }
+ },
+ {
+  "id": "write-fail-authority",
+  "kind": "failure",
+  "args": {
+   "results": [
+    {
+     "piece": "Delete the old backup folder.",
+     "text": "",
+     "items": [],
+     "met": null,
+     "refused": "authority"
+    }
+   ]
+  },
+  "expect": {
+   "piece": "Delete the old backup folder."
+  }
+ },
+ {
+  "id": "write-fail-budget",
+  "kind": "failure",
+  "args": {
+   "results": [
+    {
+     "piece": "Search the web for every release note since 2019.",
+     "text": "",
+     "items": [],
+     "met": null,
+     "refused": "budget"
+    }
+   ]
+  },
+  "expect": {
+   "piece": "Search the web for every release note since 2019."
+  }
+ },
+ {
+  "id": "write-fail-cancelled",
+  "kind": "failure",
+  "args": {
+   "results": [
+    {
+     "piece": "Summarize the quarterly report.",
+     "text": "",
+     "items": [],
+     "met": null,
+     "refused": "cancelled"
+    }
+   ]
+  },
+  "expect": {
+   "piece": "Summarize the quarterly report."
+  }
+ },
+ {
+  "id": "write-fail-error",
+  "kind": "failure",
+  "args": {
+   "results": [
+    {
+     "piece": "Edit notes.md to add a line.",
+     "text": "",
+     "items": [],
+     "met": null,
+     "error": "the editor was unreachable"
+    }
+   ]
+  },
+  "expect": {
+   "piece": "Edit notes.md to add a line."
+  }
+ }
+]

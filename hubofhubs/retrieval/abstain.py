@@ -32,7 +32,7 @@ def confidence(hybrid: HybridRrf, query: str) -> float:
     return 0.5 * min(1.0, max(0.0, (best_cosine - COSINE_FLOOR) / COSINE_SPAN)) + 0.5 * cover
 
 
-@implementation("retrieve-context", "abstaining_learned")
+@implementation("context-retriever", "abstaining_learned")
 class AbstainingLearned(Retriever):
     """The learned reranker that returns nothing when the corpus does not answer the question: a confidence under ``threshold`` gives an empty list."""
     REQUIRES = (needs.FASTEMBED_LOCAL, needs.FASTEMBED_MODEL, needs.NUMPY, needs.SKLEARN)
@@ -65,7 +65,7 @@ class AbstainingLearned(Retriever):
         return self.inner.index_bytes()
 
 
-@implementation("retrieve-context", "abstaining_hybrid")
+@implementation("context-retriever", "abstaining_hybrid")
 class AbstainingHybrid(AbstainingLearned):
     """The plain hybrid (BM25F and dense by rank fusion) with the same abstention: separates what abstaining adds from what learning adds."""
 
@@ -82,7 +82,7 @@ RERANK_PROMPT = ("You choose which pieces of a codebase a developer needs for a 
 RERANK_POOL, RERANK_KEEP, SNIPPET_CHARS = 30, 8, 240
 
 
-@implementation("retrieve-context", "llm_rerank")
+@implementation("context-retriever", "llm_rerank")
 class LlmRerank(Retriever):
     """A model reads the top 30 candidates of the learned reranker (path and 240 characters each) and names the ones the task needs. PAID: one
     model call per query. It is recorded to a cassette and replayed (``esoi run context_retrieval --impl llm_rerank --cassette DIR``); it has

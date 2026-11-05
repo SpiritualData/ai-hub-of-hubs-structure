@@ -48,7 +48,6 @@ import logging
 import time
 from typing import Any, Callable, Dict, List, Optional
 
-from esoi import implementation
 from hubofhubs.ports.context import AssembledContext, ContextAssembler, ContextAssemblerBase
 from hubofhubs.recall.card_content_render import render_block_lines
 from .. import arm_needs as needs
@@ -101,7 +100,6 @@ def fused_card_order(kw_result: AssembledContext, vec_result: AssembledContext,
     return sorted(fused, key=lambda c: (c not in pinned, -fused[c], first_seen[c]))
 
 
-@implementation("context-assembler", "hybrid")
 class HybridContextAssembler(ContextAssemblerBase):
     """Fuses a keyword/IDF assembler and a vector assembler in parallel.
 

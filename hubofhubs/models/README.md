@@ -4,13 +4,13 @@
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| Anthropic provider | `call-a-model:anthropic` | [`hubofhubs/models/anthropic.py`](anthropic.py) |  |
-| Claude Code CLI | `call-a-model:claude_cli` | [`hubofhubs/models/claude_cli.py`](claude_cli.py) | selected |
-| DeepSeek provider | `call-a-model:deepseek` | [`hubofhubs/models/openai.py`](openai.py) |  |
-| Gemini provider | `call-a-model:gemini` | [`hubofhubs/models/gemini.py`](gemini.py) |  |
-| Multi-provider router | `call-a-model:multi_provider` | [`hubofhubs/models/router.py`](router.py) |  |
-| OpenAI provider | `call-a-model:openai` | [`hubofhubs/models/openai.py`](openai.py) |  |
-| Built on the vendor model caller | `model-call:via_call_a_model` | [`hubofhubs/models/via_provider.py`](via_provider.py) | selected |
+| Tier chooser then vendor | `model-plumbing:via_vendor` | [`hubofhubs/models/via_provider.py`](via_provider.py) | selected |
+| Anthropic provider | `vendor-model-caller:anthropic` | [`hubofhubs/models/anthropic.py`](anthropic.py) |  |
+| Claude Code CLI | `vendor-model-caller:claude_cli` | [`hubofhubs/models/claude_cli.py`](claude_cli.py) | selected |
+| DeepSeek provider | `vendor-model-caller:deepseek` | [`hubofhubs/models/openai.py`](openai.py) |  |
+| Gemini provider | `vendor-model-caller:gemini` | [`hubofhubs/models/gemini.py`](gemini.py) |  |
+| Multi-provider router | `vendor-model-caller:multi_provider` | [`hubofhubs/models/router.py`](router.py) |  |
+| OpenAI provider | `vendor-model-caller:openai` | [`hubofhubs/models/openai.py`](openai.py) |  |
 
 ## Where to go next
 

@@ -1,4 +1,4 @@
-"""Scores a stay-current arm: the age in days of a recorded date, and the share terms of a combined reading."""
+"""Scores a the-learning arm: the age in days of a recorded date, and the share terms of a combined reading."""
 import datetime
 import sys
 from pathlib import Path

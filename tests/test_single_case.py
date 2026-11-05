@@ -10,7 +10,7 @@ class FakeModel:
     def __init__(self, reply):
         self.reply, self.asked = reply, []
 
-    def complete(self, prompt, tier=""):
+    def ask(self, prompt, tier=""):
         self.asked.append((prompt, tier))
         return self.reply
 
@@ -25,7 +25,7 @@ def test_a_reply_with_the_digit_passes_with_reasons_and_cost():
     assert single_case.passed(record)
     assert record["arm"] == ["anthropic", "claude-haiku-5-5"]
     assert record["list_cost_usd"] > 0
-    assert sorted(r.split(" -> ")[0] for r in record["reasons"]) == ["choose-a-model-tier", "model-call"]
+    assert sorted(r.split(" -> ")[0] for r in record["reasons"]) == ["model-plumbing", "model-tier-chooser"]
 
 
 def test_a_wrong_reply_fails():

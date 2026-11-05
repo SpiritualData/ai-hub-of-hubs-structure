@@ -8,7 +8,7 @@ A draft article for the owner to edit, about 900 words. The line between the mar
 # Which AI part is actually best? We measure the alternatives on the same cases
 
 <!-- headline-compact:start -->
-47 alternatives measured across 8 areas, from 456 researched candidates. By area: RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 4, Guardrails and oversight 4, Card building 10.
+66 alternatives measured across 13 areas, from 456 researched candidates. By area: RAG retrieval 16, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 4, Guardrails and oversight 4, Planning and delegation 2, Response writing 1, Goal completion 2, Asking judgment 2, Proactivity 2, Card building 10.
 <!-- headline-compact:end -->
 
 ## The problem with lists
@@ -40,7 +40,7 @@ Baselines and floors, such as "no overseer at all", are run so that a real arm h
 The numbers below are generated from the results file each time the README is rebuilt.
 
 <!-- headline-compact:start -->
-47 alternatives measured across 8 areas, from 456 researched candidates. By area: RAG retrieval 6, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 4, Guardrails and oversight 4, Card building 10.
+66 alternatives measured across 13 areas, from 456 researched candidates. By area: RAG retrieval 16, LLM routing and failover 2, LLMs (model quality and cost) 13, Web search APIs 2, Scholarly search 6, Coding agents 4, Guardrails and oversight 4, Planning and delegation 2, Response writing 1, Goal completion 2, Asking judgment 2, Proactivity 2, Card building 10.
 <!-- headline-compact:end -->
 
 Areas in the list are the ones people building agents tend to ask about: retrieval for RAG, the models themselves, routing and failover between providers, web search APIs, scholarly search, coding agents, guardrails and a memory store. The README has the full table, with the cases and their source for each check.

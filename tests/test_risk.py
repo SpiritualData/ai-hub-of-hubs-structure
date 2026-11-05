@@ -1,4 +1,4 @@
-"""The watch-for-risk engine: digest, signal parsing, the safe default, and assembly with a consumer's prompt as data."""
+"""The nervous-system engine: digest, signal parsing, the safe default, and assembly with a consumer's prompt as data."""
 import hubofhubs
 from hubofhubs import risk
 
@@ -52,15 +52,15 @@ def test_the_consumers_prompt_is_the_only_prompt_and_the_call_names_the_judge_st
 
 
 def test_assembly_builds_the_overseer_with_the_consumers_prompt_and_names_the_layer():
-    config = hubofhubs.AssemblyConfig(solutions=("watch-for-risk",), selections={"watch-for-risk": "overseer"},
-                                 options={"watch-for-risk": {"render": render}})
+    config = hubofhubs.AssemblyConfig(solutions=("nervous-system",), selections={"nervous-system": "overseer"},
+                                 options={"nervous-system": {"render": render}})
     system = hubofhubs.assemble(config)
-    watcher = system["watch-for-risk"]
+    watcher = system["nervous-system"]
     assert isinstance(watcher, hubofhubs.seats.RiskWatching)
     assert watcher.oversee(Provider({"signal": "escalate_human", "reason": "Do you want me to proceed?"}), "m", watcher.digest(
         user_message="u", step=1, max_steps=1)).signal == "escalate_human"
     assert any("overseer" in line and "consumer selections" in line for line in system.reasons)
-    assert "overseer" in hubofhubs.names("watch-for-risk")
+    assert "overseer" in hubofhubs.names("nervous-system")
 
 
 def test_with_no_prompt_there_is_no_policy_and_no_model_call():

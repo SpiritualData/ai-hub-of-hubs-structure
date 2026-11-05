@@ -152,7 +152,7 @@ def needs_of(implementation, meter):
     if "provider" in inspect.signature(implementation).parameters:
         from esoi import runtime
         from hubofhubs import seats  # noqa: F401
-        provider = runtime.resolve("call-a-model", scope="hubofhubs")(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
+        provider = runtime.resolve("vendor-model-caller", scope="hubofhubs")(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
         found["provider"] = meter.wrap(provider, ("answer",))
     return found
 

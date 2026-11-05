@@ -1,4 +1,4 @@
-"""Scores a search-backend arm: one factual question, the top five hits, passed when a hit comes from the gold source.
+"""Scores a web-search arm: one factual question, the top five hits, passed when a hit comes from the gold source.
 
 Matching rule (fixed before any run, also written in README.md). A URL is reduced to its host (lower case, a leading ``www.``
 removed) and its path (a trailing slash removed); scheme, query and fragment are ignored. A hit passes when its host and path equal
