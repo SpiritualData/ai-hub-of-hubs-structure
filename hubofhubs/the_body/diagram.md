@@ -2,21 +2,15 @@ These are ESOI records rendered as a diagram (evolvable structure that optimizes
 
 # Solution diagram: The form and internal context of a system
 
-Body is the form of the system and the context that belongs to it, and it lets anyone apply the hub to their own system by providing adapters or declaring their APIs and databases. Internal Context keeps what the system knows in Card Store and proposes the cards a folder of files needs through Cards From Files. Learning names the areas whose research is older than ninety days by reading their dates through Research Freshness Reader. Nervous System raises one small signal before a step that cannot be undone or belongs to a person. Hands lets the AI use outside services, change things outside and bring knowledge in without being one specific integration, and it reports how much of that is catalog data through Connection Scorer. Acting takes a goal with a written done-standard and tries to bring it about, and it reports whether the goal was met.
+Body is the form of the system and the context that belongs to it, and it lets anyone apply the hub to their own system by declaring where the data lives and which enduring integrations the AI may use. Internal Context declares where the system's data lives and which outside tool reads it, keeps what the system knows in Card Store, and proposes the cards a folder of files needs through Cards From Files. Hands makes sure that the system's own AI tool registry, LLM platform and guardrails are accessible to the AI and used by it.
 
 An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
 
 ```mermaid
 flowchart LR
     s0["Cards From Files<br/><i>cards-from-files</i>"]
-    s1["Learning<br/><i>stay-current</i>"]
-    s2["Research Freshness Reader<br/><i>read-registry-freshness</i>"]
-    s3["Hands<br/><i>connect-any-integration</i>"]
-    s4["Connection Scorer<br/><i>score-hub-connections</i>"]
-    s5["Card Store<br/><i>card-store</i>"]
-    s6["Internal Context<br/><i>internal-context</i>"]
-    s0 -->|"Cards in the card-store record shape (grouping, summary..."| s6
-    s2 -->|"Days since the date, or the combined freshness reading with..."| s1
-    s4 -->|"Per-area checks and a combined score"| s3
-    s5 -->|"The id of an added card, a card or nothing for an id, the..."| s6
+    s1["Card Store<br/><i>card-store</i>"]
+    s2["Internal Context<br/><i>internal-context</i>"]
+    s0 -->|"Cards in the card-store record shape (grouping, summary..."| s2
+    s1 -->|"The id of an added card, a card or nothing for an id, the..."| s2
 ```

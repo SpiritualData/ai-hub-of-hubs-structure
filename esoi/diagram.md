@@ -2,7 +2,7 @@ These are ESOI records rendered as a diagram (evolvable structure that optimizes
 
 # Solution diagram: The best parts for AI intelligence, assembled and proven
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. It gives the system a form and its own context through Body. It finds, prepares and answers for one request through Intelligence. It reaches what is outside the system through World. It learns when to ask the people it works for through Consciousness.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and reaches what is outside the system through World. The Self then asks Consciousness to learn from the person's feedback.
 
 An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
 
@@ -13,8 +13,8 @@ flowchart LR
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
     s4["Consciousness<br/><i>the-consciousness</i>"]
-    s0 -->|"Outside material for a task, from the search backends"| s1
-    s2 -->|"A system's own context, risk signal, integrations and..."| s1
-    s3 -->|"An answer, plan or communication for one request, held to..."| s1
-    s4 -->|"A decision to ask, proceed or decline for one person, and..."| s1
+    s0 -->|"Material from outside the system, with its sources, and the..."| s1
+    s2 -->|"What a particular system declares about its own data and..."| s1
+    s3 -->|"A response to one request, with the step of every part that..."| s1
+    s4 -->|"The person's Representative, and what the system learned..."| s1
 ```

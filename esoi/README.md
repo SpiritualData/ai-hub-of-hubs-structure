@@ -8,7 +8,7 @@ Opportunities: Any product that needs an AI grounded in a person or team's own g
 
 ## How the solutions fit together
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. It gives the system a form and its own context through Body. It finds, prepares and answers for one request through Intelligence. It reaches what is outside the system through World. It learns when to ask the people it works for through Consciousness.
+hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, passes the request on for processing to Intelligence, and reaches what is outside the system through World. The Self then asks Consciousness to learn from the person's feedback.
 
 ## Diagram
 
@@ -21,21 +21,21 @@ flowchart LR
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
     s4["Consciousness<br/><i>the-consciousness</i>"]
-    s0 -->|"Outside material for a task, from the search backends"| s1
-    s2 -->|"A system's own context, risk signal, integrations and..."| s1
-    s3 -->|"An answer, plan or communication for one request, held to..."| s1
-    s4 -->|"A decision to ask, proceed or decline for one person, and..."| s1
+    s0 -->|"Material from outside the system, with its sources, and the..."| s1
+    s2 -->|"What a particular system declares about its own data and..."| s1
+    s3 -->|"A response to one request, with the step of every part that..."| s1
+    s4 -->|"The person's Representative, and what the system learned..."| s1
 ```
 
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| World | `take-in-the-world` | `hubofhubs.run("take-in-the-world", 'latest Rust release')` | Search and papers as the way in (`search_backends`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | `hubofhubs.run("the-self", 'what is the latest Rust release?')` | Answers through the Assembler and reaches the other containers (`composition`) | The assembled whole answers a real request |
-| Body | `the-body` | no entry declared | Composition of the form and internal context (`composition`) | A system applies the hub to itself |
-| Intelligence | `the-intelligence` | no entry declared | Composition of the processing of information (`composition`) | A request is answered from what bears on it |
-| Consciousness | `the-consciousness` | no entry declared | Composition of the adaptation to humans (`composition`) | A representative asks when the person would want to be asked |
+| World | `take-in-the-world` | `hubofhubs.run("take-in-the-world", 'latest Rust release')` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
+| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency, Integrated efficiency |
+| Body | `the-body` | `hubofhubs.run("the-body", {'person': ''})` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
+| Intelligence | `the-intelligence` | `hubofhubs.run("the-intelligence", ...)` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
+| Consciousness | `the-consciousness` | `hubofhubs.run("the-consciousness", {'person': ''})` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
 
 ## Problems and ideals
 
@@ -65,14 +65,15 @@ flowchart LR
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
 - A representative asks when the person would want to be asked (`metric-the-consciousness`)
+- Integrated efficiency (`metric-integrated-efficiency`)
 
 ## Where to go next
 
 - Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md) (The AI system has a form and its own internal context, and the hub applies to a particular system by providing adapters or declaring the system's internal APIs, databases and files.)
-- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI representatives of a team learn each person's way: when to ask that person and when not to, and how that person wants the work done, from the person's own feedback.)
-- Sub-intent: [Processing information for one request](../hubofhubs/the_intelligence/README.md) (One request is answered from what the AI can see for it: the information is found and prepared, the answer is reasoned and held to its evidence, and the long view is kept across requests.)
+- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI representatives of a team learn each person's way: which authority they carry, when to ask that person and when not to, which priorities the person implies, and how that person wants the work...)
+- Sub-intent: [Processing information for one request](../hubofhubs/the_intelligence/README.md) (One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the...)
 - Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md) (The parts of the system work as one whole: each part knows its role, what the system claims matches its evidence, its records match its code, and one call builds the parts from configuration.)
-- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check and uses the right tool for each kind of need.)
+- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI knows what is outside the system and can interact with it: it brings in knowledge a reader can check, uses the right tool for each kind of need, asks a model through one measured path and...)
 - Repository: [top README](../README.md)
 - Records beside the code: [hubofhubs](../hubofhubs/README.md)
 - Records: [intent.csv](intent.csv)
@@ -105,24 +106,23 @@ flowchart LR
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| World | `take-in-the-world` | Search and papers as the way in (`search_backends`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | Answers through the Assembler and reaches the other containers (`composition`) | The assembled whole answers a real request |
-| Body | `the-body` | Composition of the form and internal context (`composition`) | A system applies the hub to itself |
-| Intelligence | `the-intelligence` | Composition of the processing of information (`composition`) | A request is answered from what bears on it |
-| Consciousness | `the-consciousness` | Composition of the adaptation to humans (`composition`) | A representative asks when the person would want to be asked |
+| World | `take-in-the-world` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
+| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency, Integrated efficiency |
+| Body | `the-body` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
+| Intelligence | `the-intelligence` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
+| Consciousness | `the-consciousness` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
 
 ### Implementations
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
-| Search and papers as the way in | `take-in-the-world:search_backends` | [hubofhubs/areas.py](../hubofhubs/areas.py) |  |
 | Hand-wired general agent framework | `the-self:hand_wired_agent_framework` |  |  |
-| The parts of the world | `take-in-the-world:parts` |  | [the_world](the_world/README.md) |
-| Answers through the Assembler and reaches the other containers | `the-self:composition` | [hubofhubs/whole.py](../hubofhubs/whole.py) |  |
+| Responds through every container | `the-self:composition` | [hubofhubs/whole.py](../hubofhubs/whole.py) |  |
+| Declared sources and enduring integrations | `the-body:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_body](the_body/README.md) |
+| One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_intelligence](the_intelligence/README.md) |
+| Representative, priorities and feedback | `the-consciousness:composition` | [hubofhubs/flows.py](../hubofhubs/flows.py) | [the_consciousness](the_consciousness/README.md) |
 | The parts of the system | `the-self:parts` |  | [the_self](the_self/README.md) |
-| Composition of the form and internal context | `the-body:composition` |  | [the_body](the_body/README.md) |
-| Composition of the processing of information | `the-intelligence:composition` |  | [the_intelligence](the_intelligence/README.md) |
-| Composition of the adaptation to humans | `the-consciousness:composition` |  | [the_consciousness](the_consciousness/README.md) |
+| Search and papers through the tools | `take-in-the-world:composition` | [hubofhubs/areas.py](../hubofhubs/areas.py) | [the_world](the_world/README.md) |
 
 ### Metrics
 
@@ -131,3 +131,4 @@ flowchart LR
 - A system applies the hub to itself (`metric-the-body`): `none`
 - A request is answered from what bears on it (`metric-the-intelligence`): `none`
 - A representative asks when the person would want to be asked (`metric-the-consciousness`): `none`
+- Integrated efficiency (`metric-integrated-efficiency`): `none`

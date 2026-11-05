@@ -4,45 +4,48 @@
 
 ## World (`take-in-the-world`)
 
-Connect any AI to tools, search and data sources without writing code for each one.
+Bring in what is outside the system and let the AI act on it through the best available tool.
 
 - Entry call: `hubofhubs.run("take-in-the-world", 'latest Rust release')`
-- Selected implementation: Search and papers as the way in (`search_backends`)
+- Selected implementation: Search and papers through the tools (`composition`)
 - Metric: Task pass rate and cost per passing task
 - Implemented by: [`hubofhubs/areas.py`](areas.py), [`hubofhubs/terminal/__init__.py`](terminal/__init__.py), [`hubofhubs/terminal/asks.py`](terminal/asks.py), [`hubofhubs/terminal/blocks.py`](terminal/blocks.py), [`hubofhubs/terminal/render.py`](terminal/render.py), [`hubofhubs/terminal/stopped.py`](terminal/stopped.py), [`hubofhubs/terminal/strings.py`](terminal/strings.py), [`hubofhubs/terminal/trail.py`](terminal/trail.py) and 3 more
 
 ## The Self (`the-self`)
 
-Keep every part of an AI system working as one coherent whole, for anyone who assembles one from the hub.
+Keep every part working as one whole for one request.
 
-- Entry call: `hubofhubs.run("the-self", 'what is the latest Rust release?')`
-- Selected implementation: Answers through the Assembler and reaches the other containers (`composition`)
-- Metric: The assembled whole answers a real request
-- Implemented by: [`hubofhubs/whole.py`](whole.py)
+- Entry call: `hubofhubs.run("the-self", ...)`
+- Selected implementation: Responds through every container (`composition`)
+- Metric: The assembled whole answers a real request, Integrated efficiency, Integrated efficiency
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 45 more
 
 ## Body (`the-body`)
 
-Let any product give the AI its own form and context without rewriting the hub's parts.
+Let the hub apply to one particular system by declaring where its data lives and which of its integrations the AI may use.
 
-- Entry call: no entry declared
-- Selected implementation: Composition of the form and internal context (`composition`)
+- Entry call: `hubofhubs.run("the-body", {'person': ''})`
+- Selected implementation: Declared sources and enduring integrations (`composition`)
 - Metric: A system applies the hub to itself
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 45 more
 
 ## Intelligence (`the-intelligence`)
 
-Answer each request from what bears on it, at the lowest cost that still passes.
+Turn one request and what is known into a response that meets its goal.
 
-- Entry call: no entry declared
-- Selected implementation: Composition of the processing of information (`composition`)
+- Entry call: `hubofhubs.run("the-intelligence", ...)`
+- Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 45 more
 
 ## Consciousness (`the-consciousness`)
 
-Let the system adapt to each human it works with, so people are neither interrupted needlessly nor surprised.
+Keep the system aligned with the humans and policies it works for.
 
-- Entry call: no entry declared
-- Selected implementation: Composition of the adaptation to humans (`composition`)
+- Entry call: `hubofhubs.run("the-consciousness", {'person': ''})`
+- Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
+- Implemented by: [`.env.example`](../.env.example), [`hubofhubs/__init__.py`](__init__.py), [`hubofhubs/areas.py`](areas.py), [`hubofhubs/arm_needs.py`](arm_needs.py), [`hubofhubs/binding.py`](binding.py), [`hubofhubs/card.py`](card.py), [`hubofhubs/cardstore.py`](cardstore.py), [`hubofhubs/cases.py`](cases.py) and 45 more
 
 ## Diagram
 
@@ -55,24 +58,23 @@ flowchart LR
     s2["Body<br/><i>the-body</i>"]
     s3["Intelligence<br/><i>the-intelligence</i>"]
     s4["Consciousness<br/><i>the-consciousness</i>"]
-    s0 -->|"Outside material for a task, from the search backends"| s1
-    s2 -->|"A system's own context, risk signal, integrations and..."| s1
-    s3 -->|"An answer, plan or communication for one request, held to..."| s1
-    s4 -->|"A decision to ask, proceed or decline for one person, and..."| s1
+    s0 -->|"Material from outside the system, with its sources, and the..."| s1
+    s2 -->|"What a particular system declares about its own data and..."| s1
+    s3 -->|"A response to one request, with the step of every part that..."| s1
+    s4 -->|"The person's Representative, and what the system learned..."| s1
 ```
 
 ## Implementations
 
 | Implementation | Handle | Code | Selected |
 |---|---|---|---|
-| Search and papers as the way in | `take-in-the-world:search_backends` | [`hubofhubs/areas.py`](areas.py) | selected |
 | Hand-wired general agent framework | `the-self:hand_wired_agent_framework` | no code yet |  |
-| The parts of the world | `take-in-the-world:parts` | no code yet |  |
-| Answers through the Assembler and reaches the other containers | `the-self:composition` | [`hubofhubs/whole.py`](whole.py) | selected |
+| Responds through every container | `the-self:composition` | [`hubofhubs/whole.py`](whole.py) | selected |
+| Declared sources and enduring integrations | `the-body:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
+| One request through the long view, the target, the Mind and the checks | `the-intelligence:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
+| Representative, priorities and feedback | `the-consciousness:composition` | [`hubofhubs/flows.py`](flows.py) | selected |
 | The parts of the system | `the-self:parts` | no code yet |  |
-| Composition of the form and internal context | `the-body:composition` | no code yet | selected |
-| Composition of the processing of information | `the-intelligence:composition` | no code yet | selected |
-| Composition of the adaptation to humans | `the-consciousness:composition` | no code yet | selected |
+| Search and papers through the tools | `take-in-the-world:composition` | [`hubofhubs/areas.py`](areas.py) | selected |
 
 ## Metrics
 
@@ -81,6 +83,7 @@ flowchart LR
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
 - A representative asks when the person would want to be asked (`metric-the-consciousness`)
+- Integrated efficiency (`metric-integrated-efficiency`)
 
 ## Problems
 
