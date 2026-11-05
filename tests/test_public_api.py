@@ -52,3 +52,13 @@ def test_consumer_facing_docs_import_no_internal_path():
     offenders = [f"{path.relative_to(ROOT)}: {line.strip()}" for path in docs for line in path.read_text().splitlines()
                  if INTERNAL_IMPORT.match(line)]
     assert offenders == [], "import from hubofhubs.api, not an internal path"
+
+
+def test_a_submodule_is_listed_by_its_module_path_not_as_an_attribute_of_its_package():
+    """``package:module`` fails when nothing has imported the submodule yet; a module is listed as ``package.module``."""
+    from hubofhubs import api
+    root = Path(api.__file__).resolve().parents[1]
+    wrong = [name for name, target in api.LOCATIONS.items() if ":" in target
+             and any((root.joinpath(*target.partition(":")[0].split("."), target.partition(":")[2] + suffix)).exists()
+                     for suffix in (".py", "/__init__.py"))]
+    assert not wrong, wrong

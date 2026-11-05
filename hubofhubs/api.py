@@ -38,14 +38,14 @@ LOCATIONS = {
     "background_pacing": "hubofhubs.the_body.internal_context.card_store.background_pacing",
     "card_limit": "hubofhubs.the_body.internal_context.card_store.card_limit",
     "card_limit_report": "hubofhubs.the_body.internal_context.card_store.card_limit_report",
-    "card_origin": "hubofhubs.the_body.internal_context.card_store:card_origin",
+    "card_origin": "hubofhubs.the_body.internal_context.card_store.card_origin",
     "card_store_hygiene": "hubofhubs.the_body.internal_context.card_store.card_store_hygiene",
-    "card_store_identity": "hubofhubs.the_body.internal_context.card_store:card_store_identity",
+    "card_store_identity": "hubofhubs.the_body.internal_context.card_store.card_store_identity",
     "card_store_merge": "hubofhubs.the_body.internal_context.card_store.card_store_merge",
-    "card_store_mounts": "hubofhubs.the_body.internal_context.card_store:card_store_mounts",
+    "card_store_mounts": "hubofhubs.the_body.internal_context.card_store.card_store_mounts",
     "card_store_tidy": "hubofhubs.the_body.internal_context.card_store.card_store_tidy",
     "card_vectors": "hubofhubs.the_body.internal_context.card_store.card_vectors",
-    "embedders": "hubofhubs.the_body.internal_context.card_store:embedders",
+    "embedders": "hubofhubs.the_body.internal_context.card_store.embedders",
     # hubofhubs.the_body.internal_context.card_store.background_pacing
     "Pacer": "hubofhubs.the_body.internal_context.card_store.background_pacing:Pacer",
     # hubofhubs.the_body.internal_context.card_store.card
@@ -290,12 +290,12 @@ LOCATIONS = {
     "close_ask": "hubofhubs.the_consciousness.terminal:close_ask",
     "continue_message": "hubofhubs.the_consciousness.terminal:continue_message",
     "fold_ask": "hubofhubs.the_consciousness.terminal:fold_ask",
-    "render": "hubofhubs.the_consciousness.terminal:render",
+    "render": "hubofhubs.the_consciousness.terminal.render",
     "settle": "hubofhubs.the_consciousness.terminal:settle",
-    "strings": "hubofhubs.the_consciousness.terminal:strings",
+    "strings": "hubofhubs.the_consciousness.terminal.strings",
     "toggle_trail": "hubofhubs.the_consciousness.terminal:toggle_trail",
     "toggle_updates": "hubofhubs.the_consciousness.terminal:toggle_updates",
-    "trail": "hubofhubs.the_consciousness.terminal:trail",
+    "trail": "hubofhubs.the_consciousness.terminal.trail",
     "unfold_ask": "hubofhubs.the_consciousness.terminal:unfold_ask",
     # hubofhubs.the_consciousness.terminal.asks
     "error_block": "hubofhubs.the_consciousness.terminal.asks:error_block",
@@ -509,7 +509,7 @@ LOCATIONS = {
     "snippet": "hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.vector_assembler:snippet",
     "task_slug": "hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.vector_assembler:task_slug",
     # hubofhubs.the_intelligence.subconscious.context_retriever.context_cards
-    "card_selection": "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards:card_selection",
+    "card_selection": "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection",
     # hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags
     "affinity_factor": "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags:affinity_factor",
     # hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render
@@ -587,7 +587,7 @@ LOCATIONS = {
     # hubofhubs.the_intelligence.subconscious.intuition.interface
     "Intuiting": "hubofhubs.the_intelligence.subconscious.intuition.interface:Intuiting",
     # hubofhubs.the_self.assembler
-    "arm_needs": "hubofhubs.the_self.assembler:arm_needs",
+    "arm_needs": "hubofhubs.the_self.assembler.arm_needs",
     # hubofhubs.the_self.assembler.interface
     "WholeAssembling": "hubofhubs.the_self.assembler.interface:WholeAssembling",
     # hubofhubs.the_self.assembler.oneline
@@ -595,7 +595,7 @@ LOCATIONS = {
     # hubofhubs.the_self.integrity
     "cases": "hubofhubs.the_self.integrity.cases",
     "render_docs": "hubofhubs.the_self.integrity.render_docs",
-    "scan": "hubofhubs.the_self.integrity:scan",
+    "scan": "hubofhubs.the_self.integrity.scan",
     "score": "hubofhubs.the_self.integrity.score",
     # hubofhubs.the_self.integrity.audit
     "PromptsAsData": "hubofhubs.the_self.integrity.audit:PromptsAsData",
@@ -613,7 +613,7 @@ LOCATIONS = {
     # hubofhubs.the_world.learning.interface
     "Staying": "hubofhubs.the_world.learning.interface:Staying",
     # hubofhubs.the_world.learning.research_freshness_reader
-    "registry": "hubofhubs.the_world.learning.research_freshness_reader:registry",
+    "registry": "hubofhubs.the_world.learning.research_freshness_reader.registry",
     # hubofhubs.the_world.learning.research_freshness_reader.interface
     "FreshnessReading": "hubofhubs.the_world.learning.research_freshness_reader.interface:FreshnessReading",
     # hubofhubs.the_world.model_plumbing
@@ -648,7 +648,7 @@ LOCATIONS = {
     "filter_keywords": "hubofhubs.the_world.model_plumbing.signature_probe:filter_keywords",
     # hubofhubs.the_world.model_plumbing.vendor_model_caller
     "claude_cli": "hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli",
-    "outage": "hubofhubs.the_world.model_plumbing.vendor_model_caller:outage",
+    "outage": "hubofhubs.the_world.model_plumbing.vendor_model_caller.outage",
     # hubofhubs.the_world.model_plumbing.vendor_model_caller.anthropic
     "AnthropicProvider": "hubofhubs.the_world.model_plumbing.vendor_model_caller.anthropic:AnthropicProvider",
     # hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli
@@ -724,10 +724,10 @@ LOCATIONS = {
     # hubofhubs.the_world.tools.delegated_agent_sessions
     "acp_config": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_config",
     "acp_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
-    "contract": "hubofhubs.the_world.tools.delegated_agent_sessions:contract",
-    "session": "hubofhubs.the_world.tools.delegated_agent_sessions:session",
+    "contract": "hubofhubs.the_world.tools.delegated_agent_sessions.contract",
+    "session": "hubofhubs.the_world.tools.delegated_agent_sessions.session",
     "stream_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner",
-    "subprocess_runner": "hubofhubs.the_world.tools.delegated_agent_sessions:subprocess_runner",
+    "subprocess_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner",
     # hubofhubs.the_world.tools.delegated_agent_sessions.acp_config
     "ALLOW": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_config:ALLOW",
     "AcpSettings": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_config:AcpSettings",
@@ -896,8 +896,8 @@ LOCATIONS = {
     # hubofhubs.the_world.tools.web_search
     "backends": "hubofhubs.the_world.tools.web_search.backends",
     "fetch": "hubofhubs.the_world.tools.web_search.fetch",
-    "link_access": "hubofhubs.the_world.tools.web_search:link_access",
-    "page_extract": "hubofhubs.the_world.tools.web_search:page_extract",
+    "link_access": "hubofhubs.the_world.tools.web_search.link_access",
+    "page_extract": "hubofhubs.the_world.tools.web_search.page_extract",
     "research": "hubofhubs.the_world.tools.web_search.research",
     # hubofhubs.the_world.tools.web_search.backends
     "ConfiguredJsonBackend": "hubofhubs.the_world.tools.web_search.backends:ConfiguredJsonBackend",
