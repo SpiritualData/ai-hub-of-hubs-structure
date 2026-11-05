@@ -1,7 +1,8 @@
 # AI Hub of Hubs Structure
 
-Interchangeable components for an LLM application (model calls, web search, retrieval, memory, coding agents, guardrails), whose defaults
-are picked by recorded evals on shared cases. Built for and used by [Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner).
+**Anyone building AI intelligence can assemble a working system from the best open-source parts available, chosen by measurement and kept current every week, without writing the glue themselves.**
+
+In plain words: an AI that helps people needs many jobs done well, such as understanding the request, finding the right information, searching the web, calling a model, editing files, deciding when to ask a person, and checking that the goal was met. For each job this project keeps several competing ways of doing it, tests them against the same cases, and uses the one that scores best. When a better way appears, it takes over and nothing you wrote has to change. Built for and used by [Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner).
 
 ```bash
 pip install "hubofhubs[web,gemini,bm25] @ git+https://github.com/SpiritualData/ai-hub-of-hubs-structure.git@v0.2.0"
@@ -24,9 +25,15 @@ The whole hub needs a free Gemini key (`GEMINI_API_KEY`, from https://aistudio.g
 
 ## The hub as a mind
 
-The hub is drawn as a mind, so a reader can follow one request through it. The Mind is a stream of consciousness focused on the goal of that one request, and the Subconscious finds and prepares the information it needs. The Body is the AI system's form and internal context, and the World is everything outside the system.
+The hub is drawn as a mind so you can follow one request through it. Five containers hold the parts. Each is named for the kind of change that moves its scores:
 
-Five containers hold the parts, and each is named for the kind of change that moves its metrics. Body changes with the system's own data model or code, Intelligence with machine learning task accuracy, World with outside systems, and Consciousness with alignment to humans or policies. The Self keeps the parts working as one whole, and its Integrity keeps claims matching evidence and records matching code. A request runs Consciousness, then Intelligence, with Body and World supplying data and tools, and a part with no arm yet says so in the result.
+- **The Self** keeps all the parts working as one honest whole.
+- **Body** is the particular system the AI lives in: where its data is, where its requests come from, which tools it may use.
+- **Intelligence** turns a request into a response: it works out what success means, finds information, plans, writes, and checks.
+- **World** is everything outside the system: models, web search, science, tools. Its scores change when the outside changes.
+- **Consciousness** is the people the AI works for: who it acts as, when it asks them, what it learns from them.
+
+A request flows from Consciousness (who is asking, with what authority) to Intelligence (understand, plan, act, check), drawing data from Body and tools from World. A part with no implementation yet says so in the result instead of inventing one.
 
 ```mermaid
 flowchart TB
@@ -51,6 +58,40 @@ flowchart TB
 | World | Awareness of the outside and interaction with it. | Science, Tools, Model Plumbing, Learning | `the-world` |
 | Consciousness | The humans who interact with the system. | Representatives, Judgment Calls, Feedback Learning, Human Prioritization, Request Intake | `the-consciousness` |
 <!-- containers:end -->
+
+### What each part is for
+
+**The Self**
+- **Integrity**: what the system says about itself and what it did matches the record.
+- **Role Understanding**: every part has a role in the whole that people and the Assembler can read.
+- **Assembler**: builds the whole from the best-scoring option for every part, with no glue code from you.
+
+**Body**
+- **Internal Context**: tells the AI what your system knows: where its data lives, whose it is, the configuration and secrets its tools need, and the record of each run.
+- **Intake Sources**: where your requests come from (chat, queued tasks, meeting transcripts).
+- **Hands**: makes the integrations your system already depends on usable by the AI.
+- **Card Store**: keeps short cards of knowledge and finds them again.
+
+**Intelligence**
+- **Mind**: turns one request into a plan and a response. Its parts are Context Intake (one view of what is known), Request Planner (splits the request and replans from what failed), Work Delegation (hands work on with its authority, budget and done-standard), and Response Writer.
+- **Higher Mind**: keeps the AI working toward what matters beyond the request in front of it: Long-Term Memory, Objectives and Planner Guidance.
+- **Subconscious**: finds and prepares the information a request needs, without crossing into another person's data: Context Retriever, Cards From Files and Intuition (useful things that surface unasked).
+- **Critical Thinking**: says what success means and checks it was reached: Metric Translation, Goal Completion, Response Quality and ESOI Application (keeps the system's own specs and scores improving).
+- **Nervous System**: one risk signal before steps that cannot be undone or that belong to a person.
+- **Proactivity**: starts standing work when it is due, without being asked.
+
+**World**
+- **Tools**: the best tool of each kind (web search, reading and editing files, connected systems, agent sessions) without wiring each one.
+- **Model Plumbing**: one measured path to a model, so cost and failover are chosen once.
+- **Science**: public science a reader can check.
+- **Learning**: keeps what the hub recommends current with the outside.
+
+**Consciousness**
+- **Representatives**: an AI acts for a person within the authority that person gave.
+- **Judgment Calls**: asks a person only when they would want to be asked, and decides how.
+- **Feedback Learning**: a correction given once changes behaviour afterwards.
+- **Human Prioritization**: turns the priorities a person implies into scores the system can optimize.
+- **Request Intake**: takes in each request once, from wherever the system listens.
 
 Every part is reached by its id, such as `hubofhubs.run("card-store", "rust")`. The full table of parts, with their research, is on [the mind map](docs/explanation/the-mind-map.md).
 
@@ -112,7 +153,7 @@ numbers, never added into them. How the cases and tests work: [how we measure](d
 | Response Writer (`response-writer`) | The response says the answer, names only links the results hold and says plainly what was not done. (free) | cited_results | 100.0% (92.0% to 100.0%), 44/44 | 44 | $0 | 0 (median) | no rival measured on the same cases |
 | Goal Completion (`goal-completion`) | A goal is called met only when the outcome is present, complete as declared and holds every requirement. (free) | evidence_standard | 100.0% (78.5% to 100.0%), 14/14 | 14 | $0 | 0 (median) | ahead of nonempty, not significant (two-sided McNemar p=0.25) |
 | Judgment Calls (`judgment-calls`) | The decision is to ask when a person should authorize a step and to proceed otherwise, within each person's own limits. (free) | severity_policy | 100.0% (94.9% to 100.0%), 72/72 | 72 | $0 | 0 (median) | ahead of ask_every_time, not significant (two-sided McNemar p=0.125) |
-| Proactivity (`proactivity`) | The schedules that are due are named by calendar period in their own zone, by a requested run or by an event. (free) | calendar_and_events | 100.0% (82.4% to 100.0%), 18/18 | 18 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=0.00781) |
+| Proactivity (`the-proactivity`) | The schedules that are due are named by calendar period in their own zone, by a requested run or by an event. (free) | calendar_and_events | 100.0% (82.4% to 100.0%), 18/18 | 18 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=0.00781) |
 | Cards From Files, Subconscious (`cards-from-files`) | The file a task needs is among the first three files a builder's cards show. (free) | import_graph_topic_cards | 44.4% (38.4% to 50.6%), 112/252, balanced score 0.6093 | 252 | $0 | 0.1 (median) | ahead of cochange_topic_cards, not significant (two-sided sign test p=0.492); ahead of file_plus_topic_cards, not significant (two-sided sign test p=0.362); ahead of llm_topic_cards (two-sided sign test p=3.68e-05); ahead of one_card (two-sided sign test p=9.59e-70); ahead of one_card_per_folder (two-sided sign test p=1.63e-36); ahead of per_file_symbols, not significant (two-sided sign test p=0.492); ahead of topic_cards_replay (two-sided sign test p=0.00328); ahead of two_cards (two-sided sign test p=2.76e-70) |
 
 Conformance tests (cases written in this repo, no rival, not counted as alternatives): Card Store, Subconscious (`card-store`) 35/35, Model Tier Chooser, Mind (`model-tier-chooser`) 36/36, Model Plumbing (`model-plumbing`) 30/30, Research Freshness Reader, Learning (`research-freshness-reader`) 41/41, Hands (`the-hands`) 33/33, Assembler (`the-assembler`) 68/68. The arm with the highest result at the deciding stage on all cases is selected (an exact tie keeps the incumbent), and the same cases give the rate, interval and test, so each claim is in-sample. A lead is significant when the two-sided exact McNemar test gives p below 0.05 after Holm's correction across rivals, with alpha divided by the number of stages the pair was run at; otherwise it is a best guess, not yet significant. Where a seat's metric is a balanced score, arms are ranked by that score. Cost per passing case is the whole run's recorded spend over its passes. Every check and every arm: [leaderboard](docs/reference/leaderboard.md), [evidence by arm](docs/reference/evidence-by-arm.md).
