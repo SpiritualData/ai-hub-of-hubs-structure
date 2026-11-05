@@ -649,5 +649,197 @@
    "web-search",
    "file-editing"
   ]
+ },
+ {
+  "id": "plan-written-01",
+  "kind": "search",
+  "args": {
+   "request": "Find out who maintains the Rust compiler"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-02",
+  "kind": "search",
+  "args": {
+   "request": "Name the company that acquired the chat app last spring"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-03",
+  "kind": "search",
+  "args": {
+   "request": "Look up the opening hours of the central library in Lisbon"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-04",
+  "kind": "search",
+  "args": {
+   "request": "Get me the founding year of the oldest university in Poland"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-05",
+  "kind": "search",
+  "args": {
+   "request": "Check what the exchange rate between the euro and the yen was this morning"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-06",
+  "kind": "search",
+  "args": {
+   "request": "Tell me the name of the director of the 2019 film about the Apollo landing"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-07",
+  "kind": "search",
+  "args": {
+   "request": "Discover how long the new bridge over the river Rhine is"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-08",
+  "kind": "search",
+  "args": {
+   "request": "Identify the author of the novel that won the prize in 2022"
+  },
+  "expect": "web-search"
+ },
+ {
+  "id": "plan-written-09",
+  "kind": "science",
+  "args": {
+   "request": "Summarise what is known about sleep and memory consolidation in adolescents"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-written-10",
+  "kind": "science",
+  "args": {
+   "request": "Gather what has been published on tidal energy in the North Sea"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-written-11",
+  "kind": "science",
+  "args": {
+   "request": "Collect what researchers have found about gut bacteria and mood"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-written-12",
+  "kind": "science",
+  "args": {
+   "request": "Report on what is understood about glaciers and sea level"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-written-13",
+  "kind": "science",
+  "args": {
+   "request": "Bring together what is known about bilingualism and attention"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-written-14",
+  "kind": "science",
+  "args": {
+   "request": "Outline what has been established about vitamin D and bone density"
+  },
+  "expect": "the-science"
+ },
+ {
+  "id": "plan-written-15",
+  "kind": "edit",
+  "args": {
+   "request": "Make the function that parses dates return None for empty input"
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-written-16",
+  "kind": "edit",
+  "args": {
+   "request": "Change the greeting in the welcome file to say good evening"
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-written-17",
+  "kind": "edit",
+  "args": {
+   "request": "Update the changelog file so the latest entry mentions the fix"
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-written-18",
+  "kind": "edit",
+  "args": {
+   "request": "Correct the typo in the heading of the install guide"
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-written-19",
+  "kind": "edit",
+  "args": {
+   "request": "Make the config file use port 8081 instead of 8080"
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-written-20",
+  "kind": "edit",
+  "args": {
+   "request": "Modify the sort helper so ties keep their original order"
+  },
+  "expect": "file-editing"
+ },
+ {
+  "id": "plan-written-21",
+  "kind": "none",
+  "args": {
+   "request": "Say hello to the new teammate in a friendly way"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-written-22",
+  "kind": "none",
+  "args": {
+   "request": "Rephrase this sentence so it sounds calmer: you must reply today"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-written-23",
+  "kind": "none",
+  "args": {
+   "request": "Explain in two sentences why the sky looks blue"
+  },
+  "expect": ""
+ },
+ {
+  "id": "plan-written-24",
+  "kind": "none",
+  "args": {
+   "request": "Draft a short thank you note to a volunteer"
+  },
+  "expect": ""
  }
 ]

@@ -1,0 +1,146 @@
+[
+ {
+  "id": "written-01",
+  "kind": "search",
+  "request": "Find out who maintains the Rust compiler",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-02",
+  "kind": "search",
+  "request": "Name the company that acquired the chat app last spring",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-03",
+  "kind": "search",
+  "request": "Look up the opening hours of the central library in Lisbon",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-04",
+  "kind": "search",
+  "request": "Get me the founding year of the oldest university in Poland",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-05",
+  "kind": "search",
+  "request": "Check what the exchange rate between the euro and the yen was this morning",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-06",
+  "kind": "search",
+  "request": "Tell me the name of the director of the 2019 film about the Apollo landing",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-07",
+  "kind": "search",
+  "request": "Discover how long the new bridge over the river Rhine is",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-08",
+  "kind": "search",
+  "request": "Identify the author of the novel that won the prize in 2022",
+  "expect": "web-search"
+ },
+ {
+  "id": "written-09",
+  "kind": "science",
+  "request": "Summarise what is known about sleep and memory consolidation in adolescents",
+  "expect": "the-science"
+ },
+ {
+  "id": "written-10",
+  "kind": "science",
+  "request": "Gather what has been published on tidal energy in the North Sea",
+  "expect": "the-science"
+ },
+ {
+  "id": "written-11",
+  "kind": "science",
+  "request": "Collect what researchers have found about gut bacteria and mood",
+  "expect": "the-science"
+ },
+ {
+  "id": "written-12",
+  "kind": "science",
+  "request": "Report on what is understood about glaciers and sea level",
+  "expect": "the-science"
+ },
+ {
+  "id": "written-13",
+  "kind": "science",
+  "request": "Bring together what is known about bilingualism and attention",
+  "expect": "the-science"
+ },
+ {
+  "id": "written-14",
+  "kind": "science",
+  "request": "Outline what has been established about vitamin D and bone density",
+  "expect": "the-science"
+ },
+ {
+  "id": "written-15",
+  "kind": "edit",
+  "request": "Make the function that parses dates return None for empty input",
+  "expect": "file-editing"
+ },
+ {
+  "id": "written-16",
+  "kind": "edit",
+  "request": "Change the greeting in the welcome file to say good evening",
+  "expect": "file-editing"
+ },
+ {
+  "id": "written-17",
+  "kind": "edit",
+  "request": "Update the changelog file so the latest entry mentions the fix",
+  "expect": "file-editing"
+ },
+ {
+  "id": "written-18",
+  "kind": "edit",
+  "request": "Correct the typo in the heading of the install guide",
+  "expect": "file-editing"
+ },
+ {
+  "id": "written-19",
+  "kind": "edit",
+  "request": "Make the config file use port 8081 instead of 8080",
+  "expect": "file-editing"
+ },
+ {
+  "id": "written-20",
+  "kind": "edit",
+  "request": "Modify the sort helper so ties keep their original order",
+  "expect": "file-editing"
+ },
+ {
+  "id": "written-21",
+  "kind": "none",
+  "request": "Say hello to the new teammate in a friendly way",
+  "expect": ""
+ },
+ {
+  "id": "written-22",
+  "kind": "none",
+  "request": "Rephrase this sentence so it sounds calmer: you must reply today",
+  "expect": ""
+ },
+ {
+  "id": "written-23",
+  "kind": "none",
+  "request": "Explain in two sentences why the sky looks blue",
+  "expect": ""
+ },
+ {
+  "id": "written-24",
+  "kind": "none",
+  "request": "Draft a short thank you note to a volunteer",
+  "expect": ""
+ }
+]

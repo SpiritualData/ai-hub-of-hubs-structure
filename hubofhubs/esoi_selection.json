@@ -289,12 +289,13 @@
  "planner": {
   "default": "cue_router",
   "evidence": {
-   "detail": "cue_router is better than one_piece (two-sided exact McNemar test, Holm-adjusted p=1.05e-08, 62 of 81 cases disagree)",
+   "detail": "cue_router is better than one_piece (two-sided exact McNemar test, Holm-adjusted p=3.38e-08, 63 of 105 cases disagree)",
    "p": 0.0,
    "verdict": "WIN"
   },
   "modules": {
    "cue_router": "hubofhubs.the_intelligence.mind.planner.planning",
+   "model_planner": "hubofhubs.the_intelligence.mind.planner.model_planner",
    "one_piece": "hubofhubs.the_intelligence.mind.planner.planning"
   }
  },

@@ -59,6 +59,7 @@ at the repository root.
 | Model Tier Chooser, Passing work per cost selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
 | Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
 | Planner, Split and route by cues (`planner:cue_router`) | none | none | none | none | no |
+| Planner, Plan by a model (`planner:model_planner`) | none | none | none | none | no |
 | Planner, One piece, no worker (`planner:one_piece`) | none | none | none | none | no |
 | Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
 | Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |

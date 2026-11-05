@@ -70,8 +70,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | provider_failover | multi_provider (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | provider_failover | single_provider | 30 | 40.0% (24.6% to 57.7%), 12/30 | $0 | 0 (median) | ahead of single_provider (two-sided McNemar p=7.63e-06) | none recorded |
 | reason_and_answer | tier_selector (selected) | 36 | 100.0% (90.4% to 100.0%), 36/36 | $0 | 0 (median) | selected | none recorded |
-| request_planning | cue_router (selected) | 81 | 79.0% (68.9% to 86.5%), 64/81 | $0 | 0 (median) | selected | none recorded |
-| request_planning | one_piece | 81 | 24.7% (16.6% to 35.1%), 20/81 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=1.05e-08) | none recorded |
+| request_planning | cue_router (selected) | 105 | 63.8% (54.3% to 72.4%), 67/105 | $0 | 0 (median) | selected | none recorded |
+| request_planning | one_piece | 105 | 22.9% (15.9% to 31.8%), 24/105 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=3.38e-08) | none recorded |
 | response_writing | cited_results (selected) | 44 | 100.0% (92.0% to 100.0%), 44/44 | $0 | 0 (median) | selected | none recorded |
 | search_backend | gemini (selected) | 40 | 80.0% (65.2% to 89.5%), 32/40 | $5.625e-05 | 2 (median) | selected | none recorded |
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |

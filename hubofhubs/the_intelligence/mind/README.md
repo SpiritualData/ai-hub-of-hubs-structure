@@ -36,7 +36,7 @@ Context Intake takes in what was prepared for a request and what the workers bro
 
 - One view with every source named (`metric-context-intake`)
 - Handoffs keep authority, budget and cancellation (`metric-work-delegation`)
-- Requests routed to the right worker (`metric-request-planner`): leader `cue_router`, 64 of 81 cases
+- Requests routed to the right worker (`metric-request-planner`): leader `cue_router`, 67 of 105 cases
 - Responses that say what the results hold (`metric-response-writer`): leader `cited_results`, 44 of 44 cases
 
 ## Where to go next
@@ -78,6 +78,7 @@ Context Intake takes in what was prepared for a request and what the workers bro
 | Route to Tools and Science | `delegation:to_tools` | [hubofhubs/the_intelligence/mind/delegation/delegation.py](delegation/delegation.py) |  |
 | Split and route by cues | `planner:cue_router` | [hubofhubs/the_intelligence/mind/planner/planning.py](planner/planning.py) |  |
 | One piece, no worker | `planner:one_piece` | [hubofhubs/the_intelligence/mind/planner/planning.py](planner/planning.py) |  |
+| Plan by a model | `planner:model_planner` | [hubofhubs/the_intelligence/mind/planner/model_planner.py](planner/model_planner.py) |  |
 | Cited results | `response-writer:cited_results` | [hubofhubs/the_intelligence/mind/response_writer/writer.py](response_writer/writer.py) |  |
 | Model synthesis | `response-writer:model_synthesis` | [hubofhubs/the_intelligence/mind/response_writer/writer.py](response_writer/writer.py) |  |
 

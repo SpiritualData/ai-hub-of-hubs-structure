@@ -17,7 +17,7 @@ Turn a request into pieces that can be done and checked, each with the worker ca
 - Entry call: `hubofhubs.run("planner", {'request': 'what is the latest Rust version?'})`
 - Selected implementation: Split and route by cues (`cue_router`)
 - Metric: Requests routed to the right worker
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../../critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../../critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../../critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../../critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](../../critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](../../critical_thinking/goal_completion/goal_completion.py) and 134 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../../critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../../critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../../critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../../critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](../../critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](../../critical_thinking/goal_completion/goal_completion.py) and 136 more
 
 ## Implementations
 
@@ -25,10 +25,11 @@ Turn a request into pieces that can be done and checked, each with the worker ca
 |---|---|---|---|
 | Split and route by cues | `planner:cue_router` | [`hubofhubs/the_intelligence/mind/planner/planning.py`](planning.py) | selected |
 | One piece, no worker | `planner:one_piece` | [`hubofhubs/the_intelligence/mind/planner/planning.py`](planning.py) |  |
+| Plan by a model | `planner:model_planner` | [`hubofhubs/the_intelligence/mind/planner/model_planner.py`](model_planner.py) |  |
 
 ## Metrics
 
-- Requests routed to the right worker (`metric-request-planner`): leader `cue_router`, 64 of 81 cases
+- Requests routed to the right worker (`metric-request-planner`): leader `cue_router`, 67 of 105 cases
 
 ## Where to go next
 
