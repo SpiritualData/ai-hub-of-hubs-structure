@@ -462,6 +462,9 @@ LOCATIONS = {
     "Proactive": "hubofhubs.the_intelligence.proactivity.interface:Proactive",
     # hubofhubs.the_intelligence.proactivity.triggers
     "TRIGGER_KINDS": "hubofhubs.the_intelligence.proactivity.triggers:KINDS",
+    # hubofhubs.the_intelligence.proactivity.window
+    "Window": "hubofhubs.the_intelligence.proactivity.window:Window",
+    "WINDOW_DAYS": "hubofhubs.the_intelligence.proactivity.window:DAYS",
     "attach_events": "hubofhubs.the_intelligence.proactivity.triggers:attach_events",
     "candidate_of": "hubofhubs.the_intelligence.proactivity.triggers:candidate_of",
     "in_priority_order": "hubofhubs.the_intelligence.proactivity.triggers:in_priority_order",

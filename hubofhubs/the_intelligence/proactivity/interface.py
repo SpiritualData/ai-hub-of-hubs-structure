@@ -8,7 +8,7 @@ from esoi import solution
 @runtime_checkable
 class Proactive(typing.Protocol):
     """Lets the system act without being asked: given its standing schedules and the time, returns the triggers that are due (each a mapping
-    with ``schedule``, ``kind`` (requested, event, period or elapsed), ``reason`` and the ``request`` to run), by calendar period in the schedule's own zone,
+    with ``schedule``, ``kind`` (requested, event, period, window or elapsed), ``reason`` and the ``request`` to run), by calendar period in the schedule's own zone, on the days and at the time of day of its ``window`` (days, run_time, time_zone, grace_minutes),
     by a requested run or by an event. Given a Prioritization answer as ``priorities`` it returns the triggers in that order, each with its ``rank``,
     ``priority_reason`` and ``metric``, and leaves out what Prioritization holds back, so the entry carries what is due and what matters first."""
 

@@ -5,11 +5,12 @@ name), ``last_run`` and ``run_requested_at`` (ISO times), and ``events`` (the ti
 
 ``calendar_and_events`` compares **calendar periods** in the schedule's own zone (a daily schedule is due when it has not run yet today
 there, not when 24 hours passed, and an evening run does not make the next morning look done), treats a run requested after the last run as
-due, and treats an event after the last run as due when the schedule is reactive. An unreadable time fails open to due (a corrupt stamp
+due, treats a schedule with a ``window`` (``Window``: ``days``, ``run_time``, ``time_zone``, ``grace_minutes``) as due once in each occasion it keeps, from the local time of day until its grace
+window ends, and treats an event after the last run as due when the schedule is reactive. An unreadable time fails open to due (a corrupt stamp
 never wedges a schedule); an unknown zone falls to the machine's own zone, never to UTC. ``elapsed_hours`` is the naive reading, due when
 the cadence's hours have passed, kept as the bound that loses days.
 
-Every trigger says what kind it is (``KINDS``: ``requested``, ``event``, ``period`` or ``elapsed``), so a consumer can tell a person's request from the clock.
+Every trigger says what kind it is (``KINDS``: ``requested``, ``event``, ``period``, ``window`` or ``elapsed``), so a consumer can tell a person's request from the clock.
 A schedule that names an ``event_source`` is reactive, and ``attach_events`` turns the items a consumer pulled from Body's Intake Sources (each a mapping with
 ``source`` and ``at``) into the events of the schedules that name that source, so a consumer's own event source is declared there and never in hub code.
 The arms also take a Prioritization answer (``priorities``): the due triggers then come back in its order, each with its ``rank``, ``priority_reason`` and ``metric``,
@@ -20,8 +21,10 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from esoi import implementation
 
+from hubofhubs.the_intelligence.proactivity.window import Window
+
 HOURS = {"daily": 24, "weekly": 24 * 7, "monthly": 24 * 30}
-KINDS = ("requested", "event", "period", "elapsed")
+KINDS = ("requested", "event", "period", "window", "elapsed")
 #: The fields of a schedule that Prioritization reads when it puts due work in order (see ``hubofhubs.the_consciousness.prioritization.types.FIELDS``).
 PRIORITY_FIELDS = ("rank", "deadline", "asked_at", "blocked_by", "waiting", "last_nudged_at")
 
@@ -94,7 +97,7 @@ def in_priority_order(triggers: Sequence[Mapping[str, Any]], candidates: Sequenc
 
 @implementation("proactivity", "calendar_and_events")
 class CalendarAndEvents:
-    """Due by calendar period in the schedule's zone, by a later run request, or by a later event for a reactive schedule."""
+    """Due by calendar period in the schedule's zone, on the days and at the time of day of its window, by a later run request, or by a later event for a reactive schedule."""
     REQUIRES = ()     # standard library
 
     def due(self, schedules: Sequence[Mapping[str, Any]], now: str = "", priorities: Optional[Mapping[str, Any]] = None) -> Sequence[Mapping[str, Any]]:
@@ -108,6 +111,10 @@ class CalendarAndEvents:
             asked = parse(schedule.get("run_requested_at"))
             if asked is not None and (last is None or asked > last):
                 out.append(trigger(schedule, "a run was requested after the last run", "requested"))
+                continue
+            if schedule.get("window") is not None:
+                if Window.of(schedule["window"]).is_due(last, moment):
+                    out.append(trigger(schedule, "the schedule's day and time of day have come and its grace window is open", "window"))
                 continue
             if schedule.get("reactive"):
                 events = [e for e in (parse(x) for x in schedule.get("events") or ()) if e is not None]
