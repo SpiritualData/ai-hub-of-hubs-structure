@@ -1,6 +1,6 @@
 # AI Hub of Hubs Structure
 
-**Anyone building AI intelligence can assemble a working system from the best open-source parts available, chosen by measurement, without writing the glue themselves.**
+**AI builders have consistent interfaces for whatever the current best AI solutions are, to adapt only what is unique to their project.**
 
 In plain words: an AI that helps people needs many jobs done well, such as understanding the request, finding the right information, searching the web, calling a model, editing files, deciding when to ask a person, and checking that the goal was met. For each job this project keeps several competing ways of doing it, tests them against the same cases, and uses the one that scores best. When a better way is measured, it takes over and nothing you wrote has to change. Built for and used by [Quest AI Runner](https://github.com/SpiritualData/quest-ai-runner).
 
