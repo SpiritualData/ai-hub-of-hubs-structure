@@ -1,0 +1,867 @@
+[
+ {
+  "id": "intuition-wording-garden",
+  "kind": "wording",
+  "source": "invented-neutral",
+  "args": {
+   "request": "when should I prune the roses",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-wording",
+     "text": "Prune roses in late winter before new growth starts"
+    },
+    {
+     "id": "c-other",
+     "text": "Compost heap needs turning monthly"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": []
+  },
+  "expect": [
+   "c-wording"
+  ]
+ },
+ {
+  "id": "intuition-companion-garden",
+  "kind": "companion",
+  "source": "invented-neutral",
+  "args": {
+   "request": "when should I prune the roses",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Sharpen and oil the secateurs"
+    },
+    {
+     "id": "c-other",
+     "text": "Compost heap needs turning monthly"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "how to prune roses before spring",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 3
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-stale-garden",
+  "kind": "stale",
+  "source": "invented-neutral",
+  "args": {
+   "request": "when should I prune the roses",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Sharpen and oil the secateurs"
+    },
+    {
+     "id": "c-other",
+     "text": "Compost heap needs turning monthly"
+    },
+    {
+     "id": "c-old",
+     "text": "Order mulch for the vegetable beds"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "how to prune roses before spring",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 2
+    },
+    {
+     "request": "how to prune roses before spring",
+     "taken": [
+      "c-old"
+     ],
+     "age_days": 120
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-none-garden",
+  "kind": "none",
+  "source": "invented-neutral",
+  "args": {
+   "request": "translate this invoice into French",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Sharpen and oil the secateurs"
+    },
+    {
+     "id": "c-other",
+     "text": "Compost heap needs turning monthly"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "how to prune roses before spring",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 5
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "id": "intuition-wording-trip",
+  "kind": "wording",
+  "source": "invented-neutral",
+  "args": {
+   "request": "plan the weekend trip",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-wording",
+     "text": "Weekend trip plan: ferry times and the coast hotel"
+    },
+    {
+     "id": "c-other",
+     "text": "Sourdough starter feeding schedule"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": []
+  },
+  "expect": [
+   "c-wording"
+  ]
+ },
+ {
+  "id": "intuition-companion-trip",
+  "kind": "companion",
+  "source": "invented-neutral",
+  "args": {
+   "request": "plan the weekend trip",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Packing list: passport, charger, rain jacket"
+    },
+    {
+     "id": "c-other",
+     "text": "Sourdough starter feeding schedule"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "plan the weekend trip to the coast",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 3
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-stale-trip",
+  "kind": "stale",
+  "source": "invented-neutral",
+  "args": {
+   "request": "plan the weekend trip",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Packing list: passport, charger, rain jacket"
+    },
+    {
+     "id": "c-other",
+     "text": "Sourdough starter feeding schedule"
+    },
+    {
+     "id": "c-old",
+     "text": "Renew the travel insurance policy"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "plan the weekend trip to the coast",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 2
+    },
+    {
+     "request": "plan the weekend trip to the coast",
+     "taken": [
+      "c-old"
+     ],
+     "age_days": 120
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-none-trip",
+  "kind": "none",
+  "source": "invented-neutral",
+  "args": {
+   "request": "translate this invoice into French",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Packing list: passport, charger, rain jacket"
+    },
+    {
+     "id": "c-other",
+     "text": "Sourdough starter feeding schedule"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "plan the weekend trip to the coast",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 5
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "id": "intuition-wording-budget",
+  "kind": "wording",
+  "source": "invented-neutral",
+  "args": {
+   "request": "monthly budget review",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-wording",
+     "text": "Monthly budget review: compare spending with the plan"
+    },
+    {
+     "id": "c-other",
+     "text": "Bicycle chain needs lubricating"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": []
+  },
+  "expect": [
+   "c-wording"
+  ]
+ },
+ {
+  "id": "intuition-companion-budget",
+  "kind": "companion",
+  "source": "invented-neutral",
+  "args": {
+   "request": "monthly budget review",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Bank export steps: download the statement as csv"
+    },
+    {
+     "id": "c-other",
+     "text": "Bicycle chain needs lubricating"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "monthly budget review with the spreadsheet",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 3
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-stale-budget",
+  "kind": "stale",
+  "source": "invented-neutral",
+  "args": {
+   "request": "monthly budget review",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Bank export steps: download the statement as csv"
+    },
+    {
+     "id": "c-other",
+     "text": "Bicycle chain needs lubricating"
+    },
+    {
+     "id": "c-old",
+     "text": "Cancel the unused gym subscription"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "monthly budget review with the spreadsheet",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 2
+    },
+    {
+     "request": "monthly budget review with the spreadsheet",
+     "taken": [
+      "c-old"
+     ],
+     "age_days": 120
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-none-budget",
+  "kind": "none",
+  "source": "invented-neutral",
+  "args": {
+   "request": "translate this invoice into French",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Bank export steps: download the statement as csv"
+    },
+    {
+     "id": "c-other",
+     "text": "Bicycle chain needs lubricating"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "monthly budget review with the spreadsheet",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 5
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "id": "intuition-wording-sky",
+  "kind": "wording",
+  "source": "invented-neutral",
+  "args": {
+   "request": "what is visible in the night sky tonight",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-wording",
+     "text": "Night sky tonight: Jupiter rises after nine"
+    },
+    {
+     "id": "c-other",
+     "text": "Quarterly tax payment due dates"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": []
+  },
+  "expect": [
+   "c-wording"
+  ]
+ },
+ {
+  "id": "intuition-companion-sky",
+  "kind": "companion",
+  "source": "invented-neutral",
+  "args": {
+   "request": "what is visible in the night sky tonight",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Telescope eyepiece cleaning routine"
+    },
+    {
+     "id": "c-other",
+     "text": "Quarterly tax payment due dates"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "night sky tonight which planets are visible",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 3
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-stale-sky",
+  "kind": "stale",
+  "source": "invented-neutral",
+  "args": {
+   "request": "what is visible in the night sky tonight",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Telescope eyepiece cleaning routine"
+    },
+    {
+     "id": "c-other",
+     "text": "Quarterly tax payment due dates"
+    },
+    {
+     "id": "c-old",
+     "text": "Star chart app settings for red light"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "night sky tonight which planets are visible",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 2
+    },
+    {
+     "request": "night sky tonight which planets are visible",
+     "taken": [
+      "c-old"
+     ],
+     "age_days": 120
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-none-sky",
+  "kind": "none",
+  "source": "invented-neutral",
+  "args": {
+   "request": "translate this invoice into French",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Telescope eyepiece cleaning routine"
+    },
+    {
+     "id": "c-other",
+     "text": "Quarterly tax payment due dates"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "night sky tonight which planets are visible",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 5
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "id": "intuition-wording-chess",
+  "kind": "wording",
+  "source": "invented-neutral",
+  "args": {
+   "request": "improve my chess endgames",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-wording",
+     "text": "Chess endgames: king and pawn opposition drills"
+    },
+    {
+     "id": "c-other",
+     "text": "Boiler pressure should sit near one bar"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": []
+  },
+  "expect": [
+   "c-wording"
+  ]
+ },
+ {
+  "id": "intuition-companion-chess",
+  "kind": "companion",
+  "source": "invented-neutral",
+  "args": {
+   "request": "improve my chess endgames",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Notebook of annotated rook positions"
+    },
+    {
+     "id": "c-other",
+     "text": "Boiler pressure should sit near one bar"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "improve chess endgames rook endings",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 3
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-stale-chess",
+  "kind": "stale",
+  "source": "invented-neutral",
+  "args": {
+   "request": "improve my chess endgames",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Notebook of annotated rook positions"
+    },
+    {
+     "id": "c-other",
+     "text": "Boiler pressure should sit near one bar"
+    },
+    {
+     "id": "c-old",
+     "text": "Tournament registration form"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "improve chess endgames rook endings",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 2
+    },
+    {
+     "request": "improve chess endgames rook endings",
+     "taken": [
+      "c-old"
+     ],
+     "age_days": 120
+    }
+   ]
+  },
+  "expect": [
+   "c-companion"
+  ]
+ },
+ {
+  "id": "intuition-none-chess",
+  "kind": "none",
+  "source": "invented-neutral",
+  "args": {
+   "request": "translate this invoice into French",
+   "limit": 3,
+   "cards": [
+    {
+     "id": "c-companion",
+     "text": "Notebook of annotated rook positions"
+    },
+    {
+     "id": "c-other",
+     "text": "Boiler pressure should sit near one bar"
+    },
+    {
+     "id": "filler-1",
+     "text": "Printer toner replacement model number"
+    },
+    {
+     "id": "filler-2",
+     "text": "Office plant watering rota"
+    },
+    {
+     "id": "filler-3",
+     "text": "Parking permit renewal reminder"
+    }
+   ],
+   "history": [
+    {
+     "request": "improve chess endgames rook endings",
+     "taken": [
+      "c-companion"
+     ],
+     "age_days": 5
+    }
+   ]
+  },
+  "expect": []
+ }
+]
