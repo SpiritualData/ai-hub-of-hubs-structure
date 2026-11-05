@@ -31,7 +31,7 @@ Hand work on without losing the authority it was given or the standard that says
 
 ## Problems
 
-- Handoff loses authority and done standard (`hprob-handoff-loses-authority-and-done-standard`): A worker given one piece of a request does not know the authority it carries or what done means for that piece.
+- Handoff loses authority and done standard (`hprob-handoff-loses-authority-and-done-standard`): A worker given one piece of a request is often not told the authority it carries or what done means for that piece.
 
 ## Ideals
 

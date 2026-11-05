@@ -24,17 +24,17 @@ Consciousness is where the system adapts to the humans and policies it works for
 
 **Problems**
 
-- Asking by one fixed rule (`hprob-ai-asks-on-one-fixed-rule`): The AI asks by a fixed rule, so one person is interrupted for steps they would have allowed and another is surprised by steps they would have wanted to approve.
-- Feedback forgotten (`hprob-feedback-is-forgotten`): A person's correction changes one reply and is forgotten, so the same correction is needed again.
-- Priorities implied, not stated (`hprob-priorities-are-implied-not-stated`): People imply their priorities instead of stating them, so an AI weighs everything the same or guesses.
+- Asking by one fixed rule (`hprob-ai-asks-on-one-fixed-rule`): Most AI assistants decide when to ask by one fixed rule, so one person is interrupted for steps they would have allowed and another is surprised by steps they would have wanted to approve.
+- Feedback forgotten (`hprob-feedback-is-forgotten`): In many assistants a correction changes the next reply but is not kept, so the person has to give it again.
+- Priorities implied, not stated (`hprob-priorities-are-implied-not-stated`): People often imply their priorities instead of stating them, so an AI weighs everything the same or guesses.
 - Requests from unseen places (`hprob-requests-come-from-places-the-system-cannot-see`): People make requests where they already work (a chat, a task list, the action items of a meeting), and a system that only answers one input cannot take them in, so requests are lost, answered twice or answered to the wrong person.
 
 **Ideals**
 
 - Asked only when wanted (`hideal-asked-only-when-the-person-would-want-it`): An AI representative asks a person when that person would want to be asked, and otherwise proceeds or declines.
-- One signal contract (`hideal-one-signal-contract`): The risk watch and the asking judgment share one signal: a risk with its severity and reason, then one decision for one person.
+- Risk and asking never disagree (`hideal-one-signal-contract`): How risky a step is and whether a person is asked about it never disagree, and a person's correction changes both at once.
 - Feedback changes behaviour (`hideal-feedback-changes-behaviour`): A correction given once is followed afterwards, for the person who gave it.
-- Implied priorities reach ESOI (`hideal-implied-priorities-reach-esoi`): The priorities a person implies are recorded as ESOI milestones and weights.
+- Effort follows what the person cares about (`hideal-implied-priorities-reach-esoi`): The system's effort follows what the person cares about most, including what they only imply.
 - Every request taken in once (`hideal-every-request-is-taken-in-once`): A request made anywhere the system listens is taken in once and attached to the person who made it.
 
 ## Metrics and their leaders
@@ -58,17 +58,17 @@ Consciousness is where the system adapts to the humans and policies it works for
 
 ### Problems
 
-- Asking by one fixed rule (`hprob-ai-asks-on-one-fixed-rule`): The AI asks by a fixed rule, so one person is interrupted for steps they would have allowed and another is surprised by steps they would have wanted to approve.
-- Feedback forgotten (`hprob-feedback-is-forgotten`): A person's correction changes one reply and is forgotten, so the same correction is needed again.
-- Priorities implied, not stated (`hprob-priorities-are-implied-not-stated`): People imply their priorities instead of stating them, so an AI weighs everything the same or guesses.
+- Asking by one fixed rule (`hprob-ai-asks-on-one-fixed-rule`): Most AI assistants decide when to ask by one fixed rule, so one person is interrupted for steps they would have allowed and another is surprised by steps they would have wanted to approve.
+- Feedback forgotten (`hprob-feedback-is-forgotten`): In many assistants a correction changes the next reply but is not kept, so the person has to give it again.
+- Priorities implied, not stated (`hprob-priorities-are-implied-not-stated`): People often imply their priorities instead of stating them, so an AI weighs everything the same or guesses.
 - Requests from unseen places (`hprob-requests-come-from-places-the-system-cannot-see`): People make requests where they already work (a chat, a task list, the action items of a meeting), and a system that only answers one input cannot take them in, so requests are lost, answered twice or answered to the wrong person.
 
 ### Ideals
 
 - Asked only when wanted (`hideal-asked-only-when-the-person-would-want-it`): An AI representative asks a person when that person would want to be asked, and otherwise proceeds or declines.
-- One signal contract (`hideal-one-signal-contract`): The risk watch and the asking judgment share one signal: a risk with its severity and reason, then one decision for one person.
+- Risk and asking never disagree (`hideal-one-signal-contract`): How risky a step is and whether a person is asked about it never disagree, and a person's correction changes both at once.
 - Feedback changes behaviour (`hideal-feedback-changes-behaviour`): A correction given once is followed afterwards, for the person who gave it.
-- Implied priorities reach ESOI (`hideal-implied-priorities-reach-esoi`): The priorities a person implies are recorded as ESOI milestones and weights.
+- Effort follows what the person cares about (`hideal-implied-priorities-reach-esoi`): The system's effort follows what the person cares about most, including what they only imply.
 - Every request taken in once (`hideal-every-request-is-taken-in-once`): A request made anywhere the system listens is taken in once and attached to the person who made it.
 
 ### Solutions

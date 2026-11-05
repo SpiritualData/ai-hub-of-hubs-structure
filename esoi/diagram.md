@@ -2,7 +2,7 @@ These are ESOI records rendered as a diagram (evolvable structure that optimizes
 
 # Solution diagram: The best parts for AI intelligence, assembled and proven
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, and passes the request on for processing to Intelligence. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback. When asked for its health, The Self reports on itself, and for the research it asks World how current it is.
+The AI Hub of Hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks Consciousness for the person's authority and preferences, asks Body where the system's data lives, and passes the request to Intelligence, which draws tools, models and outside knowledge from World. The Self then keeps the run record in Body, has Integrity audit it, and asks Consciousness to learn from the person's feedback. When asked for its health, The Self reports on itself, and for the research it asks World how current it is.
 
 An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
 

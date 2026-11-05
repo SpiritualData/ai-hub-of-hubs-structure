@@ -31,11 +31,11 @@ Build the whole from the best-measured arm of every seat and report its coverage
 
 ## Problems
 
-- Assembly judged part by part (`hprob-assembly-judged-part-by-part`): An assembled system is judged part by part, so nobody checks that it behaves like one capable assistant from where the user sits: asked for something real, it should know what it may do, ask before anything irreversible and say truthfully what it did.
+- Assembly judged part by part (`hprob-assembly-judged-part-by-part`): An assembled system is mostly measured part by part, and whole-system checks are usually hand-run demos, so few teams have a repeatable, recorded way to see whether it behaves as one capable assistant: knowing what it may do, asking before anything irreversible and saying truthfully what it did.
 
 ## Ideals
 
-- Capable from the user's seat (`hideal-capable-from-the-users-seat`): The assembled hub is judged as the user meets it: one capable assistant that gets real work done, asks before it does anything that cannot be undone, and reports only what it did.
+- Capable from the user's seat (`hideal-capable-from-the-users-seat`): Used as a whole, the hub is one capable assistant that gets real work done, asks before anything that cannot be undone, and reports only what it did.
 
 ## Where to go next
 

@@ -31,7 +31,7 @@ Carry out an operation of a connected system on the AI's behalf.
 
 ## Problems
 
-- System operations wired by hand (`hprob-each-system-operation-is-wired-by-hand`): Every connected system's operations are wired into each product by hand.
+- System operations wired by hand (`hprob-each-system-operation-is-wired-by-hand`): Most products wire each connected system's operations by hand.
 
 ## Where to go next
 

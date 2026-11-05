@@ -33,7 +33,7 @@ This part finds and prepares information before it is asked for. Cards From File
 
 ## Where to go next
 
-- Parent intent: [Processing information for one request](../README.md)
+- Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
 - Records beside the code: [hubofhubs/the_intelligence/subconscious/cards_from_files](cards_from_files/README.md), [hubofhubs/the_intelligence/subconscious/context_retriever](context_retriever/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)

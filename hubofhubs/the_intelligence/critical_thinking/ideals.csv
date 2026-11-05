@@ -1,2 +1,2 @@
 ideal_id,name,principle,state_description,hints_of_measurement,problem_ids,parent_ideal_ids
-hideal-every-request-has-a-target,Every request has a target,"Every request and sub-goal has a metric with a target value or an improvement, which rolls up to the objective it serves.",The AI knows when a goal is met and how far it is.,Requests with a named metric and target.,hprob-goal-not-turned-into-a-metric,HI5
+hideal-every-request-has-a-target,Every request has a target,"For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.",The AI knows when a goal is met and how far it is.,Requests with a named metric and target.,hprob-goal-not-turned-into-a-metric,HI5

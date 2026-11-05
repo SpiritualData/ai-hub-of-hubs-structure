@@ -8,7 +8,7 @@ These are the solutions of [The best parts for AI intelligence, assembled and pr
 
 ## How the solutions fit together
 
-hub-of-hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks for the person's authority and preferences from Consciousness, asks where the system's data lives from Body, and passes the request on for processing to Intelligence. The Self then keeps the run record in Body and asks Consciousness to learn from the person's feedback. When asked for its health, The Self reports on itself, and for the research it asks World how current it is.
+The AI Hub of Hubs gives anyone a working AI assembled from measured open-source parts, and The Self is the whole that keeps its five kinds of part working as one. To respond to a request, The Self asks Consciousness for the person's authority and preferences, asks Body where the system's data lives, and passes the request to Intelligence, which draws tools, models and outside knowledge from World. The Self then keeps the run record in Body, has Integrity audit it, and asks Consciousness to learn from the person's feedback. When asked for its health, The Self reports on itself, and for the research it asks World how current it is.
 
 ## Overview diagram
 
@@ -111,22 +111,22 @@ flowchart LR
 
 ## Problems
 
-- Parts re-glued by every team (`HP1`): Every team re-researches and re-glues the same AI parts, and the private copies drift apart.
-- No evaluation of the parts (`HP2`): Lists of hubs say what exists, not which works best or fits together.
-- One hub outage stops the system (`HP4`): One hub's outage, price change or shutdown stops the system, and switching needs code changes.
-- The whole is never tested (`HP5`): Parts that are best alone can fail when assembled, and nobody tests the whole.
-- Form wired to one product (`hprob-system-form-wired-to-one-product`): The form and internal context of an AI system are wired for one product, so another system cannot give the hub its own APIs, databases and files without rewriting the parts.
-- Too much or too little context (`hprob-one-request-answered-from-too-much-or-too-little`): A request is answered from whatever happened to be nearby, so the AI sees too much to use or too little to answer.
-- Every person treated alike (`hprob-ai-treats-every-person-alike`): An AI treats every person alike, so it asks the person who wanted it to proceed and acts without asking the person who wanted to be asked.
+- Parts re-glued by every team (`HP1`): Many teams research and wire up the same open-source AI parts on their own, and their private versions drift apart.
+- Parts not compared on the job at hand (`HP2`): Lists of hubs say what exists, not which works best for a given job or how well parts work together.
+- Wired to one hub (`HP4`): When a system is wired to one hub, that hub's outage, price change or shutdown can stop the system or raise its cost, and switching usually means changing code.
+- Parts not judged by what they add to the whole (`HP5`): Each part is usually tuned and chosen on its own, so a part can be kept for how well it does alone even when the whole gains little from it or pays more for it.
+- Form wired to one product (`hprob-system-form-wired-to-one-product`): AI systems are usually built around one product's data, so another system cannot give the hub its own APIs, databases and files without rewriting parts.
+- Too much or too little context (`hprob-one-request-answered-from-too-much-or-too-little`): A request is often answered from whatever context is at hand (the recent chat, a fixed set of files), so the AI sees too much to use well or too little to answer.
+- Every person treated alike (`hprob-ai-treats-every-person-alike`): Most AI assistants use the same rule for every person, so they ask a person who wanted them to go ahead and act without asking a person who wanted to be asked.
 
 ## Ideals
 
-- Best by measurement (`HI1`): Each seat holds the part that measures best on shared cases.
-- One-step assembly (`HI2`): Configuration in, working system out, no glue code.
-- Always current (`HI3`): No area goes a week without a fresh search and comparison.
-- Swappable parts (`HI4`): Any part can be replaced by configuration when another measures better or fails.
-- Proven whole (`HI5`): The assembled system is tested end to end on a production consumer, not only part by part.
-- Generic and thin (`HI6`): No consumer-specific content.
+- The best option for each case is in use (`HI1`): Each seat holds the part that measures best on shared cases.
+- One-step assembly (`HI2`): Anyone gets a working system from the best parts without writing glue code.
+- Always current (`HI3`): What the hub recommends reflects the best parts available now.
+- Swappable parts (`HI4`): When a better part appears or a part fails, the system keeps working with the better or the working one, and no caller changes.
+- Every part earns its place in the whole (`HI5`): The assembled whole does real work well for its users, and every part in it adds more to the whole than it costs.
+- Generic and thin (`HI6`): Any team can use the hub as it is, and can change any default without forking it.
 
 ## Where to go next
 

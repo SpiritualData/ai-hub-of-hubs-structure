@@ -22,7 +22,7 @@ Higher Mind is the long view across requests. Objectives keeps the live hierarch
 
 **Problems**
 
-- Long view lost between requests (`hprob-long-view-lost-between-requests`): Each request starts from nothing: what happened before, what stays true and what the AI is working toward are lost between requests.
+- Long view lost between requests (`hprob-long-view-lost-between-requests`): In many assistants each request starts mostly fresh: what happened before, what stays true and what the AI is working toward are kept only as far as the chat history or a few saved notes reach.
 
 ## Metrics and their leaders
 
@@ -32,7 +32,7 @@ Higher Mind is the long view across requests. Objectives keeps the live hierarch
 
 ## Where to go next
 
-- Parent intent: [Processing information for one request](../README.md)
+- Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [implementations.csv](implementations.csv), [metrics.csv](metrics.csv)
 
@@ -42,7 +42,7 @@ Higher Mind is the long view across requests. Objectives keeps the live hierarch
 
 ### Problems
 
-- Long view lost between requests (`hprob-long-view-lost-between-requests`): Each request starts from nothing: what happened before, what stays true and what the AI is working toward are lost between requests.
+- Long view lost between requests (`hprob-long-view-lost-between-requests`): In many assistants each request starts mostly fresh: what happened before, what stays true and what the AI is working toward are kept only as far as the chat history or a few saved notes reach.
 
 ### Solutions
 

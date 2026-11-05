@@ -4,7 +4,7 @@ The AI system has a form and its own internal context, and the hub applies to a 
 
 *ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
 
-This sub-intent arises as the implementation `the-body:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: A system's own data, and the integrations it already governs, are a different kind of evolution from the one the parent solution measures. Declaring a system's own sources, rather than rewriting parts for it, lets any product adopt the hub.
+This sub-intent arises as the implementation `the-body:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: A system's own data and the integrations it already runs change for reasons of their own, apart from the outside world and from model accuracy. If a system can declare its own sources instead of having parts rewritten for it, any product can adopt the hub.
 
 ## How the solutions fit together
 
@@ -34,21 +34,21 @@ flowchart LR
 
 **Problems**
 
-- Stale picks (`HP3`): Hubs go stale.
-- App connections rebuilt by every product (`HP7`): Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it.
-- One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest.
+- Picks go out of date (`HP3`): A part that was best a few months ago can be overtaken by a newer one, and without a fresh comparison the team using it often does not notice.
+- App connections rebuilt by every product (`HP7`): Many products rebuild each app connection (calendar, drive, notes, chat) with their own screen, storage and tool code, so a new app costs code in every layer and often arrives months after hubs list it.
+- One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): An app connection (a calendar, a drive, a chat) is often served better by several hubs combined than by any one, but a product usually wires a single hub and hand-writes the rest.
 - System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
-- Enduring integrations unused (`hprob-enduring-integrations-unused`): A system already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
+- Enduring integrations unused (`hprob-enduring-integrations-unused`): A system often already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
 
 **Ideals**
 
 - Common-sense metrics, sourced stages (`hideal-common-sense-metrics-with-sourced-stages`): Every metric is a plain check anyone would accept, and its stages come from public evaluations whose sources are named and compared with each other.
-- Best in each circumstance, with variants (`hideal-best-in-circumstance-with-variants`): The hub names the best part for each circumstance and not one winner, by comparing variants of a part (one setting changed) on the same cases.
-- Guards earn their place (`hideal-guards-earn-their-place`): A guard is kept only when it catches something the model or harness would miss, shown by running the same cases with and without it.
-- Cheap, fast harness with ideal context (`hideal-cheap-fast-harness-with-ideal-context`): An agent harness is chosen for the lowest cost and time at the same pass rate, given the best context the hub can assemble for it, and the choice accounts for sub-agents and recursion.
-- Hubs combined per integration (`hideal-hubs-combined-per-integration`): An integration is served by the combination of hubs that covers the most of it, chosen by data and never by one hub's reach.
+- Best in each circumstance, with variants (`hideal-best-in-circumstance-with-variants`): Each user gets the part that is best under their own limits, such as cost, speed, language or input size.
+- Guards earn their place (`hideal-guards-earn-their-place`): A guard is kept only when it catches something the model or harness would miss.
+- Agent work at the lowest cost that does it well (`hideal-cheap-fast-harness-with-ideal-context`): Work handed to an agent finishes at the lowest cost and time that keeps the same quality, with context that is enough and no more.
+- Every connected app fully usable (`hideal-hubs-combined-per-integration`): Each app a user connects offers everything the AI may do with it, and a new app needs no new code.
 - Proportionate, current cards (`hideal-cards-proportionate-and-current`): A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
-- A system offers its own context (`hideal-a-system-offers-its-own-context`): A system declares its own sources once, and the hub reads them through adapters; local files work by default.
+- A system offers its own context (`hideal-a-system-offers-its-own-context`): The AI can draw on everything a system knows, in any system, without code written for that system.
 - Enduring integrations reach the AI (`hideal-enduring-integrations-reach-the-ai`): The integrations a system already governs are accessible to the AI and used by it.
 
 ## Metrics and their leaders
@@ -72,21 +72,21 @@ flowchart LR
 
 ### Problems
 
-- Stale picks (`HP3`): Hubs go stale.
-- App connections rebuilt by every product (`HP7`): Every product re-builds each app connection (calendar, drive, notes, chat) with its own screen, storage and tool code, so a new app costs code in every layer and arrives months after hubs list it.
-- One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): One app connection (a calendar, a drive, a chat) is served better by several hubs combined than by any one, but a product wires a single hub and hand-writes the rest.
+- Picks go out of date (`HP3`): A part that was best a few months ago can be overtaken by a newer one, and without a fresh comparison the team using it often does not notice.
+- App connections rebuilt by every product (`HP7`): Many products rebuild each app connection (calendar, drive, notes, chat) with their own screen, storage and tool code, so a new app costs code in every layer and often arrives months after hubs list it.
+- One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): An app connection (a calendar, a drive, a chat) is often served better by several hubs combined than by any one, but a product usually wires a single hub and hand-writes the rest.
 - System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
-- Enduring integrations unused (`hprob-enduring-integrations-unused`): A system already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
+- Enduring integrations unused (`hprob-enduring-integrations-unused`): A system often already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
 
 ### Ideals
 
 - Common-sense metrics, sourced stages (`hideal-common-sense-metrics-with-sourced-stages`): Every metric is a plain check anyone would accept, and its stages come from public evaluations whose sources are named and compared with each other.
-- Best in each circumstance, with variants (`hideal-best-in-circumstance-with-variants`): The hub names the best part for each circumstance and not one winner, by comparing variants of a part (one setting changed) on the same cases.
-- Guards earn their place (`hideal-guards-earn-their-place`): A guard is kept only when it catches something the model or harness would miss, shown by running the same cases with and without it.
-- Cheap, fast harness with ideal context (`hideal-cheap-fast-harness-with-ideal-context`): An agent harness is chosen for the lowest cost and time at the same pass rate, given the best context the hub can assemble for it, and the choice accounts for sub-agents and recursion.
-- Hubs combined per integration (`hideal-hubs-combined-per-integration`): An integration is served by the combination of hubs that covers the most of it, chosen by data and never by one hub's reach.
+- Best in each circumstance, with variants (`hideal-best-in-circumstance-with-variants`): Each user gets the part that is best under their own limits, such as cost, speed, language or input size.
+- Guards earn their place (`hideal-guards-earn-their-place`): A guard is kept only when it catches something the model or harness would miss.
+- Agent work at the lowest cost that does it well (`hideal-cheap-fast-harness-with-ideal-context`): Work handed to an agent finishes at the lowest cost and time that keeps the same quality, with context that is enough and no more.
+- Every connected app fully usable (`hideal-hubs-combined-per-integration`): Each app a user connects offers everything the AI may do with it, and a new app needs no new code.
 - Proportionate, current cards (`hideal-cards-proportionate-and-current`): A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
-- A system offers its own context (`hideal-a-system-offers-its-own-context`): A system declares its own sources once, and the hub reads them through adapters; local files work by default.
+- A system offers its own context (`hideal-a-system-offers-its-own-context`): The AI can draw on everything a system knows, in any system, without code written for that system.
 - Enduring integrations reach the AI (`hideal-enduring-integrations-reach-the-ai`): The integrations a system already governs are accessible to the AI and used by it.
 
 ### Solutions

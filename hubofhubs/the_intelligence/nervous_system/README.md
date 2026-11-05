@@ -4,7 +4,7 @@
 
 One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the result is checked for goal completion and response quality.
 
-These are the solutions of [Processing information for one request](../README.md).
+These are the solutions of [How the AI processes information](../README.md).
 
 ## How the solutions fit together
 
@@ -44,5 +44,5 @@ Send one risk signal, a severity and a reason, before irreversible or person-own
 ## Where to go next
 
 - Up: [hubofhubs](../../README.md)
-- Intent: [Processing information for one request](../README.md)
+- Intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)

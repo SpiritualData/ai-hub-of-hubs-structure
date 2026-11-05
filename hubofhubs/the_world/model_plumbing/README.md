@@ -21,7 +21,7 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 
 **Problems**
 
-- Every part picks its own model (`hprob-every-part-picks-its-own-model`): Each part that needs a model chooses and calls it its own way, so tier choice, cost and failover are repeated and drift apart.
+- Every part picks its own model (`hprob-every-part-picks-its-own-model`): When each part that needs a model chooses and calls it its own way, tier choice, cost and failover are repeated in each part and drift apart.
 
 ## Metrics and their leaders
 
@@ -44,7 +44,7 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 
 ### Problems
 
-- Every part picks its own model (`hprob-every-part-picks-its-own-model`): Each part that needs a model chooses and calls it its own way, so tier choice, cost and failover are repeated and drift apart.
+- Every part picks its own model (`hprob-every-part-picks-its-own-model`): When each part that needs a model chooses and calls it its own way, tier choice, cost and failover are repeated in each part and drift apart.
 
 ### Solutions
 

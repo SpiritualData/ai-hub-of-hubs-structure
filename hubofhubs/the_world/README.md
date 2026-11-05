@@ -39,16 +39,16 @@ flowchart LR
 **Problems**
 
 - One public benchmark trusted alone (`hprob-public-evals-relied-on-singly`): One public benchmark is trusted alone to rank parts, although it may measure a different task, be saturated or leaked into training data, and its source is rarely checked.
-- Best pick ignores circumstance (`hprob-one-best-pick-ignores-circumstance`): A part is ranked best overall, but which part is best depends on the circumstance (a cost limit, a speed limit, a language, the size of the input), so the single winner is wrong for many users.
-- Harness dear and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
-- Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer cites a web page instead of the papers and data that bear on it, so the reader cannot check it.
+- Best pick ignores circumstance (`hprob-one-best-pick-ignores-circumstance`): A part is ranked best overall, but which part is best depends on the circumstance (a cost limit, a speed limit, a language, the size of the input), so the single winner can be wrong for many users.
+- Agent harness costly and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
+- Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer often cites a web page, or nothing, instead of the papers and data that bear on it, so the reader cannot check it.
 - The outside is wired into each part by hand (`hprob-the-outside-is-wired-into-each-part-by-hand`): Each part that needs a model or a tool is wired to one vendor or one integration directly, so a better model or tool outside the system cannot be adopted without rewriting parts.
 - Research dates read by hand (`hprob-research-dates-are-read-by-hand`): How old each area's research is has to be worked out by hand, so stale recommendations go unnoticed.
 
 **Ideals**
 
-- Tools chosen by category (`hideal-tools-chosen-by-category`): For each category of tool, the best integration is chosen by measurement, and a person's data locations are declared once.
-- The outside is adopted by measurement (`hideal-the-outside-is-adopted-by-measurement`): A better model or tool outside the system is adopted because it measured better, with no part rewritten.
+- The best tool for each kind of task (`hideal-tools-chosen-by-category`): For every kind of task, the AI uses the best tool available to it, and a person says where their data lives only once.
+- The best of the outside is in use (`hideal-the-outside-is-adopted-by-measurement`): A better model or tool outside the system is adopted because it measured better, with no part rewritten.
 
 ## Metrics and their leaders
 
@@ -77,16 +77,16 @@ flowchart LR
 ### Problems
 
 - One public benchmark trusted alone (`hprob-public-evals-relied-on-singly`): One public benchmark is trusted alone to rank parts, although it may measure a different task, be saturated or leaked into training data, and its source is rarely checked.
-- Best pick ignores circumstance (`hprob-one-best-pick-ignores-circumstance`): A part is ranked best overall, but which part is best depends on the circumstance (a cost limit, a speed limit, a language, the size of the input), so the single winner is wrong for many users.
-- Harness dear and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
-- Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer cites a web page instead of the papers and data that bear on it, so the reader cannot check it.
+- Best pick ignores circumstance (`hprob-one-best-pick-ignores-circumstance`): A part is ranked best overall, but which part is best depends on the circumstance (a cost limit, a speed limit, a language, the size of the input), so the single winner can be wrong for many users.
+- Agent harness costly and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
+- Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer often cites a web page, or nothing, instead of the papers and data that bear on it, so the reader cannot check it.
 - The outside is wired into each part by hand (`hprob-the-outside-is-wired-into-each-part-by-hand`): Each part that needs a model or a tool is wired to one vendor or one integration directly, so a better model or tool outside the system cannot be adopted without rewriting parts.
 - Research dates read by hand (`hprob-research-dates-are-read-by-hand`): How old each area's research is has to be worked out by hand, so stale recommendations go unnoticed.
 
 ### Ideals
 
-- Tools chosen by category (`hideal-tools-chosen-by-category`): For each category of tool, the best integration is chosen by measurement, and a person's data locations are declared once.
-- The outside is adopted by measurement (`hideal-the-outside-is-adopted-by-measurement`): A better model or tool outside the system is adopted because it measured better, with no part rewritten.
+- The best tool for each kind of task (`hideal-tools-chosen-by-category`): For every kind of task, the AI uses the best tool available to it, and a person says where their data lives only once.
+- The best of the outside is in use (`hideal-the-outside-is-adopted-by-measurement`): A better model or tool outside the system is adopted because it measured better, with no part rewritten.
 
 ### Solutions
 

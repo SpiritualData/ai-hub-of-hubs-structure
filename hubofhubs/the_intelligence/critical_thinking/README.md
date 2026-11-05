@@ -23,13 +23,13 @@ Critical Thinking holds a request to a measure. Metric Translation turns the req
 
 **Problems**
 
-- Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): A request is answered without a target, so no one can say whether its goal was met or how much better a second try was.
-- One quality standard for everyone (`hprob-one-quality-standard-for-everyone`): Response quality is judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
+- Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
+- Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
 
 **Ideals**
 
-- Every request has a target (`hideal-every-request-has-a-target`): Every request and sub-goal has a metric with a target value or an improvement, which rolls up to the objective it serves.
-- Quality is judged per profile (`hideal-quality-is-per-profile`): A response is judged against the quality profile of the person and situation, with a researched default when none is given.
+- Every request has a target (`hideal-every-request-has-a-target`): For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.
+- Quality is judged per profile (`hideal-quality-is-per-profile`): A response is high quality by the standard of the person and situation it serves, and good by default for someone who has said nothing yet.
 
 ## Metrics and their leaders
 
@@ -40,7 +40,7 @@ Critical Thinking holds a request to a measure. Metric Translation turns the req
 
 ## Where to go next
 
-- Parent intent: [Processing information for one request](../README.md)
+- Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
 - Records beside the code: [hubofhubs/the_intelligence/critical_thinking/goal_completion](goal_completion/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_translation](metric_translation/README.md), [hubofhubs/the_intelligence/critical_thinking/response_quality](response_quality/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
@@ -51,13 +51,13 @@ Critical Thinking holds a request to a measure. Metric Translation turns the req
 
 ### Problems
 
-- Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): A request is answered without a target, so no one can say whether its goal was met or how much better a second try was.
-- One quality standard for everyone (`hprob-one-quality-standard-for-everyone`): Response quality is judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
+- Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
+- Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
 
 ### Ideals
 
-- Every request has a target (`hideal-every-request-has-a-target`): Every request and sub-goal has a metric with a target value or an improvement, which rolls up to the objective it serves.
-- Quality is judged per profile (`hideal-quality-is-per-profile`): A response is judged against the quality profile of the person and situation, with a researched default when none is given.
+- Every request has a target (`hideal-every-request-has-a-target`): For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.
+- Quality is judged per profile (`hideal-quality-is-per-profile`): A response is high quality by the standard of the person and situation it serves, and good by default for someone who has said nothing yet.
 
 ### Solutions
 

@@ -4,7 +4,7 @@
 
 One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the result is checked for goal completion and response quality.
 
-These are the solutions of [Processing information for one request](../README.md).
+These are the solutions of [How the AI processes information](../README.md).
 
 ## How the solutions fit together
 
@@ -47,10 +47,10 @@ Let the system start its standing work when it is due, without being asked.
 
 ## Ideals
 
-- The system acts on time (`hideal-the-system-acts-on-time`): The system starts its standing work when it is due, by calendar period in the person's own zone, when a run is requested, or when something happened.
+- The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 
 ## Where to go next
 
 - Up: [hubofhubs](../../README.md)
-- Intent: [Processing information for one request](../README.md)
+- Intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)

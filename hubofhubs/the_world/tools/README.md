@@ -25,7 +25,7 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 **Problems**
 
 - Every product wires its own tools (`hprob-each-product-wires-its-own-tools`): Each product wires its own integrations and finds a person's data its own way, so a new kind of integration means new code and a person's data locations are asked for again by every product.
-- System operations wired by hand (`hprob-each-system-operation-is-wired-by-hand`): Every connected system's operations are wired into each product by hand.
+- System operations wired by hand (`hprob-each-system-operation-is-wired-by-hand`): Most products wire each connected system's operations by hand.
 - Small edits pay for an agent (`hprob-small-edits-pay-for-an-agent`): A change to one file is routed to an agent session that costs and takes far more than the edit needs, or is hand-written for each product.
 
 ## Metrics and their leaders
@@ -56,7 +56,7 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 ### Problems
 
 - Every product wires its own tools (`hprob-each-product-wires-its-own-tools`): Each product wires its own integrations and finds a person's data its own way, so a new kind of integration means new code and a person's data locations are asked for again by every product.
-- System operations wired by hand (`hprob-each-system-operation-is-wired-by-hand`): Every connected system's operations are wired into each product by hand.
+- System operations wired by hand (`hprob-each-system-operation-is-wired-by-hand`): Most products wire each connected system's operations by hand.
 - Small edits pay for an agent (`hprob-small-edits-pay-for-an-agent`): A change to one file is routed to an agent session that costs and takes far more than the edit needs, or is hand-written for each product.
 
 ### Solutions

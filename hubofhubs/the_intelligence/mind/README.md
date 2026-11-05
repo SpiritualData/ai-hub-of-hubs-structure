@@ -23,13 +23,13 @@ Context Intake takes in what was prepared for a request and what the workers bro
 
 **Problems**
 
-- One prompt carries every instruction (`hprob-one-prompt-carries-every-instruction`): Every task's prompt carries every standing instruction and every correction ever given, so cost grows and quality falls as instructions accumulate.
+- One prompt carries every instruction (`hprob-one-prompt-carries-every-instruction`): As standing instructions and corrections pile up, they are often all added to every task's prompt, so cost grows and quality can fall.
 - Two intakes wired by hand (`hprob-mind-has-two-intakes-wired-by-hand`): What the Mind sees for a request comes from two sources, the system's internal context and the outside, and each product wires both to the Mind its own way.
-- Handoff loses authority and done standard (`hprob-handoff-loses-authority-and-done-standard`): A worker given one piece of a request does not know the authority it carries or what done means for that piece.
+- Handoff loses authority and done standard (`hprob-handoff-loses-authority-and-done-standard`): A worker given one piece of a request is often not told the authority it carries or what done means for that piece.
 
 **Ideals**
 
-- Only the instructions a task needs (`hideal-only-the-instructions-a-task-needs`): A task is given the instructions that bear on it and no others, and its prompt is an implementation measured on quality and cost.
+- Only the instructions a task needs (`hideal-only-the-instructions-a-task-needs`): Each task is given the instructions that bear on it and no others, so quality holds and cost stays low as the system learns more.
 - Every handoff carries authority and a standard (`hideal-every-handoff-carries-authority-and-done-standard`): Each handoff names the authority it carries and the done-standard of its sub-goal.
 
 ## Metrics and their leaders
@@ -41,7 +41,7 @@ Context Intake takes in what was prepared for a request and what the workers bro
 
 ## Where to go next
 
-- Parent intent: [Processing information for one request](../README.md)
+- Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
 - Records beside the code: [hubofhubs/the_intelligence/mind/context_intake](context_intake/README.md), [hubofhubs/the_intelligence/mind/delegation](delegation/README.md), [hubofhubs/the_intelligence/mind/planner](planner/README.md), [hubofhubs/the_intelligence/mind/response_writer](response_writer/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
@@ -52,13 +52,13 @@ Context Intake takes in what was prepared for a request and what the workers bro
 
 ### Problems
 
-- One prompt carries every instruction (`hprob-one-prompt-carries-every-instruction`): Every task's prompt carries every standing instruction and every correction ever given, so cost grows and quality falls as instructions accumulate.
+- One prompt carries every instruction (`hprob-one-prompt-carries-every-instruction`): As standing instructions and corrections pile up, they are often all added to every task's prompt, so cost grows and quality can fall.
 - Two intakes wired by hand (`hprob-mind-has-two-intakes-wired-by-hand`): What the Mind sees for a request comes from two sources, the system's internal context and the outside, and each product wires both to the Mind its own way.
-- Handoff loses authority and done standard (`hprob-handoff-loses-authority-and-done-standard`): A worker given one piece of a request does not know the authority it carries or what done means for that piece.
+- Handoff loses authority and done standard (`hprob-handoff-loses-authority-and-done-standard`): A worker given one piece of a request is often not told the authority it carries or what done means for that piece.
 
 ### Ideals
 
-- Only the instructions a task needs (`hideal-only-the-instructions-a-task-needs`): A task is given the instructions that bear on it and no others, and its prompt is an implementation measured on quality and cost.
+- Only the instructions a task needs (`hideal-only-the-instructions-a-task-needs`): Each task is given the instructions that bear on it and no others, so quality holds and cost stays low as the system learns more.
 - Every handoff carries authority and a standard (`hideal-every-handoff-carries-authority-and-done-standard`): Each handoff names the authority it carries and the done-standard of its sub-goal.
 
 ### Solutions

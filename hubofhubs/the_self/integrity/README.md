@@ -32,7 +32,7 @@ Keep the whole honest and usable by any consumer: what the system says about its
 
 ## Problems
 
-- One product leaks into shared code (`HP6`): One product's prompts and settings leak into shared code, so it cannot be reused by anyone else.
+- One product leaks into shared code (`HP6`): One product's prompts and settings creep into shared code, so others have to find and strip them out before they can reuse it.
 
 ## Where to go next
 

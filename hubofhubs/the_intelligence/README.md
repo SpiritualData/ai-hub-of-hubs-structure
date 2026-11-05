@@ -1,4 +1,4 @@
-# Processing information for one request
+# How the AI processes information
 
 One request is answered from what the AI can see for it: the long view is read, the request becomes a target, the information is found and prepared, the response is planned and written, and the result is checked for goal completion and response quality.
 
@@ -36,19 +36,19 @@ flowchart LR
 
 **Problems**
 
-- Guards without proven value (`hprob-addon-guard-without-marginal-value`): A guard or reviewer added around a model or harness is kept because it sounds careful, without showing that it catches anything the model or harness would not catch alone.
-- Answers outrun their evidence (`hprob-answers-outrun-their-evidence`): An answer claims more than the evidence behind it supports, and the reader cannot tell which claim is unsupported.
+- Guards without proven value (`hprob-addon-guard-without-marginal-value`): A guard or reviewer added around a model or harness is often kept because it seems careful, without evidence that it catches anything the model or harness would miss alone.
+- Answers outrun their evidence (`hprob-answers-outrun-their-evidence`): AI answers often claim more than the evidence behind them supports, and the reader cannot tell which claim is unsupported.
 - The Mind sees too little or too much (`hprob-the-mind-sees-too-little-or-too-much`): What the planning and responding AI sees for a request is whatever was wired to it: earlier requests and goals are missing, the right information is not found, or too much of it is pasted in.
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
 
 **Ideals**
 
 - The context a task needs, and little else (`hideal-context-needed-and-little-else`): A task is shown the pieces it needs, in order of need, within a budget, and nothing when it needs nothing.
-- One intake, two sources (`hideal-one-intake-two-sources`): The Mind has one intake fed by the system's internal context and by the outside.
+- Answers draw on inside and outside together (`hideal-one-intake-two-sources`): Every request is answered from the best of what the system knows and what the outside offers, weighed together.
 - Answers stay within their evidence (`hideal-answers-stay-within-evidence`): Every claim in an answer is supported by evidence the reader can open, or is marked as unsupported.
 - The long view is kept (`hideal-the-long-view-is-kept`): What happened, what stays true and what the AI is working toward survive from one request to the next.
-- The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is chosen for that request, within a budget, from the long view, the system's own data and the outside.
-- The system acts on time (`hideal-the-system-acts-on-time`): The system starts its standing work when it is due, by calendar period in the person's own zone, when a run is requested, or when something happened.
+- The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is fitted to that request, within a budget, and draws on the long view, the system's own data and the outside.
+- The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 
 ## Metrics and their leaders
 
@@ -78,19 +78,19 @@ flowchart LR
 
 ### Problems
 
-- Guards without proven value (`hprob-addon-guard-without-marginal-value`): A guard or reviewer added around a model or harness is kept because it sounds careful, without showing that it catches anything the model or harness would not catch alone.
-- Answers outrun their evidence (`hprob-answers-outrun-their-evidence`): An answer claims more than the evidence behind it supports, and the reader cannot tell which claim is unsupported.
+- Guards without proven value (`hprob-addon-guard-without-marginal-value`): A guard or reviewer added around a model or harness is often kept because it seems careful, without evidence that it catches anything the model or harness would miss alone.
+- Answers outrun their evidence (`hprob-answers-outrun-their-evidence`): AI answers often claim more than the evidence behind them supports, and the reader cannot tell which claim is unsupported.
 - The Mind sees too little or too much (`hprob-the-mind-sees-too-little-or-too-much`): What the planning and responding AI sees for a request is whatever was wired to it: earlier requests and goals are missing, the right information is not found, or too much of it is pasted in.
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
 
 ### Ideals
 
 - The context a task needs, and little else (`hideal-context-needed-and-little-else`): A task is shown the pieces it needs, in order of need, within a budget, and nothing when it needs nothing.
-- One intake, two sources (`hideal-one-intake-two-sources`): The Mind has one intake fed by the system's internal context and by the outside.
+- Answers draw on inside and outside together (`hideal-one-intake-two-sources`): Every request is answered from the best of what the system knows and what the outside offers, weighed together.
 - Answers stay within their evidence (`hideal-answers-stay-within-evidence`): Every claim in an answer is supported by evidence the reader can open, or is marked as unsupported.
 - The long view is kept (`hideal-the-long-view-is-kept`): What happened, what stays true and what the AI is working toward survive from one request to the next.
-- The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is chosen for that request, within a budget, from the long view, the system's own data and the outside.
-- The system acts on time (`hideal-the-system-acts-on-time`): The system starts its standing work when it is due, by calendar period in the person's own zone, when a run is requested, or when something happened.
+- The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is fitted to that request, within a budget, and draws on the long view, the system's own data and the outside.
+- The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 
 ### Solutions
 
