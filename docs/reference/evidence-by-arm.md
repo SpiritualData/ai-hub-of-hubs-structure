@@ -46,6 +46,11 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972) | none recorded |
 | goal_completion | evidence_standard (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
 | goal_completion | nonempty | 14 | 78.6% (52.4% to 92.4%), 11/14 | $0 | 0 (median) | ahead of nonempty, not significant (two-sided McNemar p=0.25) | none recorded |
+| guidance | rule_gate (selected) | 24 | 100.0% (86.2% to 100.0%), 24/24 | $0 | 0 (median) | selected | none recorded |
+| guidance | always_nudge | 24 | 25.0% (12.0% to 44.9%), 6/24 | $0 | 0 (median) | ahead of always_nudge (two-sided sign test p=1.53e-05) | none recorded |
+| guidance | overlap_only | 24 | 41.7% (24.5% to 61.2%), 10/24 | $0 | 0 (median) | ahead of overlap_only (two-sided sign test p=0.000122) | none recorded |
+| intuition | co_taken (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
+| intuition | nearest_cards | 20 | 50.0% (29.9% to 70.1%), 10/20 | $0 | 0 (median) | ahead of nearest_cards (two-sided McNemar p=0.00195) | none recorded |
 | judgment_calls | severity_policy (selected) | 72 | 100.0% (94.9% to 100.0%), 72/72 | $0 | 0 (median) | selected | none recorded |
 | judgment_calls | ask_every_time | 72 | 94.4% (86.6% to 97.8%), 68/72 | $0 | 0 (median) | ahead of ask_every_time, not significant (two-sided McNemar p=0.125) | none recorded |
 | know_the_world | openalex_semantic (selected) | 150 | 34.7% (27.5% to 42.6%), 52/150 | $0 | 2 (median) | selected | none recorded |
@@ -54,6 +59,11 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | know_the_world | openalex_keywords_model | 40 | 7.5% (2.6% to 19.9%), 3/40 | $0.0001667 | 0.7 (median) | ahead of openalex_keywords_model, not significant (two-sided McNemar p=0.0234) | none recorded |
 | know_the_world | openalex_semantic_and_web | 150 | 32.7% (25.7% to 40.5%), 49/150 | $0.0002612 | 3.6 (median) | ahead of openalex_semantic_and_web (two-sided sign test p=6.2e-31) | none recorded |
 | know_the_world | web_research | 150 | 12.0% (7.7% to 18.2%), 18/150 | $0.0007 | 2.5 (median) | ahead of web_research (two-sided sign test p=1.12e-25) | none recorded |
+| live_objectives | rolled_up (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
+| live_objectives | flat_list | 20 | 40.0% (21.9% to 61.3%), 8/20 | $0 | 0 (median) | ahead of flat_list (two-sided sign test p=0.000488) | none recorded |
+| long_term_memory | file_recall (selected) | 17 | 94.1% (73.0% to 99.0%), 16/17 | $0 | 0 (median) | selected | none recorded |
+| long_term_memory | card_store_recall | 17 | 88.2% (65.7% to 96.7%), 15/17 | $0 | 0 (median) | ahead of card_store_recall, not significant (two-sided sign test p=1) | none recorded |
+| long_term_memory | recent_window | 17 | 58.8% (36.0% to 78.4%), 10/17 | $0 | 0 (median) | ahead of recent_window, not significant (two-sided sign test p=0.141) | none recorded |
 | model_call | via_vendor (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
 | model_quality_aime | claude_haiku (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | 1 model calls (no price) | 14.8 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | claude_opus | 30 | 96.7% (83.3% to 99.4%), 29/30 | 1.03 model calls (no price) | 10.5 (median) | complementary arm, not ranked | none recorded |
@@ -64,8 +74,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | model_quality_aime | gemini_2_5_flash_lite | 30 | 56.7% (39.2% to 72.6%), 17/30 | $0.01591 | 58.9 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | gpt_5_mini | 30 | 90.0% (74.4% to 96.5%), 27/30 | $0.01458 | 44.9 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | gpt_5_nano | 30 | 66.7% (48.8% to 80.8%), 20/30 | $0.006135 | 25.7 (median) | complementary arm, not ranked | none recorded |
-| prioritization | stated_fields (selected) | 13 | 100.0% (77.2% to 100.0%), 13/13 | $0 | 0 (median) | selected | none recorded |
-| prioritization | as_given | 13 | 7.7% (1.4% to 33.3%), 1/13 | $0 | 0 (median) | ahead of as_given (two-sided sign test p=0.000488) | none recorded |
+| prioritization | stated_fields (selected) | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | selected | none recorded |
+| prioritization | as_given | 15 | 0.0% (0.0% to 20.4%), 0/15 | no passing case | 0 (median) | ahead of as_given (two-sided sign test p=6.1e-05) | none recorded |
 | proactivity | calendar_and_events (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
 | proactivity | elapsed_hours | 18 | 55.6% (33.7% to 75.4%), 10/18 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=0.00781) | none recorded |
 | provider_failover | multi_provider (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
@@ -74,6 +84,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | request_planning | cue_router (selected) | 105 | 63.8% (54.3% to 72.4%), 67/105 | $0 | 0 (median) | selected | none recorded |
 | request_planning | one_piece | 105 | 22.9% (15.9% to 31.8%), 24/105 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=3.38e-08) | none recorded |
 | response_writing | cited_results (selected) | 44 | 100.0% (92.0% to 100.0%), 44/44 | $0 | 0 (median) | selected | none recorded |
+| role_understanding | checked_role (selected) | 13 | 100.0% (77.2% to 100.0%), 13/13 | $0 | 0 (median) | selected | none recorded |
+| role_understanding | recorded_role | 13 | 69.2% (42.4% to 87.3%), 9/13 | $0 | 0 (median) | ahead of recorded_role, not significant (two-sided sign test p=0.125) | none recorded |
 | search_backend | gemini (selected) | 40 | 80.0% (65.2% to 89.5%), 32/40 | $5.625e-05 | 2 (median) | selected | none recorded |
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |

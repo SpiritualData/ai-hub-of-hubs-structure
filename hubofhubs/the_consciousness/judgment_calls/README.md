@@ -1,19 +1,15 @@
 # Judgment Calls
 
-*ESOI records kept beside the code in `hubofhubs/the_consciousness/judgment_calls`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Ask a person only when that person would want to be asked, and decide how: whether the ask blocks or waits, whether it is batched, what may continue meanwhile, and whether a change to specs or a learning step needs an ask at all (by default it does not).
 
-The AI system works in alignment with the humans it serves.
+Breadcrumb: [Top](../../../esoi/README.md) > [Adapting to the humans the system works with](../README.md) > Judgment Calls
 
-These are the solutions of [Adapting to the humans the system works with](../README.md).
-
-## How the solutions fit together
-
-Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization turns the priorities a person states or implies into ESOI and puts the work that competes for the person's attention in order. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+Part of [Adapting to the humans the system works with](../README.md)
 
 ## Judgment Calls (`judgment-calls`)
 
-Ask a person only when that person would want to be asked, and decide how: whether the ask blocks or waits, whether it is batched, what may continue meanwhile, and whether a change to specs or a learning step needs an ask at all (by default it does not).
-
+- Out of scope: Raising the risk signal (the Nervous System does that) and learning the person's thresholds from feedback (Feedback Learning does that).
+- Delegates to: nervous-system, feedback-learning
 - Entry call: `hubofhubs.run("judgment-calls", {'signal': {'signal': 'proceed'}, 'person': ''})`
 - Selected implementation: Per-person severity policy (`severity_policy`)
 - Metric: Asked when a person should be asked
@@ -21,10 +17,10 @@ Ask a person only when that person would want to be asked, and decide how: wheth
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Ask about every risk | `judgment-calls:ask_every_time` | [`hubofhubs/the_consciousness/judgment_calls/judgment.py`](judgment.py) |  |
-| Per-person severity policy | `judgment-calls:severity_policy` | [`hubofhubs/the_consciousness/judgment_calls/judgment.py`](judgment.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Ask about every risk | `judgment-calls:ask_every_time` | Asks, blocking, about any step that carries any risk, whoever the person is. | [`hubofhubs/the_consciousness/judgment_calls/judgment.py`](judgment.py) |  |
+| Per-person severity policy | `judgment-calls:severity_policy` | Proceeds up to the severity a person set, declines from the severity they set and asks in between, to whom they named, with the timing the severity calls for (a medium risk waits and is batched while safe work continues, a high one blocks). | [`hubofhubs/the_consciousness/judgment_calls/judgment.py`](judgment.py) | selected |
 
 ## Metrics
 
@@ -35,3 +31,5 @@ Ask a person only when that person would want to be asked, and decide how: wheth
 - Up: [hubofhubs](../../README.md)
 - Intent: [Adapting to the humans the system works with](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

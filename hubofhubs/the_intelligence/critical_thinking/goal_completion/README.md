@@ -1,30 +1,26 @@
 # Goal Completion
 
-*ESOI records kept beside the code in `hubofhubs/the_intelligence/critical_thinking/goal_completion`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Check that the goal was met.
 
-A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.
+Breadcrumb: [Top](../../../../esoi/README.md) > [How the AI processes information](../../README.md) > [Holding a request to a measure](../README.md) > Goal Completion
 
-These are the solutions of [Holding a request to a measure](../README.md).
-
-## How the solutions fit together
-
-Critical Thinking holds a request to a measure. Metric Translation turns the request into a metric with a target value or improvement and a budget, adjustable while the work runs. ESOI Application records that metric as a spec and applies the principles, creating and editing specs and metrics. Goal Completion says whether the goal's condition was met against its done-standard. Response Quality judges the response against the quality profile resolved for the request.
+Part of [Holding a request to a measure](../README.md)
 
 ## Goal Completion (`goal-completion`)
 
-Check that the goal was met.
-
+- Out of scope: Judging how good the response is (Response Quality does that) and making the change (the tools do that).
+- Delegates to: response-quality, the-tools
 - Entry call: `hubofhubs.run("goal-completion", ...)`
 - Selected implementation: Evidence standard (`evidence_standard`)
 - Metric: Goals judged met only when they are
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](goal_completion.py) and 141 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](goal_completion.py) and 151 more
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Evidence standard | `goal-completion:evidence_standard` | [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](goal_completion.py) | selected |
-| Outcome is not empty | `goal-completion:nonempty` | [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](goal_completion.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Evidence standard | `goal-completion:evidence_standard` | Says a goal is met when the outcome is present, declares no coverage gap, was not refused and holds every requirement of the done-standard, by pure functions over the done-evidence code. | [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](goal_completion.py) | selected |
+| Outcome is not empty | `goal-completion:nonempty` | Says a goal is met when the outcome is not empty: what a flow with no completion check implies. | [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](goal_completion.py) |  |
 
 ## Metrics
 
@@ -35,3 +31,5 @@ Check that the goal was met.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Holding a request to a measure](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

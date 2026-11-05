@@ -1,19 +1,15 @@
 # Web Search
 
-*ESOI records kept beside the code in `hubofhubs/the_world/tools/web_search`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Run one web search and return its hits with their sources.
 
-The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Using the tools of the outside world](../README.md) > Web Search
 
-These are the solutions of [Using the tools of the outside world](../README.md).
-
-## How the solutions fit together
-
-Tools lets the AI use the tool of a category and refuses a category the authority does not allow. Web Search brings in the live web. File Reading reads the files of a folder. File Editing changes one file by instruction. Connected System Operations calls a write operation of a connected system. Delegated Agent Sessions gives open-ended work to an agent that runs in its own session.
+Part of [Using the tools of the outside world](../README.md)
 
 ## Web Search (`web-search`)
 
-Run one web search and return its hits with their sources.
-
+- Out of scope: Public research papers (Science does that) and reading a person's own data (Internal Context declares where it is and File Reading reads it).
+- Delegates to: the-science
 - Entry call: `hubofhubs.run("web-search", 'latest Rust version')`
 - Selected implementation: Gemini grounding (`gemini`)
 - Metric: Search finds the source
@@ -21,14 +17,14 @@ Run one web search and return its hits with their sources.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Brave Search API | `web-search:brave` | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
-| Gemini grounding | `web-search:gemini` | [`hubofhubs/the_world/tools/web_search/gemini.py`](gemini.py) | selected |
-| Provider-native search | `web-search:provider` | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
-| SearXNG metasearch | `web-search:searxng` | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
-| Serper Google search | `web-search:serper` | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
-| Tavily search API | `web-search:tavily` | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Brave Search API | `web-search:brave` | Searches the Brave Search API through the generic JSON-API backend; the entry is data. | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
+| Gemini grounding | `web-search:gemini` | Searches through Gemini's Google Search grounding tool and resolves the redirect links to the real pages. | [`hubofhubs/the_world/tools/web_search/gemini.py`](gemini.py) | selected |
+| Provider-native search | `web-search:provider` | Wraps any model provider object that exposes web_search(query, model, max_results). | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
+| SearXNG metasearch | `web-search:searxng` | Searches a self-hosted SearXNG instance by base url. | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
+| Serper Google search | `web-search:serper` | Searches the Serper API through the generic JSON-API backend; the entry is data. | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
+| Tavily search API | `web-search:tavily` | Searches the Tavily API through the generic JSON-API backend; the entry is data. | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
 
 ## Metrics
 
@@ -39,3 +35,5 @@ Run one web search and return its hits with their sources.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Using the tools of the outside world](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

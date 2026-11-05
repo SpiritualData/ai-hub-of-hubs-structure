@@ -1,19 +1,15 @@
 # Prioritization
 
-*ESOI records kept beside the code in `hubofhubs/the_consciousness/prioritization`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Turn the priorities a person implies into ESOI.
 
-The AI system works in alignment with the humans it serves.
+Breadcrumb: [Top](../../../esoi/README.md) > [Adapting to the humans the system works with](../README.md) > Prioritization
 
-These are the solutions of [Adapting to the humans the system works with](../README.md).
-
-## How the solutions fit together
-
-Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization turns the priorities a person states or implies into ESOI and puts the work that competes for the person's attention in order. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+Part of [Adapting to the humans the system works with](../README.md)
 
 ## Prioritization (`prioritization`)
 
-Turn the priorities a person implies into ESOI.
-
+- Out of scope: Carrying the person's preferences (Representatives do that), turning a request into a metric (Metric Translation does that), long-term nudges (Guidance does that), deciding what is due (Proactivity does that) and whether work may be done unasked (Judgment Calls does that).
+- Delegates to: the-representatives, metric-translation, guidance, proactivity
 - Entry call: `hubofhubs.run("prioritization", ...)`
 - Selected implementation: Stated and carried fields (`stated_fields`)
 - Metric: Candidates in the order the stated rules give
@@ -21,10 +17,10 @@ Turn the priorities a person implies into ESOI.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Stated and carried fields | `prioritization:stated_fields` | [`hubofhubs/the_consciousness/prioritization/ordering.py`](ordering.py) | selected |
-| As given | `prioritization:as_given` | [`hubofhubs/the_consciousness/prioritization/ordering.py`](ordering.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Stated and carried fields | `prioritization:stated_fields` | Orders the candidates by what the person stated and the fields the data carries: what the person pinned first and deferred last, what their feedback implies, the kind in the order the person gave, a blocked item after the unblocked, the person's own rank (ranked first, unranked after), the earlier deadline, the older ask, the more people waiting and the longer since a nudge. Each place has a reason in words and a weighted milestone. | [`hubofhubs/the_consciousness/prioritization/ordering.py`](ordering.py) | selected |
+| As given | `prioritization:as_given` | Keeps the order the candidates arrive in and reads nothing from them. | [`hubofhubs/the_consciousness/prioritization/ordering.py`](ordering.py) |  |
 
 ## Metrics
 
@@ -43,3 +39,5 @@ Turn the priorities a person implies into ESOI.
 - Up: [hubofhubs](../../README.md)
 - Intent: [Adapting to the humans the system works with](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

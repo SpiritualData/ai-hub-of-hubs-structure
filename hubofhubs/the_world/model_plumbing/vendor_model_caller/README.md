@@ -1,19 +1,15 @@
 # Vendor Model Caller
 
-*ESOI records kept beside the code in `hubofhubs/the_world/model_plumbing/vendor_model_caller`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Reach one vendor's model, and step to the next provider when one fails.
 
-Every part asks a model through one path: the tier is chosen by measurement and the vendor behind it can change without any part noticing.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Asking a model through one measured path](../README.md) > Vendor Model Caller
 
-These are the solutions of [Asking a model through one measured path](../README.md).
-
-## How the solutions fit together
-
-Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tier, the model that did the most passing work per unit of cost. Vendor Model Caller asks that vendor and steps to the next provider when one fails.
+Part of [Asking a model through one measured path](../README.md)
 
 ## Vendor Model Caller (`vendor-model-caller`)
 
-Reach one vendor's model, and step to the next provider when one fails.
-
+- Out of scope: Choosing the tier (the Model Tier Chooser does that) and the wording of the question (each part does that).
+- Delegates to: model-tier-chooser
 - Entry call: `hubofhubs.run("vendor-model-caller", ...)`
 - Selected implementation: Multi-provider router (`multi_provider`)
 - Metric: Provider failover
@@ -21,14 +17,14 @@ Reach one vendor's model, and step to the next provider when one fails.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Anthropic provider | `vendor-model-caller:anthropic` | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/anthropic.py`](anthropic.py) |  |
-| DeepSeek provider | `vendor-model-caller:deepseek` | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/openai.py`](openai.py) |  |
-| Gemini provider | `vendor-model-caller:gemini` | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/gemini.py`](gemini.py) |  |
-| Multi-provider router | `vendor-model-caller:multi_provider` | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/router.py`](router.py) | selected |
-| OpenAI provider | `vendor-model-caller:openai` | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/openai.py`](openai.py) |  |
-| Claude Code CLI | `vendor-model-caller:claude_cli` | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/claude_cli.py`](claude_cli.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Anthropic provider | `vendor-model-caller:anthropic` | Plans, answers, searches the web and lists models through the Anthropic SDK. | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/anthropic.py`](anthropic.py) |  |
+| DeepSeek provider | `vendor-model-caller:deepseek` | DeepSeek's OpenAI-compatible API through the OpenAI adapter, thinking off by default. | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/openai.py`](openai.py) |  |
+| Gemini provider | `vendor-model-caller:gemini` | Plans, answers, searches with Google Search grounding, fetches URLs and lists models through the Google SDK. | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/gemini.py`](gemini.py) |  |
+| Multi-provider router | `vendor-model-caller:multi_provider` | Routes each call to the provider that serves its model, and steps to a fallback model on a quota, billing, timeout or outage error. | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/router.py`](router.py) | selected |
+| OpenAI provider | `vendor-model-caller:openai` | Plans, answers and lists models over the OpenAI chat API, or any compatible endpoint by base url. | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/openai.py`](openai.py) |  |
+| Claude Code CLI | `vendor-model-caller:claude_cli` | Asks Claude through the claude program on a Claude Code subscription, with no API key. | [`hubofhubs/the_world/model_plumbing/vendor_model_caller/claude_cli.py`](claude_cli.py) |  |
 
 ## Metrics
 
@@ -39,3 +35,5 @@ Reach one vendor's model, and step to the next provider when one fails.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Asking a model through one measured path](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

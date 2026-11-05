@@ -1,19 +1,15 @@
 # File Editing
 
-*ESOI records kept beside the code in `hubofhubs/the_world/tools/file_editing`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Make the file change that was asked for, and no other.
 
-The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Using the tools of the outside world](../README.md) > File Editing
 
-These are the solutions of [Using the tools of the outside world](../README.md).
-
-## How the solutions fit together
-
-Tools lets the AI use the tool of a category and refuses a category the authority does not allow. Web Search brings in the live web. File Reading reads the files of a folder. File Editing changes one file by instruction. Connected System Operations calls a write operation of a connected system. Delegated Agent Sessions gives open-ended work to an agent that runs in its own session.
+Part of [Using the tools of the outside world](../README.md)
 
 ## File Editing (`file-editing`)
 
-Make the file change that was asked for, and no other.
-
+- Out of scope: Deciding what to change (the Planner does that), checking the goal (Goal Completion does that) and running open-ended agent work (Delegated Agent Sessions does that).
+- Delegates to: planner, goal-completion, delegated-agent-sessions
 - Entry call: `hubofhubs.run("file-editing", ...)`
 - Selected implementation: One-call file edit (`fast_edit`)
 - Metric: Goal met by its own tests
@@ -21,9 +17,9 @@ Make the file change that was asked for, and no other.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| One-call file edit | `file-editing:fast_edit` | [`hubofhubs/the_world/tools/file_editing/fast_edit.py`](fast_edit.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| One-call file edit | `file-editing:fast_edit` | Lands a bounded file edit in one model call, using the context already gathered. | [`hubofhubs/the_world/tools/file_editing/fast_edit.py`](fast_edit.py) | selected |
 
 ## Metrics
 
@@ -38,3 +34,5 @@ Make the file change that was asked for, and no other.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Using the tools of the outside world](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

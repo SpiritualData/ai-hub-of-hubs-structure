@@ -1,19 +1,15 @@
 # File Reading
 
-*ESOI records kept beside the code in `hubofhubs/the_world/tools/file_reading`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Read the files a task or a card builder needs, without leaving the folder it was given.
 
-The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Using the tools of the outside world](../README.md) > File Reading
 
-These are the solutions of [Using the tools of the outside world](../README.md).
-
-## How the solutions fit together
-
-Tools lets the AI use the tool of a category and refuses a category the authority does not allow. Web Search brings in the live web. File Reading reads the files of a folder. File Editing changes one file by instruction. Connected System Operations calls a write operation of a connected system. Delegated Agent Sessions gives open-ended work to an agent that runs in its own session.
+Part of [Using the tools of the outside world](../README.md)
 
 ## File Reading (`read-files`)
 
-Read the files a task or a card builder needs, without leaving the folder it was given.
-
+- Out of scope: Writing files (File Editing does that) and deciding which files matter (Cards From Files and the Context Retriever do that).
+- Delegates to: internal-context
 - Entry call: `hubofhubs.run("read-files", {'root': '.', 'paths': []})`
 - Selected implementation: Folder reader (`folder_reader`)
 - Metric: Files read inside the folder
@@ -21,9 +17,9 @@ Read the files a task or a card builder needs, without leaving the folder it was
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Folder reader | `read-files:folder_reader` | [`hubofhubs/the_world/tools/file_reading/read_files.py`](read_files.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Folder reader | `read-files:folder_reader` | Lists and reads the text files of one folder, never outside it, skipping what is not text or too large. | [`hubofhubs/the_world/tools/file_reading/read_files.py`](read_files.py) | selected |
 
 ## Metrics
 
@@ -34,3 +30,5 @@ Read the files a task or a card builder needs, without leaving the folder it was
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Using the tools of the outside world](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

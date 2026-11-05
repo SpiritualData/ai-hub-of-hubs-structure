@@ -1,19 +1,15 @@
 # Delegated Agent Sessions
 
-*ESOI records kept beside the code in `hubofhubs/the_world/tools/delegated_agent_sessions`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Get open-ended work done by an agent in its own session.
 
-The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Using the tools of the outside world](../README.md) > Delegated Agent Sessions
 
-These are the solutions of [Using the tools of the outside world](../README.md).
-
-## How the solutions fit together
-
-Tools lets the AI use the tool of a category and refuses a category the authority does not allow. Web Search brings in the live web. File Reading reads the files of a folder. File Editing changes one file by instruction. Connected System Operations calls a write operation of a connected system. Delegated Agent Sessions gives open-ended work to an agent that runs in its own session.
+Part of [Using the tools of the outside world](../README.md)
 
 ## Delegated Agent Sessions (`delegated-agent-sessions`)
 
-Get open-ended work done by an agent in its own session.
-
+- Out of scope: Editing a single file (File Editing does that), calling one operation (Connected System Operations does that) and deciding the pieces (the Planner does that).
+- Delegates to: file-editing, connected-system-operations, planner
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: Claude Code, steerable session (`stream_json_goal_runner`)
 - Metric: Harness, context, sub-agents and recursion ranked, Goal met by its own tests (agent sessions)
@@ -21,11 +17,11 @@ Get open-ended work done by an agent in its own session.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Claude Code, one shot | `delegated-agent-sessions:subprocess_goal_runner` | [`hubofhubs/the_world/tools/delegated_agent_sessions/subprocess_runner.py`](subprocess_runner.py) |  |
-| Claude Code, steerable session | `delegated-agent-sessions:stream_json_goal_runner` | [`hubofhubs/the_world/tools/delegated_agent_sessions/stream_runner.py`](stream_runner.py) | selected |
-| Agent Client Protocol runner | `delegated-agent-sessions:acp_deep_runner` | [`hubofhubs/the_world/tools/delegated_agent_sessions/acp_runner.py`](acp_runner.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Claude Code, one shot | `delegated-agent-sessions:subprocess_goal_runner` | Runs Claude Code headless with a goal and a turn limit and reports whether the goal was met. | [`hubofhubs/the_world/tools/delegated_agent_sessions/subprocess_runner.py`](subprocess_runner.py) |  |
+| Claude Code, steerable session | `delegated-agent-sessions:stream_json_goal_runner` | Holds one live Claude Code session per run so the person can steer it while it works. | [`hubofhubs/the_world/tools/delegated_agent_sessions/stream_runner.py`](stream_runner.py) | selected |
+| Agent Client Protocol runner | `delegated-agent-sessions:acp_deep_runner` | Runs each goal as one session against the Claude ACP agent. | [`hubofhubs/the_world/tools/delegated_agent_sessions/acp_runner.py`](acp_runner.py) |  |
 
 ## Metrics
 
@@ -37,3 +33,5 @@ Get open-ended work done by an agent in its own session.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Using the tools of the outside world](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

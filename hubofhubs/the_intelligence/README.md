@@ -1,8 +1,8 @@
 # How the AI processes information
 
-AI requests are handled in the best way possible, given all relevant information.
+**Vision statement:** AI requests are handled in the best way possible, given all relevant information.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../esoi/README.md) > How the AI processes information
 
 This sub-intent arises as the implementation `the-intelligence:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: Long-term memory, objectives and guidance, and what comes to mind unasked, are opportunities beyond the parts that answer one request. Turning a request into a measured target, and judging quality against a profile, can each be improved without changing how a single request is answered.
 
@@ -20,6 +20,17 @@ flowchart LR
     s1["Nervous System<br/><i>nervous-system</i>"]
     s1 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s0
 ```
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- [Holding a request to a measure](critical_thinking/README.md) (sub-intent): A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.
+- [The long view across requests](higher_mind/README.md) (sub-intent): The AI keeps a long view that spans requests: what it remembers, the objectives it is serving, and an infrequent longer-term nudge for the Planner.
+- [What the Mind sees and does for one request](mind/README.md) (sub-intent): For one request the Mind works from one view of the information, breaks the request into pieces, hands a piece on only when a worker is needed, and writes the plan, request or communication its reader needs.
+- [Finding and preparing information for the Mind](subconscious/README.md) (sub-intent): The information a request needs is found and prepared before the Mind asks for it, from the system's own cards, its files and what comes to mind unasked.
+- [Nervous System](nervous_system/README.md) (solution with implementations): Send one risk signal, a severity and a reason, before irreversible or person-owned steps, without slowing ordinary work and without routing.
+- [Proactivity](proactivity/README.md) (solution with implementations): Let the system start its standing work when it is due, without being asked.
 
 ## Solutions at a glance
 
@@ -62,10 +73,10 @@ flowchart LR
 
 ## Where to go next
 
-- Sub-intent: [Holding a request to a measure](critical_thinking/README.md) (A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.)
-- Sub-intent: [The long view across requests](higher_mind/README.md) (The AI keeps a long view that spans requests: what it remembers, the objectives it is serving, and an infrequent longer-term nudge for the Planner.)
-- Sub-intent: [What the Mind sees and does for one request](mind/README.md) (For one request the Mind works from one view of the information, breaks the request into pieces, hands a piece on only when a worker is needed, and writes the plan, request or communication its reader needs.)
-- Sub-intent: [Finding and preparing information for the Mind](subconscious/README.md) (The information a request needs is found and prepared before the Mind asks for it, from the system's own cards, its files and what comes to mind unasked.)
+- Sub-intent: [Holding a request to a measure](critical_thinking/README.md)
+- Sub-intent: [The long view across requests](higher_mind/README.md)
+- Sub-intent: [What the Mind sees and does for one request](mind/README.md)
+- Sub-intent: [Finding and preparing information for the Mind](subconscious/README.md)
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
 - Records beside the code: [hubofhubs/the_intelligence/nervous_system](nervous_system/README.md), [hubofhubs/the_intelligence/proactivity](proactivity/README.md)
@@ -124,3 +135,6 @@ flowchart LR
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest hubofhubs/the_intelligence/mind/delegation/overseer/tests/test_risk.py`
 - Schedules due when they should be (`metric-proactivity`): `esoi run proactivity --impl calendar_and_events; esoi run proactivity --impl elapsed_hours`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

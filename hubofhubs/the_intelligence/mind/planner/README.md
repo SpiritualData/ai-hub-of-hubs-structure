@@ -1,31 +1,27 @@
 # Planner
 
-*ESOI records kept beside the code in `hubofhubs/the_intelligence/mind/planner`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Turn a request into pieces that can be done and checked, each with the worker category that fits it, and replan from what failed.
 
-For one request the Mind works from one view of the information, breaks the request into pieces, hands a piece on only when a worker is needed, and writes the plan, request or communication its reader needs.
+Breadcrumb: [Top](../../../../esoi/README.md) > [How the AI processes information](../../README.md) > [What the Mind sees and does for one request](../README.md) > Planner
 
-These are the solutions of [What the Mind sees and does for one request](../README.md).
-
-## How the solutions fit together
-
-Context Intake takes in what was prepared for a request and what the workers brought back, as one view. Planner breaks the request into pieces, each with the sub-goal it must meet. For each piece, Nervous System gives a risk signal before the piece is passed on. Judgment Calls then decides for the person whether to proceed or ask. Delegation passes each allowed piece to the worker its category names, only when a worker is needed, with the Representative's authority and the done-standard of the sub-goal. Response Writer writes the plan, request or communication from the results, to the quality profile.
+Part of [What the Mind sees and does for one request](../README.md)
 
 ## Planner (`planner`)
 
-Turn a request into pieces that can be done and checked, each with the worker category that fits it, and replan from what failed.
-
+- Out of scope: Doing a piece (Delegation hands it on), and setting the target of the request (Metric Translation).
+- Delegates to: delegation, metric-translation
 - Entry call: `hubofhubs.run("planner", {'request': 'what is the latest Rust version?'})`
 - Selected implementation: Split and route by cues (`cue_router`)
 - Metric: Requests routed to the right worker
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../../critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../../critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../../critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../../critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](../../critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](../../critical_thinking/goal_completion/goal_completion.py) and 141 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../../critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../../critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../../critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../../critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](../../critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](../../critical_thinking/goal_completion/goal_completion.py) and 151 more
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Split and route by cues | `planner:cue_router` | [`hubofhubs/the_intelligence/mind/planner/planning.py`](planning.py) | selected |
-| One piece, no worker | `planner:one_piece` | [`hubofhubs/the_intelligence/mind/planner/planning.py`](planning.py) |  |
-| Plan by a model | `planner:model_planner` | [`hubofhubs/the_intelligence/mind/planner/model_planner.py`](model_planner.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Split and route by cues | `planner:cue_router` | Splits a request at numbered or bulleted steps and at "then", and routes each piece to a worker category by the words it uses (an edit verb, a literature word, a question or freshness word); on a replan it plans only the pieces that failed. | [`hubofhubs/the_intelligence/mind/planner/planning.py`](planning.py) | selected |
+| One piece, no worker | `planner:one_piece` | The whole request as one piece with no worker. | [`hubofhubs/the_intelligence/mind/planner/planning.py`](planning.py) |  |
+| Plan by a model | `planner:model_planner` | Asks one model call, through Model Plumbing, to break the request into pieces and name the worker category of each from a closed list, reading the request, the context view, the target, the guidance and what failed last time; a reply that is not a usable plan raises an error and is never repaired by guessing. | [`hubofhubs/the_intelligence/mind/planner/model_planner.py`](model_planner.py) |  |
 
 ## Metrics
 
@@ -36,3 +32,5 @@ Turn a request into pieces that can be done and checked, each with the worker ca
 - Up: [hubofhubs](../../../README.md)
 - Intent: [What the Mind sees and does for one request](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

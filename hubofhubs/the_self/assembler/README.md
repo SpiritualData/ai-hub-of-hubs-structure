@@ -1,29 +1,25 @@
 # Assembler
 
-*ESOI records kept beside the code in `hubofhubs/the_self/assembler`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Build the whole from the best-measured arm of every seat and report its coverage, with no glue written by the consumer.
 
-The parts of the AI system work together as one whole.
+Breadcrumb: [Top](../../../esoi/README.md) > [The parts working as one whole](../README.md) > Assembler
 
-These are the solutions of [The parts working as one whole](../README.md).
-
-## How the solutions fit together
-
-The Self keeps the parts of the system working as one whole. To respond to a request, The Self asks Consciousness for the person's authority and priorities. The Self asks Body where the system's data lives. The Self passes the request on to Intelligence. The Self asks Role Understanding what that part is for, so that no part does another's work. Integrity then audits what the system says about itself and what it did against the run record, and checks that the hub stays generic, with claims that match evidence and records that match code. The Assembler builds the whole from configuration in one call and reports which seats are built and what the rest need. When asked for its health, The Self asks World how current the research is.
+Part of [The parts working as one whole](../README.md)
 
 ## Assembler (`the-assembler`)
 
-Build the whole from the best-measured arm of every seat and report its coverage, with no glue written by the consumer.
-
+- Out of scope: Running a request (The Self does that), deciding what a part does, and judging whether a response is good.
+- Delegates to: role-understanding
 - Entry call: `hubofhubs.run("the-assembler", {})`
 - Selected implementation: One-call assembly of the whole hub (`zero_config`)
 - Metric: Whole assembly
-- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`conftest.py`](../../../conftest.py) and 240 more
+- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`conftest.py`](../../../conftest.py) and 260 more
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| One-call assembly of the whole hub | `the-assembler:zero_config` | [`hubofhubs/the_self/assembler/zero_config.py`](zero_config.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| One-call assembly of the whole hub | `the-assembler:zero_config` | Answers a question from what is remembered and from the web, holds the answer to its sources, acts on a goal only when the risk watch lets the step through, and audits the hub for consumer wording; each part comes from its selected arm. | [`hubofhubs/the_self/assembler/zero_config.py`](zero_config.py) | selected |
 
 ## Metrics
 
@@ -42,3 +38,5 @@ Build the whole from the best-measured arm of every seat and report its coverage
 - Up: [hubofhubs](../../README.md)
 - Intent: [The parts working as one whole](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

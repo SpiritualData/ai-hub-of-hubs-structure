@@ -1,29 +1,25 @@
 # Integrity
 
-*ESOI records kept beside the code in `hubofhubs/the_self/integrity`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Keep the whole honest and usable by any consumer: what the system says about itself and what it did matches the record.
 
-The parts of the AI system work together as one whole.
+Breadcrumb: [Top](../../../esoi/README.md) > [The parts working as one whole](../README.md) > Integrity
 
-These are the solutions of [The parts working as one whole](../README.md).
-
-## How the solutions fit together
-
-The Self keeps the parts of the system working as one whole. To respond to a request, The Self asks Consciousness for the person's authority and priorities. The Self asks Body where the system's data lives. The Self passes the request on to Intelligence. The Self asks Role Understanding what that part is for, so that no part does another's work. Integrity then audits what the system says about itself and what it did against the run record, and checks that the hub stays generic, with claims that match evidence and records that match code. The Assembler builds the whole from configuration in one call and reports which seats are built and what the rest need. When asked for its health, The Self asks World how current the research is.
+Part of [The parts working as one whole](../README.md)
 
 ## Integrity (`system-integrity`)
 
-Keep the whole honest and usable by any consumer: what the system says about itself and what it did matches the record.
-
+- Out of scope: Judging whether an answer to a person is good (Response Quality does that), fixing what it finds, and choosing which arm is best.
+- Delegates to: the-assembler
 - Entry call: `hubofhubs.run("system-integrity", ['examplevendor'])`
 - Selected implementation: Audit of vendor wording, staleness and configuration (`prompts_as_data`)
 - Metric: Consumer-specific strings found by scan, Intents whose solutions one paragraph and one diagram explain as the code builds them
-- Implemented by: [`hubofhubs/the_self/__init__.py`](../__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](../assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](../assembler/arm_needs.py), [`hubofhubs/the_self/assembler/cli.py`](../assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](../assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](../assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](../assembler/resolution.py), [`hubofhubs/the_self/assembler/tests/test_safe_loading.py`](../assembler/tests/test_safe_loading.py) and 20 more
+- Implemented by: [`hubofhubs/the_self/__init__.py`](../__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](../assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](../assembler/arm_needs.py), [`hubofhubs/the_self/assembler/cli.py`](../assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](../assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](../assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](../assembler/resolution.py), [`hubofhubs/the_self/assembler/tests/test_safe_loading.py`](../assembler/tests/test_safe_loading.py) and 22 more
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Audit of vendor wording, staleness and configuration | `system-integrity:prompts_as_data` | [`hubofhubs/the_self/integrity/audit.py`](audit.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Audit of vendor wording, staleness and configuration | `system-integrity:prompts_as_data` | Scans the hub for vendor-name branches and reports how stale its research is and how much of it connects by configuration. | [`hubofhubs/the_self/integrity/audit.py`](audit.py) | selected |
 
 ## Metrics
 
@@ -39,3 +35,5 @@ Keep the whole honest and usable by any consumer: what the system says about its
 - Up: [hubofhubs](../../README.md)
 - Intent: [The parts working as one whole](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

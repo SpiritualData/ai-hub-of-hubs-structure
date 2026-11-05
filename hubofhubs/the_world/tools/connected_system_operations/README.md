@@ -1,19 +1,15 @@
 # Connected System Operations
 
-*ESOI records kept beside the code in `hubofhubs/the_world/tools/connected_system_operations`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Carry out an operation of a connected system on the AI's behalf.
 
-The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Using the tools of the outside world](../README.md) > Connected System Operations
 
-These are the solutions of [Using the tools of the outside world](../README.md).
-
-## How the solutions fit together
-
-Tools lets the AI use the tool of a category and refuses a category the authority does not allow. Web Search brings in the live web. File Reading reads the files of a folder. File Editing changes one file by instruction. Connected System Operations calls a write operation of a connected system. Delegated Agent Sessions gives open-ended work to an agent that runs in its own session.
+Part of [Using the tools of the outside world](../README.md)
 
 ## Connected System Operations (`connected-system-operations`)
 
-Carry out an operation of a connected system on the AI's behalf.
-
+- Out of scope: Deciding to call it (the Planner and Delegation do that), the system's enduring integrations (Hands does that) and editing files (File Editing does that).
+- Delegates to: planner, delegation, the-hands, file-editing
 - Entry call: `hubofhubs.run("connected-system-operations", ...)`
 - Selected implementation: none selected
 - Metric: The operation is carried out and nothing else
@@ -21,9 +17,9 @@ Carry out an operation of a connected system on the AI's behalf.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| One-call MCP write | `connected-system-operations:mcp_operations` | [`hubofhubs/the_world/tools/connected_system_operations/mcp_operations.py`](mcp_operations.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| One-call MCP write | `connected-system-operations:mcp_operations` | Picks at most one writable operation of an MCP server and its arguments in one model call and runs it. | [`hubofhubs/the_world/tools/connected_system_operations/mcp_operations.py`](mcp_operations.py) |  |
 
 ## Metrics
 
@@ -38,3 +34,5 @@ Carry out an operation of a connected system on the AI's behalf.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Using the tools of the outside world](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

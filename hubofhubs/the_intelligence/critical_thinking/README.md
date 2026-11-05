@@ -1,14 +1,23 @@
 # Holding a request to a measure
 
-A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.
+**Vision statement:** A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../../esoi/README.md) > [How the AI processes information](../README.md) > Holding a request to a measure
 
 This sub-intent arises as the implementation `critical-thinking:composition` of its parent intent [`the_intelligence`](../README.md). Opportunities: Translating a request into a metric, creating and editing the specs and metrics, judging goal completion and judging response quality are four ML tasks, each improvable on its own accuracy.
 
 ## How the solutions fit together
 
 Critical Thinking holds a request to a measure. Metric Translation turns the request into a metric with a target value or improvement and a budget, adjustable while the work runs. ESOI Application records that metric as a spec and applies the principles, creating and editing specs and metrics. Goal Completion says whether the goal's condition was met against its done-standard. Response Quality judges the response against the quality profile resolved for the request.
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- ESOI Application (solution with no page of its own, its implementations are in this intent's records): Apply ESOI to the system's own specs and metrics: an AI is the author of the specs, and a proposed edit is applied directly unless Judgment Calls decides to ask.
+- [Goal Completion](goal_completion/README.md) (solution with implementations): Check that the goal was met.
+- [Metric Translation](metric_translation/README.md) (solution with implementations): Make what success means for a request explicit and measurable as a goal record: the metric, its target, the done-standard and the budget (attempts, pieces and model calls) that Delegation and Model Plumbing enforce.
+- [Response Quality](response_quality/README.md) (solution with implementations): Judge a response against the quality profile that applies to this request.
 
 ## Solutions at a glance
 
@@ -83,3 +92,6 @@ Critical Thinking holds a request to a measure. Metric Translation turns the req
 - Goals judged met only when they are (`metric-goal-completion`): `esoi run goal_completion --impl evidence_standard; esoi run goal_completion --impl nonempty`
 - A goal record with a target and a budget (`metric-metric-translation`): `python3 -m pytest tests/test_orchestrate_parts.py`
 - Balanced score of a response against its quality profile (`metric-response-quality`): `none`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

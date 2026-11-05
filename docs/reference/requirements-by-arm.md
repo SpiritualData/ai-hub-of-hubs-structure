@@ -49,11 +49,19 @@ at the repository root.
 | File Editing, One-call file edit (`file-editing:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
 | Goal Completion, Evidence standard (`goal-completion:evidence_standard`) | none | none | none | none | no |
 | Goal Completion, Outcome is not empty (`goal-completion:nonempty`) | none | none | none | none | no |
+| Guidance, Always nudge (`guidance:always_nudge`) | none | none | none | none | no |
+| Guidance, Overlap only (`guidance:overlap_only`) | none | none | none | none | no |
+| Guidance, Rule gate (`guidance:rule_gate`) | none | none | none | none | no |
 | Higher Mind, Objectives, memory and guidance for one request (`higher-mind:composition`) | none | none | none | none | no |
 | Intake Sources, Folder of queued requests (`intake-sources:folder_queue`) | none | none | none | none | no |
 | Internal Context, Declared sources, cards kept and built from files (`internal-context:composition`) | none | none | none | none | no |
 | Judgment Calls, Ask about every risk (`judgment-calls:ask_every_time`) | none | none | none | none | no |
 | Judgment Calls, Per-person severity policy (`judgment-calls:severity_policy`) | none | none | none | none | no |
+| Objectives, Flat list (`live-objectives:flat_list`) | none | none | none | none | no |
+| Objectives, Rolled-up hierarchy and word placement (`live-objectives:rolled_up`) | none | none | none | none | no |
+| Long-Term Memory, Card Store recall (`long-term-memory:card_store_recall`) | none | none | none | none | no |
+| Long-Term Memory, File recall (`long-term-memory:file_recall`) | none | none | none | none | no |
+| Long-Term Memory, Recent window (`long-term-memory:recent_window`) | none | none | none | none | no |
 | Metric Translation, Goal record with default budget (`metric-translation:goal_record`) | none | none | none | none | no |
 | Model Plumbing, Tier chooser then vendor (`model-plumbing:via_vendor`) | none | none | none | none | no |
 | Model Tier Chooser, Passing work per cost selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
@@ -71,11 +79,15 @@ at the repository root.
 | Response Quality, Links held to their evidence (`response-quality:evidence_check`) | none | none | none | none | no |
 | Response Writer, Cited results (`response-writer:cited_results`) | none | none | none | none | no |
 | Response Writer, Model synthesis (`response-writer:model_synthesis`) | none | none | none | none | no |
+| Role Understanding, Role checked against the part's calls (`role-understanding:checked_role`) | none | none | none | none | no |
+| Role Understanding, Role as the record states it (`role-understanding:recorded_role`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |
 | Consciousness, Representative, priorities and feedback (`the-consciousness:composition`) | none | none | none | none | no |
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
+| Intuition, What was taken for similar requests (`the-intuition:co_taken`) | none | none | none | none | no |
+| Intuition, Nearest items by wording (`the-intuition:nearest_cards`) | none | none | none | none | no |
 | Learning, Stale areas from the registry dates (`the-learning:registry_research`) | none | none | none | none | no |
 | Mind, The four parts of the Mind in order (`the-mind:composition`) | none | none | none | none | no |
 | Representatives, Declared authority (`the-representatives:declared_authority`) | none | none | none | none | no |

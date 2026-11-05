@@ -1,19 +1,15 @@
 # Representatives
 
-*ESOI records kept beside the code in `hubofhubs/the_consciousness/representatives`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
 
-The AI system works in alignment with the humans it serves.
+Breadcrumb: [Top](../../../esoi/README.md) > [Adapting to the humans the system works with](../README.md) > Representatives
 
-These are the solutions of [Adapting to the humans the system works with](../README.md).
-
-## How the solutions fit together
-
-Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization turns the priorities a person states or implies into ESOI and puts the work that competes for the person's attention in order. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+Part of [Adapting to the humans the system works with](../README.md)
 
 ## Representatives (`the-representatives`)
 
-Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
-
+- Out of scope: Deciding when to ask (Judgment Calls does that), learning from feedback (Feedback Learning does that) and translating implied priorities (Prioritization does that).
+- Delegates to: judgment-calls, feedback-learning, prioritization
 - Entry call: `hubofhubs.run("the-representatives", '')`
 - Selected implementation: Declared authority (`declared_authority`)
 - Metric: Authority that stays with its person
@@ -21,9 +17,9 @@ Let an AI act for a person the way that person would want, within the authority 
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Declared authority | `the-representatives:declared_authority` | [`hubofhubs/the_consciousness/representatives/representatives.py`](representatives.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Declared authority | `the-representatives:declared_authority` | Each person's representative is what that person declared; a person with no declaration gets the least authority over their own data only. | [`hubofhubs/the_consciousness/representatives/representatives.py`](representatives.py) | selected |
 
 ## Metrics
 
@@ -34,3 +30,5 @@ Let an AI act for a person the way that person would want, within the authority 
 - Up: [hubofhubs](../../README.md)
 - Intent: [Adapting to the humans the system works with](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

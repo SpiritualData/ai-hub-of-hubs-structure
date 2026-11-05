@@ -1,14 +1,24 @@
 # Using the tools of the outside world
 
-The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+**Vision statement:** The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../../esoi/README.md) > [Awareness of the outside and interaction with it](../README.md) > Using the tools of the outside world
 
 This sub-intent arises as the implementation `the-tools:composition` of its parent intent [`the_world`](../README.md). Opportunities: Each tool category is a solution and each integration an implementation, so a better search, file editor, operation caller or agent runner can replace an older one on its own measure.
 
 ## How the solutions fit together
 
 Tools lets the AI use the tool of a category and refuses a category the authority does not allow. Web Search brings in the live web. File Reading reads the files of a folder. File Editing changes one file by instruction. Connected System Operations calls a write operation of a connected system. Delegated Agent Sessions gives open-ended work to an agent that runs in its own session.
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- [Connected System Operations](connected_system_operations/README.md) (solution with implementations): Carry out an operation of a connected system on the AI's behalf.
+- [Delegated Agent Sessions](delegated_agent_sessions/README.md) (solution with implementations): Get open-ended work done by an agent in its own session.
+- [File Editing](file_editing/README.md) (solution with implementations): Make the file change that was asked for, and no other.
+- [File Reading](file_reading/README.md) (solution with implementations): Read the files a task or a card builder needs, without leaving the folder it was given.
+- [Web Search](web_search/README.md) (solution with implementations): Run one web search and return its hits with their sources.
 
 ## Solutions at a glance
 
@@ -99,3 +109,6 @@ Tools lets the AI use the tool of a category and refuses a category the authorit
 - Goal met by its own tests (`metric-file-editing`): `esoi run file_edit_goals --impl fast_edit; esoi run file_edit_goals --impl none`
 - Files read inside the folder (`metric-read-files`): `python3 -m pytest hubofhubs/the_world/tools/file_reading/tests/test_act_read_files.py`
 - Search finds the source (`metric-web-search`): `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

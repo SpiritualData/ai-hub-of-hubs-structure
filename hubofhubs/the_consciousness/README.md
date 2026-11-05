@@ -1,14 +1,24 @@
 # Adapting to the humans the system works with
 
-The AI system works in alignment with the humans it serves.
+**Vision statement:** The AI system works in alignment with the humans it serves.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../esoi/README.md) > Adapting to the humans the system works with
 
 This sub-intent arises as the implementation `the-consciousness:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: Learning when to ask, per person, and translating priorities that are only implied, are opportunities beyond any risk watch: the same step may need a question for one person and none for another. Feedback can then change specs and metrics without a person repeating a correction.
 
 ## How the solutions fit together
 
 Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization turns the priorities a person states or implies into ESOI and puts the work that competes for the person's attention in order. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- Feedback Learning (solution with no page of its own, its implementations are in this intent's records): Make a correction given once change behaviour afterwards: propose edits to specs and metrics, which ESOI Application applies directly unless Judgment Calls decides to ask.
+- [Judgment Calls](judgment_calls/README.md) (solution with implementations): Ask a person only when that person would want to be asked, and decide how: whether the ask blocks or waits, whether it is batched, what may continue meanwhile, and whether a change to specs or a learning step needs an ask at all (by default it does not).
+- [Prioritization](prioritization/README.md) (solution with implementations): Turn the priorities a person implies into ESOI.
+- [Representatives](representatives/README.md) (solution with implementations): Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
+- [Request Intake](request_intake/README.md) (solution with implementations): Take in every request a person makes, once, from wherever the system listens.
 
 ## Solutions at a glance
 
@@ -99,3 +109,6 @@ Consciousness is where the system adapts to the humans and policies it works for
 - Candidates in the order the stated rules give (`metric-human-prioritization`): `esoi run prioritization --impl stated_fields; esoi run prioritization --impl as_given`
 - Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest hubofhubs/the_consciousness/tests/test_consciousness.py`
 - Requests taken in once with their person (`metric-request-intake`): `python3 -m pytest tests/test_intake.py`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

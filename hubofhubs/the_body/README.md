@@ -1,8 +1,8 @@
 # The form and internal context of a system
 
-The AI system fits the particular system it lives in.
+**Vision statement:** The AI system fits the particular system it lives in.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../esoi/README.md) > The form and internal context of a system
 
 This sub-intent arises as the implementation `the-body:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: A system's own data and the integrations it already runs change for reasons of their own, apart from the outside world and from model accuracy. If a system can declare its own sources instead of having parts rewritten for it, any product can adopt the hub.
 
@@ -20,6 +20,14 @@ flowchart LR
     s1["Card Store<br/><i>card-store</i>"]
     s1 -->|"The id of an added card, a card or nothing for an id, the cards matching a query or a tag, whether a delete removed one, and the count"| s0
 ```
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- Hands (solution with no page of its own, its implementations are in this intent's records): Make the integrations a system already depends on accessible to the AI and actually used.
+- [Intake Sources](intake_sources/README.md) (solution with implementations): Let a system say where its requests come from and read them, without the hub being written for that system.
+- [Internal Context](internal_context/README.md) (solution with implementations and parts below it): Let the AI know what a particular system knows, without the hub being written for that system: the declaration of where its data lives and whether each source belongs to the system or to a person, the configuration its tools need, and the run record the flow writes.
 
 ## Solutions at a glance
 
@@ -112,3 +120,6 @@ flowchart LR
 - Requests read from a declared source, once (`metric-intake-sources`): `python3 -m pytest tests/test_intake.py`
 - An internal source reaches the AI through one declaration (`metric-internal-context`): `none`
 - Cards found again, none lost (`metric-card-store`): `esoi run card_store --impl local_card_store`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

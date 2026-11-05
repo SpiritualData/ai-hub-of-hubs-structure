@@ -1,19 +1,15 @@
 # Model Tier Chooser
 
-*ESOI records kept beside the code in `hubofhubs/the_world/model_plumbing/model_tier_chooser`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Pick, for each model tier, the model that does the most passing work per cost.
 
-Every part asks a model through one path: the tier is chosen by measurement and the vendor behind it can change without any part noticing.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Asking a model through one measured path](../README.md) > Model Tier Chooser
 
-These are the solutions of [Asking a model through one measured path](../README.md).
-
-## How the solutions fit together
-
-Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tier, the model that did the most passing work per unit of cost. Vendor Model Caller asks that vendor and steps to the next provider when one fails.
+Part of [Asking a model through one measured path](../README.md)
 
 ## Model Tier Chooser (`model-tier-chooser`)
 
-Pick, for each model tier, the model that does the most passing work per cost.
-
+- Out of scope: Calling the model (the Vendor Model Caller does that) and the wording of the question (each part does that).
+- Delegates to: vendor-model-caller
 - Entry call: `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})`
 - Selected implementation: Passing work per cost selector (`tier_selector`)
 - Metric: Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer
@@ -21,9 +17,9 @@ Pick, for each model tier, the model that does the most passing work per cost.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Passing work per cost selector | `model-tier-chooser:tier_selector` | [`hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py`](tiers.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Passing work per cost selector | `model-tier-chooser:tier_selector` | Ranks each provider and model by passing work per dollar on shared cases at the prices on file, counting prepaid credits as cost. | [`hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py`](tiers.py) | selected |
 
 ## Metrics
 
@@ -37,3 +33,5 @@ Pick, for each model tier, the model that does the most passing work per cost.
 - Up: [hubofhubs](../../../README.md)
 - Intent: [Asking a model through one measured path](../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

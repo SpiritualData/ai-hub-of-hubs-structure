@@ -1,8 +1,8 @@
 # Awareness of the outside and interaction with it
 
-The AI system optimally learns and interacts with the world outside of it.
+**Vision statement:** The AI system optimally learns and interacts with the world outside of it.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../esoi/README.md) > Awareness of the outside and interaction with it
 
 This sub-intent arises as the implementation `the-world:composition` of its parent intent [`hub-of-hubs`](../../esoi/README.md). Opportunities: Tool categories as solutions, with integrations as their implementations, go beyond bringing in a web search, and a category can gain a better integration without any product rewriting its code. The models the hub asks and the freshness of its research change with the outside too.
 
@@ -23,6 +23,15 @@ flowchart LR
     s0 -->|"The model's answer to a prompt at a tier"| s1
     s3 -->|"Days since the date, or the combined freshness reading with the stale areas named"| s2
 ```
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- [Asking a model through one measured path](model_plumbing/README.md) (sub-intent): Every part asks a model through one path: the tier is chosen by measurement and the vendor behind it can change without any part noticing.
+- [Using the tools of the outside world](tools/README.md) (sub-intent): The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.
+- Science (solution with no page of its own, its implementations are in this intent's records): Bring in public science a reader can check.
+- [Learning](learning/README.md) (solution with implementations and parts below it): Keep what the hub recommends current with the outside.
 
 ## Solutions at a glance
 
@@ -62,8 +71,8 @@ flowchart LR
 
 ## Where to go next
 
-- Sub-intent: [Asking a model through one measured path](model_plumbing/README.md) (Every part asks a model through one path: the tier is chosen by measurement and the vendor behind it can change without any part noticing.)
-- Sub-intent: [Using the tools of the outside world](tools/README.md) (The AI uses the tool of each category the person's authority allows, and a category gains a better integration without any product rewriting its code.)
+- Sub-intent: [Asking a model through one measured path](model_plumbing/README.md)
+- Sub-intent: [Using the tools of the outside world](tools/README.md)
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
 - Records beside the code: [hubofhubs/the_world/learning](learning/README.md), [hubofhubs/the_world/science](science/README.md), [hubofhubs/the_world/learning/research_freshness_reader](learning/research_freshness_reader/README.md)
@@ -122,3 +131,6 @@ flowchart LR
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`): `none`
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`): `none`
 - Registry freshness reading (`metric-research-freshness-reader`): `esoi run stay_current --impl registry_scan`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

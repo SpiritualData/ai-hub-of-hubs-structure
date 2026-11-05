@@ -1,19 +1,15 @@
 # Request Intake
 
-*ESOI records kept beside the code in `hubofhubs/the_consciousness/request_intake`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Take in every request a person makes, once, from wherever the system listens.
 
-The AI system works in alignment with the humans it serves.
+Breadcrumb: [Top](../../../esoi/README.md) > [Adapting to the humans the system works with](../README.md) > Request Intake
 
-These are the solutions of [Adapting to the humans the system works with](../README.md).
-
-## How the solutions fit together
-
-Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization turns the priorities a person states or implies into ESOI and puts the work that competes for the person's attention in order. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+Part of [Adapting to the humans the system works with](../README.md)
 
 ## Request Intake (`request-intake`)
 
-Take in every request a person makes, once, from wherever the system listens.
-
+- Out of scope: Where requests come from (Body's Intake Sources define the adapters), answering them (the flow does that) and what each person is allowed (Representatives do that).
+- Delegates to: intake-sources, the-representatives
 - Entry call: `hubofhubs.run("request-intake", {'person': ''})`
 - Selected implementation: Every declared source (`every_declared_source`)
 - Metric: Requests taken in once with their person
@@ -21,9 +17,9 @@ Take in every request a person makes, once, from wherever the system listens.
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Every declared source | `request-intake:every_declared_source` | [`hubofhubs/the_consciousness/request_intake/intake.py`](intake.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Every declared source | `request-intake:every_declared_source` | Pulls from each declared source (or the ones named), drops a request with no text, a duplicate and a request from another person, and keeps arrival order. | [`hubofhubs/the_consciousness/request_intake/intake.py`](intake.py) | selected |
 
 ## Metrics
 
@@ -34,3 +30,5 @@ Take in every request a person makes, once, from wherever the system listens.
 - Up: [hubofhubs](../../README.md)
 - Intent: [Adapting to the humans the system works with](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

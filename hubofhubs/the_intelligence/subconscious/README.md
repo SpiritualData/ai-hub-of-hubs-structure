@@ -1,8 +1,8 @@
 # Finding and preparing information for the Mind
 
-The information a request needs is found and prepared before the Mind asks for it, from the system's own cards, its files and what comes to mind unasked.
+**Vision statement:** The information a request needs is found and prepared before the Mind asks for it, from the system's own cards, its files and what comes to mind unasked.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../../esoi/README.md) > [How the AI processes information](../README.md) > Finding and preparing information for the Mind
 
 This sub-intent arises as the implementation `the-subconscious:card_recall` of its parent intent [`the_intelligence`](../README.md). Opportunities: How cards are built from files, how the right ones are picked for a request and what comes to mind unasked can each be improved on one measure without changing the Mind.
 
@@ -10,11 +10,19 @@ This sub-intent arises as the implementation `the-subconscious:card_recall` of i
 
 This part finds and prepares information before it is asked for. Cards From Files builds cards from the files of the system. Context Retriever picks the cards and file units that bear on the request. Intuition offers what occurs to the system unasked.
 
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- Intuition (solution with no page of its own, its implementations are in this intent's records): Let useful information surface unasked.
+- [Cards From Files](cards_from_files/README.md) (solution with implementations): Propose the cards a folder of files needs, in the card store record shape, for the Subconscious to keep and recall.
+- [Context Retriever](context_retriever/README.md) (solution with implementations): Pick, from a corpus of files, cards or memory, the pieces of text a task needs within a token budget.
+
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Intuition | `the-intuition` | `hubofhubs.run("the-intuition", {'request': 'what is the latest Rust version?'})` | none selected | Unasked items are taken and useful |
+| Intuition | `the-intuition` | `hubofhubs.run("the-intuition", {'request': 'what is the latest Rust version?'})` | What was taken for similar requests (`co_taken`) | Unasked items are taken and useful |
 | Cards From Files | `cards-from-files` | `hubofhubs.run("cards-from-files", {'root': '.', 'files': [], 'existing': {}})` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
 | Context Retriever | `context-retriever` | `hubofhubs.run("context-retriever", ...)` | BM25 over chunk text (`bm25_body`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
 
@@ -27,7 +35,7 @@ This part finds and prepares information before it is asked for. Cards From File
 
 ## Metrics and their leaders
 
-- Unasked items are taken and useful (`metric-the-intuition`)
+- Unasked items are taken and useful (`metric-the-intuition`): leader `co_taken`, 20 of 20 cases
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): leader `import_graph_topic_cards`, 112 of 252 cases
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-context-retriever`): leader `bm25_body`, 203 of 395 cases
 
@@ -36,7 +44,7 @@ This part finds and prepares information before it is asked for. Cards From File
 - Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
 - Records beside the code: [hubofhubs/the_intelligence/subconscious/cards_from_files](cards_from_files/README.md), [hubofhubs/the_intelligence/subconscious/context_retriever](context_retriever/README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [implementations.csv](implementations.csv), [metrics.csv](metrics.csv)
 
 ---
 
@@ -51,7 +59,7 @@ This part finds and prepares information before it is asked for. Cards From File
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Intuition | `the-intuition` | none selected | Unasked items are taken and useful |
+| Intuition | `the-intuition` | What was taken for similar requests (`co_taken`) | Unasked items are taken and useful |
 | Cards From Files | `cards-from-files` | Import graph topic cards (`import_graph_topic_cards`) | Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size |
 | Context Retriever | `context-retriever` | BM25 over chunk text (`bm25_body`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
 
@@ -59,6 +67,8 @@ This part finds and prepares information before it is asked for. Cards From File
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
+| Nearest items by wording | `the-intuition:nearest_cards` | [hubofhubs/the_intelligence/subconscious/intuition/nearest_cards.py](intuition/nearest_cards.py) |  |
+| What was taken for similar requests | `the-intuition:co_taken` | [hubofhubs/the_intelligence/subconscious/intuition/co_taken.py](intuition/co_taken.py) |  |
 | Model-written topic cards | `cards-from-files:llm_topic_cards` | [hubofhubs/the_intelligence/subconscious/cards_from_files/cards_from_files.py](cards_from_files/cards_from_files.py) |  |
 | One card per file | `cards-from-files:per_file_symbols` | [hubofhubs/the_intelligence/subconscious/cards_from_files/cards_from_files.py](cards_from_files/cards_from_files.py) |  |
 | Graphify file groups | `cards-from-files:graphify_files` | [hubofhubs/the_intelligence/subconscious/cards_from_files/cards_from_graphify.py](cards_from_files/cards_from_graphify.py) |  |
@@ -86,6 +96,9 @@ This part finds and prepares information before it is asked for. Cards From File
 
 ### Metrics
 
-- Unasked items are taken and useful (`metric-the-intuition`): `none`
+- Unasked items are taken and useful (`metric-the-intuition`): `esoi run intuition --impl nearest_cards; esoi run intuition --impl co_taken`
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-context-retriever`): `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl abstaining_recency; esoi run context_retrieval --impl abstaining_affinity; esoi run context_retrieval --impl abstaining_aware; esoi run context_retrieval --impl abstaining_fenced; esoi run context_retrieval --impl live_scan; esoi run context_retrieval --impl llm_rerank`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

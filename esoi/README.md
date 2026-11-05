@@ -1,8 +1,8 @@
 # The best parts for AI intelligence, assembled and proven
 
-AI builders have consistent interfaces for whatever the current best AI solutions are, to adapt only what is unique to their project.
+**Vision statement:** AI builders have consistent interfaces for whatever the current best AI solutions are, to adapt only what is unique to their project.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: Top
 
 Opportunities: Any product that needs an AI grounded in a person or team's own goals can start from the assembled whole instead of researching and gluing parts again; a production consumer is the hardest test of the assembly.
 
@@ -26,6 +26,16 @@ flowchart LR
     s3 -->|"A response to one request, with the step of every part that took part"| s1
     s4 -->|"The person's Representative, and what the system learned from that person"| s1
 ```
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- [The form and internal context of a system](../hubofhubs/the_body/README.md) (sub-intent): The AI system fits the particular system it lives in.
+- [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (sub-intent): The AI system works in alignment with the humans it serves.
+- [How the AI processes information](../hubofhubs/the_intelligence/README.md) (sub-intent): AI requests are handled in the best way possible, given all relevant information.
+- [The parts working as one whole](../hubofhubs/the_self/README.md) (sub-intent): The parts of the AI system work together as one whole.
+- [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (sub-intent): The AI system optimally learns and interacts with the world outside of it.
 
 ## Solutions at a glance
 
@@ -69,11 +79,11 @@ flowchart LR
 
 ## Where to go next
 
-- Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md) (The AI system fits the particular system it lives in.)
-- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md) (The AI system works in alignment with the humans it serves.)
-- Sub-intent: [How the AI processes information](../hubofhubs/the_intelligence/README.md) (AI requests are handled in the best way possible, given all relevant information.)
-- Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md) (The parts of the AI system work together as one whole.)
-- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md) (The AI system optimally learns and interacts with the world outside of it.)
+- Sub-intent: [The form and internal context of a system](../hubofhubs/the_body/README.md)
+- Sub-intent: [Adapting to the humans the system works with](../hubofhubs/the_consciousness/README.md)
+- Sub-intent: [How the AI processes information](../hubofhubs/the_intelligence/README.md)
+- Sub-intent: [The parts working as one whole](../hubofhubs/the_self/README.md)
+- Sub-intent: [Awareness of the outside and interaction with it](../hubofhubs/the_world/README.md)
 - Repository: [top README](../README.md)
 - Records beside the code: [hubofhubs](../hubofhubs/README.md)
 - Records: [intent.csv](intent.csv)
@@ -131,3 +141,6 @@ flowchart LR
 - A request is answered from what bears on it (`metric-the-intelligence`): `none`
 - A representative asks when the person would want to be asked (`metric-the-consciousness`): `none`
 - Integrated efficiency of the whole (`metric-integrated-efficiency`): `none`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

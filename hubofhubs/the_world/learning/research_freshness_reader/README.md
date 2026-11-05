@@ -1,43 +1,24 @@
 # Research Freshness Reader
 
-*ESOI records kept beside the code in `hubofhubs/the_world/learning/research_freshness_reader`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Read the registry's recorded dates and report how old each area's research is.
 
-The AI system optimally learns and interacts with the world outside of it.
+Breadcrumb: [Top](../../../../esoi/README.md) > [Awareness of the outside and interaction with it](../../README.md) > [Learning](../README.md) > Research Freshness Reader
 
-These are the solutions of [Awareness of the outside and interaction with it](../../README.md).
-
-## How the solutions fit together
-
-World is how the system learns what is outside it and acts on it. Science returns observations of public research that a reader can cite. Tools lets the AI use the tool of a category through Web Search, File Reading, File Editing, Connected System Operations or Delegated Agent Sessions, and refuses a category the authority does not allow. File Editing makes its one-call edit through Vendor Model Caller at the tier that Model Tier Chooser picks. Model Plumbing is how every part asks a model, through Model Tier Chooser and Vendor Model Caller. Vendor Model Caller steps to the next provider when one fails. Learning keeps the research current by reading dates through Research Freshness Reader.
-
-## Overview diagram
-
-An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
-
-```mermaid
-flowchart LR
-    s0["Model Plumbing<br/><i>model-plumbing</i>"]
-    s1["Science<br/><i>the-science</i>"]
-    s2["Learning<br/><i>the-learning</i>"]
-    s3["Research Freshness Reader<br/><i>research-freshness-reader</i>"]
-    s0 -->|"The model's answer to a prompt at a tier"| s1
-    s3 -->|"Days since the date, or the combined freshness reading with the stale areas named"| s2
-```
+Part of [Learning](../README.md)
 
 ## Research Freshness Reader (`research-freshness-reader`)
 
-Read the registry's recorded dates and report how old each area's research is.
-
+- Out of scope: Deciding which areas to research again (Learning does that) and doing the research.
 - Entry call: `hubofhubs.run("research-freshness-reader", '2026-10-01')`
 - Selected implementation: Registry date scan (`registry_scan`)
 - Metric: Registry freshness reading
-- Implemented by: [`docs/explanation/compared.md`](../../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../../docs/explanation/terminal-harness.md) and 179 more
+- Implemented by: [`docs/explanation/compared.md`](../../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../../docs/explanation/terminal-harness.md) and 181 more
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Registry date scan | `research-freshness-reader:registry_scan` | [`hubofhubs/the_world/learning/research_freshness_reader/registry.py`](registry.py) | selected |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Registry date scan | `research-freshness-reader:registry_scan` | Reads the last researched date of each area in the registry and reports days since, with a 90 day staleness bar and the stale areas. | [`hubofhubs/the_world/learning/research_freshness_reader/registry.py`](registry.py) | selected |
 
 ## Metrics
 
@@ -52,3 +33,5 @@ Read the registry's recorded dates and report how old each area's research is.
 - Up: [hubofhubs/the_world/learning](../README.md)
 - Intent: [Awareness of the outside and interaction with it](../../README.md)
 - Repository: [top README](../../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

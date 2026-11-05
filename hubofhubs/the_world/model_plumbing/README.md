@@ -1,14 +1,21 @@
 # Asking a model through one measured path
 
-Every part asks a model through one path: the tier is chosen by measurement and the vendor behind it can change without any part noticing.
+**Vision statement:** Every part asks a model through one path: the tier is chosen by measurement and the vendor behind it can change without any part noticing.
 
-*ESOI records of this intent (evolvable structure that optimizes intent), generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*
+Breadcrumb: [Top](../../../esoi/README.md) > [Awareness of the outside and interaction with it](../README.md) > Asking a model through one measured path
 
 This sub-intent arises as the implementation `model-plumbing:via_vendor` of its parent intent [`the_world`](../README.md). Opportunities: New models, vendors and prices appear outside the system, so the tier choice and the vendor adapters are improved by what is measured about them and not by what was configured once.
 
 ## How the solutions fit together
 
 Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tier, the model that did the most passing work per unit of cost. Vendor Model Caller asks that vendor and steps to the next provider when one fails.
+
+## One level below
+
+This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
+
+- [Model Tier Chooser](model_tier_chooser/README.md) (solution with implementations): Pick, for each model tier, the model that does the most passing work per cost.
+- [Vendor Model Caller](vendor_model_caller/README.md) (solution with implementations): Reach one vendor's model, and step to the next provider when one fails.
 
 ## Solutions at a glance
 
@@ -72,3 +79,6 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 - Model quality on hard maths (`metric-model-quality`): `esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
 - Vendor arms answer (`metric-vendor-answers`): `esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run call_a_model --impl claude_cli`
 - Provider failover (`metric-vendor-model-caller`): `esoi run provider_failover --impl multi_provider`
+
+
+*Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

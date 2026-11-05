@@ -1,41 +1,26 @@
 # Proactivity
 
-*ESOI records kept beside the code in `hubofhubs/the_intelligence/proactivity`, generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
+**Purpose:** Let the system start its standing work when it is due, without being asked.
 
-AI requests are handled in the best way possible, given all relevant information.
+Breadcrumb: [Top](../../../esoi/README.md) > [How the AI processes information](../README.md) > Proactivity
 
-These are the solutions of [How the AI processes information](../README.md).
-
-## How the solutions fit together
-
-Intelligence turns one request into a response. Higher Mind keeps the long view through Long-Term Memory, Objectives and Guidance, which gives an infrequent longer-term nudge. Critical Thinking turns the request into a target with a budget through Metric Translation, records it through ESOI Application, and holds the result to it through Goal Completion and Response Quality. Subconscious finds and prepares information through Cards From Files, Context Retriever and Intuition. Mind takes the request in through Context Intake, breaks it into pieces through Planner, passes each piece to a worker through Delegation and writes the response through Response Writer. Mind asks for a signal before a risky piece from Nervous System, and for the decision for the person from Judgment Calls. An unmet goal sends the flow back to the planning step within the request's budget, and when the budget or the authority runs out the flow goes to Judgment Calls. Proactivity says what is due without being asked. Prioritization says what matters first among the due work and the other work waiting, so the system acts unasked on the most important work first.
-
-## Overview diagram
-
-An arrow runs from the solution that provides to the solution that builds on it; its label is what the provider outputs.
-
-```mermaid
-flowchart LR
-    s0["Mind<br/><i>the-mind</i>"]
-    s1["Nervous System<br/><i>nervous-system</i>"]
-    s1 -->|"One risk signal: a severity (none, low, medium or high) and a reason; it never raises and never routes"| s0
-```
+Part of [How the AI processes information](../README.md)
 
 ## Proactivity (`proactivity`)
 
-Let the system start its standing work when it is due, without being asked.
-
+- Out of scope: Doing the work (the flow does that) and deciding whether it may be done unasked (Judgment Calls and the Nervous System do that).
+- Delegates to: planner, prioritization, intake-sources
 - Entry call: `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})`
 - Selected implementation: Calendar periods and events (`calendar_and_events`)
 - Metric: Schedules due when they should be
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](../critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](../critical_thinking/goal_completion/goal_completion.py) and 141 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](../critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](../critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](../critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](../critical_thinking/goal_completion/goal_completion.py) and 151 more
 
 ## Implementations
 
-| Implementation | Handle | Code | Selected |
-|---|---|---|---|
-| Calendar periods and events | `proactivity:calendar_and_events` | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) | selected |
-| Elapsed hours | `proactivity:elapsed_hours` | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) |  |
+| Implementation | Handle | Purpose | Code | Selected |
+|---|---|---|---|---|
+| Calendar periods and events | `proactivity:calendar_and_events` | Due by calendar period in the schedule's own zone, by a run requested after the last run, or by an event after the last run for a reactive schedule; an unreadable time fails open to due. | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) | selected |
+| Elapsed hours | `proactivity:elapsed_hours` | Due when the cadence's hours have passed since the last run. | [`hubofhubs/the_intelligence/proactivity/triggers.py`](triggers.py) |  |
 
 ## Metrics
 
@@ -54,3 +39,5 @@ Let the system start its standing work when it is due, without being asked.
 - Up: [hubofhubs](../../README.md)
 - Intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
+
+*Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*
