@@ -99,7 +99,10 @@ def main(argv):
     for name, begin, end in TARGETS:
         path = ROOT / name
         text = path.read_text()
-        new = render_docs.rewrite(text, begin, end, made[begin])
+        block = made[begin]
+        if name.startswith("docs/reference/"):
+            block = block.replace("](docs/", "](../")   # root-relative links become relative to the page
+        new = render_docs.rewrite(text, begin, end, block)
         stale = stale or new != text
         if "--check" not in argv:
             path.write_text(new)

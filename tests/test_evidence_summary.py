@@ -1,4 +1,4 @@
-"""The README evidence table is generated from the records: every recorded check appears, its figures are the recorded ones, and
+"""The evidence table on docs/reference/status.md is generated from the records: every recorded check appears, its figures are the recorded ones, and
 a pending or unmeasured thing is shown as such."""
 import csv
 import sys
