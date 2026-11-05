@@ -1,0 +1,492 @@
+[
+ {
+  "id": "guidance-progress-report",
+  "kind": "nudge-progress",
+  "source": "rule nudge-progress",
+  "args": {
+   "request": "I just got back from my long run and felt good. Anything I should log?",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    },
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    }
+   ]
+  },
+  "expect": "run"
+ },
+ {
+  "id": "guidance-thanks",
+  "kind": "nudge-closing",
+  "source": "rule nudge-closing",
+  "args": {
+   "request": "Thanks, that is all I needed today.",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    }
+   ]
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "guidance-whats-next",
+  "kind": "nudge-whats-next",
+  "source": "rule nudge-whats-next",
+  "args": {
+   "request": "What should I work on next?",
+   "objectives": [
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    },
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent"
+    }
+   ]
+  },
+  "expect": "ship"
+ },
+ {
+  "id": "guidance-idle",
+  "kind": "nudge-idle",
+  "source": "rule nudge-idle",
+  "args": {
+   "request": "I did my daily lesson and I am free for a bit. What would be a good use of 20 minutes?",
+   "objectives": [
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent"
+    }
+   ]
+  },
+  "expect": "lang"
+ },
+ {
+  "id": "guidance-goal-in-focus",
+  "kind": "nudge-progress",
+  "source": "rule nudge-progress",
+  "args": {
+   "request": "I did my second run this morning and my legs feel fine.",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    },
+    {
+     "id": "weekly",
+     "name": "three runs this week",
+     "next_target": "the third run by Sunday",
+     "reading": "runs this week 2 of 3",
+     "in_focus": true
+    }
+   ]
+  },
+  "expect": "weekly"
+ },
+ {
+  "id": "guidance-related-lookup",
+  "kind": "nudge-related",
+  "source": "rule nudge-related",
+  "args": {
+   "request": "What did the committee say about chapter 3 last time?",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    },
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    }
+   ]
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "guidance-related-question",
+  "kind": "nudge-related",
+  "source": "rule nudge-related",
+  "args": {
+   "request": "How long should the rehearsal take if the migration touches every table?",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    },
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    }
+   ]
+  },
+  "expect": "ship"
+ },
+ {
+  "id": "guidance-goodbye-after-other-work",
+  "kind": "nudge-closing",
+  "source": "rule nudge-closing",
+  "args": {
+   "request": "Great, bye for now.",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km",
+     "nudged_recently": true
+    },
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    }
+   ]
+  },
+  "expect": "ship"
+ },
+ {
+  "id": "guidance-several-pick-the-focus",
+  "kind": "nudge-whats-next",
+  "source": "rule nudge-whats-next",
+  "args": {
+   "request": "Where do things stand?",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    },
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent",
+     "in_focus": true
+    },
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    }
+   ]
+  },
+  "expect": "lang"
+ },
+ {
+  "id": "guidance-done-with-task",
+  "kind": "nudge-closing",
+  "source": "rule nudge-closing",
+  "args": {
+   "request": "I am done for the day.",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120",
+     "in_focus": true
+    },
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    }
+   ]
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "guidance-related-plan-request",
+  "kind": "nudge-related",
+  "source": "rule nudge-related",
+  "args": {
+   "request": "Can you plan my mock test practice for the week?",
+   "objectives": [
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    },
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent"
+    }
+   ]
+  },
+  "expect": "lang"
+ },
+ {
+  "id": "guidance-status-of-long-run",
+  "kind": "nudge-progress",
+  "source": "rule nudge-progress",
+  "args": {
+   "request": "My long run went to 12 km today, how should I recover?",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    },
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    }
+   ]
+  },
+  "expect": "run"
+ },
+ {
+  "id": "guidance-urgent-outage",
+  "kind": "restrain-urgent",
+  "source": "rule restrain-urgent",
+  "args": {
+   "request": "The release is down and customers are writing in, what do I check first?",
+   "objectives": [
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-urgent-injury",
+  "kind": "restrain-urgent",
+  "source": "rule restrain-urgent",
+  "args": {
+   "request": "I think I hurt my knee on the long run, it is an injury, what do I do right now?",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-due-today",
+  "kind": "restrain-urgent",
+  "source": "rule restrain-urgent",
+  "args": {
+   "request": "The committee form is due today and I cannot find the template.",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-upset",
+  "kind": "restrain-upset",
+  "source": "rule restrain-upset",
+  "args": {
+   "request": "I am so discouraged, my mock test score went down again.",
+   "objectives": [
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-worried",
+  "kind": "restrain-upset",
+  "source": "rule restrain-upset",
+  "args": {
+   "request": "I'm worried I will never finish the chapter in time.",
+   "objectives": [
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-stop",
+  "kind": "restrain-stop",
+  "source": "rule restrain-stop",
+  "args": {
+   "request": "Please stop reminding me about the race, I know.",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-unrelated-lookup",
+  "kind": "restrain-unrelated",
+  "source": "rule restrain-unrelated",
+  "args": {
+   "request": "What time does the pharmacy on Main Street close?",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    },
+    {
+     "id": "draft",
+     "name": "the thesis draft",
+     "next_target": "send chapter 3 to the committee by 20 November",
+     "reading": "pages drafted 74 of 120"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-unrelated-calculation",
+  "kind": "restrain-unrelated",
+  "source": "rule restrain-unrelated",
+  "args": {
+   "request": "What is 18 percent of 240?",
+   "objectives": [
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-unrelated-translation",
+  "kind": "restrain-unrelated",
+  "source": "rule restrain-unrelated",
+  "args": {
+   "request": "Translate good morning into German.",
+   "objectives": [
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-recently-raised",
+  "kind": "restrain-recent",
+  "source": "rule restrain-recent",
+  "args": {
+   "request": "I finished the second rehearsal, thanks.",
+   "objectives": [
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3",
+     "nudged_recently": true
+    }
+   ]
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-no-objectives",
+  "kind": "restrain-none",
+  "source": "rule restrain-none",
+  "args": {
+   "request": "Thanks, that is all I needed today.",
+   "objectives": []
+  },
+  "expect": null
+ },
+ {
+  "id": "guidance-unrelated-topic",
+  "kind": "restrain-unrelated",
+  "source": "rule restrain-unrelated",
+  "args": {
+   "request": "Suggest a name for my cat, she is grey with white paws.",
+   "objectives": [
+    {
+     "id": "run",
+     "name": "the 10 km race",
+     "next_target": "complete a 15 km long run by 15 November",
+     "reading": "longest run so far 12 km, target 15 km"
+    },
+    {
+     "id": "ship",
+     "name": "the new release",
+     "next_target": "finish the migration rehearsal by Friday",
+     "reading": "rehearsals passed 2 of 3"
+    },
+    {
+     "id": "lang",
+     "name": "the Spanish conversation goal",
+     "next_target": "pass the B1 mock test by 30 November",
+     "reading": "mock test score 61 percent, target 75 percent"
+    }
+   ]
+  },
+  "expect": null
+ }
+]
