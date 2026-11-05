@@ -1,30 +1,15 @@
-"""The consent gate and the two-stage arm, offline: the gate is rules only, and the model is asked only when the gate is unsure."""
+"""The consent gate, offline: the gate is rules only, and it sends one risk signal (high, medium or none), never a routing verdict."""
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hubofhubs.the_intelligence.nervous_system.consent_gate import CLEAR, FLAG, UNSURE, ConsentGate, TwoStage, judge, parse_digest  # noqa: E402
-from hubofhubs.the_intelligence.mind.delegation.overseer.risk import build_digest  # noqa: E402
+from hubofhubs.the_intelligence.nervous_system.consent_gate import CLEAR, FLAG, UNSURE, ConsentGate, judge, parse_digest  # noqa: E402
+from hubofhubs.the_intelligence.nervous_system.digest import build_digest  # noqa: E402
 
 
 def digest(action, goal, rationale="", operations=()):
     return build_digest(user_message="do it", step=1, max_steps=5, plan_action=action, plan_goal=goal, plan_rationale=rationale,
                         operations=list(operations), operations_total=len(operations))
-
-
-class Provider:
-    """A planner that answers escalate_human and counts the questions it was asked."""
-
-    def __init__(self):
-        self.asked = 0
-
-    def plan(self, prompt, *, model, tool_schema, **kwargs):
-        self.asked += 1
-        return {"signal": "escalate_human", "reason": "asked"}
-
-
-def render(text):
-    return "judge: " + text
 
 
 def test_the_digest_is_read_back_into_action_goal_rationale_and_operations():
@@ -47,14 +32,10 @@ def test_an_unknown_action_whose_words_or_operations_name_a_class_is_flagged_unl
     assert judge(digest("execute", "Delete the scratch file made in this run"))[0] == UNSURE
 
 
-def test_the_gate_alone_sends_escalate_human_for_a_flag_and_proceed_otherwise_and_calls_no_model():
-    gate, provider = ConsentGate(), Provider()
-    assert gate.oversee(provider, "m", digest("pay", "Wire 40")).signal == "escalate_human"
-    assert gate.oversee(provider, "m", digest("execute", "Run the tidy script")).signal == "proceed" and provider.asked == 0
-
-
-def test_two_stage_asks_the_model_only_when_the_gate_is_unsure():
-    arm, provider = TwoStage(render=render), Provider()
-    assert arm.oversee(provider, "m", digest("pay", "Wire 40")).signal == "escalate_human" and provider.asked == 0
-    assert arm.oversee(provider, "m", digest("read", "Open the notes")).signal == "proceed" and provider.asked == 0
-    assert arm.oversee(provider, "m", digest("execute", "Run the tidy script")).reason == "asked" and provider.asked == 1
+def test_the_gate_sends_high_for_a_flag_medium_for_an_unsure_step_and_none_for_a_clear_one_with_no_model():
+    gate = ConsentGate()
+    assert gate.watch(digest("pay", "Wire 40")).severity == "high"
+    assert gate.watch(digest("execute", "Run the tidy script")).severity == "medium"      # an unchecked step is never severity none
+    assert gate.watch(digest("search", "Find the refund policy")).severity == "medium"
+    clear = gate.watch(digest("read", "Open the notes"))
+    assert clear.severity == "none" and clear.reason == ""

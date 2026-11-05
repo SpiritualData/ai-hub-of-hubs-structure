@@ -35,6 +35,8 @@ class EvidenceStandard:
         text = outcome_text(outcome)
         if isinstance(outcome, Mapping) and outcome.get("refused"):
             return {"met": False, "reason": f"the work was refused: {outcome['refused']}"}
+        if isinstance(outcome, Mapping) and outcome.get("error"):
+            return {"met": False, "reason": f"the work failed: {outcome['error']}"}
         if not text.strip():
             return {"met": False, "reason": "the outcome is empty"}
         raw = outcome.get("coverage") if isinstance(outcome, Mapping) else None
@@ -53,4 +55,6 @@ class NonEmpty:
 
     def check(self, goal: str, done_standard: str, outcome: Any) -> Mapping[str, Any]:
         text = outcome_text(outcome)
+        if isinstance(outcome, Mapping) and (outcome.get("error") or outcome.get("refused")):
+            return {"met": False, "reason": "the work failed or was refused"}
         return {"met": bool(text.strip()), "reason": "the outcome is not empty" if text.strip() else "the outcome is empty"}

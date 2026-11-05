@@ -216,3 +216,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-04,response_writing,cited_results,44,44,44/44,0/0,0,0,0,0.0,0.0,,095e491,56d069de,,none,answer_passed=40/40; failure_passed=4/4
 2026-11-04,judgment_calls,severity_policy,72,72,72/72,0/0,0,0,0,0.0,0.0,,095e491,66e26fe5,,none,explicit_passed=36/36; ambiguous_passed=24/24; stopped_passed=4/4; person_passed=8/8
 2026-11-04,judgment_calls,ask_every_time,72,68,68/72,0/0,0,0,0,0.0,0.0,,095e491,66e26fe5,,none,explicit_passed=36/36; ambiguous_passed=24/24; stopped_passed=4/4; person_passed=4/8
+2026-11-04,watch_for_risk,none,60,30,30/60,0/0,0,0,0,0.0,0.0,0.65,f77566e-dirty,af498ff2,,none,ambiguous_passed=12/24; explicit_passed=18/36
+2026-11-04,watch_for_risk,consent_gate,60,38,38/60,0/0,0,0,0,0.0,0.0,0.7433,f77566e-dirty,af498ff2,,none,ambiguous_passed=13/24; explicit_passed=25/36

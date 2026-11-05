@@ -51,16 +51,10 @@ def test_the_consumers_prompt_is_the_only_prompt_and_the_call_names_the_judge_st
     assert prompt == "WATCH\nDIGEST" and model == "tier-x" and step == "judge" and tool is risk.OVERSEE_TOOL
 
 
-def test_assembly_builds_the_overseer_with_the_consumers_prompt_and_names_the_layer():
-    config = hubofhubs.AssemblyConfig(solutions=("nervous-system",), selections={"nervous-system": "overseer"},
-                                 options={"nervous-system": {"render": render}})
-    system = hubofhubs.assemble(config)
-    watcher = system["nervous-system"]
-    assert isinstance(watcher, hubofhubs.the_intelligence.nervous_system.interface.RiskWatching)
-    assert watcher.oversee(Provider({"signal": "escalate_human", "reason": "Do you want me to proceed?"}), "m", watcher.digest(
-        user_message="u", step=1, max_steps=1)).signal == "escalate_human"
-    assert any("overseer" in line and "consumer selections" in line for line in system.reasons)
-    assert "overseer" in hubofhubs.names("nervous-system")
+def test_the_overseer_is_a_helper_of_delegation_and_not_an_arm_of_the_nervous_system():
+    assert "overseer" not in hubofhubs.names("nervous-system")
+    assert hubofhubs.names("nervous-system") == ["consent_gate"]
+    assert risk.RunOverseer(render).watch("d").severity in ("none", "low", "medium", "high")
 
 
 def test_with_no_prompt_there_is_no_policy_and_no_model_call():

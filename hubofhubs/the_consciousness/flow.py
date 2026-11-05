@@ -43,7 +43,9 @@ class ConsciousnessComposition:
         if proposed.status != DONE:
             return {"proposed": None, "steps": listing([proposed, skipped("esoi-application", "no proposed edit to apply")])}
         asked = take(self.judgment, "judgment-calls", signal={"severity": "none", "reason": "a change to specs or metrics from feedback"}, person=person)
-        if (done(asked) or {}).get("decision", "proceed") != "proceed":      # whether to ask is Judgment Calls' decision; by default no approval step
+        if asked.status != DONE:      # no decision is not a yes: nothing is applied that nobody decided on
+            return {"proposed": done(proposed), "steps": listing([proposed, asked, skipped("esoi-application", "Judgment Calls could not decide")])}
+        if (done(asked) or {}).get("decision") != "proceed":      # whether to ask is Judgment Calls' decision; by default no approval step
             return {"proposed": done(proposed), "decision": done(asked), "steps": listing([proposed, asked, skipped("esoi-application", "Judgment Calls asked first")])}
         applied = take(self.esoi, "esoi-application", change=done(proposed))
         return {"proposed": done(proposed), "steps": listing([proposed, asked, applied])}

@@ -17,7 +17,7 @@ def severity_of(signal: Mapping[str, Any]) -> str:
     found = str(signal.get("severity") or "")
     if found in RANK:
         return found
-    return {"proceed": NONE, "escalate_human": HIGH, "redirect": MEDIUM}.get(str(signal.get("signal") or ""), NONE)
+    return MEDIUM      # a signal that names no severity is an unchecked step, and an unchecked step is not a safe one
 
 
 def timing(severity: str) -> Dict[str, Any]:

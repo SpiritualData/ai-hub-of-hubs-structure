@@ -53,7 +53,8 @@ class IntelligenceComposition:
             text, results = thinking.get("text", ""), thinking.get("results", [])
             evidence = " ".join(str(i.get("url", "")) + " " + str(i.get("snippet", "")) for r in results for i in r.get("items") or ())
             checked = take(self.critical, "critical-thinking", method="evaluate", request=request, response=text, target=target, evidence=evidence,
-                           outcome={"text": text, "refused": next((r["refused"] for r in results if r.get("refused")), "")}, **profile_inputs)
+                           outcome={"text": text, "refused": next((r["refused"] for r in results if r.get("refused")), ""),
+                                    "error": next((r["error"] for r in results if r.get("error")), "")}, **profile_inputs)
             log += [thought, checked]
             goal = (done(checked) or {}).get("goal")
             if goal is None or goal.get("met"):      # met, or no check to replan on

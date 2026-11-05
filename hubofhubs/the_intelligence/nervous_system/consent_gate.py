@@ -1,6 +1,6 @@
-"""Two more arms of the nervous-system seat that read the step by rule: a consent gate with no model, and a gate-then-overseer pair.
+"""The consent gate: an arm of the nervous-system seat that reads the step by rule, with no model.
 
-``consent_gate`` reads two things in the run digest, the plan's ``action`` and the words of the step (its goal and rationale, and for
+It reads two things in the run digest, the plan's ``action`` and the words of the step (its goal and rationale, and for
 an action that is not a plain read also the operations so far), and decides by rule, with no model call:
 
 * ``flag``: the step is one a person should authorize. The action is a consent action (pay, refund, purchase, send, publish, submit,
@@ -13,9 +13,8 @@ an action that is not a plain read also the operations so far), and decides by r
 The five classes: payment, outward sending, deletion, publishing, credential use. A consent action on something the run itself made
 (scratch, temporary or cache files, "this run") is ``unsure``, not ``flag``.
 
-Alone, the gate sends ``escalate_human`` for ``flag`` and ``proceed`` otherwise. ``two_stage`` runs the gate first and asks the model overseer
-only when the gate is ``unsure``: ``flag`` is ``escalate_human`` and ``clear`` is ``proceed`` with no model call. The keyword lists are
-generic English, not any consumer's policy; a consumer passes its own through ``ConsentRules``.
+The signal is a ``RiskSignal``: ``flag`` is high, ``unsure`` is medium and ``clear`` is none. The keyword lists are generic English, not
+any consumer's policy; a consumer passes its own through ``ConsentRules``.
 """
 import re
 from dataclasses import dataclass, field
@@ -23,8 +22,8 @@ from typing import Any, Callable, FrozenSet, Optional, Pattern, Tuple
 
 from esoi import implementation
 
-from hubofhubs.the_intelligence.mind.delegation.overseer.risk import OverseerSignal, RunOverseer, build_digest
-from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal, to_risk_signal
+from hubofhubs.the_intelligence.nervous_system.digest import build_digest
+from hubofhubs.the_intelligence.nervous_system.signals import HIGH, MEDIUM, NONE, RiskSignal
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 FLAG, CLEAR, UNSURE = "flag", "clear", "unsure"
@@ -123,34 +122,7 @@ class ConsentGate:
     def verdict(self, digest: str) -> Tuple[str, str]:
         return judge(digest, self.rules)
 
-    def oversee(self, provider: Any, model: str, digest: str) -> OverseerSignal:
+    def watch(self, digest: str, model: str = "") -> RiskSignal:
+        """``flag`` is high, ``unsure`` is medium (an unchecked step is not a safe one) and ``clear`` is none."""
         verdict, reason = self.verdict(digest)
-        return OverseerSignal("escalate_human", reason=reason) if verdict == FLAG else OverseerSignal("proceed", reason="")
-
-    def watch(self, digest: str, model: str = "") -> RiskSignal:
-        return to_risk_signal(self.oversee(None, model, digest))
-
-
-@implementation("nervous-system", "two_stage")
-class TwoStage:
-    """The consent gate first; the model overseer only when the gate is unsure. A flagged step is ``escalate_human`` and a clear one
-    is ``proceed``, both with no model call."""
-    REQUIRES = ()     # the gate, then the overseer's provider only when the gate is unsure
-
-    def __init__(self, render: Optional[Callable[[str], str]] = None, rules: Optional[ConsentRules] = None, *, provider: Any = None) -> None:
-        self.gate, self.overseer = ConsentGate(rules=rules), RunOverseer(render, provider=provider)
-        self.provider = provider
-
-    def watch(self, digest: str, model: str = "") -> RiskSignal:
-        return to_risk_signal(self.oversee(self.provider, model, digest))
-
-    def digest(self, **fields: Any) -> str:
-        return build_digest(**fields)
-
-    def oversee(self, provider: Any, model: str, digest: str) -> OverseerSignal:
-        verdict, reason = self.gate.verdict(digest)
-        if verdict == FLAG:
-            return OverseerSignal("escalate_human", reason=reason)
-        if verdict == CLEAR:
-            return OverseerSignal("proceed")
-        return self.overseer.oversee(provider, model, digest)
+        return RiskSignal(HIGH, reason) if verdict == FLAG else RiskSignal(MEDIUM, reason) if verdict == UNSURE else RiskSignal(NONE, "")

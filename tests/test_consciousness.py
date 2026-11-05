@@ -22,7 +22,7 @@ def test_the_severity_policy_proceeds_asks_declines_and_times_the_ask():
     assert medium["decision"] == "ask" and medium["to"] == "human" and medium["timing"]["mode"] == "async" and medium["timing"]["batch"]
     high = arm.decide({"severity": "high"}, "bo")
     assert high["timing"] == {"mode": "sync", "batch": False, "continue": []}
-    assert arm.decide({"signal": "escalate_human"}, "bo")["severity"] == "high"
+    assert arm.decide({"signal": "escalate_human"}, "bo")["severity"] == "medium"      # a signal that names no severity is unchecked, never none
 
 
 def test_a_flow_that_stopped_is_always_asked_about():
