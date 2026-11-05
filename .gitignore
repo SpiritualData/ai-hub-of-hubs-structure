@@ -8,3 +8,6 @@ scratch/
 logs/
 .esoi_cache/
 evaluation/model_quality_aime/data/
+
+# resumable run logs (state of an unfinished esoi run, not source)
+esoi/runs.csv
