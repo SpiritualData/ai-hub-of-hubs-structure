@@ -89,6 +89,13 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.005
 seconds_per_case = 10
 
+# prioritization: ordering what competes for attention is a few comparisons in code and runs before every unasked pass, so one ordering is worth at most a tenth of a cent and one
+# second. The weights are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/prioritization/build_cases.py.
+[balance.prioritization]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
+
 # context-assembler: one retrieval runs per query and its embedding is the only money spent, so a query is worth at most half a cent and
 # five seconds.
 [balance.context_assembler]

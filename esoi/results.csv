@@ -213,3 +213,7 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-04,request_planning,cue_router,105,67,67/105,0/0,0,0,0,0.0,0.0,,2ef28ad,5c94183d,,none,edit_passed=20/26; none_passed=14/24; science_passed=12/26; search_passed=20/28; steps_passed=1/1
 2026-11-04,request_planning,one_piece,105,24,24/105,0/0,0,0,0,0.0,0.0,,2ef28ad,5c94183d,,none,edit_passed=0/26; none_passed=24/24; science_passed=0/26; search_passed=0/28; steps_passed=0/1
 2026-11-04,agent_sessions,none,12,0,0/12,0/0,0,0,0,0.0,0.0,0.3,9c53b92,5f55d9c8,,none,
+2026-11-05,prioritization,as_given,13,1,1/13,0/0,0,0,0,0.0,0.0,0.3538,b3b9026-dirty,98e28943,,none,goal-ladder_passed=0/2; open-asks_passed=0/1; quest-list_passed=1/5; work-order_passed=0/5; mean_pairwise_agreement=0.182
+2026-11-05,prioritization,stated_fields,13,13,13/13,0/0,0,0,0,0.0,0.0,1.0,b3b9026-dirty,98e28943,,none,goal-ladder_passed=2/2; open-asks_passed=1/1; quest-list_passed=5/5; work-order_passed=5/5; mean_pairwise_agreement=1.0
+2026-11-05,proactivity,calendar_and_events,18,18,18/18,0/0,0,0,0,0.0,0.0,,b3b9026-dirty,5ad0325b,,none,
+2026-11-05,proactivity,elapsed_hours,18,10,10/18,0/0,0,0,0,0.0,0.0,,b3b9026-dirty,5ad0325b,,none,

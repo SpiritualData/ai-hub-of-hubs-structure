@@ -61,7 +61,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](the_intelligence/critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](the_intelligence/critical_thinking/goal_completion/goal_completion.py) and 140 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](the_intelligence/critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](the_intelligence/critical_thinking/goal_completion/goal_completion.py) and 141 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -70,7 +70,7 @@ Keep the system aligned with the humans and policies it works for.
 - Entry call: `hubofhubs.run("the-consciousness", '')`
 - Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py), [`hubofhubs/the_consciousness/judgment_calls/__init__.py`](the_consciousness/judgment_calls/__init__.py), [`hubofhubs/the_consciousness/judgment_calls/interface.py`](the_consciousness/judgment_calls/interface.py) and 24 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py), [`hubofhubs/the_consciousness/judgment_calls/__init__.py`](the_consciousness/judgment_calls/__init__.py), [`hubofhubs/the_consciousness/judgment_calls/interface.py`](the_consciousness/judgment_calls/interface.py) and 27 more
 
 ## Diagram
 
@@ -134,6 +134,7 @@ flowchart LR
 - Down: [hubofhubs/the_body/intake_sources](the_body/intake_sources/README.md)
 - Down: [hubofhubs/the_body/internal_context](the_body/internal_context/README.md)
 - Down: [hubofhubs/the_consciousness/judgment_calls](the_consciousness/judgment_calls/README.md)
+- Down: [hubofhubs/the_consciousness/prioritization](the_consciousness/prioritization/README.md)
 - Down: [hubofhubs/the_consciousness/representatives](the_consciousness/representatives/README.md)
 - Down: [hubofhubs/the_consciousness/request_intake](the_consciousness/request_intake/README.md)
 - Down: [hubofhubs/the_intelligence/nervous_system](the_intelligence/nervous_system/README.md)

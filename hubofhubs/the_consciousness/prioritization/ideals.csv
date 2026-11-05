@@ -1,0 +1,2 @@
+ideal_id,name,principle,state_description,hints_of_measurement,problem_ids,parent_ideal_ids
+hideal-implied-priorities-reach-esoi,Effort follows what the person cares about,"The system's effort follows what the person cares about most, including what they only imply.",The AI spends effort where the person would.,Weights match the priorities the person confirms.,hprob-priorities-are-implied-not-stated,HI5

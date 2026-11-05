@@ -64,6 +64,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | model_quality_aime | gemini_2_5_flash_lite | 30 | 56.7% (39.2% to 72.6%), 17/30 | $0.01591 | 58.9 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | gpt_5_mini | 30 | 90.0% (74.4% to 96.5%), 27/30 | $0.01458 | 44.9 (median) | complementary arm, not ranked | none recorded |
 | model_quality_aime | gpt_5_nano | 30 | 66.7% (48.8% to 80.8%), 20/30 | $0.006135 | 25.7 (median) | complementary arm, not ranked | none recorded |
+| prioritization | stated_fields (selected) | 13 | 100.0% (77.2% to 100.0%), 13/13 | $0 | 0 (median) | selected | none recorded |
+| prioritization | as_given | 13 | 7.7% (1.4% to 33.3%), 1/13 | $0 | 0 (median) | ahead of as_given (two-sided sign test p=0.000488) | none recorded |
 | proactivity | calendar_and_events (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
 | proactivity | elapsed_hours | 18 | 55.6% (33.7% to 75.4%), 10/18 | $0 | 0 (median) | ahead of elapsed_hours (two-sided McNemar p=0.00781) | none recorded |
 | provider_failover | multi_provider (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |

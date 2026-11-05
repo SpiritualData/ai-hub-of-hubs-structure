@@ -61,6 +61,8 @@ at the repository root.
 | Planner, Split and route by cues (`planner:cue_router`) | none | none | none | none | no |
 | Planner, Plan by a model (`planner:model_planner`) | none | none | none | none | no |
 | Planner, One piece, no worker (`planner:one_piece`) | none | none | none | none | no |
+| Prioritization, As given (`prioritization:as_given`) | none | none | none | none | no |
+| Prioritization, Stated and carried fields (`prioritization:stated_fields`) | none | none | none | none | no |
 | Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
 | Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
