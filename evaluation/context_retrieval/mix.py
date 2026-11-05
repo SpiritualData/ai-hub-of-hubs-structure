@@ -20,8 +20,6 @@ MIX = {"file": 1.0, "topic": 2.0, "orientation": 0.5, "none": 0.5, "memory": 0.7
 #   grouping   0.5:  the same kind of request, but the request's focus is the sibling repository and the needed files lie in the other one
 #                    (the item's home is not the request's focus): a soft preference for the focus against a hard fence.
 # The pools hold exactly these counts (memory 47, topic_open 63, grouping 32): a test fails when a pool is smaller or larger than its share.
-KIND_TOLERANCE = 0.05         # the gate on kinds (see README): an arm that leads the balanced score but trails the held arm on any kind by more than this much mean utility does not pass a stage
-MIN_CASES = {"memory": 40, "topic_open": 50, "grouping": 25}   # a stage counts a new kind only when its case set holds at least this many
 BUDGET_TOKENS = 4000          # what a task is shown: about two thirds of a long file
 UTILITY = {"recall": 0.60, "ndcg": 0.25, "quiet": 0.15}   # recall of the needed text within the budget, graded nDCG@10, and 1 minus the noise share of the tokens shown
 GAINS = {"needed": 2.0, "helpful": 1.0}
@@ -42,7 +40,7 @@ def counts(pools):
 SOURCE_CALL_USD = 0.0005      # one round trip to a source (an API request, a file open on a remote share): a tenth of the half-cent request budget
 SOURCE_RECORD_USD = 0.00001   # one record read (a file, a message, a row), the per-item charge of a metered API
 SOURCE_MB_USD = 0.0005        # one megabyte transferred from a source
-# Risk gates (conditions a stage checks with evaluation/context_retrieval/gate.py, not weights):
+# Risk limits (folded into the one score: a request over any of them gives up its case, as an oversized index does):
 MAX_SOURCE_CALLS = 20         # source calls in any one request (a handful of lookups is a retrieval, hundreds is a scan)
 MAX_SCAN_SHARE = 0.05         # a request that reads more than this share of the records of the corpus is a full scan
 MAX_OUT_OF_SCOPE = 0          # records read, or returned, outside the scope the request is allowed (scope_tags fence)

@@ -204,12 +204,16 @@ def score_case(fn, case):
     u, parts = utility(case, got["hits"], world_for(case)["links"])
     penalty = store_penalty(got["index_bytes"], got["size"])
     counted = u * (1.0 - penalty)
-    shown = sum(h["tokens"] for h in got["hits"])
     src = got["source"]
+    risky = (src["calls"] > mix.MAX_SOURCE_CALLS or src["records"] / max(got["records"], 1) > mix.MAX_SCAN_SHARE
+             or src["out_of_scope"] > mix.MAX_OUT_OF_SCOPE)
+    if risky:     # too many source calls, a full scan or a read outside the request's scope gives up the case
+        counted = 0.0
+    shown = sum(h["tokens"] for h in got["hits"])
     row = dict(ok=bool(counted > place(case["id"])), kind=case["kind"], utility=round(u, 4), counted=round(counted, 4), penalty=round(penalty, 4),
                shown=shown, returned=len(got["hits"]), recall=round(parts["recall"], 4), ndcg=round(parts["ndcg"], 4), noise=round(parts["noise"], 4),
                needs=not needs_nothing(case), source_calls=src["calls"], source_records=src["records"], source_mb=round(src["bytes"] / 1e6, 4),
-               source_usd=round(source_usd(src), 6), scan_share=round(src["records"] / max(got["records"], 1), 4), out_of_scope=src["out_of_scope"],
+               source_usd=round(source_usd(src), 6), risky=risky, scan_share=round(src["records"] / max(got["records"], 1), 4), out_of_scope=src["out_of_scope"],
                got=f"{len(got['hits'])} units, {shown} tokens, utility {u:.2f}",
                note=(f"needs {len(labels(case, world_for(case)['links'])[0])} files" if not needs_nothing(case) else "needs no context"))
     if case["kind"] == "memory":

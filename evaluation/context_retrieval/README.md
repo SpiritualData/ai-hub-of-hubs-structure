@@ -35,7 +35,7 @@ excluded by a mark; the weakest ones are diagnostic bounds that show what a meth
   (`base.py`) that counts, per request, source calls, records and bytes read. An arm that answers from the index it built beforehand reads nothing and
   pays nothing; one that scans the sources per request pays per call (0.0005 USD, a tenth of the half-cent request budget), per record (0.00001) and per
   megabyte (0.0005), added to the case's cost, so the balanced weights do not change. `live_scan` (no index, every request reads every file) is the
-  diagnostic bound that shows the charge. Risk is not weighed: `gate.py` is a gate (see Cascade conditions).
+  diagnostic bound that shows the charge. Risk is inside the one number: a request that makes more than `mix.MAX_SOURCE_CALLS` source calls, reads more than `mix.MAX_SCAN_SHARE` of a corpus or reads outside its scope gives up that case.
 - **Bootstrapping is not an arm's job.** Building and refreshing the store from the sources belongs to the card-builder solution and its metric
   (`evaluation/cards_from_files`, which reports a build's source opens, files and megabytes, reads per item ingested, and for a free builder the reads of a
   refresh over the unchanged corpus against the full build, `refresh_share`). What stays with an arm is the index derived for that one method (its
@@ -80,11 +80,8 @@ excluded by a mark; the weakest ones are diagnostic bounds that show what a meth
   What it shows: the abstention floor was set on code requests and silences most temporal-reasoning memory questions (0.19 against 0.95 for the
   hybrid), so on the broader mix `abstaining_hybrid` is beaten by `bm25_body`, `bm25_fielded`, `hybrid_rrf` and `feature_rerank` (esoi leaderboard);
   the recency, affinity and supersession arms move knowledge-update memory (0.80 to 0.83 for `abstaining_aware`) and `topic_open` by a few hundredths but
-  lose elsewhere, the hard fence scores 0 on `grouping` where the soft arms keep their score, and `live_scan` fails the source gates.
-- **Cascade conditions**: the stage conditions of `metric-retrieve-context` are checked by `PYTHONPATH=.:evaluation:../evolvable-structure/implementations/python python3 evaluation/context_retrieval/gate.py [--held ARM] [ARM ...]`:
-  the pins match, each new kind holds its minimum cases (`mix.MIN_CASES`), all arms share one case hash, the challenger trails the held arm on no kind by more
-  than `mix.KIND_TOLERANCE` (0.05) mean utility, no request made more than 20 source calls or read more than 5 percent of a corpus, and nothing was read or
-  returned outside the request's scope. The cascade library knows only `all-pass` and `competitive`, so the per-kind and risk checks live here and are named by the `when` of the stage.
+  lose elsewhere, the hard fence scores 0 on `grouping` where the soft arms keep their score, and `live_scan` gives up cases on the source limits.
+- **One number, no gates.** The stages of `metric-retrieve-context` compare arms on the balanced score alone. Risk (source calls, full scans, reads outside the scope) is a limit inside each case's score, the kinds count by the weights of `mix.MIX`, and the pins are checked by the case loaders.
 - **Limits**: one benchmark of chat memory (English, one style, sessions as turns) and four Python repositories with commit-subject wording; the mix is set by value and a sample of real requests should calibrate it; file
   labels stand for relevance, so the right passage inside a needed file is not told from the rest; the cold embedding time is not in the seconds
   per request.

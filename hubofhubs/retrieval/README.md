@@ -7,10 +7,10 @@
 | Hybrid with soft affinity to the request's focus | `retrieve-context:abstaining_affinity` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
 | Hybrid with recency, affinity and supersession | `retrieve-context:abstaining_aware` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
 | Hybrid behind a hard focus fence | `retrieve-context:abstaining_fenced` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
-| Hybrid that can say nothing | `retrieve-context:abstaining_hybrid` | [`hubofhubs/retrieval/abstain.py`](abstain.py) | selected |
+| Hybrid that can say nothing | `retrieve-context:abstaining_hybrid` | [`hubofhubs/retrieval/abstain.py`](abstain.py) |  |
 | Learned reranker that can say nothing | `retrieve-context:abstaining_learned` | [`hubofhubs/retrieval/abstain.py`](abstain.py) |  |
 | Hybrid that prefers newer items | `retrieve-context:abstaining_recency` | [`hubofhubs/retrieval/aware.py`](aware.py) |  |
-| BM25 over chunk text | `retrieve-context:bm25_body` | [`hubofhubs/retrieval/lexical.py`](lexical.py) |  |
+| BM25 over chunk text | `retrieve-context:bm25_body` | [`hubofhubs/retrieval/lexical.py`](lexical.py) | selected |
 | BM25F over path, title and body | `retrieve-context:bm25_fielded` | [`hubofhubs/retrieval/lexical.py`](lexical.py) |  |
 | BM25F over whole files | `retrieve-context:bm25_whole_files` | [`hubofhubs/retrieval/lexical.py`](lexical.py) |  |
 | Dense bge-small vectors | `retrieve-context:dense_bge_small` | [`hubofhubs/retrieval/dense.py`](dense.py) |  |

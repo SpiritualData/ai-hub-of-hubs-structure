@@ -119,6 +119,7 @@ class LiveScan(Retriever):
     """The diagnostic bound for source access: no index, every request reads every source (one call and one record each) and ranks whole files
     by how often the request's terms occur. It shows what reading live costs; it is accurate only as far as counting words is."""
     unit = "file"
+    REQUIRES = ()
 
     def scores(self, query: str) -> Dict[int, float]:
         from .units import tokens

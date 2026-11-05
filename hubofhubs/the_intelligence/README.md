@@ -61,7 +61,7 @@ flowchart LR
 | Critical Thinking | `think-critically` | `hubofhubs.run("think-critically", {'request': 'what is the latest Rust release?'})` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
 | Subconscious | `remember-and-recall` | `hubofhubs.run("remember-and-recall", 'rust release')` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
 | Context Assembler | `context-assembler` | `hubofhubs.run("context-assembler", 'where does the card store tidy itself?')` | `bm25@analyzer=english` | Relevant passage in the top five |
-| Context Retriever | `retrieve-context` | `hubofhubs.run("retrieve-context", ...)` | Hybrid that can say nothing (`abstaining_hybrid`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
+| Context Retriever | `retrieve-context` | `hubofhubs.run("retrieve-context", ...)` | BM25 over chunk text (`bm25_body`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
 | Mind | `reason-and-answer` | `hubofhubs.run("reason-and-answer", {'request': 'what is the latest Rust release?'})` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust release?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Long-Term Memory | `long-term-memory` | `hubofhubs.run("long-term-memory", {'query': 'rust release', 'person': ''})` | none selected | A later request uses what an earlier one learned |
@@ -158,7 +158,7 @@ flowchart LR
 | Critical Thinking | `think-critically` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
 | Subconscious | `remember-and-recall` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
 | Context Assembler | `context-assembler` | `bm25@analyzer=english` | Relevant passage in the top five |
-| Context Retriever | `retrieve-context` | Hybrid that can say nothing (`abstaining_hybrid`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
+| Context Retriever | `retrieve-context` | BM25 over chunk text (`bm25_body`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
 | Mind | `reason-and-answer` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Long-Term Memory | `long-term-memory` | none selected | A later request uses what an earlier one learned |
