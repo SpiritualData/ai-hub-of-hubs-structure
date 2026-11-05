@@ -150,10 +150,8 @@ def needs_of(implementation, meter):
     import os
     found = {}
     if "provider" in inspect.signature(implementation).parameters:
-        from esoi import runtime
-        from hubofhubs import HUB
-        HUB.prepare()      # declares the seats
-        provider = runtime.resolve("vendor-model-caller", scope="hubofhubs")(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
+        from hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli import ClaudeCliProvider
+        provider = ClaudeCliProvider(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))      # this component measures with the claude program, whatever the selection is
         found["provider"] = meter.wrap(provider, ("answer",))
     return found
 

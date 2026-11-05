@@ -37,13 +37,12 @@ def test_the_hub_default_builds_without_a_consumer():
 def test_assemble_with_no_arguments_builds_the_selected_arms_and_reports_the_rest():
     system = assemble(environ={})
     built = set(system.solutions())
-    assert {"vendor-model-caller", "card-store", "cards-from-files", "model-tier-chooser", "model-plumbing", "research-freshness-reader",
-            "the-mind", "the-subconscious", "critical-thinking"} <= built
+    assert {"card-store", "cards-from-files", "model-tier-chooser", "research-freshness-reader", "the-mind", "the-subconscious", "critical-thinking"} <= built
     assert built.isdisjoint(system.pending)
     assert all(line.startswith(seat + ":") or line.startswith(seat + " (") for seat, line in system.pending.items())
     assert "GEMINI_API_KEY" in system.pending["web-search"] and "HUBOFHUBS_WRITE_ROOT" in system.pending["file-editing"]
-    assert "vendor-model-caller" not in system.pending and "model-plumbing" not in system.pending     # the default vendor-model-caller arm is claude -p on the subscription
-    assert "vendor-model-caller (multi_provider)" in assemble(arms={"vendor-model-caller": "multi_provider"}, environ={}).pending["vendor-model-caller"]
+    assert "vendor-model-caller (multi_provider)" in system.pending["vendor-model-caller"] and "model-plumbing" in system.pending      # the selected router waits for the consumer's providers
+    assert "vendor-model-caller" in assemble(arms={"vendor-model-caller": "claude_cli"}, environ={}).solutions()      # the keyless arm runs claude -p on the subscription when a consumer picks it
 
 
 def test_assemble_overrides_name_only_what_differs():

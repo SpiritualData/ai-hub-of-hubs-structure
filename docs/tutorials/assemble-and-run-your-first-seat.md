@@ -29,7 +29,7 @@ print(sorted(system.pending))
 
 `assemble()` builds every seat whose selected arm needs nothing more from you and leaves the others in `system.pending`, one
 line each saying what to pass. `assemble()` takes no required argument and reads your process environment for keys; pass
-`environ={...}` to replace it (tests and sandboxes). The seats printed are the ones still waiting for you, for example `web-search` (a key such as `GEMINI_API_KEY`) and `file-editing` (a folder it may write in, `HUBOFHUBS_WRITE_ROOT`). `vendor-model-caller` is already built: its default arm is `claude_cli`, which runs `claude -p` on your Claude Code subscription and needs no key.
+`environ={...}` to replace it (tests and sandboxes). The seats printed are the ones still waiting for you, for example `web-search` (a key such as `GEMINI_API_KEY`) and `file-editing` (a folder it may write in, `HUBOFHUBS_WRITE_ROOT`). `vendor-model-caller` waits for the providers you pass (its selected arm is the failover router, `multi_provider`); a keyless alternative, `arms={"vendor-model-caller": "claude_cli"}`, runs `claude -p` on your Claude Code subscription.
 
 ## 3. Use the first seat
 

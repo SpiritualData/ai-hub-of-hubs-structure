@@ -18,7 +18,7 @@ def test_the_tutorial_runs_and_prints_what_it_says(monkeypatch):
     with contextlib.redirect_stdout(out):
         exec(compile(code, "tutorial", "exec"), {"__name__": "tutorial"})
     lines = out.getvalue().splitlines()
-    assert "web-search" in lines[0] and "file-editing" in lines[0] and "vendor-model-caller" not in lines[0]
+    assert "web-search" in lines[0] and "file-editing" in lines[0] and "vendor-model-caller" in lines[0]
     assert lines[1].startswith("[Card(id='first'") and lines[2] == "1"
     assert lines[3].startswith("card-store -> local_card_store (layer: hubofhubs default")
     assert lines[4].startswith("[Card(id='first'")

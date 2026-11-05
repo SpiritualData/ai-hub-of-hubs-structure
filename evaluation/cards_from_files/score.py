@@ -167,10 +167,7 @@ def needs(implementation, meter):
     if "saved_build" in parameters and os.environ.get(SAVED_BUILD_ENVIRONMENT) == "1":
         found["saved_build"] = True
     if "provider" in parameters:
-        from esoi import runtime
-        from hubofhubs import HUB
-        HUB.prepare()      # declares the seats
-        provider_class = runtime.resolve("vendor-model-caller", scope="hubofhubs")   # resolve returns the class: build the instance the meter wraps
+        from hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli import ClaudeCliProvider as provider_class      # this component measures with the claude program, whatever the selection is
         provider = provider_class(claude_path="claude", timeout_seconds=300, environment=dict(os.environ))
         found["provider"] = meter.wrap(provider, ("answer",))
     return found
