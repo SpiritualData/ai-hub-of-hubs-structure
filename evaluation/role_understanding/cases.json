@@ -1,0 +1,499 @@
+[
+ {
+  "id": "role-record-alpha",
+  "kind": "record",
+  "origin": "written from the records format and the esoi role-scoping how-to",
+  "args": {
+   "part": "alpha",
+   "solutions": [
+    {
+     "solution_id": "alpha",
+     "purpose": "  Keeps the ledger. ",
+     "out_of_scope": "Auditing it.",
+     "delegates_to": "beta;gamma"
+    },
+    {
+     "solution_id": "beta",
+     "purpose": "Audits the ledger.",
+     "out_of_scope": "Keeping it.",
+     "delegates_to": "alpha"
+    },
+    {
+     "solution_id": "solo",
+     "purpose": "Does the one job.",
+     "out_of_scope": "Nothing else exists.",
+     "delegates_to": "none"
+    },
+    {
+     "solution_id": "blank",
+     "purpose": "Has a purpose.",
+     "out_of_scope": "",
+     "delegates_to": ""
+    }
+   ]
+  },
+  "expect": {
+   "part": "alpha",
+   "stated": true,
+   "purpose": "Keeps the ledger.",
+   "out_of_scope": "Auditing it.",
+   "delegates_to": [
+    "beta",
+    "gamma"
+   ]
+  }
+ },
+ {
+  "id": "role-record-beta",
+  "kind": "record",
+  "origin": "written from the records format and the esoi role-scoping how-to",
+  "args": {
+   "part": "beta",
+   "solutions": [
+    {
+     "solution_id": "alpha",
+     "purpose": "  Keeps the ledger. ",
+     "out_of_scope": "Auditing it.",
+     "delegates_to": "beta;gamma"
+    },
+    {
+     "solution_id": "beta",
+     "purpose": "Audits the ledger.",
+     "out_of_scope": "Keeping it.",
+     "delegates_to": "alpha"
+    },
+    {
+     "solution_id": "solo",
+     "purpose": "Does the one job.",
+     "out_of_scope": "Nothing else exists.",
+     "delegates_to": "none"
+    },
+    {
+     "solution_id": "blank",
+     "purpose": "Has a purpose.",
+     "out_of_scope": "",
+     "delegates_to": ""
+    }
+   ]
+  },
+  "expect": {
+   "part": "beta",
+   "stated": true,
+   "purpose": "Audits the ledger.",
+   "out_of_scope": "Keeping it.",
+   "delegates_to": [
+    "alpha"
+   ]
+  }
+ },
+ {
+  "id": "role-record-solo",
+  "kind": "record",
+  "origin": "written from the records format and the esoi role-scoping how-to",
+  "args": {
+   "part": "solo",
+   "solutions": [
+    {
+     "solution_id": "alpha",
+     "purpose": "  Keeps the ledger. ",
+     "out_of_scope": "Auditing it.",
+     "delegates_to": "beta;gamma"
+    },
+    {
+     "solution_id": "beta",
+     "purpose": "Audits the ledger.",
+     "out_of_scope": "Keeping it.",
+     "delegates_to": "alpha"
+    },
+    {
+     "solution_id": "solo",
+     "purpose": "Does the one job.",
+     "out_of_scope": "Nothing else exists.",
+     "delegates_to": "none"
+    },
+    {
+     "solution_id": "blank",
+     "purpose": "Has a purpose.",
+     "out_of_scope": "",
+     "delegates_to": ""
+    }
+   ]
+  },
+  "expect": {
+   "part": "solo",
+   "stated": true,
+   "purpose": "Does the one job.",
+   "out_of_scope": "Nothing else exists.",
+   "delegates_to": []
+  }
+ },
+ {
+  "id": "role-record-blank",
+  "kind": "record",
+  "origin": "written from the records format and the esoi role-scoping how-to",
+  "args": {
+   "part": "blank",
+   "solutions": [
+    {
+     "solution_id": "alpha",
+     "purpose": "  Keeps the ledger. ",
+     "out_of_scope": "Auditing it.",
+     "delegates_to": "beta;gamma"
+    },
+    {
+     "solution_id": "beta",
+     "purpose": "Audits the ledger.",
+     "out_of_scope": "Keeping it.",
+     "delegates_to": "alpha"
+    },
+    {
+     "solution_id": "solo",
+     "purpose": "Does the one job.",
+     "out_of_scope": "Nothing else exists.",
+     "delegates_to": "none"
+    },
+    {
+     "solution_id": "blank",
+     "purpose": "Has a purpose.",
+     "out_of_scope": "",
+     "delegates_to": ""
+    }
+   ]
+  },
+  "expect": {
+   "part": "blank",
+   "stated": true,
+   "purpose": "Has a purpose.",
+   "out_of_scope": "",
+   "delegates_to": []
+  }
+ },
+ {
+  "id": "role-record-unknown-part",
+  "kind": "record",
+  "origin": "written from the records format and the esoi role-scoping how-to",
+  "args": {
+   "part": "no-such-part",
+   "solutions": [
+    {
+     "solution_id": "alpha",
+     "purpose": "  Keeps the ledger. ",
+     "out_of_scope": "Auditing it.",
+     "delegates_to": "beta;gamma"
+    },
+    {
+     "solution_id": "beta",
+     "purpose": "Audits the ledger.",
+     "out_of_scope": "Keeping it.",
+     "delegates_to": "alpha"
+    },
+    {
+     "solution_id": "solo",
+     "purpose": "Does the one job.",
+     "out_of_scope": "Nothing else exists.",
+     "delegates_to": "none"
+    },
+    {
+     "solution_id": "blank",
+     "purpose": "Has a purpose.",
+     "out_of_scope": "",
+     "delegates_to": ""
+    }
+   ]
+  },
+  "expect": {
+   "part": "no-such-part",
+   "stated": false
+  }
+ },
+ {
+  "id": "role-contradiction-owner-is-no-solution",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": "ghost"
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "",
+     "filepath": ""
+    }
+   ],
+   "code": {},
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": [
+    "unknown-owner"
+   ]
+  }
+ },
+ {
+  "id": "role-contradiction-owner-is-itself",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": "p"
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "",
+     "filepath": ""
+    }
+   ],
+   "code": {},
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": [
+    "self-owner"
+   ]
+  }
+ },
+ {
+  "id": "role-contradiction-calls-a-part-it-never-declared",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": "b"
+    },
+    {
+     "solution_id": "b",
+     "purpose": "Does the job of b.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    },
+    {
+     "solution_id": "c-part",
+     "purpose": "Does the job of c-part.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "b",
+     "filepath": "p.py"
+    }
+   ],
+   "code": {
+    "p.py": "take(self.a, \"b\")\ntake(self.c, \"c-part\", method=\"m\")\n"
+   },
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": [
+    "undeclared-call"
+   ]
+  }
+ },
+ {
+  "id": "role-contradiction-both-kinds",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": "ghost"
+    },
+    {
+     "solution_id": "c-part",
+     "purpose": "Does the job of c-part.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "",
+     "filepath": "p.py"
+    }
+   ],
+   "code": {
+    "p.py": "take(self.a, \"b\")\ntake(self.c, \"c-part\", method=\"m\")\n"
+   },
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": [
+    "undeclared-call",
+    "undeclared-call",
+    "unknown-owner"
+   ]
+  }
+ },
+ {
+  "id": "role-contradiction-calls-only-what-it-uses",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    },
+    {
+     "solution_id": "b",
+     "purpose": "Does the job of b.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    },
+    {
+     "solution_id": "c-part",
+     "purpose": "Does the job of c-part.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "b;c-part",
+     "filepath": "p.py"
+    }
+   ],
+   "code": {
+    "p.py": "take(self.a, \"b\")\ntake(self.c, \"c-part\", method=\"m\")\n"
+   },
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": []
+  }
+ },
+ {
+  "id": "role-contradiction-calls-only-what-it-delegates",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": "b;c-part"
+    },
+    {
+     "solution_id": "b",
+     "purpose": "Does the job of b.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    },
+    {
+     "solution_id": "c-part",
+     "purpose": "Does the job of c-part.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "",
+     "filepath": "p.py"
+    }
+   ],
+   "code": {
+    "p.py": "take(self.a, \"b\")\ntake(self.c, \"c-part\", method=\"m\")\n"
+   },
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": []
+  }
+ },
+ {
+  "id": "role-contradiction-no-code-no-contradiction",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": "b"
+    },
+    {
+     "solution_id": "b",
+     "purpose": "Does the job of b.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "",
+     "filepath": ""
+    }
+   ],
+   "code": {},
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": []
+  }
+ },
+ {
+  "id": "role-contradiction-calls-with-a-variable-id-are-not-guessed",
+  "kind": "contradiction",
+  "origin": "written from esoi rules S48 and S50",
+  "args": {
+   "solutions": [
+    {
+     "solution_id": "p",
+     "purpose": "Does the job of p.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    },
+    {
+     "solution_id": "b",
+     "purpose": "Does the job of b.",
+     "out_of_scope": "Other parts' work.",
+     "delegates_to": ""
+    }
+   ],
+   "implementations": [
+    {
+     "solution_id": "p",
+     "uses_solution_ids": "",
+     "filepath": "p.py"
+    }
+   ],
+   "code": {
+    "p.py": "take(self.a, name)\n"
+   },
+   "part": "p"
+  },
+  "expect": {
+   "contradictions": []
+  }
+ }
+]

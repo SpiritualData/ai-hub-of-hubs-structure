@@ -1,2 +1,1 @@
 metric_id,name,purpose,record,disadvantages,cascading_conditionals,expiration,solution_ids,ideal_ids,command,parent_metric_ids
-metric-role-understanding,Behaviour matches the stated role,A part's behaviour matches the role the whole gives it.,A part's behaviour matches the role the whole gives it. Draft: no cases or runs exist yet.,"A draft: it names what to measure, and no cases are written yet.",,,role-understanding,hideal-every-part-knows-its-role,,metric-the-self
