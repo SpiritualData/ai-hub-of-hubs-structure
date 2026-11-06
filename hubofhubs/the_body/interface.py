@@ -2,6 +2,7 @@
 import typing
 from typing import Any, Mapping, runtime_checkable
 from esoi import solution
+from hubofhubs.the_body.filemodes import match_umask  # noqa: F401  the one way the other parts give an atomically written file its normal permissions
 
 
 @solution("the-body", kind="event", entry="describe", example="")

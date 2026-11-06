@@ -3,6 +3,7 @@ import typing
 from typing import Any, Mapping, Sequence, runtime_checkable
 from esoi import solution
 from hubofhubs.the_body.internal_context.card_store.card import Card
+from hubofhubs.the_body.internal_context.context import AssembledContext, ContextAssembler, ContextAssemblerBase, VectorHit, VectorStore, VectorStoreBase  # noqa: F401  the shapes the retrievers and stores share
 
 
 @solution("internal-context", kind="event", entry="read", example="rust release")

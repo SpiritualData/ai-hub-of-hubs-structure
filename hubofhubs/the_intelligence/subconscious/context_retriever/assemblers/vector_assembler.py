@@ -72,7 +72,7 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
-from hubofhubs.the_body.internal_context.context import AssembledContext, ContextAssemblerBase, VectorHit, VectorStore, VectorStoreBase
+from hubofhubs.the_body.internal_context.interface import AssembledContext, ContextAssemblerBase, VectorHit, VectorStore, VectorStoreBase
 from hubofhubs.the_world.model_plumbing.model import STEP_SELECT, STEP_SUMMARIZE, answer_with_reasoning
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render import (
     render_card_content, render_card_content_blocks, tokenize)

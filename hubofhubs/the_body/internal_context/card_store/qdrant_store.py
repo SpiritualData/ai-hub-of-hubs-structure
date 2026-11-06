@@ -89,7 +89,7 @@ import os
 
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
-from hubofhubs.the_body.internal_context.context import VectorHit, VectorStoreBase
+from hubofhubs.the_body.internal_context.interface import VectorHit, VectorStoreBase
 from hubofhubs.the_body.internal_context.card_store.card_store_merge import PointMove
 from hubofhubs.the_body.internal_context.card_store.embedders import (
     EMBED_BATCH_DEFAULT, EMBED_MAX_CHARS_DEFAULT, FASTEMBED_EMBEDDER_ID, FASTEMBED_MODEL_NAME)

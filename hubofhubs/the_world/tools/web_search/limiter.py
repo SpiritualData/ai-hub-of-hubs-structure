@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from hubofhubs.the_body.filemodes import match_umask
+from hubofhubs.the_body.interface import match_umask
 
 logger = logging.getLogger("hubofhubs.the_world.tools.web_search.limiter")
 

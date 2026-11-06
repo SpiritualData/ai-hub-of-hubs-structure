@@ -35,7 +35,7 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
-from hubofhubs.the_body.internal_context.context import VectorHit
+from hubofhubs.the_body.internal_context.interface import VectorHit
 from hubofhubs.the_body.internal_context.card_store.card_store_identity import EMBEDDED
 from hubofhubs.the_body.internal_context.card_store.qdrant_store import scope_hash
 from hubofhubs.the_body.internal_context.card_store.vector_scopes import CARD_SEED_SCOPE

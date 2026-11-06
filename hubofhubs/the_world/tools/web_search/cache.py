@@ -29,7 +29,7 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple, Union
 
-from hubofhubs.the_body.filemodes import match_umask
+from hubofhubs.the_body.interface import match_umask
 
 logger = logging.getLogger("hubofhubs.the_world.tools.web_search.cache")
 

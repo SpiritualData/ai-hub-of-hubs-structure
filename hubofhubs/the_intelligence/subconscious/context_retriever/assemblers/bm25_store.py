@@ -50,7 +50,7 @@ import re
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
-from hubofhubs.the_body.internal_context.context import AssembledContext, ContextAssemblerBase
+from hubofhubs.the_body.internal_context.interface import AssembledContext, ContextAssemblerBase
 from hubofhubs.the_body.internal_context.card_store.walk import effective_skip_dirs, is_claude_state_file, prune_dirnames
 from hubofhubs.the_self.assembler import arm_needs as needs
 

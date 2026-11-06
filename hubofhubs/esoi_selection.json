@@ -194,6 +194,30 @@
    "to_tools": "hubofhubs.the_intelligence.mind.delegation.delegation"
   }
  },
+ "esoi-application": {
+  "default": "record_field_edit",
+  "evidence": {
+   "detail": "record_field_edit is better than append_to_description (two-sided exact McNemar test, Holm-adjusted p=0.00195, 10 of 10 cases disagree)",
+   "p": 0.001953,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "append_to_description": "hubofhubs.the_intelligence.critical_thinking.esoi_application.apply",
+   "record_field_edit": "hubofhubs.the_intelligence.critical_thinking.esoi_application.apply"
+  }
+ },
+ "feedback-learning": {
+  "default": "scoped_record_edit",
+  "evidence": {
+   "detail": "scoped_record_edit is better than kept_note (two-sided exact McNemar test, Holm-adjusted p=0.000488, 12 of 12 cases disagree)",
+   "p": 0.000488,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "kept_note": "hubofhubs.the_consciousness.feedback_learning.propose",
+   "scoped_record_edit": "hubofhubs.the_consciousness.feedback_learning.propose"
+  }
+ },
  "file-editing": {
   "default": "fast_edit",
   "evidence": {
@@ -340,8 +364,8 @@
  "prioritization": {
   "default": "stated_fields",
   "evidence": {
-   "detail": "stated_fields is better than as_given (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=6.1e-05, 15 of 15 cases disagree)",
-   "p": 6.1e-05,
+   "detail": "stated_fields is better than as_given (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.33e-10, 33 of 34 cases disagree)",
+   "p": 0.0,
    "verdict": "WIN"
   },
   "modules": {
@@ -352,8 +376,8 @@
  "proactivity": {
   "default": "calendar_and_events",
   "evidence": {
-   "detail": "calendar_and_events is better than elapsed_hours (two-sided exact McNemar test, Holm-adjusted p=0.00781, 8 of 18 cases disagree)",
-   "p": 0.007812,
+   "detail": "calendar_and_events is better than elapsed_hours (two-sided exact McNemar test, Holm-adjusted p=9.54e-07, 21 of 43 cases disagree)",
+   "p": 1e-06,
    "verdict": "WIN"
   },
   "modules": {
@@ -438,6 +462,18 @@
    "composition": "hubofhubs.the_consciousness.flow"
   }
  },
+ "the-hands": {
+  "default": "declared_and_used",
+  "evidence": {
+   "detail": "declared_and_used leads declaration_only (declaration_only 0.5 against declared_and_used 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.125, 4 of 8 cases disagree)",
+   "p": 0.125,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "declaration_only": "hubofhubs.the_body.hands.integrations",
+   "declared_and_used": "hubofhubs.the_body.hands.integrations"
+  }
+ },
  "the-intelligence": {
   "default": "composition",
   "modules": {
@@ -492,6 +528,11 @@
  },
  "the-self": {
   "default": "composition",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "composition": "hubofhubs.the_self.respond"
   }

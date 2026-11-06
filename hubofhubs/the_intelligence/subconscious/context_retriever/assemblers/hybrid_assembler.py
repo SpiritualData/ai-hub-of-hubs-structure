@@ -48,7 +48,7 @@ import logging
 import time
 from typing import Any, Callable, Dict, List, Optional
 
-from hubofhubs.the_body.internal_context.context import AssembledContext, ContextAssembler, ContextAssemblerBase
+from hubofhubs.the_body.internal_context.interface import AssembledContext, ContextAssembler, ContextAssemblerBase
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render import render_block_lines
 from hubofhubs.the_self.assembler import arm_needs as needs
 

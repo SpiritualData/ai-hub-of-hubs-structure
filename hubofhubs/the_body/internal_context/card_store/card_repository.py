@@ -29,7 +29,7 @@ import time
 from pathlib import Path
 import typing
 from typing import Any, Dict, List, Optional, Tuple, runtime_checkable
-from hubofhubs.the_body.filemodes import match_umask
+from hubofhubs.the_body.interface import match_umask
 from hubofhubs.the_body.internal_context.card_store import card_origin
 
 # Name of the bootstrap meta sidecar written next to cards on the filesystem. The filesystem repo

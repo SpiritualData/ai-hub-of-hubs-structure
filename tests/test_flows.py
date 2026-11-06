@@ -14,9 +14,6 @@ from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal  # noqa
 from hubofhubs.the_self.steps import NO_ARM  # noqa: E402
 from test_oneline import FakeProvider, whole_hub  # noqa: E402
 
-NO_ARM_SOLUTIONS = ("feedback-learning", "esoi-application", "the-hands")
-
-
 def walk(steps):
     for step in steps:
         yield step
@@ -35,7 +32,7 @@ def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(t
                 "long-term-memory", "live-objectives", "guidance", "the-intuition"):
         assert every[sid]["status"] == "done", (sid, every[sid])
     for sid in ("the-hands", "esoi-application"):
-        assert every[sid]["status"] == "pending" and every[sid]["reason"] == NO_ARM, (sid, every[sid])
+        assert every[sid]["status"] != "pending", (sid, every[sid])      # both have an arm now: a step is done or says why it was skipped
     assert result.note == "" and result.items[0]["url"].startswith("https://blog.rust-lang.org/")
     assert result.to_dict()["steps"] == list(result.steps)
 
@@ -60,11 +57,11 @@ def test_the_run_is_recorded_in_the_run_store_and_never_in_the_cards(tmp_path):
     assert result.note == ""
 
 
-@pytest.mark.parametrize("sid", NO_ARM_SOLUTIONS)
-def test_a_solution_with_no_arm_has_its_interface_and_says_no_arm_yet(sid):
-    with pytest.raises(Pending) as raised:
-        hubofhubs.run(sid, environ={})
-    assert {r.kind for r in raised.value.reasons} == {"provided"} and "no arm yet" in str(raised.value)
+@pytest.mark.parametrize("sid, call", (("feedback-learning", {"person": "p", "feedback": {"about": "r", "field": "f", "to": "v"}}),
+                                      ("esoi-application", {"change": {"edit": {"kind": "spec_edit", "target": "r", "field": "f", "value": "v"}}}), ("the-hands", {})))
+def test_a_solution_that_was_empty_now_has_an_arm_and_answers_with_no_key(sid, call):
+    answer = hubofhubs.run(sid, call, environ={}) if call else hubofhubs.run(sid, environ={})
+    assert answer is not None
 
 
 class Planner:

@@ -18,7 +18,7 @@ import re
 import time
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
-from hubofhubs.the_body.internal_context.context import AssembledContext
+from hubofhubs.the_body.internal_context.interface import AssembledContext
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags import affinity_factor
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.scope_tags import scope_tags_allow
 

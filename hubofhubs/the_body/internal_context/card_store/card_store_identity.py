@@ -41,7 +41,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from hubofhubs.the_body.filemodes import match_umask
+from hubofhubs.the_body.interface import match_umask
 
 log = logging.getLogger(__name__)
 

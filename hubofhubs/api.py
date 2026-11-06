@@ -24,8 +24,8 @@ LOCATIONS = {
     "check": "hubofhubs:check",
     "evaluate": "hubofhubs:evaluate",
     "evaluate_seats": "hubofhubs:evaluate_seats",
-    # hubofhubs.the_body.filemodes
-    "match_umask": "hubofhubs.the_body.filemodes:match_umask",
+    # hubofhubs.the_body.interface
+    "match_umask": "hubofhubs.the_body.interface:match_umask",
     # hubofhubs.the_body.flow
     "BodyComposition": "hubofhubs.the_body.flow:BodyComposition",
     # hubofhubs.the_body.hands.interface

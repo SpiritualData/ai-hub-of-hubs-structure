@@ -41,7 +41,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set
 
-from hubofhubs.the_body.filemodes import match_umask
+from hubofhubs.the_body.interface import match_umask
 
 from hubofhubs.the_body.internal_context.card_store import card_origin
 from hubofhubs.the_body.internal_context.card_store.card_store_lock import StoreLock

@@ -15,7 +15,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 from hubofhubs.the_body.internal_context.card_store.card_store_identity import identity_of
-from hubofhubs.the_body.filemodes import match_umask
+from hubofhubs.the_body.interface import match_umask
 from hubofhubs.the_body.internal_context.card_store.text_sampling import extract_terms as tfdfidf_extract_terms, select_representatives
 
 

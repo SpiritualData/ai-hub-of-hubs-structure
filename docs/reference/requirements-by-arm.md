@@ -46,6 +46,10 @@ at the repository root.
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, one shot (`delegated-agent-sessions:subprocess_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegation, Route to Tools and Science (`delegation:to_tools`) | none | none | none | none | no |
+| ESOI Application, Append to description (`esoi-application:append_to_description`) | none | none | none | none | no |
+| ESOI Application, Record field edit (`esoi-application:record_field_edit`) | none | none | none | none | no |
+| Feedback Learning, Kept note (`feedback-learning:kept_note`) | none | none | none | none | no |
+| Feedback Learning, Scoped record edit (`feedback-learning:scoped_record_edit`) | none | none | none | none | no |
 | File Editing, One-call file edit (`file-editing:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
 | Goal Completion, Evidence standard (`goal-completion:evidence_standard`) | none | none | none | none | no |
 | Goal Completion, Outcome is not empty (`goal-completion:nonempty`) | none | none | none | none | no |
@@ -85,6 +89,8 @@ at the repository root.
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |
 | Consciousness, Representative, priorities and feedback (`the-consciousness:composition`) | none | none | none | none | no |
+| Hands, Declaration only (`the-hands:declaration_only`) | none | none | none | none | no |
+| Hands, Declared and used (`the-hands:declared_and_used`) | none | none | none | none | no |
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
 | Intuition, What was taken for similar requests (`the-intuition:co_taken`) | none | none | none | none | no |
 | Intuition, Nearest items by wording (`the-intuition:nearest_cards`) | none | none | none | none | no |

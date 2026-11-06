@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 
-from hubofhubs.the_body.internal_context.context import AssembledContext
+from hubofhubs.the_body.internal_context.interface import AssembledContext
 from hubofhubs.the_intelligence.subconscious.context_retriever.interface import ContextRetrieval
 
 TEXT_EXTENSIONS = {".py", ".md", ".txt", ".rst", ".toml", ".yaml", ".yml", ".json", ".sh", ".ts", ".tsx", ".js", ".go", ".rs", ".java"}
