@@ -368,3 +368,17 @@ def test_the_self_orders_the_asks_waiting_on_a_person_through_consciousness_and_
     assert [a["id"] for a in out["asks"]] == ["frees-two"] and [h["id"] for h in out["held"]] == ["minor"] and [n["id"] for n in out["not_asked"]] == ["safe"]
     empty = SelfComposition(Absent(), Absent(), Absent(), Absent(), Absent(), Absent(), Absent()).order_asks(asks)
     assert empty["asks"] == [] and empty["steps"][-1]["status"] == "pending"
+
+
+def test_consciousness_converse_hands_the_front_door_to_terminal_session():
+    import io
+    from hubofhubs.the_consciousness.flow import ConsciousnessComposition
+
+    class Terminal:
+        def converse(self, front_door, lines, out, viewer_id="", prompt="> "):
+            out.write(front_door(next(iter(lines))))
+            return 0
+
+    out = io.StringIO()
+    result = ConsciousnessComposition(Absent(), Absent(), Absent(), Absent(), Absent(), Absent(), Terminal()).converse(lambda text: "heard " + text, ["hi"], out, "p1")
+    assert result["exit_code"] == 0 and out.getvalue() == "heard hi" and result["steps"][0]["status"] == "done"

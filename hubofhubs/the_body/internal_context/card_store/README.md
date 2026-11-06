@@ -9,6 +9,7 @@ Part of [Internal Context](../README.md)
 ## Card Store (`card-store`)
 
 - Out of scope: Building the cards from files (Cards From Files does that) and choosing which cards a request needs (the Context Retriever does that).
+- Delegates to: cards-from-files, context-retriever
 - Entry call: `hubofhubs.run("card-store", 'rust release')`
 - Selected implementation: Local card store (`local_card_store`)
 - Metric: Cards found again, none lost

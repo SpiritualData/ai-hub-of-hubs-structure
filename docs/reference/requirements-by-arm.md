@@ -86,6 +86,7 @@ at the repository root.
 | Role Understanding, Role checked against the part's calls (`role-understanding:checked_role`) | none | none | none | none | no |
 | Role Understanding, Role as the record states it (`role-understanding:recorded_role`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
+| Terminal Session, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |
 | Consciousness, Representative, priorities and feedback (`the-consciousness:composition`) | none | none | none | none | no |
