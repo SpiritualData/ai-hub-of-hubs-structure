@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Critical Thinking's pursue step sends fixed text (`still_working_line()`, `unmet_message(tried)`), never the checker's reason or next action, which stay in the result's `missing` for logs.
+
 ## 0.3.0
 
 - **The hub is restructured and has one front door (2026-11-04).** The layout: `hubofhubs/` shows the five containers (`the_self`, `the_body`, `the_intelligence`, `the_world`, `the_consciousness`) and `registry/`; every solution has a folder holding its records, `interface.py` and arms, and its tests sit beside it in a `tests/` folder (shared test support stays in `tests/`, shared fixtures in the root `conftest.py`). The ids are unchanged except those the entries below retire; display names lead. **Removed APIs, with no compatibility:** every old module path (`hubofhubs.act`, `.deep`, `.recall`, `.retrieval`, `.orchestrate`, `.critique`, `.consciousness`, `.terminal`, `.intake`, `.models`, `.websearch`, `.science`, `.ports`, `.proactivity`, `.seats`, `.flows`, `.whole`, `.areas`, `.quality`, `.risk` and the rest), the ids `act-in-the-world`, `score-hub-connections`, `asking-judgment`, `long-term-context`, and the calls `ask` and `stream`. **The front door:** `hubofhubs.api` exports every interface, result type and helper a consumer needs (`from hubofhubs.api import CardStore, Card, DeepRunner`), resolved lazily from one table; with `hubofhubs.run("<id>", ...)` and `hubofhubs.run(Interface)` it is the only way a consumer reaches the hub, so a later move edits that table and no consumer file. `tests/test_public_api.py` fails when an interface is not exported or a consumer-facing doc imports an internal path. The registry rows for Quest AI Runner cite its current files. The default install keeps `esoi` as a direct git URL (esoi is on no package index).

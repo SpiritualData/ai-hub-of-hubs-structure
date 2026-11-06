@@ -3,9 +3,9 @@
 It checks the draft (through the check it is given, else Goal Completion) and, while the condition is unmet and read-only means
 remain untried, offers them to ``attempt`` and checks again, within a budget: ``max_replans`` rounds and ``wall_seconds`` in all. Work estimated
 longer than ``inline_seconds`` is not made to wait: the current response goes out first with one plain line saying the rest is still being worked on
-(``announce`` is called once), and the work either continues inline or, when the budget says a ``background`` exists, is returned as the plan for
+(``announce`` is called once, with fixed text), and the work either continues inline or, when the budget says a ``background`` exists, is returned as the plan for
 that follow-up. A write is never offered, and an attempt that reports one is discarded and recorded. When the condition cannot be met the result
-says what was tried and what is missing. Every decision reads structured facts (the verdict's boolean, the means, the budget, what ``attempt``
+says what was tried and that the rest is unconfirmed; the checker's own words (``missing``) are kept in the result for logs and never put in a response. Every decision reads structured facts (the verdict's boolean, the means, the budget, what ``attempt``
 returned), never the words of a response. Standard library plus the hub
 and ``esoi``."""
 import time
@@ -17,13 +17,16 @@ DEFAULT_BUDGET: Dict[str, Any] = {"max_replans": 2, "wall_seconds": 90.0, "inlin
 MET, MET_AFTER_REPLAN, UNMET_REPORTED, CONTINUING, UNMET_SENT_AS_IS = "met", "met_after_replan", "unmet_reported", "continuing", "unmet_sent_as_is"
 
 
-def still_working_line(missing: str) -> str:
-    return "Still working on the rest: " + (missing.strip() or "the part not yet answered") + ". I will post what I find here."
+def still_working_line() -> str:
+    """The one plain line a long replan sends with the current response. It is fixed text: a verdict's reason or next action is a checker's
+    working note (often a plan addressed to a worker), so it never reaches the person; it stays in the result's ``missing`` for logs and traces."""
+    return "Still working on the part of your request I could not confirm yet. I will post what I find here."
 
 
-def unmet_message(tried: Sequence[str], missing: str) -> str:
+def unmet_message(tried: Sequence[str]) -> str:
+    """What was tried and that the rest is unconfirmed, from structured facts (the means tried) and fixed text only, for the same reason."""
     looked = "I tried " + ", ".join(tried) + "." if tried else "I had nothing further to try."
-    return f"{looked} What is still missing: {missing.strip() or 'the goal condition was not met'}."
+    return f"{looked} I could not confirm the rest of what you asked."
 
 
 def plain_text(outcome: Any) -> str:
@@ -77,7 +80,7 @@ class BoundedReplan:
             if estimate > float(limits["wall_seconds"]) - float(elapsed()):
                 break
             if estimate > float(limits["inline_seconds"]):
-                line = still_working_line(missing)
+                line = still_working_line()
                 if announce is not None and not interim:
                     announce(line)
                     interim = line
@@ -95,6 +98,6 @@ class BoundedReplan:
             if verdict.get("met"):
                 return self.result(best, MET_AFTER_REPLAN, True, replans, tried, "", interim)
         missing = str(verdict.get("reason") or "")
-        out = self.result(best, UNMET_REPORTED, False, replans, tried, missing, interim, message=unmet_message(tried, missing))
+        out = self.result(best, UNMET_REPORTED, False, replans, tried, missing, interim, message=unmet_message(tried))
         out["ignored_writes"] = ignored
         return out

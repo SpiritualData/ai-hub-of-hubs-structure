@@ -36,6 +36,12 @@ def test_long_work_is_announced_once_and_can_continue_in_the_background():
     assert got["status"] == "continuing" and len(lines) == 1 and got["continue"]["means"] == ["search"]
 
 
-def test_an_unrecoverable_goal_says_what_was_tried_and_what_is_missing():
+def test_an_unrecoverable_goal_says_what_was_tried_and_never_repeats_the_checkers_words():
     got = BoundedReplan().pursue("g", "d", "bad", lambda step: {"outcome": "still bad", "means_used": ["search"]}, [READ], None, None, check)
-    assert got["status"] == "unmet_reported" and "search" in got["message"] and "transcript" in got["message"]
+    assert got["status"] == "unmet_reported" and "search" in got["message"] and "transcript" not in got["message"] and "transcript" in got["missing"]
+
+
+def test_the_announced_line_is_fixed_text_not_the_checkers_working_note():
+    lines = []
+    BoundedReplan().pursue("g", "d", "bad", lambda step: {}, [dict(READ, cost_seconds=60)], {"background": True}, lines.append, check)
+    assert lines and "transcript" not in lines[0] and lines[0].startswith("Still working on")
