@@ -25,7 +25,7 @@ flowchart LR
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- Hands (solution with no page of its own, its implementations are in this intent's records): Make the integrations a system already depends on accessible to the AI and actually used.
+- [Hands](hands/README.md) (solution with implementations): Make the integrations a system already depends on accessible to the AI and actually used.
 - [Intake Sources](intake_sources/README.md) (solution with implementations): Let a system say where its requests come from and read them, without the hub being written for that system.
 - [Internal Context](internal_context/README.md) (solution with implementations and parts below it): Let the AI know what a particular system knows, without the hub being written for that system: the declaration of where its data lives and whether each source belongs to the system or to a person, the configuration its tools need, and the run record the flow writes.
 
@@ -43,9 +43,9 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 **Problems**
 
 - Picks go out of date (`HP3`): A part that was best a few months ago can be overtaken by a newer one, and without a fresh comparison the team using it often does not notice.
+- System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
 - App connections rebuilt by every product (`HP7`): Many products rebuild each app connection (calendar, drive, notes, chat) with their own screen, storage and tool code, so a new app costs code in every layer and often arrives months after hubs list it.
 - One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): An app connection (a calendar, a drive, a chat) is often served better by several hubs combined than by any one, but a product usually wires a single hub and hand-writes the rest.
-- System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
 - Enduring integrations unused (`hprob-enduring-integrations-unused`): A system often already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
 
 **Ideals**
@@ -54,9 +54,9 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Best in each circumstance, with variants (`hideal-best-in-circumstance-with-variants`): Each user gets the part that is best under their own limits, such as cost, speed, language or input size.
 - Guards earn their place (`hideal-guards-earn-their-place`): A guard is kept only when it catches something the model or harness would miss.
 - Agent work at the lowest cost that does it well (`hideal-cheap-fast-harness-with-ideal-context`): Work handed to an agent finishes at the lowest cost and time that keeps the same quality, with context that is enough and no more.
-- Every connected app fully usable (`hideal-hubs-combined-per-integration`): Each app a user connects offers everything the AI may do with it, and a new app needs no new code.
 - Proportionate, current cards (`hideal-cards-proportionate-and-current`): A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
 - A system offers its own context (`hideal-a-system-offers-its-own-context`): The AI can draw on everything a system knows, in any system, without code written for that system.
+- Every connected app fully usable (`hideal-hubs-combined-per-integration`): Each app a user connects offers everything the AI may do with it, and a new app needs no new code.
 - Enduring integrations reach the AI (`hideal-enduring-integrations-reach-the-ai`): The integrations a system already governs are accessible to the AI and used by it.
 
 ## Metrics and their leaders
@@ -71,7 +71,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
 - Records beside the code: [hubofhubs/the_body/hands](hands/README.md), [hubofhubs/the_body/intake_sources](intake_sources/README.md), [hubofhubs/the_body/internal_context](internal_context/README.md), [hubofhubs/the_body/internal_context/card_store](internal_context/card_store/README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
 - Diagram page: [diagram.md](diagram.md)
 
 ---
@@ -81,9 +81,9 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 ### Problems
 
 - Picks go out of date (`HP3`): A part that was best a few months ago can be overtaken by a newer one, and without a fresh comparison the team using it often does not notice.
+- System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
 - App connections rebuilt by every product (`HP7`): Many products rebuild each app connection (calendar, drive, notes, chat) with their own screen, storage and tool code, so a new app costs code in every layer and often arrives months after hubs list it.
 - One integration needs several hubs (`hprob-one-integration-needs-several-hubs`): An app connection (a calendar, a drive, a chat) is often served better by several hubs combined than by any one, but a product usually wires a single hub and hand-writes the rest.
-- System context not declared (`hprob-system-context-not-declared`): A system's own knowledge, in its internal APIs, databases and local files, cannot be offered to the AI without code written for that system.
 - Enduring integrations unused (`hprob-enduring-integrations-unused`): A system often already has enduring integrations, such as its own AI tool registry, LLM platform and guardrails, and the AI cannot reach them or does not use them.
 
 ### Ideals
@@ -92,9 +92,9 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Best in each circumstance, with variants (`hideal-best-in-circumstance-with-variants`): Each user gets the part that is best under their own limits, such as cost, speed, language or input size.
 - Guards earn their place (`hideal-guards-earn-their-place`): A guard is kept only when it catches something the model or harness would miss.
 - Agent work at the lowest cost that does it well (`hideal-cheap-fast-harness-with-ideal-context`): Work handed to an agent finishes at the lowest cost and time that keeps the same quality, with context that is enough and no more.
-- Every connected app fully usable (`hideal-hubs-combined-per-integration`): Each app a user connects offers everything the AI may do with it, and a new app needs no new code.
 - Proportionate, current cards (`hideal-cards-proportionate-and-current`): A folder's cards cover what is in it, about one card per thing people ask about, and change when the files change.
 - A system offers its own context (`hideal-a-system-offers-its-own-context`): The AI can draw on everything a system knows, in any system, without code written for that system.
+- Every connected app fully usable (`hideal-hubs-combined-per-integration`): Each app a user connects offers everything the AI may do with it, and a new app needs no new code.
 - Enduring integrations reach the AI (`hideal-enduring-integrations-reach-the-ai`): The integrations a system already governs are accessible to the AI and used by it.
 
 ### Solutions

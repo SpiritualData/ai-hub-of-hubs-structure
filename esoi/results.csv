@@ -245,3 +245,6 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-05,hands,declaration_only,8,4,4/8,0/0,0,0,0,0.0,0.0,,c661152,c3ede57b,,none,"declared_passed=4/4; unused_passed=0/2; reach_passed=0/2 | forced past unsolved failures: baseline arm, expected to fail the cases that need the edit | reused 2 case(s) already run for this implementation version"
 2026-11-05,integrated_efficiency,whole_hub,6,0,0/6,0/0,0,0,0,0.0,3.0,,c661152-dirty,261b85b5,,none,"integrated_efficiency=0.55; completed=0/6; honest=6/6 | forced past unsolved failures: offline floor: the seats are handed no keys, so no request completes and the honesty and cost terms are what is measured"
 2026-11-05,terminal_session,line_repl,14,14,14/14,0/0,0,0,0,0.0,0.0,1.0,2ebcdd3-dirty,1201471f,,none,ask_passed=3/3; command_passed=3/3; exit_passed=4/4; turn_passed=4/4
+2026-11-06,critical_thinking,composition,15,15,15/15,0/0,0,0,0,0.0,0.0,1.0,5078481-dirty,011ea1a8,,none,
+2026-11-06,feedback_learning,scoped_record_edit,19,19,19/19,0/0,0,0,0,0.0,0.0,,5078481-dirty,f08859c6,,none,named_passed=6/6; scoped_passed=2/2; unresolved_passed=4/4; noticed_passed=7/7
+2026-11-06,feedback_learning,kept_note,19,0,0/19,0/0,0,0,0,0.0,0.0,,5078481-dirty,f08859c6,,none,named_passed=0/6; scoped_passed=0/2; unresolved_passed=0/4; noticed_passed=0/7

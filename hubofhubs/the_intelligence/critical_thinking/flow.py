@@ -1,10 +1,11 @@
 """CriticalThinkingComposition."""
-from typing import Any, Mapping, Optional
+from typing import Any, Callable, Mapping, Optional, Sequence
 from esoi import implementation
 from esoi import Lazy
 from hubofhubs.the_consciousness.representatives.quality import resolve_profile
 from hubofhubs.the_intelligence.critical_thinking.esoi_application.interface import EsoiApplying
 from hubofhubs.the_intelligence.critical_thinking.goal_completion.interface import GoalCompleting
+from hubofhubs.the_intelligence.critical_thinking.pursuit import BoundedReplan
 from hubofhubs.the_intelligence.critical_thinking.metric_translation.interface import MetricTranslating
 from hubofhubs.the_intelligence.critical_thinking.response_quality.interface import ResponseJudging
 from hubofhubs.the_self.steps import DONE, listing, skipped, take
@@ -14,7 +15,7 @@ from hubofhubs.the_self.steps import done
 @implementation("critical-thinking", "composition")
 class CriticalThinkingComposition:
     """A request becomes a target (Metric Translation, recorded as a spec through ESOI Application), and the response is held to it: Goal
-    Completion says whether the goal was met, and Response Quality judges the response against the quality profile resolved for this request
+    Completion says whether the goal was met, ``pursue`` keeps working while it is unmet, with the untried reads and within a budget, and Response Quality judges the response against the quality profile resolved for this request
     (the Representative's, Guidance's and Prioritization's, else the default)."""
     REQUIRES = ()     # the seats it is handed
 
@@ -36,3 +37,11 @@ class CriticalThinkingComposition:
         judged = take(self.quality, "response-quality", response=response, evidence=evidence, profile=profile) if response else skipped(
             "response-quality", "no response to judge")
         return {"profile": profile.name, "goal": done(met), "findings": list(done(judged) or []), "steps": listing([met, judged])}
+
+    def pursue(self, goal: str, done_standard: str, draft: Any, attempt: Optional[Callable[[Mapping[str, Any]], Mapping[str, Any]]] = None,
+               means: Sequence[Mapping[str, Any]] = (), budget: Optional[Mapping[str, Any]] = None,
+               announce: Optional[Callable[[str], Any]] = None, check: Optional[Callable[[Any], Mapping[str, Any]]] = None) -> Mapping[str, Any]:
+        """Keeps working on a draft whose goal is unmet: Goal Completion's verdict (or the ``check`` the consumer gives) is read, and while it is unmet
+        the untried read-only ``means`` are offered to ``attempt`` within the ``budget``. The result holds the ``outcome`` to send, ``status``, ``met``,
+        ``replans``, ``tried``, ``missing``, the one ``interim`` line if any, and a plain ``message`` for an unmet end. A write is never offered or accepted."""
+        return dict(BoundedReplan(self.goal).pursue(goal, done_standard, draft, attempt, means, budget, announce, check))

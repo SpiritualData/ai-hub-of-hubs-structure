@@ -19,4 +19,4 @@ def score_case(fn, case):
 
 
 def aggregate(rows):
-    return {f"{k}_passed": f"{sum(bool(r['ok']) for r in rows if r.get('kind') == k)}/{sum(r.get('kind') == k for r in rows)}" for k in ("named", "scoped", "unresolved")}
+    return {f"{k}_passed": f"{sum(bool(r['ok']) for r in rows if r.get('kind') == k)}/{sum(r.get('kind') == k for r in rows)}" for k in ("named", "scoped", "unresolved", "noticed")}

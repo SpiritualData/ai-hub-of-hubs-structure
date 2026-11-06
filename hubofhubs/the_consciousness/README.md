@@ -14,7 +14,7 @@ Consciousness is where the system adapts to the humans and policies it works for
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- Feedback Learning (solution with no page of its own, its implementations are in this intent's records): Make a correction given once change behaviour afterwards: propose edits to specs and metrics, which ESOI Application applies directly unless Judgment Calls decides to ask.
+- [Feedback Learning](feedback_learning/README.md) (solution with implementations): Make what went wrong once change behaviour afterwards: propose edits to specs, metrics and the datasets that measure them, which ESOI Application applies directly unless Judgment Calls decides to ask.
 - [Judgment Calls](judgment_calls/README.md) (solution with implementations): Ask a person only when that person would want to be asked, and decide how: whether the ask blocks or waits, whether it is batched, what may continue meanwhile, and whether a change to specs or a learning step needs an ask at all (by default it does not).
 - [Prioritization](prioritization/README.md) (solution with implementations): Put what competes for a person's attention in the order they would: their work, the asks to them and their goals.
 - [Representatives](representatives/README.md) (solution with implementations): Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
@@ -58,7 +58,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- A correction given once is followed afterwards (`metric-feedback-learning`): leader `scoped_record_edit`, 12 of 12 cases
+- A correction given once is followed afterwards (`metric-feedback-learning`): leader `scoped_record_edit`, 19 of 19 cases
 - Asked when a person should be asked (`metric-judgment-calls`): leader `severity_policy`, 72 of 72 cases
 - Work, asks and milestones in the order the stated rules give (`metric-human-prioritization`): leader `stated_fields`, 34 of 34 cases
 - Authority that stays with its person (`metric-the-representatives`)
@@ -70,7 +70,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
 - Records beside the code: [hubofhubs/the_consciousness/feedback_learning](feedback_learning/README.md), [hubofhubs/the_consciousness/judgment_calls](judgment_calls/README.md), [hubofhubs/the_consciousness/prioritization](prioritization/README.md), [hubofhubs/the_consciousness/representatives](representatives/README.md), [hubofhubs/the_consciousness/request_intake](request_intake/README.md), [hubofhubs/the_consciousness/terminal](terminal/README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
 
 ---
 

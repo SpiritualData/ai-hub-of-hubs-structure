@@ -264,5 +264,209 @@
    "person": "p1",
    "unresolved": "the feedback concerns weather, which is not a spec, a metric or a quality profile"
   }
+ },
+ {
+  "id": "learn-noticed-unmet",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "input": "what should the team do next?",
+    "signals": {
+     "unmet": true
+    },
+    "at": "2026-01-01T00:00:00Z"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "dataset_case_add",
+    "target": "poorly_answered_inputs",
+    "field": "cases",
+    "value": {
+     "case_id": "CAND-4bf1114ae7",
+     "input": "what should the team do next?",
+     "signals": [
+      "unmet"
+     ],
+     "reason": "unmet",
+     "timestamp": "2026-01-01T00:00:00Z"
+    },
+    "scope": "p1",
+    "reason": "unmet"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-noticed-error",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "input": "send me the notes",
+    "signals": {
+     "error": true
+    },
+    "at": "2026-01-01T00:00:00Z"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "dataset_case_add",
+    "target": "poorly_answered_inputs",
+    "field": "cases",
+    "value": {
+     "case_id": "CAND-4bcb07cad1",
+     "input": "send me the notes",
+     "signals": [
+      "error"
+     ],
+     "reason": "error",
+     "timestamp": "2026-01-01T00:00:00Z"
+    },
+    "scope": "p1",
+    "reason": "error"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-noticed-empty-reply",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "input": "any updates?",
+    "signals": {
+     "empty_reply": true
+    },
+    "at": "2026-01-01T00:00:00Z"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "dataset_case_add",
+    "target": "poorly_answered_inputs",
+    "field": "cases",
+    "value": {
+     "case_id": "CAND-a8308e59f0",
+     "input": "any updates?",
+     "signals": [
+      "empty_reply"
+     ],
+     "reason": "empty_reply",
+     "timestamp": "2026-01-01T00:00:00Z"
+    },
+    "scope": "p1",
+    "reason": "empty_reply"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-noticed-pushed-back",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "input": "summarise the call",
+    "signals": {
+     "pushed_back": true,
+     "unmet": false
+    },
+    "at": "2026-01-01T00:00:00Z"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "dataset_case_add",
+    "target": "poorly_answered_inputs",
+    "field": "cases",
+    "value": {
+     "case_id": "CAND-b781b26bc7",
+     "input": "summarise the call",
+     "signals": [
+      "pushed_back"
+     ],
+     "reason": "pushed_back",
+     "timestamp": "2026-01-01T00:00:00Z"
+    },
+    "scope": "p1",
+    "reason": "pushed_back"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-noticed-unhappy-and-unmet",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "input": "plan the week",
+    "signals": {
+     "unhappy_followup": true,
+     "unmet": true
+    },
+    "at": "2026-01-01T00:00:00Z"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "dataset_case_add",
+    "target": "poorly_answered_inputs",
+    "field": "cases",
+    "value": {
+     "case_id": "CAND-a08d8c42ec",
+     "input": "plan the week",
+     "signals": [
+      "unmet",
+      "unhappy_followup"
+     ],
+     "reason": "unmet, unhappy_followup",
+     "timestamp": "2026-01-01T00:00:00Z"
+    },
+    "scope": "p1",
+    "reason": "unmet, unhappy_followup"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-noticed-unresolved-handled-well",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "input": "hello",
+    "signals": {
+     "unmet": false,
+     "error": false
+    }
+   }
+  },
+  "expect": {
+   "edit": null,
+   "person": "p1",
+   "unresolved": "no signal says the input was handled badly"
+  }
+ },
+ {
+  "id": "learn-noticed-unresolved-no-input",
+  "kind": "noticed",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "signals": {
+     "error": true
+    }
+   }
+  },
+  "expect": {
+   "edit": null,
+   "person": "p1",
+   "unresolved": "the feedback does not say what was asked"
+  }
  }
 ]

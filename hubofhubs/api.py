@@ -195,6 +195,9 @@ NAMES = {
         "Block", "TerminalState", "answer_ask", "close_ask", "continue_message", "fold_ask", "settle", "toggle_trail", "toggle_updates",
         "unfold_ask",
     ),
+    "hubofhubs.the_consciousness.feedback_learning.propose": (
+        "ScopedRecordEdit", "SIGNALS",
+    ),
     "hubofhubs.the_consciousness.terminal.asks": (
         "error_block", "is_for_viewer",
     ),
@@ -213,6 +216,9 @@ NAMES = {
     ),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.sufficiency": (
         "AbridgedTurnState", "READ_SPEC_KEYS", "collect_abridged_items", "render_abridged_notice",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.pursuit": (
+        "BoundedReplan", "still_working_line", "unmet_message",
     ),
     "hubofhubs.the_intelligence.critical_thinking.interface": (
         "CriticalThinking",

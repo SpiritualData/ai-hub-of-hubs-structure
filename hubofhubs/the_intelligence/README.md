@@ -25,7 +25,7 @@ flowchart LR
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- [Holding a request to a measure](critical_thinking/README.md) (sub-intent): A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.
+- [Holding a request to a measure](critical_thinking/README.md) (sub-intent): Every request is held to a measure until its goal is met.
 - [The long view across requests](higher_mind/README.md) (sub-intent): The AI keeps a long view that spans requests: what it remembers, the objectives it is serving, and an infrequent longer-term nudge for the Planner.
 - [What the Mind sees and does for one request](mind/README.md) (sub-intent): For one request the Mind works from one view of the information, breaks the request into pieces, hands a piece on only when a worker is needed, and writes the plan, request or communication its reader needs.
 - [Finding and preparing information for the Mind](subconscious/README.md) (sub-intent): The information a request needs is found and prepared before the Mind asks for it, from the system's own cards, its files and what comes to mind unasked.
@@ -36,7 +36,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Critical Thinking | `critical-thinking` | `hubofhubs.run("critical-thinking", {'request': 'what is the latest Rust version?'})` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
+| Critical Thinking | `critical-thinking` | `hubofhubs.run("critical-thinking", {'request': 'what is the latest Rust version?'})` | Target, goal and quality in order (`composition`) | Unmet goals pursued within their budget |
 | Subconscious | `the-subconscious` | `hubofhubs.run("the-subconscious", 'rust release')` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
 | Mind | `the-mind` | `hubofhubs.run("the-mind", {'request': 'what is the latest Rust version?'})` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust version?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
@@ -65,7 +65,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- Requests with a named problem, ideal and metric (`metric-critical-thinking`)
+- Unmet goals pursued within their budget (`metric-critical-thinking`): leader `composition`, 15 of 15 cases
 - Answer quality per dollar and per second (`metric-the-mind`)
 - Right context admitted, none from another scope (`metric-the-subconscious`)
 - The long view survives between requests (`metric-higher-mind`)
@@ -111,7 +111,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Critical Thinking | `critical-thinking` | Target, goal and quality in order (`composition`) | Requests with a named problem, ideal and metric |
+| Critical Thinking | `critical-thinking` | Target, goal and quality in order (`composition`) | Unmet goals pursued within their budget |
 | Subconscious | `the-subconscious` | Cards drawn by relevance from a store (`card_recall`) | Right context admitted, none from another scope |
 | Mind | `the-mind` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
@@ -132,7 +132,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ### Metrics
 
-- Requests with a named problem, ideal and metric (`metric-critical-thinking`): `none`
+- Unmet goals pursued within their budget (`metric-critical-thinking`): `esoi run critical_thinking --impl composition`
 - Answer quality per dollar and per second (`metric-the-mind`): `none`
 - Right context admitted, none from another scope (`metric-the-subconscious`): `none`
 - The long view survives between requests (`metric-higher-mind`): `none`

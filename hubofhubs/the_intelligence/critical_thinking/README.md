@@ -1,20 +1,20 @@
 # Holding a request to a measure
 
-**Vision statement:** A request becomes a metric with a target and a budget, adjustable while the work runs, and the result is held to it: was the goal met, and is the response good for this person.
+**Vision statement:** Every request is held to a measure until its goal is met.
 
 Breadcrumb: [Top](../../../esoi/README.md) > [How the AI processes information](../README.md) > Holding a request to a measure
 
-This sub-intent arises as the implementation `critical-thinking:composition` of its parent intent [`the_intelligence`](../README.md). Opportunities: Translating a request into a metric, creating and editing the specs and metrics, judging goal completion and judging response quality are four ML tasks, each improvable on its own accuracy.
+This sub-intent arises as the implementation `critical-thinking:composition` of its parent intent [`the_intelligence`](../README.md). Opportunities: Translating a request into a metric, creating and editing the specs and metrics, judging goal completion, replanning an unmet goal and judging response quality are five ML tasks, each improvable on its own accuracy.
 
 ## How the solutions fit together
 
-Critical Thinking holds a request to a measure. Metric Translation turns the request into a metric with a target value or improvement and a budget, adjustable while the work runs. ESOI Application records that metric as a spec and applies the principles, creating and editing specs and metrics. Goal Completion says whether the goal's condition was met against its done-standard. Response Quality judges the response against the quality profile resolved for the request.
+Critical Thinking holds a request to a measure. Metric Translation turns the request into a metric with a target value or improvement and a budget, adjustable while the work runs. ESOI Application records that metric as a spec and applies the principles, creating and editing specs and metrics. Goal Completion says whether the goal's condition was met against its done-standard. When it was not, the composition's pursue step uses the untried read-only means within a budget before the response is sent, says once that the rest is still being worked on when the work is long, and otherwise reports what was tried and what is missing. Response Quality judges the response against the quality profile resolved for the request.
 
 ## One level below
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- ESOI Application (solution with no page of its own, its implementations are in this intent's records): Apply a proposed edit to the system's own specs and metrics exactly as proposed: an AI is the author of the specs, and the edit is applied directly unless Judgment Calls decides to ask.
+- [ESOI Application](esoi_application/README.md) (solution with implementations): Apply a proposed edit to the system's own specs and metrics exactly as proposed: an AI is the author of the specs, and the edit is applied directly unless Judgment Calls decides to ask.
 - [Goal Completion](goal_completion/README.md) (solution with implementations): Check that the goal was met.
 - [Metric Translation](metric_translation/README.md) (solution with implementations): Make what success means for a request explicit and measurable as a goal record: the metric, its target, the done-standard and the budget (attempts, pieces and model calls) that Delegation and Model Plumbing enforce.
 - [Response Quality](response_quality/README.md) (solution with implementations): Judge a response against the quality profile that applies to this request.
@@ -33,11 +33,13 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 **Problems**
 
 - Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
+- Answer sent while the goal is unmet (`hprob-answer-sent-while-goal-unmet`): A draft that does not meet the goal condition is sent as final after one pass, or hands the work back to the person, although means that could meet it were never tried.
 - Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
 
 **Ideals**
 
 - Every request has a target (`hideal-every-request-has-a-target`): For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.
+- A goal is pursued until met or honestly reported (`hideal-a-goal-is-pursued-until-met-or-honestly-reported`): A request is worked on until its goal is met, and when it cannot be, the person is told exactly what was tried and what is missing.
 - Quality is judged per profile (`hideal-quality-is-per-profile`): A response is high quality by the standard of the person and situation it serves, and good by default for someone who has said nothing yet.
 
 ## Metrics and their leaders
@@ -52,7 +54,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
 - Records beside the code: [hubofhubs/the_intelligence/critical_thinking/esoi_application](esoi_application/README.md), [hubofhubs/the_intelligence/critical_thinking/goal_completion](goal_completion/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_translation](metric_translation/README.md), [hubofhubs/the_intelligence/critical_thinking/response_quality](response_quality/README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
 
 ---
 
@@ -61,11 +63,13 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 ### Problems
 
 - Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
+- Answer sent while the goal is unmet (`hprob-answer-sent-while-goal-unmet`): A draft that does not meet the goal condition is sent as final after one pass, or hands the work back to the person, although means that could meet it were never tried.
 - Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
 
 ### Ideals
 
 - Every request has a target (`hideal-every-request-has-a-target`): For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.
+- A goal is pursued until met or honestly reported (`hideal-a-goal-is-pursued-until-met-or-honestly-reported`): A request is worked on until its goal is met, and when it cannot be, the person is told exactly what was tried and what is missing.
 - Quality is judged per profile (`hideal-quality-is-per-profile`): A response is high quality by the standard of the person and situation it serves, and good by default for someone who has said nothing yet.
 
 ### Solutions

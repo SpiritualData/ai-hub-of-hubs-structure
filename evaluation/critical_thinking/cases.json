@@ -1,0 +1,746 @@
+[
+ {
+  "id": "pursuit-met-first-pass",
+  "kind": "first_pass",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met",
+   "met": true,
+   "replans": 0,
+   "tried": [],
+   "interims": 0,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-met-after-one-replan",
+  "kind": "replan",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-met-after-two-replans",
+  "kind": "replan",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Found part of it.": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    },
+    {
+     "name": "lookup",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Found part of it.",
+     "means_used": [
+      "search"
+     ]
+    },
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "lookup"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 2,
+   "tried": [
+    "search",
+    "lookup"
+   ],
+   "interims": 0,
+   "attempts": 2,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-unrecoverable-no-means",
+  "kind": "unrecoverable",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false
+   },
+   "means": [],
+   "attempts": [],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 0,
+   "tried": [],
+   "interims": 0,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-unrecoverable-after-trying",
+  "kind": "unrecoverable",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Found part of it.": false
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Found part of it.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "Found part of it.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-no-attempt-to-run",
+  "kind": "unrecoverable",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": false,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 0,
+   "tried": [],
+   "interims": 0,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-empty-outcome-keeps-the-draft",
+  "kind": "unrecoverable",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-write-never-offered",
+  "kind": "write",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    },
+    {
+     "name": "post",
+     "kind": "write",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-write-reported-is-discarded",
+  "kind": "write",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ],
+     "writes": [
+      "post"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 1,
+   "tried": [],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 1
+  }
+ },
+ {
+  "id": "pursuit-replan-cap-respected",
+  "kind": "cap",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Found part of it.": false
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    },
+    {
+     "name": "lookup",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Found part of it.",
+     "means_used": [
+      "search"
+     ]
+    },
+    {
+     "outcome": "Found part of it.",
+     "means_used": [
+      "lookup"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 1,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "Found part of it.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-wall-cap-respected",
+  "kind": "cap",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 100,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 98
+  },
+  "expect": {
+   "status": "unmet_reported",
+   "met": false,
+   "replans": 0,
+   "tried": [],
+   "interims": 0,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-long-work-announces-once-and-runs",
+  "kind": "interim",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 40
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 1,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-long-work-hands-on-to-the-background",
+  "kind": "interim",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 40
+    }
+   ],
+   "attempts": [],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": true
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "continuing",
+   "met": false,
+   "replans": 0,
+   "tried": [],
+   "interims": 1,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": true,
+   "outcome": "I do not have it, could you paste it?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-two-long-rounds-announce-once",
+  "kind": "interim",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Found part of it.": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 40
+    },
+    {
+     "name": "lookup",
+     "kind": "read",
+     "cost_seconds": 40
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Found part of it.",
+     "means_used": [
+      "search"
+     ]
+    },
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "lookup"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 400,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 2,
+   "tried": [
+    "search",
+    "lookup"
+   ],
+   "interims": 1,
+   "attempts": 2,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-short-work-does-not-announce",
+  "kind": "interim",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ }
+]

@@ -1,10 +1,11 @@
 """Rebuild cases.json for Feedback Learning: written feedback from a person and the edit a careful reader would propose from it, or the reason none can be
-proposed. Twelve cases: six corrections that name a record, a field and a new value (a spec, a metric and a quality profile), two that name a person so the edit
-is scoped to them, and four that are too vague, name nothing or concern something that is not a record, which must come back unresolved.
+proposed. Nineteen cases: six corrections that name a record, a field and a new value (a spec, a metric and a quality profile), two that name a person so the edit
+is scoped to them, and four that are too vague, name nothing or concern something that is not a record, which must come back unresolved, and seven reports of a turn that ended badly (one per signal, two together, a turn handled well and one with no input) that become a proposed new case or come back unresolved.
 
     python3 evaluation/feedback_learning/build_cases.py
 
 Standard library only."""
+import hashlib
 import json
 from pathlib import Path
 
@@ -40,6 +41,20 @@ def main():
              "the feedback concerns weather, which is not a spec, a metric or a quality profile")):
         cases.append({"id": "learn-unresolved-" + name, "kind": "unresolved", "args": {"person": person, "feedback": feedback},
                       "expect": {"edit": None, "person": person, "unresolved": why}})
+    for name, input_text, signals, expect_signals in (
+            ("unmet", "what should the team do next?", {"unmet": True}, ["unmet"]),
+            ("error", "send me the notes", {"error": True}, ["error"]),
+            ("empty-reply", "any updates?", {"empty_reply": True}, ["empty_reply"]),
+            ("pushed-back", "summarise the call", {"pushed_back": True, "unmet": False}, ["pushed_back"]),
+            ("unhappy-and-unmet", "plan the week", {"unhappy_followup": True, "unmet": True}, ["unmet", "unhappy_followup"])):
+        case = {"case_id": "CAND-" + hashlib.sha1(input_text.encode("utf-8")).hexdigest()[:10], "input": input_text, "signals": expect_signals,
+                "reason": ", ".join(expect_signals), "timestamp": "2026-01-01T00:00:00Z"}
+        cases.append({"id": "learn-noticed-" + name, "kind": "noticed", "args": {"person": "p1", "feedback": {"input": input_text, "signals": signals, "at": "2026-01-01T00:00:00Z"}},
+                      "expect": {"edit": {"kind": "dataset_case_add", "target": "poorly_answered_inputs", "field": "cases", "value": case, "scope": "p1", "reason": case["reason"]}, "person": "p1"}})
+    for name, feedback, why in (
+            ("handled-well", {"input": "hello", "signals": {"unmet": False, "error": False}}, "no signal says the input was handled badly"),
+            ("no-input", {"signals": {"error": True}}, "the feedback does not say what was asked")):
+        cases.append({"id": "learn-noticed-unresolved-" + name, "kind": "noticed", "args": {"person": "p1", "feedback": feedback}, "expect": {"edit": None, "person": "p1", "unresolved": why}})
     (HERE / "cases.json").write_text(json.dumps(cases, indent=1) + "\n")
     print(len(cases), "cases")
 
