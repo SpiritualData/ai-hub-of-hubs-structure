@@ -3,7 +3,6 @@
 The cases are invented and neutral (``build_cases.py``). One number: the share of cases that recall exactly the expected ids in order. No model call, no network."""
 import inspect
 import sys
-import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -18,7 +17,7 @@ def adapt(implementation, meter):
         if needs_store:
             from hubofhubs.the_body.internal_context.card_store.cardstore import LocalCardStore
             return implementation(LocalCardStore())
-        return implementation(tempfile.mkdtemp(prefix="memory-case-"))
+        return implementation()
 
     def run(kind, args):
         arm = fresh()

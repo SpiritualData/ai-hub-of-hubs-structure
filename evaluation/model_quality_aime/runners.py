@@ -82,14 +82,14 @@ def claude_arm(alias):
     """``claude -p`` for the model alias (haiku, sonnet, opus). The recorded model is the id the CLI reports having used."""
     def build(meter):
         counter = SubscriptionCounter()
-        scratch = tempfile.mkdtemp(prefix="aime-claude-")
+        scratch = tempfile.TemporaryDirectory(prefix="aime-claude-")   # removed when the arm is collected or the process exits
         environ = {k: v for k, v in os.environ.items() if not k.startswith("ANTHROPIC_API") and k not in ("ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL")}
 
         def ask(question):
             done = subprocess.run(
                 ["claude", "-p", PROMPT.format(question=question), "--model", alias, "--effort", "high", "--output-format", "json",
                  "--tools", "", "--setting-sources", "", "--strict-mcp-config", "--no-session-persistence"],
-                capture_output=True, text=True, timeout=1800, cwd=scratch, env=environ, stdin=subprocess.DEVNULL)
+                capture_output=True, text=True, timeout=1800, cwd=scratch.name, env=environ, stdin=subprocess.DEVNULL)
             out = json.loads(done.stdout)
             if out.get("is_error"):
                 raise RuntimeError(f"claude -p failed: {out.get('result')}")

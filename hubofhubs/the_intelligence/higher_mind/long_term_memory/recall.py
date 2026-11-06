@@ -66,7 +66,8 @@ class FileRecall:
     REQUIRES = ()     # standard library
 
     def __init__(self, directory: str = "", max_age_days: float = MAX_AGE_DAYS, half_life_days: float = HALF_LIFE_DAYS):
-        self.directory = Path(directory or tempfile.mkdtemp(prefix="long-term-memory-"))
+        self.scratch = None if directory else tempfile.TemporaryDirectory(prefix="long-term-memory-")  # removed when this arm is collected or the process exits
+        self.directory = Path(directory or self.scratch.name)
         self.max_age_days, self.half_life_days = max_age_days, half_life_days
 
     def path(self, person: str) -> Path:

@@ -49,7 +49,8 @@ class Selector:
                 raise ValueError(f"two cards share the id {record['id']!r}")
             records[record["id"]] = record
         self.records = records
-        self.store = store_class(corpus.selector_path)(tempfile.mkdtemp(prefix="cards_from_files_"), repo_root=str(corpus.root),
+        self.scratch = tempfile.TemporaryDirectory(prefix="cards_from_files_")   # removed when the selector is collected or the process exits
+        self.store = store_class(corpus.selector_path)(self.scratch.name, repo_root=str(corpus.root),
                                                        auto_bootstrap=False, confidence_threshold=0.0, max_cards_in_view=VIEW_CARDS)
         for card_id, record in records.items():
             self.store._own_repo.write(card_id, record)
