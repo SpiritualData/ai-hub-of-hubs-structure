@@ -45,6 +45,12 @@ class PlanDecision:
     # their choices): the reply asks for them first and drafts nothing. A structured self-report on the planning call, so the reply
     # writer is told by a field, never by the wording of the planner's prose.
     asks_first: bool = False
+    # The reply rests on what the person's own records (notes, logs, entries, collections) hold beyond what the context shows. A structured
+    # self-report on the planning call: a loop that sees it set on an answer with no record read this turn sends the planner back to read.
+    needs_records: bool = False
+    # The message speaks of a photo, image or file as sent with it. With no attachment object on the turn the reply says nothing arrived
+    # (decided from this field and the attachment count, never from the wording of the message or the reply).
+    refers_to_attachment: bool = False
     # The SHAPE the reply to this message must take (a small enum the consumer defines, e.g. yes_no, one_step, brief, readback,
     # default), self-reported by the planner on the planning call it already makes. None or an unknown value means no shape was
     # named. The reply writer's situation standard is selected from this field, never from the wording of any model output.
