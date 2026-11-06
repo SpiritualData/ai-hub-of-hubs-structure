@@ -144,7 +144,7 @@ def report(answer: Mapping[str, Any], said: Mapping[str, Any]) -> Dict[str, Any]
         out = {"applied": True, **said}
         if "before" in answer:
             out["before"] = answer["before"]
-        if "fields" in said:
+        if "fields" in said or said.get("field") == "milestones":
             out["created"] = True
         return out
     if status == "unchanged":
