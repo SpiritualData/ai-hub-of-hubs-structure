@@ -14,7 +14,7 @@ Critical Thinking holds a request to a measure. Metric Translation turns the req
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- ESOI Application (solution with no page of its own, its implementations are in this intent's records): Apply ESOI to the system's own specs and metrics: an AI is the author of the specs, and a proposed edit is applied directly unless Judgment Calls decides to ask.
+- ESOI Application (solution with no page of its own, its implementations are in this intent's records): Apply a proposed edit to the system's own specs and metrics exactly as proposed: an AI is the author of the specs, and the edit is applied directly unless Judgment Calls decides to ask.
 - [Goal Completion](goal_completion/README.md) (solution with implementations): Check that the goal was met.
 - [Metric Translation](metric_translation/README.md) (solution with implementations): Make what success means for a request explicit and measurable as a goal record: the metric, its target, the done-standard and the budget (attempts, pieces and model calls) that Delegation and Model Plumbing enforce.
 - [Response Quality](response_quality/README.md) (solution with implementations): Judge a response against the quality profile that applies to this request.
@@ -23,7 +23,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| ESOI Application | `esoi-application` | `hubofhubs.run("esoi-application", {'change': {}})` | none selected | Specs and metrics improve by the loop |
+| ESOI Application | `esoi-application` | `hubofhubs.run("esoi-application", {'change': {}})` | Record field edit (`record_field_edit`) | Edits change exactly the field proposed |
 | Goal Completion | `goal-completion` | `hubofhubs.run("goal-completion", ...)` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Metric Translation | `metric-translation` | `hubofhubs.run("metric-translation", {'request': 'what is the latest Rust version?'})` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
 | Response Quality | `response-quality` | `hubofhubs.run("response-quality", ...)` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
@@ -42,7 +42,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- Specs and metrics improve by the loop (`metric-esoi-application`)
+- Edits change exactly the field proposed (`metric-esoi-application`): leader `record_field_edit`, 10 of 10 cases
 - Goals judged met only when they are (`metric-goal-completion`): leader `evidence_standard`, 14 of 14 cases
 - A goal record with a target and a budget (`metric-metric-translation`)
 - Balanced score of a response against its quality profile (`metric-response-quality`)
@@ -51,7 +51,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
-- Records beside the code: [hubofhubs/the_intelligence/critical_thinking/goal_completion](goal_completion/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_translation](metric_translation/README.md), [hubofhubs/the_intelligence/critical_thinking/response_quality](response_quality/README.md)
+- Records beside the code: [hubofhubs/the_intelligence/critical_thinking/esoi_application](esoi_application/README.md), [hubofhubs/the_intelligence/critical_thinking/goal_completion](goal_completion/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_translation](metric_translation/README.md), [hubofhubs/the_intelligence/critical_thinking/response_quality](response_quality/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
 
 ---
@@ -72,7 +72,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| ESOI Application | `esoi-application` | none selected | Specs and metrics improve by the loop |
+| ESOI Application | `esoi-application` | Record field edit (`record_field_edit`) | Edits change exactly the field proposed |
 | Goal Completion | `goal-completion` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Metric Translation | `metric-translation` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
 | Response Quality | `response-quality` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
@@ -81,6 +81,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
+| Append to description | `esoi-application:append_to_description` | [hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py](esoi_application/apply.py) |  |
+| Record field edit | `esoi-application:record_field_edit` | [hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py](esoi_application/apply.py) |  |
 | Evidence standard | `goal-completion:evidence_standard` | [hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py](goal_completion/goal_completion.py) |  |
 | Outcome is not empty | `goal-completion:nonempty` | [hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py](goal_completion/goal_completion.py) |  |
 | Goal record with default budget | `metric-translation:goal_record` | [hubofhubs/the_intelligence/critical_thinking/metric_translation/translation.py](metric_translation/translation.py) |  |
@@ -88,7 +90,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ### Metrics
 
-- Specs and metrics improve by the loop (`metric-esoi-application`): `none`
+- Edits change exactly the field proposed (`metric-esoi-application`): `esoi run esoi_application --impl record_field_edit; esoi run esoi_application --impl append_to_description`
 - Goals judged met only when they are (`metric-goal-completion`): `esoi run goal_completion --impl evidence_standard; esoi run goal_completion --impl nonempty`
 - A goal record with a target and a budget (`metric-metric-translation`): `python3 -m pytest tests/test_orchestrate_parts.py`
 - Balanced score of a response against its quality profile (`metric-response-quality`): `none`

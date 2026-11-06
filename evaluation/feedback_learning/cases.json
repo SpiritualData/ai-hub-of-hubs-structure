@@ -1,0 +1,268 @@
+[
+ {
+  "id": "learn-spec-purpose",
+  "kind": "named",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "say what it is for first",
+    "about": "role-writer",
+    "field": "purpose",
+    "to": "State what the answer is for in its first sentence."
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "spec_edit",
+    "target": "role-writer",
+    "field": "purpose",
+    "value": "State what the answer is for in its first sentence.",
+    "scope": "p1",
+    "reason": "say what it is for first"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-spec-out-of-scope",
+  "kind": "named",
+  "args": {
+   "person": "p2",
+   "feedback": {
+    "text": "not your job",
+    "about": "role-writer",
+    "field": "out_of_scope",
+    "to": "Choosing the topic of the request."
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "spec_edit",
+    "target": "role-writer",
+    "field": "out_of_scope",
+    "value": "Choosing the topic of the request.",
+    "scope": "p2",
+    "reason": "not your job"
+   },
+   "person": "p2"
+  }
+ },
+ {
+  "id": "learn-metric-record",
+  "kind": "named",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "count only cited answers",
+    "about": "metric-cited",
+    "field": "record",
+    "to": "The share of answers with a cited source.",
+    "concerns": "metric"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "metric_edit",
+    "target": "metric-cited",
+    "field": "record",
+    "value": "The share of answers with a cited source.",
+    "scope": "p1",
+    "reason": "count only cited answers"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-metric-purpose",
+  "kind": "named",
+  "args": {
+   "person": "p3",
+   "feedback": {
+    "text": "stricter",
+    "about": "metric-cited",
+    "field": "purpose",
+    "to": "Every claim has a source.",
+    "concerns": "metric"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "metric_edit",
+    "target": "metric-cited",
+    "field": "purpose",
+    "value": "Every claim has a source.",
+    "scope": "p3",
+    "reason": "stricter"
+   },
+   "person": "p3"
+  }
+ },
+ {
+  "id": "learn-profile-concision",
+  "kind": "named",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "too long",
+    "about": "profile-p1",
+    "field": "concision",
+    "to": "short",
+    "concerns": "quality_profile"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "quality_profile_edit",
+    "target": "profile-p1",
+    "field": "concision",
+    "value": "short",
+    "scope": "p1",
+    "reason": "too long"
+   },
+   "person": "p1"
+  }
+ },
+ {
+  "id": "learn-profile-tone",
+  "kind": "named",
+  "args": {
+   "person": "p2",
+   "feedback": {
+    "text": "warmer please",
+    "about": "profile-p2",
+    "field": "tone",
+    "to": "warm",
+    "concerns": "quality_profile"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "quality_profile_edit",
+    "target": "profile-p2",
+    "field": "tone",
+    "value": "warm",
+    "scope": "p2",
+    "reason": "warmer please"
+   },
+   "person": "p2"
+  }
+ },
+ {
+  "id": "learn-scoped-to-first-person",
+  "kind": "scoped",
+  "args": {
+   "person": "alice",
+   "feedback": {
+    "text": "shorter",
+    "about": "profile-alice",
+    "field": "concision",
+    "to": "short",
+    "concerns": "quality_profile"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "quality_profile_edit",
+    "target": "profile-alice",
+    "field": "concision",
+    "value": "short",
+    "scope": "alice",
+    "reason": "shorter"
+   },
+   "person": "alice"
+  }
+ },
+ {
+  "id": "learn-scoped-to-second-person",
+  "kind": "scoped",
+  "args": {
+   "person": "bob",
+   "feedback": {
+    "text": "longer",
+    "about": "profile-bob",
+    "field": "concision",
+    "to": "long",
+    "concerns": "quality_profile"
+   }
+  },
+  "expect": {
+   "edit": {
+    "kind": "quality_profile_edit",
+    "target": "profile-bob",
+    "field": "concision",
+    "value": "long",
+    "scope": "bob",
+    "reason": "longer"
+   },
+   "person": "bob"
+  }
+ },
+ {
+  "id": "learn-unresolved-no-target",
+  "kind": "unresolved",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "that was wrong",
+    "field": "purpose",
+    "to": "x"
+   }
+  },
+  "expect": {
+   "edit": null,
+   "person": "p1",
+   "unresolved": "the feedback does not say what it concerns"
+  }
+ },
+ {
+  "id": "learn-unresolved-no-value",
+  "kind": "unresolved",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "change the purpose",
+    "about": "role-writer",
+    "field": "purpose"
+   }
+  },
+  "expect": {
+   "edit": null,
+   "person": "p1",
+   "unresolved": "the feedback does not say the new value"
+  }
+ },
+ {
+  "id": "learn-unresolved-only-text",
+  "kind": "unresolved",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "I did not like it"
+   }
+  },
+  "expect": {
+   "edit": null,
+   "person": "p1",
+   "unresolved": "the feedback does not say what it concerns or the field or the new value"
+  }
+ },
+ {
+  "id": "learn-unresolved-not-a-record",
+  "kind": "unresolved",
+  "args": {
+   "person": "p1",
+   "feedback": {
+    "text": "be nicer",
+    "about": "the weather",
+    "field": "tone",
+    "to": "nice",
+    "concerns": "weather"
+   }
+  },
+  "expect": {
+   "edit": null,
+   "person": "p1",
+   "unresolved": "the feedback concerns weather, which is not a spec, a metric or a quality profile"
+  }
+ }
+]

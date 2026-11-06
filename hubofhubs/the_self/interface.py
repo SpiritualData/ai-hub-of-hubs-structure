@@ -11,7 +11,8 @@ class SelfAnswering(typing.Protocol):
     request with the person's authority, World's tools do the outside work, the run is recorded and Integrity audits it, and Consciousness learns
     from feedback. ``respond`` returns a ``Result`` whose ``steps`` say, for every part, whether it ran, was skipped or has no arm yet; no answer is
     made up when a part is missing. ``serve`` takes the waiting requests in through Consciousness and responds to each; ``act_unasked`` responds to
-    what Proactivity says is due, most important first as Prioritization orders it. ``cancelled`` stops the request, down to a running agent session. ``coverage`` and ``health`` report the assembly
+    what Proactivity says is due, most important first as Prioritization orders it. ``order_asks`` puts the asks waiting on a person in order: Consciousness
+    decides which are worth asking about and Prioritization orders them. ``cancelled`` stops the request, down to a running agent session. ``coverage`` and ``health`` report the assembly
     and whether the system stays generic."""
 
     def respond(self, request: str, person: str = "", feedback: Optional[Mapping[str, Any]] = None,
@@ -19,5 +20,7 @@ class SelfAnswering(typing.Protocol):
     def serve(self, person: str = "") -> Sequence[Any]: ...
     def act_unasked(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "", candidates: Sequence[Mapping[str, Any]] = (),
                     stated: Optional[Mapping[str, Any]] = None, events: Sequence[Mapping[str, Any]] = ()) -> Sequence[Any]: ...
+    def order_asks(self, asks: Sequence[Mapping[str, Any]], person: str = "", stated: Optional[Mapping[str, Any]] = None, batch_limit: int = 0,
+                   now: str = "") -> Mapping[str, Any]: ...
     def coverage(self) -> Mapping[str, Any]: ...
     def health(self) -> Mapping[str, Any]: ...

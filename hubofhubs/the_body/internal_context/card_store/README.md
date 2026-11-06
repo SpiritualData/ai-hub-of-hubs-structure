@@ -12,7 +12,7 @@ Part of [Internal Context](../README.md)
 - Entry call: `hubofhubs.run("card-store", 'rust release')`
 - Selected implementation: Local card store (`local_card_store`)
 - Metric: Cards found again, none lost
-- Implemented by: [`hubofhubs/the_body/__init__.py`](../../__init__.py), [`hubofhubs/the_body/filemodes.py`](../../filemodes.py), [`hubofhubs/the_body/flow.py`](../../flow.py), [`hubofhubs/the_body/hands/__init__.py`](../../hands/__init__.py), [`hubofhubs/the_body/hands/interface.py`](../../hands/interface.py), [`hubofhubs/the_body/intake_sources/__init__.py`](../../intake_sources/__init__.py), [`hubofhubs/the_body/intake_sources/interface.py`](../../intake_sources/interface.py), [`hubofhubs/the_body/intake_sources/queue.py`](../../intake_sources/queue.py) and 62 more
+- Implemented by: [`hubofhubs/the_body/__init__.py`](../../__init__.py), [`hubofhubs/the_body/filemodes.py`](../../filemodes.py), [`hubofhubs/the_body/flow.py`](../../flow.py), [`hubofhubs/the_body/hands/__init__.py`](../../hands/__init__.py), [`hubofhubs/the_body/hands/integrations.py`](../../hands/integrations.py), [`hubofhubs/the_body/hands/interface.py`](../../hands/interface.py), [`hubofhubs/the_body/hands/tests/test_hands.py`](../../hands/tests/test_hands.py), [`hubofhubs/the_body/intake_sources/__init__.py`](../../intake_sources/__init__.py) and 64 more
 
 ## Implementations
 

@@ -1,1 +1,2 @@
 ideal_id,name,principle,state_description,hints_of_measurement,problem_ids,parent_ideal_ids
+hideal-every-part-knows-its-role,Every part knows its role,"Each part knows what it is for, what it hands on and what it leaves to the others.","The whole behaves as one assistant, and a part that fails says so instead of hiding it.","A part's behaviour is compared with its role, and a mismatch is reported.",hprob-parts-forget-their-role,HI5

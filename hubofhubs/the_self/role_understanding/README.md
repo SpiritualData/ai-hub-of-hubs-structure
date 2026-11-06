@@ -26,14 +26,6 @@ Part of [The parts working as one whole](../README.md)
 
 - Roles stated as recorded and contradictions found (`metric-role-understanding`): leader `checked_role`, 13 of 13 cases
 
-## Problems
-
-- Parts forget their role (`hprob-parts-forget-their-role`): Parts assembled together drift: one does another part's work, hides its own failure or claims more than its evidence shows, and no part is responsible for the coherence of the whole.
-
-## Ideals
-
-- Every part knows its role (`hideal-every-part-knows-its-role`): Each part knows what it is for, what it hands on and what it leaves to the others.
-
 ## Where to go next
 
 - Up: [hubofhubs](../../README.md)

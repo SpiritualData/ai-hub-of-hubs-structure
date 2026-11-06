@@ -42,6 +42,10 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | context_retrieval | learned_rerank | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of learned_rerank (two-sided sign test p=1.35e-24) | none recorded |
 | context_retrieval | live_scan | 395 | 20.3% (16.6% to 24.5%), 80/395 | $1.609 | 1.9 (median) | ahead of live_scan (two-sided sign test p=1.07e-103) | none recorded |
 | context_retrieval | lsi | 395 | 45.8% (41.0% to 50.8%), 181/395 | $0 | 0 (median) | ahead of lsi (two-sided sign test p=1.53e-19) | none recorded |
+| esoi_application | record_field_edit (selected) | 10 | 100.0% (72.2% to 100.0%), 10/10 | $0 | 0 (median) | selected | none recorded |
+| esoi_application | append_to_description | 10 | 0.0% (0.0% to 27.8%), 0/10 | no passing case | 0 (median) | ahead of append_to_description (two-sided McNemar p=0.00195) | none recorded |
+| feedback_learning | scoped_record_edit (selected) | 12 | 100.0% (75.8% to 100.0%), 12/12 | $0 | 0 (median) | selected | none recorded |
+| feedback_learning | kept_note | 12 | 0.0% (0.0% to 24.2%), 0/12 | no passing case | 0 (median) | ahead of kept_note (two-sided McNemar p=0.000488) | none recorded |
 | file_edit_goals | fast_edit (selected) | 30 | 96.7% (83.3% to 99.4%), 29/30 | $0.0001793 | 1.8 (median) | selected | none recorded |
 | file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972) | none recorded |
 | goal_completion | evidence_standard (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
@@ -49,6 +53,9 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | guidance | rule_gate (selected) | 24 | 100.0% (86.2% to 100.0%), 24/24 | $0 | 0 (median) | selected | none recorded |
 | guidance | always_nudge | 24 | 25.0% (12.0% to 44.9%), 6/24 | $0 | 0 (median) | ahead of always_nudge (two-sided sign test p=1.53e-05) | none recorded |
 | guidance | overlap_only | 24 | 41.7% (24.5% to 61.2%), 10/24 | $0 | 0 (median) | ahead of overlap_only (two-sided sign test p=0.000122) | none recorded |
+| hands | declared_and_used (selected) | 8 | 100.0% (67.6% to 100.0%), 8/8 | $0 | 0 (median) | selected | none recorded |
+| hands | declaration_only | 8 | 50.0% (21.5% to 78.5%), 4/8 | $0 | 0 (median) | ahead of declaration_only, not significant (two-sided McNemar p=0.125) | none recorded |
+| integrated_efficiency | whole_hub (selected) | 6 | 0.0% (0.0% to 39.0%), 0/6 | no passing case | 0.1 (median) | selected | none recorded |
 | intuition | co_taken (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
 | intuition | nearest_cards | 20 | 50.0% (29.9% to 70.1%), 10/20 | $0 | 0 (median) | ahead of nearest_cards (two-sided McNemar p=0.00195) | none recorded |
 | judgment_calls | severity_policy (selected) | 72 | 100.0% (94.9% to 100.0%), 72/72 | $0 | 0 (median) | selected | none recorded |

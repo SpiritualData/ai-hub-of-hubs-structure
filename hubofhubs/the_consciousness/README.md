@@ -24,7 +24,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Feedback Learning | `feedback-learning` | `hubofhubs.run("feedback-learning", {'person': '', 'feedback': {}})` | none selected | A correction given once is followed afterwards |
+| Feedback Learning | `feedback-learning` | `hubofhubs.run("feedback-learning", {'person': '', 'feedback': {}})` | Scoped record edit (`scoped_record_edit`) | A correction given once is followed afterwards |
 | Judgment Calls | `judgment-calls` | `hubofhubs.run("judgment-calls", {'signal': {'signal': 'proceed'}, 'person': ''})` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
 | Prioritization | `prioritization` | `hubofhubs.run("prioritization", ...)` | Stated and carried fields (`stated_fields`) | Work, asks and milestones in the order the stated rules give |
 | Representatives | `the-representatives` | `hubofhubs.run("the-representatives", '')` | Declared authority (`declared_authority`) | Authority that stays with its person |
@@ -54,7 +54,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- A correction given once is followed afterwards (`metric-feedback-learning`)
+- A correction given once is followed afterwards (`metric-feedback-learning`): leader `scoped_record_edit`, 12 of 12 cases
 - Asked when a person should be asked (`metric-judgment-calls`): leader `severity_policy`, 72 of 72 cases
 - Work, asks and milestones in the order the stated rules give (`metric-human-prioritization`): leader `stated_fields`, 34 of 34 cases
 - Authority that stays with its person (`metric-the-representatives`)
@@ -64,7 +64,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
-- Records beside the code: [hubofhubs/the_consciousness/judgment_calls](judgment_calls/README.md), [hubofhubs/the_consciousness/prioritization](prioritization/README.md), [hubofhubs/the_consciousness/representatives](representatives/README.md), [hubofhubs/the_consciousness/request_intake](request_intake/README.md)
+- Records beside the code: [hubofhubs/the_consciousness/feedback_learning](feedback_learning/README.md), [hubofhubs/the_consciousness/judgment_calls](judgment_calls/README.md), [hubofhubs/the_consciousness/prioritization](prioritization/README.md), [hubofhubs/the_consciousness/representatives](representatives/README.md), [hubofhubs/the_consciousness/request_intake](request_intake/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
 
 ---
@@ -95,7 +95,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Feedback Learning | `feedback-learning` | none selected | A correction given once is followed afterwards |
+| Feedback Learning | `feedback-learning` | Scoped record edit (`scoped_record_edit`) | A correction given once is followed afterwards |
 | Judgment Calls | `judgment-calls` | Per-person severity policy (`severity_policy`) | Asked when a person should be asked |
 | Prioritization | `prioritization` | Stated and carried fields (`stated_fields`) | Work, asks and milestones in the order the stated rules give |
 | Representatives | `the-representatives` | Declared authority (`declared_authority`) | Authority that stays with its person |
@@ -105,6 +105,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
+| Kept note | `feedback-learning:kept_note` | [hubofhubs/the_consciousness/feedback_learning/propose.py](feedback_learning/propose.py) |  |
+| Scoped record edit | `feedback-learning:scoped_record_edit` | [hubofhubs/the_consciousness/feedback_learning/propose.py](feedback_learning/propose.py) |  |
 | Ask about every risk | `judgment-calls:ask_every_time` | [hubofhubs/the_consciousness/judgment_calls/judgment.py](judgment_calls/judgment.py) |  |
 | Per-person severity policy | `judgment-calls:severity_policy` | [hubofhubs/the_consciousness/judgment_calls/judgment.py](judgment_calls/judgment.py) |  |
 | Stated and carried fields | `prioritization:stated_fields` | [hubofhubs/the_consciousness/prioritization/ordering.py](prioritization/ordering.py) |  |
@@ -114,7 +116,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ### Metrics
 
-- A correction given once is followed afterwards (`metric-feedback-learning`): `none`
+- A correction given once is followed afterwards (`metric-feedback-learning`): `esoi run feedback_learning --impl scoped_record_edit; esoi run feedback_learning --impl kept_note`
 - Asked when a person should be asked (`metric-judgment-calls`): `esoi run judgment_calls --impl severity_policy; esoi run judgment_calls --impl ask_every_time`
 - Work, asks and milestones in the order the stated rules give (`metric-human-prioritization`): `esoi run prioritization --impl stated_fields; esoi run prioritization --impl as_given`
 - Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest hubofhubs/the_consciousness/tests/test_consciousness.py`

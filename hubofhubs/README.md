@@ -35,7 +35,7 @@ Let the hub apply to one particular system by declaring where its data lives, wh
 - Entry call: `hubofhubs.run("the-body", '')`
 - Selected implementation: Declared sources and enduring integrations (`composition`)
 - Metric: A system applies the hub to itself
-- Implemented by: [`hubofhubs/the_body/__init__.py`](the_body/__init__.py), [`hubofhubs/the_body/filemodes.py`](the_body/filemodes.py), [`hubofhubs/the_body/flow.py`](the_body/flow.py), [`hubofhubs/the_body/hands/__init__.py`](the_body/hands/__init__.py), [`hubofhubs/the_body/hands/interface.py`](the_body/hands/interface.py), [`hubofhubs/the_body/intake_sources/__init__.py`](the_body/intake_sources/__init__.py), [`hubofhubs/the_body/intake_sources/interface.py`](the_body/intake_sources/interface.py), [`hubofhubs/the_body/intake_sources/queue.py`](the_body/intake_sources/queue.py) and 62 more
+- Implemented by: [`hubofhubs/the_body/__init__.py`](the_body/__init__.py), [`hubofhubs/the_body/filemodes.py`](the_body/filemodes.py), [`hubofhubs/the_body/flow.py`](the_body/flow.py), [`hubofhubs/the_body/hands/__init__.py`](the_body/hands/__init__.py), [`hubofhubs/the_body/hands/integrations.py`](the_body/hands/integrations.py), [`hubofhubs/the_body/hands/interface.py`](the_body/hands/interface.py), [`hubofhubs/the_body/hands/tests/test_hands.py`](the_body/hands/tests/test_hands.py), [`hubofhubs/the_body/intake_sources/__init__.py`](the_body/intake_sources/__init__.py) and 64 more
 
 ## Intelligence (`the-intelligence`)
 
@@ -46,7 +46,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/done_evidence.py`](the_intelligence/critical_thinking/goal_completion/done_evidence.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py`](the_intelligence/critical_thinking/goal_completion/goal_completion.py) and 152 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](the_intelligence/critical_thinking/esoi_application/apply.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py`](the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py) and 154 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -57,7 +57,7 @@ Keep the system aligned with the humans and policies it works for.
 - Entry call: `hubofhubs.run("the-consciousness", '')`
 - Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py), [`hubofhubs/the_consciousness/judgment_calls/__init__.py`](the_consciousness/judgment_calls/__init__.py), [`hubofhubs/the_consciousness/judgment_calls/interface.py`](the_consciousness/judgment_calls/interface.py) and 28 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/feedback_learning/propose.py`](the_consciousness/feedback_learning/propose.py), [`hubofhubs/the_consciousness/feedback_learning/tests/test_feedback_learning.py`](the_consciousness/feedback_learning/tests/test_feedback_learning.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py) and 30 more
 
 ## One level below
 
@@ -82,12 +82,15 @@ Keep the system aligned with the humans and policies it works for.
 - [Metric Translation](the_intelligence/critical_thinking/metric_translation/README.md) (solution with implementations): Make what success means for a request explicit and measurable as a goal record: the metric, its target, the done-standard and the budget (attempts, pieces and model calls) that Delegation and Model Plumbing enforce.
 - [Response Quality](the_intelligence/critical_thinking/response_quality/README.md) (solution with implementations): Judge a response against the quality profile that applies to this request.
 - [Guidance](the_intelligence/higher_mind/guidance/README.md) (solution with implementations): Keep the Planner pointed at the longer-term outcome without taking over the request.
+- [Long-Term Memory](the_intelligence/higher_mind/long_term_memory/README.md) (solution with implementations): Let the AI keep and recall what happened across requests.
+- [Objectives](the_intelligence/higher_mind/objectives/README.md) (solution with implementations): Let the AI keep working toward a goal over many requests and know which objective a request serves.
 - [Context Intake](the_intelligence/mind/context_intake/README.md) (solution with implementations): Give the Planner one view of what is known for a request, whatever its source.
 - [Delegation](the_intelligence/mind/delegation/README.md) (solution with implementations): Hand work on without losing the authority it was given or the standard that says it is done, enforce the authority, the goal record's budget and cancellation (down to a running agent session), and refuse a piece it may not run with the reason.
 - [Planner](the_intelligence/mind/planner/README.md) (solution with implementations): Turn a request into pieces that can be done and checked, each with the worker category that fits it, and replan from what failed.
 - [Response Writer](the_intelligence/mind/response_writer/README.md) (solution with implementations): Write what the Mind outputs for its reader.
 - [Cards From Files](the_intelligence/subconscious/cards_from_files/README.md) (solution with implementations): Propose the cards a folder of files needs, in the card store record shape, for the Subconscious to keep and recall.
 - [Context Retriever](the_intelligence/subconscious/context_retriever/README.md) (solution with implementations): Pick, from a corpus of files, cards or memory, the pieces of text a task needs within a token budget.
+- [Intuition](the_intelligence/subconscious/intuition/README.md) (solution with implementations): Let useful information surface unasked.
 - [Model Tier Chooser](the_world/model_plumbing/model_tier_chooser/README.md) (solution with implementations): Pick, for each model tier, the model that does the most passing work per cost.
 - [Vendor Model Caller](the_world/model_plumbing/vendor_model_caller/README.md) (solution with implementations): Reach one vendor's model, and step to the next provider when one fails.
 - [Connected System Operations](the_world/tools/connected_system_operations/README.md) (solution with implementations): Carry out an operation of a connected system on the AI's behalf.
@@ -127,11 +130,11 @@ flowchart LR
 ## Metrics
 
 - Task pass rate and cost per passing task (`metric-the-world`)
-- The assembled whole answers a real request (`metric-the-self`)
+- The assembled whole answers a real request (`metric-the-self`): leader `whole_hub`, 0 of 6 cases
 - A system applies the hub to itself (`metric-the-body`)
 - A request is answered from what bears on it (`metric-the-intelligence`)
 - A representative asks when the person would want to be asked (`metric-the-consciousness`)
-- Integrated efficiency of the whole (`metric-integrated-efficiency`)
+- Integrated efficiency of the whole (`metric-integrated-efficiency`): leader `whole_hub`, 0 of 6 cases
 
 ## Problems
 
@@ -155,8 +158,10 @@ flowchart LR
 ## Where to go next
 
 - Intent: [The best parts for AI intelligence, assembled and proven](../esoi/README.md)
+- Down: [hubofhubs/the_body/hands](the_body/hands/README.md)
 - Down: [hubofhubs/the_body/intake_sources](the_body/intake_sources/README.md)
 - Down: [hubofhubs/the_body/internal_context](the_body/internal_context/README.md)
+- Down: [hubofhubs/the_consciousness/feedback_learning](the_consciousness/feedback_learning/README.md)
 - Down: [hubofhubs/the_consciousness/judgment_calls](the_consciousness/judgment_calls/README.md)
 - Down: [hubofhubs/the_consciousness/prioritization](the_consciousness/prioritization/README.md)
 - Down: [hubofhubs/the_consciousness/representatives](the_consciousness/representatives/README.md)
@@ -168,16 +173,20 @@ flowchart LR
 - Down: [hubofhubs/the_self/role_understanding](the_self/role_understanding/README.md)
 - Down: [hubofhubs/the_world/learning](the_world/learning/README.md)
 - Down: [hubofhubs/the_world/science](the_world/science/README.md)
+- Down: [hubofhubs/the_intelligence/critical_thinking/esoi_application](the_intelligence/critical_thinking/esoi_application/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/goal_completion](the_intelligence/critical_thinking/goal_completion/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/metric_translation](the_intelligence/critical_thinking/metric_translation/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/response_quality](the_intelligence/critical_thinking/response_quality/README.md)
 - Down: [hubofhubs/the_intelligence/higher_mind/guidance](the_intelligence/higher_mind/guidance/README.md)
+- Down: [hubofhubs/the_intelligence/higher_mind/long_term_memory](the_intelligence/higher_mind/long_term_memory/README.md)
+- Down: [hubofhubs/the_intelligence/higher_mind/objectives](the_intelligence/higher_mind/objectives/README.md)
 - Down: [hubofhubs/the_intelligence/mind/context_intake](the_intelligence/mind/context_intake/README.md)
 - Down: [hubofhubs/the_intelligence/mind/delegation](the_intelligence/mind/delegation/README.md)
 - Down: [hubofhubs/the_intelligence/mind/planner](the_intelligence/mind/planner/README.md)
 - Down: [hubofhubs/the_intelligence/mind/response_writer](the_intelligence/mind/response_writer/README.md)
 - Down: [hubofhubs/the_intelligence/subconscious/cards_from_files](the_intelligence/subconscious/cards_from_files/README.md)
 - Down: [hubofhubs/the_intelligence/subconscious/context_retriever](the_intelligence/subconscious/context_retriever/README.md)
+- Down: [hubofhubs/the_intelligence/subconscious/intuition](the_intelligence/subconscious/intuition/README.md)
 - Down: [hubofhubs/the_world/model_plumbing/model_tier_chooser](the_world/model_plumbing/model_tier_chooser/README.md)
 - Down: [hubofhubs/the_world/model_plumbing/vendor_model_caller](the_world/model_plumbing/vendor_model_caller/README.md)
 - Down: [hubofhubs/the_world/tools/connected_system_operations](the_world/tools/connected_system_operations/README.md)

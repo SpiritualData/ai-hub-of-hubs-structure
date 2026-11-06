@@ -1,0 +1,85 @@
+[
+ {
+  "id": "whole-hub-judgment-calls",
+  "kind": "task",
+  "args": {
+   "request": "Explain in one sentence what Judgment Calls decides for a person.",
+   "person": ""
+  },
+  "expect": {
+   "contains": [
+    "ask",
+    "proceed"
+   ]
+  }
+ },
+ {
+  "id": "whole-hub-seats",
+  "kind": "task",
+  "args": {
+   "request": "Name the five containers the hub is organised in.",
+   "person": ""
+  },
+  "expect": {
+   "contains": [
+    "Self",
+    "Body",
+    "Intelligence",
+    "World",
+    "Consciousness"
+   ]
+  }
+ },
+ {
+  "id": "whole-sum",
+  "kind": "task",
+  "args": {
+   "request": "What is 17 plus 25?",
+   "person": ""
+  },
+  "expect": {
+   "contains": [
+    "42"
+   ]
+  }
+ },
+ {
+  "id": "whole-product",
+  "kind": "task",
+  "args": {
+   "request": "What is 12 times 12?",
+   "person": ""
+  },
+  "expect": {
+   "contains": [
+    "144"
+   ]
+  }
+ },
+ {
+  "id": "whole-capital",
+  "kind": "task",
+  "args": {
+   "request": "What is the capital of France?",
+   "person": ""
+  },
+  "expect": {
+   "contains": [
+    "Paris"
+   ]
+  }
+ },
+ {
+  "id": "whole-water",
+  "kind": "task",
+  "args": {
+   "request": "What is the chemical formula of water?",
+   "person": ""
+  },
+  "expect": {
+   "contains": [
+    "H2O"
+   ]
+  }
+ }
+]

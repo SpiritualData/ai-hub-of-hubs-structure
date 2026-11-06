@@ -33,7 +33,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Hands | `the-hands` | `hubofhubs.run("the-hands", '')` | none selected | Declared integrations are reachable and used |
+| Hands | `the-hands` | `hubofhubs.run("the-hands", '')` | Declared and used (`declared_and_used`) | Declared integrations are reachable and used |
 | Intake Sources | `intake-sources` | `hubofhubs.run("intake-sources", {'source': '', 'limit': 10})` | Folder of queued requests (`folder_queue`) | Requests read from a declared source, once |
 | Internal Context | `internal-context` | `hubofhubs.run("internal-context", 'rust release')` | Declared sources, cards kept and built from files (`composition`) | An internal source reaches the AI through one declaration |
 | Card Store | `card-store` | `hubofhubs.run("card-store", 'rust release')` | Local card store (`local_card_store`) | Cards found again, none lost |
@@ -61,7 +61,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- Declared integrations are reachable and used (`metric-hands-integrations-used`)
+- Declared integrations are reachable and used (`metric-hands-integrations-used`): leader `declared_and_used`, 8 of 8 cases
 - Requests read from a declared source, once (`metric-intake-sources`)
 - An internal source reaches the AI through one declaration (`metric-internal-context`)
 - Cards found again, none lost (`metric-card-store`): leader `local_card_store`, 35 of 35 cases
@@ -70,7 +70,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
-- Records beside the code: [hubofhubs/the_body/intake_sources](intake_sources/README.md), [hubofhubs/the_body/internal_context](internal_context/README.md), [hubofhubs/the_body/internal_context/card_store](internal_context/card_store/README.md)
+- Records beside the code: [hubofhubs/the_body/hands](hands/README.md), [hubofhubs/the_body/intake_sources](intake_sources/README.md), [hubofhubs/the_body/internal_context](internal_context/README.md), [hubofhubs/the_body/internal_context/card_store](internal_context/card_store/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
 - Diagram page: [diagram.md](diagram.md)
 
@@ -101,7 +101,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Hands | `the-hands` | none selected | Declared integrations are reachable and used |
+| Hands | `the-hands` | Declared and used (`declared_and_used`) | Declared integrations are reachable and used |
 | Intake Sources | `intake-sources` | Folder of queued requests (`folder_queue`) | Requests read from a declared source, once |
 | Internal Context | `internal-context` | Declared sources, cards kept and built from files (`composition`) | An internal source reaches the AI through one declaration |
 | Card Store | `card-store` | Local card store (`local_card_store`) | Cards found again, none lost |
@@ -110,13 +110,15 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
+| Declaration only | `the-hands:declaration_only` | [hubofhubs/the_body/hands/integrations.py](hands/integrations.py) |  |
+| Declared and used | `the-hands:declared_and_used` | [hubofhubs/the_body/hands/integrations.py](hands/integrations.py) |  |
 | Folder of queued requests | `intake-sources:folder_queue` | [hubofhubs/the_body/intake_sources/queue.py](intake_sources/queue.py) |  |
 | Declared sources, cards kept and built from files | `internal-context:composition` | [hubofhubs/the_body/internal_context/flow.py](internal_context/flow.py) |  |
 | Local card store | `card-store:local_card_store` | [hubofhubs/the_body/internal_context/card_store/cardstore.py](internal_context/card_store/cardstore.py) |  |
 
 ### Metrics
 
-- Declared integrations are reachable and used (`metric-hands-integrations-used`): `none`
+- Declared integrations are reachable and used (`metric-hands-integrations-used`): `esoi run hands --impl declared_and_used; esoi run hands --impl declaration_only`
 - Requests read from a declared source, once (`metric-intake-sources`): `python3 -m pytest tests/test_intake.py`
 - An internal source reaches the AI through one declaration (`metric-internal-context`): `none`
 - Cards found again, none lost (`metric-card-store`): `esoi run card_store --impl local_card_store`

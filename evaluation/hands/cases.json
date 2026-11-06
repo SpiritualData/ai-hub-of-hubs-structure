@@ -1,0 +1,264 @@
+[
+ {
+  "id": "hands-all-used",
+  "kind": "declared",
+  "args": {
+   "system": "s1",
+   "declared": [
+    {
+     "name": "tool-registry",
+     "kind": "tool_registry",
+     "system": "s1",
+     "tool": "list_tools"
+    },
+    {
+     "name": "model-platform",
+     "kind": "llm_platform",
+     "system": "s1",
+     "tool": "complete"
+    }
+   ],
+   "runs": [
+    {
+     "used": [
+      "tool-registry",
+      "model-platform"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "name": "tool-registry",
+    "kind": "tool_registry",
+    "reachable": true,
+    "used": true,
+    "unused": false
+   },
+   {
+    "name": "model-platform",
+    "kind": "llm_platform",
+    "reachable": true,
+    "used": true,
+    "unused": false
+   }
+  ]
+ },
+ {
+  "id": "hands-one-idle",
+  "kind": "unused",
+  "args": {
+   "system": "s1",
+   "declared": [
+    {
+     "name": "tool-registry",
+     "kind": "tool_registry",
+     "system": "s1",
+     "tool": "list_tools"
+    },
+    {
+     "name": "guardrails",
+     "kind": "guardrails",
+     "system": "s1",
+     "tool": "check"
+    }
+   ],
+   "runs": [
+    {
+     "used": [
+      "tool-registry"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "name": "tool-registry",
+    "kind": "tool_registry",
+    "reachable": true,
+    "used": true,
+    "unused": false
+   },
+   {
+    "name": "guardrails",
+    "kind": "guardrails",
+    "reachable": true,
+    "used": false,
+    "unused": true
+   }
+  ]
+ },
+ {
+  "id": "hands-none-used",
+  "kind": "unused",
+  "args": {
+   "system": "s1",
+   "declared": [
+    {
+     "name": "model-platform",
+     "kind": "llm_platform",
+     "system": "s1",
+     "tool": "complete"
+    }
+   ],
+   "runs": []
+  },
+  "expect": [
+   {
+    "name": "model-platform",
+    "kind": "llm_platform",
+    "reachable": true,
+    "used": false,
+    "unused": true
+   }
+  ]
+ },
+ {
+  "id": "hands-no-tool-named",
+  "kind": "reach",
+  "args": {
+   "system": "s1",
+   "declared": [
+    {
+     "name": "ticketing",
+     "kind": "tool_registry",
+     "system": "s1"
+    }
+   ],
+   "runs": [
+    {
+     "used": [
+      "ticketing"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "name": "ticketing",
+    "kind": "tool_registry",
+    "reachable": false,
+    "used": true,
+    "unused": false
+   }
+  ]
+ },
+ {
+  "id": "hands-disabled",
+  "kind": "reach",
+  "args": {
+   "system": "s1",
+   "declared": [
+    {
+     "name": "search",
+     "kind": "tool_registry",
+     "system": "s1",
+     "tool": "find",
+     "disabled": true
+    }
+   ],
+   "runs": []
+  },
+  "expect": [
+   {
+    "name": "search",
+    "kind": "tool_registry",
+    "reachable": false,
+    "used": false,
+    "unused": false
+   }
+  ]
+ },
+ {
+  "id": "hands-two-systems-asks-one",
+  "kind": "declared",
+  "args": {
+   "system": "s2",
+   "declared": [
+    {
+     "name": "tool-registry",
+     "kind": "tool_registry",
+     "system": "s1",
+     "tool": "list_tools"
+    },
+    {
+     "name": "mailer",
+     "kind": "tool_registry",
+     "system": "s2",
+     "tool": "send"
+    }
+   ],
+   "runs": [
+    {
+     "used": [
+      "mailer"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "name": "mailer",
+    "kind": "tool_registry",
+    "reachable": true,
+    "used": true,
+    "unused": false
+   }
+  ]
+ },
+ {
+  "id": "hands-declares-nothing",
+  "kind": "declared",
+  "args": {
+   "system": "s3",
+   "declared": [
+    {
+     "name": "tool-registry",
+     "kind": "tool_registry",
+     "system": "s1",
+     "tool": "list_tools"
+    }
+   ],
+   "runs": [
+    {
+     "used": [
+      "tool-registry"
+     ]
+    }
+   ]
+  },
+  "expect": []
+ },
+ {
+  "id": "hands-undeclared-use-not-reported",
+  "kind": "declared",
+  "args": {
+   "system": "s1",
+   "declared": [
+    {
+     "name": "tool-registry",
+     "kind": "tool_registry",
+     "system": "s1",
+     "tool": "list_tools"
+    }
+   ],
+   "runs": [
+    {
+     "used": [
+      "tool-registry",
+      "mystery"
+     ]
+    }
+   ]
+  },
+  "expect": [
+   {
+    "name": "tool-registry",
+    "kind": "tool_registry",
+    "reachable": true,
+    "used": true,
+    "unused": false
+   }
+  ]
+ }
+]

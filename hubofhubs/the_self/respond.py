@@ -79,6 +79,16 @@ class SelfComposition:
                    stated=said, events=events)
         return [self.respond(trigger["request"], person) for trigger in (due.output or []) if trigger.get("request")]
 
+    def order_asks(self, asks: Sequence[Mapping[str, Any]], person: str = "", stated: Optional[Mapping[str, Any]] = None, batch_limit: int = 0,
+                   now: str = "") -> Mapping[str, Any]:
+        """The asks waiting on a person, in the order to put them in front of that person: Consciousness decides which are worth an ask and Prioritization
+        orders them; with a ``batch_limit`` only that many go forward and the rest are held with why. A part with no arm is a step that says so, and nothing is
+        ordered by guess."""
+        ordered = take(self.consciousness, "the-consciousness", method="order_asks", asks=list(asks), person=person, stated=stated, batch_limit=batch_limit, now=now)
+        answer = (ordered.output or {}) if ordered.status == DONE else {}
+        return {"asks": list(answer.get("asks") or []), "held": list(answer.get("held") or []), "not_asked": list(answer.get("not_asked") or []),
+                "steps": listing([ordered])}
+
     def coverage(self) -> Mapping[str, Any]:
         found = take(self.assembler, "the-assembler")
         return found.output if found.status == DONE else {"built": [], "pending": {"the-assembler": found.reason}}

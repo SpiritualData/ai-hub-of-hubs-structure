@@ -14,17 +14,17 @@ Higher Mind is the long view across requests. Objectives keeps the live hierarch
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- Long-Term Memory (solution with no page of its own, its implementations are in this intent's records): Let the AI keep and recall what happened across requests.
-- Objectives (solution with no page of its own, its implementations are in this intent's records): Let the AI keep working toward a goal over many requests and know which objective a request serves.
 - [Guidance](guidance/README.md) (solution with implementations): Keep the Planner pointed at the longer-term outcome without taking over the request.
+- [Long-Term Memory](long_term_memory/README.md) (solution with implementations): Let the AI keep and recall what happened across requests.
+- [Objectives](objectives/README.md) (solution with implementations): Let the AI keep working toward a goal over many requests and know which objective a request serves.
 
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
+| Guidance | `guidance` | `hubofhubs.run("guidance", ...)` | Rule gate (`rule_gate`) | A nudge that helps the Planner |
 | Long-Term Memory | `long-term-memory` | `hubofhubs.run("long-term-memory", {'query': 'rust release', 'person': ''})` | File recall (`file_recall`) | A later request uses what an earlier one learned |
 | Objectives | `live-objectives` | `hubofhubs.run("live-objectives", '')` | Rolled-up hierarchy and word placement (`rolled_up`) | An objective persists until it is met |
-| Guidance | `guidance` | `hubofhubs.run("guidance", ...)` | Rule gate (`rule_gate`) | A nudge that helps the Planner |
 
 ## Problems and ideals
 
@@ -34,16 +34,16 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
+- A nudge that helps the Planner (`metric-planner-guidance`): leader `rule_gate`, 24 of 24 cases
 - A later request uses what an earlier one learned (`metric-long-term-memory`): leader `file_recall`, 16 of 17 cases
 - An objective persists until it is met (`metric-live-objectives`): leader `rolled_up`, 20 of 20 cases
-- A nudge that helps the Planner (`metric-planner-guidance`): leader `rule_gate`, 24 of 24 cases
 
 ## Where to go next
 
 - Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
-- Records beside the code: [hubofhubs/the_intelligence/higher_mind/guidance](guidance/README.md)
-- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [implementations.csv](implementations.csv), [metrics.csv](metrics.csv)
+- Records beside the code: [hubofhubs/the_intelligence/higher_mind/guidance](guidance/README.md), [hubofhubs/the_intelligence/higher_mind/long_term_memory](long_term_memory/README.md), [hubofhubs/the_intelligence/higher_mind/objectives](objectives/README.md)
+- Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
 
 ---
 
@@ -57,28 +57,28 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
+| Guidance | `guidance` | Rule gate (`rule_gate`) | A nudge that helps the Planner |
 | Long-Term Memory | `long-term-memory` | File recall (`file_recall`) | A later request uses what an earlier one learned |
 | Objectives | `live-objectives` | Rolled-up hierarchy and word placement (`rolled_up`) | An objective persists until it is met |
-| Guidance | `guidance` | Rule gate (`rule_gate`) | A nudge that helps the Planner |
 
 ### Implementations
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
+| Rule gate | `guidance:rule_gate` | [hubofhubs/the_intelligence/higher_mind/guidance/nudging.py](guidance/nudging.py) |  |
+| Overlap only | `guidance:overlap_only` | [hubofhubs/the_intelligence/higher_mind/guidance/nudging.py](guidance/nudging.py) |  |
+| Always nudge | `guidance:always_nudge` | [hubofhubs/the_intelligence/higher_mind/guidance/nudging.py](guidance/nudging.py) |  |
 | File recall | `long-term-memory:file_recall` | [hubofhubs/the_intelligence/higher_mind/long_term_memory/recall.py](long_term_memory/recall.py) |  |
 | Card Store recall | `long-term-memory:card_store_recall` | [hubofhubs/the_intelligence/higher_mind/long_term_memory/recall.py](long_term_memory/recall.py) |  |
 | Recent window | `long-term-memory:recent_window` | [hubofhubs/the_intelligence/higher_mind/long_term_memory/recall.py](long_term_memory/recall.py) |  |
 | Rolled-up hierarchy and word placement | `live-objectives:rolled_up` | [hubofhubs/the_intelligence/higher_mind/objectives/hierarchy.py](objectives/hierarchy.py) |  |
 | Flat list | `live-objectives:flat_list` | [hubofhubs/the_intelligence/higher_mind/objectives/hierarchy.py](objectives/hierarchy.py) |  |
-| Rule gate | `guidance:rule_gate` | [hubofhubs/the_intelligence/higher_mind/guidance/nudging.py](guidance/nudging.py) |  |
-| Overlap only | `guidance:overlap_only` | [hubofhubs/the_intelligence/higher_mind/guidance/nudging.py](guidance/nudging.py) |  |
-| Always nudge | `guidance:always_nudge` | [hubofhubs/the_intelligence/higher_mind/guidance/nudging.py](guidance/nudging.py) |  |
 
 ### Metrics
 
+- A nudge that helps the Planner (`metric-planner-guidance`): `esoi run guidance --impl rule_gate; esoi run guidance --impl overlap_only; esoi run guidance --impl always_nudge`
 - A later request uses what an earlier one learned (`metric-long-term-memory`): `esoi run long_term_memory --impl file_recall; esoi run long_term_memory --impl card_store_recall; esoi run long_term_memory --impl recent_window`
 - An objective persists until it is met (`metric-live-objectives`): `esoi run live_objectives --impl rolled_up; esoi run live_objectives --impl flat_list`
-- A nudge that helps the Planner (`metric-planner-guidance`): `esoi run guidance --impl rule_gate; esoi run guidance --impl overlap_only; esoi run guidance --impl always_nudge`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

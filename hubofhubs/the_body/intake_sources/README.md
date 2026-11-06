@@ -13,7 +13,7 @@ Part of [The form and internal context of a system](../README.md)
 - Entry call: `hubofhubs.run("intake-sources", {'source': '', 'limit': 10})`
 - Selected implementation: Folder of queued requests (`folder_queue`)
 - Metric: Requests read from a declared source, once
-- Implemented by: [`hubofhubs/the_body/__init__.py`](../__init__.py), [`hubofhubs/the_body/filemodes.py`](../filemodes.py), [`hubofhubs/the_body/flow.py`](../flow.py), [`hubofhubs/the_body/hands/__init__.py`](../hands/__init__.py), [`hubofhubs/the_body/hands/interface.py`](../hands/interface.py), [`hubofhubs/the_body/intake_sources/__init__.py`](__init__.py), [`hubofhubs/the_body/intake_sources/interface.py`](interface.py), [`hubofhubs/the_body/intake_sources/queue.py`](queue.py) and 62 more
+- Implemented by: [`hubofhubs/the_body/__init__.py`](../__init__.py), [`hubofhubs/the_body/filemodes.py`](../filemodes.py), [`hubofhubs/the_body/flow.py`](../flow.py), [`hubofhubs/the_body/hands/__init__.py`](../hands/__init__.py), [`hubofhubs/the_body/hands/integrations.py`](../hands/integrations.py), [`hubofhubs/the_body/hands/interface.py`](../hands/interface.py), [`hubofhubs/the_body/hands/tests/test_hands.py`](../hands/tests/test_hands.py), [`hubofhubs/the_body/intake_sources/__init__.py`](__init__.py) and 64 more
 
 ## Implementations
 

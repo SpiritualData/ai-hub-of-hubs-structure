@@ -237,3 +237,10 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-05,prioritization,stated_fields,34,34,34/34,0/0,0,0,0,0.0,0.0,1.0,75d797c,e6d4257b,,none,asks_passed=10/10; carried_passed=6/6; goals_passed=9/9; rank_passed=3/3; stated_passed=6/6; mean_pairwise_agreement=1.0
 2026-11-05,proactivity,elapsed_hours,43,22,22/43,0/0,0,0,0,0.0,0.0,,0940911,7b906e2b,,none,
 2026-11-05,proactivity,calendar_and_events,43,43,43/43,0/0,0,0,0,0.0,0.0,,0940911,7b906e2b,,none,
+2026-11-05,feedback_learning,scoped_record_edit,12,12,12/12,0/0,0,0,0,0.0,0.0,,c661152-dirty,7fee4017,,none,named_passed=6/6; scoped_passed=2/2; unresolved_passed=4/4
+2026-11-05,esoi_application,record_field_edit,10,10,10/10,0/0,0,0,0,0.0,0.0,,c661152-dirty,5f9c4c4d,,none,applies_passed=4/4; refused_passed=6/6
+2026-11-05,hands,declared_and_used,8,8,8/8,0/0,0,0,0,0.0,0.0,,c661152,c3ede57b,,none,declared_passed=4/4; unused_passed=2/2; reach_passed=2/2 | reused 8 case(s) already run for this implementation version
+2026-11-05,feedback_learning,kept_note,12,0,0/12,0/0,0,0,0,0.0,0.0,,c661152-dirty,7fee4017,,none,"named_passed=0/6; scoped_passed=0/2; unresolved_passed=0/4 | forced past unsolved failures: baseline arm, expected to fail the cases that need the edit"
+2026-11-05,esoi_application,append_to_description,10,0,0/10,0/0,0,0,0,0.0,0.0,,c661152-dirty,5f9c4c4d,,none,"applies_passed=0/4; refused_passed=0/6 | forced past unsolved failures: baseline arm, expected to fail the cases that need the edit"
+2026-11-05,hands,declaration_only,8,4,4/8,0/0,0,0,0,0.0,0.0,,c661152,c3ede57b,,none,"declared_passed=4/4; unused_passed=0/2; reach_passed=0/2 | forced past unsolved failures: baseline arm, expected to fail the cases that need the edit | reused 2 case(s) already run for this implementation version"
+2026-11-05,integrated_efficiency,whole_hub,6,0,0/6,0/0,0,0,0,0.0,3.0,,c661152-dirty,261b85b5,,none,"integrated_efficiency=0.55; completed=0/6; honest=6/6 | forced past unsolved failures: offline floor: the seats are handed no keys, so no request completes and the honesty and cost terms are what is measured"

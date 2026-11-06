@@ -47,3 +47,9 @@ def test_every_baseline_fails_some_case(component):
 def test_the_component_has_enough_cases_and_unique_ids(component):
     cases = cases_of(component)
     assert len(cases) >= 30 and len({c["id"] for c in cases}) == len(cases)
+
+
+def test_the_integrated_efficiency_baseline_that_claims_done_completes_no_task():
+    from integrated_efficiency.broken.says_done import build
+    failed, total = failures("integrated_efficiency", build)
+    assert failed == total > 0

@@ -357,3 +357,17 @@ def test_higher_mind_reads_which_milestones_matter_most_from_prioritization_and_
     view = HigherMindComposition(Absent(), RolledUp(), Absent(), StatedFields()).view("plan", "p", objectives=goals, now="2026-07-12T09:00:00Z")
     assert [r["id"] for r in view["priority"]["ordered"]] == ["m-b", "m-a"] and [h["id"] for h in view["priority"]["held"]] == ["m-c"]
     assert most_important(view)["id"] == "m-b" and most_important({"objectives": [{"id": "x"}]})["id"] == "x" and most_important({}) is None
+
+
+def test_the_self_orders_the_asks_waiting_on_a_person_through_consciousness_and_says_when_it_cannot():
+    from hubofhubs.the_consciousness.flow import ConsciousnessComposition
+    from hubofhubs.the_consciousness.judgment_calls.judgment import SeverityPolicy
+    from hubofhubs.the_consciousness.prioritization.ordering import StatedFields
+    from hubofhubs.the_self.respond import SelfComposition
+    asks = [{"id": "minor", "severity": "medium", "reason": "pick a colour"}, {"id": "frees-two", "severity": "medium", "reason": "approve the plan", "unblocks": ["a", "b"]},
+            {"id": "safe", "severity": "none", "reason": "nothing risky"}]
+    consciousness = ConsciousnessComposition(Absent(), StatedFields(), SeverityPolicy(), Absent(), Absent(), Absent())
+    out = SelfComposition(Absent(), Absent(), Absent(), Absent(), Absent(), consciousness, Absent()).order_asks(asks, "p", batch_limit=1)
+    assert [a["id"] for a in out["asks"]] == ["frees-two"] and [h["id"] for h in out["held"]] == ["minor"] and [n["id"] for n in out["not_asked"]] == ["safe"]
+    empty = SelfComposition(Absent(), Absent(), Absent(), Absent(), Absent(), Absent(), Absent()).order_asks(asks)
+    assert empty["asks"] == [] and empty["steps"][-1]["status"] == "pending"

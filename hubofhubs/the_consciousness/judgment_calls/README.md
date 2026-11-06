@@ -13,7 +13,7 @@ Part of [Adapting to the humans the system works with](../README.md)
 - Entry call: `hubofhubs.run("judgment-calls", {'signal': {'signal': 'proceed'}, 'person': ''})`
 - Selected implementation: Per-person severity policy (`severity_policy`)
 - Metric: Asked when a person should be asked
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](../feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](../feedback_learning/interface.py), [`hubofhubs/the_consciousness/flow.py`](../flow.py), [`hubofhubs/the_consciousness/interface.py`](../interface.py), [`hubofhubs/the_consciousness/judgment_calls/__init__.py`](__init__.py), [`hubofhubs/the_consciousness/judgment_calls/interface.py`](interface.py) and 28 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](../feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](../feedback_learning/interface.py), [`hubofhubs/the_consciousness/feedback_learning/propose.py`](../feedback_learning/propose.py), [`hubofhubs/the_consciousness/feedback_learning/tests/test_feedback_learning.py`](../feedback_learning/tests/test_feedback_learning.py), [`hubofhubs/the_consciousness/flow.py`](../flow.py), [`hubofhubs/the_consciousness/interface.py`](../interface.py) and 30 more
 
 ## Implementations
 

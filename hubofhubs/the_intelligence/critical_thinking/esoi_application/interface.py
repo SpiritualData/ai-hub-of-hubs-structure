@@ -7,6 +7,6 @@ from esoi import solution
 @solution("esoi-application", kind="event", entry="apply", example={"change": {}})
 @runtime_checkable
 class EsoiApplying(typing.Protocol):
-    """Creates and edits specs and metrics from a proposed change and runs the iterative improvement loop."""
+    """Applies a proposed change to the specs and metrics of the system as one field edit, or refuses it with the reason."""
 
     def apply(self, change: Mapping[str, Any]) -> Mapping[str, Any]: ...

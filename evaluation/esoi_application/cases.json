@@ -1,0 +1,637 @@
+[
+ {
+  "id": "apply-spec-purpose",
+  "kind": "applies",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "spec_edit",
+     "target": "role-writer",
+     "field": "purpose",
+     "value": "State what the answer is for first."
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "solutions",
+    "target": "role-writer",
+    "field": "purpose",
+    "before": "Write the answer.",
+    "after": "State what the answer is for first."
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "State what the answer is for first.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-metric-record",
+  "kind": "applies",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "metric_edit",
+     "target": "metric-cited",
+     "field": "record",
+     "value": "The share of answers with a cited source."
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "metrics",
+    "target": "metric-cited",
+    "field": "record",
+    "before": "No run yet.",
+    "after": "The share of answers with a cited source."
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "The share of answers with a cited source."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-profile-concision",
+  "kind": "applies",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "quality_profile_edit",
+     "target": "profile-p1",
+     "field": "concision",
+     "value": "short"
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "profiles",
+    "target": "profile-p1",
+    "field": "concision",
+    "before": "long",
+    "after": "short"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "short",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-spec-out-of-scope",
+  "kind": "applies",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "spec_edit",
+     "target": "role-writer",
+     "field": "out_of_scope",
+     "value": "Choosing the topic."
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "solutions",
+    "target": "role-writer",
+    "field": "out_of_scope",
+    "before": "Nothing.",
+    "after": "Choosing the topic."
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Choosing the topic.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-refused-unknown-target",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "spec_edit",
+     "target": "role-missing",
+     "field": "purpose",
+     "value": "x"
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "no solutions record named 'role-missing'"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-refused-unknown-field",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "spec_edit",
+     "target": "role-writer",
+     "field": "colour",
+     "value": "x"
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "solutions record 'role-writer' has no field 'colour'"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-refused-unknown-kind",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "prompt_edit",
+     "target": "role-writer",
+     "field": "purpose",
+     "value": "x"
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "the change kind 'prompt_edit' is not an edit to a spec, a metric or a quality profile"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-refused-empty-value",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "spec_edit",
+     "target": "role-writer",
+     "field": "purpose",
+     "value": "  "
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "the new value is empty"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-refused-em-dash",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "spec_edit",
+     "target": "role-writer",
+     "field": "purpose",
+     "value": "Write \u2014 briefly."
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "the new value carries an em dash"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "apply-refused-no-target",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "change": {
+    "edit": {
+     "kind": "metric_edit",
+     "field": "record",
+     "value": "x"
+    }
+   }
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "no metrics record named None"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ }
+]
