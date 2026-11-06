@@ -204,8 +204,11 @@ NAMES = {
     "hubofhubs.the_consciousness.terminal.trace": (
         "WorkTrace", "domain_of", "project", "validate",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.esoi_application.apply": (
+        "RecordFieldEdit", "TableRecords",
+    ),
     "hubofhubs.the_intelligence.critical_thinking.esoi_application.interface": (
-        "EsoiApplying",
+        "EsoiApplying", "RecordsSource",
     ),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.done_evidence": (
         "CONTINUE", "clean_requirements", "continue_decision", "coverage_gap", "coverage_progress", "interim_data", "parse_coverage",

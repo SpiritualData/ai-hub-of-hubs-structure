@@ -22,6 +22,33 @@ def after(table, target, field, value):
     return changed
 
 
+def location_cases():
+    """The records-location port: the same edits against other locations. Ensure-one additions (a record, a milestone) that create once and leave a repeat alone,
+    an edit a location holds for a person's approval (reported as proposed, records unchanged), and a location that refuses (reported plainly, records unchanged)."""
+    add = {"kind": "record_add", "table": "implementations", "key": "post-a", "fields": {"name": "Post A", "description": "Hypothesis: a short post draws more clicks."}}
+    milestone = {"kind": "milestone_add", "target": "role-writer", "key": "Writers are measured.", "fields": {"metric": "metric-cited"}}
+    seeded = json.loads(json.dumps(RECORDS))
+    seeded["solutions"]["role-writer"]["milestones"] = "Answers exist."
+    withdraft = json.loads(json.dumps(RECORDS))
+    withdraft.setdefault("implementations", {})["post-a"] = add["fields"]
+    cases = [
+        {"id": "location-adds-one-record", "kind": "adds", "args": {"records": RECORDS, "changes": [{"edit": add}]},
+         "expect": {"result": {"applied": True, "table": "implementations", "target": "post-a", "fields": add["fields"], "created": True}, "records": withdraft}},
+        {"id": "location-repeat-adds-nothing", "kind": "repeats", "args": {"records": RECORDS, "changes": [{"edit": add}, {"edit": add}]},
+         "expect": {"result": {"applied": True, "table": "implementations", "target": "post-a", "fields": add["fields"], "created": False, "note": "already there"}, "records": withdraft}},
+        {"id": "location-milestone-once", "kind": "repeats", "args": {"records": seeded, "changes": [{"edit": milestone}, {"edit": milestone}]},
+         "expect": {"result": {"applied": True, "table": "solutions", "target": "role-writer", "field": "milestones", "after": "Writers are measured.", "created": False, "note": "already there"},
+                    "records": json.loads(json.dumps(seeded).replace("Answers exist.", "Answers exist.\\nWriters are measured."))}},
+        {"id": "location-refuses-empty-key", "kind": "refused", "args": {"records": RECORDS, "changes": [{"edit": dict(add, key="")}]},
+         "expect": {"result": {"applied": False, "reason": "an addition needs a key that says which record it is, so a repeat adds nothing"}, "records": RECORDS}},
+        {"id": "location-holds-edit-for-approval", "kind": "proposed", "args": {"records": RECORDS, "source": {"holds": ["purpose"]}, "changes": [{"edit": {"kind": "spec_edit", "target": "role-writer", "field": "purpose", "value": "State it first."}}]},
+         "expect": {"result": {"applied": False, "proposed": True, "table": "solutions", "target": "role-writer", "field": "purpose", "decision": "decision-1",
+                               "reason": "proposed, waiting for approval: the owner has to say yes"}, "records": RECORDS}},
+        {"id": "location-denies-plainly", "kind": "refused", "args": {"records": RECORDS, "source": {"denies": "you may not change this specification"}, "changes": [{"edit": {"kind": "spec_edit", "target": "role-writer", "field": "purpose", "value": "State it first."}}]},
+         "expect": {"result": {"applied": False, "reason": "you may not change this specification"}, "records": RECORDS}}]
+    return cases
+
+
 def main():
     cases = []
     for name, kind, table, target, field, value in (
@@ -41,6 +68,7 @@ def main():
             ("no-target", {"kind": "metric_edit", "field": "record", "value": "x"}, "no metrics record named None")):
         cases.append({"id": "apply-refused-" + name, "kind": "refused", "args": {"records": RECORDS, "change": {"edit": edit}},
                       "expect": {"result": {"applied": False, "reason": why}, "records": RECORDS}})
+    cases += location_cases()
     (HERE / "cases.json").write_text(json.dumps(cases, indent=1) + "\n")
     print(len(cases), "cases")
 

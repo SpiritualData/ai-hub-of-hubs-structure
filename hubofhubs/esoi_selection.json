@@ -172,6 +172,11 @@
  },
  "critical-thinking": {
   "default": "composition",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
    "composition": "hubofhubs.the_intelligence.critical_thinking.flow"
   }
@@ -210,8 +215,8 @@
  "feedback-learning": {
   "default": "scoped_record_edit",
   "evidence": {
-   "detail": "scoped_record_edit is better than kept_note (two-sided exact McNemar test, Holm-adjusted p=0.000488, 12 of 12 cases disagree)",
-   "p": 0.000488,
+   "detail": "scoped_record_edit is better than kept_note (two-sided exact McNemar test, Holm-adjusted p=3.81e-06, 19 of 19 cases disagree)",
+   "p": 4e-06,
    "verdict": "WIN"
   },
   "modules": {

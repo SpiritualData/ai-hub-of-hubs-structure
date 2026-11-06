@@ -20,7 +20,7 @@ Part of [Holding a request to a measure](../README.md)
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
 | Append to description | `esoi-application:append_to_description` | Adds the change as a sentence to the end of the record's description: the longer-prompt way, where each correction makes the text longer and no field is edited. | [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](apply.py) |  |
-| Record field edit | `esoi-application:record_field_edit` | Sets the one field a change names on the one record it names, in the table its kind belongs to (specs, metrics, quality profiles). It refuses a change whose target or field does not exist, whose kind is unknown or whose new value is empty or carries an em dash, and says why; a refused change leaves every record as it was. | [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](apply.py) | selected |
+| Record field edit | `esoi-application:record_field_edit` | Sets the one field a change names on the one record it names, or adds one record or milestone once (ensure-one), in the table its kind belongs to (problems, ideals, solutions, implementations, metrics, quality profiles), at the records location it is given. It refuses a change whose target, field or kind does not exist, whose value is empty or carries an em dash, and says why; a refused change leaves every record as it was, and a change the location holds for a person's approval is reported as proposed, never as applied. | [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](apply.py) | selected |
 
 ## Metrics
 

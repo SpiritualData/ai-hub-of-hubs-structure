@@ -633,5 +633,466 @@
     }
    }
   }
+ },
+ {
+  "id": "location-adds-one-record",
+  "kind": "adds",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "changes": [
+    {
+     "edit": {
+      "kind": "record_add",
+      "table": "implementations",
+      "key": "post-a",
+      "fields": {
+       "name": "Post A",
+       "description": "Hypothesis: a short post draws more clicks."
+      }
+     }
+    }
+   ]
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "implementations",
+    "target": "post-a",
+    "fields": {
+     "name": "Post A",
+     "description": "Hypothesis: a short post draws more clicks."
+    },
+    "created": true
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    },
+    "implementations": {
+     "post-a": {
+      "name": "Post A",
+      "description": "Hypothesis: a short post draws more clicks."
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "location-repeat-adds-nothing",
+  "kind": "repeats",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "changes": [
+    {
+     "edit": {
+      "kind": "record_add",
+      "table": "implementations",
+      "key": "post-a",
+      "fields": {
+       "name": "Post A",
+       "description": "Hypothesis: a short post draws more clicks."
+      }
+     }
+    },
+    {
+     "edit": {
+      "kind": "record_add",
+      "table": "implementations",
+      "key": "post-a",
+      "fields": {
+       "name": "Post A",
+       "description": "Hypothesis: a short post draws more clicks."
+      }
+     }
+    }
+   ]
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "implementations",
+    "target": "post-a",
+    "fields": {
+     "name": "Post A",
+     "description": "Hypothesis: a short post draws more clicks."
+    },
+    "created": false,
+    "note": "already there"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    },
+    "implementations": {
+     "post-a": {
+      "name": "Post A",
+      "description": "Hypothesis: a short post draws more clicks."
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "location-milestone-once",
+  "kind": "repeats",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers.",
+      "milestones": "Answers exist."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "changes": [
+    {
+     "edit": {
+      "kind": "milestone_add",
+      "target": "role-writer",
+      "key": "Writers are measured.",
+      "fields": {
+       "metric": "metric-cited"
+      }
+     }
+    },
+    {
+     "edit": {
+      "kind": "milestone_add",
+      "target": "role-writer",
+      "key": "Writers are measured.",
+      "fields": {
+       "metric": "metric-cited"
+      }
+     }
+    }
+   ]
+  },
+  "expect": {
+   "result": {
+    "applied": true,
+    "table": "solutions",
+    "target": "role-writer",
+    "field": "milestones",
+    "after": "Writers are measured.",
+    "created": false,
+    "note": "already there"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers.",
+      "milestones": "Answers exist.\nWriters are measured."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "location-refuses-empty-key",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "changes": [
+    {
+     "edit": {
+      "kind": "record_add",
+      "table": "implementations",
+      "key": "",
+      "fields": {
+       "name": "Post A",
+       "description": "Hypothesis: a short post draws more clicks."
+      }
+     }
+    }
+   ]
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "an addition needs a key that says which record it is, so a repeat adds nothing"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "location-holds-edit-for-approval",
+  "kind": "proposed",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "source": {
+    "holds": [
+     "purpose"
+    ]
+   },
+   "changes": [
+    {
+     "edit": {
+      "kind": "spec_edit",
+      "target": "role-writer",
+      "field": "purpose",
+      "value": "State it first."
+     }
+    }
+   ]
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "proposed": true,
+    "table": "solutions",
+    "target": "role-writer",
+    "field": "purpose",
+    "decision": "decision-1",
+    "reason": "proposed, waiting for approval: the owner has to say yes"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
+ },
+ {
+  "id": "location-denies-plainly",
+  "kind": "refused",
+  "args": {
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   },
+   "source": {
+    "denies": "you may not change this specification"
+   },
+   "changes": [
+    {
+     "edit": {
+      "kind": "spec_edit",
+      "target": "role-writer",
+      "field": "purpose",
+      "value": "State it first."
+     }
+    }
+   ]
+  },
+  "expect": {
+   "result": {
+    "applied": false,
+    "reason": "you may not change this specification"
+   },
+   "records": {
+    "solutions": {
+     "role-writer": {
+      "purpose": "Write the answer.",
+      "out_of_scope": "Nothing.",
+      "description": "Writes answers."
+     }
+    },
+    "metrics": {
+     "metric-cited": {
+      "purpose": "Answers cite sources.",
+      "record": "No run yet."
+     }
+    },
+    "profiles": {
+     "profile-p1": {
+      "concision": "long",
+      "tone": "plain"
+     }
+    }
+   }
+  }
  }
 ]
