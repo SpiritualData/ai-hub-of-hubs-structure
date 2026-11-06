@@ -1,9 +1,9 @@
 """Install honesty: every dependency of the distribution is pinned to a tag, a commit, a branch ref or a version range; none is a
 bare name that would take whatever is newest.
 
-Our own repositories are installed from `@main` by every consumer with one identical direct-URL string, because pip refuses two
-different direct URLs for one package (the 2026-10-19 production image build failure). Tags and a version range arrive together
-in the coordinated release window, in every consumer at once."""
+Our own repositories are installed from one tag by every consumer with one identical direct-URL string, because pip refuses two
+different direct URLs for one package (the 2026-10-19 production image build failure). The tags change together, in every
+consumer at once, at each release."""
 import re
 import sys
 import tomllib
@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT))
 
 BARE = re.compile(r"^[A-Za-z0-9_.-]+(\[[^\]]*\])?$")
 PINNED = re.compile(r"(@\s*git\+https://\S+@(v?\d|main\b)|==|~=|>=|<=|<|>)")
-CONSUMER_ESOI = "esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@main#subdirectory=implementations/python"
+CONSUMER_ESOI = "esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@v0.4.0#subdirectory=implementations/python"
 
 
 def declared():

@@ -11,7 +11,7 @@
 - **Composition arms in code** for the-world, the-subconscious, the-mind, system-integrity and the-assembler, plus implementations for the-learning, the-hands and critical-thinking (links held to their evidence).
 - **hold-the-intents is dissolved**: its research area now sits under the-mind.
 - **Composites build a member on first use**: the whole-hub question needs only the search key, and `the-subconscious` runs offline; the model, the risk watch, the acting seat and the audit are built when first used.
-- **Install pins the extras; esoi is installed from `@main` with the same direct-URL string the consumers use** (a tag pin here would make pip fail on two different direct URLs for one package, as on 2026-10-19). Tags and a version range come in the coordinated release window, in every consumer at once.
+- **Install pins the extras; esoi is installed from the `@v0.4.0` tag with the same direct-URL string every consumer uses** (two different direct URLs for one package make pip fail, as on 2026-10-19). Every library moves to its next tag in every consumer at once, at each release.
 - New pages: glossary, the mind map, compared, and `CONTRIBUTING.md`.
 
 ### Restructure details
