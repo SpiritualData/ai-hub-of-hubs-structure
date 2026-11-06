@@ -84,6 +84,7 @@
    "response-writer": "hubofhubs",
    "role-understanding": "hubofhubs",
    "system-integrity": "hubofhubs",
+   "terminal-session": "hubofhubs",
    "the-assembler": "hubofhubs",
    "the-body": "hubofhubs",
    "the-consciousness": "hubofhubs",
@@ -442,6 +443,17 @@
   "default": "prompts_as_data",
   "modules": {
    "prompts_as_data": "hubofhubs.the_self.integrity.audit"
+  }
+ },
+ "terminal-session": {
+  "default": "line_repl",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "line_repl": "hubofhubs.the_consciousness.terminal.repl"
   }
  },
  "the-assembler": {
