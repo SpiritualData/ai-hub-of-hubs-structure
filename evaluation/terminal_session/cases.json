@@ -1,0 +1,445 @@
+[
+ {
+  "id": "session-one-turn",
+  "kind": "turn",
+  "origin": "rule: a line is run once and its answer shown",
+  "args": {
+   "lines": [
+    "hello\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "hello": {
+     "answer": "Hi there.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Hi there."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "hello"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-two-turns-in-order",
+  "kind": "turn",
+  "origin": "rule: two lines reach the front door in the order typed",
+  "args": {
+   "lines": [
+    "first\n",
+    "second\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "first": {
+     "answer": "One.",
+     "events": []
+    },
+    "second": {
+     "answer": "Two.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "One.",
+    "Two."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "first",
+    "second"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-interim-shown",
+  "kind": "turn",
+  "origin": "rule: an interim update of the run is shown",
+  "args": {
+   "lines": [
+    "go\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "go": {
+     "answer": "Done.",
+     "events": [
+      {
+       "type": "interim",
+       "text": "Reading the notes",
+       "data": {}
+      }
+     ]
+    }
+   },
+   "must_show": [
+    "Reading the notes",
+    "Done."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "go"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-blank-lines-skipped",
+  "kind": "turn",
+  "origin": "rule: a blank line runs nothing",
+  "args": {
+   "lines": [
+    "\n",
+    "  \n",
+    "hi\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "hi": {
+     "answer": "Hello.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Hello."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "hi"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-help-lists-commands",
+  "kind": "command",
+  "origin": "rule: /help names the commands and runs nothing",
+  "args": {
+   "lines": [
+    "/help\n",
+    "/quit\n"
+   ],
+   "replies": {},
+   "must_show": [
+    "/trail",
+    "/quit",
+    "/help"
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-trail-toggles",
+  "kind": "command",
+  "origin": "rule: /trail says whether the trail is on",
+  "args": {
+   "lines": [
+    "/trail\n",
+    "/trail\n",
+    "/quit\n"
+   ],
+   "replies": {},
+   "must_show": [
+    "Trail on.",
+    "Trail off."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-unknown-command",
+  "kind": "command",
+  "origin": "rule: an unknown command is named and runs nothing",
+  "args": {
+   "lines": [
+    "/nope\n",
+    "/quit\n"
+   ],
+   "replies": {},
+   "must_show": [
+    "Unknown command /nope"
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-ask-number-picks-option",
+  "kind": "ask",
+  "origin": "rule: a number answers an open question with that option",
+  "args": {
+   "lines": [
+    "find it\n",
+    "2\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "find it": {
+     "answer": "Need a choice.",
+     "events": [
+      {
+       "type": "decision",
+       "text": "",
+       "data": {
+        "decision_id": "d1",
+        "question": "Which source?",
+        "options": [
+         "Web",
+         "Library"
+        ]
+       }
+      }
+     ]
+    },
+    "Library": {
+     "answer": "Used the library.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Which source?",
+    "1. Web",
+    "Used the library."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "find it",
+    "Library"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-ask-free-text",
+  "kind": "ask",
+  "origin": "rule: any other text answers an open question as typed",
+  "args": {
+   "lines": [
+    "plan\n",
+    "the second draft\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "plan": {
+     "answer": "Which draft?",
+     "events": [
+      {
+       "type": "decision",
+       "text": "",
+       "data": {
+        "decision_id": "d2",
+        "question": "Which draft?"
+       }
+      }
+     ]
+    },
+    "the second draft": {
+     "answer": "Using it.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Which draft?",
+    "Using it."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "plan",
+    "the second draft"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-ask-folded-by-later",
+  "kind": "ask",
+  "origin": "rule: /later folds a question without answering it, and the next line is a new message",
+  "args": {
+   "lines": [
+    "plan\n",
+    "/later\n",
+    "other\n",
+    "/quit\n"
+   ],
+   "replies": {
+    "plan": {
+     "answer": "Which draft?",
+     "events": [
+      {
+       "type": "decision",
+       "text": "",
+       "data": {
+        "decision_id": "d3",
+        "question": "Which draft?"
+       }
+      }
+     ]
+    },
+    "other": {
+     "answer": "Fine.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Which draft?",
+    "Fine."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "plan",
+    "other"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-quit-stops-reading",
+  "kind": "exit",
+  "origin": "rule: /quit ends the session before later lines",
+  "args": {
+   "lines": [
+    "/quit\n",
+    "never\n"
+   ],
+   "replies": {
+    "never": {
+     "answer": "No.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Goodbye."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-end-of-input",
+  "kind": "exit",
+  "origin": "rule: end of input ends the session cleanly",
+  "args": {
+   "lines": [
+    "hi\n"
+   ],
+   "replies": {
+    "hi": {
+     "answer": "Hello.",
+     "events": []
+    }
+   },
+   "must_show": [
+    "Hello.",
+    "Goodbye."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [
+    "hi"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-empty-input",
+  "kind": "exit",
+  "origin": "rule: no input at all ends the session cleanly",
+  "args": {
+   "lines": [],
+   "replies": {},
+   "must_show": [
+    "Goodbye."
+   ],
+   "setup_error": false
+  },
+  "expect": {
+   "door_calls": [],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ },
+ {
+  "id": "session-setup-needed",
+  "kind": "exit",
+  "origin": "rule: a front door that cannot start shows what to set and the session goes on",
+  "args": {
+   "lines": [
+    "hi\n",
+    "/quit\n"
+   ],
+   "replies": {},
+   "must_show": [
+    "needs setup",
+    "Goodbye."
+   ],
+   "setup_error": true
+  },
+  "expect": {
+   "door_calls": [
+    "hi"
+   ],
+   "missing": [],
+   "exit_code": 0,
+   "ended": true
+  }
+ }
+]

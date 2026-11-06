@@ -11524,3 +11524,17 @@ integrated_efficiency,whole_hub,261b85b5,,,whole-sum,,0,0,0,0,2.1,,
 integrated_efficiency,whole_hub,261b85b5,,,whole-product,,0,0,0,0,0.1,,
 integrated_efficiency,whole_hub,261b85b5,,,whole-capital,,0,0,0,0,0.1,,
 integrated_efficiency,whole_hub,261b85b5,,,whole-water,,0,0,0,0,0.1,,
+terminal_session,line_repl,1201471f,,,session-one-turn,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-two-turns-in-order,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-interim-shown,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-blank-lines-skipped,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-help-lists-commands,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-trail-toggles,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-unknown-command,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-ask-number-picks-option,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-ask-free-text,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-ask-folded-by-later,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-quit-stops-reading,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-end-of-input,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-empty-input,,1,0,0,0,0.0,,1.0
+terminal_session,line_repl,1201471f,,,session-setup-needed,,1,0,0,0,0.0,,1.0

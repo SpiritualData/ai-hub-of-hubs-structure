@@ -1,4 +1,4 @@
-"""``ahohs``: the hub's command line. ``ahohs run "<input>"`` is a thin wrapper over ``hubofhubs.run``: it runs the whole hub on the
+"""``ahohs``: the hub's command line. ``ahohs chat`` is the line REPL of ``the_consciousness/terminal/repl.py`` over the same call. ``ahohs run "<input>"`` is a thin wrapper over ``hubofhubs.run``: it runs the whole hub on the
 input, or the solution named with ``--id``, and prints the answer with its sources (``--json`` prints one JSON object). Exit code 0
 ran, 2 needs setup (the lines say what to set), 1 the run failed. Standard library only."""
 from __future__ import annotations
@@ -23,7 +23,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     one.add_argument("--arm", action="append", default=[], metavar="ID=ARM", help="override one solution's arm")
     one.add_argument("--lock", default=None, help="an esoi.lock.json to keep the locked arms")
     one.add_argument("--json", action="store_true", help="print the result as one JSON object")
+    talk = sub.add_parser("chat", help="talk to the whole hub line by line (/help inside lists the commands)")
+    talk.add_argument("--arm", action="append", default=[], metavar="ID=ARM", help="override one solution's arm")
+    talk.add_argument("--lock", default=None, help="an esoi.lock.json to keep the locked arms")
     args = parser.parse_args(argv)
+    if args.command == "chat":
+        from hubofhubs.the_consciousness.terminal.repl import LineRepl
+        chosen = dict(item.split("=", 1) for item in args.arm)
+        return LineRepl().converse(lambda text: hubofhubs.run("hub-of-hubs", text, arms=chosen or None, lock=args.lock), sys.stdin, sys.stdout)
     arms = dict(item.split("=", 1) for item in args.arm)
     try:
         result = hubofhubs.run(args.id, args.input, arms=arms or None, lock=args.lock)

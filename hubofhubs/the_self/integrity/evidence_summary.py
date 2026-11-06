@@ -328,7 +328,7 @@ MIND_TREE = (
     ("the-learning", "the-world"), ("research-freshness-reader", "the-learning"),
     ("the-consciousness", ""),
     ("the-representatives", "the-consciousness"), ("judgment-calls", "the-consciousness"), ("feedback-learning", "the-consciousness"),
-    ("prioritization", "the-consciousness"), ("request-intake", "the-consciousness"),
+    ("prioritization", "the-consciousness"), ("request-intake", "the-consciousness"), ("terminal-session", "the-consciousness"),
 )
 #: A solution with one of these ids is a mind seat, and its name is the part's name.
 MIND_SEATS = tuple(sid for sid, _inside in MIND_TREE)

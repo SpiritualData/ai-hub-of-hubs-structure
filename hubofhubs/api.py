@@ -188,6 +188,9 @@ NAMES = {
     "hubofhubs.the_consciousness.request_intake.interface": (
         "RequestIntaking",
     ),
+    "hubofhubs.the_consciousness.terminal.interface": (
+        "Conversing",
+    ),
     "hubofhubs.the_consciousness.terminal": (
         "Block", "TerminalState", "answer_ask", "close_ask", "continue_message", "fold_ask", "settle", "toggle_trail", "toggle_updates",
         "unfold_ask",

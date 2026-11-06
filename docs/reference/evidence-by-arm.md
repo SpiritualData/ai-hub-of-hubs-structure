@@ -96,6 +96,7 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | search_backend | gemini (selected) | 40 | 80.0% (65.2% to 89.5%), 32/40 | $5.625e-05 | 2 (median) | selected | none recorded |
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |
+| terminal_session | line_repl (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | none | 60 | 50.0% (37.7% to 62.3%), 30/60 | $0 | 0 (median) | ahead of none, not significant (two-sided sign test p=0.718) | none recorded |
 | watch_for_risk | overseer | 36 | 91.7% (78.2% to 97.1%), 33/36 | $7.576e-05 | 0.4 (median) | ahead of overseer, not significant (two-sided Fisher p=0.718) | none recorded |

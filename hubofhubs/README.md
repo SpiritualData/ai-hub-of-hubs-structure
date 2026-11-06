@@ -57,7 +57,7 @@ Keep the system aligned with the humans and policies it works for.
 - Entry call: `hubofhubs.run("the-consciousness", '')`
 - Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/feedback_learning/propose.py`](the_consciousness/feedback_learning/propose.py), [`hubofhubs/the_consciousness/feedback_learning/tests/test_feedback_learning.py`](the_consciousness/feedback_learning/tests/test_feedback_learning.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py) and 30 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](the_consciousness/feedback_learning/__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](the_consciousness/feedback_learning/interface.py), [`hubofhubs/the_consciousness/feedback_learning/propose.py`](the_consciousness/feedback_learning/propose.py), [`hubofhubs/the_consciousness/feedback_learning/tests/test_feedback_learning.py`](the_consciousness/feedback_learning/tests/test_feedback_learning.py), [`hubofhubs/the_consciousness/flow.py`](the_consciousness/flow.py), [`hubofhubs/the_consciousness/interface.py`](the_consciousness/interface.py) and 33 more
 
 ## One level below
 
@@ -72,6 +72,7 @@ Keep the system aligned with the humans and policies it works for.
 - [Prioritization](the_consciousness/prioritization/README.md) (solution with implementations): Put what competes for a person's attention in the order they would: their work, the asks to them and their goals.
 - [Representatives](the_consciousness/representatives/README.md) (solution with implementations): Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
 - [Request Intake](the_consciousness/request_intake/README.md) (solution with implementations): Take in every request a person makes, once, from wherever the system listens.
+- [Terminal Session](the_consciousness/terminal/README.md) (solution with implementations): Let a person converse with the hub in a plain terminal and always see what it is doing and what it asks.
 - [Nervous System](the_intelligence/nervous_system/README.md) (solution with implementations): Send one risk signal, a severity and a reason, before irreversible or person-owned steps, without slowing ordinary work and without routing.
 - [Proactivity](the_intelligence/proactivity/README.md) (solution with implementations): Let the system start its standing work when it is due, without being asked.
 - [Assembler](the_self/assembler/README.md) (solution with implementations): Build the whole from the best-measured arm of every seat and report its coverage, with no glue written by the consumer.
@@ -166,6 +167,7 @@ flowchart LR
 - Down: [hubofhubs/the_consciousness/prioritization](the_consciousness/prioritization/README.md)
 - Down: [hubofhubs/the_consciousness/representatives](the_consciousness/representatives/README.md)
 - Down: [hubofhubs/the_consciousness/request_intake](the_consciousness/request_intake/README.md)
+- Down: [hubofhubs/the_consciousness/terminal](the_consciousness/terminal/README.md)
 - Down: [hubofhubs/the_intelligence/nervous_system](the_intelligence/nervous_system/README.md)
 - Down: [hubofhubs/the_intelligence/proactivity](the_intelligence/proactivity/README.md)
 - Down: [hubofhubs/the_self/assembler](the_self/assembler/README.md)

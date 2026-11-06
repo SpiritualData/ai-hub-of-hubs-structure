@@ -8,7 +8,7 @@ This sub-intent arises as the implementation `the-consciousness:composition` of 
 
 ## How the solutions fit together
 
-Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization is the one place that orders three things for a person. The first is the work the system is about to start unasked, which Intelligence says is due. The second is the asks the system puts to the person, which arrive from Judgment Calls once it has decided to ask, so that the person's scarce attention goes first to what unblocks the most work and is not flooded. The third is the person's own goals, the solution milestones of their intents, which Intelligence keeps live, so that the system knows what the person cares about most. Prioritization also turns the priorities a person states or implies into ESOI. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
+Consciousness is where the system adapts to the humans and policies it works for. Request Intake takes in what people ask through Intake Sources. Representatives are the AI personas that act for a person, carrying that person's authority, data scope, preferences and quality profile. Prioritization is the one place that orders three things for a person. The first is the work the system is about to start unasked, which Intelligence says is due. The second is the asks the system puts to the person, which arrive from Judgment Calls once it has decided to ask, so that the person's scarce attention goes first to what unblocks the most work and is not flooded. The third is the person's own goals, the solution milestones of their intents, which Intelligence keeps live, so that the system knows what the person cares about most. Prioritization also turns the priorities a person states or implies into ESOI. Judgment Calls decides for the person whether to ask, proceed or decline when a step is risky, and how the ask is timed. Terminal Session lets a person converse with the hub in a plain terminal: it sends each line the person types through the front door and draws the work, the interim updates and any question the hub asks, so the next line answers an open question. Feedback Learning proposes edits to specs and metrics, never to prompts. Those edits are applied directly, with no approval step, unless Judgment Calls decides to ask.
 
 ## One level below
 
@@ -19,6 +19,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - [Prioritization](prioritization/README.md) (solution with implementations): Put what competes for a person's attention in the order they would: their work, the asks to them and their goals.
 - [Representatives](representatives/README.md) (solution with implementations): Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
 - [Request Intake](request_intake/README.md) (solution with implementations): Take in every request a person makes, once, from wherever the system listens.
+- [Terminal Session](terminal/README.md) (solution with implementations): Let a person converse with the hub in a plain terminal and always see what it is doing and what it asks.
 
 ## Solutions at a glance
 
@@ -29,6 +30,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Prioritization | `prioritization` | `hubofhubs.run("prioritization", ...)` | Stated and carried fields (`stated_fields`) | Work, asks and milestones in the order the stated rules give |
 | Representatives | `the-representatives` | `hubofhubs.run("the-representatives", '')` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Request Intake | `request-intake` | `hubofhubs.run("request-intake", {'person': ''})` | Every declared source (`every_declared_source`) | Requests taken in once with their person |
+| Terminal Session | `terminal-session` | `hubofhubs.run("terminal-session", {'lines': ['/quit']})` | Line REPL (ahohs chat) (`line_repl`) | Scripted sessions that end right |
 
 ## Problems and ideals
 
@@ -41,6 +43,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Asks reach a person in arrival order (`hprob-asks-arrive-in-arrival-order`): The questions, decisions and approvals an AI puts to a person reach them in the order they arrived, whatever each one unblocks, so the answer that would free five waiting tasks sits behind a question nothing waits on, and a person with many open asks is shown all of them at once.
 - A person's milestones are a flat list (`hprob-goals-are-a-flat-list`): The milestones of the solutions of a person's intents (what each solution is to reach next, with its target time and what it depends on) are held as a flat list, so the AI cannot tell which matters most to the person: a milestone others depend on, one with a near target time and one the person said they care most about look alike, and the AI orders its own work and its questions without knowing.
 - Unasked work starts in the order it became due (`hprob-unasked-work-starts-in-due-order`): The work the AI is about to start unasked is started in the order it became due, so a daily chore can run before the report the person is waiting for.
+- The hub runs one input per command (`hprob-the-hub-runs-one-input-at-a-time-from-a-command-line`): The hub can be run from a command line one input at a time, and each run starts without the earlier ones, so a person cannot try it or steer it by talking with it, answer a question it asks, or see what it is doing between one line and the next.
 
 **Ideals**
 
@@ -51,6 +54,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Effort follows what the person cares about (`hideal-implied-priorities-reach-esoi`): The system's effort follows what the person cares about most, including what they only imply.
 - A person's attention goes to what frees the most work (`hideal-scarce-attention-goes-to-what-unblocks-most`): A person's attention is scarce, so the AI puts first in front of them the question whose answer frees the most work, and no more at once than they welcome.
 - The AI knows which goals matter most (`hideal-the-ai-knows-which-goals-matter-most`): The AI knows which of a person's goals matters most to them, and why, from what they stated, how they reacted, deadlines and what depends on what.
+- Converse with the hub in a plain terminal (`hideal-a-person-can-converse-with-the-hub-in-a-terminal`): A person can converse with the hub in a plain terminal and always see what it is doing and what it asks.
 
 ## Metrics and their leaders
 
@@ -59,12 +63,13 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Work, asks and milestones in the order the stated rules give (`metric-human-prioritization`): leader `stated_fields`, 34 of 34 cases
 - Authority that stays with its person (`metric-the-representatives`)
 - Requests taken in once with their person (`metric-request-intake`)
+- Scripted sessions that end right (`metric-terminal-session`): leader `line_repl`, 14 of 14 cases
 
 ## Where to go next
 
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
-- Records beside the code: [hubofhubs/the_consciousness/feedback_learning](feedback_learning/README.md), [hubofhubs/the_consciousness/judgment_calls](judgment_calls/README.md), [hubofhubs/the_consciousness/prioritization](prioritization/README.md), [hubofhubs/the_consciousness/representatives](representatives/README.md), [hubofhubs/the_consciousness/request_intake](request_intake/README.md)
+- Records beside the code: [hubofhubs/the_consciousness/feedback_learning](feedback_learning/README.md), [hubofhubs/the_consciousness/judgment_calls](judgment_calls/README.md), [hubofhubs/the_consciousness/prioritization](prioritization/README.md), [hubofhubs/the_consciousness/representatives](representatives/README.md), [hubofhubs/the_consciousness/request_intake](request_intake/README.md), [hubofhubs/the_consciousness/terminal](terminal/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [metrics.csv](metrics.csv)
 
 ---
@@ -80,6 +85,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Asks reach a person in arrival order (`hprob-asks-arrive-in-arrival-order`): The questions, decisions and approvals an AI puts to a person reach them in the order they arrived, whatever each one unblocks, so the answer that would free five waiting tasks sits behind a question nothing waits on, and a person with many open asks is shown all of them at once.
 - A person's milestones are a flat list (`hprob-goals-are-a-flat-list`): The milestones of the solutions of a person's intents (what each solution is to reach next, with its target time and what it depends on) are held as a flat list, so the AI cannot tell which matters most to the person: a milestone others depend on, one with a near target time and one the person said they care most about look alike, and the AI orders its own work and its questions without knowing.
 - Unasked work starts in the order it became due (`hprob-unasked-work-starts-in-due-order`): The work the AI is about to start unasked is started in the order it became due, so a daily chore can run before the report the person is waiting for.
+- The hub runs one input per command (`hprob-the-hub-runs-one-input-at-a-time-from-a-command-line`): The hub can be run from a command line one input at a time, and each run starts without the earlier ones, so a person cannot try it or steer it by talking with it, answer a question it asks, or see what it is doing between one line and the next.
 
 ### Ideals
 
@@ -90,6 +96,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Effort follows what the person cares about (`hideal-implied-priorities-reach-esoi`): The system's effort follows what the person cares about most, including what they only imply.
 - A person's attention goes to what frees the most work (`hideal-scarce-attention-goes-to-what-unblocks-most`): A person's attention is scarce, so the AI puts first in front of them the question whose answer frees the most work, and no more at once than they welcome.
 - The AI knows which goals matter most (`hideal-the-ai-knows-which-goals-matter-most`): The AI knows which of a person's goals matters most to them, and why, from what they stated, how they reacted, deadlines and what depends on what.
+- Converse with the hub in a plain terminal (`hideal-a-person-can-converse-with-the-hub-in-a-terminal`): A person can converse with the hub in a plain terminal and always see what it is doing and what it asks.
 
 ### Solutions
 
@@ -100,6 +107,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Prioritization | `prioritization` | Stated and carried fields (`stated_fields`) | Work, asks and milestones in the order the stated rules give |
 | Representatives | `the-representatives` | Declared authority (`declared_authority`) | Authority that stays with its person |
 | Request Intake | `request-intake` | Every declared source (`every_declared_source`) | Requests taken in once with their person |
+| Terminal Session | `terminal-session` | Line REPL (ahohs chat) (`line_repl`) | Scripted sessions that end right |
 
 ### Implementations
 
@@ -113,6 +121,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | As given | `prioritization:as_given` | [hubofhubs/the_consciousness/prioritization/ordering.py](prioritization/ordering.py) |  |
 | Declared authority | `the-representatives:declared_authority` | [hubofhubs/the_consciousness/representatives/representatives.py](representatives/representatives.py) |  |
 | Every declared source | `request-intake:every_declared_source` | [hubofhubs/the_consciousness/request_intake/intake.py](request_intake/intake.py) |  |
+| Line REPL (ahohs chat) | `terminal-session:line_repl` | [hubofhubs/the_consciousness/terminal/repl.py](terminal/repl.py) |  |
 
 ### Metrics
 
@@ -121,6 +130,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Work, asks and milestones in the order the stated rules give (`metric-human-prioritization`): `esoi run prioritization --impl stated_fields; esoi run prioritization --impl as_given`
 - Authority that stays with its person (`metric-the-representatives`): `python3 -m pytest hubofhubs/the_consciousness/tests/test_consciousness.py`
 - Requests taken in once with their person (`metric-request-intake`): `python3 -m pytest tests/test_intake.py`
+- Scripted sessions that end right (`metric-terminal-session`): `esoi run terminal_session --impl line_repl`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

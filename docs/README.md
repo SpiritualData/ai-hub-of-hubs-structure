@@ -19,6 +19,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Iterate on card builders without repeating model calls](how-to/iterate-on-card-builders-without-repeating-model-calls.md)
 - [Build an autopilot on the hub](how-to/build-an-autopilot-on-the-hub.md)
 - [Render a run in a terminal](how-to/render-a-run-in-a-terminal.md)
+- [Talk to the hub in a terminal](how-to/talk-to-the-hub-in-a-terminal.md)
 - [Release the hub](how-to/release-the-hub.md)
 
 ## Explanation
