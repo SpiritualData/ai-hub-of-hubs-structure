@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Response Quality gains the generic reply guards as arms, each judging one criterion and able to repair: `grounded_figures` (a sentence stating a figure the evidence lacks is a finding and `repair` takes it out), `em_dash_free` (`repair` rewrites each em dash by punctuation rules) and `date_arithmetic` (a wrong "N days from today" or "N days before/after an event (date)" count). The interface gains `repair(response, evidence)`. Names exported in `hubofhubs.api`: `evidence_of`, `strip_unsupported`, `remove_em_dashes`, `clean_value`, `relativize`, `clean_roots`, `dates_in`, `month_of`, `today_of`, `day_count_errors`, `event_offset_errors` and the month and date patterns. Offline metric cases: `evaluation/response_quality`.
+
 ## 0.4.0 (2026-11-07)
 
 - References resolved for a card's content are remembered for a minute (`resolve_remembered`, cleared by `clear_resolution_memo`, exported in `hubofhubs.api`; the consumer clears it after any write), so the turn-start assembly and the reads after it do not fetch the same live data again one after the other. A turn-start assembly that hit its deadline but holds context counts as context in hand for `TurnCardCache`'s cheap follow-up reads.

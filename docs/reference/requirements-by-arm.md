@@ -80,7 +80,10 @@ at the repository root.
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
 | Request Intake, Every declared source (`request-intake:every_declared_source`) | none | none | none | none | no |
 | Research Freshness Reader, Registry date scan (`research-freshness-reader:registry_scan`) | none | none | none | none | no |
+| Response Quality, Day counts that match the calendar (`response-quality:date_arithmetic`) | none | none | none | none | no |
+| Response Quality, No em dash (`response-quality:em_dash_free`) | none | none | none | none | no |
 | Response Quality, Links held to their evidence (`response-quality:evidence_check`) | none | none | none | none | no |
+| Response Quality, Figures held to their evidence (`response-quality:grounded_figures`) | none | none | none | none | no |
 | Response Writer, Cited results (`response-writer:cited_results`) | none | none | none | none | no |
 | Response Writer, Model synthesis (`response-writer:model_synthesis`) | none | none | none | none | no |
 | Role Understanding, Role checked against the part's calls (`role-understanding:checked_role`) | none | none | none | none | no |

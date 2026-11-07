@@ -1,0 +1,171 @@
+[
+ {
+  "id": "quality-figure-held",
+  "kind": "figure",
+  "args": {
+   "response": "The garden has 12 beds and 4 are planted.",
+   "evidence": "Garden notes: 12 beds, 4 planted."
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-figure-invented",
+  "kind": "figure",
+  "args": {
+   "response": "The garden has 12 beds and 9 are planted.",
+   "evidence": "Garden notes: 12 beds, 4 planted."
+  },
+  "expect": {
+   "grounded_figures": [
+    "figure not in the evidence: 9"
+   ]
+  }
+ },
+ {
+  "id": "quality-figure-list-numbers-ignored",
+  "kind": "figure",
+  "args": {
+   "response": "Steps:\n1. Water the beds.\n2. Pull weeds from 4 beds.",
+   "evidence": "Garden notes: 4 beds need weeding."
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-figure-two-invented",
+  "kind": "figure",
+  "args": {
+   "response": "We sold 30 jars. Then 45 more went out the door.",
+   "evidence": "Sales sheet: 12 jars sold."
+  },
+  "expect": {
+   "grounded_figures": [
+    "figure not in the evidence: 30",
+    "figure not in the evidence: 45"
+   ]
+  }
+ },
+ {
+  "id": "quality-dash-one",
+  "kind": "dash",
+  "args": {
+   "response": "The plan \u2014 which you wrote \u2014 works.",
+   "evidence": ""
+  },
+  "expect": {
+   "em_dash_free": [
+    "em dash in the response: 2"
+   ]
+  }
+ },
+ {
+  "id": "quality-dash-range",
+  "kind": "dash",
+  "args": {
+   "response": "Open 10\u201420 hours.",
+   "evidence": "Open 10 to 20 hours."
+  },
+  "expect": {
+   "em_dash_free": [
+    "em dash in the response: 1"
+   ],
+   "grounded_figures": []
+  }
+ },
+ {
+  "id": "quality-dash-none",
+  "kind": "dash",
+  "args": {
+   "response": "The plan, which you wrote, works.",
+   "evidence": ""
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-date-days-from-today-right",
+  "kind": "date",
+  "args": {
+   "response": "On 20 Jul that is 8 days from today.",
+   "evidence": "Today is 2026-07-12. Deadline 20 Jul, 8 days away; 5 and 3 are other counts."
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-date-days-from-today-wrong",
+  "kind": "date",
+  "args": {
+   "response": "On 20 Jul that is 5 days from today.",
+   "evidence": "Today is 2026-07-12. Deadline 20 Jul, 8 days away; 5 and 3 are other counts."
+  },
+  "expect": {
+   "date_arithmetic": [
+    "8 days from today to 20 Jul, not 5"
+   ],
+   "grounded_figures": []
+  }
+ },
+ {
+  "id": "quality-date-other-anchor-not-judged",
+  "kind": "date",
+  "args": {
+   "response": "Finish 3 days before they arrive on 20 Jul.",
+   "evidence": "Today is 2026-07-12. Deadline 20 Jul, 8 days away; 5 and 3 are other counts."
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-date-offset-right",
+  "kind": "date",
+  "args": {
+   "response": "We arrive 13 Nov. Pack 3 days before arrival (10 Nov).",
+   "evidence": "Trip: arrive 13 Nov, pack 10 Nov, 3 days."
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-date-offset-wrong",
+  "kind": "date",
+  "args": {
+   "response": "We arrive 13 Nov. Pack 3 days before arrival (17 Nov).",
+   "evidence": "Trip: arrive 13 Nov, 3 days."
+  },
+  "expect": {
+   "date_arithmetic": [
+    "3 days before 13 Nov is 10 Nov, not 17 Nov"
+   ],
+   "grounded_figures": [
+    "figure not in the evidence: 17"
+   ]
+  }
+ },
+ {
+  "id": "quality-link-held",
+  "kind": "link",
+  "args": {
+   "response": "See https://example.org/a for details.",
+   "evidence": "Source: https://example.org/a"
+  },
+  "expect": {}
+ },
+ {
+  "id": "quality-link-invented",
+  "kind": "link",
+  "args": {
+   "response": "See https://example.org/b for details.",
+   "evidence": "Source: https://example.org/a"
+  },
+  "expect": {
+   "evidence_check": [
+    "link not in the evidence: https://example.org/b"
+   ]
+  }
+ },
+ {
+  "id": "quality-clean",
+  "kind": "clean",
+  "args": {
+   "response": "The garden is doing well and the beds are planted.",
+   "evidence": "Garden notes: planted."
+  },
+  "expect": {}
+ }
+]

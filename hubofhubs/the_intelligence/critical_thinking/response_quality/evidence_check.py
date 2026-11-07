@@ -28,3 +28,7 @@ class EvidenceCheck:
             if normalize_url_for_match(url) not in known:
                 found.append(f"link not in the evidence: {url}")
         return found
+
+    def repair(self, response: str, evidence: str = "") -> str:
+        """A link the evidence lacks is removed by the Link Guard, which can also reach the network; this arm only reports."""
+        return response

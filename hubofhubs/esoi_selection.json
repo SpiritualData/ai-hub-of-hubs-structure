@@ -416,8 +416,16 @@
  },
  "response-quality": {
   "default": "evidence_check",
+  "evidence": {
+   "detail": "the selected implementation has no recorded row",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
   "modules": {
-   "evidence_check": "hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check"
+   "date_arithmetic": "hubofhubs.the_intelligence.critical_thinking.response_quality.date_arithmetic",
+   "em_dash_free": "hubofhubs.the_intelligence.critical_thinking.response_quality.em_dash_free",
+   "evidence_check": "hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check",
+   "grounded_figures": "hubofhubs.the_intelligence.critical_thinking.response_quality.figure_grounding"
   }
  },
  "response-writer": {

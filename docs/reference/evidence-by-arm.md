@@ -42,7 +42,7 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | context_retrieval | learned_rerank | 395 | 37.0% (32.3% to 41.8%), 146/395 | $0 | 0 (median) | ahead of learned_rerank (two-sided sign test p=1.35e-24) | none recorded |
 | context_retrieval | live_scan | 395 | 20.3% (16.6% to 24.5%), 80/395 | $1.609 | 1.9 (median) | ahead of live_scan (two-sided sign test p=1.07e-103) | none recorded |
 | context_retrieval | lsi | 395 | 45.8% (41.0% to 50.8%), 181/395 | $0 | 0 (median) | ahead of lsi (two-sided sign test p=1.53e-19) | none recorded |
-| critical_thinking | composition (selected) | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | selected | none recorded |
+| critical_thinking | composition (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
 | esoi_application | record_field_edit (selected) | 10 | 100.0% (72.2% to 100.0%), 10/10 | $0 | 0 (median) | selected | none recorded |
 | esoi_application | append_to_description | 10 | 0.0% (0.0% to 27.8%), 0/10 | no passing case | 0 (median) | ahead of append_to_description (two-sided McNemar p=0.00195) | none recorded |
 | feedback_learning | scoped_record_edit (selected) | 19 | 100.0% (83.2% to 100.0%), 19/19 | $0 | 0 (median) | selected | none recorded |
@@ -91,6 +91,10 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | reason_and_answer | tier_selector (selected) | 36 | 100.0% (90.4% to 100.0%), 36/36 | $0 | 0 (median) | selected | none recorded |
 | request_planning | cue_router (selected) | 105 | 63.8% (54.3% to 72.4%), 67/105 | $0 | 0 (median) | selected | none recorded |
 | request_planning | one_piece | 105 | 22.9% (15.9% to 31.8%), 24/105 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=3.38e-08) | none recorded |
+| response_quality | evidence_check (selected) | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | selected | none recorded |
+| response_quality | date_arithmetic | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | identical to date_arithmetic on all 15 cases | none recorded |
+| response_quality | em_dash_free | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | identical to em_dash_free on all 15 cases | none recorded |
+| response_quality | grounded_figures | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | identical to grounded_figures on all 15 cases | none recorded |
 | response_writing | cited_results (selected) | 44 | 100.0% (92.0% to 100.0%), 44/44 | $0 | 0 (median) | selected | none recorded |
 | role_understanding | checked_role (selected) | 13 | 100.0% (77.2% to 100.0%), 13/13 | $0 | 0 (median) | selected | none recorded |
 | role_understanding | recorded_role | 13 | 69.2% (42.4% to 87.3%), 9/13 | $0 | 0 (median) | ahead of recorded_role, not significant (two-sided sign test p=0.125) | none recorded |

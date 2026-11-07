@@ -232,11 +232,23 @@ NAMES = {
     "hubofhubs.the_intelligence.critical_thinking.response_quality.citations": (
         "dois_in", "strip_unlisted_dois",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.response_quality.date_arithmetic": (
+        "DAY_THEN_MONTH", "MONTHS", "MONTH_NUMBER", "MONTH_THEN_DAY", "dates_in", "day_count_errors", "event_offset_errors", "month_of", "today_of",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.response_quality.em_dash_free": (
+        "clean_value", "remove_em_dashes",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.response_quality.figure_grounding": (
+        "evidence_of", "strip_unsupported",
+    ),
     "hubofhubs.the_intelligence.critical_thinking.response_quality.interface": (
         "ResponseJudging",
     ),
     "hubofhubs.the_intelligence.critical_thinking.response_quality.link_detect": (
         "MAX_LISTED_LINKS", "links_in_message",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.response_quality.machine_paths": (
+        "clean_roots", "relativize",
     ),
     "hubofhubs.the_intelligence.critical_thinking.response_quality.link_guard": (
         "DEAD", "LinkGuard", "LinkPolicy", "OK", "UNKNOWN", "build_link_guard", "evidence_text", "normalize_url_for_match",

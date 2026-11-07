@@ -13,3 +13,4 @@ S51,hprob-addon-guard-without-marginal-value:why_it_matters,"Literally true: a g
 S51,hprob-claims-without-checkable-sources:problem,Literally true: some answers cite no source at all.
 S51,hprob-context-too-broad-or-missing:problem,Literally true: 'context it never needed' describes context that was not needed.
 S51,hprob-context-too-broad-or-missing:why_it_matters,"Literally true: a request that needs nothing from the corpus should be sent none, stated conditionally."
+S33,response-quality,"Pending decision: each arm judges one criterion on cases where every other arm must stay silent, so all four score 1.0 on the same cases and the cascade has no real winner; the selected arm (evidence_check, the link check the entry call has always run) stays until a case set scores arms on the same criterion. The other arms are reached by the names of hubofhubs.api."

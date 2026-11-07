@@ -47,7 +47,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Edits change exactly the field proposed (`metric-esoi-application`): leader `record_field_edit`, 10 of 10 cases
 - Goals judged met only when they are (`metric-goal-completion`): leader `evidence_standard`, 14 of 14 cases
 - A goal record with a target and a budget (`metric-metric-translation`)
-- Balanced score of a response against its quality profile (`metric-response-quality`)
+- Balanced score of a response against its quality profile (`metric-response-quality`): leader `date_arithmetic`, 15 of 15 cases
 
 ## Where to go next
 
@@ -91,13 +91,16 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Outcome is not empty | `goal-completion:nonempty` | [hubofhubs/the_intelligence/critical_thinking/goal_completion/goal_completion.py](goal_completion/goal_completion.py) |  |
 | Goal record with default budget | `metric-translation:goal_record` | [hubofhubs/the_intelligence/critical_thinking/metric_translation/translation.py](metric_translation/translation.py) |  |
 | Links held to their evidence | `response-quality:evidence_check` | [hubofhubs/the_intelligence/critical_thinking/response_quality/evidence_check.py](response_quality/evidence_check.py) |  |
+| Day counts that match the calendar | `response-quality:date_arithmetic` | [hubofhubs/the_intelligence/critical_thinking/response_quality/date_arithmetic.py](response_quality/date_arithmetic.py) |  |
+| No em dash | `response-quality:em_dash_free` | [hubofhubs/the_intelligence/critical_thinking/response_quality/em_dash_free.py](response_quality/em_dash_free.py) |  |
+| Figures held to their evidence | `response-quality:grounded_figures` | [hubofhubs/the_intelligence/critical_thinking/response_quality/figure_grounding.py](response_quality/figure_grounding.py) |  |
 
 ### Metrics
 
 - Edits change exactly the field proposed (`metric-esoi-application`): `esoi run esoi_application --impl record_field_edit; esoi run esoi_application --impl append_to_description`
 - Goals judged met only when they are (`metric-goal-completion`): `esoi run goal_completion --impl evidence_standard; esoi run goal_completion --impl nonempty`
 - A goal record with a target and a budget (`metric-metric-translation`): `python3 -m pytest tests/test_orchestrate_parts.py`
-- Balanced score of a response against its quality profile (`metric-response-quality`): `none`
+- Balanced score of a response against its quality profile (`metric-response-quality`): `esoi run response_quality --impl evidence_check; esoi run response_quality --impl grounded_figures; esoi run response_quality --impl em_dash_free; esoi run response_quality --impl date_arithmetic`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

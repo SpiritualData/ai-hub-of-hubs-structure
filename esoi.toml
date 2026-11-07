@@ -110,6 +110,13 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.001
 seconds_per_case = 1
 
+# response-quality: judging one response is a few regular expressions over its text, so a judgment is worth at most a tenth of a cent and one second. The weights are the library's
+# defaults and the budgets were fixed before any arm was scored on the cases of evaluation/response_quality/build_cases.py.
+[balance.response_quality]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
+
 # guidance: deciding whether and what to nudge is a few string checks in code before a reply is planned, so one decision is worth at most a tenth of a cent and one second.
 # The weights are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/guidance/build_cases.py.
 [balance.guidance]
