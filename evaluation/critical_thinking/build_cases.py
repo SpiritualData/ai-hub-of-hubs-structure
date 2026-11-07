@@ -14,15 +14,16 @@ SEARCH = {"name": "search", "kind": "read", "cost_seconds": 5}
 LOOKUP = {"name": "lookup", "kind": "read", "cost_seconds": 5}
 POST = {"name": "post", "kind": "write", "cost_seconds": 5}
 DRAFT = "I do not have it, could you paste it?"
+QUESTION = "Which quest or topic do you want to talk about?"      # a reply that is the one question a cut-off or ambiguous message needs
 GOOD = "Here is the next step, from the transcript."
 PARTIAL = "Found part of it."
 BUDGET = {"max_replans": 2, "wall_seconds": 120, "inline_seconds": 30, "background": False}
 
 
-def case(name, kind, verdicts, means, attempts, budget=None, expect=None, attempt_given=True, elapsed_start=0):
-    args = {"goal": "an actionable next step, grounded in the transcript", "done_standard": "a next step that cites the transcript", "draft": DRAFT, "verdicts": verdicts,
+def case(name, kind, verdicts, means, attempts, budget=None, expect=None, attempt_given=True, elapsed_start=0, draft=DRAFT):
+    args = {"goal": "an actionable next step, grounded in the transcript", "done_standard": "a next step that cites the transcript", "draft": draft, "verdicts": verdicts,
             "means": means, "attempts": attempts, "budget": dict(BUDGET, **(budget or {})), "attempt_given": attempt_given, "elapsed_start": elapsed_start}
-    summary = {"status": "", "met": False, "replans": 0, "tried": [], "interims": 0, "attempts": 0, "writes_offered": 0, "message": False, "outcome": DRAFT, "ignored_writes": 0}
+    summary = {"status": "", "met": False, "replans": 0, "tried": [], "interims": 0, "attempts": 0, "writes_offered": 0, "message": False, "outcome": draft, "ignored_writes": 0}
     return {"id": "pursuit-" + name, "kind": kind, "args": args, "expect": dict(summary, **expect)}
 
 
@@ -56,6 +57,12 @@ def main():
         case("two-long-rounds-announce-once", "interim", dict(unmet, **{PARTIAL: False, GOOD: True}), [dict(SEARCH, cost_seconds=40), dict(LOOKUP, cost_seconds=40)],
              [{"outcome": PARTIAL, "means_used": ["search"]}, {"outcome": GOOD, "means_used": ["lookup"]}], budget={"wall_seconds": 400},
              expect={"status": "met_after_replan", "met": True, "replans": 2, "tried": ["search", "lookup"], "interims": 1, "attempts": 2, "outcome": GOOD}),
+        case("cut-off-message-question-is-terminal", "awaiting_person", {QUESTION: "awaiting"}, [dict(SEARCH, cost_seconds=40)], [], budget={"background": True},
+             draft=QUESTION, expect={"status": "awaiting_person", "met": True, "outcome": QUESTION}),
+        case("ambiguous-request-one-question-is-terminal", "awaiting_person", {QUESTION: "awaiting"}, [SEARCH], [{"outcome": GOOD, "means_used": ["search"]}],
+             draft=QUESTION, expect={"status": "awaiting_person", "met": True, "outcome": QUESTION}),
+        case("real-unmet-goal-still-pursues", "awaiting_person", dict(unmet, **{GOOD: True}), [SEARCH], [{"outcome": GOOD, "means_used": ["search"]}],
+             expect={"status": "met_after_replan", "met": True, "replans": 1, "tried": ["search"], "attempts": 1, "outcome": GOOD}),
         case("short-work-does-not-announce", "interim", dict(unmet, **{GOOD: True}), [SEARCH], [{"outcome": GOOD, "means_used": ["search"]}],
              expect={"status": "met_after_replan", "met": True, "replans": 1, "tried": ["search"], "attempts": 1, "outcome": GOOD}),
     ]

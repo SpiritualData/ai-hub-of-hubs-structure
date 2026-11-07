@@ -65,7 +65,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- Unmet goals pursued within their budget (`metric-critical-thinking`): leader `composition`, 15 of 15 cases
+- Unmet goals pursued within their budget (`metric-critical-thinking`): leader `composition`, 18 of 18 cases
 - Answer quality per dollar and per second (`metric-the-mind`)
 - Right context admitted, none from another scope (`metric-the-subconscious`)
 - The long view survives between requests (`metric-higher-mind`)

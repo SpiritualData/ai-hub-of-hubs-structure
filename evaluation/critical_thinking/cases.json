@@ -694,6 +694,143 @@
   }
  },
  {
+  "id": "pursuit-cut-off-message-question-is-terminal",
+  "kind": "awaiting_person",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "Which quest or topic do you want to talk about?",
+   "verdicts": {
+    "Which quest or topic do you want to talk about?": "awaiting"
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 40
+    }
+   ],
+   "attempts": [],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": true
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "awaiting_person",
+   "met": true,
+   "replans": 0,
+   "tried": [],
+   "interims": 0,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Which quest or topic do you want to talk about?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-ambiguous-request-one-question-is-terminal",
+  "kind": "awaiting_person",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "Which quest or topic do you want to talk about?",
+   "verdicts": {
+    "Which quest or topic do you want to talk about?": "awaiting"
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "awaiting_person",
+   "met": true,
+   "replans": 0,
+   "tried": [],
+   "interims": 0,
+   "attempts": 0,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Which quest or topic do you want to talk about?",
+   "ignored_writes": 0
+  }
+ },
+ {
+  "id": "pursuit-real-unmet-goal-still-pursues",
+  "kind": "awaiting_person",
+  "args": {
+   "goal": "an actionable next step, grounded in the transcript",
+   "done_standard": "a next step that cites the transcript",
+   "draft": "I do not have it, could you paste it?",
+   "verdicts": {
+    "I do not have it, could you paste it?": false,
+    "Here is the next step, from the transcript.": true
+   },
+   "means": [
+    {
+     "name": "search",
+     "kind": "read",
+     "cost_seconds": 5
+    }
+   ],
+   "attempts": [
+    {
+     "outcome": "Here is the next step, from the transcript.",
+     "means_used": [
+      "search"
+     ]
+    }
+   ],
+   "budget": {
+    "max_replans": 2,
+    "wall_seconds": 120,
+    "inline_seconds": 30,
+    "background": false
+   },
+   "attempt_given": true,
+   "elapsed_start": 0
+  },
+  "expect": {
+   "status": "met_after_replan",
+   "met": true,
+   "replans": 1,
+   "tried": [
+    "search"
+   ],
+   "interims": 0,
+   "attempts": 1,
+   "writes_offered": 0,
+   "message": false,
+   "outcome": "Here is the next step, from the transcript.",
+   "ignored_writes": 0
+  }
+ },
+ {
   "id": "pursuit-short-work-does-not-announce",
   "kind": "interim",
   "args": {

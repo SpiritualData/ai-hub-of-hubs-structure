@@ -45,7 +45,10 @@ def adapt(implementation, meter):
         costs = {m["name"]: float(m["cost_seconds"]) for m in args["means"]}
 
         def check(outcome):
-            met = bool(args["verdicts"].get(outcome if isinstance(outcome, str) else "", False))
+            scripted = args["verdicts"].get(outcome if isinstance(outcome, str) else "", False)
+            if scripted == "awaiting":          # the draft is the one question a cut-off or ambiguous message needs: a structured flag, not its words
+                return {"met": False, "awaiting_person": True, "reason": "the person supplies the missing piece"}
+            met = bool(scripted)
             return {"met": met, "reason": "" if met else "the transcript is not used"}
 
         def attempt(step):

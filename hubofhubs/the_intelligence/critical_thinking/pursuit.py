@@ -6,7 +6,9 @@ longer than ``inline_seconds`` is not made to wait: the current response goes ou
 (``announce`` is called once, with fixed text), and the work either continues inline or, when the budget says a ``background`` exists, is returned as the plan for
 that follow-up. A write is never offered, and an attempt that reports one is discarded and recorded. When the condition cannot be met the result
 says what was tried and that the rest is unconfirmed; the checker's own words (``missing``) are kept in the result for logs and never put in a response. Every decision reads structured facts (the verdict's boolean, the means, the budget, what ``attempt``
-returned), never the words of a response. Standard library plus the hub
+returned), never the words of a response. A draft whose structured outcome is a question to the person (the check's ``awaiting_person`` flag) is a
+terminal, satisfied state: the goal condition of a cut-off or ambiguous message is that the person supplies the missing piece, so nothing is pursued,
+announced or queued and no line is added. Standard library plus the hub
 and ``esoi``."""
 import time
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
@@ -15,6 +17,7 @@ from hubofhubs.the_self.steps import done, take
 
 DEFAULT_BUDGET: Dict[str, Any] = {"max_replans": 2, "wall_seconds": 90.0, "inline_seconds": 30.0, "background": False}
 MET, MET_AFTER_REPLAN, UNMET_REPORTED, CONTINUING, UNMET_SENT_AS_IS = "met", "met_after_replan", "unmet_reported", "continuing", "unmet_sent_as_is"
+AWAITING_PERSON = "awaiting_person"
 
 
 def still_working_line() -> str:
@@ -68,6 +71,8 @@ class BoundedReplan:
         verdict = verdicts.of(draft)
         if verdict.get("met"):
             return self.result(draft, MET, True, 0, [], "", "")
+        if verdict.get("awaiting_person") is True:
+            return self.result(draft, AWAITING_PERSON, True, 0, [], "", "")
         best, tried, interim, replans, ignored = draft, [], "", 0, []
         reads = [m for m in means if str(m.get("kind", "read")) == "read"]
         while attempt is not None and replans < int(limits["max_replans"]):

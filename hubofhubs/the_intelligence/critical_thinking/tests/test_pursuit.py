@@ -45,3 +45,11 @@ def test_the_announced_line_is_fixed_text_not_the_checkers_working_note():
     lines = []
     BoundedReplan().pursue("g", "d", "bad", lambda step: {}, [dict(READ, cost_seconds=60)], {"background": True}, lines.append, check)
     assert lines and "transcript" not in lines[0] and lines[0].startswith("Still working on")
+
+
+def test_a_question_to_the_person_is_terminal_and_satisfied_so_nothing_is_pursued_announced_or_added():
+    calls, lines = [], []
+    got = BoundedReplan().pursue("g", "d", "which topic?", lambda step: calls.append(step) or {}, [dict(READ, cost_seconds=60)], {"background": True}, lines.append,
+                                 lambda outcome: {"met": False, "awaiting_person": True, "reason": "the person supplies the missing piece"})
+    assert got["status"] == "awaiting_person" and got["met"] is True and got["message"] == "" and got["outcome"] == "which topic?"
+    assert calls == [] and lines == [] and "continue" not in got
