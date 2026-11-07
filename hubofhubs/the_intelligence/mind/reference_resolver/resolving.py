@@ -1,7 +1,7 @@
 """Resolve a reference: the arms of the one seat that says which candidate a phrase refers to, or abstains.
 
-``exact_match`` matches by id, by the whole name or an alias, or by whole words of a name (a first name, "Post B" for "Post B on video"), and abstains when none matches or
-more than one does. ``model_judged`` shows a model the phrase and the candidates and takes its answer only when it names one candidate offered, or says none; an answer outside the list
+``exact_match`` matches by id, by the whole name or an alias, or by whole words of a name (a first name, "Post B" for "Post B on video"; not an alias, and not with ``context["whole"]``
+set, for a caller that wants a title and nothing less), and abstains when none matches or more than one does. ``model_judged`` shows a model the phrase and the candidates and takes its answer only when it names one candidate offered, or says none; an answer outside the list
 raises ``ReferenceNotSettled`` and is never repaired. ``shared_words`` matches the candidate that shares the most words with the phrase and never abstains while any word is shared: the way
 references were once settled, kept as the bound that shows what abstaining is worth. Standard library plus the hub and ``esoi``."""
 import json
@@ -71,9 +71,11 @@ class ExactMatch:
         if len(whole) > 1:
             return abstain("more than one candidate has that name")
         wanted = set(words_of(phrase))
+        if (context or {}).get("whole"):
+            return abstain("no candidate has that name")
         if not wanted:
             return abstain("the phrase holds no word that names anything")
-        parts = [c for c in candidates if any(wanted <= set(words_of(n)) for n in names_of(c) if n)]
+        parts = [c for c in candidates if c.get("name") and wanted <= set(words_of(c.get("name")))]
         if len(parts) == 1:
             return matched(parts[0], "every word of the phrase is a word of the candidate's name")
         return abstain("more than one candidate fits the phrase" if parts else "no candidate holds every word of the phrase")

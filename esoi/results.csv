@@ -261,3 +261,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-07,route_a_request,majority_floor,41,12,12/41,0/0,0,0,0,0.0,0.0,,c4e7452,08addfa3,,none,act_passed=0/13; clarify_passed=0/8; draft_passed=0/8; information_passed=12/12 | reused 41 case(s) already run for this implementation version
 2026-11-07,resolve_a_reference,exact_match,32,28,28/32,0/0,0,0,0,0.0,0.0,,c4e7452,03b427b9,,none,goal_passed=7/9; person_passed=15/15; post_passed=6/8; wrong_match=0 | reused 32 case(s) already run for this implementation version
 2026-11-07,resolve_a_reference,shared_words,32,20,20/32,0/0,0,0,0,0.0,0.0,,c4e7452,03b427b9,,none,goal_passed=4/9; person_passed=12/15; post_passed=4/8; wrong_match=9 | reused 32 case(s) already run for this implementation version
+2026-11-07,resolve_a_reference,exact_match,32,28,28/32,0/0,0,0,0,0.0,0.0,,ffb33f4-dirty,03b427b9,,none,goal_passed=7/9; person_passed=15/15; post_passed=6/8; wrong_match=0
+2026-11-07,resolve_a_reference,shared_words,32,20,20/32,0/0,0,0,0,0.0,0.0,,ffb33f4-dirty,03b427b9,,none,goal_passed=4/9; person_passed=12/15; post_passed=4/8; wrong_match=9

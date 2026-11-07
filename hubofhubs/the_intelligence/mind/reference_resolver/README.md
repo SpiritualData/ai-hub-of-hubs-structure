@@ -19,7 +19,7 @@ Part of [What the Mind sees and does for one request](../README.md)
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
-| Id and exact match | `resolve-a-reference:exact_match` | Matches by id, by the whole name or an alias, or by every word of the phrase being a whole word of one candidate's name; two candidates that fit, or none, is an abstain. | [`hubofhubs/the_intelligence/mind/reference_resolver/resolving.py`](resolving.py) | selected |
+| Id and exact match | `resolve-a-reference:exact_match` | Matches by id, by the whole name or an alias, or by every word of the phrase being a whole word of one candidate's name (a caller can ask for the whole name only); two candidates that fit, or none, is an abstain. | [`hubofhubs/the_intelligence/mind/reference_resolver/resolving.py`](resolving.py) | selected |
 | A model judges sameness | `resolve-a-reference:model_judged` | One model call is shown the phrase and the candidates and says which is the very same thing, or none; an answer outside the candidates offered raises. | [`hubofhubs/the_intelligence/mind/reference_resolver/resolving.py`](resolving.py) |  |
 | Most shared words | `resolve-a-reference:shared_words` | The candidate sharing the most words with the phrase wins; it abstains only when no word is shared. | [`hubofhubs/the_intelligence/mind/reference_resolver/resolving.py`](resolving.py) |  |
 

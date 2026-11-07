@@ -432,9 +432,9 @@
  "response-quality": {
   "default": "evidence_check",
   "evidence": {
-   "detail": "the selected implementation has no recorded row",
-   "p": null,
-   "verdict": "UNMEASURED"
+   "detail": "date_arithmetic is exactly equal to evidence_check on the metric (date_arithmetic 1 against evidence_check 1), so evidence_check stays; em_dash_free is exactly equal to evidence_check on the metric (em_dash_free 1 against evidence_check 1), so evidence_check stays; grounded_figures is exactly equal to evidence_check on the metric (grounded_figures 1 against evidence_check 1), so evidence_check stays",
+   "p": 1.0,
+   "verdict": "TIE"
   },
   "modules": {
    "date_arithmetic": "hubofhubs.the_intelligence.critical_thinking.response_quality.date_arithmetic",

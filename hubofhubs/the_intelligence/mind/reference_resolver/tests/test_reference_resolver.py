@@ -58,3 +58,11 @@ def test_model_judged_raises_on_a_reply_that_names_no_candidate_offered(reply):
 def test_model_judged_with_no_candidates_makes_no_call():
     ask = Asked('{"id": "g1"}')
     assert ModelJudged(None).resolve("x", [], ask=ask)["outcome"] == "abstain" and ask.prompts == []
+
+
+def test_an_alias_names_a_candidate_only_whole_and_a_caller_can_ask_for_a_whole_name():
+    people = [{"id": "u1", "name": "Ann Lee", "aliases": ["ann.lee@example.org"]}, {"id": "u2", "name": "Bo Chen", "aliases": ["bo@example.org"]}]
+    assert ExactMatch().resolve("example", people)["outcome"] == "abstain"      # a word of an email address names nobody
+    assert ExactMatch().resolve("Ann", people)["id"] == "u1"
+    assert ExactMatch().resolve("Ann", people, context={"whole": True})["outcome"] == "abstain"
+    assert ExactMatch().resolve("Ann Lee", people, context={"whole": True})["id"] == "u1"
