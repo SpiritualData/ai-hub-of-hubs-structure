@@ -24,7 +24,10 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from typing import Any, Dict, List, Optional, Set
+import threading
+import time
+from collections import OrderedDict
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from hubofhubs.the_intelligence.subconscious.cards_from_files.conversation_format import parse_date_bound, timestamp_in_range
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.reference_resolver import _render_unresolved
@@ -396,6 +399,45 @@ def _preview_of(text: str, *, max_chars: int = 160) -> str:
         return ""
 
 
+#: A resolved reference is remembered this long (seconds) and this many at most. The turn-start assembly and each later read of the same
+#: turn render the same cards, and each render used to fetch their live data again (a chat thread, a collection) one after the other;
+#: that fetching was the longest wait of an information turn. A mutation clears the memory (``clear_resolution_memo``), so a turn never reads
+#: data older than its own writes. 0 turns the memory off.
+RESOLUTION_MEMO_SECONDS = 60.0
+RESOLUTION_MEMO_MAX = 512
+_memo_lock = threading.Lock()
+_memo: "OrderedDict[Any, Tuple[float, str]]" = OrderedDict()
+
+
+def clear_resolution_memo() -> None:
+    """Forget every remembered reference. Call after anything that changes the data a reference points at."""
+    with _memo_lock:
+        _memo.clear()
+
+
+def resolve_remembered(resolver: Any, itype: str, locator: Any, item_cap: int) -> str:
+    """``resolver.resolve(locator, max_chars=item_cap)``, served from the memory when the same reference was resolved a moment ago."""
+    if RESOLUTION_MEMO_SECONDS <= 0:
+        return resolver.resolve(locator, max_chars=item_cap) or ""
+    try:
+        key = (itype, json.dumps(locator, sort_keys=True, default=str), int(item_cap))
+    except Exception:  # noqa: BLE001
+        return resolver.resolve(locator, max_chars=item_cap) or ""
+    now = time.monotonic()
+    with _memo_lock:
+        hit = _memo.get(key)
+        if hit is not None and now - hit[0] <= RESOLUTION_MEMO_SECONDS:
+            _memo.move_to_end(key)
+            return hit[1]
+    rendered = resolver.resolve(locator, max_chars=item_cap) or ""
+    if rendered:
+        with _memo_lock:
+            _memo[key] = (now, rendered)
+            while len(_memo) > RESOLUTION_MEMO_MAX:
+                _memo.popitem(last=False)
+    return rendered
+
+
 def render_card_content_blocks(
     card: Dict[str, Any],
     resolvers: Dict[str, Any],
@@ -445,7 +487,7 @@ def render_card_content_blocks(
             if resolver is not None:
                 rendered = ""
                 try:
-                    rendered = resolver.resolve(locator, max_chars=item_cap) or ""
+                    rendered = resolve_remembered(resolver, itype, locator, item_cap)
                 except Exception:  # noqa: BLE001, a resolver must never break assembly
                     rendered = ""
                 if not rendered:

@@ -370,7 +370,7 @@ NAMES = {
     "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render": (
         "MAX_CARD_REFS", "MAX_CARD_REF_CHARS", "MAX_CARD_REF_ITEM_CHARS", "content_identity_key", "content_item_text", "dedupe_content",
         "filter_content_by_time_range", "locator_label", "mark_items_used", "normalize_content", "rank_content_by_recency_relevance",
-        "render_block_lines", "render_card_content", "render_card_content_blocks", "tokenize",
+        "render_block_lines", "render_card_content", "clear_resolution_memo", "render_card_content_blocks", "tokenize",
     ),
     "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection": (
         "CONTEXT_DEPTH_KEY", "DECISIVE_CARD_SCORE", "DEPTH_RETRIEVE", "CardMetadata", "cheap_result_is_decisive", "retrieve_only", "stable_card_order",

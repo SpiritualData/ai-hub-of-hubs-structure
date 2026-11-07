@@ -198,7 +198,8 @@ class TurnCardCache:
     def has_completed_context(self) -> bool:
         """True when this turn already holds a completed (non-partial) assembly: its turn-start one or an earlier read's."""
         started = self.turn_start_result
-        return bool(self.results) or (started is not None and not bool(getattr(started, "partial", False)))
+        # A turn-start assembly that hit its soft deadline is partial but still holds context; only an empty one is no context in hand.
+        return bool(self.results) or (started is not None and bool((getattr(started, "context_view", "") or "").strip()))
 
     def assemble_cheap_first(self, assembler: Any, query: str, meta: Optional[Dict[str, Any]]):
         """The cheap assembly for ``query``; the full one when the cheap result is not decisive (empty or all weak)."""

@@ -72,12 +72,17 @@ def test_the_other_arm_keeps_every_read_full():
     assert asm.calls == ["full", "full"]
 
 
-def test_a_partial_turn_start_does_not_count_as_a_context_in_hand():
+def test_a_partial_turn_start_with_content_counts_as_context_in_hand_and_an_empty_one_does_not():
     asm = ScriptedAssembler(cheap=strong("cheap"), full=strong("full"))
     cache = TurnCardCache(asm, None)
-    cache.note_turn_start_result(AssembledContext(partial=True))
+    cache.note_turn_start_result(AssembledContext(context_view="some context", partial=True))
     cache.assemble_for_query("first", 5)
-    assert asm.calls == ["full"]
+    assert asm.calls == ["retrieve"]
+    asm2 = ScriptedAssembler(cheap=strong("cheap"), full=strong("full"))
+    cache2 = TurnCardCache(asm2, None)
+    cache2.note_turn_start_result(AssembledContext(partial=True))
+    cache2.assemble_for_query("first", 5)
+    assert asm2.calls == ["full"]
 
 
 class CountingProvider:
@@ -128,3 +133,24 @@ def test_two_arms_asking_the_same_question_at_once_share_one_query_generation():
     [t.join() for t in threads]
     assert provider.calls == 1
 
+
+
+def test_a_reference_resolved_a_moment_ago_is_not_fetched_again_until_a_write_clears_it():
+    from hubofhubs.api import clear_resolution_memo
+    from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render import resolve_remembered
+
+    class Resolver:
+        calls = 0
+
+        def resolve(self, locator, *, max_chars):
+            Resolver.calls += 1
+            return f"data {Resolver.calls}"
+
+    clear_resolution_memo()
+    r = Resolver()
+    first = resolve_remembered(r, "chat_thread", {"id": "t1"}, 500)
+    assert resolve_remembered(r, "chat_thread", {"id": "t1"}, 500) == first and Resolver.calls == 1
+    resolve_remembered(r, "chat_thread", {"id": "t2"}, 500)
+    assert Resolver.calls == 2                                     # another reference is another fetch
+    clear_resolution_memo()
+    assert resolve_remembered(r, "chat_thread", {"id": "t1"}, 500) != first and Resolver.calls == 3
