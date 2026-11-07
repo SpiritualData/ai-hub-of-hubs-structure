@@ -221,7 +221,7 @@ NAMES = {
         "AbridgedTurnState", "READ_SPEC_KEYS", "collect_abridged_items", "render_abridged_notice",
     ),
     "hubofhubs.the_intelligence.critical_thinking.pursuit": (
-        "BoundedReplan", "still_working_line", "unmet_message",
+        "BoundedReplan",
     ),
     "hubofhubs.the_intelligence.critical_thinking.interface": (
         "CriticalThinking",

@@ -30,21 +30,15 @@ def test_a_write_reported_by_an_attempt_is_discarded_and_recorded():
     assert got["status"] == "unmet_reported" and got["outcome"] == "bad" and got["ignored_writes"] == [["post"]]
 
 
-def test_long_work_is_announced_once_and_can_continue_in_the_background():
+def test_long_work_can_continue_in_the_background_and_adds_no_line():
     lines = []
     got = BoundedReplan().pursue("g", "d", "bad", lambda step: {}, [dict(READ, cost_seconds=60)], {"background": True}, lines.append, check)
-    assert got["status"] == "continuing" and len(lines) == 1 and got["continue"]["means"] == ["search"]
+    assert got["status"] == "continuing" and lines == [] and got["message"] == "" and got["continue"]["means"] == ["search"]
 
 
-def test_an_unrecoverable_goal_says_what_was_tried_and_never_repeats_the_checkers_words():
+def test_an_unrecoverable_goal_adds_no_line_and_keeps_the_checkers_words_for_logs():
     got = BoundedReplan().pursue("g", "d", "bad", lambda step: {"outcome": "still bad", "means_used": ["search"]}, [READ], None, None, check)
-    assert got["status"] == "unmet_reported" and "search" in got["message"] and "transcript" not in got["message"] and "transcript" in got["missing"]
-
-
-def test_the_announced_line_is_fixed_text_not_the_checkers_working_note():
-    lines = []
-    BoundedReplan().pursue("g", "d", "bad", lambda step: {}, [dict(READ, cost_seconds=60)], {"background": True}, lines.append, check)
-    assert lines and "transcript" not in lines[0] and lines[0].startswith("Still working on")
+    assert got["status"] == "unmet_reported" and got["message"] == "" and got["tried"] == ["search"] and "transcript" in got["missing"]
 
 
 def test_a_question_to_the_person_is_terminal_and_satisfied_so_nothing_is_pursued_announced_or_added():
