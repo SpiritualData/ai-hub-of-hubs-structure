@@ -10,6 +10,7 @@ import time
 from concurrent.futures import Future, TimeoutError as FuturesTimeoutError
 from typing import Any, Callable, Dict, Optional, Tuple
 
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import cheap_result_is_decisive, with_retrieve_depth
 from hubofhubs.the_world.tools.deep import ProgressEvent, ProgressSink
 from hubofhubs.the_world.tools.events import EVENT_STATUS, Mode
 from hubofhubs.the_world.model_plumbing.scope import ScopedThreadPoolExecutor as ThreadPoolExecutor
@@ -47,6 +48,9 @@ class TurnCardCache:
         self.turn_start_query: Optional[str] = None   # the query the turn-start pre-fetch ran for
         self.turn_start_began: Optional[float] = None   # time.monotonic() when that pre-fetch was registered
         self.turn_start_result: Any = None            # what the turn-start collect used (full or partial)
+        self.cheap_followups = True                   # False keeps every mid-loop read on the full assembly (the other arm)
+        self.cheap_reads = 0                          # mid-loop reads that took the cheap path
+        self.escalated_reads = 0                      # of those, how many were not decisive and ran the full assembly too
 
     def register_prefetch(self, query: str, future: Future) -> None:
         """Register the turn-start eager pre-fetch future under its query. Never raises."""
@@ -178,7 +182,11 @@ class TurnCardCache:
                     self.executor = ThreadPoolExecutor(max_workers=1)
                 assembler = self.assembler
                 meta = self.meta
-                future = self.executor.submit(lambda: assembler.assemble(query, meta=meta))
+                # CHEAP FIRST: once the turn holds a completed context (its turn-start assembly), a further read for another
+                # query is a top-up, so it searches and scores without the model passes (generated queries, review, filter,
+                # consolidation) and only escalates to the full assembly when the cheap result is not decisive.
+                cheap = self.has_completed_context() and self.cheap_followups
+                future = self.executor.submit(lambda: self.assemble_cheap_first(assembler, query, meta) if cheap else assembler.assemble(query, meta=meta))
                 self.futures[query] = future
         assembled = future.result(timeout=timeout)  # may raise TimeoutError -> named error obs
         with self.lock:
@@ -186,6 +194,20 @@ class TurnCardCache:
                 self.results[query] = assembled
             self.futures.pop(query, None)
         return assembled, origin
+
+    def has_completed_context(self) -> bool:
+        """True when this turn already holds a completed (non-partial) assembly: its turn-start one or an earlier read's."""
+        started = self.turn_start_result
+        return bool(self.results) or (started is not None and not bool(getattr(started, "partial", False)))
+
+    def assemble_cheap_first(self, assembler: Any, query: str, meta: Optional[Dict[str, Any]]):
+        """The cheap assembly for ``query``; the full one when the cheap result is not decisive (empty or all weak)."""
+        self.cheap_reads += 1
+        cheap = assembler.assemble(query, meta=with_retrieve_depth(meta))
+        if cheap_result_is_decisive(cheap):
+            return cheap
+        self.escalated_reads += 1
+        return assembler.assemble(query, meta=meta)
 
     def render_card(self, card_id: str, timeout: float):
         """One card's rendered content plus an ORIGIN ("card" | "unsupported" | "none"). Never the

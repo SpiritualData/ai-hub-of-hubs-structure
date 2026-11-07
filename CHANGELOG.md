@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Cheap-first context. `meta["context_depth"] == "retrieve"` (`retrieve_only`, `with_retrieve_depth`, `cheap_result_is_decisive`, all in `hubofhubs.api`) asks an assembly for search and score only: the vector arm skips query generation and hit review, the hybrid skips consolidation. `TurnCardCache` serves a read after the turn-start assembly on that path (`cheap_followups`, default on) and escalates to the full assembly when the cheap result is empty or has no card at `DECISIVE_CARD_SCORE`. Two arms asking the same selection question at once share one model call (`single_flight`). The within-card file ranking is skipped for a card of `RANK_ONLY_ABOVE` (5) or fewer files.
+
 - Critical Thinking's pursue step sends fixed text (`still_working_line()`, `unmet_message(tried)`), never the checker's reason or next action, which stay in the result's `missing` for logs.
 
 ## 0.3.0

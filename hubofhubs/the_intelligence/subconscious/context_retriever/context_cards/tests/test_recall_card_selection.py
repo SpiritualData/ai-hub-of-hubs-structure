@@ -15,9 +15,18 @@ Covers the two call-reduction changes in ``hubofhubs.the_intelligence.subconscio
 from __future__ import annotations
 
 import gc
+
+import pytest
 from typing import Any, Dict, List
 
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import consolidate_context, filter_cards_by_relevance
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards import card_selection as card_selection_module
+
+
+@pytest.fixture(autouse=True)
+def rank_every_card_with_files(monkeypatch):
+    """These tests pin the ranking call itself, so they run on the arm that ranks every card that has files."""
+    monkeypatch.setattr(card_selection_module, "RANK_ONLY_ABOVE", 0)
 
 
 class CountingProvider:

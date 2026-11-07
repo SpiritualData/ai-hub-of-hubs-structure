@@ -373,7 +373,8 @@ NAMES = {
         "render_block_lines", "render_card_content", "render_card_content_blocks", "tokenize",
     ),
     "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection": (
-        "CardMetadata", "stable_card_order",
+        "CONTEXT_DEPTH_KEY", "DECISIVE_CARD_SCORE", "DEPTH_RETRIEVE", "CardMetadata", "cheap_result_is_decisive", "retrieve_only", "stable_card_order",
+        "with_retrieve_depth",
     ),
     "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_thread": (
         "ACTION_CONTINUE", "ACTION_NEW", "ACTION_SWITCH", "CardCandidate", "CardThreadContext", "CardThreadDecision", "FINISHED_STATUSES",

@@ -76,7 +76,7 @@ from hubofhubs.the_body.internal_context.interface import AssembledContext, Cont
 from hubofhubs.the_world.model_plumbing.model import STEP_SELECT, STEP_SUMMARIZE, answer_with_reasoning
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render import (
     render_card_content, render_card_content_blocks, tokenize)
-from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import keep_whole_task, memo_get, memo_put, selection_key
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import keep_whole_task, memo_get, memo_put, retrieve_only, selection_key, single_flight
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.reference_resolver import build_resolver_registry
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags import affinity_factor, affinity_label
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.scope_tags import scope_tags_allow
@@ -649,9 +649,13 @@ class VectorContextAssembler(ContextAssemblerBase):
         memo_key = selection_key(
             "vector_queries", task_text, [], model=self._query_model, extra=str(self._num_queries),
         )
-        cached = memo_get(self._provider, memo_key)
-        if cached is not None:
-            return list(cached)
+        with single_flight(self._provider, memo_key):
+            cached = memo_get(self._provider, memo_key)
+            if cached is not None:
+                return list(cached)
+            return self._generate_queries_uncached(task_text, memo_key)
+
+    def _generate_queries_uncached(self, task_text: str, memo_key: str) -> List[str]:
         try:
             prompt = self._prompts.queries(self._num_queries, task_text)
             raw = answer_with_reasoning(
@@ -736,10 +740,14 @@ class VectorContextAssembler(ContextAssemblerBase):
             for h in candidates
         ]
         memo_key = selection_key("vector_review", task_text, signatures, model=self._query_model)
-        cached = memo_get(self._provider, memo_key)
-        if cached is not None:
-            kept_ids = set(cached)
-            return [h for h in candidates if h.id in kept_ids]
+        with single_flight(self._provider, memo_key):
+            cached = memo_get(self._provider, memo_key)
+            if cached is not None:
+                kept_ids = set(cached)
+                return [h for h in candidates if h.id in kept_ids]
+            return self._llm_review_uncached(task_text, candidates, memo_key)
+
+    def _llm_review_uncached(self, task_text: str, candidates: List[VectorHit], memo_key: str) -> List[VectorHit]:
         try:
             items_text = "\n".join(
                 f"[{i}] id={h.id} | score={h.score:.3f} | {snippet(h.text or str(h.payload))}"
@@ -913,8 +921,9 @@ class VectorContextAssembler(ContextAssemblerBase):
     ) -> AssembledContext:
         scope = meta or None
 
-        # Step a: build query list.
-        extra_queries = self._generate_queries(task_text)
+        # Step a: build query list. The cheap path (``meta["context_depth"] == "retrieve"``) searches the raw task text only.
+        cheap = retrieve_only(meta)
+        extra_queries = [] if cheap else self._generate_queries(task_text)
         all_queries = [task_text] + extra_queries
 
         # Step b: vector-search all queries IN PARALLEL; dedupe.
@@ -953,7 +962,7 @@ class VectorContextAssembler(ContextAssemblerBase):
 
         # Step c: LLM review when provider is available and the judgment is not delegated to a
         # downstream holistic pass (the hybrid's consolidating filter; see ``llm_review_delegated``).
-        if self._provider is not None and self._llm_review_enabled:
+        if self._provider is not None and self._llm_review_enabled and not cheap:
             candidates = self._llm_review(task_text, candidates)
 
         # Step d: rank by an effective score = raw similarity x SPECIFICITY x recency, used to pick
@@ -1018,7 +1027,7 @@ class VectorContextAssembler(ContextAssemblerBase):
         # happens HERE, on the score-ranked list, so the survivors are the most relevant hits --
         # relevance decides WHICH cards make it in, before order is ever touched.
         kept_decayed.sort(key=lambda x: x[0], reverse=True)
-        kept_decayed = kept_decayed[: self._max_in_view]
+        kept_decayed = kept_decayed[: max(1, self._max_in_view // 2) if cheap else self._max_in_view]     # the cheap path keeps the best half
 
         # PRESENTATION: the survivors' rendered order is STABLE by card id, independent of score.
         # Provider prompt caches are PREFIX caches, so a card set that renders in a different order

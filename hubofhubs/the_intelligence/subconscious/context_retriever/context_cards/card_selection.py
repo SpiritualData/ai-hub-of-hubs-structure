@@ -22,6 +22,40 @@ from hubofhubs.the_world.model_plumbing.model import ModelProvider, STEP_SELECT,
 _log = logging.getLogger(__name__)
 
 
+#: ``meta["context_depth"]``: how much model work one assembly may spend. "retrieve" is the cheap path (search and score only: no
+#: generated queries, no hit review, no card filter, no consolidation). Anything else is the full path. The caller sets it from the
+#: turn's own state (a context already in hand), never from words, and escalates to the full path when the cheap result is empty or weak.
+CONTEXT_DEPTH_KEY = "context_depth"
+DEPTH_RETRIEVE = "retrieve"
+#: A cheap result is decisive when at least one card clears this relevance (the card score is a 0 to 1 similarity or filter score).
+DECISIVE_CARD_SCORE = 0.5
+#: How many files of a card the within-card ranking keeps (and so the size at or under which ranking cannot change which are kept).
+RANKED_FILES_KEPT = 5
+#: A card is sent to the within-card ranking only when it holds MORE files than this. 0 ranks every card that has files (the other arm).
+RANK_ONLY_ABOVE = RANKED_FILES_KEPT
+
+
+def retrieve_only(meta: Optional[Dict[str, Any]]) -> bool:
+    """True when this assembly is asked to take the cheap path (``meta["context_depth"] == "retrieve"``)."""
+    return bool(meta) and (meta or {}).get(CONTEXT_DEPTH_KEY) == DEPTH_RETRIEVE
+
+
+def with_retrieve_depth(meta: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """A copy of ``meta`` asking for the cheap path."""
+    return {**(meta or {}), CONTEXT_DEPTH_KEY: DEPTH_RETRIEVE}
+
+
+def cheap_result_is_decisive(assembled: Any) -> bool:
+    """Did a cheap assembly find enough to stand on? A fact over its structured card scores, never its words: some text came
+    back, and when cards carry scores at least one reaches ``DECISIVE_CARD_SCORE``. An empty or all-weak result is not decisive, so the
+    caller escalates to the full path."""
+    if assembled is None or not (getattr(assembled, "context_view", "") or "").strip():
+        return False
+    metadata = list(getattr(assembled, "card_metadata", None) or [])
+    scores = [float(m.get("relevance_score")) for m in metadata if isinstance(m, dict) and m.get("relevance_score") is not None]
+    return not scores or max(scores) >= DECISIVE_CARD_SCORE
+
+
 def keep_whole_task(task: str) -> str:
     """The default excerpt: the task as given. A consumer passes its own to hand a judge only the gist of a long brief."""
     return task
@@ -117,6 +151,22 @@ def selection_key(
         h.update(sig.encode("utf-8", "replace"))
         h.update(b"\x00")
     return h.hexdigest()
+
+
+_flight_lock = threading.Lock()
+_flights: "weakref.WeakKeyDictionary[Any, Dict[str, threading.Lock]]" = weakref.WeakKeyDictionary()
+
+
+def single_flight(provider: Any, key: str) -> "threading.Lock":
+    """The lock for one selection key on one provider. Two arms that ask the identical question at the same moment (two vector arms
+    of one fused assembler generating queries for the same task) take it in turn, so the second finds the first's verdict in the memo
+    instead of paying for the same model call. A provider that cannot be weak-referenced gets a fresh lock (no sharing, as before)."""
+    with _flight_lock:
+        try:
+            locks = _flights.setdefault(provider, {})
+        except TypeError:
+            return threading.Lock()
+        return locks.setdefault(key, threading.Lock())
 
 
 def memo_get(provider: Any, key: str) -> Any:
@@ -552,7 +602,7 @@ def _rank_files_batched(
         card_files = files_by_id[cid]
         ranked[cid] = sorted(
             card_files, key=lambda f: score_map.get(f, 0), reverse=True
-        )[:5]
+        )[:RANKED_FILES_KEPT]
     return ranked
 
 
@@ -673,7 +723,9 @@ def filter_cards_by_relevance(
             relevant_cards.append((card, score))
 
     # Only cards that actually have files need ranking; a file-less card keeps an empty file list.
-    cards_with_files = [(c, s) for (c, s) in relevant_cards if c.get("files")]
+    # The ranking keeps a card's top RANKED_FILES_KEPT files, so a card holding no more than that has nothing to choose between: its
+    # files keep their order and no model call is spent on it.
+    cards_with_files = [(c, s) for (c, s) in relevant_cards if len(c.get("files") or []) > RANK_ONLY_ABOVE]
     ranked_by_card = _rank_files_batched(
         task, cards_with_files, model_provider=model_provider, model=model, prompts=prompts,
     )

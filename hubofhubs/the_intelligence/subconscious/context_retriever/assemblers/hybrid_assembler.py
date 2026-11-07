@@ -50,6 +50,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 from hubofhubs.the_body.internal_context.interface import AssembledContext, ContextAssembler, ContextAssemblerBase
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_content_render import render_block_lines
+from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import retrieve_only
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 logger = logging.getLogger(__name__)
@@ -398,6 +399,7 @@ class HybridContextAssembler(ContextAssemblerBase):
             and self._consolidate_fn is not None
             and self._model_provider is not None
             and not partial
+            and not retrieve_only(meta)
             and (deadline is None
                  or (deadline - time.monotonic()) >= CONSOLIDATE_MIN_REMAINING_SECONDS)
             and (any((m.get("items") for m in merged_metadata))
