@@ -324,6 +324,18 @@ NAMES = {
     "hubofhubs.the_intelligence.mind.planner.staged_plan": (
         "count_tasks", "is_staged", "normalize_staged_subtasks", "sequence_stages", "split_plan", "step_allows", "tasks_flat", "tasks_in",
     ),
+    "hubofhubs.the_intelligence.mind.reference_resolver.interface": (
+        "OUTCOMES", "ReferenceResolving",
+    ),
+    "hubofhubs.the_intelligence.mind.reference_resolver.resolving": (
+        "ExactMatch", "ModelJudged", "ReferenceNotSettled", "SharedWords",
+    ),
+    "hubofhubs.the_intelligence.mind.request_router.interface": (
+        "ROUTES", "RequestRouting",
+    ),
+    "hubofhubs.the_intelligence.mind.request_router.routing": (
+        "MajorityFloor", "PlanDerived", "RouteError", "SingleClassifier", "parse_route", "route_from_report",
+    ),
     "hubofhubs.the_intelligence.mind.response_writer.answer": (
         "AnswerKit", "AnsweringMixin",
     ),

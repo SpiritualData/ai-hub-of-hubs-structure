@@ -313,7 +313,7 @@ MIND_TREE = (
     ("the-hands", "the-body"),
     ("the-intelligence", ""),
     ("the-mind", "the-intelligence"), ("context-intake", "the-mind"), ("planner", "the-mind"),
-    ("delegation", "the-mind"), ("response-writer", "the-mind"),
+    ("delegation", "the-mind"), ("response-writer", "the-mind"), ("route-a-request", "the-mind"), ("resolve-a-reference", "the-mind"),
     ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("live-objectives", "higher-mind"), ("guidance", "higher-mind"),
     ("the-subconscious", "the-intelligence"), ("the-intuition", "the-subconscious"), ("cards-from-files", "the-subconscious"),
     ("context-retriever", "the-subconscious"),

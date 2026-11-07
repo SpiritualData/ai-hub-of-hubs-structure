@@ -80,9 +80,11 @@
    "read-files": "hubofhubs",
    "request-intake": "hubofhubs",
    "research-freshness-reader": "hubofhubs",
+   "resolve-a-reference": "hubofhubs",
    "response-quality": "hubofhubs",
    "response-writer": "hubofhubs",
    "role-understanding": "hubofhubs",
+   "route-a-request": "hubofhubs",
    "system-integrity": "hubofhubs",
    "terminal-session": "hubofhubs",
    "the-assembler": "hubofhubs",
@@ -414,6 +416,19 @@
    "registry_scan": "hubofhubs.the_world.learning.research_freshness_reader.registry"
   }
  },
+ "resolve-a-reference": {
+  "default": "exact_match",
+  "evidence": {
+   "detail": "exact_match is better than shared_words (two-sided exact McNemar test, Holm-adjusted p=0.0215, 10 of 32 cases disagree)",
+   "p": 0.021484,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "exact_match": "hubofhubs.the_intelligence.mind.reference_resolver.resolving",
+   "model_judged": "hubofhubs.the_intelligence.mind.reference_resolver.resolving",
+   "shared_words": "hubofhubs.the_intelligence.mind.reference_resolver.resolving"
+  }
+ },
  "response-quality": {
   "default": "evidence_check",
   "evidence": {
@@ -450,6 +465,19 @@
   "modules": {
    "checked_role": "hubofhubs.the_self.role_understanding.roles",
    "recorded_role": "hubofhubs.the_self.role_understanding.roles"
+  }
+ },
+ "route-a-request": {
+  "default": "majority_floor",
+  "evidence": {
+   "detail": "plan_derived is exactly equal to majority_floor on the metric (plan_derived 0.293 against majority_floor 0.293), so majority_floor stays",
+   "p": 1.0,
+   "verdict": "TIE"
+  },
+  "modules": {
+   "majority_floor": "hubofhubs.the_intelligence.mind.request_router.routing",
+   "plan_derived": "hubofhubs.the_intelligence.mind.request_router.routing",
+   "single_classifier": "hubofhubs.the_intelligence.mind.request_router.routing"
   }
  },
  "system-integrity": {

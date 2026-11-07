@@ -46,7 +46,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](the_intelligence/critical_thinking/esoi_application/apply.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py`](the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py) and 168 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](the_intelligence/critical_thinking/esoi_application/apply.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py`](the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py) and 170 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -91,6 +91,8 @@ Keep the system aligned with the humans and policies it works for.
 - [Context Intake](the_intelligence/mind/context_intake/README.md) (solution with implementations): Give the Planner one view of what is known for a request, whatever its source.
 - [Delegation](the_intelligence/mind/delegation/README.md) (solution with implementations): Hand work on without losing the authority it was given or the standard that says it is done, enforce the authority, the goal record's budget and cancellation (down to a running agent session), and refuse a piece it may not run with the reason.
 - [Planner](the_intelligence/mind/planner/README.md) (solution with implementations): Turn a request into pieces that can be done and checked, each with the worker category that fits it, and replan from what failed.
+- [Resolve a Reference](the_intelligence/mind/reference_resolver/README.md) (solution with implementations): Tie a phrase to the thing it names only when it is that thing.
+- [Route a Request](the_intelligence/mind/request_router/README.md) (solution with implementations): Understand what a request asks for before the system answers, acts or writes, in one place.
 - [Response Writer](the_intelligence/mind/response_writer/README.md) (solution with implementations): Write what the Mind outputs for its reader.
 - [Cards From Files](the_intelligence/subconscious/cards_from_files/README.md) (solution with implementations): Propose the cards a folder of files needs, in the card store record shape, for the Subconscious to keep and recall.
 - [Context Retriever](the_intelligence/subconscious/context_retriever/README.md) (solution with implementations): Pick, from a corpus of files, cards or memory, the pieces of text a task needs within a token budget.
@@ -188,6 +190,8 @@ flowchart LR
 - Down: [hubofhubs/the_intelligence/mind/context_intake](the_intelligence/mind/context_intake/README.md)
 - Down: [hubofhubs/the_intelligence/mind/delegation](the_intelligence/mind/delegation/README.md)
 - Down: [hubofhubs/the_intelligence/mind/planner](the_intelligence/mind/planner/README.md)
+- Down: [hubofhubs/the_intelligence/mind/reference_resolver](the_intelligence/mind/reference_resolver/README.md)
+- Down: [hubofhubs/the_intelligence/mind/request_router](the_intelligence/mind/request_router/README.md)
 - Down: [hubofhubs/the_intelligence/mind/response_writer](the_intelligence/mind/response_writer/README.md)
 - Down: [hubofhubs/the_intelligence/subconscious/cards_from_files](the_intelligence/subconscious/cards_from_files/README.md)
 - Down: [hubofhubs/the_intelligence/subconscious/context_retriever](the_intelligence/subconscious/context_retriever/README.md)

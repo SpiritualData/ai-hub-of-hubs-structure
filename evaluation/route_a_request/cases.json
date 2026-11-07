@@ -1,0 +1,421 @@
+[
+ {
+  "id": "route-information-01",
+  "kind": "information",
+  "args": {
+   "request": "Where do we stand on the newsletter subscribers milestone?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-02",
+  "kind": "information",
+  "args": {
+   "request": "How many goals are open this week?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-03",
+  "kind": "information",
+  "args": {
+   "request": "What is the status of the workshop signups?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-04",
+  "kind": "information",
+  "args": {
+   "request": "Which of my goals is due first?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-05",
+  "kind": "information",
+  "args": {
+   "request": "Who owns the podcast milestone?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-06",
+  "kind": "information",
+  "args": {
+   "request": "What did we decide about the launch date last week?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-07",
+  "kind": "information",
+  "args": {
+   "request": "How is the checkout page doing since Monday?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-08",
+  "kind": "information",
+  "args": {
+   "request": "Remind me what the done-when is for the listeners milestone.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-09",
+  "kind": "information",
+  "args": {
+   "request": "Is the invoice from March paid?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-10",
+  "kind": "information",
+  "args": {
+   "request": "Why did the signup count drop on Tuesday?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-11",
+  "kind": "information",
+  "args": {
+   "request": "What does the weekly review step involve?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-information-12",
+  "kind": "information",
+  "args": {
+   "request": "Can you tell me how many people replied to the survey?",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "information"
+ },
+ {
+  "id": "route-act-01",
+  "kind": "act",
+  "args": {
+   "request": "Add a goal for this week: send the spring survey to the list.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-02",
+  "kind": "act",
+  "args": {
+   "request": "Mark the workshop outline goal as done.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-03",
+  "kind": "act",
+  "args": {
+   "request": "Move the launch call to Thursday afternoon.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-04",
+  "kind": "act",
+  "args": {
+   "request": "Create a note on the podcast quest saying the guest confirmed.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-05",
+  "kind": "act",
+  "args": {
+   "request": "Assign the invoice follow-up to Dana.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-06",
+  "kind": "act",
+  "args": {
+   "request": "Start a research run on competitor pricing and report back when done.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-07",
+  "kind": "act",
+  "args": {
+   "request": "Update the checkout page copy in the repository and open a change for it.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-08",
+  "kind": "act",
+  "args": {
+   "request": "Schedule a reminder for Friday to renew the domain.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-09",
+  "kind": "act",
+  "args": {
+   "request": "Push the workshop signups milestone forward this week.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-act-10",
+  "kind": "act",
+  "args": {
+   "request": "Send the agenda to the team before the call.",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-cue-01",
+  "kind": "act",
+  "args": {
+   "request": "newsletter subscribers",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-cue-02",
+  "kind": "act",
+  "args": {
+   "request": "podcast listeners",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-cue-03",
+  "kind": "act",
+  "args": {
+   "request": "workshop signups",
+   "context": {
+    "view": "Milestones on this quest: newsletter subscribers; podcast listeners; workshop signups."
+   }
+  },
+  "expect": "act"
+ },
+ {
+  "id": "route-draft-01",
+  "kind": "draft",
+  "args": {
+   "request": "Write a short caption for the launch photo.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-02",
+  "kind": "draft",
+  "args": {
+   "request": "Draft two versions of the subject line for Friday's email.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-03",
+  "kind": "draft",
+  "args": {
+   "request": "Give me a three sentence description of the workshop for the website.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-04",
+  "kind": "draft",
+  "args": {
+   "request": "Compose a thank you note to the guest, I will send it myself.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-05",
+  "kind": "draft",
+  "args": {
+   "request": "Write the opening paragraph of the newsletter.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-06",
+  "kind": "draft",
+  "args": {
+   "request": "Can you word a post announcing the new episode?",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-07",
+  "kind": "draft",
+  "args": {
+   "request": "Draft the message I could send to the volunteers about Saturday.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-draft-08",
+  "kind": "draft",
+  "args": {
+   "request": "Put together a short agenda for the call as text here.",
+   "context": {}
+  },
+  "expect": "draft"
+ },
+ {
+  "id": "route-clarify-01",
+  "kind": "clarify",
+  "args": {
+   "request": "Do the thing from before.",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-02",
+  "kind": "clarify",
+  "args": {
+   "request": "Update it.",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-03",
+  "kind": "clarify",
+  "args": {
+   "request": "Send that to them.",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-04",
+  "kind": "clarify",
+  "args": {
+   "request": "Make it better.",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-05",
+  "kind": "clarify",
+  "args": {
+   "request": "and also the other one",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-06",
+  "kind": "clarify",
+  "args": {
+   "request": "Move it to next week.",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-07",
+  "kind": "clarify",
+  "args": {
+   "request": "Fix the numbers.",
+   "context": {}
+  },
+  "expect": "clarify"
+ },
+ {
+  "id": "route-clarify-08",
+  "kind": "clarify",
+  "args": {
+   "request": "Can you look at the one Dana mentioned?",
+   "context": {}
+  },
+  "expect": "clarify"
+ }
+]

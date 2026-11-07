@@ -80,6 +80,9 @@ at the repository root.
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
 | Request Intake, Every declared source (`request-intake:every_declared_source`) | none | none | none | none | no |
 | Research Freshness Reader, Registry date scan (`research-freshness-reader:registry_scan`) | none | none | none | none | no |
+| Resolve a Reference, Id and exact match (`resolve-a-reference:exact_match`) | none | none | none | none | no |
+| Resolve a Reference, A model judges sameness (`resolve-a-reference:model_judged`) | none | none | none | none | no |
+| Resolve a Reference, Most shared words (`resolve-a-reference:shared_words`) | none | none | none | none | no |
 | Response Quality, Day counts that match the calendar (`response-quality:date_arithmetic`) | none | none | none | none | no |
 | Response Quality, No em dash (`response-quality:em_dash_free`) | none | none | none | none | no |
 | Response Quality, Links held to their evidence (`response-quality:evidence_check`) | none | none | none | none | no |
@@ -88,6 +91,9 @@ at the repository root.
 | Response Writer, Model synthesis (`response-writer:model_synthesis`) | none | none | none | none | no |
 | Role Understanding, Role checked against the part's calls (`role-understanding:checked_role`) | none | none | none | none | no |
 | Role Understanding, Role as the record states it (`role-understanding:recorded_role`) | none | none | none | none | no |
+| Route a Request, Always information (`route-a-request:majority_floor`) | none | none | none | none | no |
+| Route a Request, Route read off the plan (`route-a-request:plan_derived`) | none | none | none | none | no |
+| Route a Request, One cheap classifier call (`route-a-request:single_classifier`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
 | Terminal Session, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |

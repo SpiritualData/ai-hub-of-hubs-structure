@@ -13,7 +13,7 @@ Part of [Holding a request to a measure](../README.md)
 - Entry call: `hubofhubs.run("esoi-application", {'change': {}})`
 - Selected implementation: Record field edit (`record_field_edit`)
 - Metric: Edits change exactly the field proposed
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](apply.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](interface.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py`](tests/test_esoi_application.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../goal_completion/__init__.py) and 168 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](apply.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](interface.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py`](tests/test_esoi_application.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](../flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](../goal_completion/__init__.py) and 170 more
 
 ## Implementations
 

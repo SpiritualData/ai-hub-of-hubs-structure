@@ -104,6 +104,8 @@ The table below is generated from the records. Names lead, each part says what i
 | Planner | Mind | 0 | 0 | 0 | none | `planner` |
 | Delegation | Mind | 0 | 0 | 0 | none | `delegation` |
 | Response Writer | Mind | 0 | 0 | 0 | none | `response-writer` |
+| Route a Request | Mind | 0 | 0 | 0 | none | `route-a-request` |
+| Resolve a Reference | Mind | 0 | 0 | 0 | none | `resolve-a-reference` |
 | Higher Mind | Intelligence | 0 | 0 | 0 | none | `higher-mind` |
 | Long-Term Memory | Higher Mind | 0 | 0 | 0 | none | `long-term-memory` |
 | Objectives | Higher Mind | 0 | 0 | 0 | none | `live-objectives` |

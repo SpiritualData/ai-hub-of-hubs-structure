@@ -1,0 +1,2 @@
+ideal_id,name,principle,state_description,hints_of_measurement,problem_ids,parent_ideal_ids
+hideal-no-reference-without-the-thing-itself,No match without the thing itself,A phrase is tied to a candidate only when it is that candidate; otherwise the system says it does not know and goes on without guessing.,"Every tie between a phrase and a person, goal or post is either the one right candidate or an explicit abstain.",The number of wrong matches falls to zero on look-alike cases while the right matches stay found.,hprob-reference-settled-by-shared-words,HI1

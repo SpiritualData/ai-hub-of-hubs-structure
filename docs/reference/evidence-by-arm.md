@@ -91,6 +91,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | reason_and_answer | tier_selector (selected) | 36 | 100.0% (90.4% to 100.0%), 36/36 | $0 | 0 (median) | selected | none recorded |
 | request_planning | cue_router (selected) | 105 | 63.8% (54.3% to 72.4%), 67/105 | $0 | 0 (median) | selected | none recorded |
 | request_planning | one_piece | 105 | 22.9% (15.9% to 31.8%), 24/105 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=3.38e-08) | none recorded |
+| resolve_a_reference | exact_match (selected) | 32 | 87.5% (71.9% to 95.0%), 28/32 | $0 | 0 (median) | selected | none recorded |
+| resolve_a_reference | shared_words | 32 | 62.5% (45.3% to 77.1%), 20/32 | $0 | 0 (median) | ahead of shared_words (two-sided McNemar p=0.0215) | none recorded |
 | response_quality | evidence_check (selected) | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | selected | none recorded |
 | response_quality | date_arithmetic | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | identical to date_arithmetic on all 15 cases | none recorded |
 | response_quality | em_dash_free | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | identical to em_dash_free on all 15 cases | none recorded |
@@ -98,6 +100,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | response_writing | cited_results (selected) | 44 | 100.0% (92.0% to 100.0%), 44/44 | $0 | 0 (median) | selected | none recorded |
 | role_understanding | checked_role (selected) | 13 | 100.0% (77.2% to 100.0%), 13/13 | $0 | 0 (median) | selected | none recorded |
 | role_understanding | recorded_role | 13 | 69.2% (42.4% to 87.3%), 9/13 | $0 | 0 (median) | ahead of recorded_role, not significant (two-sided sign test p=0.125) | none recorded |
+| route_a_request | majority_floor (selected) | 41 | 29.3% (17.6% to 44.5%), 12/41 | $0 | 0 (median) | selected | none recorded |
+| route_a_request | plan_derived | 41 | 29.3% (17.6% to 44.5%), 12/41 | $0 | 0 (median) | identical to plan_derived on all 41 cases | none recorded |
 | search_backend | gemini (selected) | 40 | 80.0% (65.2% to 89.5%), 32/40 | $5.625e-05 | 2 (median) | selected | none recorded |
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |

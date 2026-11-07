@@ -1,0 +1,915 @@
+[
+ {
+  "id": "ref-person-id",
+  "kind": "person",
+  "args": {
+   "phrase": "u3",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": "u3"
+ },
+ {
+  "id": "ref-person-whole-name",
+  "kind": "person",
+  "args": {
+   "phrase": "Bo Chen",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": "u3"
+ },
+ {
+  "id": "ref-person-first-name",
+  "kind": "person",
+  "args": {
+   "phrase": "bo",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": "u3"
+ },
+ {
+  "id": "ref-person-family-name",
+  "kind": "person",
+  "args": {
+   "phrase": "Park",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": "u2"
+ },
+ {
+  "id": "ref-person-email-alias",
+  "kind": "person",
+  "args": {
+   "phrase": "ann.lee@example.org",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": "u1"
+ },
+ {
+  "id": "ref-person-unique-first-name",
+  "kind": "person",
+  "args": {
+   "phrase": "Ann",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": "u1"
+ },
+ {
+  "id": "ref-person-two-same-first-names",
+  "kind": "person",
+  "args": {
+   "phrase": "Ann",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    },
+    {
+     "id": "u5",
+     "name": "Ann Marie Ortiz"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-whole-name-of-the-longer",
+  "kind": "person",
+  "args": {
+   "phrase": "Ann Marie Ortiz",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    },
+    {
+     "id": "u5",
+     "name": "Ann Marie Ortiz"
+    }
+   ]
+  },
+  "expect": "u5"
+ },
+ {
+  "id": "ref-person-part-of-another-name",
+  "kind": "person",
+  "args": {
+   "phrase": "Joan",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-unknown-person",
+  "kind": "person",
+  "args": {
+   "phrase": "Priya",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-words-of-two-people",
+  "kind": "person",
+  "args": {
+   "phrase": "Lee Park",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-a-team-not-a-person",
+  "kind": "person",
+  "args": {
+   "phrase": "the content team",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-nickname-not-listed",
+  "kind": "person",
+  "args": {
+   "phrase": "Annie",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-empty",
+  "kind": "person",
+  "args": {
+   "phrase": "",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-person-filler-only",
+  "kind": "person",
+  "args": {
+   "phrase": "the",
+   "candidates": [
+    {
+     "id": "u1",
+     "name": "Ann Lee",
+     "aliases": [
+      "ann.lee@example.org"
+     ]
+    },
+    {
+     "id": "u2",
+     "name": "Joanne Park"
+    },
+    {
+     "id": "u3",
+     "name": "Bo Chen"
+    },
+    {
+     "id": "u4",
+     "name": "Dev Rao"
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-goal-whole-title",
+  "kind": "goal",
+  "args": {
+   "phrase": "Record podcast episode 12",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": "g3"
+ },
+ {
+  "id": "ref-goal-title-in-other-case",
+  "kind": "goal",
+  "args": {
+   "phrase": "workshop outline",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": "g4"
+ },
+ {
+  "id": "ref-goal-two-look-alikes",
+  "kind": "goal",
+  "args": {
+   "phrase": "Send the spring newsletter to subscribers",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-goal-look-alike-by-one-word",
+  "kind": "goal",
+  "args": {
+   "phrase": "Record the sales call",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-goal-shared-topic-only",
+  "kind": "goal",
+  "args": {
+   "phrase": "Survey the workshop attendees",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-goal-two-share-the-word",
+  "kind": "goal",
+  "args": {
+   "phrase": "Subscribers",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-goal-not-on-the-list",
+  "kind": "goal",
+  "args": {
+   "phrase": "Renew the domain",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-goal-paraphrase",
+  "kind": "goal",
+  "args": {
+   "phrase": "the goal about tidying the imported email list",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": "g1"
+ },
+ {
+  "id": "ref-goal-paraphrase-two",
+  "kind": "goal",
+  "args": {
+   "phrase": "write up the survey findings for subscribers",
+   "candidates": [
+    {
+     "id": "g1",
+     "name": "Newsletter subscribers import cleanup",
+     "text": "Remove bounced addresses from the imported list."
+    },
+    {
+     "id": "g2",
+     "name": "Subscribers survey results",
+     "text": "Summarise what subscribers said in the spring survey."
+    },
+    {
+     "id": "g3",
+     "name": "Record podcast episode 12",
+     "text": "Record and edit the episode with the guest."
+    },
+    {
+     "id": "g4",
+     "name": "Workshop outline",
+     "text": "Outline the three sessions of the workshop."
+    }
+   ]
+  },
+  "expect": "g2"
+ },
+ {
+  "id": "ref-post-by-letter",
+  "kind": "post",
+  "args": {
+   "phrase": "Post B",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": "p2"
+ },
+ {
+  "id": "ref-post-whole-name",
+  "kind": "post",
+  "args": {
+   "phrase": "Post C photo thread",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": "p3"
+ },
+ {
+  "id": "ref-post-letter-not-listed",
+  "kind": "post",
+  "args": {
+   "phrase": "Post D",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-post-both-launch-videos",
+  "kind": "post",
+  "args": {
+   "phrase": "launch video",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-post-shared-words-other-post",
+  "kind": "post",
+  "args": {
+   "phrase": "Our launch photos with a caption",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": ""
+ },
+ {
+  "id": "ref-post-paraphrase-text",
+  "kind": "post",
+  "args": {
+   "phrase": "Our launch video opens on the customer story and ends with the offer.",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": "p2"
+ },
+ {
+  "id": "ref-post-paraphrase-photos",
+  "kind": "post",
+  "args": {
+   "phrase": "five workshop day photos, each with a caption",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": "p3"
+ },
+ {
+  "id": "ref-post-unrelated-text",
+  "kind": "post",
+  "args": {
+   "phrase": "A reminder that the office is closed on Friday.",
+   "candidates": [
+    {
+     "id": "p1",
+     "name": "Post A launch video",
+     "text": "Our launch video shows the studio tour with the founder."
+    },
+    {
+     "id": "p2",
+     "name": "Post B launch video",
+     "text": "Our launch video opens on the customer story and ends with the offer."
+    },
+    {
+     "id": "p3",
+     "name": "Post C photo thread",
+     "text": "Five photos of the workshop day with a caption each."
+    }
+   ]
+  },
+  "expect": ""
+ }
+]
