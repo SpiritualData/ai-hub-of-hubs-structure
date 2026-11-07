@@ -154,3 +154,19 @@ def test_a_reference_resolved_a_moment_ago_is_not_fetched_again_until_a_write_cl
     assert Resolver.calls == 2                                     # another reference is another fetch
     clear_resolution_memo()
     assert resolve_remembered(r, "chat_thread", {"id": "t1"}, 500) != first and Resolver.calls == 3
+
+
+def test_a_cards_items_are_fetched_together_and_the_budget_is_applied_in_relevance_order():
+    import time as clock
+    from hubofhubs.api import clear_resolution_memo, render_card_content_blocks
+
+    class SlowResolver:
+        def resolve(self, locator, *, max_chars):
+            clock.sleep(0.2)
+            return f"text of {locator['id']} " + "x" * 50
+
+    clear_resolution_memo()
+    card = {"content": [{"id": f"i{n}", "type": "note", "locator": {"id": f"i{n}"}, "why": "w", "ts": f"2026-11-0{n}"} for n in range(1, 6)]}
+    started = clock.monotonic()
+    blocks = render_card_content_blocks(card, {"note": SlowResolver()}, task_kws=set(), max_refs=5, max_ref_chars=400)
+    assert clock.monotonic() - started < 0.7 and len(blocks) == 5 and all(b["text"].startswith("text of") for b in blocks)

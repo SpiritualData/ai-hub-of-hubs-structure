@@ -26,6 +26,7 @@ import json
 import re
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Set, Tuple
 
@@ -405,6 +406,8 @@ def _preview_of(text: str, *, max_chars: int = 160) -> str:
 #: data older than its own writes. 0 turns the memory off.
 RESOLUTION_MEMO_SECONDS = 60.0
 RESOLUTION_MEMO_MAX = 512
+#: How many of one card's items are fetched at once.
+PARALLEL_RESOLVES = 8
 _memo_lock = threading.Lock()
 _memo: "OrderedDict[Any, Tuple[float, str]]" = OrderedDict()
 
@@ -476,6 +479,21 @@ def render_card_content_blocks(
         # items survive (and their resolved/truncated text) is byte-for-byte what it was before.
         ranked = rank_content_by_recency_relevance(content, task_kws, limit=max_refs)
         budget = max_ref_chars
+        # The items are independent reads of live data, so they are fetched together (each at the most one item may take), and the
+        # budget below is then applied in relevance order, cutting each fetched text to what is left. The result is the same text the
+        # one-after-the-other loop gave, a fraction of the wait.
+        fetched: Dict[int, Any] = {}
+        resolvable = [(i, it) for i, it in enumerate(ranked) if (resolvers or {}).get(it.get("type", "note")) is not None]
+        if len(resolvable) > 1:
+            cap_all = min(max_ref_chars, max_ref_item_chars)
+            with ThreadPoolExecutor(max_workers=min(PARALLEL_RESOLVES, len(resolvable))) as pool:
+                futures = {i: pool.submit(resolve_remembered, resolvers[it.get("type", "note")], it.get("type", "note"), it.get("locator", {}), cap_all)
+                           for i, it in resolvable}
+                for i, future in futures.items():
+                    try:
+                        fetched[i] = future.result()
+                    except Exception:  # noqa: BLE001, a resolver must never break assembly
+                        fetched[i] = ""
         for rank, item in enumerate(ranked):
             if budget <= 0:
                 break
@@ -487,7 +505,9 @@ def render_card_content_blocks(
             if resolver is not None:
                 rendered = ""
                 try:
-                    rendered = resolve_remembered(resolver, itype, locator, item_cap)
+                    rendered = fetched[rank] if rank in fetched else resolve_remembered(resolver, itype, locator, item_cap)
+                    if len(rendered) > item_cap:
+                        rendered = rendered[: item_cap - 1].rstrip() + "…"
                 except Exception:  # noqa: BLE001, a resolver must never break assembly
                     rendered = ""
                 if not rendered:
