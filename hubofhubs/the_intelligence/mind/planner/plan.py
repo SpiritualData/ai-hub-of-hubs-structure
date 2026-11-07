@@ -55,6 +55,8 @@ class PlanDecision:
     # default), self-reported by the planner on the planning call it already makes. None or an unknown value means no shape was
     # named. The reply writer's situation standard is selected from this field, never from the wording of any model output.
     reply_shape: Optional[str] = None
+    # How the reply will be delivered, when the message says so: "spoken" (read aloud) or "written". The planner's structured report; None when the message says nothing.
+    delivery: Optional[str] = None
     # User clarification/input needed: when action="clarify"
     clarification: Optional[Dict[str, Any]] = None  # {"question": "...", "options": [...], "allow_free_input": bool}
     # EXPLICIT execution-mode signal the planner detected in the user's message (LLM judgment on
