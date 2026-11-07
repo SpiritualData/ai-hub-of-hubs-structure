@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hubofhubs"
-version = "0.3.0"
+version = "0.4.0"
 description = "A registry of the best AI-intelligence hubs and the scorer that reads it with a consumer's code"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
-dependencies = ["esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@v0.4.0#subdirectory=implementations/python"]
+dependencies = ["esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@v0.5.0#subdirectory=implementations/python"]
 
 [project.scripts]
 ahohs = "hubofhubs.the_self.assembler.cli:main"

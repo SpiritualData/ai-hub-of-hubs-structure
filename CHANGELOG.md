@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 (2026-11-07)
 
 - References resolved for a card's content are remembered for a minute (`resolve_remembered`, cleared by `clear_resolution_memo`, exported in `hubofhubs.api`; the consumer clears it after any write), so the turn-start assembly and the reads after it do not fetch the same live data again one after the other. A turn-start assembly that hit its deadline but holds context counts as context in hand for `TurnCardCache`'s cheap follow-up reads.
 
