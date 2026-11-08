@@ -98,3 +98,14 @@ def test_a_records_location_without_a_parent_link_still_finds_the_child_by_its_f
     upkeep, esoi = arm(tables)
     actions = upkeep.upkeep(SPEC, tables["metrics"], None, TODAY, model())
     assert [a["metric_id"] for a in actions] == ["m-pub"] and actions[0]["child_metric"]["id"] == "m-child" and actions[0]["child_metric"]["created"] is False
+
+
+def test_a_record_behind_its_source_is_stale_and_read_with_the_value_it_held_before():
+    tables = records(source="sheet", measured_through="2030-03-01", value=2)
+    upkeep, esoi = arm(tables)
+    action = upkeep.upkeep(dict(SPEC, moved_by="ai"), tables["metrics"], {"sheet": lambda mid: {"value": 3, "as_of": "2030-03-09"}}, TODAY)[0]
+    assert action["state"] == STALE and action["action"] == READ and action["previous"] == 2 and action["reading"]["value"] == 3
+    assert esoi.records["metrics"]["m-pub"]["record"].startswith("Current value: 3 (as of 2030-03-09")
+    same_day = records(source="sheet", measured_through="2030-03-09", value=3)
+    upkeep, _ = arm(same_day)
+    assert upkeep.upkeep(dict(SPEC, moved_by="ai"), same_day["metrics"], {"sheet": lambda mid: {"value": 3, "as_of": "2030-03-09"}}, TODAY)[0]["action"] == NONE

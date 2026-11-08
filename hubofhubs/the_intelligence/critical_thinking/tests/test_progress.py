@@ -84,3 +84,11 @@ def test_progress_composes_upkeep_the_increment_before_the_work_and_after():
     assert made["asks"] == ["Record it."]          # at most one person-only step, added to the increment
     nothing = composition.progress(MILESTONE, esoi.records["metrics"], [SCRIPT], lambda inc: {"artifact": ""}, judge=judge, means=MEANS, today="2030-03-10", ask=ask)
     assert nothing["status"] == REFUSED_BOOKKEEPING
+
+
+def test_a_stale_metric_read_comes_before_a_deliverable_and_measures_from_the_value_held():
+    read = [{"metric_id": "m-pub", "state": "stale", "action": "read", "reading": {"value": 5, "as_of": "2030-03-09"}, "previous": 2}]
+    found = choose_increment(MILESTONE, read, [SCRIPT], MEANS)
+    assert found.kind == METRIC_READ and found.item["previous"] == 2
+    fresh = [dict(read[0], state="fresh")]
+    assert choose_increment(MILESTONE, fresh, [SCRIPT], MEANS).kind == DELIVERABLE          # a current metric leaves the deliverable first

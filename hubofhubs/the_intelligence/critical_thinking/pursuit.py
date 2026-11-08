@@ -70,10 +70,11 @@ def doable_by_ai(item: Mapping[str, Any], means: Sequence[Mapping[str, Any]], av
 
 def choose_increment(milestone: Mapping[str, Any], metric_actions: Sequence[Mapping[str, Any]], work_items: Sequence[Mapping[str, Any]],
                      means: Sequence[Mapping[str, Any]] = ()) -> Optional[Increment]:
-    """The turn's increment, the first rung of ``LADDER`` that applies, decided on structured fields: (1) an AI-doable work item of kind ``deliverable``,
-    measured by the milestone's intermediate metric when upkeep defined one; (2) a metric upkeep read; (3) an AI-doable ``evidence`` item; (4) an
-    AI-doable ``recommendation`` item; (5) a ``simulation`` item, only where a means to simulate is given. None only when no rung applies, which the caller
-    reports as a gap in the work items, never as waiting on a person."""
+    """The turn's increment, the first rung that applies, decided on structured fields: first, when Metric Upkeep found the milestone's metric stale or
+    unmeasured and read it from its source, that reading (metrics are kept current so progress can be measured); then (1) an AI-doable work item of kind
+    ``deliverable``, measured by the milestone's intermediate metric when upkeep defined one; (2) a metric read upkeep made otherwise; (3) an AI-doable
+    ``evidence`` item; (4) an AI-doable ``recommendation`` item; (5) a ``simulation`` item, only where a means to simulate is given. None only when no rung
+    applies, which the caller reports as a gap in the work items, never as waiting on a person."""
     available = list(milestone.get("records") or [])
     lands_on = dict(milestone.get("lands_on") or {})
     child = next((a.get("child_metric") for a in metric_actions if isinstance(a.get("child_metric"), Mapping) and a["child_metric"].get("id")), None)
@@ -86,12 +87,19 @@ def choose_increment(milestone: Mapping[str, Any], metric_actions: Sequence[Mapp
         return Increment(kind, measure, None, [str(r) for r in item.get("requirements") or []], str(item.get("size") or INLINE), lands_on, dict(item), METHOD_OF[kind])
 
     solution = str(milestone.get("solution_id") or milestone.get("id") or "milestone")
+
+    def reading_of(action: Mapping[str, Any]) -> Increment:
+        return Increment(METRIC_READ, str(action["metric_id"]), None, [], INLINE, lands_on,
+                         {"metric_id": action["metric_id"], "reading": action["reading"], "previous": action.get("previous")}, "read")
+    stale = next((a for a in metric_actions if a.get("action") == "read" and a.get("reading") and a.get("state") in ("stale", "unmeasured")), None)
+    if stale is not None:
+        return reading_of(stale)
     found = from_item(DELIVERABLE, str(child["id"]) if child else f"{solution}:deliverable")
     if found:
         return found
     read = next((a for a in metric_actions if a.get("action") == "read" and a.get("reading")), None)
     if read is not None:
-        return Increment(METRIC_READ, str(read["metric_id"]), None, [], INLINE, lands_on, {"metric_id": read["metric_id"], "reading": read["reading"]}, "read")
+        return reading_of(read)
     for kind in (EVIDENCE, RECOMMENDATION):
         found = from_item(kind, f"{solution}:{kind}")
         if found:

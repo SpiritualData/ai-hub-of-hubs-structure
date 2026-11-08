@@ -143,8 +143,14 @@ class RecordFieldUpkeep:
             state = state_of(metric, day)
             action: Dict[str, Any] = {"metric_id": mid, "state": state, "action": NONE}
             source = str(metric.get("source") or "").strip()
-            if state in (STALE, UNMEASURED) and source and readers and readers.get(source):
-                action.update(self.read(mid, source, readers[source]))
+            reader = readers.get(source) if (source and readers) else None
+            if state in (STALE, UNMEASURED) and reader:
+                action.update(self.read(mid, source, reader, metric))
+            elif state == FRESH and reader:
+                # A record is behind its source when the source reads a later day than the record covers: reading it is the progress this turn can make.
+                newer = self.read(mid, source, reader, metric, record=False)
+                if newer.get("reading") and (day_of(newer["reading"].get("as_of")) or day) > (day_of(metric.get("measured_through")) or datetime.date.min):
+                    action.update(state=STALE, why_stale="the source reads a later day than the record covers", **self.read(mid, source, lambda _m: newer["reading"], metric))
             elif state == NO_SOURCE or (state == STALE and not source):
                 action.update(action=PROPOSE_SOURCE, proposed_source=None, why="no arm yet proposes a source; the metric stays without one")
             if str(spec.get("moved_by") or "") == PERSON:
@@ -152,16 +158,22 @@ class RecordFieldUpkeep:
             out.append(action)
         return out
 
-    def read(self, mid: str, source: str, reader: Callable[[str], Mapping[str, Any]]) -> Dict[str, Any]:
+    def read(self, mid: str, source: str, reader: Callable[[str], Mapping[str, Any]], metric: Optional[Mapping[str, Any]] = None,
+             record: bool = True) -> Dict[str, Any]:
+        """Read the metric's source; with ``record`` the reading is written to the metric record through ESOI Application. The action carries the value the
+        record held before (``previous``, its structured ``value`` field) so the increment's before and after are one measure."""
+        previous = (metric or {}).get("value")
         try:
             reading = dict(reader(mid) or {})
         except Exception as error:  # noqa: BLE001 -- a source that cannot be read is said, never guessed
             return {"action": READ, "reading": None, "why": f"the source {source!r} could not be read ({type(error).__name__}: {error})"}
         if reading.get("value") in (None, "") or not day_of(reading.get("as_of")):
             return {"action": READ, "reading": None, "why": f"the source {source!r} gave no dated value"}
+        if not record:
+            return {"action": READ, "reading": reading, "previous": previous}
         line = f"Current value: {reading['value']} (as of {day_of(reading['as_of']).isoformat()}, from {reading.get('source') or source})"
         applied = self.esoi.apply({"edit": {"kind": "metric_edit", "target": mid, "field": "record", "value": line}})
-        return {"action": READ, "reading": reading, "recorded": applied}
+        return {"action": READ, "reading": reading, "previous": previous, "recorded": applied}
 
     def intermediate(self, spec: Mapping[str, Any], parent: str, metric: Mapping[str, Any], metrics: Mapping[str, Mapping[str, Any]],
                      ask: Optional[Callable[[str], str]]) -> Dict[str, Any]:

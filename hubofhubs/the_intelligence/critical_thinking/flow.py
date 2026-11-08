@@ -145,7 +145,9 @@ class CriticalThinkingComposition:
         if child and child.get("rubric") and not increment.requirements:
             increment.requirements = [str(r) for r in child["rubric"]]       # a work item with no requirements of its own is held to the metric's rubric
         reader = (lambda: increment.item.get("reading") or {}) if increment.method == "read" else None
-        before = measure_increment(increment, kept, judge, reader, today, total=self.total_of(upkept["actions"]))
+        # A reading's before is the value the record held before it was read (unmeasured is 0), its after the reading itself: one measure against itself.
+        held = (lambda: {"value": increment.item.get("previous") or 0, "as_of": today}) if increment.method == "read" else None
+        before = measure_increment(increment, kept, judge, held or reader, today, total=self.total_of(upkept["actions"]))
         increment.before = before.value if before.value is not None else 0.0
         if increment.size == "background":
             return {"status": "continuing", "increment": increment.to_dict(), "before": before.to_dict(), "actions": upkept["actions"], "steps": upkept["steps"]}
