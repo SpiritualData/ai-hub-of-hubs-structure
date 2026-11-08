@@ -149,10 +149,23 @@ removed sentences said, and never add a fact, figure, date or name.
 Reply with JSON only: {{"sentences": [{{"n": <the sentence's number>, "action": "rewrite" or "remove", "text": "<the rewritten sentence, empty when removing>"}}]}}. Do not use em dashes."""
 
 
+SENTENCE_END = re.compile(r"[.!?:][\"')\]*]*$")
+SENTENCE_START = re.compile(r"^[\"'(\[*]*[A-Z0-9]")
+MIN_WORDS = 2
+
+
+def complete(text: str) -> bool:
+    """True when ``text`` reads as whole sentences by structure: it starts as a sentence starts (a capital letter or a digit, after any opening quote or bracket), ends with a
+    sentence's closing mark (a full stop, question or exclamation mark, or a colon that introduces what follows, before any closing quote or bracket), and holds at least
+    ``MIN_WORDS`` words. A rewrite that dropped the end of its sentence ("The step is due") is not complete. A line of a list or a heading is not judged here."""
+    text = " ".join(str(text or "").split())
+    return bool(text) and bool(SENTENCE_START.match(text)) and bool(SENTENCE_END.search(text)) and len(WORD.findall(text)) >= MIN_WORDS
+
+
 def rewrite_allowed(text: str, units: Sequence[Unit], index: int, question: str) -> bool:
-    """A rewrite of a dangling sentence stands only when it states no figure and no capitalised name that the remaining reply (or the question) does not hold, and does not open
-    with a back-reference itself when the sentence before it was removed."""
-    if not text.strip():
+    """A rewrite of a dangling sentence stands only when it is a complete sentence (``complete``), states no figure and no capitalised name that the remaining reply (or the
+    question) does not hold, and does not open with a back-reference itself when the sentence before it was removed."""
+    if not text.strip() or not complete(text):
         return False
     held = " ".join(u.text for u in units if u.kept) + " " + (question or "")
     if figures(text) - figures(held):

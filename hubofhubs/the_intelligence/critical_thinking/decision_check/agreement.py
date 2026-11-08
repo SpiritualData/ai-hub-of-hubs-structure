@@ -18,7 +18,7 @@ from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import (
     ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, CallPool, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
     known_block, numbered, parse_json, pick_view_prompt, quoted, read_pick, read_verdicts, remove_span, run_parallel, sentence_of, spent_view, options_listing)
 from hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes import CONFIRMED_FAILURE, new_mistake
-from hubofhubs.the_intelligence.critical_thinking.decision_check.remainder import cohere, figures, joined, units_of
+from hubofhubs.the_intelligence.critical_thinking.decision_check.remainder import cohere, complete, figures, joined, units_of
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 
 
@@ -226,9 +226,15 @@ class Arm:
             if not held:
                 continue
             if r["action"] == "rewrite":
+                was = held[0].text
                 held[0].text = held[0].text.replace(r["span"], r["text"], 1) if holder is not None else r["text"]
                 for u in held[1:]:
                     u.kept = False
+                if complete(was) and not complete(held[0].text):
+                    # A rewrite that leaves a fragment ("The step is due") says less than nothing: the whole sentence is removed instead, and what is left is cohered.
+                    held[0].text, held[0].kept = was, False
+                    r.update(action="remove", text="", why_removed="the rewrite left an incomplete sentence")
+                    removed_any = True
             else:
                 # Code removes the confirmed span with the whole sentence that holds it: a clause cut out of its sentence leaves a fragment that says nothing.
                 for u in held:

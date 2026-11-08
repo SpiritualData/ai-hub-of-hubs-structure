@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[5]))
 from hubofhubs.the_intelligence.critical_thinking.decision_check.agreement import AgreementCheck  # noqa: E402
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import CheckBinding, View  # noqa: E402
 from hubofhubs.the_intelligence.critical_thinking.decision_check.remainder import (  # noqa: E402
-    cohere, cohered_text, dangling, figures, joined, shortened_text, units_of)
+    cohere, cohered_text, complete, dangling, figures, joined, shortened_text, units_of)
 
 
 def removed(text, *gone):
@@ -133,3 +133,26 @@ def test_a_back_reference_a_few_words_in_dangles_but_a_conjunction_that_does_not
     assert dangling(units) == [1]
     units = removed("The owner is set. I know that the count is 0.", "The owner is set.")
     assert dangling(units) == []
+
+
+def test_a_repair_that_leaves_a_fragment_removes_the_whole_sentence():
+    """The shape seen live: a confirmed span "Sunday 8 November." was rewritten without its full stop and left a fragment ("The step is due this"); a sentence must stay whole, else it goes."""
+    draft = "The goal is owned by Mary. The step is due Sunday 8 November. The draft is kept on the goal."
+    views = [View("facts", "A statement must hold.", "the step is due this week")]
+
+    def reply(prompt):
+        if "List each part" in prompt:
+            return json.dumps({"findings": [{"span": "Sunday 8 November.", "quote": ""}]})
+        if "For each numbered statement" in prompt:
+            return json.dumps({"verdicts": [{"n": 1, "fails": True, "quote": ""}]})
+        return json.dumps({"action": "rewrite", "text": "this"})
+    got = AgreementCheck(plumbing=None).check(draft, CheckBinding(kind="reply", views=views, max_calls=6), reply)
+    assert got["text"] == "The goal is owned by Mary. The draft is kept on the goal."
+    assert got["findings"][0]["action"] == "remove" and "incomplete" in got["findings"][0]["why_removed"]
+
+
+def test_a_coherence_rewrite_must_be_a_complete_sentence():
+    units = removed("The owner is you. Milestone A is first. Its due date is Friday.", "Milestone A is first.")
+    got, how = cohere(units, "", lambda prompt: json.dumps({"sentences": [{"n": 2, "action": "rewrite", "text": "The step is due"}]}))
+    assert joined(got) == "The owner is you." and how == "removed"
+    assert complete("The step is due Friday.") and not complete("The step is due") and not complete("Mary ow")
