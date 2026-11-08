@@ -307,5 +307,14 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0049,17.6,0.9949,89acf11,393c849c,sample:1,claude-haiku-5-5,
 2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0051,18.6,0.9946,89acf11,393c849c,sample:1,claude-haiku-5-5,
 2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,4,4/7,0/0,7,0,0,0.065,256.1,0.6895,89acf11,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0708,275.2,0.8887,3817ce1,393c849c,,claude-haiku-5-5,forced past unsolved failures: hard stage run on 2026-11-08
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0691,282.6,0.7884,3817ce1,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.7376,204.4,0.8769,cceeb2a,393c849c,,claude-sonnet-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0676,268.1,0.789,cceeb2a,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,7,7/7,0/0,7,0,0,1.8887,315.4,0.9483,cceeb2a,393c849c,,claude-opus-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0741,295.5,0.8879,cceeb2a,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,127.3,0.9876,20876a9,0dcffc5e,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0421,129.2,0.9875,f633f94,0dcffc5e,,claude-haiku-5-5,forced past ceiling: cascade stage run on 2026-11-08
 2026-11-08,relevant_solutions,records_index,62,46,37/49,9/13,0,0,0,0.0,0.8,0.7517,00bcf79,ec848095,,none,recall=0.828; precision=0.454; f2=0.6466; missed_cases=16
 2026-11-08,solution_passes,network_passes,6,6,6/6,0/0,0,0,0,0.0,2.2,,00bcf79,8c79356a,"only:reach-graph-arm,reach-keyword-papers,reach-draft-as-given,reach-risk-gate-off,reach-no-edit-arm,reach-fielded-retrieval",none,reaches_passed=6/6; calls_per_case=0.0
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,15,15/18,0/0,18,0,0,0.1398,156.2,0.8608,b2b36dd,0dcffc5e,,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08

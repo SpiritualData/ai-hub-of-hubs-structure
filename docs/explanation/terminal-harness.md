@@ -270,9 +270,18 @@ What the runs showed (18 cases: 12 read and report, 3 coding with their own test
   buy: on short tasks the public finding that the best tier costs less in total than the middle one (long Terminal-Bench trials)
   does not hold.
 - opencode with Gemini is the cheapest per token but not per finished task: the fast tier passed 9 of 18 (it stops after a tool
-  call, asks for files nobody will send, or rewrites a file it was asked to read); the balanced tier passed 16 of 18. Telling the
+  call, asks for files nobody will send, or rewrites a file it was asked to read); the balanced tier passed 16 and 15 of 18 in two runs. Telling the
   worker that nobody answers during the run, and continuing a run that ends without a report once, fixed two failures on a rerun but
   not the variance.
+- Every Claude tier passing those short cases says the cases are too easy to tell tiers apart, so a hard stage was added
+  (`metric-delegated-agent-sessions-hard`, `evaluation/agent_sessions_hard`): four multi-file coding changes modelled on real deep tasks,
+  checked by hidden tests, and three milestone deliverables over the real records past turns read, each rubric item judged on the best
+  tier with a quote that must be in the evidence. The case bodies stay private; the repository holds ids and digests. On it the fast tier
+  passed 5 of 7 (one shot) and 6 of 7 (steerable), the balanced tier 6 of 7, and the best tier all 7, at about 27 cents a case against
+  one cent for the fast tier; the best tier still has the highest balanced score there, so hard work is chosen on the best tier
+  (`choose_agent_arm(difficulty="hard")`) while ordinary work keeps the fast tier.
+- Two published instruction packs were measured as an arm setting on the steerable fast arm (`instructions=<name>`): Ponytail 5 of 7
+  and Karpathy Skills 6 of 7 on the hard stage, against 6 of 7 without either, at the same cost; neither earns a place on these cases.
 - Two case flaws were found by the arms and fixed: a date written "April 2" failed a "2 april" check, and an order task invited
   reordering the file it then required unchanged.
 
