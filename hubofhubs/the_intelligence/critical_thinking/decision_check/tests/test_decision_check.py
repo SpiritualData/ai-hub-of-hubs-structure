@@ -122,7 +122,8 @@ def test_a_reply_is_repaired_only_at_the_confirmed_failing_span():
         assert "The deadline is June 5." in prompt.split("Evidence it must agree with:")[1]
         return json.dumps({"action": "rewrite", "text": "The deadline is June 5."})
     got = arm().check(REPLY, reply_binding(), Scripted(reply))
-    assert got["outcome"] == "repaired" and got["text"] == "I read the report. I created the task. The deadline is June 5."
+    # A repair never adds a figure the reply did not state (the 5 is new), so the wrong sentence is removed rather than rewritten with the evidence's figure.
+    assert got["outcome"] == "repaired" and got["text"] == "I read the report. I created the task."
     assert got["dropped"] == 1 and got["calls"] == 3
 
 
@@ -296,3 +297,17 @@ def test_a_removal_needs_most_of_three_confirmations_so_one_wrong_confirmation_d
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=5), Scripted(reply))
     assert got["text"] == draft and got["outcome"] == "held" and got["calls"] == 5
+
+
+def test_a_rewrite_never_adds_a_figure_the_reply_did_not_state_so_it_becomes_a_removal():
+    draft = "The quest has 598 goals. I read only the first 100 of them."
+    views = [View("facts", "A statement must hold.", "598 goals")]
+
+    def reply(prompt):
+        if "List each part" in prompt:
+            return json.dumps({"findings": [{"span": "I read only the first 100 of them.", "quote": ""}]})
+        if "Does the statement fail" in prompt:
+            return json.dumps({"fails": True})
+        return json.dumps({"action": "rewrite", "text": "69 of them are assigned to you."})
+    got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=8), Scripted(reply))
+    assert got["text"] == "The quest has 598 goals." and "69" not in got["text"]

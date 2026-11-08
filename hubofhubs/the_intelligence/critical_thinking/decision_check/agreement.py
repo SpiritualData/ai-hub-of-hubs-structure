@@ -6,6 +6,7 @@ quotes and the options, and must quote the deciding words (code checks they are 
 each span is in the reply, one independent call per span (shown the span alone) confirms it, and only a confirmed span is rewritten or removed, with the evidence that contradicts it.
 ``agreement_with_known_mistakes`` is the same arm with each view's known-mistake lines in its prompt and, while the call budget allows, a twin view built on them.
 ``majority_vote`` is the agreement check with a disagreement settled by the views' majority (a tie still goes to the adjudication). ``single_verify`` is the one verify call that was tried before (the bound), and ``draft_as_given`` makes no call. Every arm stays within ``max_calls``. Standard library plus the hub and ``esoi``."""
+import re
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
@@ -15,6 +16,9 @@ from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import (
     ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
     known_block, parse_json, pick_view_prompt, quoted, read_pick, remove_span, run_parallel, sentence_of, spent_view, options_listing)
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
+
+
+FIGURE_TOKEN = re.compile(r"\d+(?:[.,]\d+)*")
 
 
 def result(outcome: str, calls: Calls, why: str, agreement: float, **fields: Any) -> Dict[str, Any]:
@@ -164,6 +168,9 @@ class Arm:
                     return dict(f, action="", text="", kept="most confirmations found the span does not fail")
                 return dict(f, action="remove", text="")
             if action == "rewrite" and text and text != f["span"]:
+                # A repair only removes or rewords what the reply already says: a rewrite holding a figure the span did not hold adds a claim, so the span is removed instead.
+                if set(FIGURE_TOKEN.findall(text)) - set(FIGURE_TOKEN.findall(f["span"])):
+                    return dict(f, action="remove", text="", why_removed="the rewrite added a figure the reply did not state")
                 return dict(f, action="rewrite", text=text)
             return dict(f, action="", text="")
         repairs = run_parallel([lambda f=f: repair(f) for f in confirmed], b.parallel)
