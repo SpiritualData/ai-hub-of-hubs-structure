@@ -1,0 +1,458 @@
+[
+ {
+  "id": "hub-hand-01",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Remind me what we decided about the newsletter last week"
+  },
+  "expect": {
+   "gold": [
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-02",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Keep working on the podcast launch goal over the next few days and tell me which objective each step serves"
+  },
+  "expect": {
+   "gold": [
+    "live-objectives"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-03",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Edit the README so the install step mentions the venv"
+  },
+  "expect": {
+   "gold": [
+    "file-editing"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-04",
+  "kind": "request",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Search the web for the latest pricing of embedding APIs"
+  },
+  "expect": {
+   "gold": [
+    "web-search"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-05",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Should you ask me before sending this email to a donor, or just send it?"
+  },
+  "expect": {
+   "gold": [
+    "judgment-calls"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-06",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "What should I work on first today, given my asks and my goals?"
+  },
+  "expect": {
+   "gold": [
+    "prioritization"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-07",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Draft my reply to Maria in my voice"
+  },
+  "expect": {
+   "gold": [
+    "response-writer",
+    "the-representatives"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-08",
+  "kind": "request",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Run this long refactor in its own coding agent session and report back"
+  },
+  "expect": {
+   "gold": [
+    "delegated-agent-sessions"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-09",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Which file holds the retry logic for model calls?"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever",
+    "cards-from-files"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-10",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "When it says 'the report', which report does it mean?"
+  },
+  "expect": {
+   "gold": [
+    "resolve-a-reference"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-11",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Check the answer actually met the goal before closing the task"
+  },
+  "expect": {
+   "gold": [
+    "goal-completion"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-12",
+  "kind": "request",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Warn me before you delete anything or spend money"
+  },
+  "expect": {
+   "gold": [
+    "nervous-system"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-13",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Find recent papers on retrieval-augmented generation that a reader can check"
+  },
+  "expect": {
+   "gold": [
+    "the-science"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-14",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The model provider is down; fall back to another one"
+  },
+  "expect": {
+   "gold": [
+    "vendor-model-caller"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-15",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Which model should the cheap tier use now?"
+  },
+  "expect": {
+   "gold": [
+    "model-tier-chooser"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-16",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The terminal chat stops showing what it is doing during a long step"
+  },
+  "expect": {
+   "gold": [
+    "terminal-session"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-17",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The same request from Slack was taken in twice"
+  },
+  "expect": {
+   "gold": [
+    "request-intake"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-18",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The plan split the task into pieces nobody could check"
+  },
+  "expect": {
+   "gold": [
+    "planner"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-19",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "A correction I gave yesterday did not change how the AI behaves today"
+  },
+  "expect": {
+   "gold": [
+    "feedback-learning"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-20",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Cards for the docs folder are stale after I edited three files"
+  },
+  "expect": {
+   "gold": [
+    "cards-from-files",
+    "card-store"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-21",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Graphify: a deterministic graph of code and docs with hybrid retrieval and no model call to build"
+  },
+  "expect": {
+   "gold": [
+    "cards-from-files",
+    "context-retriever",
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-22",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Tavily search API for agents"
+  },
+  "expect": {
+   "gold": [
+    "web-search"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-23",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "OpenCode, an open-source coding agent CLI"
+  },
+  "expect": {
+   "gold": [
+    "delegated-agent-sessions"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-24",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "bm25s, a fast BM25 library in Python"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-25",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "mem0, a memory layer for AI agents"
+  },
+  "expect": {
+   "gold": [
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-26",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "LiteLLM proxy to reach many model providers with failover"
+  },
+  "expect": {
+   "gold": [
+    "vendor-model-caller"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-27",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "A reranker model that orders retrieved chunks by relevance"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-28",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Temporal for durable long-running jobs"
+  },
+  "expect": {
+   "gold": [
+    "proactivity",
+    "live-objectives"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-29",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Surface anything useful I did not ask about when I open a goal"
+  },
+  "expect": {
+   "gold": [
+    "the-intuition"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-30",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Apply this edit to the metric spec exactly as I wrote it"
+  },
+  "expect": {
+   "gold": [
+    "esoi-application"
+   ]
+  }
+ }
+]

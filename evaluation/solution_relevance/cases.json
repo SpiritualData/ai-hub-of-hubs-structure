@@ -1,0 +1,948 @@
+[
+ {
+  "id": "hub-hand-01",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Remind me what we decided about the newsletter last week"
+  },
+  "expect": {
+   "gold": [
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-02",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Keep working on the podcast launch goal over the next few days and tell me which objective each step serves"
+  },
+  "expect": {
+   "gold": [
+    "live-objectives"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-03",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Edit the README so the install step mentions the venv"
+  },
+  "expect": {
+   "gold": [
+    "file-editing"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-04",
+  "kind": "request",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Search the web for the latest pricing of embedding APIs"
+  },
+  "expect": {
+   "gold": [
+    "web-search"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-05",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Should you ask me before sending this email to a donor, or just send it?"
+  },
+  "expect": {
+   "gold": [
+    "judgment-calls"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-06",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "What should I work on first today, given my asks and my goals?"
+  },
+  "expect": {
+   "gold": [
+    "prioritization"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-07",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Draft my reply to Maria in my voice"
+  },
+  "expect": {
+   "gold": [
+    "response-writer",
+    "the-representatives"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-08",
+  "kind": "request",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Run this long refactor in its own coding agent session and report back"
+  },
+  "expect": {
+   "gold": [
+    "delegated-agent-sessions"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-09",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Which file holds the retry logic for model calls?"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever",
+    "cards-from-files"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-10",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "When it says 'the report', which report does it mean?"
+  },
+  "expect": {
+   "gold": [
+    "resolve-a-reference"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-11",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Check the answer actually met the goal before closing the task"
+  },
+  "expect": {
+   "gold": [
+    "goal-completion"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-12",
+  "kind": "request",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Warn me before you delete anything or spend money"
+  },
+  "expect": {
+   "gold": [
+    "nervous-system"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-13",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Find recent papers on retrieval-augmented generation that a reader can check"
+  },
+  "expect": {
+   "gold": [
+    "the-science"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-14",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The model provider is down; fall back to another one"
+  },
+  "expect": {
+   "gold": [
+    "vendor-model-caller"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-15",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Which model should the cheap tier use now?"
+  },
+  "expect": {
+   "gold": [
+    "model-tier-chooser"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-16",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The terminal chat stops showing what it is doing during a long step"
+  },
+  "expect": {
+   "gold": [
+    "terminal-session"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-17",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The same request from Slack was taken in twice"
+  },
+  "expect": {
+   "gold": [
+    "request-intake"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-18",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "The plan split the task into pieces nobody could check"
+  },
+  "expect": {
+   "gold": [
+    "planner"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-19",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "A correction I gave yesterday did not change how the AI behaves today"
+  },
+  "expect": {
+   "gold": [
+    "feedback-learning"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-20",
+  "kind": "bug",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Cards for the docs folder are stale after I edited three files"
+  },
+  "expect": {
+   "gold": [
+    "cards-from-files",
+    "card-store"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-21",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Graphify: a deterministic graph of code and docs with hybrid retrieval and no model call to build"
+  },
+  "expect": {
+   "gold": [
+    "cards-from-files",
+    "context-retriever",
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-22",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Tavily search API for agents"
+  },
+  "expect": {
+   "gold": [
+    "web-search"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-23",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "OpenCode, an open-source coding agent CLI"
+  },
+  "expect": {
+   "gold": [
+    "delegated-agent-sessions"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-24",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "bm25s, a fast BM25 library in Python"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-25",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "mem0, a memory layer for AI agents"
+  },
+  "expect": {
+   "gold": [
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-26",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "LiteLLM proxy to reach many model providers with failover"
+  },
+  "expect": {
+   "gold": [
+    "vendor-model-caller"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-27",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "A reranker model that orders retrieved chunks by relevance"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-28",
+  "kind": "candidate",
+  "area": "hand",
+  "heldout": true,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Temporal for durable long-running jobs"
+  },
+  "expect": {
+   "gold": [
+    "proactivity",
+    "live-objectives"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-29",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Surface anything useful I did not ask about when I open a goal"
+  },
+  "expect": {
+   "gold": [
+    "the-intuition"
+   ]
+  }
+ },
+ {
+  "id": "hub-hand-30",
+  "kind": "request",
+  "area": "hand",
+  "heldout": false,
+  "description": "hand-labelled",
+  "args": {
+   "text": "Apply this edit to the metric spec exactly as I wrote it"
+  },
+  "expect": {
+   "gold": [
+    "esoi-application"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-72744b0",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 72744b0",
+  "args": {
+   "text": "Progress: the work item's own requirements stay the increment's; the intermediate metric's rubric only fills in when the item has none"
+  },
+  "expect": {
+   "gold": [
+    "critical-thinking",
+    "metric-upkeep"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-daec9f9",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit daec9f9",
+  "args": {
+   "text": "Metric Upkeep: the intermediate metric counts the AI's own work item, is found by its feeds line, and its rubric is the increment's"
+  },
+  "expect": {
+   "gold": [
+    "critical-thinking",
+    "metric-upkeep"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-0c98f47",
+  "kind": "git",
+  "area": "commit",
+  "heldout": true,
+  "description": "commit 0c98f47",
+  "args": {
+   "text": "Delegated Agent Sessions: one-case and six-case stages recorded; harness runs that stop without a report are continued once; prior fallback by balanced score"
+  },
+  "expect": {
+   "gold": [
+    "delegated-agent-sessions"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-fe68366",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit fe68366",
+  "args": {
+   "text": "Public evidence on agent harnesses: Terminal-Bench 4.0 rows from two boards, 2.0 submitter rows and a survey, graded; a generic rule turns graded evidence into a prior per arm; Delegated Agent Sessions gets public_priors.csv (prior, grade, measure first, expiry) for its harness, provider and tier arms"
+  },
+  "expect": {
+   "gold": [
+    "delegated-agent-sessions"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-7f4a773",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 7f4a773",
+  "args": {
+   "text": "Decision Check (reply): a repair or a coherence rewrite leaves whole sentences, else the sentence is removed"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-9994284",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 9994284",
+  "args": {
+   "text": "Figures held by value; a back-reference in a sentence's first words dangles"
+  },
+  "expect": {
+   "gold": [
+    "decision-check",
+    "response-quality"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-5e079f6",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 5e079f6",
+  "args": {
+   "text": "Decision Check (reply): what is left after a removal still reads as an answer"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-c244bc5",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit c244bc5",
+  "args": {
+   "text": "Decision Check: CallPool with a ceiling on calls in flight and a hedge (a call unanswered after hedge_after_seconds is sent once more, first answer wins)"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-52dc651",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 52dc651",
+  "args": {
+   "text": "Decision Check (reply): overlapping stages on one bounded pool (confirm a view's spans as soon as it answers, repair a span as soon as it is confirmed), a view's spans confirmed in one call each, two confirmations first and the third only on a split; same rule: every flag checked, no confirmed failure ships unchanged"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-4e96349",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 4e96349",
+  "args": {
+   "text": "Quick acknowledgement: a status marked kind ack, sent by code before any slow work, within one second of the turn's start; Acknowledger and Emitter.ack send it once"
+  },
+  "expect": {
+   "gold": [
+    "delegation"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-e620d33",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit e620d33",
+  "args": {
+   "text": "Decision Check: confirm every flagged span by majority; a confirmed failure is rewritten or removed, never shipped unchanged"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-f1aae37",
+  "kind": "git",
+  "area": "commit",
+  "heldout": true,
+  "description": "commit f1aae37",
+  "args": {
+   "text": "Decision Check: a repair never adds a figure the reply did not state"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-fdf6848",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit fdf6848",
+  "args": {
+   "text": "Decision Check: a removal needs most of three confirmations"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-9b0ee2e",
+  "kind": "git",
+  "area": "commit",
+  "heldout": true,
+  "description": "commit 9b0ee2e",
+  "args": {
+   "text": "Decision Check: confirm only the spans the budget can also repair"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-cabbbc2",
+  "kind": "git",
+  "area": "commit",
+  "heldout": true,
+  "description": "commit cabbbc2",
+  "args": {
+   "text": "Decision Check: a majority_vote arm, a split decided by the views' majority"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-6ee710e",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 6ee710e",
+  "args": {
+   "text": "Decision Check: a removed span takes its whole sentence, so no fragment is left"
+  },
+  "expect": {
+   "gold": [
+    "decision-check"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-cbf53c8",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit cbf53c8",
+  "args": {
+   "text": "Resolve a Reference: an alias names a candidate only whole, and a caller can ask for the whole name only"
+  },
+  "expect": {
+   "gold": [
+    "resolve-a-reference"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-f74e83b",
+  "kind": "git",
+  "area": "commit",
+  "heldout": true,
+  "description": "commit f74e83b",
+  "args": {
+   "text": "A card's items are fetched together, then the budget is applied in relevance order"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever",
+    "delegation"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-7ea37b6",
+  "kind": "git",
+  "area": "commit",
+  "heldout": true,
+  "description": "commit 7ea37b6",
+  "args": {
+   "text": "Remember resolved card references for a minute; a deadline-partial turn-start assembly with content counts as context in hand"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever",
+    "delegation"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-5d5176e",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 5d5176e",
+  "args": {
+   "text": "PlanDecision carries delivery (spoken or written), the planner's report of how the reply is delivered"
+  },
+  "expect": {
+   "gold": [
+    "planner"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-daf1cb6",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit daf1cb6",
+  "args": {
+   "text": "Cheap-first context: retrieve-only depth, follow-up reads that escalate when weak, single-flight selection calls, no ranking of a card that fits the kept files"
+  },
+  "expect": {
+   "gold": [
+    "context-retriever",
+    "delegation"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-6ef48f9",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 6ef48f9",
+  "args": {
+   "text": "A milestone added for the first time reports created, like a record"
+  },
+  "expect": {
+   "gold": [
+    "esoi-application"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-319bbbd",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 319bbbd",
+  "args": {
+   "text": "PlanDecision carries needs_records and refers_to_attachment, the planner's structured reports"
+  },
+  "expect": {
+   "gold": [
+    "planner"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-2d47e7b",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 2d47e7b",
+  "args": {
+   "text": "Consciousness flow uses Terminal Session through converse; paragraph within limit; delegates_to owners"
+  },
+  "expect": {
+   "gold": [
+    "card-store",
+    "terminal-session",
+    "the-consciousness"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-2ebcdd3",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 2ebcdd3",
+  "args": {
+   "text": "Clean up temporary folders made by arms and evaluation, and compact the public API table"
+  },
+  "expect": {
+   "gold": [
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-6dba1b9",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 6dba1b9",
+  "args": {
+   "text": "Proactivity specs recurring work that falls on days and times: problem, ideal and role wording for a window of days, time of day, time zone and grace"
+  },
+  "expect": {
+   "gold": [
+    "proactivity"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-df02428",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit df02428",
+  "args": {
+   "text": "Prioritization metric: source-tagged invented cases for asks and solution milestones in the one balanced number; results recorded"
+  },
+  "expect": {
+   "gold": [
+    "prioritization"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-72f126a",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 72f126a",
+  "args": {
+   "text": "Prioritization specs the three things it orders for a person: unasked work, the asks to the person and the person's solution milestones"
+  },
+  "expect": {
+   "gold": [
+    "judgment-calls",
+    "prioritization"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-a12d37d",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit a12d37d",
+  "args": {
+   "text": "Integrate the five new solutions: components, public API for the new arms, flows test states the arms, role budget, duplicate esoi.toml sections removed, default-arm solutions no longer tagged consumer-provided"
+  },
+  "expect": {
+   "gold": [
+    "guidance",
+    "role-understanding"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-3cf857c",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 3cf857c",
+  "args": {
+   "text": "Objectives arms (rolled_up, flat_list), one balanced offline metric over invented neutral rule cases, interface takes the recorded objectives, results recorded"
+  },
+  "expect": {
+   "gold": [
+    "live-objectives"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-7f4c68e",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit 7f4c68e",
+  "args": {
+   "text": "Long-Term Memory arms (file_recall selected, card_store_recall, recent_window), one balanced offline metric over invented neutral cases, interface takes the clock, results recorded"
+  },
+  "expect": {
+   "gold": [
+    "long-term-memory"
+   ]
+  }
+ },
+ {
+  "id": "hub-git-d990e11",
+  "kind": "git",
+  "area": "commit",
+  "heldout": false,
+  "description": "commit d990e11",
+  "args": {
+   "text": "Intuition: nearest_cards and co_taken arms, free metric on invented neutral cases"
+  },
+  "expect": {
+   "gold": [
+    "the-intuition"
+   ]
+  }
+ }
+]
