@@ -57,6 +57,7 @@
    "context-intake": "hubofhubs",
    "context-retriever": "hubofhubs",
    "critical-thinking": "hubofhubs",
+   "decision-check": "hubofhubs",
    "delegated-agent-sessions": "hubofhubs",
    "delegation": "hubofhubs",
    "esoi-application": "hubofhubs",
@@ -181,6 +182,20 @@
   },
   "modules": {
    "composition": "hubofhubs.the_intelligence.critical_thinking.flow"
+  }
+ },
+ "decision-check": {
+  "default": "agreement_check",
+  "evidence": {
+   "detail": "agreement_check is better than draft_as_given (two-sided exact McNemar test, Holm-adjusted p=0.00391, 10 of 21 cases disagree); single_verify is exactly equal to agreement_check on the metric (single_verify 0.952 against agreement_check 0.952), so agreement_check stays",
+   "p": 0.003906,
+   "verdict": "TIE"
+  },
+  "modules": {
+   "agreement_check": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
+   "agreement_with_known_mistakes": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
+   "draft_as_given": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
+   "single_verify": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement"
   }
  },
  "delegated-agent-sessions": {

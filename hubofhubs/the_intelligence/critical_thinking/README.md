@@ -24,7 +24,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Decision Check | `decision-check` | `hubofhubs.run("decision-check")` | Draft as given (`draft_as_given`) | Decisions right within a call cap |
+| Decision Check | `decision-check` | `hubofhubs.run("decision-check")` | Independent views, adjudicated on disagreement (`agreement_check`) | Decisions right within a call cap |
 | ESOI Application | `esoi-application` | `hubofhubs.run("esoi-application", {'change': {}})` | Record field edit (`record_field_edit`) | Edits change exactly the field proposed |
 | Goal Completion | `goal-completion` | `hubofhubs.run("goal-completion", ...)` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Metric Translation | `metric-translation` | `hubofhubs.run("metric-translation", {'request': 'what is the latest Rust version?'})` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
@@ -36,8 +36,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
 - Answer sent while the goal is unmet (`hprob-answer-sent-while-goal-unmet`): A draft that does not meet the goal condition is sent as final after one pass, or hands the work back to the person, although means that could meet it were never tried.
-- Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and nothing in the system checks the pick against the evidence it should rest on.
-- The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and never reaches the prompt.
+- Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and the pick is seldom checked against the evidence it should rest on.
+- The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and does not reach the prompt.
 - Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
 
 **Ideals**
@@ -71,8 +71,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
 - Answer sent while the goal is unmet (`hprob-answer-sent-while-goal-unmet`): A draft that does not meet the goal condition is sent as final after one pass, or hands the work back to the person, although means that could meet it were never tried.
-- Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and nothing in the system checks the pick against the evidence it should rest on.
-- The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and never reaches the prompt.
+- Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and the pick is seldom checked against the evidence it should rest on.
+- The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and does not reach the prompt.
 - Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
 
 ### Ideals
@@ -87,7 +87,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Decision Check | `decision-check` | Draft as given (`draft_as_given`) | Decisions right within a call cap |
+| Decision Check | `decision-check` | Independent views, adjudicated on disagreement (`agreement_check`) | Decisions right within a call cap |
 | ESOI Application | `esoi-application` | Record field edit (`record_field_edit`) | Edits change exactly the field proposed |
 | Goal Completion | `goal-completion` | Evidence standard (`evidence_standard`) | Goals judged met only when they are |
 | Metric Translation | `metric-translation` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |

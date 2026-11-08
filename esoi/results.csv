@@ -267,3 +267,10 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-07,route_a_request,majority_floor,41,12,12/41,0/0,0,0,0,0.0,0.0,,cbf53c8,08addfa3,,none,act_passed=0/13; clarify_passed=0/8; draft_passed=0/8; information_passed=12/12
 2026-11-07,resolve_a_reference,exact_match,32,28,28/32,0/0,0,0,0,0.0,0.0,,cbf53c8,03b427b9,,none,goal_passed=7/9; person_passed=15/15; post_passed=6/8; wrong_match=0
 2026-11-07,resolve_a_reference,shared_words,32,20,20/32,0/0,0,0,0,0.0,0.0,,cbf53c8,03b427b9,,none,goal_passed=4/9; person_passed=12/15; post_passed=4/8; wrong_match=9
+2026-11-07,decision_check,draft_as_given,20,9,9/20,0/0,0,0,0,0.0,0.0,,604d5ea-dirty,c9481f1d,,none,pick_passed=5/12; reply_passed=4/8; wrong_picks=7; calls_per_decision=0.0; agreement=1.0
+2026-11-07,decision_check,draft_as_given,21,10,10/21,0/0,0,0,0,0.0,0.0,,604d5ea-dirty,42a5cba4,,none,pick_passed=6/13; reply_passed=4/8; wrong_picks=7; calls_per_decision=0.0; agreement=1.0
+2026-11-07,decision_check,agreement_check,21,20,20/21,0/0,0,0,0,0.0,150.0,,604d5ea-dirty,42a5cba4,,none,pick_passed=12/13; reply_passed=8/8; wrong_picks=1; calls_per_decision=0.0; agreement=0.798
+2026-11-07,decision_check,single_verify,21,20,20/21,0/0,0,0,0,0.0,54.9,,604d5ea-dirty,42a5cba4,,none,pick_passed=12/13; reply_passed=8/8; wrong_picks=1; calls_per_decision=0.0; agreement=0.714
+2026-11-07,decision_check,draft_as_given,21,10,10/21,0/0,0,0,0,0.0,0.0,,f41622c,42a5cba4,,none,pick_passed=6/13; reply_passed=4/8; wrong_picks=7; calls_per_decision=0.0; agreement=1.0
+2026-11-07,decision_check,agreement_check,21,20,20/21,0/0,0,0,0,0.0,156.9,,f41622c,42a5cba4,,none,pick_passed=12/13; reply_passed=8/8; wrong_picks=1; calls_per_decision=3.95; agreement=0.81
+2026-11-07,decision_check,single_verify,21,20,20/21,0/0,0,0,0,0.0,68.4,,f41622c,42a5cba4,,none,pick_passed=12/13; reply_passed=8/8; wrong_picks=1; calls_per_decision=1.0; agreement=0.714

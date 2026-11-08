@@ -43,9 +43,9 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | context_retrieval | live_scan | 395 | 20.3% (16.6% to 24.5%), 80/395 | $1.609 | 1.9 (median) | ahead of live_scan (two-sided sign test p=1.07e-103) | none recorded |
 | context_retrieval | lsi | 395 | 45.8% (41.0% to 50.8%), 181/395 | $0 | 0 (median) | ahead of lsi (two-sided sign test p=1.53e-19) | none recorded |
 | critical_thinking | composition (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
-| decision_check | draft_as_given (selected) | 21 | 47.6% (28.3% to 67.6%), 10/21 | $0 | 0 (median) | selected | none recorded |
-| decision_check | agreement_check | 21 | 95.2% (77.3% to 99.2%), 20/21 | $0 | 6.6 (median) | agreement_check beats it (two-sided McNemar p=0.00391; 20/21, $0 per pass) | none recorded |
-| decision_check | single_verify | 21 | 95.2% (77.3% to 99.2%), 20/21 | $0 | 2.5 (median) | single_verify beats it (two-sided McNemar p=0.00391; 20/21, $0 per pass) | none recorded |
+| decision_check | agreement_check (selected) | 21 | 95.2% (77.3% to 99.2%), 20/21 | $0 | 7 (median) | selected | none recorded |
+| decision_check | draft_as_given | 21 | 47.6% (28.3% to 67.6%), 10/21 | $0 | 0 (median) | ahead of draft_as_given (two-sided McNemar p=0.00391) | none recorded |
+| decision_check | single_verify | 21 | 95.2% (77.3% to 99.2%), 20/21 | $0 | 2.8 (median) | identical to single_verify on all 21 cases | none recorded |
 | esoi_application | record_field_edit (selected) | 10 | 100.0% (72.2% to 100.0%), 10/10 | $0 | 0 (median) | selected | none recorded |
 | esoi_application | append_to_description | 10 | 0.0% (0.0% to 27.8%), 0/10 | no passing case | 0 (median) | ahead of append_to_description (two-sided McNemar p=0.00195) | none recorded |
 | feedback_learning | scoped_record_edit (selected) | 19 | 100.0% (83.2% to 100.0%), 19/19 | $0 | 0 (median) | selected | none recorded |

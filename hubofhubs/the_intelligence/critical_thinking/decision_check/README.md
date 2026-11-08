@@ -11,7 +11,7 @@ Part of [Holding a request to a measure](../README.md)
 - Out of scope: Judging a reply against a person's quality profile (Response Quality does that), whether the goal was met (Goal Completion does that), producing the draft, and the consumer's evidence, prompts and records of mistakes (the consumer supplies them).
 - Delegates to: model-plumbing, response-quality
 - Entry call: `hubofhubs.run("decision-check")`
-- Selected implementation: Draft as given (`draft_as_given`)
+- Selected implementation: Independent views, adjudicated on disagreement (`agreement_check`)
 - Metric: Decisions right within a call cap
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/tests/test_decision_check.py`](tests/test_decision_check.py) and 176 more
 
@@ -19,10 +19,10 @@ Part of [Holding a request to a measure](../README.md)
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
-| Independent views, adjudicated on disagreement | `decision-check:agreement_check` | Runs one short structured call per view in parallel, each shown only its slice of evidence, counts the draft and any vote the consumer holds, and reconciles by agreement; a disagreement goes to one call that sees only the disagreeing views and must quote evidence that code finds in them. For a reply, each span a view lists is confirmed by an independent call and only a confirmed span is rewritten or removed. | [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py) |  |
+| Independent views, adjudicated on disagreement | `decision-check:agreement_check` | Runs one short structured call per view in parallel, each shown only its slice of evidence, counts the draft and any vote the consumer holds, and reconciles by agreement; a disagreement goes to one call that sees only the disagreeing views and must quote evidence that code finds in them. For a reply, each span a view lists is confirmed by an independent call and only a confirmed span is rewritten or removed. | [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py) | selected |
 | Independent views with known mistakes | `decision-check:agreement_with_known_mistakes` | The agreement check with each view's known-mistake lines in its prompt, most frequent first and within a token cap, and a twin view built on those lines while the call cap allows. | [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py) |  |
 | One verify call over all the evidence | `decision-check:single_verify` | One call is shown all the evidence at once with the draft and decides; a reply loses the spans it lists. | [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py) |  |
-| Draft as given | `decision-check:draft_as_given` | The draft stands and no call is made. | [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py) | selected |
+| Draft as given | `decision-check:draft_as_given` | The draft stands and no call is made. | [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py) |  |
 
 ## Metrics
 
@@ -30,8 +30,8 @@ Part of [Holding a request to a measure](../README.md)
 
 ## Problems
 
-- Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and nothing in the system checks the pick against the evidence it should rest on.
-- The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and never reaches the prompt.
+- Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and the pick is seldom checked against the evidence it should rest on.
+- The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and does not reach the prompt.
 
 ## Ideals
 
