@@ -13,7 +13,7 @@ Part of [The form and internal context of a system](../README.md)
 - Entry call: `hubofhubs.run("the-hands", '')`
 - Selected implementation: Declared and used (`declared_and_used`)
 - Metric: Declared integrations are reachable and used
-- Implemented by: [`docs/explanation/compared.md`](../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../docs/explanation/terminal-harness.md) and 46 more
+- Implemented by: [`docs/explanation/compared.md`](../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../docs/explanation/terminal-harness.md) and 48 more
 
 ## Implementations
 

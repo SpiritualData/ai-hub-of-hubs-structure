@@ -318,7 +318,7 @@ MIND_TREE = (
     ("the-subconscious", "the-intelligence"), ("the-intuition", "the-subconscious"), ("cards-from-files", "the-subconscious"),
     ("context-retriever", "the-subconscious"),
     ("critical-thinking", "the-intelligence"), ("esoi-application", "critical-thinking"), ("metric-translation", "critical-thinking"),
-    ("goal-completion", "critical-thinking"), ("response-quality", "critical-thinking"), ("decision-check", "critical-thinking"),
+    ("goal-completion", "critical-thinking"), ("response-quality", "critical-thinking"), ("decision-check", "critical-thinking"), ("metric-upkeep", "critical-thinking"),
     ("nervous-system", "the-intelligence"), ("proactivity", "the-intelligence"),
     ("the-world", ""),
     ("the-science", "the-world"),

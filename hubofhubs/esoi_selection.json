@@ -72,6 +72,7 @@
    "live-objectives": "hubofhubs",
    "long-term-memory": "hubofhubs",
    "metric-translation": "hubofhubs",
+   "metric-upkeep": "hubofhubs",
    "model-plumbing": "hubofhubs",
    "model-tier-chooser": "hubofhubs",
    "nervous-system": "hubofhubs",
@@ -195,6 +196,7 @@
    "agreement_check": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
    "agreement_with_known_mistakes": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
    "draft_as_given": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
+   "majority_vote": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement",
    "single_verify": "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement"
   }
  },
@@ -336,6 +338,12 @@
   "default": "goal_record",
   "modules": {
    "goal_record": "hubofhubs.the_intelligence.critical_thinking.metric_translation.translation"
+  }
+ },
+ "metric-upkeep": {
+  "default": "record_fields",
+  "modules": {
+   "record_fields": "hubofhubs.the_intelligence.critical_thinking.metric_upkeep.upkeep"
   }
  },
  "model-plumbing": {

@@ -218,7 +218,7 @@ NAMES = {
         "DecisionChecking", "OUTCOMES",
     ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.remainder": (
-        "Unit", "cohere", "cohered_text", "dangling", "joined", "shorten", "shortened_text", "units_of",
+        "Unit", "cohere", "cohered_text", "complete", "dangling", "joined", "shorten", "shortened_text", "units_of",
     ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes": (
         "CONFIRMED_FAILURE", "Line", "LineBook", "Mistake", "MistakeLog", "adopt", "distill", "new_mistake", "overruled_mistakes", "retire",
@@ -230,8 +230,8 @@ NAMES = {
         "EsoiApplying", "RecordsSource",
     ),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.done_evidence": (
-        "CONTINUE", "clean_requirements", "continue_decision", "coverage_gap", "coverage_progress", "interim_data", "parse_coverage",
-        "render_continue_plan", "render_coverage_line", "render_requirements",
+        "CONTINUE", "Reading", "clean_requirements", "continue_decision", "coverage_gap", "coverage_progress", "evidence_coverage", "interim_data",
+        "measure", "parse_coverage", "render_continue_plan", "render_coverage_line", "render_requirements", "rubric_coverage",
     ),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.interface": (
         "GoalCompleting",
@@ -240,10 +240,19 @@ NAMES = {
         "AbridgedTurnState", "READ_SPEC_KEYS", "collect_abridged_items", "render_abridged_notice",
     ),
     "hubofhubs.the_intelligence.critical_thinking.pursuit": (
-        "BoundedReplan",
+        "BoundedReplan", "Increment", "LADDER", "REFUSED_BOOKKEEPING", "bookkeeping_only", "choose_increment", "doable_by_ai", "only_bookkeeping_writes",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.metric_upkeep.interface": (
+        "MetricUpkeeping",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.metric_upkeep.upkeep": (
+        "RecordFieldUpkeep", "state_of",
     ),
     "hubofhubs.the_intelligence.critical_thinking.interface": (
         "CriticalThinking",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.flow": (
+        "CriticalThinkingComposition",
     ),
     "hubofhubs.the_intelligence.critical_thinking.metric_translation.interface": (
         "MetricTranslating",

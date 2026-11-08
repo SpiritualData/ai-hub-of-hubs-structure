@@ -218,3 +218,93 @@ def interim_data(raw: Any, **extra: Any) -> Dict[str, Any]:
     data: Dict[str, Any] = {"final": False, "coverage": record.to_dict() if record else None}
     data.update(extra)
     return data
+
+
+# --- Measuring an AI increment ------------------------------------------------------------------------------------------------------------------------
+#
+# A progress turn shows a measured before and after. ``measure`` scores an increment's artifact against the increment's requirements by a judge the
+# CALLER gives (a check that is not the model that wrote the artifact: Decision Check views, or Response Quality), counts evidence coverage from structured
+# answers, or takes a reader's value. An empty or missing artifact scores 0; a kept earlier version is scored again the same way, so before and after are
+# one measure against itself. A simulation reading is labelled as one.
+
+MEASURE_METHODS = ("read", "rubric", "evidence", "quality_score", "simulation")
+
+
+@dataclass(frozen=True)
+class Reading:
+    """One measured value of an increment: ``value`` out of ``total`` (None when there is none), ``as_of`` the day, ``source`` what was measured,
+    ``evidence_ref`` where the artifact is kept, ``method`` how it was measured, ``simulated`` for a simulation, ``detail`` per-part results."""
+    measure_id: str
+    value: Optional[float]
+    as_of: str = ""
+    source: str = ""
+    evidence_ref: str = ""
+    method: str = ""
+    total: Optional[int] = None
+    simulated: bool = False
+    detail: Tuple[Any, ...] = ()
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {"measure_id": self.measure_id, "value": self.value, "as_of": self.as_of, "source": self.source, "evidence_ref": self.evidence_ref,
+                "method": self.method, "total": self.total, "simulated": self.simulated, "detail": list(self.detail)}
+
+
+def parts_of(artifact: Any) -> List[str]:
+    """The parts of an artifact a rubric is applied to: ``{"parts": [...]}`` as listed, a list as is, a text as one part; empty text is no part."""
+    if isinstance(artifact, dict):
+        artifact = artifact.get("parts") if "parts" in artifact else artifact.get("text")
+    if isinstance(artifact, (list, tuple)):
+        return [str(p) for p in artifact if str(p or "").strip()]
+    return [str(artifact)] if str(artifact or "").strip() else []
+
+
+def rubric_coverage(requirements: Iterable[str], artifact: Any, judge: Any) -> Tuple[int, List[Dict[str, Any]]]:
+    """``(parts meeting every requirement, per-part detail)``. ``judge(requirement, part) -> bool`` is the caller's independent check; a part with no
+    requirement to meet counts as meeting none (a rubric must exist to count)."""
+    items = [r for r in requirements if str(r or "").strip()]
+    met, detail = 0, []
+    for k, part in enumerate(parts_of(artifact)):
+        results = [bool(judge(r, part)) for r in items] if items else []
+        whole = bool(results) and all(results)
+        met += whole
+        detail.append({"part": k + 1, "met": whole, "items": results})
+    return met, detail
+
+
+def evidence_coverage(artifact: Any) -> Tuple[int, Optional[int]]:
+    """``(questions answered with a cited source, questions the decision needs)`` from ``{"questions": [{"answer": ..., "source": ...}, ...]}``."""
+    questions = artifact.get("questions") if isinstance(artifact, dict) else None
+    if not isinstance(questions, list):
+        return 0, None
+    answered = sum(1 for q in questions if isinstance(q, dict) and str(q.get("answer") or "").strip() and str(q.get("source") or "").strip())
+    return answered, len(questions)
+
+
+def measure(increment: Any, artifact: Any, judge: Any = None, reader: Any = None, today: str = "", evidence_ref: str = "",
+            total: Optional[int] = None) -> Reading:
+    """The increment's measure of ``artifact`` now: ``rubric`` (parts meeting every requirement, judged by ``judge``), ``evidence`` (questions answered with
+    a cited source), ``read`` (``reader()`` returning ``{"value", "as_of", "source"}``), ``quality_score`` (``judge(None, text) -> float``) or
+    ``simulation`` (a reader's value, labelled simulated). ``increment`` is an ``Increment`` or its mapping. Never raises for a missing artifact: it is 0."""
+    data = increment.to_dict() if hasattr(increment, "to_dict") else dict(increment or {})
+    method = str(data.get("method") or "rubric")
+    measure_id = str(data.get("measure_id") or "")
+    if method == "read" or method == "simulation":
+        got = dict(reader() or {}) if reader is not None else {}
+        value = got.get("value")
+        try:
+            value = float(value) if value not in (None, "") else None
+        except (TypeError, ValueError):
+            value = None
+        return Reading(measure_id, value, str(got.get("as_of") or today), str(got.get("source") or ""), evidence_ref, method, total,
+                       simulated=method == "simulation")
+    if method == "evidence":
+        answered, needed = evidence_coverage(artifact)
+        return Reading(measure_id, float(answered), today, "evidence coverage", evidence_ref, method, needed if needed is not None else total)
+    if method == "quality_score":
+        text = "\n".join(parts_of(artifact))
+        score = float(judge(None, text)) if (judge is not None and text) else 0.0
+        return Reading(measure_id, score, today, "quality score", evidence_ref, method, total)
+    if judge is None:
+        raise ValueError("a rubric measure needs a judge that is not the writer of the artifact")
+    met, detail = rubric_coverage(data.get("requirements") or [], artifact, judge)
+    return Reading(measure_id, float(met), today, "rubric", evidence_ref, "rubric", total, detail=tuple(detail))

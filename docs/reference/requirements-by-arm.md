@@ -45,6 +45,7 @@ at the repository root.
 | Decision Check, Independent views, adjudicated on disagreement (`decision-check:agreement_check`) | none | none | none | none | no |
 | Decision Check, Independent views with known mistakes (`decision-check:agreement_with_known_mistakes`) | none | none | none | none | no |
 | Decision Check, Draft as given (`decision-check:draft_as_given`) | none | none | none | none | no |
+| Decision Check, Independent views, decided by majority (`decision-check:majority_vote`) | none | none | none | none | no |
 | Decision Check, One verify call over all the evidence (`decision-check:single_verify`) | none | none | none | none | no |
 | Delegated Agent Sessions, Agent Client Protocol runner (`delegated-agent-sessions:acp_deep_runner`) | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
@@ -71,6 +72,7 @@ at the repository root.
 | Long-Term Memory, File recall (`long-term-memory:file_recall`) | none | none | none | none | no |
 | Long-Term Memory, Recent window (`long-term-memory:recent_window`) | none | none | none | none | no |
 | Metric Translation, Goal record with default budget (`metric-translation:goal_record`) | none | none | none | none | no |
+| Metric Upkeep, Record fields (`metric-upkeep:record_fields`) | none | none | none | none | no |
 | Model Plumbing, Tier chooser then vendor (`model-plumbing:via_vendor`) | none | none | none | none | no |
 | Model Tier Chooser, Passing work per cost selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
 | Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
