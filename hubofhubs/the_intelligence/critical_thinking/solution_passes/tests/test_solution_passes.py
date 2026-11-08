@@ -92,3 +92,18 @@ def test_a_piece_short_of_its_rubric_is_split_worked_part_by_part_recombined_and
     assert out["before"] < 1 and out["after"] == 1 and out["met"] and out["levels"] == 1
     capped = build_out({"goal": "a script", "requirements": rubric, "prompt": "P"}, work, check, budget={"calls": 3})
     assert capped["stopped"] == "budget" and not capped["met"]
+
+
+def test_the_verbatim_combine_keeps_each_part_as_written_even_when_the_call_rewrites_it():
+    from hubofhubs.the_intelligence.critical_thinking.solution_passes.depth import verbatim_combine
+    parts = [{"requirements": ["one ask"], "text": "Reply with your start date."}, {"requirements": ["three steps"], "text": "1. Read.\n2. Join.\n3. Post."}]
+    combine = verbatim_combine(lambda prompt: "Welcome. 1. Read.\n2. Join.\n3. Post. Please tell us when you can start.")
+    out = combine({"goal": "a welcome"}, "Welcome.", parts)
+    assert "1. Read." in out and "Reply with your start date." in out
+
+
+def test_each_solution_finding_is_handed_on_before_the_parent_passes():
+    ask, _ = scripted()
+    seen = []
+    out = NetworkPasses(None).consider("change it", BRIEFS, ask=ask, on_finding=lambda f: seen.append((f["solution_id"], len(seen))))
+    assert sorted(s for s, _ in seen) == ["a", "b"] and out["parents"]

@@ -28,6 +28,29 @@ def default_combine(item: Mapping[str, Any], base: str, parts: Sequence[Mapping[
     return "\n\n".join([base.strip()] + [f"{p['requirements'][0]}\n{p['text'].strip()}" for p in parts if str(p.get("text") or "").strip()]).strip()
 
 
+VERBATIM_COMBINE = ("Make one finished text from the earlier text and the parts below. Copy every sentence of every part exactly as written, "
+                    "word for word; you may only remove, reorder or join sentences of the earlier text so the parts fit, and add nothing else. "
+                    "Use no em dashes. Reply with the text only.\n\nWhat it is: {goal}\n\nEarlier text:\n{base}\n\nParts (copy each exactly):\n{parts}")
+
+
+def kept_verbatim(text: str, part: str) -> bool:
+    flat = " ".join(str(text).split())
+    return all(" ".join(s.split()) in flat for s in str(part).split("\n") if s.strip())
+
+
+def verbatim_combine(ask: Callable[[str], str]) -> Callable[[Mapping[str, Any], str, Sequence[Mapping[str, Any]]], str]:
+    """A combine step that keeps each part's sentences exactly as written: one writing call fits the parts into the earlier text and may only
+    remove, reorder or join the earlier text's own sentences; code then checks every part line is in the result, and a part the call dropped or
+    rewrote is appended as written (``default_combine``'s way), so a part that met its requirement is never lost in the recombining."""
+    def combine(item: Mapping[str, Any], base: str, parts: Sequence[Mapping[str, Any]]) -> str:
+        written = [p for p in parts if str(p.get("text") or "").strip()]
+        merged = str(ask(VERBATIM_COMBINE.format(goal=item.get("goal", ""), base=base,
+                                                 parts="\n\n".join(str(p["text"]).strip() for p in written))) or "").strip() or base
+        lost = [p for p in written if not kept_verbatim(merged, p["text"])]
+        return default_combine(item, merged, lost) if lost else merged
+    return combine
+
+
 def build_out(item: Mapping[str, Any], work: Callable[[Mapping[str, Any]], str], check: Callable[[str, Mapping[str, Any]], Mapping[str, Any]],
               split: Optional[Callable[[Mapping[str, Any], Mapping[str, Any]], Sequence[Mapping[str, Any]]]] = None,
               combine: Optional[Callable[[Mapping[str, Any], str, Sequence[Mapping[str, Any]]], str]] = None,

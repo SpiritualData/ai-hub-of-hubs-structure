@@ -122,19 +122,6 @@ def writer(ask):
     return work
 
 
-COMBINE = ("Combine into one finished text that meets every requirement below. Keep what the earlier text already does well, and use each part "
-           "for the requirement it was written for. Use no em dashes. Reply with the text only.\n\nWhat to write: {goal}\nRequirements:\n{requirements}"
-           "\n\nEarlier text:\n{base}\n\nParts:\n{parts}")
-
-
-def combiner(ask):
-    """The Response Writer's part of depth: one writing call that makes the parts one text (appending parts breaks whole-text requirements)."""
-    def combine(item, base, parts):
-        return ask(COMBINE.format(goal=item["goal"], requirements="\n".join(f"- {r}" for r in item["requirements"]), base=base,
-                                  parts="\n\n".join(f"For: {p['requirements'][0]}\n{p.get('text', '')}" for p in parts)))
-    return combine
-
-
 def depth_case(meter, args):
     """The one-call deliverable and the same deliverable given depth (build_out), scored by the same rubric check."""
     from hubofhubs.api import build_out
@@ -143,4 +130,5 @@ def depth_case(meter, args):
     item = {"goal": args["goal"], "requirements": args["requirements"], "prompt": ""}
     work, check = writer(ask), rubric_check(ask)
     one = work(item)
-    return dict(build_out(item, work, check, combine=combiner(ask), base=one))
+    from hubofhubs.api import verbatim_combine
+    return dict(build_out(item, work, check, combine=verbatim_combine(ask), base=one))

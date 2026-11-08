@@ -97,7 +97,8 @@ class NetworkPasses:
         self.plumbing, self.tier = plumbing, tier
 
     def consider(self, request: str, briefs: Mapping[str, Any], own_passes: Optional[Mapping[str, Callable[..., Mapping[str, Any]]]] = None,
-                 limits: Optional[Mapping[str, int]] = None, ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]:
+                 limits: Optional[Mapping[str, int]] = None, ask: Optional[Callable[[str], str]] = None,
+                 on_finding: Optional[Callable[[Mapping[str, Any]], Any]] = None) -> Mapping[str, Any]:
         bound = {**DEFAULT_LIMITS, **dict(limits or {})}
         own = dict(own_passes or {})
         call = ask or (lambda prompt: self.plumbing.ask(prompt, self.tier))
@@ -125,7 +126,16 @@ class NetworkPasses:
             got = model(SOLUTION_ASK.format(prompt=brief.get("prompt", ""), request=request, rules=RULES))
             return {**shaped_finding(sid, brief.get("name", sid), got), "by": "model pass"}
 
-        findings = self.parallel([lambda b=b: solution_pass(b) for b in solutions], bound["width"])
+        def announced(brief: Mapping[str, Any]) -> Dict[str, Any]:
+            found = solution_pass(brief)
+            if on_finding is not None:      # each solution's finding is usable the moment its own pass returns, before any parent pass
+                try:
+                    on_finding(found)
+                except Exception:      # noqa: BLE001  a consumer's hook never stops the passes
+                    pass
+            return found
+
+        findings = self.parallel([lambda b=b: announced(b) for b in solutions], bound["width"])
         found_by = {f["solution_id"]: f for f in findings}
         cut: List[Dict[str, str]] = []
         parents: List[Dict[str, Any]] = []

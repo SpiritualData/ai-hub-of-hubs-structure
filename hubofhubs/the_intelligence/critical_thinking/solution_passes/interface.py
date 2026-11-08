@@ -17,10 +17,12 @@ class SolutionConsidering(typing.Protocol):
 
     ``briefs`` is what the Subconscious prepared (``solutions``, ``ancestors``, ``dependents``, each with its ``prompt``). ``own_passes`` maps a solution
     id to the consumer's own pass for it (``(request, brief) -> finding``), used instead of a model pass. ``ask`` is a one-argument model call that
-    replaces the arm's own. The result holds ``findings`` (one per relevant solution: ``solution_id``, ``applies``, ``needs``, ``target``
+    replaces the arm's own. ``on_finding`` is called with each relevant solution's finding as soon as its own pass returns, before the parent
+    passes, so a consumer can use it early. The result holds ``findings`` (one per relevant solution: ``solution_id``, ``applies``, ``needs``, ``target``
     (``metric_id``, ``value``, ``done_when``), ``risks``, ``conflicts``, ``knowledge``, ``candidates``), ``parents`` (``solution_id``, ``level``,
     ``children``, ``serves_purpose``, ``siblings_affected``, ``metric_update``, ``combination_effect``, ``why``), ``dependents`` (``solution_id``,
     ``relies_on``, ``still_holds``, ``why``), ``calls``, ``cut`` (passes left out by the limits, with why) and ``stopped_at``."""
 
     def consider(self, request: str, briefs: Mapping[str, Any], own_passes: Optional[Mapping[str, Callable[..., Mapping[str, Any]]]] = None,
-                 limits: Optional[Mapping[str, int]] = None, ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]: ...
+                 limits: Optional[Mapping[str, int]] = None, ask: Optional[Callable[[str], str]] = None,
+                 on_finding: Optional[Callable[[Mapping[str, Any]], Any]] = None) -> Mapping[str, Any]: ...

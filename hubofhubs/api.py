@@ -258,7 +258,7 @@ NAMES = {
         "NetworkPasses",
     ),
     "hubofhubs.the_intelligence.critical_thinking.solution_passes.depth": (
-        "build_out", "default_combine", "default_split",
+        "build_out", "default_combine", "default_split", "verbatim_combine",
     ),
     "hubofhubs.the_intelligence.critical_thinking.solution_passes.write_back": (
         "combined_check", "proposals_of",
