@@ -154,7 +154,8 @@ class Arm:
         out, undone = draft, []
         for r in repairs:
             if r["action"] == "remove":
-                out = remove_span(out, r["span"])
+                # The whole sentence that holds the span goes: a clause cut out of its sentence leaves a fragment ("..., and") that says nothing.
+                out = remove_span(out, sentence_of(out, r["span"]))
             elif r["action"] == "rewrite":
                 out = out.replace(r["span"], r["text"], 1)
             else:

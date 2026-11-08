@@ -156,6 +156,18 @@ def test_a_span_that_can_only_be_removed_is_removed_and_a_reply_without_a_usable
     assert got["outcome"] == "unrepaired" and got["text"] == REPLY
 
 
+def test_a_removed_clause_takes_its_whole_sentence_so_no_fragment_is_left():
+    draft = "I read the report. The deadline is June 3, and I created the task."
+    def reply(prompt):
+        if "List each part" in prompt:
+            return findings("and I created the task")
+        if "Does the statement fail" in prompt:
+            return json.dumps({"fails": True})
+        return json.dumps({"action": "remove", "text": ""})
+    got = arm().check(draft, reply_binding(), Scripted(reply))
+    assert got["text"] == "I read the report."
+
+
 def test_the_known_mistake_arm_puts_the_lines_in_the_prompt_and_adds_a_twin_view_the_base_arm_does_not():
     known = {"rules": ["A farm word is not an orchard rule."]}
     seen = Scripted(lambda p: say("a", "orchards belongs to Alpha") if "rules give" in p else say("a", "Beta handles"))
