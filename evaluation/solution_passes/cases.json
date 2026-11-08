@@ -217,5 +217,47 @@
   "expect": {
    "full": 6
   }
+ },
+ {
+  "id": "depth-video-script",
+  "kind": "depth",
+  "description": "one-call deliverable against depth on the same rubric (hard: many checkable requirements)",
+  "args": {
+   "goal": "A 90-second spoken video script that teaches beginners one way to test a claim they read online",
+   "requirements": [
+    "opens with a hook question in the first sentence",
+    "names one specific claim as the running example",
+    "gives exactly three numbered steps to test it",
+    "each step names a free tool or method by its kind",
+    "includes one sentence on a common mistake and how to avoid it",
+    "ends with a single call to action that asks viewers to comment one claim",
+    "marks each line with a time stamp in seconds from 0 to 90",
+    "stays between 200 and 240 words"
+   ]
+  },
+  "expect": {
+   "full": 8
+  }
+ },
+ {
+  "id": "depth-interview-questions",
+  "kind": "depth",
+  "description": "one-call deliverable against depth on the same rubric (hard: many checkable requirements)",
+  "args": {
+   "goal": "A question set for a 30-minute interview with a community organizer about how they keep volunteers engaged",
+   "requirements": [
+    "has exactly twelve questions, numbered",
+    "groups them under three headings: start, practice, lessons",
+    "every question is open (none can be answered yes or no)",
+    "at least two questions ask for a specific story with a time and place",
+    "one question asks what they would do differently",
+    "one question asks for a number they track",
+    "no question is longer than 25 words",
+    "ends with a closing question that invites anything not covered"
+   ]
+  },
+  "expect": {
+   "full": 8
+  }
  }
 ]
