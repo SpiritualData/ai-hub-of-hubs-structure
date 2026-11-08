@@ -31,6 +31,14 @@ arm_folders = ["hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*", "hubofhubs/*/*
 # Public evidence: others' measurements, shown beside our own results and never counted as one. The registry
 # hubofhubs/registry/hub_evidence.csv is the one source of truth; esoi/evidence.csv is derived from it by
 # scripts/export_evidence.py (a test fails when they differ). The default file is esoi/evidence.csv, named here for clarity.
+# Per-solution consideration (esoi spec prompt / esoi consider, the hub's relevant-solutions and solution-passes): the researched findings join the
+# prompt of the solution each row names (its solution_id: the solution whose arm implements the candidate, else the seat of its area in hubs.csv),
+# and each row cites that solution's recorded results in its results column (filled from esoi/results.csv, or "no recorded results").
+[[consider.records]]
+file = "hubofhubs/registry/hub_findings.csv"
+kind = "finding"
+results = "results"
+
 [evidence]
 file = "esoi/evidence.csv"
 
@@ -205,3 +213,17 @@ seconds_per_case = 1
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.001
 seconds_per_case = 1
+
+# The balanced score of Relevant Solutions (which of the hub's solutions a request concerns): the library's numbers for Solution Relevance, fixed
+# before any hub arm was scored. One classification runs before each fan-out of passes, so it is worth at most a fifth of a cent and two seconds.
+[balance.relevant_solutions]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.002
+seconds_per_case = 2
+
+# Relevant Solutions builds on the library's Solution Relevance: its general cases are the foundation and the hub's own cases (mined from this
+# repository's history and hand-labelled requests) are added.
+[builds_on.relevant_solutions.esoi]
+repo = "../evolvable-structure"
+component = "solution_relevance"
+share = 0.50
