@@ -545,6 +545,9 @@ NAMES = {
     "hubofhubs.the_world.tools.connected_system_operations.mcp_operations": (
         "MCPOperationRunner",
     ),
+    "hubofhubs.the_world.tools.acknowledge": (
+        "ACK_TEXT", "ACK_WITHIN_SECONDS", "Acknowledger", "STATUS_KIND_ACK", "ack_event", "is_ack",
+    ),
     "hubofhubs.the_world.tools.deep": (
         "DeepResult", "DeepRunner", "DeepRunnerBase", "FUTURE_CONTEXT_VIA_FIELD", "FUTURE_CONTEXT_VIA_OUTPUT", "FileWriter",
         "FileWriterBase", "LAUNCH_MISSING_PROGRAM", "LAUNCH_PERMISSION_DENIED", "OperationWriter", "OperationWriterBase", "ProgressEvent",

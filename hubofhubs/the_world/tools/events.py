@@ -29,7 +29,10 @@ class Mode(enum.Enum):
 # Event types the orchestrator emits through the ProgressSink. Stable strings so consumers
 # (a backend, a dashboard) can switch on them. "Chatter" types (status/plan/read/replan)
 # are the ones a BACKGROUND sink drops; the rest always surface.
-EVENT_STATUS = "status"        # a human-facing progress tick ("reading…", "answering")
+EVENT_STATUS = "status"        # a human-facing progress tick ("reading…", "answering"). A consumer shows the latest one and
+                               # REPLACES it with whatever comes next; a status is never stored in the conversation history.
+                               # ``data["kind"] == "ack"`` marks the turn's quick acknowledgement, sent first and before any
+                               # slow work (``hubofhubs.the_world.tools.acknowledge``).
 
 
 EVENT_PLAN = "plan"            # the planner chose a next step (planning/re-planning chatter)

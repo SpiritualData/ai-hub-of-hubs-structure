@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Quick acknowledgement (`hubofhubs.the_world.tools.acknowledge`): a turn opens with a status event marked `kind: "ack"`, written by code and sent before any slow work, within `ACK_WITHIN_SECONDS` (one second) of the turn's start. A status is replaced by later events and never stored, unlike `EVENT_INTERIM`. `ack_event`, `is_ack`, `Acknowledger` (sends once, records `acked_after`) and `Emitter.ack()`, all in `hubofhubs.api`. How-to: `docs/how-to/acknowledge-a-turn.md`.
 - Decision Check (reply): detection and confirmation run on every flagged span (three independent confirmations each, on top of the cap; most must say it fails). A confirmed failure never ships unchanged: a model rewrite when a call is left (rewording only, no new figure), else code removes its whole sentence; a reply left empty says plainly what could not be confirmed. Each span removed instead of rewritten is returned as a `confirmed_failure` mistake record (`CONFIRMED_FAILURE`). Replaces the rule that confirmed a span only when the budget could also repair it.
 - Decision Check (reply): a repair only removes or rewords what the reply already says; a rewrite holding a figure the span did not hold becomes a removal.
 - Decision Check (reply): a span the repair would remove goes only when most of three independent confirmations say it fails (two more calls, only for a removal); spans are budgeted at four calls each, and a reply left unchanged is `held`.

@@ -16,6 +16,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Register a second consumer](how-to/register-a-second-consumer.md)
 - [Adopt the hub](how-to/adopt-the-hub.md)
 - [Emit a work trace](how-to/emit-a-work-trace.md)
+- [Acknowledge a turn](how-to/acknowledge-a-turn.md)
 - [Iterate on card builders without repeating model calls](how-to/iterate-on-card-builders-without-repeating-model-calls.md)
 - [Build an autopilot on the hub](how-to/build-an-autopilot-on-the-hub.md)
 - [Render a run in a terminal](how-to/render-a-run-in-a-terminal.md)
