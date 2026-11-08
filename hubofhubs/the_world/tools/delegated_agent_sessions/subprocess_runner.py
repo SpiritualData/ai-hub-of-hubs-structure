@@ -33,6 +33,7 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.contract import (
     cli_safe_model, compose_goal_prompt_fitted, envelope_reports_no_work, extract_escalation_id, kill_process_group, log, parse_deep_review,
     parse_worker_output, resolve_deep_launch, resolve_deep_review_interval_seconds, resolve_deep_timeout_seconds, resume_target_missing,
     stop_process_group)
+from hubofhubs.the_world.tools.delegated_agent_sessions import providers
 from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings, build_deep_argv
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import (
     describe_session_activity, landed_file_changes, monitor_claude_session, read_session_activity_tail, resolve_session_file,
@@ -53,14 +54,19 @@ class SubprocessGoalRunner(DeepRunner):
     caller so they see what Claude is doing in real-time.
     """
     REQUIRES = (needs.CLAUDE_BINARY, needs.CLAUDE_ACCOUNT, needs.CLAUDE_CLI_BOUNDARY, needs.WRITE_ROOT)
+    PROVIDERS = ("anthropic",)   # Claude Code runs Claude models only (a subscription login or a key)
 
     config_class = SubprocessConfig   # the dataclass this runner is built from (core.resolve.resolve_config)
     model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None
     settings_source: Optional[GoalSettingsSource] = None
+    tier_model: Optional[str] = None   # the model of the arm's tier, used when a call names no model
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "",
                  model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None,
-                 settings: Optional[GoalSettingsSource] = None):
+                 settings: Optional[GoalSettingsSource] = None, provider: str = "anthropic", tier: str = ""):
+        if not providers.drives(type(self), provider):
+            raise ValueError(f"{type(self).__name__} drives only {', '.join(providers.providers_of(type(self)))}, not {provider!r}")
+        self.tier_model = providers.model_for(provider, tier) if tier else None
         if config is None:
             if not root:
                 raise ValueError("no config: pass config=, or root= (or set HUBOFHUBS_WRITE_ROOT), the one folder the worker runs in")
@@ -192,6 +198,7 @@ class SubprocessGoalRunner(DeepRunner):
         session id, instead of the worker carrying on until it exits or the liveness review
         notices."""
         landed_already = self.landed_in(working_dir, resume_session_id)
+        model = model or self.tier_model
         try:
             res = self.run_goal_once(goal=goal, brief=brief, model=model, max_turns=max_turns,
                                      emit=emit, context_preamble=context_preamble, run_id=run_id,

@@ -597,8 +597,17 @@ NAMES = {
     "hubofhubs.the_world.tools.delegated_agent_sessions.control": (
         "ControlMessage", "RunControl",
     ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.arm_choice": (
+        "ArmChoice", "build_agent_runner", "choose_agent_arm",
+    ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner": (
+        "CodexCliRunner", "HeadlessCliRunner", "OpencodeRunner",
+    ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.interface": (
         "AgentSessions",
+    ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.providers": (
+        "ANY", "credential_names", "drives", "model_for", "providers_of",
     ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.launch": (
         "DeepLaunchSettings", "build_deep_argv", "lean_flags",

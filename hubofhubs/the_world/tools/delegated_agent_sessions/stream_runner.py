@@ -427,6 +427,7 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
                  control: Optional[RunControl] = None) -> DeepResult:
         """Run the goal over a live session. Never raises (the DeepRunner port)."""
         landed_already = self.landed_in(working_dir, resume_session_id)
+        model = model or self.tier_model
         try:
             res = self.run_goal_once(goal=goal, brief=brief, model=model, max_turns=max_turns,
                                      emit=emit, context_preamble=context_preamble, run_id=run_id,

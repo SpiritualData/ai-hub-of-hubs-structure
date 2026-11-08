@@ -1,0 +1,13 @@
+arm,problem_fit,purpose_fit,real_conditions,cost_and_risk,checkability,reasons
+"subprocess_goal_runner@provider=anthropic,tier=fast",4,4,4,3,4,"A full agent on the cheapest Claude tier that every Claude Code login can run; cost is the subscription's, risk is the shared usage limit; results are checked by the same cases."
+"subprocess_goal_runner@provider=anthropic,tier=balanced",4,4,4,2,4,"The same harness on the middle tier: stronger on long work, but public runs show it is not cheaper than the best tier per finished task."
+"subprocess_goal_runner@provider=anthropic,tier=best",4,4,4,2,4,"The strongest Claude tier; dearest per token, though public runs show fewer wasted turns."
+"stream_json_goal_runner@provider=anthropic,tier=fast",4,4,4,3,4,"Same model and harness as the one shot with steering added mid-run; the extra protocol is one more way to fail, checked by the same cases."
+"acp_deep_runner@provider=anthropic,tier=fast",4,3,2,2,4,"Mid-turn steering over a standard protocol, but needs the ACP agent binary and Node 22, which the measuring machine lacks."
+"codex_cli_runner@provider=openai,tier=fast",4,4,3,3,4,"A full agent from another vendor for a consumer that holds only an OpenAI key; no turn-limit flag, the time cap bounds it."
+"codex_cli_runner@provider=openai,tier=balanced",4,4,3,2,4,"Codex on the middle OpenAI tier; dearer per case than the fast tier."
+"opencode_runner@provider=gemini,tier=fast",4,4,3,4,4,"One open harness on the cheapest Gemini model: cents per case, but a weak model may stop after a refused tool call."
+"opencode_runner@provider=gemini,tier=balanced",4,4,3,3,4,"The same harness on a stronger Gemini model, a few times dearer than the fast tier."
+"opencode_runner@provider=openai,tier=fast",4,4,3,3,4,"opencode on an OpenAI key, for a consumer that prefers an open harness over the vendor's own."
+"opencode_runner@provider=anthropic,tier=fast",4,3,3,2,4,"opencode on an Anthropic key: cannot use a Claude subscription login, so it bills per token where Claude Code would not."
+"opencode_runner@provider=deepseek,tier=fast",4,4,3,4,4,"opencode on DeepSeek's cheap model: lowest list price of the providers, untested as an agent here."

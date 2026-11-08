@@ -148,3 +148,12 @@ CLAUDE_CLI_BOUNDARY = requirements.isolatable("cli")
 ACP_BINARY = requirements.binary("claude-agent-acp", "install the Claude ACP agent with npm; it needs Node 22 or later", version_args=("--version",))
 NODE_BINARY = requirements.binary("node", "install Node 22 or later (the ACP agent declares it)", version_args=("--version",))
 ACP_BOUNDARY = requirements.isolatable("subprocess")
+
+# --- other agent harnesses (Delegated Agent Sessions) -------------------------------------------------------------------------
+
+CODEX_BINARY = requirements.binary("codex", "install Codex CLI with npm (package @openai/codex): https://github.com/openai/codex",
+                                   version_args=("--version",))
+OPENCODE_BINARY = requirements.binary("opencode", "install opencode with npm (package opencode-ai): https://opencode.ai/docs/cli/",
+                                      version_args=("--version",))
+HARNESS_PROVIDER_KEY = requirements.resource("a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or "
+                                             "DEEPSEEK_API_KEY); a run bills that provider's account")

@@ -81,6 +81,7 @@ class AcpDeepRunner(DeepRunnerBase):
     can also call ``steer()`` directly. Both routes go through ``_session/steering``; a message that
     arrives after the turn settled is handed back to the queue rather than dropped.
     """
+    PROVIDERS = ("anthropic",)   # the Claude ACP agent runs Claude models only
     REQUIRES = (needs.ACP_SDK, needs.ACP_BINARY, needs.NODE_BINARY, needs.CLAUDE_ACCOUNT, needs.ACP_BOUNDARY)
 
     config_class = AcpConfig   # the dataclass this runner is built from (core.resolve.resolve_config)
