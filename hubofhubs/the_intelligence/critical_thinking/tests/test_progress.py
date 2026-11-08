@@ -79,7 +79,7 @@ def test_progress_composes_upkeep_the_increment_before_the_work_and_after():
     made = composition.progress(MILESTONE, tables["metrics"], [SCRIPT], lambda inc: {"artifact": {"parts": ["An opening. A call to action."]},
                                                                                      "evidence_ref": "goal T1 scripts", "asks": ["Record it.", "Second ask."]},
                                 judge=judge, means=MEANS, today="2030-03-10", ask=ask)
-    assert made["status"] == "measured" and made["increment"]["measure_id"] == "m-pub-intermediate"
+    assert made["status"] == "measured" and made["increment"]["measure_id"] == "Scripts meeting the rubric"
     assert (made["before"]["value"], made["after"]["value"], made["after"]["total"]) == (0, 1, 6)
     assert made["asks"] == ["Record it."]          # at most one person-only step, added to the increment
     nothing = composition.progress(MILESTONE, esoi.records["metrics"], [SCRIPT], lambda inc: {"artifact": ""}, judge=judge, means=MEANS, today="2030-03-10", ask=ask)

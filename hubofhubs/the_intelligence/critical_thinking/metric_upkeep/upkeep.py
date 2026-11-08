@@ -26,7 +26,6 @@ NONE, READ, PROPOSE_SOURCE, DEFINE_INTERMEDIATE = "none", "read", "propose_sourc
 PERSON = "person"
 TRACKS, DOES_NOT_TRACK = "tracks", "does_not_track"
 PERIOD_DAYS = {"daily": 1, "day": 1, "weekly": 7, "week": 7, "monthly": 30, "month": 30, "quarterly": 91, "yearly": 365}
-CHILD_SUFFIX = "-intermediate"
 EM_DASH = "—"
 
 PROPOSE_PROMPT = """A milestone's metric moves only when a person acts, so the AI needs one intermediate metric it can move by its own work now.
@@ -34,12 +33,14 @@ PROPOSE_PROMPT = """A milestone's metric moves only when a person acts, so the A
 Milestone: {name}
 Done when: {done_when}
 Its metric: {parent_name}. Recorded: {parent_record}
-
+{ai_work}
 Propose ONE intermediate metric: a count of AI-made work that is a necessary step toward the done test (for example deliverables meeting a rubric, or
-questions the decision needs answered with a cited source), countable now, with the total it is counted out of.
+questions the decision needs answered with a cited source), countable now, with the total it is counted out of. When the AI's work is named above, count
+units of exactly that work, and make the rubric what one unit of it must be.
 Reply with JSON only: {{"name": "<what is counted, short>", "definition": "<how to count it, one sentence>", "unit": "<what one unit is>",
 "total": <a whole number, the count that means done>, "feeds_parent": "<one sentence: how reaching the total moves the parent metric>",
-"rubric": ["<what one unit must meet to count>", ...]}}. Use only what the milestone above says; invent no figure. Do not use em dashes."""
+"rubric": ["<what one unit must meet to count>", ...]}}. Give 3 or 4 rubric items, each checkable by reading the unit's own text (never by what happens
+later, outside the text or after a person acts). Use only what the milestone above says; invent no figure. Do not use em dashes."""
 
 TRACK_VIEWS = (
     ("done-test", "Does counting this intermediate metric measure real progress toward the parent's done test, so that reaching its total leaves less for the person to do?"),
@@ -90,12 +91,18 @@ def state_of(metric: Mapping[str, Any], today: Optional[datetime.date]) -> str:
 def metrics_of(metrics: Mapping[str, Mapping[str, Any]], solution_id: str) -> List[str]:
     """The ids of the metrics that measure the milestone and are not themselves intermediates of another of them."""
     own = [mid for mid, m in metrics.items() if solution_id in (m.get("solution_ids") or [])]
-    return [mid for mid in own if not set(metrics[mid].get("parent_metric_ids") or []) & set(own)]
+    return [mid for mid in own if not any(feeds(metrics[mid], other) for other in own if other != mid)]
+
+
+def feeds(metric: Mapping[str, Any], parent: str) -> bool:
+    """True when ``metric`` is an intermediate of ``parent``: its ``parent_metric_ids`` name it, or (at a records location that keeps no parent link) its
+    ``cascading_conditionals`` line is the one this arm writes, ``feeds <parent>: ...``."""
+    return parent in (metric.get("parent_metric_ids") or []) or str(metric.get("cascading_conditionals") or "").startswith(f"feeds {parent}:")
 
 
 def child_of(metrics: Mapping[str, Mapping[str, Any]], parent: str) -> Optional[str]:
     """The intermediate metric already recorded for ``parent``, if any (at most one is ever added)."""
-    return next((mid for mid, m in metrics.items() if parent in (m.get("parent_metric_ids") or [])), None)
+    return next((mid for mid, m in metrics.items() if mid != parent and feeds(m, parent)), None)
 
 
 def parse_json(text: Any) -> Dict[str, Any]:
@@ -164,14 +171,15 @@ class RecordFieldUpkeep:
         if ask is None:
             return {"action": DEFINE_INTERMEDIATE, "child_metric": None, "why": "no model call was given to propose an intermediate metric"}
         proposal = parse_json(ask(PROPOSE_PROMPT.format(name=spec.get("name") or "", done_when=spec.get("done_when") or "",
-                                                        parent_name=metric.get("name") or parent, parent_record=str(metric.get("record") or "not recorded")[:600])))
+                                                        parent_name=metric.get("name") or parent, parent_record=str(metric.get("record") or "not recorded")[:600],
+                                                        ai_work=(f"The AI's work that leads to it: {spec['ai_work']}\n" if spec.get("ai_work") else ""))))
         if not proposal_ok(proposal):
             return {"action": DEFINE_INTERMEDIATE, "child_metric": None, "why": "the proposal was not a countable metric with a total"}
         checked = self.cross_check(spec, metric, proposal, ask)
         if checked.get("pick") != TRACKS:
             return {"action": DEFINE_INTERMEDIATE, "child_metric": None, "why": "the independent check did not agree the intermediate tracks the done test",
                     "check": {k: checked.get(k) for k in ("outcome", "pick", "agreement")}}
-        key = parent + CHILD_SUFFIX
+        key = str(proposal["name"]).strip()      # the record's name is its ensure-one key at every records location (a repeat finds it by name)
         rubric = [str(r) for r in proposal.get("rubric") or [] if str(r).strip()]
         fields = {"name": str(proposal["name"]), "purpose": str(proposal["definition"]), "record": f"Current value: 0 of {proposal['total']} {proposal['unit']}",
                   "unit": str(proposal["unit"]), "total": str(proposal["total"]), "parent_metric_ids": [parent],
@@ -180,7 +188,8 @@ class RecordFieldUpkeep:
         if rubric:
             fields["rubric"] = rubric
         applied = self.esoi.apply({"edit": {"kind": "record_add", "table": "metrics", "key": key, "fields": fields}})
-        return {"action": DEFINE_INTERMEDIATE, "child_metric": dict(fields, id=key, created=bool(applied.get("created")), proposed=bool(applied.get("proposed"))),
+        return {"action": DEFINE_INTERMEDIATE, "child_metric": dict(fields, id=str(applied.get("target") or key), created=bool(applied.get("created")),
+                                                                    proposed=bool(applied.get("proposed"))),
                 "recorded": applied, "check": {k: checked.get(k) for k in ("outcome", "pick", "agreement")}}
 
     def cross_check(self, spec: Mapping[str, Any], metric: Mapping[str, Any], proposal: Mapping[str, Any], ask: Callable[[str], str]) -> Mapping[str, Any]:

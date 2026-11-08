@@ -89,3 +89,12 @@ def test_unmeasured_without_a_reader_stays_unmeasured():
     upkeep, _ = arm(tables)
     action = upkeep.upkeep(dict(SPEC, moved_by="ai"), tables["metrics"], None, TODAY)[0]
     assert action["state"] == UNMEASURED and action["action"] == NONE
+
+
+def test_a_records_location_without_a_parent_link_still_finds_the_child_by_its_feeds_line():
+    tables = records()
+    tables["metrics"]["m-child"] = {"name": "Scripts meeting the rubric", "record": "Current value: 1 of 6", "solution_ids": ["sol-a"],
+                                    "cascading_conditionals": "feeds m-pub: each tutorial needs its script first."}
+    upkeep, esoi = arm(tables)
+    actions = upkeep.upkeep(SPEC, tables["metrics"], None, TODAY, model())
+    assert [a["metric_id"] for a in actions] == ["m-pub"] and actions[0]["child_metric"]["id"] == "m-child" and actions[0]["child_metric"]["created"] is False

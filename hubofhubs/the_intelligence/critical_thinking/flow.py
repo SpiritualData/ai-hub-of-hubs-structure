@@ -8,7 +8,7 @@ from hubofhubs.the_intelligence.critical_thinking.esoi_application.interface imp
 from hubofhubs.the_intelligence.critical_thinking.goal_completion.interface import GoalCompleting
 from hubofhubs.the_intelligence.critical_thinking.goal_completion.done_evidence import measure as measure_increment
 from hubofhubs.the_intelligence.critical_thinking.metric_upkeep.interface import MetricUpkeeping
-from hubofhubs.the_intelligence.critical_thinking.pursuit import REFUSED_BOOKKEEPING, BoundedReplan, choose_increment
+from hubofhubs.the_intelligence.critical_thinking.pursuit import REFUSED_BOOKKEEPING, BoundedReplan, choose_increment, doable_by_ai
 from hubofhubs.the_intelligence.critical_thinking.metric_translation.interface import MetricTranslating
 from hubofhubs.the_intelligence.critical_thinking.response_quality.interface import ResponseJudging
 from hubofhubs.the_self.steps import DONE, listing, skipped, take
@@ -74,11 +74,20 @@ class CriticalThinkingComposition:
         is already kept (``kept``: an earlier version, None scores 0); ``work(increment) -> {"artifact", "evidence_ref", "asks"}`` does it (inline here; a
         background increment is returned as a plan); ``pursue`` refuses a result with no increment; the AFTER is measured by ``judge`` (never the writer).
         The result holds ``increment``, ``before``, ``after``, ``artifact``, ``asks`` (at most one person-only step, added to the increment), ``status`` and the steps."""
+        work_item = next((w for w in work_items if str(w.get("kind") or "") == "deliverable" and doable_by_ai(w, means, list(milestone.get("records") or []))), None)
+        if work_item is not None and not milestone.get("ai_work"):
+            # An intermediate metric counts units of the work the AI will do, so upkeep is told what that work is and the measure and the work cannot drift apart.
+            milestone = dict(milestone, ai_work=str(work_item.get("name") or "") + (" (each unit must: " + "; ".join(map(str, work_item.get("requirements") or [])) + ")"
+                                                                                    if work_item.get("requirements") else ""))
         upkept = self.upkeep(milestone, metrics, readers, today, ask)
         increment = choose_increment(milestone, upkept["actions"], work_items, means)
         if increment is None:
             return {"status": "no_increment", "increment": None, "actions": upkept["actions"], "steps": upkept["steps"],
                     "message": "no AI-doable work item or reading applies; the work items need decomposing again"}
+        child = next((a.get("child_metric") for a in upkept["actions"] if isinstance(a.get("child_metric"), Mapping)
+                      and str(a["child_metric"].get("id") or "") == increment.measure_id), None)
+        if child and child.get("rubric"):
+            increment.requirements = [str(r) for r in child["rubric"]]       # the metric defines what counts: one rubric for the writer and the scorer
         reader = (lambda: increment.item.get("reading") or {}) if increment.method == "read" else None
         before = measure_increment(increment, kept, judge, reader, today, total=self.total_of(upkept["actions"]))
         increment.before = before.value if before.value is not None else 0.0
