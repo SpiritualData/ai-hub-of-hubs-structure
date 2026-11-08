@@ -154,7 +154,10 @@ class RecordFieldUpkeep:
             elif state == NO_SOURCE or (state == STALE and not source):
                 action.update(action=PROPOSE_SOURCE, proposed_source=None, why="no arm yet proposes a source; the metric stays without one")
             if str(spec.get("moved_by") or "") == PERSON:
-                action.update(self.intermediate(spec, mid, metric, metrics, ask))
+                defined = self.intermediate(spec, mid, metric, metrics, ask)
+                if action["action"] != NONE:
+                    defined.pop("action", None)       # a reading made this turn stays the action; the intermediate metric rides beside it
+                action.update(defined)
             out.append(action)
         return out
 
