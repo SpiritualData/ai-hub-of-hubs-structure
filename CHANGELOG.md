@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.5.1 (2026-11-08)
 
 - Decision Check (`decision-check`, `DecisionChecking`, in Critical Thinking): a cheap model gives a reliable decision through structure. A consumer hands a `CheckBinding` (the options and, per view, an instruction and the one slice of evidence it sees, plus any vote it already holds and a call cap); the views run in parallel, agreement is accepted at no further cost, a disagreement goes to one call that sees only the disagreeing views and must quote evidence the code finds in them or the check abstains, and a reply is repaired only at the spans an independent call confirms. Arms: `agreement_check`, `agreement_with_known_mistakes`, `single_verify` (the bound) and `draft_as_given` (the floor). The learning loop (`Mistake`, `MistakeLog`, `overruled_mistakes`, `distill`, `LineBook`, `adopt`, `retire`, all in `hubofhubs.api`) turns found mistakes into known-mistake lines offline and adopts a line only when the check's score rises on held-out cases. `CriticalThinking.check_decision` is the composition step. Offline metric `evaluation/decision_check`.
 
