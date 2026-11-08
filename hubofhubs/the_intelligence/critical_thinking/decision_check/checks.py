@@ -49,6 +49,8 @@ class CheckBinding:
     #: Seconds after which a call still unanswered is asked once more in parallel and the first answer is taken (a provider's retry wait, not the work, makes the
     #: slowest calls slow). 0 asks every call once.
     hedge_after_seconds: float = 0.0
+    #: For a reply: the question it answers. What is left after a removal is held to it (a sentence pointing back to a removed one is rewritten or removed).
+    question: str = ""
 
 
 def as_binding(value: Any) -> CheckBinding:

@@ -18,10 +18,10 @@ from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import (
     ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, CallPool, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
     known_block, numbered, parse_json, pick_view_prompt, quoted, read_pick, read_verdicts, remove_span, run_parallel, sentence_of, spent_view, options_listing)
 from hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes import CONFIRMED_FAILURE, new_mistake
+from hubofhubs.the_intelligence.critical_thinking.decision_check.remainder import cohere, figures, joined, units_of
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 
 
-FIGURE_TOKEN = re.compile(r"\d+(?:[.,]\d+)*")
 CONFIRMATIONS = 3          # independent confirmations a flagged span can get; most of them must say it fails
 FIRST_CONFIRMATIONS = 2    # asked first; when they agree the third cannot change the majority, so it is asked only on a split
 UNCONFIRMED_REPLY = "I could not confirm the answer from what I read this turn, so I have left out what I could not confirm."
@@ -154,8 +154,8 @@ class Arm:
                 f = grounded[i]
                 view = by_id[f["view"]]
                 quote = next((a["quote"] for a in votes[i] if a["fails"] and a["quote"]), f["quote"])
-                f.update(quote=quote)
                 evidence = quote if quoted(quote, view.evidence) else view.evidence
+                f.update(quote=quote)
                 prompt = REPAIR_PROMPT.format(instruction=view.instruction, sentence=sentence_of(draft, f["span"]), span=f["span"], evidence=evidence)
                 pool.submit(("repair", i), prompt)
 
@@ -200,7 +200,8 @@ class Arm:
                         f = grounded[what]
                         data = parse_json(raw) if raw is not None else {}
                         action, text = data.get("action"), str(data.get("text") or "").strip()
-                        if action == "rewrite" and text and text != f["span"] and not set(FIGURE_TOKEN.findall(text)) - set(FIGURE_TOKEN.findall(f["span"])):
+                        # A rewrite states no figure the span did not (compared by value: "1,000" is "1000", "02" is "2").
+                        if action == "rewrite" and text and text != f["span"] and not figures(text) - figures(f["span"]):
                             repairs[what] = dict(f, action="rewrite", text=text)
                         else:
                             why = ("no call was left for a rewrite" if raw is None else "the rewrite added a figure the reply did not state" if action == "rewrite" and text
@@ -216,19 +217,35 @@ class Arm:
         if not confirmed:
             return result("held", calls, "most confirmations found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=raised - len(grounded), hedged=pool.hedged)
         done_repairs = [dict(repairs[i], asked=checked[i]["asked"], confirmed=True, votes=checked[i]["votes"]) for i in confirmed]
-        out = draft
+        units = units_of(draft)
+        removed_any = False
         for r in done_repairs:
+            holder = next((u for u in units if u.kept and r["span"] in u.text), None)
+            # A span may run over several sentences: then it is those sentences.
+            held = [holder] if holder is not None else [u for u in units if u.kept and u.text in r["span"]]
+            if not held:
+                continue
             if r["action"] == "rewrite":
-                out = out.replace(r["span"], r["text"], 1)
+                held[0].text = held[0].text.replace(r["span"], r["text"], 1) if holder is not None else r["text"]
+                for u in held[1:]:
+                    u.kept = False
             else:
                 # Code removes the confirmed span with the whole sentence that holds it: a clause cut out of its sentence leaves a fragment that says nothing.
-                out = remove_span(out, sentence_of(out, r["span"]))
+                for u in held:
+                    u.kept = False
+                removed_any = True
+        cohered = "coherent"
+        if removed_any and any(u.kept for u in units):
+            # What is left must still read as an answer: a sentence pointing back to a removed one ("Its value", "the same figure") is rewritten from the rest, or removed.
+            calls.limit += 1
+            units, cohered = cohere(units, b.question, model)
+        out = joined(units)
         if not out.strip():
             out = UNCONFIRMED_REPLY
         mistakes = [asdict(new_mistake(r["view"], by_id[r["view"]].evidence[:2000], r["span"], r.get("why_removed") or "", CONFIRMED_FAILURE))
                     for r in done_repairs if r["action"] != "rewrite"]
         return result("repaired", calls, "every confirmed failing span was rewritten or removed", agreement, text=out, findings=done_repairs, mistakes=mistakes,
-                      dropped=raised - len(grounded), hedged=pool.hedged)
+                      dropped=raised - len(grounded), hedged=pool.hedged, cohered=cohered)
 
 
 @implementation("decision-check", "agreement_check")

@@ -217,6 +217,9 @@ NAMES = {
     "hubofhubs.the_intelligence.critical_thinking.decision_check.interface": (
         "DecisionChecking", "OUTCOMES",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.decision_check.remainder": (
+        "Unit", "cohere", "cohered_text", "dangling", "joined", "shorten", "shortened_text", "units_of",
+    ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes": (
         "CONFIRMED_FAILURE", "Line", "LineBook", "Mistake", "MistakeLog", "adopt", "distill", "new_mistake", "overruled_mistakes", "retire",
     ),
