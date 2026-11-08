@@ -25,7 +25,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | Connected System Operations | `connected-system-operations` | `hubofhubs.run("connected-system-operations", ...)` | none selected | The operation is carried out and nothing else |
-| Delegated Agent Sessions | `delegated-agent-sessions` | `hubofhubs.run("delegated-agent-sessions", ...)` | Claude Code, steerable session (`stream_json_goal_runner`) | Harness, context, sub-agents and recursion ranked, Goal met by its own tests (agent sessions) |
+| Delegated Agent Sessions | `delegated-agent-sessions` | `hubofhubs.run("delegated-agent-sessions", ...)` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions) |
 | File Editing | `file-editing` | `hubofhubs.run("file-editing", ...)` | One-call file edit (`fast_edit`) | Goal met by its own tests |
 | File Reading | `read-files` | `hubofhubs.run("read-files", {'root': '.', 'paths': []})` | Folder reader (`folder_reader`) | Files read inside the folder |
 | Web Search | `web-search` | `hubofhubs.run("web-search", 'latest Rust version')` | Gemini grounding (`gemini`) | Search finds the source |
@@ -47,7 +47,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Share of connections that need no code (`metric-connection-config-share`)
 - The operation is carried out and nothing else (`metric-connected-system-operations`)
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): leader `none`, 0 of 12 cases
+- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 18 of 18 cases
 - Goal met by its own tests (`metric-file-editing`): leader `fast_edit`, 29 of 30 cases
 - Files read inside the folder (`metric-read-files`)
 - and 1 more: all 11 are in [metrics](#metrics) of the full record below
@@ -74,7 +74,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
 | Connected System Operations | `connected-system-operations` | none selected | The operation is carried out and nothing else |
-| Delegated Agent Sessions | `delegated-agent-sessions` | Claude Code, steerable session (`stream_json_goal_runner`) | Harness, context, sub-agents and recursion ranked, Goal met by its own tests (agent sessions) |
+| Delegated Agent Sessions | `delegated-agent-sessions` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions) |
 | File Editing | `file-editing` | One-call file edit (`fast_edit`) | Goal met by its own tests |
 | File Reading | `read-files` | Folder reader (`folder_reader`) | Files read inside the folder |
 | Web Search | `web-search` | Gemini grounding (`gemini`) | Search finds the source |
@@ -87,6 +87,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Claude Code, one shot | `delegated-agent-sessions:subprocess_goal_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/subprocess_runner.py](delegated_agent_sessions/subprocess_runner.py) |  |
 | Claude Code, steerable session | `delegated-agent-sessions:stream_json_goal_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/stream_runner.py](delegated_agent_sessions/stream_runner.py) |  |
 | Agent Client Protocol runner | `delegated-agent-sessions:acp_deep_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/acp_runner.py](delegated_agent_sessions/acp_runner.py) |  |
+| Codex CLI, one shot | `delegated-agent-sessions:codex_cli_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py](delegated_agent_sessions/headless_runner.py) |  |
+| opencode, one shot | `delegated-agent-sessions:opencode_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py](delegated_agent_sessions/headless_runner.py) |  |
 | One-call file edit | `file-editing:fast_edit` | [hubofhubs/the_world/tools/file_editing/fast_edit.py](file_editing/fast_edit.py) |  |
 | Folder reader | `read-files:folder_reader` | [hubofhubs/the_world/tools/file_reading/read_files.py](file_reading/read_files.py) |  |
 | Brave Search API | `web-search:brave` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |
@@ -105,7 +107,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Share of connections that need no code (`metric-connection-config-share`): `python3 -m pytest tests/test_registry.py tests/test_areas.py`
 - The operation is carried out and nothing else (`metric-connected-system-operations`): `none`
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`): `python3 -m pytest hubofhubs/the_world/tools/delegated_agent_sessions/tests/test_deep_session_subagents.py`
-- Goal met by its own tests (agent sessions) (`metric-delegated-agent-sessions`): `esoi run agent_sessions --impl stream_json_goal_runner; esoi run agent_sessions --impl subprocess_goal_runner; esoi run agent_sessions --impl acp_deep_runner; esoi run agent_sessions --impl none`
+- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): `esoi run agent_sessions --impl none; esoi run agent_sessions --impl stream_json_goal_runner@provider=anthropic,tier=fast; esoi run agent_sessions --impl subprocess_goal_runner@provider=anthropic,tier=fast; esoi run agent_sessions --impl subprocess_goal_runner@provider=anthropic,tier=balanced; esoi run agent_sessions --impl subprocess_goal_runner@provider=anthropic,tier=best; esoi run agent_sessions --impl opencode_runner@provider=gemini,tier=fast; esoi run agent_sessions --impl opencode_runner@provider=gemini,tier=balanced; esoi run agent_sessions --impl opencode_runner@provider=openai,tier=fast; esoi run agent_sessions --impl opencode_runner@provider=anthropic,tier=fast; esoi run agent_sessions --impl opencode_runner@provider=deepseek,tier=fast; esoi run agent_sessions --impl codex_cli_runner@provider=openai,tier=fast; esoi run agent_sessions --impl acp_deep_runner@provider=anthropic,tier=fast`
 - Goal met by its own tests (`metric-file-editing`): `esoi run file_edit_goals --impl fast_edit; esoi run file_edit_goals --impl none`
 - Files read inside the folder (`metric-read-files`): `python3 -m pytest hubofhubs/the_world/tools/file_reading/tests/test_act_read_files.py`
 - Search finds the source (`metric-web-search`): `esoi run search_backend --impl gemini; esoi run search_backend --impl provider; esoi run search_backend --impl searxng; esoi run search_backend --impl brave; esoi run search_backend --impl serper; esoi run search_backend --impl tavily`

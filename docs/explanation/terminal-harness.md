@@ -248,6 +248,34 @@ cases.
 - **Em dashes and privacy on screen.** The renderers must strip em dashes from code-written text and show only the allowlisted
   work trace fields; both are stage 1 checks, not conventions.
 
+## 9. Harnesses measured as Delegated Agent Sessions arms (2026-11-08)
+
+Section 4 compares harnesses as terminals. Two of them (Codex CLI and opencode) are now also arms of Delegated Agent Sessions,
+measured on its own metric (`metric-delegated-agent-sessions`, cases in `evaluation/agent_sessions`): an arm is a harness, the
+provider it drives and a tier (`opencode_runner@provider=gemini,tier=fast`), the tier's model comes from the tier chooser, and a
+consumer gets the best arm among those its credentials allow (`choose_agent_arm`).
+
+| Harness | Drives | Headless mode used | Measured here |
+|---|---|---|---|
+| Claude Code (one shot, steerable, ACP) | Anthropic only | `claude -p` JSON, stream-json, ACP | one shot and steerable on the fast, balanced and best tiers; ACP not installed |
+| Codex CLI 0.167 | OpenAI only | `codex exec --json`, prompt on stdin; `codex exec resume` to continue | no: no OpenAI key where we measure; 0.167 also refuses the chat wire API, so Gemini's OpenAI-compatible endpoint cannot stand in |
+| opencode 1.19 | any provider with a key | `opencode run --format json --dir`, permissions from `OPENCODE_CONFIG_CONTENT`; `--session` to continue | Gemini, fast and balanced tiers; Anthropic, OpenAI and DeepSeek keys are not configured |
+| Goose, OpenHands, Aider, Crush, Toad | | | not built: no headless JSON mode on the page, unmaintained, or a licence that cannot be linked (section 4) |
+
+What the runs showed (18 cases: 12 read and report, 3 coding with their own tests, 3 milestone deliverables; results in `esoi/results.csv`):
+
+- Claude Code on the fast tier passed every case of the full set, one shot and steerable alike, at about a quarter of a cent and
+  seven seconds a case (the CLI's list-price estimate on a subscription). The steerable session costs nothing extra on these cases.
+- The balanced and best Claude tiers passed the six-case stage too, at 14 and 30 times the fast tier's cost per case, with no gain to
+  buy: on short tasks the public finding that the best tier costs less in total than the middle one (long Terminal-Bench trials)
+  does not hold.
+- opencode with Gemini is the cheapest per token but not per finished task: the fast tier passed 9 of 18 (it stops after a tool
+  call, asks for files nobody will send, or rewrites a file it was asked to read); the balanced tier passed 16 of 18. Telling the
+  worker that nobody answers during the run, and continuing a run that ends without a report once, fixed two failures on a rerun but
+  not the variance.
+- Two case flaws were found by the arms and fixed: a date written "April 2" failed a "2 april" check, and an order task invited
+  reordering the file it then required unchanged.
+
 ## Summary of findings and recommendation
 
 1. No public benchmark compares terminal interfaces of AI harnesses; the closest source is a position poster (grade D), so our own metric decides the ranking.
@@ -260,3 +288,4 @@ cases.
 8. About 2,750 of QAR's 4,300 terminal lines look generic and can move; quests, commands, branding and adapters stay behind a small `TerminalProfile`.
 9. Start with phase 0: renderers, NDJSON/text replay of three recorded logs, and the JSON contract, with no UI framework and no cost.
 10. Risks to watch: no real logs yet for asks, replay and resume; thin public evidence; keep QAR working through re-exports during the move.
+11. Measured as agent-session arms (section 9): Claude Code fast leads on open-ended short work; opencode makes any provider key usable, and with Gemini it is cheaper per call but finishes fewer tasks.

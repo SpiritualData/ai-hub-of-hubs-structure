@@ -99,7 +99,7 @@ def number(text: Any) -> Optional[float]:
 
 
 def measured_choice(declared: Iterable[str], snapshot: Dict[str, Any]) -> Optional[ArmChoice]:
-    from esoi.optimization.leaderboard import cascade_stages, ranking
+    from esoi.optimization.leaderboard import cascade_stages
     from esoi.optimization.leaderboard.stage_standings import Standing, decide
     stages, problems = cascade_stages.parse(snapshot.get("cascade", ""))
     if not stages or problems:
@@ -115,8 +115,7 @@ def measured_choice(declared: Iterable[str], snapshot: Dict[str, Any]) -> Option
     passed = f"{row.get('passed', '?')}/{row.get('cases', '?')}"
     held = f"; held in place: {', '.join(decision.pending)}" if decision.pending else ""
     return ArmChoice(decision.winner, harness, provider, tier, "measured", stage, number(row.get("balanced")) or 0.0,
-                     f"best eligible arm at the {stage} stage ({passed} passed, balanced {row.get('balanced', '?')}, "
-                     f"pass rate {ranking.pass_rate(row):.2f}){held}")
+                     f"best eligible arm at the {stage} stage ({passed} passed, balanced {row.get('balanced', '?')}){held}")
 
 
 def prior_balanced(row: Dict[str, str], balance: Optional[Dict[str, Any]]) -> float:

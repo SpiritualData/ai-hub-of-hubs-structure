@@ -1,5 +1,81 @@
 {
- "cascade": "idea [kind=idea | scale=esoi/idea-rating-scale.md | min-pass-rate=0.75 | when=a new arm (harness, provider, tier) is described: its five ratings and reasons are a row of arm_ideas.csv beside the solution, rated before it is built] > offline [real=no | gate=all-pass | when=the harness's own tests pass with no model: test_headless_runner.py replays each harness's recorded event stream through a fake program (report, tokens, cost, launch failure, time limit, cancel, escalation), and the Claude Code runner tests pass; the none arm is the zero bound] > public [real=no | when=graded public evidence for the arm exists at grade C or better (public_priors.csv beside the solution)] > one [sample=sample:1 | real=yes | gate=all-pass | when=the offline stage passed for the harness and the arm's provider has credentials where we measure: one real case runs end to end and its report is read by hand] > staged [sample=sample:6 | real=yes | gate=competitive | max-age-days=90 | when=the one case passed and a call budget is set with --max-calls: two cases of each kind] > whole [sample=full | real=yes | max-age-days=90 | when=the staged sample passed its gate, or did not separate the leading arms]",
+ "balance": {
+  "cost_per_case_usd": 0.1,
+  "seconds_per_case": 120,
+  "weights": {
+   "accuracy": 0.7,
+   "cost": 0.15,
+   "time": 0.15
+  }
+ },
+ "cascade": "idea [kind=idea | scale=esoi/idea-rating-scale.md | min-pass-rate=0.75 | when=a new arm (harness, provider, tier) is described: its five ratings and reasons are a row of arm_ideas.csv beside the solution, rated before it is built] > offline [real=no | gate=all-pass | when=the harness's own tests pass with no model: test_headless_runner.py replays each harness's recorded event stream through a fake program (report, tokens, cost, launch failure, time limit, cancel, escalation), and the Claude Code runner tests pass; the none arm is the zero bound] > public [real=no | when=the arm has an unexpired prior of grade C or better in public_priors.csv beside the solution, set by the prior rule of docs/explanation/public-evidence.md (direct or borrowed from a published live-benchmark row, never estimated); a prior orders unmeasured arms and never outranks a measured result] > one [sample=sample:1 | real=yes | gate=all-pass | when=the offline stage passed for the harness and the arm's provider has credentials where we measure: one real case runs end to end and its report is read by hand] > staged [sample=sample:6 | real=yes | gate=competitive | max-age-days=90 | when=the one case passed and a call budget is set with --max-calls: two cases of each kind] > whole [sample=full | real=yes | max-age-days=90 | when=the staged sample passed its gate, or did not separate the leading arms]",
  "metric": "metric-delegated-agent-sessions",
- "rows": {}
+ "rows": {
+  "opencode_runner@provider=gemini,tier=balanced": {
+   "5": {
+    "balanced": "0.901",
+    "cases": "18",
+    "cases_sha": "0dcffc5e",
+    "component": "agent_sessions",
+    "cost_usd": "0.1332",
+    "date": "2026-11-08",
+    "details": "forced past ceiling: cascade stage run on 2026-11-08",
+    "dev": "16/18",
+    "git_sha": "613d3a7",
+    "heldout": "0/0",
+    "impl": "opencode_runner@provider=gemini,tier=balanced",
+    "model": "gemini-2.5-flash",
+    "model_calls": "18",
+    "passed": "16",
+    "sample": "",
+    "seconds": "146.0",
+    "tokens_in": "0",
+    "tokens_out": "0"
+   }
+  },
+  "stream_json_goal_runner@provider=anthropic,tier=fast": {
+   "5": {
+    "balanced": "0.9873",
+    "cases": "18",
+    "cases_sha": "0dcffc5e",
+    "component": "agent_sessions",
+    "cost_usd": "0.0431",
+    "date": "2026-11-08",
+    "details": "",
+    "dev": "18/18",
+    "git_sha": "613d3a7",
+    "heldout": "0/0",
+    "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
+    "model": "claude-haiku-5-5",
+    "model_calls": "18",
+    "passed": "18",
+    "sample": "",
+    "seconds": "130.6",
+    "tokens_in": "0",
+    "tokens_out": "0"
+   }
+  },
+  "subprocess_goal_runner@provider=anthropic,tier=fast": {
+   "5": {
+    "balanced": "0.9872",
+    "cases": "18",
+    "cases_sha": "0dcffc5e",
+    "component": "agent_sessions",
+    "cost_usd": "0.0432",
+    "date": "2026-11-08",
+    "details": "",
+    "dev": "18/18",
+    "git_sha": "613d3a7",
+    "heldout": "0/0",
+    "impl": "subprocess_goal_runner@provider=anthropic,tier=fast",
+    "model": "claude-haiku-5-5",
+    "model_calls": "18",
+    "passed": "18",
+    "sample": "",
+    "seconds": "132.6",
+    "tokens_in": "0",
+    "tokens_out": "0"
+   }
+  }
+ }
 }
