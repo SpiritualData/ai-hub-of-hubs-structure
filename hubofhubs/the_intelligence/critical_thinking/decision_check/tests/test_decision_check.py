@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[5]))
 from hubofhubs.the_intelligence.critical_thinking.decision_check.agreement import (  # noqa: E402
-    AgreementCheck, AgreementWithKnownMistakes, DraftAsGiven, SingleVerify)
+    AgreementCheck, AgreementWithKnownMistakes, DraftAsGiven, SingleVerify, MajorityVote)
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import CheckBinding, View, Vote, as_binding, known_block  # noqa: E402
 from hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes import (  # noqa: E402
     LineBook, MistakeLog, adopt, distill, new_mistake, overruled_mistakes, retire)
@@ -246,3 +246,22 @@ def test_a_held_out_case_a_line_was_learned_from_is_never_used_to_adopt_it():
     seen = []
     adopt(LineBook(), "rules", line, [{"id": "case0"}, {"id": "case1"}, {"id": "fresh"}], lambda lines, cases: (seen.append([c["id"] for c in cases]), 0.0)[1])
     assert ["fresh"] in seen
+
+
+def test_the_majority_arm_decides_a_split_by_the_majority_with_no_adjudication_and_a_tie_still_adjudicates():
+    same = "Everything about orchards belongs to Alpha."
+    views = [View(f"v{i}", "Which option does the text give?", same) for i in range(3)]
+    picks = iter(["a", "a", "b"])
+    lock = threading.Lock()
+
+    def reply(prompt):
+        if "disagreed" in prompt:
+            raise AssertionError("a majority needs no adjudication")
+        with lock:
+            return say(next(picks), "orchards belongs to Alpha")
+    got = arm(MajorityVote).check("", CheckBinding(kind="pick", options=OPTIONS, views=views), Scripted(reply))
+    assert got["outcome"] == "majority" and got["pick"] == "a" and got["calls"] == 3
+    tie = iter(["a", "b"])
+    asked = Scripted(lambda p: say("a", "orchards belongs to Alpha") if "disagreed" in p else say(next(tie), "orchards belongs to Alpha"))
+    got = arm(MajorityVote).check("", CheckBinding(kind="pick", options=OPTIONS, views=views[:2]), asked)
+    assert got["outcome"] == "adjudicated" and got["pick"] == "a"

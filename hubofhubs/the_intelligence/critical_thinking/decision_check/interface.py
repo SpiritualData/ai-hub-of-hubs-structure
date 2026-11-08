@@ -6,7 +6,7 @@ from esoi import solution
 #: How a check ended. ``agreed``: the views that had an opinion agreed. ``adjudicated``: they disagreed and one call decided from quoted evidence.
 #: ``abstained``: they disagreed and nothing decided. ``held``: a reply with no confirmed finding. ``repaired``: only the failing spans changed.
 #: ``unrepaired``: a confirmed finding could not be repaired within the budget. ``kept``: no view had an opinion, so the draft stands.
-OUTCOMES = ("agreed", "adjudicated", "abstained", "held", "repaired", "unrepaired", "kept")
+OUTCOMES = ("agreed", "majority", "adjudicated", "abstained", "held", "repaired", "unrepaired", "kept")
 
 EXAMPLE_BINDING = {"kind": "pick", "options": [{"id": "a", "text": "Alpha"}, {"id": "b", "text": "Beta"}], "views": [], "max_calls": 4}
 

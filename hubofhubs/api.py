@@ -205,7 +205,7 @@ NAMES = {
         "WorkTrace", "domain_of", "project", "validate",
     ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement": (
-        "AgreementCheck", "AgreementWithKnownMistakes", "DraftAsGiven", "SingleVerify",
+        "AgreementCheck", "AgreementWithKnownMistakes", "DraftAsGiven", "MajorityVote", "SingleVerify",
     ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.checks": (
         "CheckBinding", "View", "Vote", "as_binding",

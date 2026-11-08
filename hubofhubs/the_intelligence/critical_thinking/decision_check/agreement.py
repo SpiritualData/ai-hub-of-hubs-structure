@@ -5,7 +5,7 @@ reconciles by agreement: when the opinions agree the decision is accepted at no 
 quotes and the options, and must quote the deciding words (code checks they are in that evidence) or the result abstains. For a reply, each view lists the spans that fail, code checks
 each span is in the reply, one independent call per span (shown the span alone) confirms it, and only a confirmed span is rewritten or removed, with the evidence that contradicts it.
 ``agreement_with_known_mistakes`` is the same arm with each view's known-mistake lines in its prompt and, while the call budget allows, a twin view built on them.
-``single_verify`` is the one verify call that was tried before (the bound), and ``draft_as_given`` makes no call. Every arm stays within ``max_calls``. Standard library plus the hub and ``esoi``."""
+``majority_vote`` is the agreement check with a disagreement settled by the views' majority (a tie still goes to the adjudication). ``single_verify`` is the one verify call that was tried before (the bound), and ``draft_as_given`` makes no call. Every arm stays within ``max_calls``. Standard library plus the hub and ``esoi``."""
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
@@ -173,6 +173,22 @@ class AgreementCheck(Arm):
 class AgreementWithKnownMistakes(Arm):
     """The agreement check with each view's known-mistake lines in its prompt and a twin view built on them while the call budget allows."""
     use_known = True
+
+
+@implementation("decision-check", "majority_vote")
+class MajorityVote(Arm):
+    """The agreement check with a disagreement settled by the views' majority: each view's pick stands only with a quote code finds in its evidence, and the pick more than
+    half of the opinions hold is the decision. Only a tie (no pick held by more than half) goes to the adjudication call. Several views of the same question, each a
+    separate cheap call, make the decision independent of any one sample."""
+
+    def adjudicate(self, cast: List[Dict[str, Any]], picks: List[str], b: CheckBinding, model: Asking, calls: Calls, report: List[Dict[str, Any]]) -> Dict[str, Any]:
+        counts = {p: sum(c["pick"] == p for c in cast) for p in picks}
+        top = max(counts.values())
+        leaders = [p for p in picks if counts[p] == top]
+        if len(leaders) == 1 and 2 * top > len(cast):
+            return result("majority", calls, f"{top} of {len(cast)} opinions hold the pick", top / len(cast), pick=leaders[0],
+                          overruled=[c["id"] for c in cast if c["pick"] != leaders[0]], views=report)
+        return super().adjudicate(cast, picks, b, model, calls, report)
 
 
 @implementation("decision-check", "single_verify")

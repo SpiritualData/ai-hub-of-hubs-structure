@@ -98,6 +98,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
 | Independent views, adjudicated on disagreement | `decision-check:agreement_check` | [hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py](decision_check/agreement.py) |  |
+| Independent views, decided by majority | `decision-check:majority_vote` | [hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py](decision_check/agreement.py) |  |
 | Independent views with known mistakes | `decision-check:agreement_with_known_mistakes` | [hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py](decision_check/agreement.py) |  |
 | One verify call over all the evidence | `decision-check:single_verify` | [hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py](decision_check/agreement.py) |  |
 | Draft as given | `decision-check:draft_as_given` | [hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py](decision_check/agreement.py) |  |
