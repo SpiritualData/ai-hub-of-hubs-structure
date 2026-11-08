@@ -70,7 +70,10 @@ the arm's parameters (for example `provider` and `tier`), `prior`, `grade`, `bas
    from our cases and only the order carries over. A prior is used only (a) to order which unmeasured arms to measure first and
    (b) as the labelled fallback ("public prior, grade B") for an eligible arm when no eligible arm has a real result yet. If our
    first real stage orders two arms opposite to their priors by more than the tolerance, both priors are dropped for that
-   solution and the contradiction is reported.
+   solution and the contradiction is reported. A priors file may carry `cost_per_case_usd` and `seconds_per_case` (the cost
+   and time of one of our cases) only when a source published them for cases like ours; a public benchmark's cost per trial
+   is never scaled down to our cases, because the ratio is itself an estimate. Left empty, they score zero in a balanced
+   fallback (an unknown price is never free), and our own first run supplies them.
 4. **What to measure first.** `measure_first` is `yes` for an arm the consumer can run (its credentials exist) whose prior is
    empty or within the tolerance of the best prior among runnable arms, and `no` for an arm that cannot run here or whose
    prior is below the best by more than the tolerance at no lower cost. An empty prior is a reason to measure, not to skip:
