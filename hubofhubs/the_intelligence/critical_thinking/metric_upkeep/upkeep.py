@@ -36,11 +36,11 @@ Its metric: {parent_name}. Recorded: {parent_record}
 {ai_work}
 Propose ONE intermediate metric: a count of AI-made work that is a necessary step toward the done test (for example deliverables meeting a rubric, or
 questions the decision needs answered with a cited source), countable now, with the total it is counted out of. When the AI's work is named above, count
-units of exactly that work, and make the rubric what one unit of it must be.
+units of exactly that work, and make the rubric exactly what that work says each unit must meet.
 Reply with JSON only: {{"name": "<what is counted, short>", "definition": "<how to count it, one sentence>", "unit": "<what one unit is>",
 "total": <a whole number, the count that means done>, "feeds_parent": "<one sentence: how reaching the total moves the parent metric>",
-"rubric": ["<what one unit must meet to count>", ...]}}. Give 3 or 4 rubric items, each checkable by reading the unit's own text (never by what happens
-later, outside the text or after a person acts). Use only what the milestone above says; invent no figure. Do not use em dashes."""
+"rubric": ["<what one unit must meet to count>", ...]}}. Give 3 or 4 rubric items, each checkable by reading the unit's own text against the milestone's records
+(never by what happens later, outside the text or after a person acts), and none asking the unit to state a figure, length or date the milestone does not give. Use only what the milestone above says; invent no figure. Do not use em dashes."""
 
 TRACK_VIEWS = (
     ("done-test", "Does counting this intermediate metric measure real progress toward the parent's done test, so that reaching its total leaves less for the person to do?"),

@@ -86,8 +86,8 @@ class CriticalThinkingComposition:
                     "message": "no AI-doable work item or reading applies; the work items need decomposing again"}
         child = next((a.get("child_metric") for a in upkept["actions"] if isinstance(a.get("child_metric"), Mapping)
                       and str(a["child_metric"].get("id") or "") == increment.measure_id), None)
-        if child and child.get("rubric"):
-            increment.requirements = [str(r) for r in child["rubric"]]       # the metric defines what counts: one rubric for the writer and the scorer
+        if child and child.get("rubric") and not increment.requirements:
+            increment.requirements = [str(r) for r in child["rubric"]]       # a work item with no requirements of its own is held to the metric's rubric
         reader = (lambda: increment.item.get("reading") or {}) if increment.method == "read" else None
         before = measure_increment(increment, kept, judge, reader, today, total=self.total_of(upkept["actions"]))
         increment.before = before.value if before.value is not None else 0.0
