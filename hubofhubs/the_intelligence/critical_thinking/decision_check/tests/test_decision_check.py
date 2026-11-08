@@ -366,3 +366,22 @@ def test_the_third_confirmation_is_asked_only_on_a_split_and_spans_of_one_view_a
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=6), seen)
     assert got["text"] == "Two holds." and got["calls"] == 4      # one view, two confirmations covering both spans, one repair
     assert sum(CONFIRMING in p for p in seen.prompts) == 2
+
+
+def test_a_call_still_unanswered_after_the_hedge_time_is_sent_again_and_the_first_answer_wins():
+    import time
+    seen = []
+    lock = threading.Lock()
+
+    def reply(prompt):
+        if "List each part" in prompt:
+            with lock:
+                seen.append(prompt)
+                first = len(seen) == 1
+            if first:
+                time.sleep(3)           # the first copy is stuck waiting on the provider
+            return json.dumps({"findings": []})
+        return verdicts(prompt, False)
+    started = time.monotonic()
+    got = arm().check(REPLY, CheckBinding(kind="reply", views=[View("claims", "Every claim is supported.", READS)], hedge_after_seconds=0.2), Scripted(reply))
+    assert got["outcome"] == "held" and len(seen) == 2 and time.monotonic() - started < 2.0

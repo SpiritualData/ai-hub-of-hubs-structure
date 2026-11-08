@@ -6,7 +6,8 @@ is not the JSON asked for is a view that did not answer, and a quote or span tha
 import json
 import re
 import threading
-from concurrent.futures import ThreadPoolExecutor
+import time
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple
 
@@ -45,6 +46,9 @@ class CheckBinding:
     token_cap: int = 300
     max_calls: int = 6
     parallel: int = 4
+    #: Seconds after which a call still unanswered is asked once more in parallel and the first answer is taken (a provider's retry wait, not the work, makes the
+    #: slowest calls slow). 0 asks every call once.
+    hedge_after_seconds: float = 0.0
 
 
 def as_binding(value: Any) -> CheckBinding:
@@ -73,6 +77,78 @@ class Calls:
     @property
     def left(self) -> int:
         return max(0, self.limit - self.used)
+
+
+class CallPool:
+    """Model calls run on a pool of ``width`` in flight; ``next_answers`` gives each logical call's answer as soon as it is in. With ``hedge_after`` set, a call still
+    unanswered after that many seconds is sent once more alongside (on top of the width, since the slow one is waiting on the provider, not working) and the first
+    answer that is not a failed call wins; the other copy is left to finish unread. ``hedged`` counts the extra sends."""
+
+    def __init__(self, ask: Callable[[str], Optional[str]], width: int, hedge_after: float = 0.0, on_hedge: Optional[Callable[[], None]] = None):
+        self.ask, self.hedge_after, self.on_hedge = ask, max(0.0, float(hedge_after or 0.0)), on_hedge
+        self.pool = ThreadPoolExecutor(max_workers=max(1, int(width)) * (2 if self.hedge_after else 1))
+        self.width = max(1, int(width))
+        self.queue: List[Tuple[Any, str]] = []
+        self.flying: Dict[Any, Tuple[int, float]] = {}     # future -> (logical call, sent at)
+        self.calls: Dict[int, Dict[str, Any]] = {}
+        self.hedged = 0
+
+    def submit(self, tag: Any, prompt: str) -> None:
+        self.queue.append((tag, prompt))
+
+    def _launch(self) -> None:
+        live = len({n for n, _ in self.flying.values()})
+        while self.queue and live < self.width:
+            tag, prompt = self.queue.pop(0)
+            n = len(self.calls)
+            self.calls[n] = {"tag": tag, "prompt": prompt, "copies": 1, "hedged": False}
+            self.flying[self.pool.submit(self.ask, prompt)] = (n, time.monotonic())
+            live += 1
+
+    def busy(self) -> bool:
+        return bool(self.queue or self.flying)
+
+    def next_answers(self) -> List[Tuple[Any, Optional[str]]]:
+        """The ``(tag, answer)`` of every logical call that has settled since the last call, waiting until at least one has."""
+        while True:
+            self._launch()
+            if not self.flying:
+                return []
+            timeout = None
+            if self.hedge_after:
+                now = time.monotonic()
+                due = [sent + self.hedge_after - now for n, sent in self.flying.values() if not self.calls[n]["hedged"]]
+                timeout = max(0.0, min(due)) if due else None
+            done, _ = wait(list(self.flying), timeout=timeout, return_when=FIRST_COMPLETED)
+            out = []
+            for future in done:
+                n, _ = self.flying.pop(future)
+                call = self.calls[n]
+                call["copies"] -= 1
+                if call.get("settled"):
+                    continue
+                raw = future.result()
+                if raw is not None and str(raw).startswith("ERROR ") and call["copies"] > 0:
+                    continue        # a failed copy: the other copy may still answer
+                call["settled"] = True
+                for other in [f for f, (m, _) in self.flying.items() if m == n]:
+                    del self.flying[other]          # left to finish unread
+                out.append((call["tag"], raw))
+            if self.hedge_after:
+                now = time.monotonic()
+                for n, sent in list(self.flying.values()):
+                    call = self.calls[n]
+                    if not call["hedged"] and not call.get("settled") and now - sent >= self.hedge_after:
+                        call["hedged"], call["copies"] = True, call["copies"] + 1
+                        self.hedged += 1
+                        if self.on_hedge:
+                            self.on_hedge()
+                        self.flying[self.pool.submit(self.ask, call["prompt"])] = (n, now)
+            if out:
+                return out
+
+    def close(self) -> None:
+        self.pool.shutdown(wait=False, cancel_futures=True)
 
 
 def run_parallel(jobs: Sequence[Callable[[], Any]], width: int) -> List[Any]:

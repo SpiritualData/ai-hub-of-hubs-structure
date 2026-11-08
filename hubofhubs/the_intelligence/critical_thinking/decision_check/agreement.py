@@ -8,7 +8,6 @@ each stage starts as soon as its input is in, on one pool of bounded width.
 ``agreement_with_known_mistakes`` is the same arm with each view's known-mistake lines in its prompt and, while the call budget allows, a twin view built on them.
 ``majority_vote`` is the agreement check with a disagreement settled by the views' majority (a tie still goes to the adjudication). ``single_verify`` is the one verify call that was tried before (the bound), and ``draft_as_given`` makes no call. Every arm stays within ``max_calls``. Standard library plus the hub and ``esoi``."""
 import re
-from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from dataclasses import asdict
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
@@ -16,7 +15,7 @@ from esoi import implementation
 from esoi import Lazy
 
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import (
-    ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
+    ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, CallPool, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
     known_block, numbered, parse_json, pick_view_prompt, quoted, read_pick, read_verdicts, remove_span, run_parallel, sentence_of, spent_view, options_listing)
 from hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes import CONFIRMED_FAILURE, new_mistake
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
@@ -125,8 +124,8 @@ class Arm:
         """Every stage starts as soon as what it needs is in, on one pool of at most ``b.parallel`` calls in flight (a provider's limit on concurrent calls is the usual
         cause of slow checks, so the width is a ceiling, not a target): a view's flagged spans go to confirmation the moment that view answers, and a confirmed span
         goes to repair the moment it is confirmed. A view's spans are confirmed together, each judged on its own in the list. Two confirmations come first; when they
-        agree the third cannot change the majority, so it is asked only on a split. Every flagged span is confirmed (those calls run on top of the cap) and no confirmed
-        span ships unchanged."""
+        agree the third cannot change the majority, so it is asked only on a split. With ``hedge_after_seconds`` a call still unanswered that long is sent once more and
+        the first answer wins. Every flagged span is confirmed (those calls run on top of the cap) and no confirmed span ships unchanged."""
         shown = self.prompt_binding(b)
         views = self.planned_views(b, 2)
         by_id = {v.id: v for v in views}
@@ -137,9 +136,11 @@ class Arm:
         asked: Dict[int, int] = {}
         verdict: Dict[int, bool] = {}
         repairs: Dict[int, Dict[str, Any]] = {}
-        with ThreadPoolExecutor(max_workers=max(1, b.parallel)) as pool:
-            pending: Dict[Any, tuple] = {}
 
+        def hedge() -> None:
+            calls.limit += 1          # a hedge repeats a call already counted, so it never takes the place of a repair
+        pool = CallPool(model, b.parallel, b.hedge_after_seconds, on_hedge=hedge)
+        try:
             def confirm(view: View, idxs: List[int], times: int) -> None:
                 calls.limit += times      # confirmations run on top of the cap
                 prompt = CONFIRM_PROMPT.format(instruction=view.instruction, statements=numbered([grounded[i]["span"] for i in idxs]), evidence=view.evidence)
@@ -147,7 +148,7 @@ class Arm:
                     waiting[i] = waiting.get(i, 0) + times
                     asked[i] = asked.get(i, 0) + times
                 for _ in range(times):
-                    pending[pool.submit(model, prompt)] = ("confirm", idxs)
+                    pool.submit(("confirm", idxs), prompt)
 
             def repair(i: int) -> None:
                 f = grounded[i]
@@ -156,16 +157,13 @@ class Arm:
                 f.update(quote=quote)
                 evidence = quote if quoted(quote, view.evidence) else view.evidence
                 prompt = REPAIR_PROMPT.format(instruction=view.instruction, sentence=sentence_of(draft, f["span"]), span=f["span"], evidence=evidence)
-                pending[pool.submit(model, prompt)] = ("repair", i)
+                pool.submit(("repair", i), prompt)
 
             for view in views:
                 prompt = FINDINGS_PROMPT.format(instruction=view.instruction, draft=draft, evidence=view.evidence, known=known_block(shown.known.get(view.id, ()), b.token_cap))
-                pending[pool.submit(model, prompt)] = ("view", view)
-            while pending:
-                done, _ = wait(list(pending), return_when=FIRST_COMPLETED)
-                for future in done:
-                    stage, what = pending.pop(future)
-                    raw = future.result()
+                pool.submit(("view", view), prompt)
+            while pool.busy():
+                for (stage, what), raw in pool.next_answers():
                     if stage == "view":
                         rows = parse_json(raw).get("findings") if raw is not None else None
                         mine = []
@@ -208,13 +206,15 @@ class Arm:
                             why = ("no call was left for a rewrite" if raw is None else "the rewrite added a figure the reply did not state" if action == "rewrite" and text
                                    else "the repair removed it" if action == "remove" else "the repair gave no usable rewrite")
                             repairs[what] = dict(f, action="remove", text="", why_removed=why)
+        finally:
+            pool.close()
         if not grounded:
-            return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=raised)
+            return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=raised, hedged=pool.hedged)
         checked = [dict(f, asked=len(votes.get(i, [])), confirmed=verdict.get(i, False), votes=sum(a["fails"] for a in votes.get(i, []))) for i, f in enumerate(grounded)]
         confirmed = [i for i in range(len(grounded)) if verdict.get(i)]
         agreement = len(confirmed) / len(grounded)
         if not confirmed:
-            return result("held", calls, "most confirmations found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=raised - len(grounded))
+            return result("held", calls, "most confirmations found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=raised - len(grounded), hedged=pool.hedged)
         done_repairs = [dict(repairs[i], asked=checked[i]["asked"], confirmed=True, votes=checked[i]["votes"]) for i in confirmed]
         out = draft
         for r in done_repairs:
@@ -228,7 +228,7 @@ class Arm:
         mistakes = [asdict(new_mistake(r["view"], by_id[r["view"]].evidence[:2000], r["span"], r.get("why_removed") or "", CONFIRMED_FAILURE))
                     for r in done_repairs if r["action"] != "rewrite"]
         return result("repaired", calls, "every confirmed failing span was rewritten or removed", agreement, text=out, findings=done_repairs, mistakes=mistakes,
-                      dropped=raised - len(grounded))
+                      dropped=raised - len(grounded), hedged=pool.hedged)
 
 
 @implementation("decision-check", "agreement_check")
