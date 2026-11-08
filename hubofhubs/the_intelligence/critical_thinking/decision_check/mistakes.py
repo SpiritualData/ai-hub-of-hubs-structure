@@ -18,7 +18,8 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import parse_json
 
 EVAL_FAILURE, CORRECTION, OVERRULED = "eval_failure", "correction", "overruled"
-SOURCES = (EVAL_FAILURE, CORRECTION, OVERRULED)
+CONFIRMED_FAILURE = "confirmed_failure"     # a reply span most independent confirmations found failing, which a repair removed instead of rewriting
+SOURCES = (EVAL_FAILURE, CORRECTION, OVERRULED, CONFIRMED_FAILURE)
 ADOPTED, RETIRED = "adopted", "retired"
 
 

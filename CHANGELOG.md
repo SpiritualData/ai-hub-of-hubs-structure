@@ -2,9 +2,9 @@
 
 ## Unreleased
 
+- Decision Check (reply): detection and confirmation run on every flagged span (three independent confirmations each, on top of the cap; most must say it fails). A confirmed failure never ships unchanged: a model rewrite when a call is left (rewording only, no new figure), else code removes its whole sentence; a reply left empty says plainly what could not be confirmed. Each span removed instead of rewritten is returned as a `confirmed_failure` mistake record (`CONFIRMED_FAILURE`). Replaces the rule that confirmed a span only when the budget could also repair it.
 - Decision Check (reply): a repair only removes or rewords what the reply already says; a rewrite holding a figure the span did not hold becomes a removal.
 - Decision Check (reply): a span the repair would remove goes only when most of three independent confirmations say it fails (two more calls, only for a removal); spans are budgeted at four calls each, and a reply left unchanged is `held`.
-- Decision Check (reply): a raised span is confirmed only when the call budget can also repair it, so no confirmed failure is left unrepaired after costing its calls.
 - Decision Check: `majority_vote` arm (`MajorityVote`), the agreement check with a disagreement settled by the views' majority; only a tie goes to the adjudication call. Outcome `majority` added.
 - Decision Check: a span a reply check removes takes its whole sentence with it, so a removed clause never leaves a fragment ("..., and").
 

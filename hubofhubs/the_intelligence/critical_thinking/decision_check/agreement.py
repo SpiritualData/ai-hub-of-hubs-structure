@@ -7,6 +7,7 @@ each span is in the reply, one independent call per span (shown the span alone) 
 ``agreement_with_known_mistakes`` is the same arm with each view's known-mistake lines in its prompt and, while the call budget allows, a twin view built on them.
 ``majority_vote`` is the agreement check with a disagreement settled by the views' majority (a tie still goes to the adjudication). ``single_verify`` is the one verify call that was tried before (the bound), and ``draft_as_given`` makes no call. Every arm stays within ``max_calls``. Standard library plus the hub and ``esoi``."""
 import re
+from dataclasses import asdict
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
 from esoi import implementation
@@ -15,10 +16,13 @@ from esoi import Lazy
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import (
     ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
     known_block, parse_json, pick_view_prompt, quoted, read_pick, remove_span, run_parallel, sentence_of, spent_view, options_listing)
+from hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes import CONFIRMED_FAILURE, new_mistake
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 
 
 FIGURE_TOKEN = re.compile(r"\d+(?:[.,]\d+)*")
+CONFIRMATIONS = 3          # independent confirmation calls per flagged span; most of them must say it fails
+UNCONFIRMED_REPLY = "I could not confirm the answer from what I read this turn, so I have left out what I could not confirm."
 
 
 def result(outcome: str, calls: Calls, why: str, agreement: float, **fields: Any) -> Dict[str, Any]:
@@ -131,60 +135,49 @@ class Arm:
                 grounded.append(f)
         if not grounded:
             return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=len(raised))
-        # A span is confirmed only when the budget can also repair it: four calls each (a confirmation, the repair and, for a removal, two more confirmations), or at
-        # least one span with a confirmation and a repair. A confirmed failure with no call left to repair it changed nothing and cost its calls.
-        affordable = calls.left // 4 or (1 if calls.left >= 2 else 0)
-        if affordable < len(grounded):
-            raised_extra, grounded = grounded[affordable:], grounded[:affordable]
-        else:
-            raised_extra = []
-        if not grounded:
-            return result("held", calls, "no call was left to confirm and repair a raised span", 0.0, text=draft, findings=[], dropped=len(raised), unchecked=[f["span"] for f in raised_extra])
+        # Detection and confirmation always run on every flagged span: each gets CONFIRMATIONS independent confirmation calls on top of the cap, and is confirmed when
+        # most of them say it fails, so one wrong confirmation does not delete a true sentence.
+        calls.limit += CONFIRMATIONS * len(grounded)
 
         def confirm(f: Dict[str, str]) -> Dict[str, Any]:
             view = by_id[f["view"]]
-            raw = model(CONFIRM_PROMPT.format(instruction=view.instruction, span=f["span"], evidence=view.evidence))
-            data = parse_json(raw) if raw is not None else {}
-            return dict(f, asked=raw is not None, confirmed=data.get("fails") is True, quote=str(data.get("quote") or f["quote"]))
+            raws = run_parallel([lambda: model(CONFIRM_PROMPT.format(instruction=view.instruction, span=f["span"], evidence=view.evidence))] * CONFIRMATIONS, CONFIRMATIONS)
+            answers = [parse_json(raw) for raw in raws if raw is not None]
+            fails = sum(a.get("fails") is True for a in answers)
+            quote = next((str(a.get("quote")) for a in answers if a.get("fails") is True and a.get("quote")), f["quote"])
+            return dict(f, asked=len(answers), confirmed=2 * fails > len(answers) > 0, votes=fails, quote=quote)
         checked = run_parallel([lambda f=f: confirm(f) for f in grounded], b.parallel)
         confirmed = [f for f in checked if f["confirmed"]]
         agreement = len(confirmed) / len(grounded)
         if not confirmed:
-            return result("held", calls, "the independent confirmation found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=len(raised) - len(grounded))
+            return result("held", calls, "most confirmations found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=len(raised) - len(grounded))
 
         def repair(f: Dict[str, Any]) -> Dict[str, Any]:
+            """A model rewrite when the budget allows one, under the rule that a repair only removes or rewords what the reply says; otherwise code removes the span."""
             view = by_id[f["view"]]
             evidence = f["quote"] if quoted(f["quote"], view.evidence) else view.evidence
             raw = model(REPAIR_PROMPT.format(instruction=view.instruction, sentence=sentence_of(draft, f["span"]), span=f["span"], evidence=evidence))
             data = parse_json(raw) if raw is not None else {}
             action, text = data.get("action"), str(data.get("text") or "").strip()
-            if action == "remove":
-                # Removing a sentence loses whatever was true in it, so one confirmation is not enough: two more independent confirmations run, and the span goes
-                # only when most of the three say it fails. When the budget has no room for them, the one confirmation stands.
-                extra = run_parallel([lambda: model(CONFIRM_PROMPT.format(instruction=view.instruction, span=f["span"], evidence=view.evidence))] * 2, 2)
-                answered = [parse_json(raw).get("fails") is True for raw in extra if raw is not None]
-                fails = 1 + sum(answered)
-                if 2 * fails <= 1 + len(answered):
-                    return dict(f, action="", text="", kept="most confirmations found the span does not fail")
-                return dict(f, action="remove", text="")
-            if action == "rewrite" and text and text != f["span"]:
-                # A repair only removes or rewords what the reply already says: a rewrite holding a figure the span did not hold adds a claim, so the span is removed instead.
-                if set(FIGURE_TOKEN.findall(text)) - set(FIGURE_TOKEN.findall(f["span"])):
-                    return dict(f, action="remove", text="", why_removed="the rewrite added a figure the reply did not state")
+            if action == "rewrite" and text and text != f["span"] and not set(FIGURE_TOKEN.findall(text)) - set(FIGURE_TOKEN.findall(f["span"])):
                 return dict(f, action="rewrite", text=text)
-            return dict(f, action="", text="")
+            why = ("no call was left for a rewrite" if raw is None else "the rewrite added a figure the reply did not state" if action == "rewrite" and text
+                   else "the repair removed it" if action == "remove" else "the repair gave no usable rewrite")
+            return dict(f, action="remove", text="", why_removed=why)
         repairs = run_parallel([lambda f=f: repair(f) for f in confirmed], b.parallel)
-        out, undone = draft, []
+        out = draft
         for r in repairs:
-            if r["action"] == "remove":
-                # The whole sentence that holds the span goes: a clause cut out of its sentence leaves a fragment ("..., and") that says nothing.
-                out = remove_span(out, sentence_of(out, r["span"]))
-            elif r["action"] == "rewrite":
+            if r["action"] == "rewrite":
                 out = out.replace(r["span"], r["text"], 1)
-            elif not r.get("kept"):
-                undone.append(r["span"])
-        return result("unrepaired" if undone else ("repaired" if out != draft else "held"), calls, ("these confirmed spans were not repaired: " + "; ".join(undone)) if undone else "only the confirmed failing spans were rewritten or removed",
-                      agreement, text=out, findings=repairs, dropped=len(raised) - len(grounded))
+            else:
+                # Code removes the confirmed span with the whole sentence that holds it: a clause cut out of its sentence leaves a fragment that says nothing.
+                out = remove_span(out, sentence_of(out, r["span"]))
+        if not out.strip():
+            out = UNCONFIRMED_REPLY
+        mistakes = [asdict(new_mistake(r["view"], by_id[r["view"]].evidence[:2000], r["span"], r.get("why_removed") or "", CONFIRMED_FAILURE))
+                    for r in repairs if r["action"] != "rewrite"]
+        return result("repaired", calls, "every confirmed failing span was rewritten or removed", agreement, text=out, findings=repairs, mistakes=mistakes,
+                      dropped=len(raised) - len(grounded))
 
 
 @implementation("decision-check", "agreement_check")

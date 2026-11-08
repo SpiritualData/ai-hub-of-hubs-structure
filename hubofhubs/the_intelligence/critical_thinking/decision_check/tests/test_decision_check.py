@@ -124,7 +124,7 @@ def test_a_reply_is_repaired_only_at_the_confirmed_failing_span():
     got = arm().check(REPLY, reply_binding(), Scripted(reply))
     # A repair never adds a figure the reply did not state (the 5 is new), so the wrong sentence is removed rather than rewritten with the evidence's figure.
     assert got["outcome"] == "repaired" and got["text"] == "I read the report. I created the task."
-    assert got["dropped"] == 1 and got["calls"] == 3
+    assert got["dropped"] == 1 and got["calls"] == 5      # one view, three confirmations, one repair
 
 
 def test_a_raised_span_the_independent_confirmation_clears_leaves_the_reply_untouched():
@@ -141,7 +141,7 @@ def test_a_reply_with_no_failing_span_costs_only_the_views():
     assert got["outcome"] == "held" and got["calls"] == 1 and got["text"] == REPLY
 
 
-def test_a_span_that_can_only_be_removed_is_removed_and_a_reply_without_a_usable_repair_is_reported():
+def test_a_span_that_can_only_be_removed_is_removed_and_one_with_no_usable_repair_is_removed_by_code_and_recorded():
     def reply(prompt):
         if "List each part" in prompt:
             return findings("I created the task.")
@@ -154,7 +154,9 @@ def test_a_span_that_can_only_be_removed_is_removed_and_a_reply_without_a_usable
     def unusable(prompt):
         return reply(prompt) if "Rewrite only" not in prompt else "no idea"
     got = arm().check(REPLY, reply_binding(), Scripted(unusable))
-    assert got["outcome"] == "unrepaired" and got["text"] == REPLY
+    # A confirmed failure never ships unchanged: code removes its sentence and the span is a mistake record for the learning loop.
+    assert got["outcome"] == "repaired" and got["text"] == "I read the report. The deadline is June 3."
+    assert [(m["wrong"], m["source"]) for m in got["mistakes"]] == [("I created the task.", "confirmed_failure")]
 
 
 def test_a_removed_clause_takes_its_whole_sentence_so_no_fragment_is_left():
@@ -268,8 +270,8 @@ def test_the_majority_arm_decides_a_split_by_the_majority_with_no_adjudication_a
     assert got["outcome"] == "adjudicated" and got["pick"] == "a"
 
 
-def test_only_the_spans_the_budget_can_also_repair_are_confirmed_so_none_is_left_confirmed_and_unrepaired():
-    draft = "One is wrong. Two is wrong. Three is wrong."
+def test_every_flagged_span_is_confirmed_and_one_with_no_call_left_for_a_rewrite_is_removed_by_code():
+    draft = "One is wrong. Two is wrong. Three is wrong. Four holds."
     views = [View(f"v{i}", "A statement must hold.", "nothing") for i in range(2)]
 
     def reply(prompt):
@@ -277,9 +279,21 @@ def test_only_the_spans_the_budget_can_also_repair_are_confirmed_so_none_is_left
             return json.dumps({"findings": [{"span": "One is wrong.", "quote": ""}, {"span": "Two is wrong.", "quote": ""}, {"span": "Three is wrong.", "quote": ""}]})
         if "Does the statement fail" in prompt:
             return json.dumps({"fails": True})
-        return json.dumps({"action": "remove", "text": ""})
+        return json.dumps({"action": "rewrite", "text": "It holds."})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=4), Scripted(reply))
-    assert got["outcome"] == "repaired" and got["calls"] == 4 and got["text"] == "Two is wrong. Three is wrong."
+    # The cap covered the two views and two repairs: the nine confirmations still ran, two spans were rewritten and the one with no call left was removed by code.
+    assert got["calls"] == 13 and got["text"] == "It holds. It holds. Four holds." and len(got["mistakes"]) == 1
+
+
+def test_a_reply_left_with_nothing_confirmed_says_so_plainly():
+    def reply(prompt):
+        if "List each part" in prompt:
+            return json.dumps({"findings": [{"span": "Only claim.", "quote": ""}]})
+        if "Does the statement fail" in prompt:
+            return json.dumps({"fails": True})
+        return json.dumps({"action": "remove", "text": ""})
+    got = arm().check("Only claim.", CheckBinding(kind="reply", views=[View("v", "A statement must hold.", "x")], max_calls=6), Scripted(reply))
+    assert got["text"].startswith("I could not confirm")
 
 
 def test_a_removal_needs_most_of_three_confirmations_so_one_wrong_confirmation_does_not_delete_a_true_sentence():
@@ -296,7 +310,7 @@ def test_a_removal_needs_most_of_three_confirmations_so_one_wrong_confirmation_d
                 return json.dumps({"fails": next(votes)})
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=5), Scripted(reply))
-    assert got["text"] == draft and got["outcome"] == "held" and got["calls"] == 5
+    assert got["text"] == draft and got["outcome"] == "held" and got["calls"] == 4      # one view, three confirmations, no repair
 
 
 def test_a_rewrite_never_adds_a_figure_the_reply_did_not_state_so_it_becomes_a_removal():

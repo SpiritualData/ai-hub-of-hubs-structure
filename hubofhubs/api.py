@@ -214,7 +214,7 @@ NAMES = {
         "DecisionChecking", "OUTCOMES",
     ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes": (
-        "Line", "LineBook", "Mistake", "MistakeLog", "adopt", "distill", "new_mistake", "overruled_mistakes", "retire",
+        "CONFIRMED_FAILURE", "Line", "LineBook", "Mistake", "MistakeLog", "adopt", "distill", "new_mistake", "overruled_mistakes", "retire",
     ),
     "hubofhubs.the_intelligence.critical_thinking.esoi_application.apply": (
         "RecordFieldEdit", "TableRecords",
