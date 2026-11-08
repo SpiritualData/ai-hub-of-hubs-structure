@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 (2026-11-07)
+
 - Two Mind solutions, each with competing arms and an offline metric. `route-a-request` (`RequestRouting`) decides once whether a request asks to be told something, to have something done, to have text written in the reply, or is not yet understood: the arms are `single_classifier` (one cheap model call), `plan_derived` (the route read off the Planner's plan; a consumer subclass supplies the draft and clarify signals of its own planner) and `majority_floor`. `resolve-a-reference` (`ReferenceResolving`) ties a phrase to one of a list of candidates or abstains: the arms are `exact_match` (id, whole name or alias, whole words of one name), `model_judged` and `shared_words` (the bound that matches look-alikes). Both are in `hubofhubs.api`; the paid arms are not yet measured live.
 - Response Quality gains the generic reply guards as arms, each judging one criterion and able to repair: `grounded_figures` (a sentence stating a figure the evidence lacks is a finding and `repair` takes it out), `em_dash_free` (`repair` rewrites each em dash by punctuation rules) and `date_arithmetic` (a wrong "N days from today" or "N days before/after an event (date)" count). The interface gains `repair(response, evidence)`. Names exported in `hubofhubs.api`: `evidence_of`, `strip_unsupported`, `remove_em_dashes`, `clean_value`, `relativize`, `clean_roots`, `dates_in`, `month_of`, `today_of`, `day_count_errors`, `event_offset_errors` and the month and date patterns. Offline metric cases: `evaluation/response_quality`.
 
