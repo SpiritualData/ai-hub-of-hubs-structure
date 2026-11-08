@@ -25,7 +25,7 @@ research report that was not re-opened says so in `source_quality`, and anything
    contaminated, vendor-run, stale, or off our circumstance.
 
 `use` values: `metric-input` (sourced, not run by us), `run-subset`, `run-full`, `prior-only`, `not-useful`.
-Counts: 5 metric-input, 5 run-subset, 1 run-full, 30 prior-only, 14 not-useful. Most public numbers are priors, and that is the
+Counts: 6 metric-input, 5 run-subset, 1 run-full, 29 prior-only, 14 not-useful. Most public numbers are priors, and that is the
 honest result of this survey.
 
 ## Per seat
@@ -36,7 +36,7 @@ honest result of this survey.
 | model-call | Artificial Analysis price and speed columns, sourced with date | none |
 | vendor-model-caller | none | Arena (style preference), LiveBench (nothing verified) |
 | the-assembler | none | tau2-bench (vendor board, paid user simulator), GAIA (page unreadable) |
-| file-editing, delegated-agent-sessions, connected-system-operations | SWE-bench Pro rows for model shortlisting under one scaffold | Terminal-Bench (version moved to 4.0, 2.0 rows not mixable), Aider polyglot (eleven months old), METR (not updated), OSWorld (unread); SWE-bench Verified saturated, WebArena stale |
+| file-editing, delegated-agent-sessions, connected-system-operations | SWE-bench Pro rows for model shortlisting under one scaffold; Terminal-Bench 4.0 rows (two boards: vendor CLIs and mini-swe-agent) as public priors per arm ([the prior rule](../explanation/public-evidence.md#from-public-evidence-to-a-prior-per-arm), `delegated_agent_sessions/public_priors.csv`) | Terminal-Bench 2.0 submitter rows (hints only), Aider polyglot (eleven months old), METR (not updated), OSWorld (unread); SWE-bench Verified saturated, WebArena stale |
 | the-hands | MCP-Atlas model pass rates, triangulated with BFCL | BFCL V4 (call format is the minority of failures), Toolathlon (no primary source) |
 | the-world | none | BrowseComp (vendor), DeepResearch Bench (changing paid judge), browser-agent vendor figures |
 | web-search | none | single-source search accuracy table, one topic |

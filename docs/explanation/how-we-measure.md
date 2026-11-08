@@ -53,6 +53,9 @@ who ran it, whether the method is disclosed, its `n`, and its known confounds (`
   the disagreement is stated, with the likely reason (a different circumstance, model or task).
 - **As the only evidence, labelled so**, for a seat we have not yet measured.
 
+How a public number becomes a prior per arm, which arms to measure first, and when a prior expires:
+[public evidence](public-evidence.md#from-public-evidence-to-a-prior-per-arm).
+
 ## Circumstances
 
 The best arm can depend on the model and the harness. Each run records both, and a seat may select a different arm per

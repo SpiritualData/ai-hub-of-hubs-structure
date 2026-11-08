@@ -42,3 +42,43 @@ derived file. `esoi.toml` names it under `[evidence]` and maps the candidates th
 `[evidence.aliases]`; `esoi evidence list|grade|rank|table` and `esoi cascade` read it. The `public` stage of the
 `context-retriever` and `file-editing` metrics is satisfied only when graded evidence for an arm is at grade C or better, and it
 never replaces our own first-stage result.
+
+## From public evidence to a prior per arm
+
+Every solution's `public` cascade stage follows this rule. A solution whose arms are worth ordering before we measure them
+keeps a `public_priors.csv` beside its records: one row per arm, with the columns `arm_id`, `harness` (the implementation),
+the arm's parameters (for example `provider` and `tier`), `prior`, `grade`, `basis_evidence_ids`, `measure_first`, `reason`,
+`date_checked` and `expires`. Delegated Agent Sessions is the first
+(`hubofhubs/the_world/tools/delegated_agent_sessions/public_priors.csv`).
+
+1. **What counts.** Only `quality` rows of `hub_evidence.csv` that `esoi evidence grade` puts at C or better, on a benchmark
+   whose status is `live`, run no more than 180 days before `date_checked`. Vendor-only, saturated and archived rows never
+   set a prior; they may still be named in `basis_evidence_ids` as the reason for `measure_first`.
+2. **The prior is a number someone published, never one we estimate.** Resolve the arm to the exact model it runs (for
+   example the tier chooser's model for its provider and tier on `date_checked`).
+   - *Direct*: a counting row names this implementation (by its candidate or an `[evidence.aliases]` entry) and this model.
+     `prior` is its value as a fraction; `grade` is its grade.
+   - *Borrowed*: no direct row, but a counting row names this model under another harness, and the same benchmark version holds
+     at least two models run under both harnesses whose scores agree within the grader's tolerance for quality (10 percent
+     relative). `prior` is the other harness's value; `grade` is one letter below the weaker of the rows used; the reason says
+     "Borrowed" and `basis_evidence_ids` lists the comparison rows. One step only: a prior is never borrowed from a borrowed prior.
+   - *None*: otherwise `prior` and `grade` stay empty. A neighbouring model, an older benchmark version or a different
+     benchmark never fills it.
+   - When two counting rows give a direct value and disagree beyond the tolerance, the prior is empty and the reason names both.
+3. **How selection uses it.** Our own results always win at the stage they reach: an arm with a measured result is ranked by it,
+   and a prior never outranks or averages into a measured result, because a public benchmark's tasks are harder or different
+   from our cases and only the order carries over. A prior is used only (a) to order which unmeasured arms to measure first and
+   (b) as the labelled fallback ("public prior, grade B") for an eligible arm when no eligible arm has a real result yet. If our
+   first real stage orders two arms opposite to their priors by more than the tolerance, both priors are dropped for that
+   solution and the contradiction is reported.
+4. **What to measure first.** `measure_first` is `yes` for an arm the consumer can run (its credentials exist) whose prior is
+   empty or within the tolerance of the best prior among runnable arms, and `no` for an arm that cannot run here or whose
+   prior is below the best by more than the tolerance at no lower cost. An empty prior is a reason to measure, not to skip:
+   only our run can say.
+5. **Expiry.** A prior expires at `expires`: `date_checked` plus 90 days (leaderboards move with every model release), or
+   sooner when a basis row passes 180 days, the benchmark moves to a new version, or the arm's parameters resolve to a
+   different model. An expired prior is empty until the boards are read again; re-reading means opening the pages, adding the
+   new rows to `hub_evidence.csv` and rewriting the priors file.
+
+The rule is generic and lives here; a solution's metric names it in the `when` of its `public` stage. It is not yet code in
+esoi: the library's `public` stage only checks that graded evidence exists for an implementation, not per arm parameter.
