@@ -32,6 +32,8 @@ def prepared(request, knowledge):
 
 def adapt(implementation, meter, knowledge="retrieved"):
     def run(kind, args):
+        if kind == "depth":
+            return depth_case(meter, args)
         made = prepared(args["request"], args.get("knowledge") or knowledge)
         if kind == "reaches":
             return {"briefs": made}
@@ -48,6 +50,9 @@ def finding_text(finding):
 
 def score_case(fn, case):
     got = fn(case["kind"], case["args"])
+    if case["kind"] == "depth":
+        return {"id": case["id"], "kind": "depth", "one_call": got.get("before"), "depth": got.get("after"), "calls": got.get("calls"),
+                "ok": (got.get("after") or 0) > (got.get("before") or 0) or got.get("before") == 1, "met": got.get("met")}
     sid = case["expect"]["solution"]
     brief = next((b for b in got["briefs"]["solutions"] if b["solution_id"] == sid), None)
     row = {"id": case["id"], "kind": case["kind"], "named": brief is not None, "prompt_chars": len((brief or {}).get("prompt", ""))}
@@ -64,6 +69,11 @@ def score_case(fn, case):
 
 def aggregate(rows):
     out = {}
+    deep = [r for r in rows if r.get("kind") == "depth"]
+    if deep:
+        out["one_call_mean"] = round(sum(r["one_call"] or 0 for r in deep) / len(deep), 3)
+        out["depth_mean"] = round(sum(r["depth"] or 0 for r in deep) / len(deep), 3)
+        out["depth_calls_per_case"] = round(sum(r["calls"] or 0 for r in deep) / len(deep), 2)
     for kind in ("reaches", "verdict"):
         mine = [r for r in rows if r.get("kind") == kind]
         if mine:
@@ -72,3 +82,65 @@ def aggregate(rows):
     if calls:
         out["calls_per_case"] = round(sum(calls) / len(calls), 2)
     return out
+
+
+WRITE = "Write the following. Use no em dashes. Reply with the text only.\n\n{prompt}\n\nWhat to write: {goal}\nIt must meet every one of these:\n{requirements}"
+JUDGE = ("For each numbered requirement, say whether the text meets it, and quote the exact words of the text that show it. Reply with JSON only: "
+         "{{\"items\": [{{\"n\": 1, \"met\": true, \"quote\": \"<exact words from the text>\"}}]}}\n\nRequirements:\n{requirements}\n\nText:\n{text}")
+
+
+def parse_reply(text):
+    import json
+    raw = str(text or "")
+    start, end = raw.find("{"), raw.rfind("}")
+    try:
+        found = json.loads(raw[start:end + 1]) if start >= 0 and end > start else {}
+    except ValueError:
+        return {}
+    return found if isinstance(found, dict) else {}
+
+
+def rubric_check(ask):
+    """The rubric's own check, never the writer: a requirement counts as met only when the judge says so and its quote is found in the text."""
+    def check(text, item):
+        reqs = list(item["requirements"])
+        listing = "\n".join(f"{n}. {r}" for n, r in enumerate(reqs, 1))
+        got = parse_reply(ask(JUDGE.format(requirements=listing, text=text)))
+        met = set()
+        for row in got.get("items") or []:
+            quote = " ".join(str(row.get("quote") or "").split())
+            if row.get("met") is True and quote and quote.lower() in " ".join(text.split()).lower() and isinstance(row.get("n"), int) and 1 <= row["n"] <= len(reqs):
+                met.add(row["n"] - 1)
+        missing = [r for n, r in enumerate(reqs) if n not in met]
+        return {"met": not missing, "score": round(len(met) / len(reqs), 3), "missing": missing}
+    return check
+
+
+def writer(ask):
+    def work(item):
+        return ask(WRITE.format(prompt=item.get("prompt", ""), goal=item["goal"], requirements="\n".join(f"- {r}" for r in item["requirements"])))
+    return work
+
+
+COMBINE = ("Combine into one finished text that meets every requirement below. Keep what the earlier text already does well, and use each part "
+           "for the requirement it was written for. Use no em dashes. Reply with the text only.\n\nWhat to write: {goal}\nRequirements:\n{requirements}"
+           "\n\nEarlier text:\n{base}\n\nParts:\n{parts}")
+
+
+def combiner(ask):
+    """The Response Writer's part of depth: one writing call that makes the parts one text (appending parts breaks whole-text requirements)."""
+    def combine(item, base, parts):
+        return ask(COMBINE.format(goal=item["goal"], requirements="\n".join(f"- {r}" for r in item["requirements"]), base=base,
+                                  parts="\n\n".join(f"For: {p['requirements'][0]}\n{p.get('text', '')}" for p in parts)))
+    return combine
+
+
+def depth_case(meter, args):
+    """The one-call deliverable and the same deliverable given depth (build_out), scored by the same rubric check."""
+    from hubofhubs.api import build_out
+    plumbing = Plumbing(meter)
+    ask = lambda prompt: plumbing.ask(prompt, "cheap")
+    item = {"goal": args["goal"], "requirements": args["requirements"], "prompt": ""}
+    work, check = writer(ask), rubric_check(ask)
+    one = work(item)
+    return dict(build_out(item, work, check, combine=combiner(ask), base=one))

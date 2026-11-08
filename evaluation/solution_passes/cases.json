@@ -160,5 +160,62 @@
     "203"
    ]
   }
+ },
+ {
+  "id": "depth-volunteer-welcome",
+  "kind": "depth",
+  "description": "one-call deliverable against depth on the same rubric",
+  "args": {
+   "goal": "A welcome message for a new volunteer who will moderate an online study group",
+   "requirements": [
+    "names the volunteer's role as study group moderator",
+    "gives exactly three first-week steps, numbered",
+    "states one boundary of the role (what a moderator does not do)",
+    "names where to ask for help",
+    "ends with a single question asking the volunteer to confirm a start date",
+    "stays under 200 words"
+   ]
+  },
+  "expect": {
+   "full": 6
+  }
+ },
+ {
+  "id": "depth-release-note",
+  "kind": "depth",
+  "description": "one-call deliverable against depth on the same rubric",
+  "args": {
+   "goal": "A release note for a feature that lets people export their saved notes as a file",
+   "requirements": [
+    "names who the feature is for",
+    "says how to start an export in one sentence",
+    "names the file format",
+    "states one limit of the export",
+    "says what happens to the notes after export (they stay)",
+    "has a title line of at most eight words"
+   ]
+  },
+  "expect": {
+   "full": 6
+  }
+ },
+ {
+  "id": "depth-study-plan",
+  "kind": "depth",
+  "description": "one-call deliverable against depth on the same rubric",
+  "args": {
+   "goal": "A one-week study plan for a person learning the basics of a new programming language, one hour a day",
+   "requirements": [
+    "lists seven days, one line each",
+    "each day names one concrete exercise",
+    "day seven is a small project that uses what days one to six covered",
+    "names one free resource by its kind (for example official tutorial)",
+    "says how the person checks they understood each day",
+    "fits one hour a day"
+   ]
+  },
+  "expect": {
+   "full": 6
+  }
  }
 ]
