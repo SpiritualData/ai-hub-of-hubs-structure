@@ -8,7 +8,9 @@ surface. For each event, in the context of the turn so far, ``communicate`` retu
   default for the raw Mind stream (plans, reads, model chunks, token counts, traces).
 * ``DELIVER_STATUS``: shown to someone watching right now and REPLACED by the next thing they are shown; never kept in the
   conversation history. The first status of a turn is the acknowledgement (``hubofhubs.the_world.tools.acknowledge``),
-  due before any slow work, within ``ack_within_seconds``. Later statuses mark a phase change.
+  due before any slow work, within ``ack_within_seconds``. Later statuses mark a phase change. An interim the Mind marks
+  ``data["announce"] is True`` (where things stand and what happens next, written before the work it announces) is a
+  status too, however long the turn has run: it says what is coming, not what was found.
 * ``DELIVER_DURABLE``: kept in the conversation, because the person would want to see it if they came back later. The final
   answer is durable. A partial result is durable when a long stretch of work produced something usable and another long
   stretch is still coming, so a person who left is not left with nothing; otherwise it is only a status.
@@ -52,6 +54,10 @@ REASON_NOTHING_USABLE = "nothing_usable"
 REASON_SHORT_STRETCH = "short_stretch"
 REASON_ENDING_SOON = "ending_soon"
 REASON_MIND_STREAM = "mind_stream"
+REASON_ANNOUNCE = "announces_work"
+
+#: The ``data`` key with which the Mind marks an interim that announces the work to come rather than a result of it.
+ANNOUNCE_KEY = "announce"
 
 
 @dataclass(frozen=True)
@@ -124,6 +130,8 @@ def communicate(event: Any, turn: TurnSoFar = TurnSoFar(), policy: Communication
     if etype in (EVENT_INTERIM, EVENT_MILESTONE):
         if not has_usable_content(text, data):
             return Delivery(DELIVER_NOTHING, REASON_NOTHING_USABLE)
+        if data.get(ANNOUNCE_KEY) is True:
+            return Delivery(DELIVER_STATUS, REASON_ANNOUNCE)
         if data.get("notify") is True:
             return Delivery(DELIVER_ASK, REASON_NOTIFY, notify=True)
         stretch = turn.elapsed_seconds - (turn.last_durable_at or 0.0)

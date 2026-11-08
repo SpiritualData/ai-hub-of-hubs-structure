@@ -1,5 +1,5 @@
 """The communication policy: each Mind event becomes nothing, a status, a durable message or an ask, from structure only."""
-from hubofhubs.api import (DELIVER_ASK, DELIVER_DURABLE, DELIVER_NOTHING, DELIVER_STATUS, EVENT_DECISION, EVENT_INTERIM,
+from hubofhubs.api import (ANNOUNCE_KEY, DELIVER_ASK, DELIVER_DURABLE, DELIVER_NOTHING, DELIVER_STATUS, EVENT_DECISION, EVENT_INTERIM,
                            EVENT_MILESTONE, EVENT_PARTIAL, EVENT_PLAN, EVENT_READ, EVENT_RESULT, EVENT_STATUS,
                            EVENT_TOKENS, EVENT_WORK_TRACE, CommunicationPolicy, ProgressEvent, TurnCommunicator,
                            TurnSoFar, ack_event, communicate)
@@ -68,3 +68,10 @@ def test_the_long_stretch_is_a_parameter_and_the_communicator_keeps_the_clock():
     assert talk.decide(interim()).kind == DELIVER_STATUS, "the stretch restarted at the kept message"
     now[0] = 23.0
     assert talk.decide(interim()).kind == DELIVER_DURABLE
+
+
+def test_an_interim_that_announces_the_work_is_a_status_however_long_the_turn_ran():
+    turn = TurnSoFar(elapsed_seconds=90.0)
+    d = communicate(interim(text="The goal stands at 3 of 10. Adding the two goals now.", **{ANNOUNCE_KEY: True}), turn)
+    assert d.kind == DELIVER_STATUS and not d.kept
+    assert communicate(interim(), turn).kind == DELIVER_DURABLE, "an unmarked partial result is still kept"
