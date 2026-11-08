@@ -119,6 +119,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Metric Translation | Critical Thinking | 0 | 0 | 0 | none | `metric-translation` |
 | Goal Completion | Critical Thinking | 0 | 0 | 0 | none | `goal-completion` |
 | Response Quality | Critical Thinking | 5 | 5 | 26 | 2026-10-30 | `response-quality` |
+| Decision Check | Critical Thinking | 0 | 0 | 0 | none | `decision-check` |
 | Nervous System | Intelligence | 5 | 5 | 29 | 2026-10-30 | `nervous-system` |
 | Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
 | World | the hub | 7 | 1 | 36 | 2026-10-30 | `the-world` |

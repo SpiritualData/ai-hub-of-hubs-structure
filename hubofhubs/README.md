@@ -46,7 +46,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/__init__.py`](the_intelligence/critical_thinking/esoi_application/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/apply.py`](the_intelligence/critical_thinking/esoi_application/apply.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/interface.py`](the_intelligence/critical_thinking/esoi_application/interface.py), [`hubofhubs/the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py`](the_intelligence/critical_thinking/esoi_application/tests/test_esoi_application.py), [`hubofhubs/the_intelligence/critical_thinking/flow.py`](the_intelligence/critical_thinking/flow.py), [`hubofhubs/the_intelligence/critical_thinking/goal_completion/__init__.py`](the_intelligence/critical_thinking/goal_completion/__init__.py) and 170 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](the_intelligence/critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](the_intelligence/critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](the_intelligence/critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](the_intelligence/critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](the_intelligence/critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/tests/test_decision_check.py`](the_intelligence/critical_thinking/decision_check/tests/test_decision_check.py) and 176 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -81,6 +81,7 @@ Keep the system aligned with the humans and policies it works for.
 - [Integrity](the_self/integrity/README.md) (solution with implementations): Keep the whole honest and usable by any consumer: what the system says about itself and what it did matches the record.
 - [Role Understanding](the_self/role_understanding/README.md) (solution with implementations): Give every part a role in the whole that the part and the Assembler can both read.
 - [Learning](the_world/learning/README.md) (solution with implementations and parts below it): Keep what the hub recommends current with the outside.
+- [Decision Check](the_intelligence/critical_thinking/decision_check/README.md) (solution with implementations): Give a draft decision to small independent checks that check each other's work, within a declared number of calls.
 - [ESOI Application](the_intelligence/critical_thinking/esoi_application/README.md) (solution with implementations): Apply a proposed edit to the system's own specs and metrics exactly as proposed: an AI is the author of the specs, and the edit is applied directly unless Judgment Calls decides to ask.
 - [Goal Completion](the_intelligence/critical_thinking/goal_completion/README.md) (solution with implementations): Check that the goal was met.
 - [Metric Translation](the_intelligence/critical_thinking/metric_translation/README.md) (solution with implementations): Make what success means for a request explicit and measurable as a goal record: the metric, its target, the done-standard and the budget (attempts, pieces and model calls) that Delegation and Model Plumbing enforce.
@@ -180,6 +181,7 @@ flowchart LR
 - Down: [hubofhubs/the_self/role_understanding](the_self/role_understanding/README.md)
 - Down: [hubofhubs/the_world/learning](the_world/learning/README.md)
 - Down: [hubofhubs/the_world/science](the_world/science/README.md)
+- Down: [hubofhubs/the_intelligence/critical_thinking/decision_check](the_intelligence/critical_thinking/decision_check/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/esoi_application](the_intelligence/critical_thinking/esoi_application/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/goal_completion](the_intelligence/critical_thinking/goal_completion/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/metric_translation](the_intelligence/critical_thinking/metric_translation/README.md)

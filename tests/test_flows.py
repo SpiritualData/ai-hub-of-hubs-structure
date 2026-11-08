@@ -162,7 +162,7 @@ def test_critical_thinking_resolves_the_profile_and_reports_goal_and_quality_ste
     arm = hubofhubs.resolve("critical-thinking", "composition")
     from hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check import EvidenceCheck
 
-    part = arm(Absent(), Absent(), Absent(), EvidenceCheck())
+    part = arm(Absent(), Absent(), Absent(), EvidenceCheck(), Absent())
     result = part.evaluate("q", "See https://other.example/x", {"done_standard": "cited"}, "x", priorities={"quality_weights": {"safety": 0.4}})
     assert result["profile"] == "default+prioritization"
     assert [(s["solution"], s["status"]) for s in result["steps"]] == [("goal-completion", "pending"), ("response-quality", "done")]      # a pending check is reported, never faked

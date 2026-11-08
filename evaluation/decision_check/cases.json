@@ -1,0 +1,830 @@
+[
+ {
+  "id": "pick-right-all-agree",
+  "kind": "pick",
+  "args": {
+   "draft": "g1",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Prune the apple trees before spring",
+      "evidence": "Anything about trees or fruit belongs to Orchard Planning."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Prune the apple trees before spring",
+      "evidence": "Plant new pear trees -> Orchard Planning. Prune the plum trees -> Orchard Planning."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Prune the apple trees before spring",
+      "evidence": "Orchard Planning: trees and fruit. Greenhouse Repairs: glass and heaters. Seed Orders: packets and suppliers."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g1"
+ },
+ {
+  "id": "pick-wrong-rules-decide",
+  "kind": "pick",
+  "args": {
+   "draft": "g3",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Replace the cracked glass panel",
+      "evidence": "Broken glass, heaters and vents belong to Greenhouse Repairs."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Replace the cracked glass panel",
+      "evidence": "Order tomato seeds -> Seed Orders. Fix the vent hinge -> Greenhouse Repairs."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Replace the cracked glass panel",
+      "evidence": "Seed Orders: packets and suppliers, including panels of seed samples."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g2"
+ },
+ {
+  "id": "pick-wrong-examples-decide",
+  "kind": "pick",
+  "args": {
+   "draft": "g1",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Reorder the basil packets from the usual supplier",
+      "evidence": "No rule covers this item."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Reorder the basil packets from the usual supplier",
+      "evidence": "Reorder carrot packets from the supplier -> Seed Orders. Reorder lettuce packets -> Seed Orders. Reorder basil packets -> Seed Orders."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Reorder the basil packets from the usual supplier",
+      "evidence": "Orchard Planning: trees and fruit and herbs of the orchard."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g3"
+ },
+ {
+  "id": "pick-description-misleads-rules-decide",
+  "kind": "pick",
+  "args": {
+   "draft": "g2",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Check the heater in the seed room",
+      "evidence": "Heaters belong to Greenhouse Repairs, wherever they are."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Check the heater in the seed room",
+      "evidence": "Order seed trays -> Seed Orders."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Check the heater in the seed room",
+      "evidence": "Seed Orders: everything about the seed room."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g2"
+ },
+ {
+  "id": "pick-nothing-decides-draft-stands",
+  "kind": "pick",
+  "args": {
+   "draft": "g1",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Talk to Sam about the plan",
+      "evidence": "No rule covers this item."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Talk to Sam about the plan",
+      "evidence": "No example resembles this item."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Talk to Sam about the plan",
+      "evidence": "No description mentions a person or a plan."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g1"
+ },
+ {
+  "id": "pick-views-split-nothing-decides",
+  "kind": "pick",
+  "args": {
+   "draft": "g2",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Sort out the shed",
+      "evidence": "No rule covers this item."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Sort out the shed",
+      "evidence": "Clean the shed floor -> Seed Orders. Clean the shed roof -> Orchard Planning."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Sort out the shed",
+      "evidence": "No description mentions a shed."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": ""
+ },
+ {
+  "id": "pick-right-despite-misleading-example",
+  "kind": "pick",
+  "args": {
+   "draft": "s2",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "s1",
+      "text": "Podcast Production"
+     },
+     {
+      "id": "s2",
+      "text": "Newsletter"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Write the monthly subscriber letter",
+      "evidence": "Anything sent to subscribers belongs to Newsletter."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Write the monthly subscriber letter",
+      "evidence": "Record the guest interview -> Podcast Production. Write the monthly recap -> Podcast Production."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Write the monthly subscriber letter",
+      "evidence": "Podcast Production: recording, editing and show notes. Newsletter: letters to subscribers."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "s2"
+ },
+ {
+  "id": "pick-wrong-rules-and-examples-agree",
+  "kind": "pick",
+  "args": {
+   "draft": "s2",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "s1",
+      "text": "Podcast Production"
+     },
+     {
+      "id": "s2",
+      "text": "Newsletter"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Cut the silence from episode 4",
+      "evidence": "Editing audio belongs to Podcast Production."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Cut the silence from episode 4",
+      "evidence": "Cut the intro of episode 3 -> Podcast Production."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Cut the silence from episode 4",
+      "evidence": "Newsletter: episode summaries."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "s1"
+ },
+ {
+  "id": "pick-right-rules-only",
+  "kind": "pick",
+  "args": {
+   "draft": "s1",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "s1",
+      "text": "Podcast Production"
+     },
+     {
+      "id": "s2",
+      "text": "Newsletter"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Book the studio for the guest recording",
+      "evidence": "Recording sessions belong to Podcast Production."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Book the studio for the guest recording",
+      "evidence": "No example resembles this item."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Book the studio for the guest recording",
+      "evidence": "Podcast Production: recording. Newsletter: letters."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "s1"
+ },
+ {
+  "id": "pick-wrong-descriptions-only",
+  "kind": "pick",
+  "args": {
+   "draft": "g1",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Compare prices of three catalog suppliers",
+      "evidence": "No rule covers this item."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Compare prices of three catalog suppliers",
+      "evidence": "No example resembles this item."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Compare prices of three catalog suppliers",
+      "evidence": "Seed Orders: choosing suppliers and ordering. Orchard Planning: planting plans."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g3"
+ },
+ {
+  "id": "pick-draft-right-views-silent",
+  "kind": "pick",
+  "args": {
+   "draft": "g2",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Fix the leaking tap in the potting shed",
+      "evidence": "No rule covers this item."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Fix the leaking tap in the potting shed",
+      "evidence": "No example resembles this item."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Fix the leaking tap in the potting shed",
+      "evidence": "No description covers a tap or a shed."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g2"
+ },
+ {
+  "id": "pick-rules-override-examples",
+  "kind": "pick",
+  "args": {
+   "draft": "g3",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "g1",
+      "text": "Orchard Planning"
+     },
+     {
+      "id": "g2",
+      "text": "Greenhouse Repairs"
+     },
+     {
+      "id": "g3",
+      "text": "Seed Orders"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Order twelve apple saplings",
+      "evidence": "Anything about trees belongs to Orchard Planning even when it is ordered."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Order twelve apple saplings",
+      "evidence": "Order tomato seeds -> Seed Orders. Order saplings from the nursery -> Seed Orders."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Order twelve apple saplings",
+      "evidence": "Seed Orders: ordering."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "g1"
+ },
+ {
+  "id": "pick-two-views-vs-draft",
+  "kind": "pick",
+  "args": {
+   "draft": "s1",
+   "binding": {
+    "kind": "pick",
+    "options": [
+     {
+      "id": "s1",
+      "text": "Podcast Production"
+     },
+     {
+      "id": "s2",
+      "text": "Newsletter"
+     }
+    ],
+    "views": [
+     {
+      "id": "rules",
+      "instruction": "Pick the option the owner's rules and scopes give for this item. Use only the rules. Item: Draft the subscriber thank-you note",
+      "evidence": "Notes to subscribers belong to Newsletter."
+     },
+     {
+      "id": "examples",
+      "instruction": "Pick the option that the prior examples most clearly show for an item like this one. Use only the examples. Item: Draft the subscriber thank-you note",
+      "evidence": "Draft a thank-you note to subscribers -> Newsletter."
+     },
+     {
+      "id": "descriptions",
+      "instruction": "Pick the option whose description fits this item best. Use only the descriptions. Item: Draft the subscriber thank-you note",
+      "evidence": "Podcast Production: thanks to guests."
+     }
+    ],
+    "max_calls": 6
+   }
+  },
+  "expect": "s2"
+ },
+ {
+  "id": "reply-false-read-claim",
+  "kind": "reply",
+  "args": {
+   "draft": "I read the budget file and the plan. The plan has three phases.",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\nplan.md"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\n(none)"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [
+    "I read the budget file"
+   ],
+   "keep": [
+    "The plan has three phases."
+   ]
+  }
+ },
+ {
+  "id": "reply-false-sent-claim",
+  "kind": "reply",
+  "args": {
+   "draft": "I sent the invoice to the client. The total is 40.",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\n(none)"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\nsend_email: to the team, subject Weekly notes"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [
+    "I sent the invoice to the client."
+   ],
+   "keep": [
+    "The total is 40."
+   ]
+  }
+ },
+ {
+  "id": "reply-clean",
+  "kind": "reply",
+  "args": {
+   "draft": "I read the plan. I created the task for Friday.",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\nplan.md"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\ncreate_task: Friday review"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [],
+   "keep": [
+    "I read the plan.",
+    "I created the task for Friday."
+   ]
+  }
+ },
+ {
+  "id": "reply-question-to-absent-person",
+  "kind": "reply",
+  "args": {
+   "draft": "I filed the report. Dana, can you approve the budget today?",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\n(none)"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\nfile_report: Q3"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [
+    "Dana, can you approve the budget today?"
+   ],
+   "keep": [
+    "I filed the report."
+   ]
+  }
+ },
+ {
+  "id": "reply-question-to-present-person",
+  "kind": "reply",
+  "args": {
+   "draft": "I filed the report. Sam, do you want it sent today?",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\n(none)"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\nfile_report: Q3"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [],
+   "keep": [
+    "I filed the report.",
+    "Sam, do you want it sent today?"
+   ]
+  }
+ },
+ {
+  "id": "reply-two-false-claims",
+  "kind": "reply",
+  "args": {
+   "draft": "I looked up the venue page. I booked the hall for Monday. The hall seats 80.",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\n(none)"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\n(none)"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [
+    "I looked up the venue page.",
+    "I booked the hall for Monday."
+   ],
+   "keep": [
+    "The hall seats 80."
+   ]
+  }
+ },
+ {
+  "id": "reply-true-claims-kept",
+  "kind": "reply",
+  "args": {
+   "draft": "I checked the calendar and moved the call to 3 pm.",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\ncalendar.ics"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\nmove_event: call to 3 pm"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [],
+   "keep": [
+    "I checked the calendar",
+    "moved the call to 3 pm"
+   ]
+  }
+ },
+ {
+  "id": "reply-action-planned-not-claimed",
+  "kind": "reply",
+  "args": {
+   "draft": "I will send the invoice tomorrow. I read the plan.",
+   "binding": {
+    "kind": "reply",
+    "views": [
+     {
+      "id": "claims",
+      "instruction": "A statement that something was read or looked up must be supported by the reads listed in the evidence. Statements about anything else are not this task.",
+      "evidence": "Reads:\nplan.md"
+     },
+     {
+      "id": "actions",
+      "instruction": "A statement that an action was done (past tense, as a fact) must be supported by an executed action record in the evidence. A plan or promise, a read, a question or a fact about the world is not this task.",
+      "evidence": "Executed actions:\n(none)"
+     },
+     {
+      "id": "asks",
+      "instruction": "A question or request addressed to a named person who is not listed as present in the evidence fails this task. A question to a person who is present, and every statement that is not a question or request, does not fail it.",
+      "evidence": "Present in this conversation: Sam"
+     }
+    ],
+    "max_calls": 8
+   }
+  },
+  "expect": {
+   "remove": [],
+   "keep": [
+    "I will send the invoice tomorrow.",
+    "I read the plan."
+   ]
+  }
+ }
+]

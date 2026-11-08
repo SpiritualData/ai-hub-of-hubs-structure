@@ -204,6 +204,18 @@ NAMES = {
     "hubofhubs.the_consciousness.terminal.trace": (
         "WorkTrace", "domain_of", "project", "validate",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement": (
+        "AgreementCheck", "AgreementWithKnownMistakes", "DraftAsGiven", "SingleVerify",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.decision_check.checks": (
+        "CheckBinding", "View", "Vote", "as_binding",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.decision_check.interface": (
+        "DecisionChecking", "OUTCOMES",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes": (
+        "Line", "LineBook", "Mistake", "MistakeLog", "adopt", "distill", "new_mistake", "overruled_mistakes", "retire",
+    ),
     "hubofhubs.the_intelligence.critical_thinking.esoi_application.apply": (
         "RecordFieldEdit", "TableRecords",
     ),
