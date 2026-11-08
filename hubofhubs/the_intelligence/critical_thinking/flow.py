@@ -11,7 +11,10 @@ from hubofhubs.the_intelligence.critical_thinking.metric_upkeep.interface import
 from hubofhubs.the_intelligence.critical_thinking.pursuit import REFUSED_BOOKKEEPING, BoundedReplan, choose_increment, doable_by_ai
 from hubofhubs.the_intelligence.critical_thinking.metric_translation.interface import MetricTranslating
 from hubofhubs.the_intelligence.critical_thinking.response_quality.interface import ResponseJudging
-from hubofhubs.the_self.steps import DONE, listing, skipped, take
+from hubofhubs.the_intelligence.critical_thinking.solution_passes.interface import SolutionConsidering
+from hubofhubs.the_intelligence.critical_thinking.solution_passes.depth import build_out
+from hubofhubs.the_intelligence.critical_thinking.solution_passes.write_back import combined_check, proposals_of
+from hubofhubs.the_self.steps import DONE, NO_ARM, PENDING, Step, listing, skipped, take
 from hubofhubs.the_self.steps import done
 
 
@@ -21,15 +24,68 @@ class CriticalThinkingComposition:
     Completion says whether the goal was met, ``pursue`` keeps working while it is unmet, with the untried reads and within a budget, and Response Quality judges the response against the quality profile resolved for this request
     (the Representative's, Guidance's and Prioritization's, else the default), and Decision Check tests a draft decision with independent checks. ``progress``
     composes one measurable step on a milestone: Metric Upkeep, then the increment rule, the before reading, the work, ``pursue`` (which refuses a bookkeeping-only
-    result) and the after reading."""
+    result) and the after reading. ``consider`` gives each solution the request concerns its own pass through Solution Passes, ``check_pieces``
+    holds each plan piece to its own solution's target through Goal Completion and checks that the pieces still combine, and ``write_back`` has ESOI
+    Application record what was learned (knowledge items, results, candidates) so the next request's prompts carry it."""
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, metric: Lazy[MetricTranslating], esoi: Lazy[EsoiApplying], goal: Lazy[GoalCompleting], quality: Lazy[ResponseJudging],
-                 decision: Lazy[DecisionChecking], upkeep: Lazy[MetricUpkeeping]):
+                 decision: Lazy[DecisionChecking], upkeep: Lazy[MetricUpkeeping], consideration: Lazy[SolutionConsidering] = None):
         self.metric, self.esoi, self.goal, self.quality, self.decision, self.metric_upkeep = metric, esoi, goal, quality, decision, upkeep
+        self.consideration = consideration
 
-    def translate(self, request: str, parent: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
-        found = take(self.metric, "metric-translation", request=request, parent=parent)
+    def consider(self, request: str, briefs: Mapping[str, Any], own_passes: Optional[Mapping[str, Callable[..., Mapping[str, Any]]]] = None,
+                 limits: Optional[Mapping[str, int]] = None, ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]:
+        """One pass per solution the request concerns, then the scopes above and the dependents (Solution Passes)."""
+        found = take(self.consideration, "solution-passes", request=request, briefs=briefs, own_passes=own_passes, limits=limits, ask=ask) \
+            if self.consideration is not None else Step("solution-passes", PENDING, reason=NO_ARM)
+        return {**dict(done(found) or {}), "steps": listing([found])}
+
+    def check_pieces(self, results: Sequence[Mapping[str, Any]], considered: Mapping[str, Any]) -> Mapping[str, Any]:
+        """Each piece tied to a solution is checked against that solution's own target (Goal Completion), and the parent passes' findings say whether
+        the pieces still combine: ``pieces`` (solution, met, reason, the target it was held to) and ``combined`` (``met``, ``reasons``)."""
+        findings = {f["solution_id"]: f for f in considered.get("findings") or []}
+        pieces, log = [], []
+        for result in results:
+            finding = findings.get(str(result.get("solution_id") or ""))
+            if finding is None:
+                continue
+            target = finding.get("target") or {}
+            standard = str(target.get("done_when") or finding.get("needs") or "")
+            met = take(self.goal, "goal-completion", goal=str(result.get("piece") or ""), done_standard=standard,
+                       outcome={"text": str(result.get("text") or ""), "refused": str(result.get("refused") or ""), "error": str(result.get("error") or "")})
+            log.append(met)
+            verdict = done(met) or {}
+            pieces.append({"solution_id": finding["solution_id"], "piece": str(result.get("piece") or ""), "metric_id": str(target.get("metric_id") or ""),
+                           "value": str(target.get("value") or ""), "done_standard": standard, "met": verdict.get("met"), "reason": str(verdict.get("reason") or "")})
+        return {"pieces": pieces, "combined": combined_check(pieces, considered), "steps": listing(log)}
+
+    def build_out(self, item: Mapping[str, Any], work: Callable[[Mapping[str, Any]], str], check: Callable[[str, Mapping[str, Any]], Mapping[str, Any]],
+                  split: Optional[Callable[..., Sequence[Mapping[str, Any]]]] = None, combine: Optional[Callable[..., str]] = None,
+                  budget: Optional[Mapping[str, int]] = None, base: Optional[str] = None) -> Mapping[str, Any]:
+        """Depth for a piece that falls short of its own solution's metric: its check returns it, it is split into the sub-pieces its missing
+        requirements need (each with its own sub-prompt, done by ``work``), the parts are combined and checked again against the whole rubric,
+        within ``budget`` (calls, depth, width). See ``solution_passes.depth``."""
+        return build_out(item, work, check, split, combine, budget, base)
+
+    def write_back(self, considered: Mapping[str, Any], checked: Optional[Mapping[str, Any]] = None, today: str = "",
+                   apply: Optional[Callable[[Mapping[str, Any]], Mapping[str, Any]]] = None) -> Mapping[str, Any]:
+        """ESOI Application records what the request taught each solution: the knowledge items its pass proposed, the result of each checked piece
+        and the candidates it named, sourced, at the records location the seat (or ``apply``) writes to. Returns ``proposed`` and ``applied``."""
+        proposed = proposals_of(considered, checked or {}, today)
+        applied, log = [], []
+        for change in proposed:
+            if apply is not None:
+                applied.append({"change": change, "result": dict(apply(change) or {})})
+                continue
+            step = take(self.esoi, "esoi-application", change=change)
+            log.append(step)
+            applied.append({"change": change, "result": dict(done(step) or {"applied": False, "reason": step.reason})})
+        return {"proposed": proposed, "applied": applied, "steps": listing(log)}
+
+    def translate(self, request: str, parent: Optional[Mapping[str, Any]] = None, solutions: Sequence[Mapping[str, Any]] = ()) -> Mapping[str, Any]:
+        extra = {"solutions": list(solutions)} if solutions else {}       # each relevant solution's own target, from its own metric
+        found = take(self.metric, "metric-translation", request=request, parent=parent, **extra)
         recorded = take(self.esoi, "esoi-application", change={"metric": done(found)}) if found.status == DONE else skipped(
             "esoi-application", "no target to record as a spec")
         return {"target": done(found), "steps": listing([found, recorded])}

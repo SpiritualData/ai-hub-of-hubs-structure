@@ -1,0 +1,164 @@
+[
+ {
+  "id": "reach-graph-arm",
+  "kind": "reaches",
+  "description": "the record that decides the request reaches the pass of the solution it belongs to",
+  "args": {
+   "request": "Should Cards From Files switch to the Graphify arm? It is the most popular code graph tool."
+  },
+  "expect": {
+   "solution": "cards-from-files",
+   "record": "graphify_files: passed 3 of 63"
+  }
+ },
+ {
+  "id": "reach-keyword-papers",
+  "kind": "reaches",
+  "description": "the record that decides the request reaches the pass of the solution it belongs to",
+  "args": {
+   "request": "Switch the Science paper lookup to the plain OpenAlex keyword arm; keywords are simpler."
+  },
+  "expect": {
+   "solution": "the-science",
+   "record": "openalex_keywords: passed 3 of 40"
+  }
+ },
+ {
+  "id": "reach-draft-as-given",
+  "kind": "reaches",
+  "description": "the record that decides the request reaches the pass of the solution it belongs to",
+  "args": {
+   "request": "Drop the agreement check in Decision Check and send each draft decision as given, to save calls."
+  },
+  "expect": {
+   "solution": "decision-check",
+   "record": "draft_as_given: passed 10 of 21"
+  }
+ },
+ {
+  "id": "reach-risk-gate-off",
+  "kind": "reaches",
+  "description": "the record that decides the request reaches the pass of the solution it belongs to",
+  "args": {
+   "request": "Turn off the consent gate in the Nervous System; watching for risk adds nothing over no watch."
+  },
+  "expect": {
+   "solution": "nervous-system",
+   "record": "none: passed 30 of 60"
+  }
+ },
+ {
+  "id": "reach-no-edit-arm",
+  "kind": "reaches",
+  "description": "the record that decides the request reaches the pass of the solution it belongs to",
+  "args": {
+   "request": "Run file edits with no editing arm at all; the agent can edit files by itself."
+  },
+  "expect": {
+   "solution": "file-editing",
+   "record": "none: passed 0 of 30"
+  }
+ },
+ {
+  "id": "reach-fielded-retrieval",
+  "kind": "reaches",
+  "description": "the record that decides the request reaches the pass of the solution it belongs to",
+  "args": {
+   "request": "Should Context Retriever move from bm25_body to bm25_fielded since fielded search is more advanced?"
+  },
+  "expect": {
+   "solution": "context-retriever",
+   "record": "bm25_fielded: passed 187 of 395"
+  }
+ },
+ {
+  "id": "verdict-graph-arm",
+  "kind": "verdict",
+  "description": "the solution's own pass names the conflict with its recorded result",
+  "args": {
+   "request": "Should Cards From Files switch to the Graphify arm? It is the most popular code graph tool."
+  },
+  "expect": {
+   "solution": "cards-from-files",
+   "cites": [
+    "3 of 63",
+    "graphify"
+   ]
+  }
+ },
+ {
+  "id": "verdict-keyword-papers",
+  "kind": "verdict",
+  "description": "the solution's own pass names the conflict with its recorded result",
+  "args": {
+   "request": "Switch the Science paper lookup to the plain OpenAlex keyword arm; keywords are simpler."
+  },
+  "expect": {
+   "solution": "the-science",
+   "cites": [
+    "3 of 40",
+    "openalex_keywords"
+   ]
+  }
+ },
+ {
+  "id": "verdict-draft-as-given",
+  "kind": "verdict",
+  "description": "the solution's own pass names the conflict with its recorded result",
+  "args": {
+   "request": "Drop the agreement check in Decision Check and send each draft decision as given, to save calls."
+  },
+  "expect": {
+   "solution": "decision-check",
+   "cites": [
+    "10 of 21",
+    "draft_as_given"
+   ]
+  }
+ },
+ {
+  "id": "verdict-risk-gate-off",
+  "kind": "verdict",
+  "description": "the solution's own pass names the conflict with its recorded result",
+  "args": {
+   "request": "Turn off the consent gate in the Nervous System; watching for risk adds nothing over no watch."
+  },
+  "expect": {
+   "solution": "nervous-system",
+   "cites": [
+    "30 of 60",
+    "38 of 60"
+   ]
+  }
+ },
+ {
+  "id": "verdict-no-edit-arm",
+  "kind": "verdict",
+  "description": "the solution's own pass names the conflict with its recorded result",
+  "args": {
+   "request": "Run file edits with no editing arm at all; the agent can edit files by itself."
+  },
+  "expect": {
+   "solution": "file-editing",
+   "cites": [
+    "0 of 30",
+    "29 of 30"
+   ]
+  }
+ },
+ {
+  "id": "verdict-fielded-retrieval",
+  "kind": "verdict",
+  "description": "the solution's own pass names the conflict with its recorded result",
+  "args": {
+   "request": "Should Context Retriever move from bm25_body to bm25_fielded since fielded search is more advanced?"
+  },
+  "expect": {
+   "solution": "context-retriever",
+   "cites": [
+    "187",
+    "203"
+   ]
+  }
+ }
+]

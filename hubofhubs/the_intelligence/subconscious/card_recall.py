@@ -13,7 +13,10 @@ from hubofhubs.the_intelligence.subconscious.cards_from_files.interface import C
 from hubofhubs.the_body.internal_context.interface import InternalContexting
 from hubofhubs.the_intelligence.subconscious.context_retriever.interface import ContextRetrieval
 from hubofhubs.the_intelligence.subconscious.intuition.interface import Intuiting
-from hubofhubs.the_self.steps import listing, skipped, take
+from hubofhubs.the_intelligence.subconscious.solution_briefs import RETRIEVED, briefs
+from hubofhubs.the_intelligence.subconscious.relevant_solutions.interface import SolutionRelevance
+from hubofhubs.the_intelligence.subconscious.relevant_solutions.network import network_of
+from hubofhubs.the_self.steps import DONE, listing, skipped, take
 
 
 @implementation("the-subconscious", "card_recall")
@@ -22,22 +25,42 @@ class CardRecall:
     then the cards Internal Context finds by the query's words, each card once."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, internal: InternalContexting, builder: Lazy[CardsFromFiles], intuition: Lazy[Intuiting], retriever: Lazy[ContextRetrieval]):
+    def __init__(self, internal: InternalContexting, builder: Lazy[CardsFromFiles], intuition: Lazy[Intuiting], retriever: Lazy[ContextRetrieval],
+                 relevance: Lazy[SolutionRelevance] = None):
         self.internal = internal
         self.builder = builder
         self.intuition = intuition
         self.retriever = retriever
+        self.relevance = relevance
 
-    def prepare(self, request: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = 4000) -> Mapping[str, Any]:
+    def prepare(self, request: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = 4000, records: Any = None,
+                knowledge: str = RETRIEVED, limit: int = 5, depth: int = 3) -> Mapping[str, Any]:
         """What the Mind is handed for a request: the recalled cards, what Intuition offers (a pending step while it has no arm) and the pieces the Context
-        Retriever picks from what Internal Context returns and the files given. Every step is reported, none is made up."""
+        Retriever picks from what Internal Context returns and the files given. With the consumer's ESOI ``records``, also ``solutions``: the solutions the
+        request concerns (Relevant Solutions), each with its generated prompt and the knowledge that bears on it, and the scopes above and the dependents of
+        each. Every step is reported, none is made up."""
         held = take(self.internal, "internal-context", method="corpus")
         corpus = {**(held.output or {}), **(files or {})}
         offered = take(self.intuition, "the-intuition", request=request)
         pieces = take(self.retriever, "context-retriever", query=request, files=corpus, budget_tokens=budget_tokens) if corpus else skipped(
             "context-retriever", "Internal Context holds nothing to read yet")
-        return {"cards": list(self.recall(request)), "offered": offered.output or [], "pieces": list(pieces.output or []),
-                "steps": listing([held, offered, pieces])}
+        log = [held, offered, pieces]
+        out = {"cards": list(self.recall(request)), "offered": offered.output or [], "pieces": list(pieces.output or [])}
+        if records is not None and self.relevance is not None:
+            found = take(self.relevance, "relevant-solutions", request=request, records=records, limit=limit, depth=depth)
+            log.append(found)
+            if found.status == DONE:
+                offered_ids = [str(o.get("id") or o.get("card_id") or "") for o in (offered.output or []) if isinstance(o, Mapping)]
+                out["solutions"] = briefs(network_of(records), (found.output or {}).get("solutions") or [], request, knowledge,
+                                          self.knowledge_retriever(), offered_ids, self.internal.keep)
+        return {**out, "steps": listing(log)}
+
+    def knowledge_retriever(self) -> Any:
+        """The selected Context Retriever, or None when it cannot be built here (the records' own rank order is used then)."""
+        try:
+            return self.retriever.retrieve and self.retriever
+        except Exception:      # noqa: BLE001  a retriever that cannot be built is the ranked fallback, never a failed request
+            return None
 
     def learn(self, root: str, files: Sequence[str]) -> int:
         """Fill the kept cards from files the consumer already keeps: the selected builder proposes the cards, Internal Context keeps them.

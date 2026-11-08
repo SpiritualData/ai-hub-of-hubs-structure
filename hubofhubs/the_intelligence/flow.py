@@ -50,16 +50,29 @@ class IntelligenceComposition:
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
                 priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None,
-                objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "") -> Mapping[str, Any]:
+                objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "",
+                records: Any = None, own_passes: Optional[Mapping[str, Callable[..., Mapping[str, Any]]]] = None, knowledge: str = "retrieved",
+                ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]:
         view = take(self.higher, "higher-mind", request=request, person=person, objectives=objectives, stated=stated, now=now)
         long_view = done(view) or {}
-        translated = take(self.critical, "critical-thinking", method="translate", request=request, parent=most_important(long_view))
+        prepared = take(self.subconscious, "the-subconscious", method="prepare", request=request,
+                        **({"records": records, "knowledge": knowledge} if records is not None else {}))
+        briefs = (done(prepared) or {}).get("solutions") or {}
+        considered_step = (take(self.critical, "critical-thinking", method="consider", request=request, briefs=briefs, own_passes=own_passes, ask=ask)
+                           if briefs.get("solutions") else skipped("critical-thinking", "the request concerns no solution of the consumer's records"
+                                                                   if records is not None else "no ESOI records were given"))
+        considered = {**dict(done(considered_step) or {}), "prompts": {b["solution_id"]: b.get("prompt", "") for b in briefs.get("solutions") or []}}
+        own_targets = [{**dict(f.get("target") or {}), "solution_id": f["solution_id"], "name": f.get("name", "")}
+                       for f in considered.get("findings") or [] if f.get("applies") is not False]
+        translated = take(self.critical, "critical-thinking", method="translate", request=request, parent=most_important(long_view),
+                          **({"solutions": own_targets} if own_targets else {}))
         target = (done(translated) or {}).get("target")
-        prepared = take(self.subconscious, "the-subconscious", method="prepare", request=request)
         profile_inputs = {"representative": representative, "guidance": long_view.get("guidance"), "priorities": priorities}
         budget = dict((target or {}).get("budget") or {})
         attempts = int(budget.get("attempts") or 1)
-        log: List[Step] = [view, translated, prepared]
+        log: List[Step] = [view, prepared, considered_step, translated]
+        with_solutions = {"considered": considered} if considered.get("findings") else {}
+        pieces_checked: Step = skipped("critical-thinking", "no piece is tied to a solution")
         unmet: Optional[Mapping[str, Any]] = None
         outside: Optional[Mapping[str, Any]] = None
         checked: Step = skipped("critical-thinking", "the mind produced nothing to check")
@@ -67,7 +80,7 @@ class IntelligenceComposition:
         for attempt in range(1, max(attempts, 1) + 1):
             thought = take(self.mind, "the-mind", request=request, authority=representative, target=target, guidance=long_view.get("guidance"),
                            profile=resolve_profile(**profile_inputs), prepared=done(prepared), unmet=unmet, outside=outside, budget=budget,
-                           cancelled=cancelled)
+                           cancelled=cancelled, **with_solutions)
             thinking = done(thought) or {}
             text, results = thinking.get("text", ""), thinking.get("results", [])
             evidence = " ".join(str(i.get("url", "")) + " " + str(i.get("snippet", "")) for r in results for i in r.get("items") or ())
@@ -76,6 +89,15 @@ class IntelligenceComposition:
                                     "error": next((r["error"] for r in results if r.get("error")), "")}, **profile_inputs)
             log += [thought, checked]
             goal = (done(checked) or {}).get("goal")
+            short: List[Mapping[str, Any]] = []
+            if with_solutions:      # each piece against its own solution's target: a piece short of it returns to the Planner like an unmet goal
+                pieces_checked = take(self.critical, "critical-thinking", method="check_pieces", results=results, considered=considered)
+                log.append(pieces_checked)
+                verdict = done(pieces_checked) or {}
+                short = [p for p in verdict.get("pieces") or [] if p.get("met") is False]
+                if short or (verdict.get("combined") or {}).get("met") is False:
+                    goal = {"met": False, "reason": "; ".join([f"{p['solution_id']}: {p.get('reason') or 'short of its target'}" for p in short]
+                                                              + list((verdict.get("combined") or {}).get("reasons") or []))}
             if goal is None or goal.get("met"):      # met, or no check to replan on
                 break
             if any(r.get("refused") in ("authority", "cancelled") for r in results):
@@ -84,11 +106,15 @@ class IntelligenceComposition:
             if attempt >= attempts:
                 stopped = "budget"
                 break
-            unmet = {"failed_pieces": [str(r.get("piece", "")) for r in failed_pieces(results)], "reason": goal.get("reason", "")}
+            unmet = {"failed_pieces": [str(r.get("piece", "")) for r in failed_pieces(results)] + [str(p.get("piece", "")) for p in short],
+                     "reason": goal.get("reason", "")}
             outside = outside_of(results)
+        if with_solutions:      # what the passes and the last checks taught, written back for the next request's prompts
+            log.append(take(self.critical, "critical-thinking", method="write_back", considered=considered, checked=done(pieces_checked) or {}, today=now[:10]))
         if stopped and stopped != "cancelled":
             asked = take(self.judgment, "judgment-calls", signal={"severity": "none", "reason": (done(checked) or {}).get("goal", {}).get("reason", "")},
                          person=str((representative or {}).get("person", "")), context={"stopped": stopped})
             log.append(asked)
             escalation = done(asked)
-        return {"answer": text, "results": results, "attempts": attempt, "stopped": stopped, "escalation": escalation, "steps": listing(log)}
+        return {"answer": text, "results": results, "attempts": attempt, "stopped": stopped, "escalation": escalation, "steps": listing(log),
+                **({"considered": considered} if with_solutions else {})}

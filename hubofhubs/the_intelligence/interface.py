@@ -12,10 +12,15 @@ class InformationProcessing(typing.Protocol):
     authority runs out it goes to Judgment Calls. Returns a mapping with ``answer``, ``attempts``, ``escalation`` (Judgment Calls' decision, when
     the flow stopped unmet) and ``steps``. ``proactive`` returns the triggers Proactivity says are due together with the
     other waiting work, most important first as Prioritization orders it for the person (each with its ``rank``, ``priority_reason`` and ``metric``). Given the person's recorded ``objectives`` (solution milestones) to
-    ``process``, the one the person cares about most, as Prioritization orders them, is the parent the request is translated under."""
+    ``process``, the one the person cares about most, as Prioritization orders them, is the parent the request is translated under. Given the consumer's ESOI
+    ``records``, each solution the request concerns gets its own consideration (``own_passes`` replaces the model pass for a solution, ``knowledge`` says how
+    knowledge reaches each prompt, ``ask`` replaces the model call of the passes), each plan piece is held to its own solution's target, and the result
+    also holds ``considered``."""
 
     def process(self, request: str, person: str = "", representative: Optional[Mapping[str, Any]] = None,
                 priorities: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None,
-                objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "") -> Mapping[str, Any]: ...
+                objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "",
+                records: Any = None, own_passes: Optional[Mapping[str, Callable[..., Mapping[str, Any]]]] = None, knowledge: str = "retrieved",
+                ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]: ...
     def proactive(self, schedules: Sequence[Mapping[str, Any]], now: str = "", person: str = "", candidates: Sequence[Mapping[str, Any]] = (),
                   stated: Optional[Mapping[str, Any]] = None, events: Sequence[Mapping[str, Any]] = ()) -> Sequence[Mapping[str, Any]]: ...

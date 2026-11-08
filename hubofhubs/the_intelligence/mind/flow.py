@@ -6,6 +6,7 @@ from hubofhubs.the_intelligence.mind.context_intake.interface import ContextTaki
 from hubofhubs.the_intelligence.mind.delegation.interface import Delegating
 from hubofhubs.the_consciousness.judgment_calls.interface import JudgmentCalling
 from hubofhubs.the_intelligence.mind.planner.interface import Planning
+from hubofhubs.the_intelligence.mind.planner.solution_pieces import tie
 from hubofhubs.the_intelligence.mind.response_writer.interface import ResponseWriting
 from hubofhubs.the_intelligence.nervous_system.interface import RiskWatching
 from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal
@@ -26,7 +27,9 @@ def failed_pieces(results: Sequence[Mapping[str, Any]]) -> List[Mapping[str, Any
 class MindComposition:
     """The Mind for one request, in order: Context Intake, the Planner, Delegation and the Response Writer. Before a piece of work is handed on,
     the Nervous System signals how risky it is and Judgment Calls decides for this person; a piece that is not allowed is not delegated, and
-    one that is asked about waits for the answer while the others go on. On a replan, Context Intake takes in what the workers brought last time."""
+    one that is asked about waits for the answer while the others go on. On a replan, Context Intake takes in what the workers brought last time. Given
+    what each relevant solution's own pass found (``considered``), each planned piece is tied to the solution it serves and held to that solution's
+    target, a needing solution no piece serves gets a piece of its own, and a worker that takes a brief gets that solution's generated prompt."""
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, intake: Lazy[ContextTaking], planner: Lazy[Planning], delegation: Lazy[Delegating], writer: Lazy[ResponseWriting],
@@ -37,14 +40,16 @@ class MindComposition:
     def think(self, request: str, authority: Optional[Mapping[str, Any]] = None, target: Optional[Mapping[str, Any]] = None,
               guidance: Optional[Mapping[str, Any]] = None, profile: Optional[Any] = None, prepared: Optional[Mapping[str, Any]] = None,
               unmet: Optional[Mapping[str, Any]] = None, outside: Optional[Mapping[str, Any]] = None, budget: Optional[Any] = None,
-              cancelled: Optional[Callable[[], bool]] = None, instructions: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
+              cancelled: Optional[Callable[[], bool]] = None, instructions: Optional[Mapping[str, Any]] = None,
+              considered: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
         authority = authority or {}
         log: List[Step] = [take(self.intake, "context-intake", request=request, prepared=prepared, outside=outside, instructions=instructions)]
         planned = take(self.planner, "planner", request=request, context=done(log[0]), target=target, guidance=guidance, unmet=unmet)
         log.append(planned)
         allowed: List[Mapping[str, Any]] = []
         asked: List[Mapping[str, Any]] = []
-        for piece in done(planned) or ():
+        pieces = tie(done(planned) or [], considered) if considered else list(done(planned) or [])
+        for piece in pieces:
             digest = take(self.watch, "nervous-system", method="digest", user_message=request, step=1, max_steps=1,
                           plan_action=ACTION_OF_TOOL.get(str(piece.get("tool") or ""), "execute"), plan_goal=str(piece.get("piece", piece)))
             signal = take(self.watch, "nervous-system", digest=done(digest)) if digest.status == DONE else digest
@@ -69,7 +74,7 @@ class MindComposition:
                                               for p in asked]
         written = take(self.writer, "response-writer", results=results, profile=profile)
         log += [handed, written]
-        return {"text": done(written) or "", "results": results, "pieces": list(done(planned) or []), "steps": listing(log)}
+        return {"text": done(written) or "", "results": results, "pieces": pieces, "steps": listing(log)}
 
 
 def outside_of(results: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:

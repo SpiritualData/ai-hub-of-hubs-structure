@@ -80,6 +80,7 @@
    "prioritization": "hubofhubs",
    "proactivity": "hubofhubs",
    "read-files": "hubofhubs",
+   "relevant-solutions": "hubofhubs",
    "request-intake": "hubofhubs",
    "research-freshness-reader": "hubofhubs",
    "resolve-a-reference": "hubofhubs",
@@ -87,6 +88,7 @@
    "response-writer": "hubofhubs",
    "role-understanding": "hubofhubs",
    "route-a-request": "hubofhubs",
+   "solution-passes": "hubofhubs",
    "system-integrity": "hubofhubs",
    "terminal-session": "hubofhubs",
    "the-assembler": "hubofhubs",
@@ -424,6 +426,17 @@
    "folder_reader": "hubofhubs.the_world.tools.file_reading.read_files"
   }
  },
+ "relevant-solutions": {
+  "default": "records_index",
+  "evidence": {
+   "detail": "the selected implementation has no recorded row",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "records_index": "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_index"
+  }
+ },
  "request-intake": {
   "default": "every_declared_source",
   "modules": {
@@ -503,6 +516,17 @@
    "majority_floor": "hubofhubs.the_intelligence.mind.request_router.routing",
    "plan_derived": "hubofhubs.the_intelligence.mind.request_router.routing",
    "single_classifier": "hubofhubs.the_intelligence.mind.request_router.routing"
+  }
+ },
+ "solution-passes": {
+  "default": "network_passes",
+  "evidence": {
+   "detail": "the selected implementation has no recorded row",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "network_passes": "hubofhubs.the_intelligence.critical_thinking.solution_passes.passes"
   }
  },
  "system-integrity": {

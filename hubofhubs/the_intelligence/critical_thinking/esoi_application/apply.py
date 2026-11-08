@@ -9,7 +9,7 @@ from hubofhubs.the_intelligence.critical_thinking.esoi_application.interface imp
 EDITABLE = {"spec_edit": "solutions", "metric_edit": "metrics", "quality_profile_edit": "profiles", "problem_edit": "problems", "ideal_edit": "ideals",
             "implementation_edit": "implementations"}
 ADDING = ("record_add", "milestone_add")
-ADDABLE = ("problems", "ideals", "solutions", "implementations", "metrics")
+ADDABLE = ("problems", "ideals", "solutions", "implementations", "metrics", "knowledge")
 EM_DASH = "—"
 
 

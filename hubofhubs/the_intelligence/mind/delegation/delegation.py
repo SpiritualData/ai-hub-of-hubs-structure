@@ -66,7 +66,8 @@ class ToTools:
         spent = 0.0
         for index, piece in enumerate(pieces):
             base = {"piece": str(piece.get("piece", "")), "tool": str(piece.get("tool", "")), "sub_goal": piece.get("sub_goal"),
-                    "authority": dict(authority), "items": [], "text": "", "met": None}
+                    "authority": dict(authority), "items": [], "text": "", "met": None,
+                    **({"solution_id": str(piece["solution_id"])} if piece.get("solution_id") else {})}
             category = base["tool"]
             if cancelled is not None and cancelled():
                 results.append({**base, "refused": "cancelled"})

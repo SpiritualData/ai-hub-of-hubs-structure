@@ -248,6 +248,42 @@ NAMES = {
     "hubofhubs.the_intelligence.critical_thinking.metric_upkeep.upkeep": (
         "RecordFieldUpkeep", "state_of",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.esoi_application.repo_records": (
+        "RepoRecords",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.solution_passes.interface": (
+        "DEFAULT_LIMITS", "SolutionConsidering",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.solution_passes.passes": (
+        "NetworkPasses",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.solution_passes.depth": (
+        "build_out", "default_combine", "default_split",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.solution_passes.write_back": (
+        "combined_check", "proposals_of",
+    ),
+    "hubofhubs.the_intelligence.subconscious.relevant_solutions.interface": (
+        "SolutionRelevance",
+    ),
+    "hubofhubs.the_intelligence.subconscious.relevant_solutions.network": (
+        "SolutionNetwork", "network_of",
+    ),
+    "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_index": (
+        "RecordsIndex",
+    ),
+    "hubofhubs.the_intelligence.subconscious.solution_briefs": (
+        "briefs",
+    ),
+    "hubofhubs.the_intelligence.subconscious.cards_from_files.knowledge_cards": (
+        "cards_of", "knowledge_card", "solution_card",
+    ),
+    "hubofhubs.the_intelligence.subconscious.context_retriever.knowledge_pick": (
+        "pick",
+    ),
+    "hubofhubs.the_intelligence.mind.planner.solution_pieces": (
+        "tie",
+    ),
     "hubofhubs.the_intelligence.critical_thinking.interface": (
         "CriticalThinking",
     ),
