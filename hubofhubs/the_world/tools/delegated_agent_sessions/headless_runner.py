@@ -32,6 +32,8 @@ from hubofhubs.the_self.assembler import arm_needs as needs
 DEFAULT_TIER = "fast"
 DEFAULT_TIMEOUT_SECONDS = 1800.0   # a run with no configured cap still ends; the Claude Code runners have a liveness review instead
 ARGUMENT_LIMIT = 100_000           # longer prompts go in a file: one argument may not exceed 128 KiB on Linux
+CONTINUE_MESSAGE = ("You stopped before writing your final report. Finish the task above using your tools, then write the final report: "
+                    "what you found or changed, concretely.")
 
 
 @dataclass
@@ -122,7 +124,8 @@ class HeadlessCliRunner(DeepRunnerBase):
     def prompt_for(self, goal: str, brief: str, preamble: str, working_dir: str, settings: GoalSettings) -> str:
         body = compose_goal_prompt(goal, brief, preamble=preamble, model=self.model, settings=settings)
         return (f"WORKING FOLDER: {working_dir}\nEvery file the task names is in this folder; read and write files by their path "
-                f"relative to it, and stay inside it.\n\n{body}")
+                f"relative to it, and stay inside it. Nobody answers questions during this run: use your tools to list and read what "
+                f"you need, then finish with your report.\n\n{body}")
 
     def run_goal(self, *, goal: str, brief: str, model: Optional[str] = None, max_turns: Optional[int] = None,
                  emit: Optional[Callable[..., None]] = None, context_preamble: Optional[str] = None, run_id: Optional[str] = None,
@@ -149,6 +152,7 @@ class HeadlessCliRunner(DeepRunnerBase):
         if not found:
             return DeepResult(met=False, launch_failed=True, launch_problem=LAUNCH_MISSING_PROGRAM,
                               error=f"the {binary!r} program is not installed or not on the PATH")
+        started = time.monotonic()
         with tempfile.TemporaryDirectory(prefix="harness_prompt_") as spare:
             prompt_file = None
             if len(prompt) > ARGUMENT_LIMIT:
@@ -156,19 +160,24 @@ class HeadlessCliRunner(DeepRunnerBase):
                 with open(prompt_file, "w", encoding="utf-8") as handle:
                     handle.write(prompt)
             argv = self.command(found, prompt, run_model, cwd, prompt_file)
-            stdin_text = prompt if argv and argv[-1] == "-" else None
-            started = time.monotonic()
-            try:
-                proc = subprocess.Popen(argv, cwd=cwd, env=self.child_environment(settings), stdin=subprocess.PIPE,
-                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
-            except FileNotFoundError:
-                return DeepResult(met=False, launch_failed=True, launch_problem=LAUNCH_MISSING_PROGRAM,
-                                  error=f"the {binary!r} program is not installed or not on the PATH")
-            except PermissionError:
-                return DeepResult(met=False, launch_failed=True, launch_problem=LAUNCH_PERMISSION_DENIED,
-                                  error=f"the {binary!r} program cannot be run (permission denied)")
-            out, err, ended = self.wait(proc, stdin_text, cancel_check, started)
+            launched = self.launch(argv, prompt, cwd, settings, cancel_check, started, binary)
+        if isinstance(launched, DeepResult):
+            return launched
+        out, err, ended, returncode = launched
         parsed = self.parse(out or "")
+        # A weak model can end its turn on a tool call with no report. One continuation of the same session asks for the report, so
+        # the work it already did is kept; a harness with no way to continue a session leaves the result as it is.
+        nudge = self.continue_command(found, parsed.session_id, run_model, cwd) if (
+            ended == "exited" and returncode == 0 and not parsed.error and not parsed.text.strip() and parsed.session_id) else None
+        if nudge:
+            again = self.launch(nudge, CONTINUE_MESSAGE, cwd, settings, cancel_check, started, binary)
+            if not isinstance(again, DeepResult):
+                out2, err, ended, returncode = again
+                more = self.parse(out2 or "")
+                parsed = Parsed(text=more.text, tokens_in=parsed.tokens_in + more.tokens_in, tokens_out=parsed.tokens_out + more.tokens_out,
+                                cost_usd=(parsed.cost_usd or 0.0) + (more.cost_usd or 0.0) if (parsed.cost_usd or more.cost_usd) else None,
+                                session_id=more.session_id or parsed.session_id, error=more.error)
+        proc_returncode = returncode
         tokens = parsed.tokens_in + parsed.tokens_out
         cost = parsed.cost_usd if parsed.cost_usd else list_price(self.provider, run_model, parsed.tokens_in, parsed.tokens_out)
         text = parsed.text.strip()
@@ -177,7 +186,7 @@ class HeadlessCliRunner(DeepRunnerBase):
             return DeepResult(met=False, cancelled=True, error="The run was stopped on request.", **common)
         if ended == "timeout":
             return DeepResult(met=False, error="The run passed its time limit and was stopped.", **common)
-        problem = parsed.error or ("" if proc.returncode == 0 else ((err or "").strip().splitlines() or [f"exit {proc.returncode}"])[-1])
+        problem = parsed.error or ("" if proc_returncode == 0 else ((err or "").strip().splitlines() or [f"exit {proc_returncode}"])[-1])
         if problem and tokens == 0 and not text:
             return DeepResult(met=False, launch_failed=True, error=f"The harness did not start the work: {problem}"[:500], **common)
         decision_id = extract_escalation_id(text, settings.escalation_marker)
@@ -188,6 +197,26 @@ class HeadlessCliRunner(DeepRunnerBase):
         if not text:
             return DeepResult(met=False, error="The harness ended without a final message.", **common)
         return DeepResult(met=True, **common)
+
+    def continue_command(self, binary: str, session_id: str, model: str, working_dir: str) -> Optional[List[str]]:
+        """The command that continues session ``session_id`` with one more message (read from stdin when it ends with ``-``), or
+        None when the harness cannot continue a session headless."""
+        return None
+
+    def launch(self, argv, prompt, cwd, settings, cancel_check, started, binary):
+        """Run one harness command: ``(stdout, stderr, how it ended, exit code)``, or a ``DeepResult`` when it could not start."""
+        stdin_text = prompt if argv and argv[-1] == "-" else None
+        try:
+            proc = subprocess.Popen(argv, cwd=cwd, env=self.child_environment(settings), stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+        except FileNotFoundError:
+            return DeepResult(met=False, launch_failed=True, launch_problem=LAUNCH_MISSING_PROGRAM,
+                              error=f"the {binary!r} program is not installed or not on the PATH")
+        except PermissionError:
+            return DeepResult(met=False, launch_failed=True, launch_problem=LAUNCH_PERMISSION_DENIED,
+                              error=f"the {binary!r} program cannot be run (permission denied)")
+        out, err, ended = self.wait(proc, stdin_text, cancel_check, started)
+        return out, err, ended, proc.returncode
 
     def wait(self, proc, stdin_text, cancel_check, started):
         """``(stdout, stderr, how it ended)``: ``exited``, ``timeout`` or ``cancelled``."""
@@ -226,6 +255,10 @@ class CodexCliRunner(HeadlessCliRunner):
         policy = ["--dangerously-bypass-approvals-and-sandbox"] if self.cfg.skip_permissions else ["--sandbox", "workspace-write"]
         return [binary, "exec", "--json", "--skip-git-repo-check", *policy, "-C", working_dir, "-m", model, "-"]
 
+    def continue_command(self, binary, session_id, model, working_dir):
+        policy = ["--dangerously-bypass-approvals-and-sandbox"] if self.cfg.skip_permissions else ["--sandbox", "workspace-write"]
+        return [binary, "exec", "resume", "--json", "--skip-git-repo-check", *policy, "-m", model, session_id, "-"]
+
     def parse(self, raw):
         got = Parsed()
         for event in json_lines(raw):
@@ -262,6 +295,10 @@ class OpencodeRunner(HeadlessCliRunner):
         target = f"{OPENCODE_PROVIDER.get(self.provider, self.provider)}/{model}"
         message = ["-f", prompt_file, "--", "Carry out the task in the attached file."] if prompt_file else ["--", prompt]
         return [binary, "run", "--format", "json", "--dir", working_dir, "-m", target, *message]
+
+    def continue_command(self, binary, session_id, model, working_dir):
+        target = f"{OPENCODE_PROVIDER.get(self.provider, self.provider)}/{model}"
+        return [binary, "run", "--format", "json", "--dir", working_dir, "-m", target, "--session", session_id, "--", CONTINUE_MESSAGE]
 
     def harness_environment(self, env):
         if self.cfg.skip_permissions:

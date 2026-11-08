@@ -130,3 +130,21 @@ def test_providers_are_declared_per_harness(tmp_path):
         CodexCliRunner(SubprocessConfig(working_dir=str(tmp_path)), provider="gemini", model_for=lambda p, t: "m")
     with pytest.raises(ValueError):
         SubprocessGoalRunner(SubprocessConfig(working_dir=str(tmp_path)), provider="openai")
+
+
+def test_a_run_that_stops_without_a_report_is_continued_once(tmp_path):
+    first = [{"type": "step_finish", "sessionID": "ses_9", "part": {"tokens": {"input": 100, "output": 1}, "cost": 0.001}}]
+    script = tmp_path / "fake_continue"
+    script.write_text(textwrap.dedent(f"""\
+        #!{sys.executable}
+        import json, sys
+        events = {OPENCODE_EVENTS!r} if "--session" in sys.argv else {first!r}
+        open({str(tmp_path / 'argv.txt')!r}, "a").write(" ".join(sys.argv[1:]) + "\\n")
+        print("\\n".join(json.dumps(e) for e in events))
+        """))
+    script.chmod(script.stat().st_mode | stat.S_IEXEC)
+    runner = build(OpencodeRunner, tmp_path, str(script), provider="gemini")
+    res = runner.run_goal(goal="g", brief="b")
+    assert res.met and "Rotterdam" in res.output and res.cost_usd == pytest.approx(0.004)
+    calls = [line for line in (tmp_path / "argv.txt").read_text().splitlines() if line.startswith("run --format json")]
+    assert len(calls) == 2 and "--session ses_9" in calls[1]

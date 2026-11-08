@@ -598,7 +598,7 @@ NAMES = {
         "ControlMessage", "RunControl",
     ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.arm_choice": (
-        "ArmChoice", "build_agent_runner", "choose_agent_arm",
+        "ArmChoice", "build_agent_runner", "choose_agent_arm", "harness_class",
     ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner": (
         "CodexCliRunner", "HeadlessCliRunner", "OpencodeRunner",

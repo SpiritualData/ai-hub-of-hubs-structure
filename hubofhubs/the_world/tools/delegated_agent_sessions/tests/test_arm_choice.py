@@ -66,3 +66,14 @@ def test_the_shipped_snapshot_reads(tmp_path):
     bad.write_text("{not json")
     assert arm_choice.read_snapshot(bad) == {}
     json.dumps(shipped)
+
+
+def test_the_prior_fallback_weighs_cost_and_time_like_the_measured_stage():
+    balance = {"weights": {"accuracy": 0.7, "cost": 0.15, "time": 0.15}, "cost_per_case_usd": 0.10, "seconds_per_case": 120}
+    priors = [{"arm_id": CLAUDE_BEST, "prior": "0.65", "grade": "B", "cost_per_case_usd": "0.09", "seconds_per_case": "110"},
+              {"arm_id": CLAUDE_FAST, "prior": "0.55", "grade": "C", "cost_per_case_usd": "0.005", "seconds_per_case": "20"}]
+    got = arm_choice.choose_agent_arm(["anthropic"], snapshot={"cascade": CASCADE, "rows": {}, "balance": balance}, priors=priors, ideas=[])
+    assert got.arm == CLAUDE_FAST and got.basis == "public prior"   # 0.7*0.55 + cheap and fast beats 0.7*0.65 at nearly the whole budget
+    unpriced = [dict(priors[0]), {"arm_id": CLAUDE_FAST, "prior": "0.55", "grade": "C"}]
+    got = arm_choice.choose_agent_arm(["anthropic"], snapshot={"cascade": CASCADE, "rows": {}, "balance": balance}, priors=unpriced, ideas=[])
+    assert got.arm == CLAUDE_BEST   # a row that states no cost is never counted as free

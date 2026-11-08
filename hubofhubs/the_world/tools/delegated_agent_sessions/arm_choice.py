@@ -8,8 +8,10 @@ that provider (``PROVIDERS`` on the harness class, see ``providers``). The choic
    result at the latest stage any of them reached, unless another eligible arm beat it at an earlier shared stage and has not been run
    at the latest one. The results come from the snapshot ``arm_standings.json`` beside this file, written from the results log by
    ``write_snapshot`` so an installed copy needs no records (``python3 -m hubofhubs.the_world.tools.delegated_agent_sessions.arm_choice``).
-2. **public prior**: with no measured eligible arm, the eligible arm with the highest prior in ``public_priors.csv`` whose evidence grades
-   C or better, labelled with its grade.
+2. **public prior**: with no measured eligible arm, the eligible arm whose prior in ``public_priors.csv`` (evidence graded C or better)
+   has the highest balanced score: the same ``[balance.agent_sessions]`` weights and budgets as the measured stage, with the prior as the
+   pass rate and the row's ``cost_per_case_usd`` and ``seconds_per_case`` when it states them. A row that states no cost or time scores
+   nothing on that part, since an unknown price is never counted as free. Labelled with its grade.
 3. **idea**: else the eligible arm with the highest idea-stage rating in ``arm_ideas.csv`` (the scale is ``esoi/idea-rating-scale.md``).
 
 The reason says which of these decided, so a consumer can log it. Nothing here reads the environment or calls a model.
@@ -117,15 +119,30 @@ def measured_choice(declared: Iterable[str], snapshot: Dict[str, Any]) -> Option
                      f"pass rate {ranking.pass_rate(row):.2f}){held}")
 
 
-def prior_choice(declared: Iterable[str], rows: List[Dict[str, str]]) -> Optional[ArmChoice]:
+def prior_balanced(row: Dict[str, str], balance: Optional[Dict[str, Any]]) -> float:
+    """The balanced score of a prior row: the prior as the pass rate, the row's cost and seconds per case where it states them, and
+    the whole budget (nothing scored) where it does not."""
+    from esoi.optimization.measurement_harness.balance import DEFAULT_WEIGHTS, clamp
+    table = balance or {}
+    weights = {**DEFAULT_WEIGHTS, **(table.get("weights") or {})}
+    cost, seconds = number(row.get("cost_per_case_usd")), number(row.get("seconds_per_case"))
+    cost_budget, seconds_budget = number(table.get("cost_per_case_usd")), number(table.get("seconds_per_case"))
+    cost_part = clamp(1 - cost / cost_budget) if cost is not None and cost_budget else 0.0
+    time_part = clamp(1 - seconds / seconds_budget) if seconds is not None and seconds_budget else 0.0
+    return weights["accuracy"] * (number(row.get("prior")) or 0.0) + weights["cost"] * cost_part + weights["time"] * time_part
+
+
+def prior_choice(declared: Iterable[str], rows: List[Dict[str, str]], balance: Optional[Dict[str, Any]] = None) -> Optional[ArmChoice]:
     usable = [r for r in rows if (r.get("grade") or "").strip().upper()[:1] in USABLE_GRADES and number(r.get("prior")) is not None
               and eligible(r.get("arm_id", ""), declared)]
     if not usable:
         return None
-    best = max(usable, key=lambda r: number(r["prior"]))
+    best = max(usable, key=lambda r: prior_balanced(r, balance))
     harness, provider, tier = split_arm(best["arm_id"])
-    return ArmChoice(best["arm_id"], harness, provider, tier, "public prior", "public", number(best["prior"]) or 0.0,
-                     f"no eligible arm is measured; best public prior {best['prior']} (grade {best['grade']}): {best.get('reason', '')}".strip())
+    score = prior_balanced(best, balance)
+    return ArmChoice(best["arm_id"], harness, provider, tier, "public prior", "public", score,
+                     f"no eligible arm is measured; best balanced score on public priors {score:.3f} (prior {best['prior']}, grade "
+                     f"{best['grade']}): {best.get('reason', '')}".strip())
 
 
 def idea_rating(row: Dict[str, str]) -> Optional[float]:
@@ -149,8 +166,9 @@ def choose_agent_arm(declared: Iterable[str], *, snapshot: Optional[Dict[str, An
            ideas: Optional[List[Dict[str, str]]] = None) -> Optional[ArmChoice]:
     """The arm for a consumer holding credentials for ``declared`` providers, or None when it can run no arm."""
     declared = providers.normalise_all(declared)
-    return (measured_choice(declared, read_snapshot() if snapshot is None else snapshot)
-            or prior_choice(declared, read_rows(PRIORS) if priors is None else priors)
+    snapshot = read_snapshot() if snapshot is None else snapshot
+    return (measured_choice(declared, snapshot)
+            or prior_choice(declared, read_rows(PRIORS) if priors is None else priors, snapshot.get("balance"))
             or idea_choice(declared, read_rows(IDEAS) if ideas is None else ideas))
 
 
@@ -161,6 +179,19 @@ def build_agent_runner(choice: ArmChoice, config: Any, **arguments: Any) -> Any:
     if cls is None:
         raise ValueError(f"the hub declares no harness {choice.harness!r}")
     return cls(config, provider=choice.provider, tier=choice.tier, **arguments)
+
+
+def balance_table(config: Any) -> Dict[str, Any]:
+    """``[balance.agent_sessions]`` of the configuration file (weights and budgets), or ``{}``."""
+    try:
+        import tomllib
+    except ImportError:   # Python 3.10
+        return {}
+    try:
+        with (Path(config.root) / "esoi.toml").open("rb") as handle:
+            return dict((tomllib.load(handle).get("balance") or {}).get(COMPONENT) or {})
+    except (OSError, ValueError):
+        return {}
 
 
 def write_snapshot(root: Optional[Path] = None, path: Path = SNAPSHOT, today: Optional[datetime.date] = None) -> Dict[str, Any]:
@@ -179,7 +210,7 @@ def write_snapshot(root: Optional[Path] = None, path: Path = SNAPSHOT, today: Op
         raise ValueError(f"the cascade of {METRIC} does not parse: {problems}")
     history = {arm: rows for arm, rows in all_results(config.results_path).get(COMPONENT, {}).items() if split_arm(arm)[1]}
     standing = standings(stages, history, today, lambda row: stale_reason(config, COMPONENT, row, True), config.evaluation)
-    out = {"metric": METRIC, "cascade": metric.get("cascading_conditionals", ""),
+    out = {"metric": METRIC, "cascade": metric.get("cascading_conditionals", ""), "balance": balance_table(config),
            "rows": {arm: {str(i): dict(row) for i, row in sorted(s.rows.items())} for arm, s in sorted(standing.items()) if s.rows}}
     path.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return out
