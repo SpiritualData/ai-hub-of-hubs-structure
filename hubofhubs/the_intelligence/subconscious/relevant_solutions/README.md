@@ -23,7 +23,7 @@ Part of [Finding and preparing information for the Mind](../README.md)
 
 ## Metrics
 
-- Solutions needing consideration named, recall first (`metric-relevant-solutions`): no result recorded
+- Solutions needing consideration named, recall first (`metric-relevant-solutions`): leader `records_index`, 46 of 62 cases
 
 ## Where to go next
 
