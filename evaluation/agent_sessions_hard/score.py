@@ -73,7 +73,17 @@ def body(stub):
 
 
 def squash(text):
-    return " ".join(str(text or "").lower().split())
+    """Lowercase words with markdown marks and quotation marks dropped, so a quote matches the text it quotes however it was laid out."""
+    text = re.sub(r"['\u2018\u2019]", "", str(text or "").lower())
+    text = re.sub(r"[#*_`>\"\u201c\u201d]", " ", text)
+    return " ".join(text.split())
+
+
+def quoted(quote, evidence):
+    """Whether every piece of ``quote`` (pieces joined by an ellipsis or a line break in the judge's quote) is in ``evidence``."""
+    pieces = [squash(p) for p in re.split(r"\.\.\.|\u2026|\n|\s/\s", str(quote or ""))]
+    pieces = [p.strip(" -:;,.") for p in pieces if len(p.strip(" -:;,.")) >= 3]
+    return bool(pieces) and all(p in evidence for p in pieces)
 
 
 JUDGE_PROMPT = """You judge one deliverable against its rubric. For each rubric item decide pass or fail from the evidence only, and quote
@@ -111,14 +121,13 @@ def judge(case, deliverable):
         except (subprocess.TimeoutExpired, ValueError, AttributeError, KeyError, TypeError):
             verdicts = None
     if verdicts is None:
-        return [(i, False, "the judge gave no readable verdict") for i in case["rubric"]["items"]]
+        return [(i, False, "the judge gave no readable verdict", "") for i in case["rubric"]["items"]]
     evidence = squash(deliverable) + " " + squash(records)
     out = []
     for item, verdict in zip(case["rubric"]["items"], verdicts + [{}] * len(case["rubric"]["items"])):
-        quote = squash(verdict.get("quote"))
-        ok = verdict.get("verdict") == "pass" and bool(quote) and quote in evidence
+        ok = verdict.get("verdict") == "pass" and quoted(verdict.get("quote"), evidence)
         why = "" if ok else ("judged fail" if verdict.get("verdict") != "pass" else "the quote is not in the evidence")
-        out.append((item, ok, why))
+        out.append((item, ok, why, str(verdict.get("quote") or "")[:400]))
     return out
 
 
@@ -156,7 +165,7 @@ def score_case(fn, stub):
                 text = target.read_text(encoding="utf-8", errors="replace")
                 verdicts = judge(case, text)
                 keep(case, text, verdicts)
-                failed = [f"{item} ({why})" for item, ok, why in verdicts if not ok]
+                failed = [f"{item} ({why})" for item, ok, why, _ in verdicts if not ok]
                 problems += [f"rubric fails: {failed}"] if failed else []
         met = bool(getattr(result, "met", False))
         ok = met and not problems

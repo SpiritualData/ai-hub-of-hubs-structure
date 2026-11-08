@@ -77,3 +77,12 @@ def test_the_prior_fallback_weighs_cost_and_time_like_the_measured_stage():
     unpriced = [dict(priors[0]), {"arm_id": CLAUDE_FAST, "prior": "0.55", "grade": "C"}]
     got = arm_choice.choose_agent_arm(["anthropic"], snapshot={"cascade": CASCADE, "rows": {}, "balance": balance}, priors=unpriced, ideas=[])
     assert got.arm == CLAUDE_BEST   # a row that states no cost is never counted as free
+
+
+def test_hard_work_uses_its_own_metric_and_falls_back_to_ordinary_work():
+    hard = {"cascade": CASCADE, "rows": {CLAUDE_BEST: {"4": row(CLAUDE_BEST, 7, 7, 0.8, "")}, CLAUDE_FAST: {"4": row(CLAUDE_FAST, 3, 7, 0.5, "")}}}
+    snap = dict(MEASURED, kinds={"hard": hard})
+    got = arm_choice.choose_agent_arm(["anthropic"], difficulty="hard", snapshot=snap, priors=[], ideas=[])
+    assert got.arm == CLAUDE_BEST and got.reason.startswith("for hard work")
+    assert arm_choice.choose_agent_arm(["anthropic"], snapshot=snap, priors=[], ideas=[]).arm == CLAUDE_FAST
+    assert arm_choice.choose_agent_arm(["gemini"], difficulty="hard", snapshot=snap, priors=[], ideas=[]).arm == GEMINI_FAST

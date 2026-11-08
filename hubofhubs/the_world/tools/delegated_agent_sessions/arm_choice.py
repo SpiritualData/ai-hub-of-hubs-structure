@@ -14,6 +14,9 @@ that provider (``PROVIDERS`` on the harness class, see ``providers``). The choic
    nothing on that part, since an unknown price is never counted as free. Labelled with its grade.
 3. **idea**: else the eligible arm with the highest idea-stage rating in ``arm_ideas.csv`` (the scale is ``esoi/idea-rating-scale.md``).
 
+A kind of work with a metric of its own (``KINDS``: hard deep work, measured on real past deep tasks) is chosen from that metric's results
+when the caller names it (``difficulty="hard"``) and an eligible arm is measured there; otherwise the choice above stands.
+
 The reason says which of these decided, so a consumer can log it. Nothing here reads the environment or calls a model.
 """
 from __future__ import annotations
@@ -30,6 +33,9 @@ from hubofhubs.the_world.tools.delegated_agent_sessions import providers
 SOLUTION = "delegated-agent-sessions"
 METRIC = "metric-delegated-agent-sessions"
 COMPONENT = "agent_sessions"
+#: kinds of work measured on a metric of their own: {difficulty: (metric id, component)}. A consumer that knows a run's difficulty asks
+#: for that kind; with no measured eligible arm for it, the choice for ordinary work stands.
+KINDS = {"hard": ("metric-delegated-agent-sessions-hard", "agent_sessions_hard")}
 HERE = Path(__file__).resolve().parent
 SNAPSHOT = HERE / "arm_standings.json"
 PRIORS = HERE / "public_priors.csv"
@@ -49,6 +55,7 @@ class ArmChoice:
     stage: str = ""       # the cascade stage the choice rests on (measured only)
     score: float = 0.0    # the balanced score, the prior or the idea rating the choice rests on
     reason: str = ""
+    kind: str = ""        # the kind of work whose own metric decided (``KINDS``), "" for ordinary work
 
 
 def split_arm(arm: str) -> Tuple[str, str, str]:
@@ -161,11 +168,20 @@ def idea_choice(declared: Iterable[str], rows: List[Dict[str, str]]) -> Optional
                      f"no eligible arm is measured or has a usable public prior; best idea rating {score:.2f} (not measured)")
 
 
-def choose_agent_arm(declared: Iterable[str], *, snapshot: Optional[Dict[str, Any]] = None, priors: Optional[List[Dict[str, str]]] = None,
-           ideas: Optional[List[Dict[str, str]]] = None) -> Optional[ArmChoice]:
-    """The arm for a consumer holding credentials for ``declared`` providers, or None when it can run no arm."""
+def choose_agent_arm(declared: Iterable[str], *, difficulty: str = "", snapshot: Optional[Dict[str, Any]] = None,
+                     priors: Optional[List[Dict[str, str]]] = None, ideas: Optional[List[Dict[str, str]]] = None) -> Optional[ArmChoice]:
+    """The arm for a consumer holding credentials for ``declared`` providers, or None when it can run no arm. ``difficulty`` names a kind
+    of work measured on its own metric (``KINDS``, e.g. ``"hard"``): its best measured eligible arm is chosen when there is one, else the
+    choice for ordinary work."""
     declared = providers.normalise_all(declared)
     snapshot = read_snapshot() if snapshot is None else snapshot
+    kind = (snapshot.get("kinds") or {}).get((difficulty or "").strip().lower())
+    if kind:
+        chosen = measured_choice(declared, kind)
+        if chosen is not None:
+            chosen.reason = f"for {difficulty} work: {chosen.reason}"
+            chosen.kind = difficulty.strip().lower()
+            return chosen
     return (measured_choice(declared, snapshot)
             or prior_choice(declared, read_rows(PRIORS) if priors is None else priors, snapshot.get("balance"))
             or idea_choice(declared, read_rows(IDEAS) if ideas is None else ideas))
@@ -180,41 +196,48 @@ def build_agent_runner(choice: ArmChoice, config: Any, **arguments: Any) -> Any:
     return cls(config, provider=choice.provider, tier=choice.tier, **arguments)
 
 
-def balance_table(config: Any) -> Dict[str, Any]:
-    """``[balance.agent_sessions]`` of the configuration file (weights and budgets), or ``{}``."""
+def balance_table(config: Any, component: str = COMPONENT) -> Dict[str, Any]:
+    """``[balance.<component>]`` of the configuration file (weights and budgets), or ``{}``."""
     try:
         import tomllib
     except ImportError:   # Python 3.10
         return {}
     try:
         with (Path(config.root) / "esoi.toml").open("rb") as handle:
-            return dict((tomllib.load(handle).get("balance") or {}).get(COMPONENT) or {})
+            return dict((tomllib.load(handle).get("balance") or {}).get(component) or {})
     except (OSError, ValueError):
         return {}
 
 
-def write_snapshot(root: Optional[Path] = None, path: Path = SNAPSHOT, today: Optional[datetime.date] = None) -> Dict[str, Any]:
-    """Write the counting result of every arm at each cascade stage, from the results log of the records tree at ``root``.
-    Stale and expired results are left out, as the cascade rule leaves them out."""
+def standing_of(config: Any, metric_id: str, component: str, today: Optional[datetime.date]) -> Dict[str, Any]:
+    """One metric's cascade, balance and the counting row of every arm at each stage, from the results log of ``component``. Stale and
+    expired results are left out, as the cascade rule leaves them out."""
     from esoi.optimization.leaderboard import cascade_stages
     from esoi.optimization.leaderboard.results_log import all_results
     from esoi.optimization.leaderboard.stage_standings import standings
     from esoi.optimization.when_metrics_are_run.know_what_a_result_measures.stale_reasons import stale_reason
-    from esoi.structure.intent_registry.config import load as load_config
     from esoi.structure.intent_registry.registry import load as load_registry
-    config = load_config(start=root or HERE)
-    metric = next(m for m in load_registry(config).metrics if m.get("metric_id") == METRIC)
+    metric = next(m for m in load_registry(config).metrics if m.get("metric_id") == metric_id)
     stages, problems = cascade_stages.load_stages(config, metric)
     if problems:
-        raise ValueError(f"the cascade of {METRIC} does not parse: {problems}")
-    history = {arm: rows for arm, rows in all_results(config.results_path).get(COMPONENT, {}).items() if split_arm(arm)[1]}
-    standing = standings(stages, history, today, lambda row: stale_reason(config, COMPONENT, row, True), config.evaluation)
-    out = {"metric": METRIC, "cascade": metric.get("cascading_conditionals", ""), "balance": balance_table(config),
-           "rows": {arm: {str(i): dict(row) for i, row in sorted(s.rows.items())} for arm, s in sorted(standing.items()) if s.rows}}
+        raise ValueError(f"the cascade of {metric_id} does not parse: {problems}")
+    history = {arm: rows for arm, rows in all_results(config.results_path).get(component, {}).items() if split_arm(arm)[1]}
+    standing = standings(stages, history, today, lambda row: stale_reason(config, component, row, True), config.evaluation)
+    return {"metric": metric_id, "cascade": metric.get("cascading_conditionals", ""), "balance": balance_table(config, component),
+            "rows": {arm: {str(i): dict(row) for i, row in sorted(s.rows.items())} for arm, s in sorted(standing.items()) if s.rows}}
+
+
+def write_snapshot(root: Optional[Path] = None, path: Path = SNAPSHOT, today: Optional[datetime.date] = None) -> Dict[str, Any]:
+    """Write what ``choose_agent_arm`` reads: the standing of the main metric, and of each kind of work in ``KINDS``."""
+    from esoi.structure.intent_registry.config import load as load_config
+    config = load_config(start=root or HERE)
+    out = standing_of(config, METRIC, COMPONENT, today)
+    out["kinds"] = {kind: standing_of(config, metric_id, component, today) for kind, (metric_id, component) in KINDS.items()}
     path.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return out
 
 
 if __name__ == "__main__":
     written = write_snapshot()
-    print(f"{len(written['rows'])} measured arm(s) written to {SNAPSHOT.name}")
+    print(f"{len(written['rows'])} measured arm(s) written to {SNAPSHOT.name}; by kind: "
+          + ", ".join(f"{k} {len(v['rows'])}" for k, v in written["kinds"].items()))
