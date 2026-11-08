@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Decision Check (reply): a raised span is confirmed only when the call budget can also repair it, so no confirmed failure is left unrepaired after costing its calls.
 - Decision Check: `majority_vote` arm (`MajorityVote`), the agreement check with a disagreement settled by the views' majority; only a tie goes to the adjudication call. Outcome `majority` added.
 - Decision Check: a span a reply check removes takes its whole sentence with it, so a removed clause never leaves a fragment ("..., and").
 

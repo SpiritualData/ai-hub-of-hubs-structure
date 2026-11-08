@@ -127,6 +127,14 @@ class Arm:
                 grounded.append(f)
         if not grounded:
             return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=len(raised))
+        # A span is confirmed only when the budget can also repair it (one call each): a confirmed failure with no call left to repair it changed nothing and cost two calls.
+        affordable = calls.left // 2
+        if affordable < len(grounded):
+            raised_extra, grounded = grounded[affordable:], grounded[:affordable]
+        else:
+            raised_extra = []
+        if not grounded:
+            return result("held", calls, "no call was left to confirm and repair a raised span", 0.0, text=draft, findings=[], dropped=len(raised), unchecked=[f["span"] for f in raised_extra])
 
         def confirm(f: Dict[str, str]) -> Dict[str, Any]:
             view = by_id[f["view"]]

@@ -265,3 +265,17 @@ def test_the_majority_arm_decides_a_split_by_the_majority_with_no_adjudication_a
     asked = Scripted(lambda p: say("a", "orchards belongs to Alpha") if "disagreed" in p else say(next(tie), "orchards belongs to Alpha"))
     got = arm(MajorityVote).check("", CheckBinding(kind="pick", options=OPTIONS, views=views[:2]), asked)
     assert got["outcome"] == "adjudicated" and got["pick"] == "a"
+
+
+def test_only_the_spans_the_budget_can_also_repair_are_confirmed_so_none_is_left_confirmed_and_unrepaired():
+    draft = "One is wrong. Two is wrong. Three is wrong."
+    views = [View(f"v{i}", "A statement must hold.", "nothing") for i in range(2)]
+
+    def reply(prompt):
+        if "List each part" in prompt:
+            return json.dumps({"findings": [{"span": "One is wrong.", "quote": ""}, {"span": "Two is wrong.", "quote": ""}, {"span": "Three is wrong.", "quote": ""}]})
+        if "Does the statement fail" in prompt:
+            return json.dumps({"fails": True})
+        return json.dumps({"action": "remove", "text": ""})
+    got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=4), Scripted(reply))
+    assert got["outcome"] == "repaired" and got["calls"] == 4 and got["text"] == "Two is wrong. Three is wrong."
