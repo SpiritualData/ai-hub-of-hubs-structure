@@ -127,8 +127,9 @@ class Arm:
                 grounded.append(f)
         if not grounded:
             return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=len(raised))
-        # A span is confirmed only when the budget can also repair it (one call each): a confirmed failure with no call left to repair it changed nothing and cost two calls.
-        affordable = calls.left // 2
+        # A span is confirmed only when the budget can also repair it: four calls each (a confirmation, the repair and, for a removal, two more confirmations), or at
+        # least one span with a confirmation and a repair. A confirmed failure with no call left to repair it changed nothing and cost its calls.
+        affordable = calls.left // 4 or (1 if calls.left >= 2 else 0)
         if affordable < len(grounded):
             raised_extra, grounded = grounded[affordable:], grounded[:affordable]
         else:
@@ -154,6 +155,13 @@ class Arm:
             data = parse_json(raw) if raw is not None else {}
             action, text = data.get("action"), str(data.get("text") or "").strip()
             if action == "remove":
+                # Removing a sentence loses whatever was true in it, so one confirmation is not enough: two more independent confirmations run, and the span goes
+                # only when most of the three say it fails. When the budget has no room for them, the one confirmation stands.
+                extra = run_parallel([lambda: model(CONFIRM_PROMPT.format(instruction=view.instruction, span=f["span"], evidence=view.evidence))] * 2, 2)
+                answered = [parse_json(raw).get("fails") is True for raw in extra if raw is not None]
+                fails = 1 + sum(answered)
+                if 2 * fails <= 1 + len(answered):
+                    return dict(f, action="", text="", kept="most confirmations found the span does not fail")
                 return dict(f, action="remove", text="")
             if action == "rewrite" and text and text != f["span"]:
                 return dict(f, action="rewrite", text=text)
@@ -166,9 +174,9 @@ class Arm:
                 out = remove_span(out, sentence_of(out, r["span"]))
             elif r["action"] == "rewrite":
                 out = out.replace(r["span"], r["text"], 1)
-            else:
+            elif not r.get("kept"):
                 undone.append(r["span"])
-        return result("unrepaired" if undone else "repaired", calls, ("these confirmed spans were not repaired: " + "; ".join(undone)) if undone else "only the confirmed failing spans were rewritten or removed",
+        return result("unrepaired" if undone else ("repaired" if out != draft else "held"), calls, ("these confirmed spans were not repaired: " + "; ".join(undone)) if undone else "only the confirmed failing spans were rewritten or removed",
                       agreement, text=out, findings=repairs, dropped=len(raised) - len(grounded))
 
 

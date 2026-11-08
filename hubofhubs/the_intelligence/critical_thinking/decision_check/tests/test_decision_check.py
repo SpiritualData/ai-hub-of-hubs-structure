@@ -279,3 +279,20 @@ def test_only_the_spans_the_budget_can_also_repair_are_confirmed_so_none_is_left
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=4), Scripted(reply))
     assert got["outcome"] == "repaired" and got["calls"] == 4 and got["text"] == "Two is wrong. Three is wrong."
+
+
+def test_a_removal_needs_most_of_three_confirmations_so_one_wrong_confirmation_does_not_delete_a_true_sentence():
+    draft = "The rate is 50 percent. Kaja owns it."
+    views = [View("facts", "A statement must hold.", "rate 50 percent")]
+    votes = iter([True, False, False])
+    lock = threading.Lock()
+
+    def reply(prompt):
+        if "List each part" in prompt:
+            return json.dumps({"findings": [{"span": "The rate is 50 percent.", "quote": ""}]})
+        if "Does the statement fail" in prompt:
+            with lock:
+                return json.dumps({"fails": next(votes)})
+        return json.dumps({"action": "remove", "text": ""})
+    got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=5), Scripted(reply))
+    assert got["text"] == draft and got["outcome"] == "held" and got["calls"] == 5
