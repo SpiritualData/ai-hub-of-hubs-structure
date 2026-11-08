@@ -12,13 +12,14 @@ Part of [Finding and preparing information for the Mind](../README.md)
 - Entry call: `hubofhubs.run("relevant-solutions", ...)`
 - Selected implementation: Records index (`records_index`)
 - Metric: Solutions needing consideration named, recall first
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../critical_thinking/decision_check/remainder.py) and 201 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../critical_thinking/decision_check/remainder.py) and 202 more
 
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
 | Records index | `relevant-solutions:records_index` | The esoi library's classifier over the consumer's specification index (lexical hits plus the records each hit links to), each solution with its chain of parents and its dependents from the records' own edges. | [`hubofhubs/the_intelligence/subconscious/relevant_solutions/records_index.py`](records_index.py) | selected |
+| Records index, then a cheap model | `relevant-solutions:records_then_model` | The library's lexical arm gives three times as many candidate solutions as asked for, and one cheap model call through Model Plumbing picks among them from each candidate's name and purpose; each pick then gets its chain of parents and its dependents. | [`hubofhubs/the_intelligence/subconscious/relevant_solutions/records_then_model.py`](records_then_model.py) |  |
 
 ## Metrics
 

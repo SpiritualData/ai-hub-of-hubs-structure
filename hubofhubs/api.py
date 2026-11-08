@@ -270,7 +270,10 @@ NAMES = {
         "SolutionNetwork", "network_of",
     ),
     "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_index": (
-        "RecordsIndex",
+        "RecordsIndex", "shaped",
+    ),
+    "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_then_model": (
+        "RecordsThenModel",
     ),
     "hubofhubs.the_intelligence.subconscious.solution_briefs": (
         "briefs",

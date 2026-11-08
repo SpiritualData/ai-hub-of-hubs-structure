@@ -51,3 +51,18 @@ def test_the_retriever_picks_a_person_item_always_and_a_quarantined_item_never()
     assert picked[0] == "knowledge-k-s1-p" and "knowledge-k-s1-1" in picked and "knowledge-k-s1-2" not in picked
     assert "knowledge-k-s1-old" not in [c.id for c in active]
     assert isinstance(cards[0], Card) and "managed" in cards[0].tags
+
+
+def test_records_supplied_as_rows_form_the_same_network():
+    from hubofhubs.the_intelligence.subconscious.relevant_solutions.network import SolutionNetwork
+    tables = {
+        "intents": [{"intent_id": "top", "name": "Top", "implements": ""}, {"intent_id": "growth", "name": "Growth", "implements": "reach:plan"}],
+        "solutions": [{"solution_id": "reach", "intent_id": "top", "name": "Reach", "purpose": "Reach new readers.", "milestones": "1. 1000 subscribers"},
+                      {"solution_id": "weekly-video", "intent_id": "growth", "name": "Weekly Video", "purpose": "Publish one video each week.",
+                       "knowledge": "[lesson] Short titles did better (source: last month's results)"}],
+    }
+    network = SolutionNetwork.from_rows(tables)
+    found = RecordsIndex().relevant("publish the weekly video", network)["solutions"]
+    assert found[0]["solution_id"] == "weekly-video" and found[0]["chain"] == ["reach"]
+    made = network.prompt("weekly-video", "publish it")
+    assert "Publish one video each week." in made["text"] and made["knowledge"][0]["claim"].startswith("Short titles")

@@ -434,7 +434,8 @@
    "verdict": "UNMEASURED"
   },
   "modules": {
-   "records_index": "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_index"
+   "records_index": "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_index",
+   "records_then_model": "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_then_model"
   }
  },
  "request-intake": {

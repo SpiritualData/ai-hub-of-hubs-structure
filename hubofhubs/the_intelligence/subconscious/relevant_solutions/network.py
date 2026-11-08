@@ -45,6 +45,23 @@ class SolutionNetwork:
         self.budget = solution_prompt.budget_of(self.config)
         self.has_knowledge = "knowledge" in inspect.signature(solution_prompt.prompt).parameters
 
+    @classmethod
+    def from_rows(cls, tables: Mapping[str, Sequence[Mapping[str, str]]], name: str = "rows") -> "SolutionNetwork":
+        """The network of records any source supplies as rows (``{table: [row, ...]}``: intents, problems, ideals, solutions,
+        implementations, metrics, results, knowledge, findings, evidence), with no folder: the esoi library's ``from_rows`` and
+        ``build_from_rows``. ``name`` stands for the root in what the arms return."""
+        from esoi.understanding.solution_consideration import fan_out, solution_prompt
+        from esoi.understanding.spec_search import spec_index
+        made = cls.__new__(cls)
+        made.root, made.extra = name, ()
+        made.prompts, made.fan_out = solution_prompt, fan_out
+        made.net = solution_prompt.from_rows(tables)
+        made.config = made.net.config
+        made.index = spec_index.build_from_rows({k: list(v) for k, v in tables.items()})
+        made.budget = solution_prompt.DEFAULT_BUDGET
+        made.has_knowledge = True
+        return made
+
     def has(self, sid: str) -> bool:
         return sid in self.net.solutions
 

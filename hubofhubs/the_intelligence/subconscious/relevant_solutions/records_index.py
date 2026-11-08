@@ -15,9 +15,14 @@ class RecordsIndex:
 
     def relevant(self, request: str, records: Any, limit: int = 5, depth: int = 3) -> Mapping[str, Any]:
         network = network_of(records)
-        found: List[Dict[str, Any]] = []
-        for hit in network.classify(request, limit):
-            sid = hit["solution_id"]
-            found.append({"solution_id": sid, "name": network.name(sid), "score": hit.get("score", 0.0), "via": list(hit.get("via") or []),
-                          "chain": network.chain(sid, depth), "dependents": network.dependents(sid)})
-        return {"solutions": found, "records": str(getattr(network, "root", ""))}
+        return shaped(network, network.classify(request, limit), depth)
+
+
+def shaped(network: Any, hits: List[Mapping[str, Any]], depth: int) -> Mapping[str, Any]:
+    """The arm's answer: each solution hit with its name, its chain of parents and its dependents."""
+    found: List[Dict[str, Any]] = []
+    for hit in hits:
+        sid = hit["solution_id"]
+        found.append({"solution_id": sid, "name": network.name(sid), "score": hit.get("score", 0.0), "via": list(hit.get("via") or []),
+                      "chain": network.chain(sid, depth), "dependents": network.dependents(sid)})
+    return {"solutions": found, "records": str(getattr(network, "root", ""))}
