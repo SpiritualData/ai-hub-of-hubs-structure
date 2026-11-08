@@ -126,3 +126,10 @@ def test_a_span_over_several_sentences_is_removed_whole():
         return json.dumps({"action": "remove", "text": ""})
     got = AgreementCheck(plumbing=None).check(draft, CheckBinding(kind="reply", views=views, max_calls=6), reply)
     assert got["text"] == "I updated the step. The draft is below."
+
+
+def test_a_back_reference_a_few_words_in_dangles_but_a_conjunction_that_does_not():
+    units = removed("The top item is milestone A. Behind it, the headline count is 0.", "The top item is milestone A.")
+    assert dangling(units) == [1]
+    units = removed("The owner is set. I know that the count is 0.", "The owner is set.")
+    assert dangling(units) == []

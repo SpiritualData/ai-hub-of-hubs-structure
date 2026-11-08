@@ -32,10 +32,17 @@ def figures_of(text: str) -> List[str]:
     return FIGURE.findall(LIST_NUMBER.sub("", text or ""))
 
 
+def figure_value(figure: str) -> str:
+    """A figure by value: leading zeros and a thousands comma aside, so "06" (in "2026-11-06") holds "6" (in "6 November") and "1,000" holds "1000"."""
+    plain = figure.replace(",", "") if re.fullmatch(r"\d{1,3}(?:,\d{3})+", figure) else figure
+    whole, dot, rest = plain.partition(".")
+    return (whole.lstrip("0") or "0") + (dot + rest if dot else "")
+
+
 def cut_unsupported(text: str, evidence: str) -> Tuple[str, List[str]]:
     """``(the reply without its unsupported sentences, the figures that were unsupported)``, even when nothing is left. Sentences are cut at line ends and sentence ends; a figure
     is supported when the same number occurs in the evidence as a whole number."""
-    held = set(FIGURE.findall(evidence or ""))
+    held = {figure_value(f) for f in FIGURE.findall(evidence or "")} | {figure_value(f) for f in re.findall(r"\d+", evidence or "")}
     kept: List[str] = []
     removed: List[str] = []
     for raw_line in str(text or "").split("\n"):
@@ -44,7 +51,7 @@ def cut_unsupported(text: str, evidence: str) -> Tuple[str, List[str]]:
         pieces = SENTENCE_END.split(line) if line.strip() else [line]
         survivors = []
         for piece in pieces:
-            bad = [f for f in figures_of(piece) if f not in held]
+            bad = [f for f in figures_of(piece) if figure_value(f) not in held]
             if bad:
                 removed.extend(bad)
             else:

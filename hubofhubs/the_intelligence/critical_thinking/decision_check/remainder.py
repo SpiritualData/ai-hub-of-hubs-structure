@@ -21,7 +21,7 @@ CAPITALISED = re.compile(r"\b[A-Z][a-zA-Z'-]{2,}")
 # Back-reference words: pronouns and demonstratives (a closed class of grammar words). A sentence opening with one leans on the sentence before it.
 BACK_REFERENCE_OPENERS = frozenset("it its it's they their them theirs this that these those he she his her him such".split())
 DEMONSTRATIVE_HEAD = re.compile(r"\b(?:this|that|these|those)\s+(?P<head>[A-Za-z][A-Za-z-]{2,})", re.IGNORECASE)
-NOT_A_NOUN = frozenset("is are was were has had have will would can could may might must does did should shall".split())
+NOT_A_NOUN = frozenset("the and for but not you our his her its are was were has had have will would can could may might must does did should shall".split())
 THE_SAME = re.compile(r"\bthe\s+same\b", re.IGNORECASE)
 STEM = 5
 STOP = frozenset(("that this with from have were been what when where which their there about would could should your they them then than also into over only just more most "
@@ -92,9 +92,16 @@ def figures(text: str) -> Set[str]:
     return out
 
 
+IMPERSONAL_REFERENCES = frozenset("it its this these those".split())
+OPENING_WORDS = 3      # "It ...", "Behind it, ...", "Because of this, ...": a back-reference in the first words leans on the sentence before
+
+
 def opener(text: str) -> str:
-    words = WORD.findall(text or "")
-    return words[0].lower() if words else ""
+    """The back-reference word among the sentence's first words, or its first word when there is none."""
+    words = [w.lower() for w in WORD.findall(text or "")[:OPENING_WORDS]]
+    # Past the first word only the impersonal back-references count: "that" and "such" there are usually a conjunction or an adjective ("I know that ..."), and a
+    # personal pronoun ("Is she free?") usually names a person an earlier kept sentence named.
+    return next((w for k, w in enumerate(words) if w in BACK_REFERENCE_OPENERS and (k == 0 or w in IMPERSONAL_REFERENCES)), words[0] if words else "")
 
 
 def dangling(units: Sequence[Unit], question: str = "") -> List[int]:
