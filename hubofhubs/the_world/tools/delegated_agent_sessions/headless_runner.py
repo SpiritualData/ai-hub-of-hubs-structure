@@ -26,7 +26,8 @@ from hubofhubs.the_world.tools.deep import DeepResult, DeepRunnerBase, LAUNCH_MI
 from hubofhubs.the_world.tools.delegated_agent_sessions import providers
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import (
     CANCEL_POLL_SECONDS, SubprocessConfig, compose_goal_prompt, extract_escalation_id, kill_process_group, log, stop_process_group)
-from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings, GoalSettingsSource, resolve_goal_settings
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import (
+    GoalSettings, GoalSettingsSource, resolve_goal_settings, with_instructions_pack)
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 DEFAULT_TIER = "fast"
@@ -77,7 +78,8 @@ class HeadlessCliRunner(DeepRunnerBase):
     config_class = SubprocessConfig
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "", provider: str = "", tier: str = DEFAULT_TIER,
-                 settings: Optional[GoalSettingsSource] = None, model_for: Optional[Callable[[str, str], Optional[str]]] = None):
+                 settings: Optional[GoalSettingsSource] = None, model_for: Optional[Callable[[str, str], Optional[str]]] = None,
+                 instructions: str = ""):
         if config is None:
             if not root:
                 raise ValueError("no config: pass config=, or root=, the one folder the harness runs in")
@@ -89,6 +91,7 @@ class HeadlessCliRunner(DeepRunnerBase):
         self.cfg = config
         self.tier = tier or DEFAULT_TIER
         self.settings_source = settings
+        self.instructions = instructions   # the instructions pack this arm adds to every run, "" for none
         self.model = (model_for or providers.model_for)(self.provider, self.tier)
         # The deep-model ladder names Claude models; a harness on another provider runs its own tier's model, so a goal loop must not
         # announce or climb that ladder for it.
@@ -122,7 +125,7 @@ class HeadlessCliRunner(DeepRunnerBase):
         return self.harness_environment(env)
 
     def prompt_for(self, goal: str, brief: str, preamble: str, working_dir: str, settings: GoalSettings) -> str:
-        body = compose_goal_prompt(goal, brief, preamble=preamble, model=self.model, settings=settings)
+        body = compose_goal_prompt(goal, brief, preamble=preamble, model=self.model, settings=with_instructions_pack(settings, self.instructions))
         return (f"WORKING FOLDER: {working_dir}\nEvery file the task names is in this folder; read and write files by their path "
                 f"relative to it, and stay inside it. Nobody answers questions during this run: use your tools to list and read what "
                 f"you need, then finish with your report.\n\n{body}")

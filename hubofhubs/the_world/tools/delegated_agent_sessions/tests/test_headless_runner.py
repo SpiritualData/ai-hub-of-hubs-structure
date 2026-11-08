@@ -148,3 +148,15 @@ def test_a_run_that_stops_without_a_report_is_continued_once(tmp_path):
     assert res.met and "Rotterdam" in res.output and res.cost_usd == pytest.approx(0.004)
     calls = [line for line in (tmp_path / "argv.txt").read_text().splitlines() if line.startswith("run --format json")]
     assert len(calls) == 2 and "--session ses_9" in calls[1]
+
+
+def test_an_instructions_pack_is_added_to_the_prompt(tmp_path):
+    config = SubprocessConfig(working_dir=str(tmp_path), claude_path=fake_program(tmp_path, CODEX_EVENTS), timeout_seconds=30.0)
+    packs = {"lean": "Write the least code that fully works."}
+    settings = GoalSettings(environment=lambda: {"PATH": "/usr/bin:/bin"}, instruction_pack=lambda name: packs.get(name, ""))
+    runner = CodexCliRunner(config, provider="openai", settings=settings, model_for=lambda p, t: "m", instructions="lean")
+    assert runner.run_goal(goal="g", brief="b").met
+    assert "INSTRUCTIONS PACK (lean):\nWrite the least code that fully works." in call(tmp_path)["stdin"]
+    unknown = CodexCliRunner(config, provider="openai", settings=settings, model_for=lambda p, t: "m", instructions="missing")
+    res = unknown.run_goal(goal="g", brief="b")
+    assert not res.met and "no instructions pack named 'missing'" in res.error

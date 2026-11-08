@@ -56,6 +56,14 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.10
 seconds_per_case = 120
 
+# The balanced score of the hard stage of Delegated Agent Sessions: real deep work (multi-file coding changes with hidden tests, milestone
+# deliverables judged item by item), which takes minutes. Weights are the library's defaults. A task of this kind is worth at most a dollar
+# and ten minutes, fixed before any arm was scored on these cases.
+[balance.agent_sessions_hard]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 1.00
+seconds_per_case = 600
+
 # The balanced score of cards-from-files (esoi/balance.py). One case is finding the file one task needs, which is part of a
 # small file edit (worth at most ten cents and a minute, [balance.file_edit_goals]) and what a worker without cards spends a
 # few tool calls on, so a case is worth at most a fifth of an edit. One build serves every case of a run, so a card build of

@@ -13,6 +13,8 @@ passes a zero-argument callable returning ``GoalSettings`` instead of a value; `
 """
 from __future__ import annotations
 
+import dataclasses
+
 import logging
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple, Union
@@ -90,6 +92,11 @@ def no_instructions() -> str:
     return ""
 
 
+def no_pack(name: str) -> str:
+    """The default pack source: no instructions pack is known."""
+    return ""
+
+
 def keep_requester(env: Dict[str, str], user_id: Optional[str]) -> Dict[str, str]:
     """The default requester hook: the child's environment is left as it is."""
     return env
@@ -111,6 +118,8 @@ class GoalSettings:
     deep_review_interval_seconds  seconds between liveness reviews; None turns them off.
     deep_launch                   the launch flags of the worker (``launch.DeepLaunchSettings``).
     claude_config_dir             where the worker keeps its sessions when not the default ``~/.claude``; None for the default.
+    instruction_pack              a callable from a pack name to its text ("" when unknown): an instructions pack is a named block of
+                                  working instructions (a published agent rule set, say) an arm adds after the standing instructions.
     escalation_marker             the line prefix a worker prints to report the human decision it raised (``<marker> <id>``);
                                   empty means no worker escalates this way and no marker is read.
     run_id_env                    the environment name that carries a run's id into the worker's shell; empty sets none.
@@ -128,6 +137,7 @@ class GoalSettings:
     escalation_marker: str = ""
     run_id_env: str = ""
     standing_instructions: Callable[[], str] = no_instructions
+    instruction_pack: Callable[[str], str] = no_pack
     apply_requester: Callable[[Dict[str, str], Optional[str]], Dict[str, str]] = keep_requester
     environment: Callable[[], Mapping[str, str]] = empty_environment
     usage_limits: UsageLimits = field(default_factory=UsageLimits)
@@ -142,3 +152,19 @@ def resolve_goal_settings(source: Optional[GoalSettingsSource]) -> GoalSettings:
     if source is None:
         return GoalSettings()
     return source if isinstance(source, GoalSettings) else source()
+
+
+def with_instructions_pack(settings: GoalSettings, name: str) -> GoalSettings:
+    """``settings`` whose standing instructions end with the text of the instructions pack ``name`` (unchanged for no name). Raises
+    ValueError when the pack source knows no pack of that name, so an arm never runs without the instructions it is named for."""
+    if not name:
+        return settings
+    text = (settings.instruction_pack(name) or "").strip()
+    if not text:
+        raise ValueError(f"no instructions pack named {name!r} is known to these settings")
+    base = settings.standing_instructions
+
+    def standing() -> str:
+        head = (base() or "").strip()
+        return f"{head}\n\nINSTRUCTIONS PACK ({name}):\n{text}" if head else f"INSTRUCTIONS PACK ({name}):\n{text}"
+    return dataclasses.replace(settings, standing_instructions=standing)

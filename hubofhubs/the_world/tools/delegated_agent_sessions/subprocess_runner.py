@@ -38,7 +38,8 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunch
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import (
     describe_session_activity, landed_file_changes, monitor_claude_session, read_session_activity_tail, resolve_session_file,
     resolved_model_from_session, session_replay_tokens, subagent_work_in_flight, worker_output_is_thin)
-from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings, GoalSettingsSource, resolve_goal_settings
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import (
+    GoalSettings, GoalSettingsSource, resolve_goal_settings, with_instructions_pack)
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 
@@ -60,13 +61,15 @@ class SubprocessGoalRunner(DeepRunner):
     model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None
     settings_source: Optional[GoalSettingsSource] = None
     tier_model: Optional[str] = None   # the model of the arm's tier, used when a call names no model
+    instructions: str = ""   # the name of the arm's instructions pack, "" for none
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "",
                  model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None,
-                 settings: Optional[GoalSettingsSource] = None, provider: str = "anthropic", tier: str = ""):
+                 settings: Optional[GoalSettingsSource] = None, provider: str = "anthropic", tier: str = "", instructions: str = ""):
         if not providers.drives(type(self), provider):
             raise ValueError(f"{type(self).__name__} drives only {', '.join(providers.providers_of(type(self)))}, not {provider!r}")
         self.tier_model = providers.model_for(provider, tier) if tier else None
+        self.instructions = instructions   # the instructions pack this arm adds to every run (``settings.with_instructions_pack``)
         if config is None:
             if not root:
                 raise ValueError("no config: pass config=, or root= (or set HUBOFHUBS_WRITE_ROOT), the one folder the worker runs in")
@@ -266,7 +269,8 @@ class SubprocessGoalRunner(DeepRunner):
         budget = prompt_budget.resolve_deep_prompt_budget(
             prompt_budget_tokens or self.cfg.prompt_token_budget, model=window_model)
         prompt, fit = compose_goal_prompt_fitted(goal, brief, preamble=preamble,
-                                                 budget_tokens=budget, model=window_model, settings=settings)
+                                                 budget_tokens=budget, model=window_model,
+                                                 settings=with_instructions_pack(settings, self.instructions))
         prompt_tokens = prompt_budget.estimate_tokens(prompt)
         if fit.cuts and emit is not None:
             emit(ProgressEvent(

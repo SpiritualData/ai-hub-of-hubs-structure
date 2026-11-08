@@ -1,0 +1,37 @@
+[
+ {
+  "id": "hard-code-asks",
+  "stratum": "code",
+  "digest": "a1c494159a60"
+ },
+ {
+  "id": "hard-code-chat-times",
+  "stratum": "code",
+  "digest": "1e1ac57d62da"
+ },
+ {
+  "id": "hard-code-goal-assign",
+  "stratum": "code",
+  "digest": "c4f7372482fb"
+ },
+ {
+  "id": "hard-code-periods",
+  "stratum": "code",
+  "digest": "0026609bcd67"
+ },
+ {
+  "id": "hard-deliverable-first-video",
+  "stratum": "deliverable",
+  "digest": "2aa9a172b2bb"
+ },
+ {
+  "id": "hard-deliverable-niche-analysis",
+  "stratum": "deliverable",
+  "digest": "755c03eb6421"
+ },
+ {
+  "id": "hard-deliverable-research-brief",
+  "stratum": "deliverable",
+  "digest": "3a919a11b0c6"
+ }
+]

@@ -55,6 +55,7 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.launch import build_deep
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import (
     describe_session_activity, monitor_claude_session, resolve_session_file, resolved_model_from_session, session_file_size, session_replay_tokens,
     worker_output_is_thin)
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import with_instructions_pack
 from hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner import SubprocessGoalRunner
 from hubofhubs.the_self.assembler import arm_needs as needs
 
@@ -482,7 +483,8 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
         budget = prompt_budget.resolve_deep_prompt_budget(
             prompt_budget_tokens or self.cfg.prompt_token_budget, model=window_model)
         prompt, fit = compose_goal_prompt_fitted(goal, brief, preamble=preamble,
-                                                 budget_tokens=budget, model=window_model, settings=settings)
+                                                 budget_tokens=budget, model=window_model,
+                                                 settings=with_instructions_pack(settings, self.instructions))
         prompt_tokens = prompt_budget.estimate_tokens(prompt)
         effective_dir = self.cfg.working_dir if working_dir is None else working_dir
         if resume_session_id:
