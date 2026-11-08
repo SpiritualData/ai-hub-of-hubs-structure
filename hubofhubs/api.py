@@ -167,6 +167,10 @@ NAMES = {
         "FileToolLedger", "STUCK_OUTPUT_ALIKE", "STUCK_REASON_ALIKE", "ToolOutcome", "alike", "changed_something", "describe_failure",
         "failure_signature", "outcome_from_result", "repeated_failure", "unrecovered_failures",
     ),
+    "hubofhubs.the_consciousness.communication": (
+        "CommunicationPolicy", "DEFAULT_COMMUNICATION_POLICY", "DELIVER_ASK", "DELIVER_DURABLE", "DELIVER_NOTHING", "DELIVER_STATUS",
+        "Delivery", "LONG_STRETCH_SECONDS", "TurnCommunicator", "TurnSoFar", "communicate",
+    ),
     "hubofhubs.the_consciousness.feedback_learning.interface": (
         "FeedbackLearning",
     ),
