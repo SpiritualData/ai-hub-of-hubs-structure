@@ -1,0 +1,3 @@
+knowledge_id,claim,kind,source,solution_ids,status,status_by,recorded,expiration
+k-solution-passes-1,A single broad pass over many solutions rates candidates from general knowledge and misses what a solution's own records hold: one such pass called a candidate the strongest when its own solution's results showed it had lost on the same cases.,best guess,"the solution's knowledge field of solution-passes, migrated 2026-11-08",solution-passes,active,,2026-11-08,
+k-solution-passes-2,Many cheap scoped calls beat one broad call for this.,best guess,"the solution's knowledge field of solution-passes, migrated 2026-11-08",solution-passes,active,,2026-11-08,

@@ -1,0 +1,4 @@
+knowledge_id,claim,kind,source,solution_ids,status,status_by,recorded,expiration
+k-context-retriever-1,Retrieval papers favour hybrid first stages and rerankers.,best guess,"the solution's knowledge field of context-retriever, migrated 2026-11-08",context-retriever,active,,2026-11-08,
+k-context-retriever-2,"code retrieval gains from structure (names, imports, co-change).",best guess,"the solution's knowledge field of context-retriever, migrated 2026-11-08",context-retriever,active,,2026-11-08,
+k-context-retriever-3,a consumer's own labelled history is the best training data and stays with the consumer.,best guess,"the solution's knowledge field of context-retriever, migrated 2026-11-08",context-retriever,active,,2026-11-08,

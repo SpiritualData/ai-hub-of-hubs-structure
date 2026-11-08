@@ -1,0 +1,2 @@
+knowledge_id,claim,kind,source,solution_ids,status,status_by,recorded,expiration
+k-vendor-model-caller-1,"Each vendor's SDK and the claude program have their own limits, listed beside the arm in the requirements table.",best guess,"the solution's knowledge field of vendor-model-caller, migrated 2026-11-08",vendor-model-caller,active,,2026-11-08,
