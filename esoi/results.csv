@@ -307,3 +307,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0049,17.6,0.9949,89acf11,393c849c,sample:1,claude-haiku-5-5,
 2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0051,18.6,0.9946,89acf11,393c849c,sample:1,claude-haiku-5-5,
 2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,4,4/7,0/0,7,0,0,0.065,256.1,0.6895,89acf11,393c849c,,claude-haiku-5-5,
+2026-11-08,relevant_solutions,records_index,62,46,37/49,9/13,0,0,0,0.0,0.8,0.7517,00bcf79,ec848095,,none,recall=0.828; precision=0.454; f2=0.6466; missed_cases=16
+2026-11-08,solution_passes,network_passes,6,6,6/6,0/0,0,0,0,0.0,2.2,,00bcf79,8c79356a,"only:reach-graph-arm,reach-keyword-papers,reach-draft-as-given,reach-risk-gate-off,reach-no-edit-arm,reach-fielded-retrieval",none,reaches_passed=6/6; calls_per_case=0.0
