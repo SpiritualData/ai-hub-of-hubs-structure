@@ -1,6 +1,7 @@
 """Write cases.json for Delegated Agent Sessions: open-ended tasks a person hands to an agent, of three kinds (the case's ``stratum``).
 
-* ``report`` (12): read a small folder of plain files and report; the final report must hold every expected fact and the files stay unchanged.
+* ``report`` (12): read a small folder of plain files and report; the final report must hold every expected fact (a fact written as a list
+  holds when any of its spellings appears) and the files stay unchanged.
 * ``code`` (3): change a file so that the case's own tests pass; the harness rewrites the tests before checking, so editing them cannot pass.
 * ``deliverable`` (3), shaped like the work a milestone asks for: draft a script to a written rubric, research a question from source
   files and cite each one, turn meeting notes into a dated plan. The file the agent writes is checked against the rubric.
@@ -25,7 +26,7 @@ REPORTS = [
     ("count-files", {"a.md": "x", "b.md": "y", "c.txt": "z", "d.md": "w"},
      "How many markdown (.md) files are in this folder? Report the number and list their names.", ["3", "a.md", "b.md", "d.md"]),
     ("deadline", {"plan.txt": "Phase one ends on 12 March.\nPhase two ends 20 days later.\nPhase three starts the day after phase two ends.\n"},
-     "Work out the date phase three starts, using plan.txt, and tell me.", ["2 april"]),
+     "Work out the date phase three starts, using plan.txt, and tell me.", [["2 april", "april 2", "02-04", "04-02"]]),
     ("who-owns", {"owners.csv": "area,owner\nbilling,Sana\nsupport,Idris\nonboarding,Mei\n", "request.txt": "A customer cannot update the card on file.\n"},
      "Using the two files, tell me who should receive the request and why.", ["sana", "billing"]),
     ("summary-one-line", {"article.txt": "The council approved a new cycling lane on Mill Street. Work starts in May and lasts six weeks. Parking on the north side will be removed during the work.\n"},
@@ -40,7 +41,8 @@ REPORTS = [
     ("missing", {"todo.txt": "1. Book the room\n2. Send the agenda\n"},
      "Does todo.txt have a task about catering? Reply 'none found' if not, and quote the last task in the list.", ["none found", "send the agenda"]),
     ("order", {"steps.txt": "C: serve\nA: boil water\nB: add the pasta\n"},
-     "Put the steps in steps.txt in the right order by their letters and report the order.", ["boil water", "add the pasta", "serve"]),
+     "Without changing steps.txt, tell me its steps in the right order by their letters, naming each step.",
+     ["boil water", "add the pasta", "serve"]),
     ("names", {"people.txt": "Ana Silva, Bo Chen, Cleo Park\n"},
      "How many people are listed in people.txt and which one has the surname Chen?", ["3", "bo"]),
 ]

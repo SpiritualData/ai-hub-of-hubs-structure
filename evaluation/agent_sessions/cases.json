@@ -48,7 +48,12 @@
   },
   "goal": "Work out the date phase three starts, using plan.txt, and tell me.",
   "expect": [
-   "2 april"
+   [
+    "2 april",
+    "april 2",
+    "02-04",
+    "04-02"
+   ]
   ]
  },
  {
@@ -134,7 +139,7 @@
   "files": {
    "steps.txt": "C: serve\nA: boil water\nB: add the pasta\n"
   },
-  "goal": "Put the steps in steps.txt in the right order by their letters and report the order.",
+  "goal": "Without changing steps.txt, tell me its steps in the right order by their letters, naming each step.",
   "expect": [
    "boil water",
    "add the pasta",

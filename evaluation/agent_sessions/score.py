@@ -4,7 +4,7 @@ Each case is a small folder of plain files and a goal. A fresh temporary folder 
 its working directory and nothing else. Every case needs the run to say it met the goal and the files it was not asked to change to be
 unchanged; then, by the case's ``stratum``:
 
-* ``report``: the final report holds every expected fact (case-insensitive).
+* ``report``: the final report holds every expected fact (case-insensitive; a list is any one of its spellings).
 * ``code``: the case's own tests, rewritten by the harness after the run, pass in a new process with a time limit.
 * ``deliverable``: the file the goal names exists and meets its rubric (words in range, every required term present as a word, nothing
   forbidden, terms in the stated order).
@@ -59,6 +59,11 @@ def adapt(implementation, meter):
         meter.cost_usd += float(getattr(result, "cost_usd", 0.0) or 0.0)
         return result
     return run
+
+
+def spellings(fact):
+    """The accepted spellings of an expected fact: a list is any one of its items (a date written either way round)."""
+    return fact if isinstance(fact, list) else [fact]
 
 
 def word_in(term, text):
@@ -116,7 +121,7 @@ def score_case(fn, case):
             problems += [] if ok else [f"tests fail: {last}"]
         elif case.get("rubric"):
             problems += rubric_problems(root, case["rubric"])
-        missing = [fact for fact in case["expect"] if fact.lower() not in report.lower()]
+        missing = [fact for fact in case["expect"] if not any(f.lower() in report.lower() for f in spellings(fact))]
         problems += [f"the report lacks {missing}"] if missing else []
         problems += [f"files changed: {changed}"] if changed else []
         met = bool(getattr(result, "met", False))
