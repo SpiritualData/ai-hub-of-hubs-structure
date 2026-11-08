@@ -161,14 +161,35 @@ Reply with JSON only: {{"findings": [{{"span": "<words copied exactly from the r
 CONFIRM_PROMPT = """Use ONLY the evidence below.
 Task: {instruction}
 
-Statement:
-{span}
+Statements, each judged on its own:
+{statements}
 
 Evidence:
 {evidence}
 
-Does the statement fail the task? It fails only if it is of the kind the task is about and the evidence does not support it (or contradicts it). A statement of any other kind does not fail.
-Reply with JSON only: {{"fails": true or false, "quote": "<words copied exactly from the evidence that show it, or empty>"}}. Do not use em dashes."""
+For each numbered statement: does it fail the task? It fails only if it is of the kind the task is about and the evidence does not support it (or contradicts it). A statement of any other kind does not fail.
+Reply with JSON only: {{"verdicts": [{{"n": <the statement's number>, "fails": true or false, "quote": "<words copied exactly from the evidence that show it, or empty>"}}]}}, one entry per statement. Do not use em dashes."""
+
+
+def numbered(spans: Sequence[str]) -> str:
+    return "\n".join(f"{i}. {span}" for i, span in enumerate(spans, 1))
+
+
+def read_verdicts(raw: Any, count: int) -> Dict[int, Dict[str, Any]]:
+    """The verdicts of one confirmation call, by statement index (0-based); a statement the reply gives no true/false for is missing, i.e. not answered."""
+    rows = parse_json(raw).get("verdicts")
+    out: Dict[int, Dict[str, Any]] = {}
+    for row in rows if isinstance(rows, list) else ():
+        if not isinstance(row, dict) or not isinstance(row.get("fails"), bool):
+            continue
+        try:
+            n = int(row.get("n")) - 1
+        except (TypeError, ValueError):
+            continue
+        if 0 <= n < count and n not in out:
+            out[n] = {"fails": row["fails"], "quote": str(row.get("quote") or "")}
+    return out
+
 
 REPAIR_PROMPT = """One part of a reply fails this task: {instruction}
 

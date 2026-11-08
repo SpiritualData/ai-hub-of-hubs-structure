@@ -3,10 +3,12 @@
 ``agreement_check`` runs one short structured call per view in parallel (each sees only its slice of evidence), adds the producer's own pick and any vote the consumer already holds, and
 reconciles by agreement: when the opinions agree the decision is accepted at no further cost; when they disagree one adjudication call sees only the disagreeing views, their evidence and
 quotes and the options, and must quote the deciding words (code checks they are in that evidence) or the result abstains. For a reply, each view lists the spans that fail, code checks
-each span is in the reply, one independent call per span (shown the span alone) confirms it, and only a confirmed span is rewritten or removed, with the evidence that contradicts it.
+each span is in the reply, independent confirmation calls (two, a third only on a split) judge each span, and only a confirmed span is rewritten or removed, with the evidence that contradicts it;
+each stage starts as soon as its input is in, on one pool of bounded width.
 ``agreement_with_known_mistakes`` is the same arm with each view's known-mistake lines in its prompt and, while the call budget allows, a twin view built on them.
 ``majority_vote`` is the agreement check with a disagreement settled by the views' majority (a tie still goes to the adjudication). ``single_verify`` is the one verify call that was tried before (the bound), and ``draft_as_given`` makes no call. Every arm stays within ``max_calls``. Standard library plus the hub and ``esoi``."""
 import re
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from dataclasses import asdict
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
@@ -15,13 +17,14 @@ from esoi import Lazy
 
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import (
     ABSTAIN, ADJUDICATE_PROMPT, CONFIRM_PROMPT, FINDINGS_PROMPT, PICK, REPAIR_PROMPT, REPLY, Calls, CheckBinding, View, Vote, as_binding,
-    known_block, parse_json, pick_view_prompt, quoted, read_pick, remove_span, run_parallel, sentence_of, spent_view, options_listing)
+    known_block, numbered, parse_json, pick_view_prompt, quoted, read_pick, read_verdicts, remove_span, run_parallel, sentence_of, spent_view, options_listing)
 from hubofhubs.the_intelligence.critical_thinking.decision_check.mistakes import CONFIRMED_FAILURE, new_mistake
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 
 
 FIGURE_TOKEN = re.compile(r"\d+(?:[.,]\d+)*")
-CONFIRMATIONS = 3          # independent confirmation calls per flagged span; most of them must say it fails
+CONFIRMATIONS = 3          # independent confirmations a flagged span can get; most of them must say it fails
+FIRST_CONFIRMATIONS = 2    # asked first; when they agree the third cannot change the majority, so it is asked only on a split
 UNCONFIRMED_REPLY = "I could not confirm the answer from what I read this turn, so I have left out what I could not confirm."
 
 
@@ -119,54 +122,102 @@ class Arm:
 
     # ---- a reply
     def check_reply(self, draft: str, b: CheckBinding, model: Asking, calls: Calls) -> Dict[str, Any]:
+        """Every stage starts as soon as what it needs is in, on one pool of at most ``b.parallel`` calls in flight (a provider's limit on concurrent calls is the usual
+        cause of slow checks, so the width is a ceiling, not a target): a view's flagged spans go to confirmation the moment that view answers, and a confirmed span
+        goes to repair the moment it is confirmed. A view's spans are confirmed together, each judged on its own in the list. Two confirmations come first; when they
+        agree the third cannot change the majority, so it is asked only on a split. Every flagged span is confirmed (those calls run on top of the cap) and no confirmed
+        span ships unchanged."""
         shown = self.prompt_binding(b)
         views = self.planned_views(b, 2)
         by_id = {v.id: v for v in views}
+        raised = 0
+        grounded: List[Dict[str, Any]] = []
+        votes: Dict[int, List[Dict[str, Any]]] = {}
+        waiting: Dict[int, int] = {}
+        asked: Dict[int, int] = {}
+        verdict: Dict[int, bool] = {}
+        repairs: Dict[int, Dict[str, Any]] = {}
+        with ThreadPoolExecutor(max_workers=max(1, b.parallel)) as pool:
+            pending: Dict[Any, tuple] = {}
 
-        def one(view: View) -> List[Dict[str, str]]:
-            raw = model(FINDINGS_PROMPT.format(instruction=view.instruction, draft=draft, evidence=view.evidence, known=known_block(shown.known.get(view.id, ()), b.token_cap)))
-            rows = parse_json(raw).get("findings") if raw is not None else None
-            return [{"view": view.id, "span": str(r.get("span") or ""), "quote": str(r.get("quote") or "")} for r in rows if isinstance(r, dict)] if isinstance(rows, list) else []
-        raised = [f for found in run_parallel([lambda v=v: one(v) for v in views], b.parallel) for f in found]
-        grounded, seen = [], set()
-        for f in raised:
-            if f["span"] and f["span"] in draft and f["span"] not in seen:
-                seen.add(f["span"])
-                grounded.append(f)
+            def confirm(view: View, idxs: List[int], times: int) -> None:
+                calls.limit += times      # confirmations run on top of the cap
+                prompt = CONFIRM_PROMPT.format(instruction=view.instruction, statements=numbered([grounded[i]["span"] for i in idxs]), evidence=view.evidence)
+                for i in idxs:
+                    waiting[i] = waiting.get(i, 0) + times
+                    asked[i] = asked.get(i, 0) + times
+                for _ in range(times):
+                    pending[pool.submit(model, prompt)] = ("confirm", idxs)
+
+            def repair(i: int) -> None:
+                f = grounded[i]
+                view = by_id[f["view"]]
+                quote = next((a["quote"] for a in votes[i] if a["fails"] and a["quote"]), f["quote"])
+                f.update(quote=quote)
+                evidence = quote if quoted(quote, view.evidence) else view.evidence
+                prompt = REPAIR_PROMPT.format(instruction=view.instruction, sentence=sentence_of(draft, f["span"]), span=f["span"], evidence=evidence)
+                pending[pool.submit(model, prompt)] = ("repair", i)
+
+            for view in views:
+                prompt = FINDINGS_PROMPT.format(instruction=view.instruction, draft=draft, evidence=view.evidence, known=known_block(shown.known.get(view.id, ()), b.token_cap))
+                pending[pool.submit(model, prompt)] = ("view", view)
+            while pending:
+                done, _ = wait(list(pending), return_when=FIRST_COMPLETED)
+                for future in done:
+                    stage, what = pending.pop(future)
+                    raw = future.result()
+                    if stage == "view":
+                        rows = parse_json(raw).get("findings") if raw is not None else None
+                        mine = []
+                        for r in rows if isinstance(rows, list) else ():
+                            if not isinstance(r, dict):
+                                continue
+                            raised += 1
+                            span = str(r.get("span") or "")
+                            if span and span in draft and span not in {g["span"] for g in grounded}:
+                                mine.append(len(grounded))
+                                grounded.append({"view": what.id, "span": span, "quote": str(r.get("quote") or "")})
+                        if mine:
+                            confirm(what, mine, FIRST_CONFIRMATIONS)
+                    elif stage == "confirm":
+                        read = read_verdicts(raw, len(what)) if raw is not None else {}
+                        split: List[int] = []
+                        for k, i in enumerate(what):
+                            waiting[i] -= 1
+                            if raw is not None:
+                                votes.setdefault(i, []).append(read.get(k) or {"fails": False, "quote": ""})
+                            if waiting[i] or i in verdict:
+                                continue
+                            fails = sum(a["fails"] for a in votes.get(i, []))
+                            holds = len(votes.get(i, [])) - fails
+                            if 2 * fails > CONFIRMATIONS or 2 * holds > CONFIRMATIONS or asked[i] >= CONFIRMATIONS:
+                                verdict[i] = 2 * fails > len(votes.get(i, [])) > 0
+                                if verdict[i]:
+                                    repair(i)
+                            else:
+                                split.append(i)
+                        if split:
+                            confirm(by_id[grounded[split[0]]["view"]], split, 1)
+                    else:
+                        f = grounded[what]
+                        data = parse_json(raw) if raw is not None else {}
+                        action, text = data.get("action"), str(data.get("text") or "").strip()
+                        if action == "rewrite" and text and text != f["span"] and not set(FIGURE_TOKEN.findall(text)) - set(FIGURE_TOKEN.findall(f["span"])):
+                            repairs[what] = dict(f, action="rewrite", text=text)
+                        else:
+                            why = ("no call was left for a rewrite" if raw is None else "the rewrite added a figure the reply did not state" if action == "rewrite" and text
+                                   else "the repair removed it" if action == "remove" else "the repair gave no usable rewrite")
+                            repairs[what] = dict(f, action="remove", text="", why_removed=why)
         if not grounded:
-            return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=len(raised))
-        # Detection and confirmation always run on every flagged span: each gets CONFIRMATIONS independent confirmation calls on top of the cap, and is confirmed when
-        # most of them say it fails, so one wrong confirmation does not delete a true sentence.
-        calls.limit += CONFIRMATIONS * len(grounded)
-
-        def confirm(f: Dict[str, str]) -> Dict[str, Any]:
-            view = by_id[f["view"]]
-            raws = run_parallel([lambda: model(CONFIRM_PROMPT.format(instruction=view.instruction, span=f["span"], evidence=view.evidence))] * CONFIRMATIONS, CONFIRMATIONS)
-            answers = [parse_json(raw) for raw in raws if raw is not None]
-            fails = sum(a.get("fails") is True for a in answers)
-            quote = next((str(a.get("quote")) for a in answers if a.get("fails") is True and a.get("quote")), f["quote"])
-            return dict(f, asked=len(answers), confirmed=2 * fails > len(answers) > 0, votes=fails, quote=quote)
-        checked = run_parallel([lambda f=f: confirm(f) for f in grounded], b.parallel)
-        confirmed = [f for f in checked if f["confirmed"]]
+            return result("held", calls, "no view found a failing span in the reply", 1.0, text=draft, findings=[], dropped=raised)
+        checked = [dict(f, asked=len(votes.get(i, [])), confirmed=verdict.get(i, False), votes=sum(a["fails"] for a in votes.get(i, []))) for i, f in enumerate(grounded)]
+        confirmed = [i for i in range(len(grounded)) if verdict.get(i)]
         agreement = len(confirmed) / len(grounded)
         if not confirmed:
-            return result("held", calls, "most confirmations found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=len(raised) - len(grounded))
-
-        def repair(f: Dict[str, Any]) -> Dict[str, Any]:
-            """A model rewrite when the budget allows one, under the rule that a repair only removes or rewords what the reply says; otherwise code removes the span."""
-            view = by_id[f["view"]]
-            evidence = f["quote"] if quoted(f["quote"], view.evidence) else view.evidence
-            raw = model(REPAIR_PROMPT.format(instruction=view.instruction, sentence=sentence_of(draft, f["span"]), span=f["span"], evidence=evidence))
-            data = parse_json(raw) if raw is not None else {}
-            action, text = data.get("action"), str(data.get("text") or "").strip()
-            if action == "rewrite" and text and text != f["span"] and not set(FIGURE_TOKEN.findall(text)) - set(FIGURE_TOKEN.findall(f["span"])):
-                return dict(f, action="rewrite", text=text)
-            why = ("no call was left for a rewrite" if raw is None else "the rewrite added a figure the reply did not state" if action == "rewrite" and text
-                   else "the repair removed it" if action == "remove" else "the repair gave no usable rewrite")
-            return dict(f, action="remove", text="", why_removed=why)
-        repairs = run_parallel([lambda f=f: repair(f) for f in confirmed], b.parallel)
+            return result("held", calls, "most confirmations found none of the raised spans to fail", agreement, text=draft, findings=checked, dropped=raised - len(grounded))
+        done_repairs = [dict(repairs[i], asked=checked[i]["asked"], confirmed=True, votes=checked[i]["votes"]) for i in confirmed]
         out = draft
-        for r in repairs:
+        for r in done_repairs:
             if r["action"] == "rewrite":
                 out = out.replace(r["span"], r["text"], 1)
             else:
@@ -175,9 +226,9 @@ class Arm:
         if not out.strip():
             out = UNCONFIRMED_REPLY
         mistakes = [asdict(new_mistake(r["view"], by_id[r["view"]].evidence[:2000], r["span"], r.get("why_removed") or "", CONFIRMED_FAILURE))
-                    for r in repairs if r["action"] != "rewrite"]
-        return result("repaired", calls, "every confirmed failing span was rewritten or removed", agreement, text=out, findings=repairs, mistakes=mistakes,
-                      dropped=len(raised) - len(grounded))
+                    for r in done_repairs if r["action"] != "rewrite"]
+        return result("repaired", calls, "every confirmed failing span was rewritten or removed", agreement, text=out, findings=done_repairs, mistakes=mistakes,
+                      dropped=raised - len(grounded))
 
 
 @implementation("decision-check", "agreement_check")

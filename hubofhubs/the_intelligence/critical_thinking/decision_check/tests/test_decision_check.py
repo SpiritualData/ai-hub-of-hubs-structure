@@ -109,6 +109,16 @@ def reply_binding(**more):
     return CheckBinding(kind="reply", views=[View("claims", "Every claim is supported by the evidence read.", READS)], **more)
 
 
+CONFIRMING = "For each numbered statement"
+
+
+def verdicts(prompt, fails, quote=""):
+    """A confirmation call's answer: the same verdict for every numbered statement it was shown."""
+    listed = prompt.split("Statements, each judged on its own:")[1].split("Evidence:")[0]
+    count = len([line for line in listed.splitlines() if line.strip()[:1].isdigit()])
+    return json.dumps({"verdicts": [{"n": n, "fails": fails, "quote": quote} for n in range(1, count + 1)]})
+
+
 def findings(*spans):
     return json.dumps({"findings": [{"span": s, "quote": "The deadline is June 5."} for s in spans]})
 
@@ -117,21 +127,21 @@ def test_a_reply_is_repaired_only_at_the_confirmed_failing_span():
     def reply(prompt):
         if "List each part" in prompt:
             return findings("The deadline is June 3.", "not in the reply")
-        if "Does the statement fail" in prompt:
-            return json.dumps({"fails": True, "quote": "The deadline is June 5."})
+        if CONFIRMING in prompt:
+            return verdicts(prompt, True, "The deadline is June 5.")
         assert "The deadline is June 5." in prompt.split("Evidence it must agree with:")[1]
         return json.dumps({"action": "rewrite", "text": "The deadline is June 5."})
     got = arm().check(REPLY, reply_binding(), Scripted(reply))
     # A repair never adds a figure the reply did not state (the 5 is new), so the wrong sentence is removed rather than rewritten with the evidence's figure.
     assert got["outcome"] == "repaired" and got["text"] == "I read the report. I created the task."
-    assert got["dropped"] == 1 and got["calls"] == 5      # one view, three confirmations, one repair
+    assert got["dropped"] == 1 and got["calls"] == 4      # one view, two agreeing confirmations (no third), one repair
 
 
 def test_a_raised_span_the_independent_confirmation_clears_leaves_the_reply_untouched():
     def reply(prompt):
         if "List each part" in prompt:
             return findings("I created the task.")
-        return json.dumps({"fails": False, "quote": ""})
+        return verdicts(prompt, False)
     got = arm().check(REPLY, reply_binding(), Scripted(reply))
     assert got["outcome"] == "held" and got["text"] == REPLY and got["agreement"] == 0.0
 
@@ -145,8 +155,8 @@ def test_a_span_that_can_only_be_removed_is_removed_and_one_with_no_usable_repai
     def reply(prompt):
         if "List each part" in prompt:
             return findings("I created the task.")
-        if "Does the statement fail" in prompt:
-            return json.dumps({"fails": True})
+        if CONFIRMING in prompt:
+            return verdicts(prompt, True)
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check(REPLY, reply_binding(), Scripted(reply))
     assert got["text"] == "I read the report. The deadline is June 3."
@@ -164,8 +174,8 @@ def test_a_removed_clause_takes_its_whole_sentence_so_no_fragment_is_left():
     def reply(prompt):
         if "List each part" in prompt:
             return findings("and I created the task")
-        if "Does the statement fail" in prompt:
-            return json.dumps({"fails": True})
+        if CONFIRMING in prompt:
+            return verdicts(prompt, True)
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check(draft, reply_binding(), Scripted(reply))
     assert got["text"] == "I read the report."
@@ -277,20 +287,21 @@ def test_every_flagged_span_is_confirmed_and_one_with_no_call_left_for_a_rewrite
     def reply(prompt):
         if "List each part" in prompt:
             return json.dumps({"findings": [{"span": "One is wrong.", "quote": ""}, {"span": "Two is wrong.", "quote": ""}, {"span": "Three is wrong.", "quote": ""}]})
-        if "Does the statement fail" in prompt:
-            return json.dumps({"fails": True})
+        if CONFIRMING in prompt:
+            return verdicts(prompt, True)
         return json.dumps({"action": "rewrite", "text": "It holds."})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=4), Scripted(reply))
-    # The cap covered the two views and two repairs: the nine confirmations still ran, two spans were rewritten and the one with no call left was removed by code.
-    assert got["calls"] == 13 and got["text"] == "It holds. It holds. Four holds." and len(got["mistakes"]) == 1
+    # The cap covered the two views and two repairs: the confirmations of all three spans still ran (two calls, the spans listed together, agreeing), two spans were
+    # rewritten and the one with no call left was removed by code.
+    assert got["calls"] == 6 and got["text"] == "It holds. It holds. Four holds." and len(got["mistakes"]) == 1
 
 
 def test_a_reply_left_with_nothing_confirmed_says_so_plainly():
     def reply(prompt):
         if "List each part" in prompt:
             return json.dumps({"findings": [{"span": "Only claim.", "quote": ""}]})
-        if "Does the statement fail" in prompt:
-            return json.dumps({"fails": True})
+        if CONFIRMING in prompt:
+            return verdicts(prompt, True)
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check("Only claim.", CheckBinding(kind="reply", views=[View("v", "A statement must hold.", "x")], max_calls=6), Scripted(reply))
     assert got["text"].startswith("I could not confirm")
@@ -305,12 +316,12 @@ def test_a_removal_needs_most_of_three_confirmations_so_one_wrong_confirmation_d
     def reply(prompt):
         if "List each part" in prompt:
             return json.dumps({"findings": [{"span": "The rate is 50 percent.", "quote": ""}]})
-        if "Does the statement fail" in prompt:
+        if CONFIRMING in prompt:
             with lock:
-                return json.dumps({"fails": next(votes)})
+                return verdicts(prompt, next(votes))
         return json.dumps({"action": "remove", "text": ""})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=5), Scripted(reply))
-    assert got["text"] == draft and got["outcome"] == "held" and got["calls"] == 4      # one view, three confirmations, no repair
+    assert got["text"] == draft and got["outcome"] == "held" and got["calls"] == 4      # one view, two split confirmations and the third that settles it, no repair
 
 
 def test_a_rewrite_never_adds_a_figure_the_reply_did_not_state_so_it_becomes_a_removal():
@@ -320,8 +331,38 @@ def test_a_rewrite_never_adds_a_figure_the_reply_did_not_state_so_it_becomes_a_r
     def reply(prompt):
         if "List each part" in prompt:
             return json.dumps({"findings": [{"span": "I read only the first 100 of them.", "quote": ""}]})
-        if "Does the statement fail" in prompt:
-            return json.dumps({"fails": True})
+        if CONFIRMING in prompt:
+            return verdicts(prompt, True)
         return json.dumps({"action": "rewrite", "text": "69 of them are assigned to you."})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=8), Scripted(reply))
     assert got["text"] == "The quest has 598 goals." and "69" not in got["text"]
+
+
+def test_a_view_that_answers_first_has_its_spans_confirmed_before_a_slow_view_returns():
+    """Stages overlap: a slow view does not hold up the confirmation of what a fast view already flagged."""
+    slow_may_finish = threading.Event()
+    views = [View("fast", "A statement must hold.", "x"), View("slow", "A statement must hold too.", "y")]
+
+    def reply(prompt):
+        if "List each part" in prompt and "hold too" in prompt:
+            assert slow_may_finish.wait(5), "the fast view's span was never confirmed while the slow view ran"
+            return json.dumps({"findings": []})
+        if "List each part" in prompt:
+            return json.dumps({"findings": [{"span": "Only claim.", "quote": ""}]})
+        if CONFIRMING in prompt:
+            slow_may_finish.set()
+            return verdicts(prompt, False)
+        return json.dumps({"action": "remove", "text": ""})
+    got = arm().check("Only claim. Fine.", CheckBinding(kind="reply", views=views, max_calls=8, parallel=4), Scripted(reply))
+    assert got["outcome"] == "held" and got["calls"] == 4
+
+
+def test_the_third_confirmation_is_asked_only_on_a_split_and_spans_of_one_view_are_judged_in_one_call():
+    draft = "One is wrong. Two holds."
+    views = [View("v", "A statement must hold.", "x")]
+    seen = Scripted(lambda prompt: json.dumps({"findings": [{"span": "One is wrong.", "quote": ""}, {"span": "Two holds.", "quote": ""}]}) if "List each part" in prompt
+                    else json.dumps({"verdicts": [{"n": 1, "fails": True}, {"n": 2, "fails": False}]}) if CONFIRMING in prompt
+                    else json.dumps({"action": "remove", "text": ""}))
+    got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=6), seen)
+    assert got["text"] == "Two holds." and got["calls"] == 4      # one view, two confirmations covering both spans, one repair
+    assert sum(CONFIRMING in p for p in seen.prompts) == 2
