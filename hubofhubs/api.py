@@ -261,7 +261,7 @@ NAMES = {
         "build_out", "default_combine", "default_split", "verbatim_combine",
     ),
     "hubofhubs.the_intelligence.critical_thinking.solution_passes.write_back": (
-        "combined_check", "proposals_of",
+        "combined_check", "descendants", "proposals_of",
     ),
     "hubofhubs.the_intelligence.subconscious.relevant_solutions.interface": (
         "SolutionRelevance",
