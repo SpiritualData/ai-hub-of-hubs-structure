@@ -109,3 +109,22 @@ def test_a_record_behind_its_source_is_stale_and_read_with_the_value_it_held_bef
     same_day = records(source="sheet", measured_through="2030-03-09", value=3)
     upkeep, _ = arm(same_day)
     assert upkeep.upkeep(dict(SPEC, moved_by="ai"), same_day["metrics"], {"sheet": lambda mid: {"value": 3, "as_of": "2030-03-09"}}, TODAY)[0]["action"] == NONE
+
+
+def test_an_unreadable_source_gets_a_checked_proposal_kept_as_knowledge():
+    tables = records(source="sheet", measured_through="2030-03-09")
+    tables["solutions"]["sol-a"]["knowledge"] = "[best guess] older note (source: x)"
+    upkeep, esoi = arm(tables)
+
+    def ask(prompt):
+        if "cannot be read in this environment" in prompt:
+            return json.dumps({"source": "sheet", "field": "value", "connect": "share the metrics folder with the team's file source", "why": "the record names it"})
+        return json.dumps({"pick": "workable", "quote": "Proposal"})
+
+    def unreadable(mid):
+        raise RuntimeError("no file source is connected")
+    spec = dict(SPEC, moved_by="ai", knowledge="[best guess] older note (source: x)", sources=["sheet"])
+    action = upkeep.upkeep(spec, tables["metrics"], {"sheet": unreadable}, TODAY, ask)[0]
+    assert action["action"] == PROPOSE_SOURCE and action["proposed_source"]["kept"]
+    knowledge = esoi.records["solutions"]["sol-a"]["knowledge"]
+    assert knowledge.startswith("[best guess] older note (source: x)\n[best guess] Source proposal for metric m-pub: read sheet, field value; a person connects share")

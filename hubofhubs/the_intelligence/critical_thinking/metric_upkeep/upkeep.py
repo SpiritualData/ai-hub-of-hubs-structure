@@ -2,8 +2,9 @@
 
 The state of each metric is decided by code from the record's fields, never by reading its text for meaning: no value recorded and no source is
 ``no_source``; no value with a source is ``unmeasured``; a value whose ``measured_through`` day is older than its ``expiration`` allows is ``stale``; else
-``fresh``. A stale or unmeasured metric with a reader for its source is read and the reading recorded through ESOI Application. A metric with no source
-gets a ``propose_source`` action (proposing one is not built yet: it is reported pending, never guessed).
+``fresh``. A stale or unmeasured metric with a reader for its source is read and the reading recorded through ESOI Application, and a record behind its
+source is stale. A metric with no source, or one whose source cannot be read in this environment, gets a ``propose_source`` action: how it becomes readable
+(which source, which field, what a person connects), checked by independent views and kept as a best-guess knowledge line on the milestone's record.
 
 When the milestone's metric moves only through a person (``moved_by: person``, for example "videos published"), upkeep adds ONE intermediate metric record
 the AI can move now ("scripts meeting the rubric: n of 6"): a child record with ``parent_metric_ids=[parent]``, a definition that is countable now and a
@@ -41,6 +42,19 @@ Reply with JSON only: {{"name": "<what is counted, short>", "definition": "<how 
 "total": <a whole number, the count that means done>, "feeds_parent": "<one sentence: how reaching the total moves the parent metric>",
 "rubric": ["<what one unit must meet to count>", ...]}}. Give 3 or 4 rubric items, each checkable by reading the unit's own text against the milestone's records
 (never by what happens later, outside the text or after a person acts), and none asking the unit to state a figure, length or date the milestone does not give. Use only what the milestone above says; invent no figure. Do not use em dashes."""
+
+SOURCE_PROMPT = """A milestone's metric cannot be read in this environment, so its progress cannot be measured here.
+
+Metric: {name}
+Its record: {record}
+Its named source: {source}
+Why it cannot be read: {unreadable}
+Sources this environment can read or connect: {available}
+The milestone is done when: {done_when}
+
+Propose how the metric becomes readable: which source (one listed above, or a new one a person can connect), which field or file holds the value, and
+exactly what a person must connect or grant. Use only what is shown; invent no system. Reply with JSON only:
+{{"source": "<source name>", "field": "<field or file>", "connect": "<what a person connects, one sentence>", "why": "<one sentence>"}}. Do not use em dashes."""
 
 TRACK_VIEWS = (
     ("done-test", "Does counting this intermediate metric measure real progress toward the parent's done test, so that reaching its total leaves less for the person to do?"),
@@ -144,15 +158,22 @@ class RecordFieldUpkeep:
             action: Dict[str, Any] = {"metric_id": mid, "state": state, "action": NONE}
             source = str(metric.get("source") or "").strip()
             reader = readers.get(source) if (source and readers) else None
+            unreadable = ""
             if state in (STALE, UNMEASURED) and reader:
                 action.update(self.read(mid, source, reader, metric))
+                unreadable = "" if action.get("reading") else str(action.get("why") or "")
             elif state == FRESH and reader:
                 # A record is behind its source when the source reads a later day than the record covers: reading it is the progress this turn can make.
                 newer = self.read(mid, source, reader, metric, record=False)
                 if newer.get("reading") and (day_of(newer["reading"].get("as_of")) or day) > (day_of(metric.get("measured_through")) or datetime.date.min):
                     action.update(state=STALE, why_stale="the source reads a later day than the record covers", **self.read(mid, source, lambda _m: newer["reading"], metric))
-            elif state == NO_SOURCE or (state == STALE and not source):
-                action.update(action=PROPOSE_SOURCE, proposed_source=None, why="no arm yet proposes a source; the metric stays without one")
+                elif not newer.get("reading"):
+                    unreadable = str(newer.get("why") or "")
+            elif source and readers is not None and not reader:
+                unreadable = f"no reader for the source {source!r} in this environment"
+            if state == NO_SOURCE or (state == STALE and not source) or unreadable:
+                # Making a metric measurable is progress the AI can make: propose how it becomes readable here, kept as knowledge on the milestone's record.
+                action.update(self.propose_source(spec, mid, metric, unreadable, ask))
             if str(spec.get("moved_by") or "") == PERSON:
                 defined = self.intermediate(spec, mid, metric, metrics, ask)
                 if action["action"] != NONE:
@@ -160,6 +181,39 @@ class RecordFieldUpkeep:
                 action.update(defined)
             out.append(action)
         return out
+
+    def propose_source(self, spec: Mapping[str, Any], mid: str, metric: Mapping[str, Any], unreadable: str, ask: Optional[Callable[[str], str]]) -> Dict[str, Any]:
+        """A proposal for how the metric becomes readable in this environment (which source among those the environment can read or connect, which field,
+        what a person must connect), checked by Decision Check's independent views and kept as a best-guess knowledge line on the milestone's Solution
+        record through ESOI Application. Nothing is proposed without a model call, and a proposal the views do not agree is workable is not kept."""
+        if ask is None:
+            return {"action": PROPOSE_SOURCE, "proposed_source": None, "why": "no model call was given to propose a source"}
+        available = ", ".join(str(s) for s in spec.get("sources") or []) or "none listed"
+        data = parse_json(ask(SOURCE_PROMPT.format(name=metric.get("name") or mid, record=str(metric.get("record") or "")[:600], source=metric.get("source") or "none",
+                                                   unreadable=unreadable or "it has no source", available=available, done_when=spec.get("done_when") or "")))
+        proposal = {k: " ".join(str(data.get(k) or "").replace("(", "").replace(")", "").split()) for k in ("source", "field", "connect", "why")}
+        if not proposal["connect"] or EM_DASH in " ".join(proposal.values()):
+            return {"action": PROPOSE_SOURCE, "proposed_source": None, "why": "the proposal did not say what makes the metric readable"}
+        evidence = (f"Metric: {metric.get('name')}. Recorded: {str(metric.get('record') or '')[:400]}. Why it is not readable here: {unreadable or 'no source'}.\n"
+                    f"Proposal: source {proposal['source'] or 'a new one'}, field {proposal['field'] or 'not named'}; a person connects: {proposal['connect']}. Why: {proposal['why']}")
+        binding = {"kind": "pick", "options": [{"id": "workable", "text": "following it would make the metric readable from its source"},
+                                               {"id": "not_workable", "text": "it would not, or it rests on something not shown"}],
+                   "views": [{"id": "readable", "instruction": "Would following this proposal make the metric readable, as recorded, from a source?", "evidence": evidence},
+                             {"id": "grounded", "instruction": "Does the proposal rest only on the metric's record and the sources listed, inventing none?", "evidence": evidence}],
+                   "max_calls": 4, "parallel": 2}
+        try:
+            checked = dict(self.decision.check("workable", binding, ask) or {})
+        except Exception as error:  # noqa: BLE001 -- a check that could not run keeps nothing
+            checked = {"pick": None, "why": f"{type(error).__name__}: {error}"}
+        if checked.get("pick") != "workable":
+            return {"action": PROPOSE_SOURCE, "proposed_source": None, "why": "the independent check did not agree the proposal makes the metric readable"}
+        line = (f"[best guess] Source proposal for metric {mid}: read {proposal['source'] or 'a source to be connected'}"
+                + (f", field {proposal['field']}" if proposal["field"] else "") + f"; a person connects {proposal['connect']}"
+                + (f"; why {proposal['why']}" if proposal["why"] else "") + f" (source: {mid} record, {spec.get('today') or 'today'})")
+        kept = [l for l in str(spec.get("knowledge") or "").splitlines() if l.strip() and not l.startswith(f"[best guess] Source proposal for metric {mid}:")]
+        applied = self.esoi.apply({"edit": {"kind": "spec_edit", "target": str(spec.get("solution_id") or ""), "field": "knowledge", "value": "\n".join(kept + [line])}})
+        return {"action": PROPOSE_SOURCE, "proposed_source": dict(proposal, line=line, kept=bool(applied.get("applied")), proposed=bool(applied.get("proposed"))),
+                "recorded": applied}
 
     def read(self, mid: str, source: str, reader: Callable[[str], Mapping[str, Any]], metric: Optional[Mapping[str, Any]] = None,
              record: bool = True) -> Dict[str, Any]:
