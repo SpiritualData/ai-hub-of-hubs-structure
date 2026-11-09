@@ -1,7 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.6.0 (2026-11-08)
 
+- Relevant Solutions gate (`hubofhubs.the_intelligence.subconscious.relevant_solutions.gate`): a model pass only for solutions at or above a records-index score (73 by default, fixed from the hub's 62 relevance cases by the precision-at-least-half rule; `threshold_from_cases` re-derives it for a consumer's own records).
+- Solution Passes (Critical Thinking): the work-outcome metric (score = B - 0.5 N - 0.1 L - 0.1 K; weights and gate fixed before any run), its six work-request and four no-solution cases, and the runner that scores them. Built on esoi 0.6.0's `solution_consideration` and `solution_relevance`.
+- Quick acknowledgement in two stages: the code-written placeholder (stage `placeholder`) then a fast-model acknowledgement (`model_ack_event`, `ack_stage`, `Emitter.model_ack`, stage `model`).
+- Requires esoi 0.6.0.
 - Decision Check: `CallPool` runs a check's calls with a ceiling on calls in flight; `CheckBinding.hedge_after_seconds` sends a call still unanswered after that long once more and takes the first answer that is not a failed call (the copy left running is never read). The reply result reports `hedged`.
 - Decision Check (reply): stages overlap on one pool of at most `parallel` calls in flight: a view's flagged spans go to confirmation as soon as that view answers, a confirmed span goes to repair as soon as it is confirmed. A view's spans are confirmed together (each judged on its own in a numbered list); two confirmations come first and the third is asked only on a split, which cannot change a two-to-nothing majority. Every flagged span is still confirmed and no confirmed failure ships unchanged. `UNCONFIRMED_REPLY` is exported.
 - Communication policy: an interim the Mind marks `data["announce"] = True` (`ANNOUNCE_KEY`: where things stand and what happens next, sent before the work) is a status, never kept, however long the turn has run.

@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT))
 
 BARE = re.compile(r"^[A-Za-z0-9_.-]+(\[[^\]]*\])?$")
 PINNED = re.compile(r"(@\s*git\+https://\S+@(v?\d|main\b)|==|~=|>=|<=|<|>)")
-CONSUMER_ESOI = "esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@v0.5.0#subdirectory=implementations/python"
+CONSUMER_ESOI = "esoi @ git+https://github.com/JoshuaMathias/evolvable-structure.git@v0.6.0#subdirectory=implementations/python"
 
 
 def declared():
@@ -38,4 +38,4 @@ def test_esoi_uses_the_exact_direct_url_string_the_consumers_use():
 
 def test_the_version_is_bumped_with_the_pin():
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
-    assert project["version"] == "0.5.1"
+    assert project["version"] == "0.6.0"
