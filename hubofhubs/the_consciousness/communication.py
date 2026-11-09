@@ -8,7 +8,7 @@ surface. For each event, in the context of the turn so far, ``communicate`` retu
   default for the raw Mind stream (plans, reads, model chunks, token counts, traces).
 * ``DELIVER_STATUS``: shown to someone watching right now and REPLACED by the next thing they are shown; never kept in the
   conversation history. The first status of a turn is the acknowledgement (``hubofhubs.the_world.tools.acknowledge``),
-  due before any slow work, within ``ack_within_seconds``. Later statuses mark a phase change. An interim the Mind marks
+  due before any slow work, within ``ack_within_seconds``; a model-written ack (``stage`` model) may follow it and replaces it. Later statuses mark a phase change. An interim the Mind marks
   ``data["announce"] is True`` (where things stand and what happens next, written before the work it announces) is a
   status too, however long the turn has run: it says what is coming, not what was found.
 * ``DELIVER_DURABLE``: kept in the conversation, because the person would want to see it if they came back later. The final
