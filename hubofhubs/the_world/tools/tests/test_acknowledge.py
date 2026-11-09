@@ -1,8 +1,8 @@
 """The quick acknowledgement contract: one status marked ``kind: "ack"``, sent once per turn, before slow work."""
 import time
 
-from hubofhubs.api import (ACK_TEXT, ACK_WITHIN_SECONDS, EVENT_INTERIM, EVENT_STATUS, Acknowledger, Emitter, Mode,
-                           STATUS_KIND_ACK, ack_event, is_ack)
+from hubofhubs.api import (ACK_TEXT, ACK_WITHIN_SECONDS, EVENT_INTERIM, EVENT_STATUS, STAGE_MODEL, STAGE_PLACEHOLDER, Acknowledger,
+                           Emitter, Mode, STATUS_KIND_ACK, ack_event, ack_stage, is_ack, model_ack_event)
 
 
 def test_the_ack_is_a_status_not_an_interim():
@@ -54,3 +54,30 @@ def test_emitter_ack_goes_out_once_with_its_status_callback():
     emit.status("Reading...")
     assert [is_ack(e) for e in sink.events] == [True, False]
     assert said == [ACK_TEXT, "Reading..."]
+
+
+def test_the_model_ack_is_a_second_stage_that_is_still_an_ack_status():
+    event = model_ack_event("  I'll check your streak and compare it with last week.  ")
+    assert event.type == EVENT_STATUS and is_ack(event)
+    assert event.text == "I'll check your streak and compare it with last week."
+    assert event.data == {"kind": STATUS_KIND_ACK, "stage": STAGE_MODEL}
+    assert ack_stage(event) == STAGE_MODEL
+    assert ack_stage(ack_event()) == STAGE_PLACEHOLDER, "an ack with no stage is the code-written placeholder"
+    assert ack_stage({"event": "status", "text": "x", "kind": "ack", "stage": "model"}) == STAGE_MODEL
+    assert ack_stage({"event": "status", "text": "Reading..."}) is None
+
+
+def test_a_model_ack_needs_a_line_the_model_wrote():
+    import pytest
+    with pytest.raises(ValueError):
+        model_ack_event("   ")
+
+
+def test_emitter_sends_the_placeholder_first_then_the_model_ack_which_does_not_use_up_the_ack_once():
+    sink, said = Sink(), []
+    emit = Emitter(sink, Mode.LIVE, said.append)
+    assert emit.ack() is True
+    emit.model_ack("I'll look at your marathon plan.")
+    assert [ack_stage(e) for e in sink.events] == [STAGE_PLACEHOLDER, STAGE_MODEL]
+    assert said == [ACK_TEXT, "I'll look at your marathon plan."]
+    assert emit.ack() is False, "the placeholder still goes out once"

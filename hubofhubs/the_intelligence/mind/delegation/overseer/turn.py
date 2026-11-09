@@ -11,7 +11,7 @@ from concurrent.futures import Future, TimeoutError as FuturesTimeoutError
 from typing import Any, Callable, Dict, Optional, Tuple
 
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection import cheap_result_is_decisive, with_retrieve_depth
-from hubofhubs.the_world.tools.acknowledge import ACK_TEXT, ack_event
+from hubofhubs.the_world.tools.acknowledge import ACK_TEXT, ack_event, model_ack_event
 from hubofhubs.the_world.tools.deep import ProgressEvent, ProgressSink
 from hubofhubs.the_world.tools.events import EVENT_STATUS, Mode
 from hubofhubs.the_world.model_plumbing.scope import ScopedThreadPoolExecutor as ThreadPoolExecutor
@@ -285,6 +285,16 @@ class Emitter:
             pass
         self.emit(event)
         return True
+
+    def model_ack(self, text: str) -> None:
+        """Emit the model-written acknowledgement (second stage, ``hubofhubs.the_world.tools.acknowledge``): an ack status
+        marked ``stage: "model"`` that replaces the placeholder. May follow the placeholder, never sets ``acked``."""
+        event = model_ack_event(text)
+        try:
+            self._status_cb(event.text or "")
+        except Exception:  # noqa: BLE001
+            pass
+        self.emit(event)
 
     def status(self, text: str) -> None:
         # The status callback plus a STATUS progress event.

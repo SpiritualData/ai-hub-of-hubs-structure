@@ -604,7 +604,8 @@ NAMES = {
         "MCPOperationRunner",
     ),
     "hubofhubs.the_world.tools.acknowledge": (
-        "ACK_TEXT", "ACK_WITHIN_SECONDS", "Acknowledger", "STATUS_KIND_ACK", "ack_event", "is_ack",
+        "ACK_TEXT", "ACK_WITHIN_SECONDS", "Acknowledger", "MODEL_ACK_TARGET_SECONDS", "STAGE_MODEL", "STAGE_PLACEHOLDER", "STATUS_KIND_ACK",
+        "ack_event", "ack_stage", "is_ack", "model_ack_event",
     ),
     "hubofhubs.the_world.tools.deep": (
         "DeepResult", "DeepRunner", "DeepRunnerBase", "FUTURE_CONTEXT_VIA_FIELD", "FUTURE_CONTEXT_VIA_OUTPUT", "FileWriter",
