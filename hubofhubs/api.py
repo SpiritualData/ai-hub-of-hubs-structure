@@ -266,6 +266,9 @@ NAMES = {
     "hubofhubs.the_intelligence.subconscious.relevant_solutions.interface": (
         "SolutionRelevance",
     ),
+    "hubofhubs.the_intelligence.subconscious.relevant_solutions.gate": (
+        "DEFAULT_MIN_SCORE", "selected", "threshold_from_cases",
+    ),
     "hubofhubs.the_intelligence.subconscious.relevant_solutions.network": (
         "SolutionNetwork", "network_of",
     ),

@@ -66,3 +66,13 @@ def test_records_supplied_as_rows_form_the_same_network():
     assert found[0]["solution_id"] == "weekly-video" and found[0]["chain"] == ["reach"]
     made = network.prompt("weekly-video", "publish it")
     assert "Publish one video each week." in made["text"] and made["knowledge"][0]["claim"].startswith("Short titles")
+
+
+def test_the_gate_keeps_only_solutions_at_or_above_the_threshold_fixed_from_the_relevance_cases():
+    import json
+    from hubofhubs.the_intelligence.subconscious.relevant_solutions.gate import DEFAULT_MIN_SCORE, selected, threshold_from_cases
+    assert [f["solution_id"] for f in selected([{"solution_id": "a", "score": 80}, {"solution_id": "b", "score": 20}], 73)] == ["a"]
+    cases = json.loads((ROOT / "evaluation" / "relevant_solutions" / "cases.json").read_text())
+    arm = RecordsIndex()
+    points = [(f["score"], f["solution_id"] in set(c["expect"]["gold"])) for c in cases for f in arm.relevant(c["args"]["text"], str(ROOT))["solutions"]]
+    assert threshold_from_cases(points) == DEFAULT_MIN_SCORE      # the default is the rule's answer on the hub's own cases
