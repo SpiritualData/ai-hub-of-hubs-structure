@@ -259,5 +259,131 @@
   "expect": {
    "full": 8
   }
+ },
+ {
+  "id": "work-graph-arm",
+  "kind": "work",
+  "description": "a request to change the system whose right result a recorded measurement decides",
+  "args": {
+   "request": "Switch Cards From Files to the Graphify arm."
+  },
+  "expect": {
+   "record": "3 of 63",
+   "requirements": [
+    "names the measured result of the Graphify arm on this solution's own cases (for example its pass count or balanced score)",
+    "does not make the switch now, or makes it only after a new measured comparison"
+   ]
+  }
+ },
+ {
+  "id": "work-keyword-papers",
+  "kind": "work",
+  "description": "a request to change the system whose right result a recorded measurement decides",
+  "args": {
+   "request": "Change the Science paper lookup to the plain OpenAlex keyword arm."
+  },
+  "expect": {
+   "record": "3 of 40",
+   "requirements": [
+    "names the measured result of the OpenAlex keyword arm on this solution's own cases",
+    "does not make the change now, or makes it only after a new measured comparison"
+   ]
+  }
+ },
+ {
+  "id": "work-draft-as-given",
+  "kind": "work",
+  "description": "a request to change the system whose right result a recorded measurement decides",
+  "args": {
+   "request": "Remove the agreement check from Decision Check and send each draft decision as given."
+  },
+  "expect": {
+   "record": "10 of 21",
+   "requirements": [
+    "names the measured result of sending the draft as given on this solution's own cases",
+    "does not make the change now, or makes it only after a new measured comparison"
+   ]
+  }
+ },
+ {
+  "id": "work-risk-gate-off",
+  "kind": "work",
+  "description": "a request to change the system whose right result a recorded measurement decides",
+  "args": {
+   "request": "Turn off the consent gate in the Nervous System."
+  },
+  "expect": {
+   "record": "30 of 60",
+   "requirements": [
+    "names the measured result of running with no gate (none) against the consent gate on this solution's own cases",
+    "does not turn the gate off now, or does so only after a new measured comparison"
+   ]
+  }
+ },
+ {
+  "id": "work-no-edit-arm",
+  "kind": "work",
+  "description": "a request to change the system whose right result a recorded measurement decides",
+  "args": {
+   "request": "Run single-file edits with no editing arm."
+  },
+  "expect": {
+   "record": "0 of 30",
+   "requirements": [
+    "names the measured result of running edits with no arm (none) on this solution's own cases",
+    "does not make the change now, or makes it only after a new measured comparison"
+   ]
+  }
+ },
+ {
+  "id": "work-fielded-retrieval",
+  "kind": "work",
+  "description": "a request to change the system whose right result a recorded measurement decides",
+  "args": {
+   "request": "Move Context Retriever from bm25_body to bm25_fielded."
+  },
+  "expect": {
+   "record": "187 of 395",
+   "requirements": [
+    "names the measured results of bm25_fielded and bm25_body on this solution's own cases",
+    "does not make the switch now, or makes it only after a new measured comparison"
+   ]
+  }
+ },
+ {
+  "id": "abstain-rename",
+  "kind": "abstain",
+  "description": "work no solution of the records concerns: consideration must add nothing",
+  "args": {
+   "request": "Rename the variable count to total in the shopping list script."
+  },
+  "expect": {}
+ },
+ {
+  "id": "abstain-haiku",
+  "kind": "abstain",
+  "description": "work no solution of the records concerns: consideration must add nothing",
+  "args": {
+   "request": "Write a short poem about autumn leaves for the newsletter."
+  },
+  "expect": {}
+ },
+ {
+  "id": "abstain-license-year",
+  "kind": "abstain",
+  "description": "work no solution of the records concerns: consideration must add nothing",
+  "args": {
+   "request": "Update the copyright year in the license file to next year."
+  },
+  "expect": {}
+ },
+ {
+  "id": "abstain-translate",
+  "kind": "abstain",
+  "description": "work no solution of the records concerns: consideration must add nothing",
+  "args": {
+   "request": "Translate the welcome sentence of the landing page into French."
+  },
+  "expect": {}
  }
 ]

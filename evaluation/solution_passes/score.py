@@ -132,3 +132,52 @@ def depth_case(meter, args):
     one = work(item)
     from hubofhubs.api import verbatim_combine
     return dict(build_out(item, work, check, combine=verbatim_combine(ask), base=one))
+
+
+WORK = ("You are doing a piece of work on a software system. Decide what you will change and do it in words: say exactly what you change, "
+        "where, and why, or why you do not change it. Use no em dashes. Reply with the work's result only.\n\n{block}## The work\n{request}")
+
+
+def work_block(request, arm, passes=True, root=None):
+    """What an arm adds to the work's brief: nothing (off), or each relevant solution's prompt and its own pass's finding, for every
+    solution the index names (always) or only those at or above the gate (gated); one pass per solution plus at most one parent pass.
+    Returns the block, the added model calls and the added seconds."""
+    import time
+    from hubofhubs.api import DEFAULT_MIN_SCORE, NetworkPasses, RecordsIndex, briefs, network_of, selected
+    if arm == "off":
+        return "", 0, 0.0
+    began = time.monotonic()
+    records = str(root or ROOT)
+    found = RecordsIndex().relevant(request, records, depth=1)["solutions"]
+    chosen = [{**f, "dependents": {}} for f in (selected(found, DEFAULT_MIN_SCORE) if arm == "gated" else found)]
+    if not chosen:
+        return "", 0, round(time.monotonic() - began, 2)
+    plumbing = Plumbing(None)
+    calls = {"n": 0}
+
+    def ask(prompt):
+        calls["n"] += 1
+        return plumbing.ask(prompt, "cheap")
+    made = briefs(network_of(records), chosen, request)
+    considered = NetworkPasses(None).consider(request, made, ask=ask, limits={"depth": 1, "calls": len(chosen) + 1}) if passes else {}
+    findings = {f["solution_id"]: f for f in considered.get("findings") or []}
+    parts = []
+    for brief in made.get("solutions") or []:
+        f = findings.get(brief["solution_id"], {})
+        lines = [f"Needs: {f.get('needs') or 'nothing'}"] + [f"Risk: {r}" for r in f.get("risks") or []]
+        lines += [f"Conflict with its records: {c.get('conflict') if isinstance(c, dict) else c}" for c in f.get("conflicts") or []]
+        parts.append(f"### {brief.get('name')} ({brief['solution_id']})\nWhat its own pass found:\n" + "\n".join(lines) + "\n\nIts records:\n" + brief["prompt"][:12000])
+    block = "## Each solution this work touches, with its own records\n\n" + "\n\n".join(parts) + "\n\n"
+    return block, calls["n"], round(time.monotonic() - began, 2)
+
+
+def work_case(meter, args, arm, real=True, root=None):
+    """One work or abstain case for an arm: the block it adds, then (real) the work's output by one cheap writing call and its check."""
+    block, calls, seconds = work_block(args["request"], arm, passes=real, root=root)
+    out = {"block": block, "calls": calls, "seconds": seconds}
+    if real and args.get("requirements"):
+        plumbing = Plumbing(meter)
+        ask = lambda prompt: plumbing.ask(prompt, "cheap")
+        output = str(ask(WORK.format(block=block, request=args["request"])) or "")
+        out.update(output=output, checked=rubric_check(ask)(output, {"requirements": args["requirements"]}))
+    return out
