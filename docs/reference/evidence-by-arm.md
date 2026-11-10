@@ -129,8 +129,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | solution_passes | `network_passes` | no run on the whole case set yet (2 partial run(s) recorded) | not stated | not stated | not stated | not compared: no whole run | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |
-| terminal_session | live_session (selected) | 34 | 100.0% (89.8% to 100.0%), 34/34 | $0 | 0 (median) | selected | none recorded |
-| terminal_session | line_repl | 34 | 64.7% (47.9% to 78.5%), 22/34 | $0 | 0 (median) | ahead of line_repl (two-sided sign test p=0.000488) | none recorded |
+| terminal_session | live_session (selected) | 37 | 100.0% (90.6% to 100.0%), 37/37 | $0 | 0 (median) | selected | none recorded |
+| terminal_session | line_repl | 37 | 64.9% (48.8% to 78.2%), 24/37 | $0 | 0 (median) | ahead of line_repl (two-sided sign test p=0.000244) | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | none | 60 | 50.0% (37.7% to 62.3%), 30/60 | $0 | 0 (median) | ahead of none, not significant (two-sided sign test p=0.718) | none recorded |
 | watch_for_risk | overseer | 36 | 91.7% (78.2% to 97.1%), 33/36 | $7.576e-05 | 0.4 (median) | ahead of overseer, not significant (two-sided Fisher p=0.718) | none recorded |

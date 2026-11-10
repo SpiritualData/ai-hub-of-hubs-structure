@@ -191,9 +191,9 @@ def paint(text: str, code: str, color: bool) -> str:
     return f"\x1b[{COLOR[code]}m{text}\x1b[0m" if color else text
 
 
-def step_row(step: Step, color: bool = False) -> str:
+def step_row(step: Step, color: bool = False, who: str = "") -> str:
     mark = (GLYPH_MARK if color else ASCII_MARK).get(step.state, "..")
-    who = "" if step.agent_id == MAIN else f"[{step.agent_id[:8]}] "
+    who = f"[{who}] " if who else "" if step.agent_id == MAIN else f"[{step.agent_id[:8]}] "
     if step.kind == "message-received":
         return f"{paint(mark, step.state, color)} taken up   {short(step.label, 70)}"
     return f"{paint(mark, step.state, color)} {step.kind:<{KIND_WIDTH - 1}} {who}{short(step.label, 70)}"
@@ -217,14 +217,20 @@ def event_line(event: SessionEvent, view: SessionView) -> str:
     if isinstance(event, Step):
         if event.state == "running" and event.kind != "delegate":
             return ""
-        return stamp + step_row(event)
+        agent = view.agents.get(event.agent_id)
+        return stamp + step_row(event, who=short(agent.task, 24) if agent else "")
     if isinstance(event, AgentStarted):
-        return f"{stamp}agent started: {short(event.task, 60)} (under {event.parent_id})"
+        return f"{stamp}agent started: {short(event.task, 50)}" + (f" ({event.solution})" if event.solution else "") + (" under " + short(view.agents[event.parent_id].task, 24) if event.parent_id in view.agents else "")
     if isinstance(event, AgentEnded):
         name = view.agents[event.agent_id].task if event.agent_id in view.agents else event.agent_id
         return f"{stamp}agent {event.state}: {short(name, 60)}"
     if isinstance(event, Review):
         return f"{stamp}review: {event.text or 'done'}"
+    if isinstance(event, Usage):
+        bits = [f"{event.calls} call{'' if event.calls == 1 else 's'}"] if event.calls else []
+        if event.cost_usd is not None:
+            bits.append(f"${event.cost_usd:.4f}")
+        return f"{stamp}so far: {', '.join(bits)}" if bits else ""
     if isinstance(event, Waiting):
         return f"{stamp}WAITING FOR YOU: {event.question}" + (f" It will change: {short(event.preview, 80).rstrip(".")}." if event.preview else "") + " (y to approve, n to refuse)"
     return ""

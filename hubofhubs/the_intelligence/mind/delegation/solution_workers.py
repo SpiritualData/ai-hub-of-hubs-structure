@@ -116,17 +116,41 @@ def better(old: Tuple[str, Mapping[str, Any]], new: Tuple[str, Mapping[str, Any]
 def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]], children: Callable[[str, str], Sequence[str]],
                   work: Callable[[Mapping[str, Any]], str], check: Callable[[str, str, str], Mapping[str, Any]], task: str = "", handed: str = "",
                   budget: Optional[Mapping[str, int]] = None, already_met: Optional[Callable[[str], bool]] = None,
-                  cancel: Optional[Callable[[], bool]] = None) -> SolutionReport:
+                  cancel: Optional[Callable[[], bool]] = None, session: Optional[Callable[[Dict[str, Any]], None]] = None) -> SolutionReport:
     """Work ``task`` through the hierarchy under ``solution_id`` and return the tree of reports. Each node: its children first (each a recursive call,
     in parallel up to ``width``, each handed ``HANDED`` filled in), then its own ``work(brief)`` with the children's compact reports, then
     ``check(solution_id, milestone, output) -> {"met", "missing"[, "score"]}``; unmet with rounds left, it works again with ``missing`` in the brief.
     The brief holds only ``solution_id``, ``name``, ``frame``, ``milestone``, ``task``, ``handed``, ``reports`` and, on a rework, ``missing`` and
     ``round``. A worker or check that raises leaves that node unmet with the error as ``missing``; the rest of the tree still runs. Work that is not
-    started (calls spent, depth reached, a cycle, cancellation) is reported with the reason, never dropped."""
+    started (calls spent, depth reached, a cycle, cancellation) is reported with the reason, never dropped.
+
+    With a ``session`` sink each node is announced as an agent of the tree, with its parent and its solution: ``agent-started`` once its frame is
+    known and ``agent-ended`` with its state and calls when it is done, as dicts shaped like the session events of the Consciousness container. The
+    brief then also holds ``agent_id`` (the node's agent), so a worker can report its steps under its solution."""
     bound = {**DEFAULT_BUDGET, **dict(budget or {})}
     counter = Counter(bound["calls"])
 
+    begun: set = set()
+
+    def agent_of(path: Tuple[str, ...], sid: str) -> str:
+        return "-".join(path + (sid,))
+
+    def say(kind: str, **data: Any) -> None:
+        if session is not None:
+            try:
+                session(dict(data, type=kind))
+            except Exception:      # noqa: BLE001  a surface that fails never stops the work
+                pass
+
     def node(sid: str, task_text: str, handed_line: str, level: int, path: Tuple[str, ...]) -> SolutionReport:
+        report = node_body(sid, task_text, handed_line, level, path)
+        agent = agent_of(path, sid)
+        if agent in begun:
+            state = {MET: "met", ALREADY_MET: "met", CANCELLED: "stopped", NOT_STARTED: "not_started"}.get(report.status, "unmet")
+            say("agent-ended", agent_id=agent, state=state, calls=report.total_calls(), summary=report.missing[:100])
+        return report
+
+    def node_body(sid: str, task_text: str, handed_line: str, level: int, path: Tuple[str, ...]) -> SolutionReport:
         report = SolutionReport(solution=sid)
         try:
             fields = dict(frame(sid) or {})
@@ -134,6 +158,8 @@ def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]]
             report.status, report.missing = UNMET, f"{type(error).__name__}: {error}"
             return report
         report.name, report.milestone = str(fields.get("name") or sid), str(fields.get("milestone") or "")
+        begun.add(agent_of(path, sid))
+        say("agent-started", agent_id=agent_of(path, sid), parent_id="-".join(path) or "main", task=report.name, solution=sid)
         if cancel is not None and cancel():
             report.status, report.missing = CANCELLED, "cancelled before this work started"
             return report
@@ -167,6 +193,8 @@ def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]]
         reports = [c.compact() for c in report.children]
         base = {"solution_id": sid, "name": report.name, "frame": solution_frame(fields), "milestone": report.milestone, "task": task_text,
                 "handed": handed_line, "reports": reports}
+        if session is not None:
+            base["agent_id"] = agent_of(path, sid)
         kept: Optional[Tuple[str, Mapping[str, Any]]] = None
         for attempt in range(1, int(bound["rounds"]) + 1):
             if cancel is not None and cancel():

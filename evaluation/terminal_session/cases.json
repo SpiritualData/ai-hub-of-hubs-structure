@@ -766,5 +766,52 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "attend-live_helper-loop",
+  "kind": "attend",
+  "origin": "rule: live helper on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "live_helper",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X7"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-stop_prompt-loop",
+  "kind": "attend",
+  "origin": "rule: stop prompt on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "stop_prompt",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X4",
+   "X5"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-solution_agents-solutions",
+  "kind": "attend",
+  "origin": "rule: solution agents on the solutions harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "solution_agents",
+   "kit": "solutions"
+  },
+  "requirements": [
+   "X14",
+   "X15"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

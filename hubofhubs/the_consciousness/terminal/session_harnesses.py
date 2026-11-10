@@ -91,8 +91,9 @@ class LoopHarness:
 
     def __init__(self, runner: Any, *, working_dir: Optional[str] = None, max_calls: int = 15, gate: Optional[ApprovalGate] = None):
         self.runner, self.working_dir, self.max_calls, self.gate = runner, working_dir, max_calls, gate
-        self.capabilities = Capabilities(stop=True, resume=True, steer=True, approve=gate is not None, target_agents=False, live_usage=False,
-                                         live_agents=False, steer_ack=False)
+        structured = bool(getattr(runner, "emits_session", False))
+        self.capabilities = Capabilities(stop=True, resume=True, steer=True, approve=gate is not None, target_agents=False, live_usage=structured,
+                                         live_agents=structured, steer_ack=structured)
         self.stopped = threading.Event()
         self.run_id = ""
         self.pending: List[Tuple[str, str]] = []
@@ -102,6 +103,14 @@ class LoopHarness:
     def inbox_empty(self) -> bool:
         queue_ = self.runner.running.get(self.run_id)
         return queue_ is None or queue_.empty()
+
+    def take_up(self, label: str) -> None:
+        """The loop reported a message taken up: it is no longer waiting."""
+        with self.lock:
+            for index, (_id, text) in enumerate(self.pending):
+                if short(text) == label:
+                    del self.pending[index]
+                    break
 
     def poll(self) -> None:
         with self.lock:
@@ -117,19 +126,25 @@ class LoopHarness:
         self.sink = sink
         self.run_id = short_id()
         session_id = resume_session_id or self.run_id
+        structured = bool(getattr(self.runner, "emits_session", False))      # the runner reports the contract's own events: nothing is guessed
         lines = LoopLines()
         if self.gate is not None:
             self.gate.bind(sink, self.stopped.is_set)
-        sink(RunStarted(goal=goal, harness=self.name, session_id=session_id, resumed=bool(resume_session_id)))
+        if not structured:
+            sink(RunStarted(goal=goal, harness=self.name, session_id=session_id, resumed=bool(resume_session_id)))
 
         def emit(event: Any) -> None:
-            for item in progress_events(event, loop=lines):
+            for item in progress_events(event, loop=None if structured else lines):
+                if structured and isinstance(item, Step) and item.kind == "message-received":
+                    self.take_up(item.label)
                 sink(item)
-            self.poll()
+            if not structured:
+                self.poll()
         result, usage, why = self.runner.work(goal, working_dir=self.working_dir, max_calls=self.max_calls, emit=emit, cancel_check=self.stopped.is_set,
                                               run_id=self.run_id, session_id=session_id, resume_session_id=resume_session_id or None)
-        for item in loop_log_events(result.log):
-            sink(item)
+        if not structured:
+            for item in loop_log_events(result.log):
+                sink(item)
         cost = float(usage.get("cost", 0.0)) or None
         tokens = int(usage.get("tokens", 0)) or None
         sink(Usage(cost_usd=cost, tokens=tokens, calls=result.calls))

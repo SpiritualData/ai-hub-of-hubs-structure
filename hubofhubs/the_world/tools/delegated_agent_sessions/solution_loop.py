@@ -23,9 +23,11 @@ The completion is injected (``complete(system, prompt) -> text``), so the loop i
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import threading
+import time
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -41,6 +43,7 @@ LEFT_OUT_LINES = 25               # folders left out that the folder map names, 
 MAP_ENTRIES = 300
 LEXICAL_FILES = 200                # above this many files the folder map is an outline, not a list
 TOOL_LIMIT = 20_000                # characters kept from one tool result (a runbook or a page is read whole where a command's output is clipped)
+GOAL_ROOM = 8_000                  # system text kept free for the start files when a long goal moves into it
 SYSTEM_CHARS = 80_000              # the system text is one command argument for a command-line completion, which the system caps near 128 KiB
 NOTHING_NEW = "(nothing has changed or been added since the start: the files shown at the start are current)"
 # The files in view at the start go in the system text, after the instructions: a model service keeps a long system text between calls, so the
@@ -51,9 +54,13 @@ START_FILES = "FILES IN VIEW AT THE START (each is current unless the message sh
 REVIEW_PROSE = "prose"            # ``review`` value: review every written text, not only one in which the code check found something
 PROSE_SUFFIXES = ("", ".md", ".txt", ".rst", ".adoc", ".html", ".htm")
 MAP_FILE_LIMIT = 200_000          # a larger file is not listed or put in view at launch (READ can still show its start)
+log = logging.getLogger("hubofhubs.deep")
 SNAPSHOT_FILES = 5000
 OLD_RESULT_CHARS = 300
+HISTORY_CHARS = 20_000             # the history section of a message passes this and the older calls shrink further
+GOAL_TITLE_CHARS = 200
 COMMAND_LIMIT = 4000
+CANCEL_POLL_SECONDS = 0.05      # how often a stop is looked for while a model call is in flight
 REPORT_DELEGATE_CHARS = 600
 MESSAGE_LINE = "MESSAGE FROM THE PERSON (follow it; it overrides the plan so far): "
 MESSAGE_ADVICE = "A message from the person arrived while you worked, so your REPORT was not accepted. Answer the message, then report again."
@@ -62,7 +69,7 @@ NO_ACTION_ADVICE = ("Your last reply used none of the actions. Reply with READ:,
 
 SYSTEM = """You work in one folder. The files in view are current and complete; the folder map lists the rest, and marks each file you have not seen. Never report on, summarise or cite a file that is not in view: READ it first. Act by writing these lines, each on its own line, anywhere in your reply:
 READ: <path>     show a file from the folder (several lines allowed)
-RUN: <command>   run a shell command in the folder (several allowed)
+RUN: <command>   run a shell command in the folder (several allowed). A command of several lines is a fenced block (```bash then the lines then ```), or a RUN line that ends in a heredoc opener with its body after it: RUN: python3 - <<'EOF' then the code, then EOF alone on a line
 CHECK: <command> your acceptance check for the whole task, run after all other actions
 NOTE: <one line> something you want to remember for the next reply
 REPORT: <text>   the final report; everything after it to the end of the reply (or to a line END REPORT) is the report
@@ -123,6 +130,50 @@ class CallCounter:
     def left(self) -> int:
         with self.lock:
             return max(self.limit - self.used, 0)
+
+
+class Abandoned(Exception):
+    """The run was stopped while a model call was in flight and the call was given up (its result, if it ever comes, is discarded)."""
+
+
+class Telling:
+    """The structured account of a run for a surface, as plain dicts shaped like the session events of the Consciousness container (``type``, ``at``,
+    ``agent_id`` and the event's own fields), so nothing here imports a screen. One ``Telling`` is shared by a loop and its helpers: each helper gets an
+    agent id of its own and announces itself under its parent. ``sink`` gets each dict; a sink that raises never ends a run."""
+
+    def __init__(self, sink: Optional[Callable[[Dict[str, Any]], None]], agent: str = "main", solution: str = "",
+                 shared: Optional[Dict[str, Any]] = None, clock: Callable[[], float] = time.monotonic):
+        self.sink, self.agent, self.solution, self.clock = sink, agent, solution, clock
+        self.shared = shared if shared is not None else {"start": clock(), "helper": 0, "step": 0, "message": 0, "lock": threading.Lock()}
+
+    def send(self, event_type: str, /, **data: Any) -> None:
+        if self.sink is None:
+            return
+        data.setdefault("agent_id", self.agent)
+        data.update(type=event_type, at=max(round(self.clock() - self.shared["start"], 3), 0.001))
+        try:
+            self.sink(data)
+        except Exception:  # noqa: BLE001 -- a surface that fails never ends a run
+            pass
+
+    def count(self, name: str) -> int:
+        with self.shared["lock"]:
+            self.shared[name] += 1
+            return self.shared[name]
+
+    def helper(self, task: str, solution: str = "") -> "Telling":
+        """Announce a helper under this agent and return the ``Telling`` it reports through."""
+        agent = f"helper-{self.count('helper')}"
+        self.send("agent-started", agent_id=agent, parent_id=self.agent, task=short(task), solution=solution)
+        return Telling(self.sink, agent, solution, self.shared, self.clock)
+
+    def step(self, kind: str, label: str, state: str = "running", step_id: str = "", detail: str = "") -> str:
+        lines = [line for line in label.strip().splitlines() if line.strip()]
+        if len(lines) > 1:      # a command of several lines is named by its first line and how many more there are
+            label = f"{lines[0].strip()} (+{len(lines) - 1} more lines)"
+        step_id = step_id or f"{self.agent}-step-{self.count('step')}"
+        self.send("step", step_id=step_id, kind=kind, label=short(label), state=state, detail=short(detail, 100))
+        return step_id
 
 
 @dataclass
@@ -420,13 +471,41 @@ def parse_reply(text: str, tools: bool = False) -> Reply:
         reply.problems.append("an edit block is malformed: " + str(error).strip().splitlines()[-1])
     for position, (name, search, replace) in zip(spans, blocks):
         reply.actions.append(Action("edit", name, search, replace, order=position))
-    for position, line in enumerate(body):
+    fence = re.compile(r"^\s*```\s*(bash|sh|shell|zsh)\s*$", re.IGNORECASE)
+    heredoc = re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
+    position = -1
+    while position + 1 < len(body):      # a fenced shell block is one command; so is a RUN line that opens a heredoc, with its body and terminator
+        position += 1
+        line = body[position]
         if mask[position]:
+            continue
+        if fence.match(line):
+            end = position + 1
+            while end < len(body) and not body[end].strip().startswith("```"):
+                end += 1
+            if end < len(body):
+                script = "\n".join(body[position + 1:end]).strip("\n")
+                for k in range(position, end + 1):
+                    mask[k] = True
+                if script.strip():
+                    reply.actions.append(Action("run", script, order=position))
+                position = end
             continue
         found = marker.match(line)
         if not found:
             continue
         kind, value = found.group(1).lower(), found.group(2)
+        opener = heredoc.search(value) if kind == "run" else None
+        if opener:
+            tag, end = opener.group(2), position + 1
+            while end < len(body) and body[end].strip() != tag:
+                end += 1
+            if end < len(body):
+                reply.actions.append(Action("run", "\n".join([value] + body[position + 1:end + 1]), order=position))
+                for k in range(position, end + 1):
+                    mask[k] = True
+                position = end
+                continue
         if len(value) > 1 and value.startswith("`") and value.endswith("`") and value.count("`") == 2:
             value = value[1:-1]
         if kind == "note":
@@ -442,21 +521,31 @@ def parse_reply(text: str, tools: bool = False) -> Reply:
 
 # --- the prompt ------------------------------------------------------------------------------------------------------------------------
 
-def history_text(entries: Sequence[Mapping[str, Any]]) -> str:
-    """One compact entry per earlier call. The latest call's results are shown in full, older ones clipped to ``OLD_RESULT_CHARS``."""
+def history_text(entries: Sequence[Mapping[str, Any]], budget: int = HISTORY_CHARS) -> str:
+    """One compact entry per earlier call. The latest call's results are shown in full, older ones clipped to ``OLD_RESULT_CHARS``, and clipped further
+    (halved, down to the labels alone) while the whole passes ``budget`` characters."""
     if not entries:
         return "Nothing yet: this is your first reply."
+    old = OLD_RESULT_CHARS
+    text = history_lines(entries, old)
+    while len(text) > budget and old > 0:
+        old = old // 2 if old > 20 else 0
+        text = history_lines(entries, old)
+    return text
+
+
+def history_lines(entries: Sequence[Mapping[str, Any]], old_chars: int) -> str:
     lines: List[str] = []
     last_call = max((position for position, entry in enumerate(entries) if "message" not in entry), default=-1)
     for position, entry in enumerate(entries):
         if "message" in entry:
             full = position > last_call
-            lines.append(MESSAGE_LINE + (str(entry["message"]) if full else clip(str(entry["message"]), OLD_RESULT_CHARS)))
+            lines.append(MESSAGE_LINE + (str(entry["message"]) if full else clip(str(entry["message"]), max(old_chars, 40))))
             continue
         latest = position == last_call
         lines.append(f"Call {entry['call']}:" + (f" NOTE: {entry['note']}" if entry.get("note") else ""))
         for outcome in entry["outcomes"]:
-            text = outcome.text if latest else clip(outcome.text, OLD_RESULT_CHARS)
+            text = outcome.text if latest else (clip(outcome.text, old_chars) if old_chars else "")
             lines.append(f"  {outcome.label}: {'ok' if outcome.ok else 'FAILED'}" + (f"\n{indent(text)}" if text.strip() else ""))
         if latest and entry.get("advice"):
             lines.append(f"  {entry['advice']}")
@@ -527,7 +616,8 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
              counter: Optional[CallCounter] = None, review: bool = True, state: Optional[LoopState] = None,
              save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
              tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000,
-             select: Optional[Callable[..., Any]] = None) -> LoopResult:
+             select: Optional[Callable[..., Any]] = None, telling: Optional[Telling] = None,
+             abandon: Optional[Callable[[int], None]] = None) -> LoopResult:
     """Work ``goal`` in ``working_dir`` until a call's report is accepted, the model is blocked, ``max_calls`` model calls are spent (the
     ``counter`` is shared with helpers and counts all of them) or ``cancel()`` is true. Never raises. With ``review``, written text in which a code check
     (``unsupported``) finds a figure no source file holds, or a named file that is not in the folder, gets one more call before it is accepted: a
@@ -541,11 +631,17 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
     ``select`` chooses the files put in view before the first call and leaves out the folders not worth scanning: the entry point of the Folder View
     solution, called as ``select(goal, context, root, budget_chars, file_limit=...)`` and returning its ``FolderChoice``. When none is given the hub's
     selected implementation of the solution is used (resolved by name from the records), so the choice stays swappable by metric; a caller that holds
-    more evidence binds it, for instance ``functools.partial(arm.choose, trail=...)``."""
+    more evidence binds it, for instance ``functools.partial(arm.choose, trail=...)``.
+
+    ``telling`` is the structured account for a surface (see ``Telling``): a step per action (running before a command starts, done or failed after),
+    a ``message-received`` step when the inbox is drained, a helper's start and end under its parent, and the calls used so far after each model call.
+    The ``emit`` strings go on as before. With a ``cancel`` a model call in flight is given up as soon as ``cancel()`` is true: the call runs on its own
+    thread, ``abandon(thread id)`` may end what it started (the Claude CLI provider kills its process group), the state saved before the call is
+    kept, and a later run resumes from it."""
     result = LoopResult()
     try:
         loop(result, goal, working_dir, complete, context, max_calls, depth, cancel, emit, command_timeout, environment, wrap, view_chars,
-             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars, select)
+             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars, select, telling, abandon)
     except Exception as error:  # noqa: BLE001 -- the loop reports a failure, it does not raise
         result.met = False
         result.error = result.error or f"the loop failed: {type(error).__name__}: {error}"
@@ -555,9 +651,11 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
 def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str, max_calls: int, depth: int, cancel, emit, command_timeout: float,
          environment, wrap, view_chars: int, counter: CallCounter, review: bool = True, state: Optional[LoopState] = None,
          save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
-         tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000, select: Optional[Callable[..., Any]] = None) -> None:
+         tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000, select: Optional[Callable[..., Any]] = None,
+         telling: Optional[Telling] = None, abandon: Optional[Callable[[int], None]] = None) -> None:
     root = os.path.abspath(working_dir)
     say = emit or (lambda _text: None)
+    tell = telling if telling is not None else Telling(None)
     select = select or selected_folder_view()
     chosen = select(goal, context, root, view_chars, file_limit=SNAPSHOT_FILES)
     skip = frozenset(x.path.rstrip('/') for x in chosen.left_out if not x.is_file)
@@ -586,7 +684,15 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         seen.update((rel, None) for rel in state.read)
     tool_lines = "".join(f"USE: {name} <input>   {' '.join(tool.description.split())}\n" for name, tool in (tools or {}).items())
     system = SYSTEM.format(delegate=DELEGATE_LINE if depth > 0 else "", tools=tool_lines)
-    if cache_chars and len(context) >= cache_chars and len(system) + len(context) < SYSTEM_CHARS // 2:
+    if wrap:
+        system += "\n\nCommands can write inside the working folder and in /tmp, which is kept for the whole run (across a stop and a resume); everything else is read-only."
+    goal_shown = goal
+    if cache_chars and len(goal) >= cache_chars and len(system) + len(goal) + len(context) < SYSTEM_CHARS - GOAL_ROOM:
+        # A long goal (a whole brief) is the same at every call: it goes where it is kept between calls, and the message keeps its first line as the title.
+        system += f"\n\nGOAL (the full text; the message names it by its first line):\n{goal.strip()}"
+        title = next((line.strip() for line in goal.splitlines() if line.strip()), "")
+        goal_shown = clip(title, GOAL_TITLE_CHARS) + " (the full goal is in your instructions)"
+    if cache_chars and len(context) >= cache_chars and len(system) + len(context) < (SYSTEM_CHARS - GOAL_ROOM if goal_shown != goal else SYSTEM_CHARS // 2):
         # Long standing context is the same at every call of a run (and often for every run of a lane): it goes where it is kept between calls.
         system += f"\n\nSTANDING CONTEXT:\n{context.strip()}"
         context = ""
@@ -614,7 +720,36 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             return []
         for message in got:
             entries.append({"message": message.strip()})
+            tell.step("message-received", message.strip(), "done", step_id=f"message-{tell.count('message')}")
         return got
+
+    def ask(system_text: str, prompt: str) -> str:
+        """One model call. With a ``cancel`` it runs on a thread of its own and is given up when ``cancel()`` turns true."""
+        if cancel is None:
+            return complete(system_text, prompt)
+        box: Dict[str, Any] = {}
+
+        def go() -> None:
+            try:
+                box["text"] = complete(system_text, prompt)
+            except BaseException as error:  # noqa: BLE001 -- handed to the caller's thread
+                box["error"] = error
+        worker = threading.Thread(target=go, daemon=True)
+        worker.start()
+        while True:
+            worker.join(CANCEL_POLL_SECONDS)
+            if not worker.is_alive():
+                break
+            if cancel():
+                if abandon is not None and worker.ident is not None:
+                    try:
+                        abandon(worker.ident)
+                    except Exception:  # noqa: BLE001 -- a failed kill never hides the stop
+                        pass
+                raise Abandoned()
+        if "error" in box:
+            raise box["error"]
+        return box.get("text", "")
 
     saved_at: List[Any] = [None]
 
@@ -656,10 +791,19 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         elif counter.left() == 1:
             note = "One call remains after this one: aim to finish with a REPORT."
         try:
-            text = complete(system, build_prompt(goal, context, folder_map, files_text, entries, note, earlier_goal, bool(start))) or ""
+            message = build_prompt(goal_shown, context, folder_map, files_text, entries, note, earlier_goal, bool(start))
+            log.info("loop %s call %d: system %d chars, message %d chars (goal %d, context %d, folder map %d, files %d, history %d)", tell.agent, own_calls,
+                     len(system), len(message), len(goal_shown), len(context), len(folder_map), len(files_text), len(history_text(entries)))
+            text = ask(system, message) or ""
+        except Abandoned:       # stopped while the model worked: the call did not happen, the state saved before it is what a resume continues from
+            own_calls -= 1
+            result.calls -= 1
+            result.error = "the run was cancelled"
+            break
         except Exception as error:  # noqa: BLE001
             result.error = f"the model call failed: {type(error).__name__}: {error}"
             break
+        tell.send("usage", calls=counter.used)
         reply = parse_reply(text, tools=bool(tools))
         entry: Dict[str, Any] = {"call": earlier_calls + own_calls, "note": " | ".join(reply.notes), "outcomes": [], "advice": "", "reply": text}
         result.log.append({"call": own_calls, "reply": text, "outcomes": entry["outcomes"]})
@@ -698,9 +842,12 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             if action.kind == "check":
                 checks.append(action)
                 continue
+            step_id = tell.step(action.kind, action.text, "running" if action.kind in ("run", "use", "delegate") else "done") \
+                if action.kind in ("run", "use", "delegate") else ""
             outcome = execute(action, root, view, changed, seen, result, depth, complete, context, max_calls, cancel, emit, command_timeout,
-                              environment, wrap, view_chars, counter, codes, tools)
+                              environment, wrap, view_chars, counter, codes, tools, tell, abandon)
             entry["outcomes"].append(outcome)
+            tell.step(action.kind, action.text, "done" if outcome.ok else "failed", step_id=step_id, detail="" if outcome.ok else outcome.text)
             if action.kind == "read" and outcome.ok:
                 new_reads = new_reads or outcome.text.startswith("added")
             elif action.kind == "use":
@@ -713,10 +860,12 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         passed = True
         for action in checks:
             before = snapshot(root, view.skip)
+            check_id = tell.step("check", action.text)
             done = run_command(action.text, working_dir=root, timeout=command_timeout, environment=environment, wrap=wrap, limit=COMMAND_LIMIT)
             result.commands += 0 if done.refused else 1
             track(root, before, changed, view.skip)
             ok = done.code == 0 and not done.refused
+            tell.step("check", action.text, "done" if ok else "failed", step_id=check_id, detail="" if ok else f"exit {done.code}")
             passed = passed and ok
             check_passed = check_passed or ok
             entry["outcomes"].append(Outcome(f"CHECK {short(action.text)}", ok, f"exit {done.code}\n{done.output}".strip()))
@@ -846,7 +995,8 @@ def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDi
 
 def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, None]", seen, result: LoopResult, depth: int, complete, context: str,
             max_calls: int, cancel, emit, command_timeout: float, environment, wrap, view_chars: int, counter: CallCounter,
-            codes: List[int], tools: Optional[Mapping[str, Tool]] = None) -> Outcome:
+            codes: List[int], tools: Optional[Mapping[str, Tool]] = None, tell: Optional[Telling] = None,
+            abandon: Optional[Callable[[int], None]] = None) -> Outcome:
     if action.kind == "edit":
         outcome, wrote = apply_block(action, root)
         rel = os.path.relpath(inside(Path(root), action.text), Path(root).resolve()).replace(os.sep, "/") if outcome.ok or wrote else action.text
@@ -899,9 +1049,13 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
         label = f"DELEGATE {short(action.text)}"
         if depth <= 0:
             return Outcome(label, False, "delegation is not available here")
+        helper = tell.helper(action.text) if tell is not None else None
         child = run_loop(action.text, working_dir=root, complete=complete, context=context, max_calls=max_calls, depth=depth - 1, cancel=cancel,
                          emit=emit, command_timeout=command_timeout, environment=environment, wrap=wrap, view_chars=view_chars, counter=counter,
-                         review=False, tools=tools, select=view.select)      # the parent's review covers what its helpers wrote
+                         review=False, tools=tools, select=view.select, telling=helper, abandon=abandon)      # the parent's review covers what its helpers wrote
+        if helper is not None:
+            stopped = not child.met and "cancelled" in child.error
+            helper.send("agent-ended", state="met" if child.met else "stopped" if stopped else "unmet", calls=child.calls, summary=short(child.report or child.error, 100))
         result.calls += child.calls
         result.commands += child.commands
         result.log.append({"delegated": action.text, "calls": child.calls, "met": child.met})

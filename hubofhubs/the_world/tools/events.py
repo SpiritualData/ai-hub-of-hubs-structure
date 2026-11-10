@@ -155,6 +155,9 @@ EVENT_WORK_TRACE = "work_trace"  # one unit of work the run did FOR THE READER (
                                # LIVE-only like ``exec``: it is NOT in SURFACING_EVENTS, so a BACKGROUND
                                # run drops it.
 
+EVENT_SESSION = "session"      # one event of the session contract (``hubofhubs.the_consciousness.terminal.session_events``): a step, a helper's start or end, a
+                               # message taken up, the calls and cost so far. ``data`` = the event's ``to_dict``-shaped dict. LIVE-only like ``exec``.
+
 # The event types a BACKGROUND (MilestoneSink) run forwards. Everything else is dropped as
 # intermediate chatter. Encoded ONCE here so every consumer inherits the same policy.
 SURFACING_EVENTS = frozenset({EVENT_UNDERSTANDING, EVENT_CONTEXT, EVENT_INTENT, EVENT_RESULT, EVENT_DECISION, EVENT_MILESTONE, EVENT_DONE, EVENT_TOKENS, EVENT_OVERSEER, EVENT_MODE_SIGNAL, EVENT_CARD_THREAD, EVENT_EXPLANATION})

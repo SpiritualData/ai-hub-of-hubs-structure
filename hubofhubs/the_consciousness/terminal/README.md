@@ -23,7 +23,7 @@ Part of [Adapting to the humans the system works with](../README.md)
 
 ## Metrics
 
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 34 of 34 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 37 of 37 cases
 
 ## Problems
 

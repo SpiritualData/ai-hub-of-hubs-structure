@@ -60,20 +60,20 @@ Read on 2026-11-10 from the code of each surface (the web surfaces read-only; a 
 | X4 | yes | yes: Escape and Ctrl+C keep the session | yes: Stop, cooperative, global | part: Stop is an undo | Claude Code Esc keeps work; Aider Ctrl-C keeps the partial reply; Codex `turn/interrupt` ends interrupted | stop at once, keep work |
 | X5 | yes | yes: `/resume`, `--resume`, `--continue` | no for a turn (reconnect replays the stream) | part: pause and resume on the live card only | `claude --resume`, `codex resume`, `openhands --resume` | resume by session, no repeat |
 | X6 | yes | part: delivered once and confirmed; the taken-up mark is in the control, not shown as a row | part: queued in memory, no pickup event | yes: claim and seen shown in the timeline | Claude Code queues Enter and sends after tool calls; Codex has `codex queue` | sent, then taken up |
-| X7 | yes | no: a flat jobs list | no: one `delegated` event | no | Claude Code shows nested subagents as a tree with a (+N) count | tree with parent |
+| X7 | yes | yes since 2026-11-10: helpers under their parent when the runner reports them (the hub loop does) | no: one `delegated` event | no | Claude Code shows nested subagents as a tree with a (+N) count | tree with parent |
 | X8 | yes (honest when unsupported) | no | no | no | Claude Code `/tasks` then `x` stops one subagent; typing into its transcript takes over | stop or steer one |
 | X9 | yes | part: a planner confirm waits between steps | yes: ApprovalCard approve or decline | part: approve and restart | Claude Code names the asking subagent, Esc denies one call; Codex `requestApproval`; opencode permission reply | a step waits for the answer |
 | X10 | yes | yes since 2026-11-10: closing line names files changed | no | no | Aider `/diff` and auto-commit; Codex file-change items | files changed, diff on demand |
 | X11 | yes | no (harness set in config) | no | no | opencode and Codex expose a server; Toad and Zed use ACP so one screen drives many agents | same screen on any harness |
-| X12 | yes | no: consumes its own events | no | no | opencode TUI, web and editor are clients of one server | one contract, three surfaces |
+| X12 | yes | part: consumes the events and the shared run control, not yet the full control set | no | no | opencode TUI, web and editor are clients of one server | one contract, three surfaces |
 | X13 | yes | no: Textual only | part: reconnect with `resume_from_event` | part: poll with a 120 s cap | Codex and Claude Code have JSON streams for non-terminal use | plain fallback, replay to same screen |
-| X14 | yes (when the harness is framed) | no | ? | ? | none found | run names solution and milestone |
-| X15 | yes (events carry the solution) | no | no | no | none found | helpers named by solution |
+| X14 | yes (when the harness is framed) | yes since 2026-11-10: "Serves ..." when a run names its solution | ? | ? | none found | run names solution and milestone |
+| X15 | yes (events carry the solution) | yes since 2026-11-10: a helper line names its solution | no | no | none found | helpers named by solution |
 | X16 | yes | yes: Trail from structural events | yes: work trace | ? | typed items rather than prose | no narration as evidence |
 | X17 | yes (Framed harness) | yes: metric lines in the milestone block | ? | ? | none found | before, after, change |
 | X18 | yes | yes: detail behind Alt+T and Alt+D | ? | ? | Claude Code transcript mode | detail on demand |
-| X19 | yes | no | no | no | Codex sandbox and approval modes; Claude Code plan mode | the effect before the step |
-| X20 | yes | part: stopped reasons | ? | ? | Claude Code `permission_denied` event | refused steps with reason |
+| X19 | yes | part: shown with a question a run waits on; QAR does not gate tools yet | no | no | Codex sandbox and approval modes; Claude Code plan mode | the effect before the step |
+| X20 | yes | yes since 2026-11-10: blocked steps listed with the reason; also stopped reasons | ? | ? | Claude Code `permission_denied` event | refused steps with reason |
 | X21 | yes | yes: resume | part | part | Aider `/undo` reverts the last commit | resume or undo |
 | X22 | yes | no: an ask is answered after the turn | part | part | Claude Code passes background subagent prompts to the main session while it works | answer while the run goes on |
 | X23 | yes | ? | ? | ? | none measured | nothing restated |
@@ -145,17 +145,44 @@ Adapters: `LoopLines` (the hub loop's progress strings), `loop_log_events` (help
 `report_events` (a `SolutionReport` tree), `progress_events` (routes one `ProgressEvent`). Harness adapters: `LoopHarness`, `StreamHarness`, `ApprovalGate`
 (wraps tools so a risky call waits) and `Framed` (adds solution, milestone, frame and a metric before and after to any harness).
 
-## What the loop does not emit yet
+## What the loop emits
 
-Built against today's strings, so the loop can adopt these shapes later (all would be `ProgressEvent(type="session", data=<event.to_dict()>)`):
+The hub loop reports the contract's own events beside its progress strings (the strings stay for a consumer that reads only text). Each is
+`ProgressEvent(type="session", data=<dict>)` (`EVENT_SESSION`), and every dict is the `to_dict` of the event of that name, so a web surface can carry it
+as JSON and `event_from_dict` rebuilds it. Fields below are only added to, never renamed.
 
-1. A helper when it starts: `{"type":"agent-started","agent_id","parent_id","task","solution"}` and when it ends `{"type":"agent-ended","agent_id","state","calls"}`. Today the helper appears only after it ends, and its steps are drawn under the main agent.
-2. A step per action with its own id and the agent it belongs to: `{"type":"step","step_id","agent_id","kind","label","state":"running"|"done"|"failed"}`, running before the command starts.
-3. The message taken up: `{"type":"step","kind":"message-received","step_id":<message id>}` when the inbox is drained. Today the harness reads the runner's inbox to guess it.
-4. Usage after each call: `{"type":"usage","cost_usd","tokens","calls"}`. Today cost is known only when the run ends.
-5. A stop that names the call in flight: the loop stops between calls, so a stop waits for the model call to return.
+| `data["type"]` | Fields | When |
+|---|---|---|
+| `run-started` | `goal`, `harness`, `session_id`, `resumed`, `solution`, `milestone`, `frame` | once, when `work` or `run_goal` starts (the caller gives solution, milestone and frame; `as_solution_worker` passes those of its brief) |
+| `step` | `agent_id`, `step_id`, `kind`, `label`, `state`, `detail` | read and edit: once, done or failed. run, use, check and delegate: `running` before the command starts, then the same `step_id` `done` or `failed` (with `detail` on a failure). A command of several lines is named by its first line and how many more |
+| `step` with `kind` `message-received` | `label` = the message | when the inbox is drained, so a steer is shown as taken up at the moment the loop has it |
+| `agent-started` | `agent_id`, `parent_id`, `task`, `solution` | a `DELEGATE` helper starts under its parent; a solution tree (`work_solution(..., session=sink)`) announces each node under its parent solution |
+| `agent-ended` | `agent_id`, `state` (met, unmet, stopped), `calls`, `summary` | the helper or node is done |
+| `usage` | `agent_id`, `calls`, `cost_usd`, `tokens` | after each model call: calls so far for the whole tree, cost and tokens so far when the provider reports them (tokens are plain input plus output; cache reads and writes are left out, as in the sibling runner) |
 
-The stream runner does not forward its raw lines either; it should emit each as `ProgressEvent(type="stream", data=<line>)`. The `permission_denied` line shape used by the adapter is assumed from the event name in the CLI documentation and is not verified.
+`LoopHarness` reads these and no longer guesses from strings or from `LoopResult.log`. A solution tree is a tree of agents: `work_solution` puts
+`agent_id` in each brief and `as_solution_worker(..., emit=)` reports each worker's steps under it (`TreeHarness` in `scripted.py` shows it, and the
+metric scores it).
+
+A stop is prompt. With a `cancel` the model call runs on its own thread and is given up as soon as `cancel()` turns true: the Claude CLI call is
+ended (its process group is killed, `claude_cli.abandon_thread`), the state saved before the call stays, the call is not counted, and a resume replays it.
+Measured on a scripted completion that holds a call for six seconds: a stop took 6.04 seconds to return before, and 0.07 after. A `RunControl` handed to
+`run_goal(control=...)` now steers (messages claimed once, confirmed with `mark_seen`) and pauses the loop like the stream runner.
+
+Still open: the stream runner does not forward its raw lines (it should emit each as `ProgressEvent(type="stream", data=<line>)`), the `permission_denied`
+line shape the adapter reads is assumed from the event name in the CLI documentation, and one helper of the loop cannot be stopped or steered alone
+(`Capabilities.target_agents` is false for the loop).
+
+### Found by a real task, fixed in the loop
+
+A first real multi-step run on a production lane ended incomplete after 13 calls and found four defects. (1) Tokens counted cache reads and writes, about
+a hundred times the sibling runner's basis, so a token budget stopped the run: the loop now reports plain input plus output. (2) Each command got a
+new `/tmp` and a read-only home: one private scratch folder per session (mode 0700, beside the session file, kept across a resume) is bound at `/tmp`
+with `TMPDIR` set, `XDG_CACHE_HOME` points inside it, the real home stays read-only and untouched, and the system text says so in one line. (3) A
+command of several lines could not be written: a fenced `bash` or `sh` block is one command, and so is a `RUN:` line that opens a heredoc, with its body
+and terminator; a fence inside a `REPORT` or an edit block is text. (4) Every call carried the whole brief: a goal at or above the cache size moves into
+the system text (kept first line as the title in the message, when goal and context fit), the history section is bounded near 20,000 characters (older
+calls shrink first), and each call logs at INFO the size of the system text and of each message section, then the tokens the call reported.
 
 ## Run it
 
@@ -167,14 +194,15 @@ by itself.
 ## The metric
 
 `metric-terminal-session` stays the solution's one authoritative metric. Its cases gain the kind `attend` (`evaluation/terminal_session/sessions.py`):
-20 scripted sessions, each on the hub loop (a scripted completion behind the loop runner) and on a fake of the stream runner, scoring named checks against
-the ids above. The number is the share of all 34 cases right (14 line-session cases and 20 attended), balanced with time by the fixed weights; the per-id
+23 scripted sessions, each on the hub loop (a scripted completion behind the loop runner) and on a fake of the stream runner, scoring named checks against
+the ids above. The number is the share of all 37 cases right (14 line-session cases and 23 attended), balanced with time by the fixed weights; the per-id
 shares are reported.
 
 | Arm | Cases right | Balanced | Ids fully met |
 |---|---|---|---|
-| `line_repl` (baseline) | 22 of 34 | 0.6091 | X1, X2, X3, X7, X10, X11, X12, X14, X15, X16, X17 (it prints every event as a line and nothing else) |
-| `live_session` | 34 of 34 | 0.9969 | X1 to X23 |
+| `line_repl` (baseline) | 24 of 37 | 0.6041 | the ids a plain printed line can show (it prints every event as a line and nothing else) |
+| `live_session`, before the loop reported the events itself | 34 of 37 | n/a | the three new cases (a helper announced live, a prompt stop, a solution tree) failed |
+| `live_session` | 37 of 37 | 0.9964 | X1 to X23 |
 
 `live_session` is selected from this result. What it cannot show: the cases are scripted by the author of the arm, so a ceiling proves the contract holds on
 two harnesses and not that a real model's run feels right; X18, X22 and X23 are checked only as the absence of explanations, of a blocked answer and of

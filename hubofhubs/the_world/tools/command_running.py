@@ -89,15 +89,25 @@ def path_part(token: str) -> str:
     return token.split("=", 1)[1] if re.match(r"^-{1,2}[A-Za-z][\w-]*=", token) else token
 
 
-def sandbox_wrap(working_dir: str, *, program: str = "bwrap", network: bool = True, extra_read_write: Sequence[str] = ()) -> Tuple[str, ...]:
+def sandbox_wrap(working_dir: str, *, program: str = "bwrap", network: bool = True, extra_read_write: Sequence[str] = (),
+                 scratch: str = "") -> Tuple[str, ...]:
     """The bubblewrap argv prefix that runs a command with the whole filesystem read-only and only ``working_dir``, a private temp folder and
     each ``extra_read_write`` folder writable. ``--unshare-net`` is added only when ``network`` is False. Returns ``()`` when ``program`` is not
-    on PATH, so the caller runs unconfined (with ``refusal`` as the only floor)."""
+    on PATH, so the caller runs unconfined (with ``refusal`` as the only floor).
+
+    The temp folder is empty and new for every command unless ``scratch`` names a folder: that folder is then bound at ``/tmp`` (``TMPDIR`` points to
+    it), so files written by one command are there for the next. The user's cache folder stays read-only, and ``XDG_CACHE_HOME`` points inside
+    the scratch folder so tools that honour it write their cache there; nothing of the real home is exposed or shadowed."""
     if shutil.which(program) is None:
         return ()
     folder = os.path.abspath(working_dir)
-    argv = [program, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--tmpfs", "/tmp", "--bind", folder, folder,
-            "--chdir", folder, "--die-with-parent"]
+    argv = [program, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc"]
+    if scratch:
+        kept = os.path.abspath(scratch)
+        argv += ["--bind", kept, "/tmp", "--setenv", "TMPDIR", "/tmp", "--setenv", "XDG_CACHE_HOME", "/tmp/.cache"]
+    else:
+        argv += ["--tmpfs", "/tmp"]
+    argv += ["--bind", folder, folder, "--chdir", folder, "--die-with-parent"]
     if not network:
         argv.append("--unshare-net")
     for path in extra_read_write:

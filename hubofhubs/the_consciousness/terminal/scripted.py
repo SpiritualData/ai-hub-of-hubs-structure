@@ -303,6 +303,58 @@ def stream_kit(folder: str, turns: Sequence[Turn], pause: float = 0.0, frame: Op
     return Kit(harness, trace, folder, runner)
 
 
+class TreeHarness:
+    """A tree of solution workers as a ``Harness``: ``work_solution`` over a small hierarchy of solutions, each solution worked by the hub loop on a scripted
+    completion that edits a file named after the solution. The agents of the tree and the steps under each come from the loop's own events."""
+    name = "solutions"
+
+    def __init__(self, folder: str, hierarchy: dict, pause: float = 0.0):
+        from hubofhubs.the_consciousness.terminal.session_events import Capabilities
+        from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import Tool  # noqa: F401
+        self.folder, self.hierarchy, self.pause = folder, hierarchy, pause
+        self.capabilities = Capabilities(stop=True, resume=False, steer=False, live_agents=True, live_usage=True)
+        self.stopped = threading.Event()
+
+    def complete(self, system: str, prompt: str) -> str:
+        import re
+        found = re.search(r"Solution: (\S+)", prompt)
+        name = found.group(1) if found else "x"
+        if self.pause:
+            time.sleep(self.pause)
+        return f"{name}.txt\n{SEARCH}\n{DIVIDER}\n{name}\n{REPLACE}\nREPORT: {name} done.\n"
+
+    def start(self, goal: str, sink: Callable[[Any], None], resume_session_id: str = "") -> Any:
+        from hubofhubs.the_consciousness.terminal.session_adapters import progress_events
+        from hubofhubs.the_consciousness.terminal.session_events import Finished, RunStarted, event_from_dict
+        from hubofhubs.the_intelligence.mind.delegation.solution_workers import work_solution
+        from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop_runner import SolutionLoopRunner, as_solution_worker
+        seed(self.folder)
+        runner = SolutionLoopRunner(root=self.folder, complete=self.complete, sandbox=False, review=False, session_dir=os.path.join(self.folder, ".sessions"))
+        root = next(iter(self.hierarchy))
+        sink(RunStarted(goal=goal, harness=self.name, solution=root, milestone="every solution in the tree met", metric=""))
+
+        def emit(event: Any) -> None:
+            for item in progress_events(event):
+                sink(item)
+        worker = as_solution_worker(runner, self.folder, cancel=self.stopped.is_set, emit=emit)
+        tree = work_solution(root, frame=lambda sid: {"name": sid.title(), "milestone": f"{sid} is done"}, children=lambda sid, task: self.hierarchy.get(sid, ()),
+                             work=worker, check=lambda sid, milestone, output: {"met": True}, task=goal, cancel=self.stopped.is_set,
+                             session=lambda data: sink(event_from_dict(data)))
+        done = Finished(outcome="met" if tree.met else "unmet", report=tree.tree_text(), changed=tuple(sorted(p.name for p in Path(self.folder).glob("*.txt"))))
+        sink(done)
+        return done
+
+    def control(self, control: Any) -> bool:
+        if getattr(control, "type", "") == "stop" and not getattr(control, "agent_id", ""):
+            self.stopped.set()
+            return True
+        return False
+
+
+def tree_kit(folder: str, hierarchy: dict, pause: float = 0.0) -> Kit:
+    return Kit(TreeHarness(folder, hierarchy, pause), Trace(), folder, None)
+
+
 KITS = {"loop": loop_kit, "stream": stream_kit}
 
 

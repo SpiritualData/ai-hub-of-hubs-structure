@@ -65,7 +65,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Work, asks and milestones in the order the stated rules give (`metric-human-prioritization`): leader `stated_fields`, 34 of 34 cases
 - Authority that stays with its person (`metric-the-representatives`)
 - Requests taken in once with their person (`metric-request-intake`)
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 34 of 34 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 37 of 37 cases
 
 ## Where to go next
 

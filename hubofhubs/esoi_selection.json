@@ -554,8 +554,8 @@
  "terminal-session": {
   "default": "live_session",
   "evidence": {
-   "detail": "live_session is better than line_repl (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000488, 12 of 34 cases disagree)",
-   "p": 0.000488,
+   "detail": "live_session is better than line_repl (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000244, 13 of 37 cases disagree)",
+   "p": 0.000244,
    "verdict": "WIN"
   },
   "modules": {

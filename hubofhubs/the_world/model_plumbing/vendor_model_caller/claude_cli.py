@@ -25,6 +25,7 @@ import os
 import shutil
 import signal
 import subprocess
+import threading
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
@@ -180,6 +181,24 @@ def _neutral_cwd() -> str:
     return d  # type: ignore[return-value]
 
 
+RUNNING: Dict[int, "subprocess.Popen"] = {}      # thread id -> the completion process that thread is waiting on, so a stop can end it
+
+
+def abandon_thread(thread_id: int) -> bool:
+    """End the completion process (its whole group) that the thread ``thread_id`` is waiting on. True when there was one. The thread's own call
+    then fails and its result is discarded by whoever gave the call up."""
+    proc = RUNNING.get(thread_id)
+    if proc is None:
+        return False
+    try:
+        os.killpg(proc.pid, signal.SIGKILL)
+    except (ProcessLookupError, PermissionError):
+        return False
+    except AttributeError:  # a platform without process groups
+        proc.kill()
+    return True
+
+
 def run_in_group(cmd, *, input, env, cwd, timeout) -> "subprocess.CompletedProcess":
     """Run ``cmd`` in its own process group; on timeout kill the whole group, not just the child.
 
@@ -191,6 +210,7 @@ def run_in_group(cmd, *, input, env, cwd, timeout) -> "subprocess.CompletedProce
     """
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             env=env, cwd=cwd, start_new_session=True)
+    RUNNING[threading.get_ident()] = proc
     try:
         out, err = proc.communicate(input, timeout=timeout)
     except BaseException:  # the timeout, and an interrupt too: its own session no longer hears the terminal's Ctrl-C
@@ -205,6 +225,8 @@ def run_in_group(cmd, *, input, env, cwd, timeout) -> "subprocess.CompletedProce
         except subprocess.TimeoutExpired:
             pass
         raise
+    finally:
+        RUNNING.pop(threading.get_ident(), None)
     return subprocess.CompletedProcess(cmd, proc.returncode, out, err)
 
 

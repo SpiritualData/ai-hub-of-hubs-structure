@@ -4,13 +4,14 @@ keeps the stream runner's contract; no model, no network. The requirement ids ar
 import io
 import sys
 import threading
+import time
 import tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from hubofhubs.the_consciousness.terminal.scripted import KITS, delegate, edit, read, report, run, turn, use  # noqa: E402
+from hubofhubs.the_consciousness.terminal.scripted import KITS, delegate, edit, read, report, run, tree_kit, turn, use  # noqa: E402
 from hubofhubs.the_consciousness.terminal.session_adapters import report_events  # noqa: E402
 from hubofhubs.the_consciousness.terminal.session_events import Step, Steer  # noqa: E402
 from hubofhubs.the_consciousness.terminal.session_keys import ScriptedKeys  # noqa: E402
@@ -210,7 +211,66 @@ def frame(arm, name):
     return failed
 
 
-SCENARIOS = {"watch": watch, "stop_resume": stop_resume, "steer": steer, "tree": tree, "solution_tree": solution_tree,
+def live_helper(arm, name):
+    """The loop itself reports a helper as it starts and ends, and the helper's own steps under it (no guessing from its end)."""
+    kit = folder_kit(name, [turn(delegate("write the tests", turn(read("a.txt"), edit("tests.txt"), report("tests done")))), turn(report("Finished."))], pause=0.01)
+    rep, text = attend(arm, kit, ScriptedKeys())
+    kinds = [(e.type, getattr(e, "agent_id", "")) for e in rep.events]
+    failed = []
+    started = [i for i, e in enumerate(rep.events) if e.type == "agent-started"]
+    own = [i for i, e in enumerate(rep.events) if isinstance(e, Step) and e.agent_id != "main" and e.kind == "edit"]
+    ended = [i for i, e in enumerate(rep.events) if e.type == "agent-ended"]
+    if not (len(started) == 1 and own and ended and started[0] < own[0] < ended[0]):
+        failed.append("helper-announced-before-its-steps")
+    if own and rep.events[own[0]].agent_id != rep.events[started[0]].agent_id:
+        failed.append("helper-steps-under-the-helper")
+    if "     tests.txt" not in text and "tests.txt" not in text:
+        failed.append("helper-edit-shown")
+    return failed
+
+
+def stop_prompt(arm, name):
+    """A stop during a slow model call returns at once (not after the call) and the session resumes from before that call."""
+    keys = ScriptedKeys()
+    hold = lambda: (keys.press("esc"), keys.press("line", "resume"), time.sleep(6))
+    kit = folder_kit(name, [turn(edit("one.txt")), turn(edit("two.txt"), hook=hold), turn(edit("two.txt")), turn(edit("three.txt"), report("All three."))], pause=0.0)
+    begun = time.monotonic()
+    out = io.StringIO()
+    holder = {}
+
+    def watch_first_stop():
+        pass
+    rep = arm.attend(kit.harness, "do the work", out, keys, tick=0.01, live=False, width=100)
+    first = rep.runs[0] if rep.runs else None
+    failed = []
+    stopped_at = next((e.at for e in rep.events if e.type == "finished"), 99)
+    if not (first and first.outcome == "stopped" and stopped_at < 2.5):
+        failed.append("stop-returns-within-two-seconds")
+    names = done_steps(rep, "edit")
+    if sorted(names) != ["one.txt", "three.txt", "two.txt"] or len(names) != 3:
+        failed.append("resume-after-an-abandoned-call")
+    return failed
+
+
+def solution_agents(arm, name):
+    """A tree of solution workers is a tree of agents with their solutions, and each worker's steps sit under its own solution."""
+    folder = tempfile.mkdtemp(prefix="session-")
+    kit = tree_kit(folder, {"release": ["notes", "tests"], "tests": ["fixtures"]})
+    rep, text = attend(arm, kit, ScriptedKeys())
+    parents = {e.solution: e.parent_id for e in rep.events if e.type == "agent-started"}
+    ids = {e.solution: e.agent_id for e in rep.events if e.type == "agent-started"}
+    failed = []
+    if set(parents) != {"release", "notes", "tests", "fixtures"} or parents["release"] != "main" or parents["notes"] != ids["release"] or parents["fixtures"] != ids["tests"]:
+        failed.append("agents-follow-the-solution-hierarchy")
+    under = {e.agent_id for e in rep.events if isinstance(e, Step) and e.kind == "edit"}
+    if under != set(ids.values()):
+        failed.append("each-worker-steps-under-its-solution")
+    if "(fixtures)" not in text or "Served: release" not in text:
+        failed.append("solutions-shown")
+    return failed
+
+
+SCENARIOS = {"live_helper": live_helper, "stop_prompt": stop_prompt, "solution_agents": solution_agents, "watch": watch, "stop_resume": stop_resume, "steer": steer, "tree": tree, "solution_tree": solution_tree,
              "approve": lambda arm, name: approval(arm, name, "y"), "refuse": lambda arm, name: approval(arm, name, "n"), "target": target,
              "same_surface": same_surface, "plain_and_replay": plain_and_replay, "frame": frame}
 

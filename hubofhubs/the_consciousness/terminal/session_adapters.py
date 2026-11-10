@@ -5,7 +5,7 @@
   announces a helper only when it ends, so the tree of a loop run is complete at that point and not before.
 * ``StreamJson``: the lines of a Claude Code ``stream-json`` session (tool_use and tool_result blocks, ``parent_tool_use_id`` for helpers, ``result``).
 * ``report_events``: a ``SolutionReport`` tree (any object with ``solution``, ``name``, ``status``, ``calls``, ``children``).
-* ``progress_events``: one ``ProgressEvent`` of the hub's runners, routed to the adapter that reads it.
+* ``progress_events``: one ``ProgressEvent`` of the hub's runners, routed to the adapter that reads it (``session`` events are the contract's own).
 
 All are pure and standard library only.
 """
@@ -15,7 +15,7 @@ import re
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
 from hubofhubs.the_consciousness.terminal.session_events import (
-    MAIN, AgentEnded, AgentStarted, Review, SessionEvent, Step, Usage, Waiting, short)
+    MAIN, AgentEnded, AgentStarted, Review, SessionEvent, Step, Usage, Waiting, event_from_dict, short)
 
 LOOP_ACTION = re.compile(r"^call (\d+): (READ|EDIT|RUN|DELEGATE|USE|NOTE)\s*(.*?)\s+(ok|failed)$")
 LOOP_CHECK = re.compile(r"^call (\d+): check (passed|failed)$")
@@ -170,6 +170,11 @@ def progress_events(event: Any, loop: Optional[LoopLines] = None, stream: Option
     for the person, an ``exec`` tick of the loop is a progress string; anything else is chatter and gives no event."""
     kind = getattr(event, "type", "")
     data = getattr(event, "data", None) or {}
+    if kind == "session" and isinstance(data, Mapping):      # a runner that reports the contract's own events: nothing to guess
+        try:
+            return [event_from_dict(data)]
+        except (ValueError, TypeError):
+            return []
     if kind == "stream" and stream is not None and isinstance(data, Mapping):
         return stream.events(data)
     if kind == "decision":
