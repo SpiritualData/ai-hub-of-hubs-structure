@@ -18,14 +18,17 @@ import threading
 import time
 import uuid
 from dataclasses import replace
-from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, Tuple
+from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Sequence, TextIO, Tuple
 
 from esoi import implementation
 
+from hubofhubs.the_consciousness.ai_session_experience.structure_in_view.tree import flatten, structure_view, tables_of
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl import LineRepl
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.structure_lines import structure_lines
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     Approve, Control, Finished, Harness, Refuse, SessionEvent, Step, Steer, Stop, Waiting, short)
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, event_line, frame, report
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS, SessionReport, SessionView, event_line, frame, report
 
 MAX_RESUMES = 8
 REDRAW_SECONDS = 0.1
@@ -60,12 +63,24 @@ class Painter:
 class Attendance:
     """One attended session: the events in, the keys in, the controls out."""
 
-    def __init__(self, harness: Harness, goal: str, out: TextIO, keys: Any, clock: Callable[[], float], tick: float, live: bool, width: int):
+    def __init__(self, harness: Harness, goal: str, out: TextIO, keys: Any, clock: Callable[[], float], tick: float, live: bool, width: int, *,
+                 records: Any = None, commands: Optional[Mapping[str, Callable[[str], Optional[str]]]] = None,
+                 segments: Sequence[Callable[[SessionView], str]] = (), panels: Sequence[Callable[[SessionView], List[str]]] = (), command: str = "",
+                 representative: Optional[Mapping[str, Any]] = None, stop_limits: Optional[Mapping[str, Any]] = None):
         self.harness, self.goal, self.out, self.keys, self.clock, self.tick = harness, goal, out, keys, clock, tick
+        self.records, self.loaded = records, None
+        self.commands_extra = {name.lstrip("/").lower(): fn for name, fn in (commands or {}).items()}
+        self.segments, self.panels = list(segments), list(panels)
+        self.shape: Tuple[Any, ...] = ()
+        self.nodes: List[str] = []
         self.live = live
         self.painter = Painter(out, live, width)
         self.width = width
         self.view = SessionView()
+        if command:
+            self.view.command = command
+        self.view.authority = hub_lines.authority_lines(representative, stop_limits)
+        self.view.acting_for = str((representative or {}).get("person") or "")
         self.view.started = self.view.now = clock()
         self.inbox: "queue.Queue[Tuple[Any, ...]]" = queue.Queue()
         self.commands: "queue.Queue[str]" = queue.Queue()
@@ -96,6 +111,9 @@ class Attendance:
         if token == "typing":
             self.inbox.put(("typing", text))
             return
+        if token in ("tree", "up", "down", "open", "close", "help", "who"):
+            self.inbox.put(("key", token, text))
+            return
         if token == "eof":
             self.commands.put("quit")
             self.stop_wanted = self.running
@@ -109,7 +127,19 @@ class Attendance:
         if not text:
             return
         word = text.lower()
-        if word in ("resume", "/resume"):
+        first = word.split(" ", 1)[0].lstrip("/") if word.startswith("/") else ""
+        if first in self.commands_extra:
+            try:
+                said = self.commands_extra[first](text.split(" ", 1)[1].strip() if " " in text else "")
+            except Exception as error:  # noqa: BLE001 -- a consumer's command that raises is shown, never fatal
+                said = f"/{first} failed: {type(error).__name__}: {error}"
+            if said:
+                self.inbox.put(("notice", said))
+        elif word in ("/tree", "/help", "?", "/keys", "/who"):
+            self.inbox.put(("key", {"/tree": "tree", "/who": "who"}.get(word, "help"), ""))
+        elif word.startswith("/open") or word.startswith("/close"):
+            self.inbox.put(("key", "open" if word.startswith("/open") else "close", text.split(" ", 1)[1].strip() if " " in text else ""))
+        elif word in ("resume", "/resume"):
             if self.stop_wanted or not self.running:
                 self.commands.put("resume")
             else:
@@ -180,6 +210,8 @@ class Attendance:
                 self.view.status = "stopping"
                 if not self.live:
                     self.painter.line("stopping: finished work is kept, and the session can be resumed")
+        elif kind == "key":
+            self.key(item[1], item[2])
         elif kind == "answered":
             self.view.asking = None
             self.view.status = "running"
@@ -187,6 +219,86 @@ class Attendance:
             self.view.notice(item[1])
             if not self.live:
                 self.painter.line(item[1])
+
+    def tables(self) -> Any:
+        if self.loaded is None:
+            self.loaded = tables_of(self.records) or {}
+        return self.loaded or None
+
+    def refresh_structure(self, force: bool = False) -> Mapping[str, Any]:
+        """The compact structure line and the panel, from the events so far and the records; recomputed only when an event or a key changed what they show."""
+        view = self.view
+        shape = (len(self.events), view.show_structure, view.selected, tuple(view.opened))
+        if shape == self.shape and not force:
+            return self.data
+        self.shape = shape
+        data = structure_view(self.events, self.tables(), tuple(view.opened))
+        nodes = flatten(data["tree"])
+        self.nodes = [node["solution"] for node in nodes]
+        view.selected = min(view.selected, max(len(nodes) - 1, 0))
+        helpers = sum(len(node["agents"]) for node in nodes) + len(data["unplaced"])
+        if not nodes and not helpers:
+            view.structure_compact, view.structure_panel = "", (["structure (Tab hides)"] + ["  " + row for row in view.authority] if view.authority and view.show_structure else [])
+        else:
+            roots = data["tree"]
+            lead = ", ".join(f"{root['name']} [{root['state']}]" + (" > " + ", ".join(c["name"] for c in root["children"]) if root["children"] else "") for root in roots[:2])
+            view.structure_compact = f"structure: {lead or 'no solution named'}; {helpers} helper{'' if helpers == 1 else 's'} (Tab shows the tree)"
+            selected = self.nodes[view.selected] if self.nodes else ""
+            rows = ["  " + row for row in structure_lines(data, max(self.width - 6, 40), selected)] + (["  " + row for row in view.authority] if view.authority else [])
+            room = max(shutil.get_terminal_size((80, 24)).lines - 14, 6) if self.live else 10 ** 6      # the frame never grows taller than the screen
+            if len(rows) > room:
+                rows = rows[:room - 1] + [f"  ... {len(rows) - room + 1} more rows (close a solution with Left)"]
+            view.structure_panel = ["structure (Up and Down move, Right opens a solution's fields, Left closes, Tab hides)"] + rows
+        self.data = data
+        return data
+
+    data: Mapping[str, Any] = {}
+
+    def key(self, token: str, text: str) -> None:
+        """A structure or help key, taken in the main thread. On a terminal the frame shows the change; elsewhere the lines are printed."""
+        view = self.view
+        data = self.refresh_structure(force=True)
+        if token == "who":
+            for row in view.authority or ["No representative is named for this run: the hub's default applies."]:
+                view.notice(row)
+                if not self.live:
+                    self.painter.line(row)
+            return
+        if token == "help":
+            view.show_help = not view.show_help
+            if not self.live and view.show_help:
+                for row in HELP_ROWS:
+                    self.painter.line(row)
+            return
+        if not self.nodes and not data.get("unplaced") and not view.authority:
+            self.view.notice("No solution is named for this run yet, so there is no structure to show (give one with --solution).")
+            if not self.live:
+                self.painter.line(self.view.notices[-1])
+            return
+        if token == "tree":
+            view.show_structure = not view.show_structure
+        elif token in ("up", "down"):
+            view.show_structure = True
+            view.selected = max(0, min(view.selected + (1 if token == "down" else -1), len(self.nodes) - 1))
+        elif token in ("open", "close"):
+            view.show_structure = True
+            name = text.strip() if text.strip() else (self.nodes[view.selected] if self.nodes else "")
+            if name == "*" and token == "open":
+                view.opened[:] = list(self.nodes)
+            elif name == "*":
+                view.opened[:] = []
+            else:
+                known = next((n for n in self.nodes if n == name or n.startswith(name)), "") if name else ""
+                if not known:
+                    self.view.notice(f"No solution in view matches {name!r}.")
+                elif token == "open" and known not in view.opened:
+                    view.opened.append(known)
+                elif token == "close" and known in view.opened:
+                    view.opened.remove(known)
+        self.refresh_structure(force=True)
+        if not self.live and view.show_structure:
+            for row in view.structure_panel:
+                self.painter.line(row)
 
     def retry(self) -> None:
         for message in list(self.unsent):
@@ -197,6 +309,12 @@ class Attendance:
 
     def redraw(self) -> None:
         self.view.now = self.clock()
+        self.refresh_structure()
+        try:
+            self.view.segments = [fn(self.view) for fn in self.segments]
+            self.view.panels = [row for fn in self.panels for row in fn(self.view)]
+        except Exception:  # noqa: BLE001 -- a consumer's segment that raises is left out, never fatal
+            self.view.segments, self.view.panels = [], []
         if self.live:
             self.painter.draw(frame(self.view, self.width, color=True))
 
@@ -262,7 +380,7 @@ class Attendance:
             if self.keys is not None:
                 self.keys.detach()
             self.painter.erase()
-            for row in report(self.view, color=self.live):
+            for row in report(self.view, color=self.live, width=max(self.width - 1, 40) if self.live else 0):
                 self.out.write(row + "\n")
             self.out.flush()
 
@@ -290,7 +408,8 @@ class Attendance:
 
 @implementation("terminal-session", "live_session")
 class LiveSession:
-    """Drives any harness: live view, Escape stops and keeps the session, resume, steering shown as taken up, sub-agent tree, approvals, closing report."""
+    """Drives any harness: live view, Escape stops and keeps the session, resume, steering shown as taken up, sub-agent tree, approvals, closing report; the structure of the
+    work (collapsed, opened on request), the ceilings and spend, the hub's stop decision, who the AI acts for, follow-ups that continue a session and a switch of harness."""
     REQUIRES = ()     # the seats it is handed
 
     def structure_lines(self, view: Any, width: int = 100) -> List[str]:
@@ -299,12 +418,25 @@ class LiveSession:
     def converse(self, front_door: Optional[Callable[[str], Any]] = None, lines: Iterable[str] = (), out: Optional[TextIO] = None, viewer_id: str = "", prompt: str = "> ") -> int:
         return LineRepl().converse(front_door, lines, out, viewer_id, prompt)
 
+    def work(self, build: Callable[[str], Harness], out: TextIO, goal: str = "", resume: str = "", lines: Optional[Iterable[str]] = None, **options: Any) -> Any:
+        """The interactive command: run ``goal`` (or ask for one) on the harness ``build(name)`` gives, then take each typed line as a follow-up that continues the session, with
+        ``/harness NAME`` to switch between runs. Returns the ``WorkTerminal`` (its ``reports`` hold every run's ``SessionReport``). See ``work.WorkTerminal`` for the options."""
+        from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.work import WorkTerminal
+        terminal = WorkTerminal(build, out, lines=lines, **options)
+        terminal.run(goal, resume)
+        return terminal
+
     def attend(self, harness: Harness, goal: str, out: TextIO, keys: Any = None, resume_session_id: str = "", clock: Callable[[], float] = time.monotonic,
-               tick: float = 0.02, live: Optional[bool] = None, width: int = 0) -> SessionReport:
-        """Run ``goal`` on ``harness`` and return the report. ``live`` (redraw in place) defaults to whether ``out`` is a terminal."""
+               tick: float = 0.02, live: Optional[bool] = None, width: int = 0, records: Any = None,
+               commands: Optional[Mapping[str, Callable[[str], Optional[str]]]] = None, segments: Sequence[Callable[[SessionView], str]] = (),
+               panels: Sequence[Callable[[SessionView], List[str]]] = (), command: str = "", representative: Optional[Mapping[str, Any]] = None,
+               stop_limits: Optional[Mapping[str, Any]] = None) -> SessionReport:
+        """Run ``goal`` on ``harness`` and return the report. ``live`` (redraw in place) defaults to whether ``out`` is a terminal. ``records`` (a records root or its
+        tables) is where an opened solution's fields are read; ``commands`` maps extra slash commands to a function of the rest of the line that returns text to show;
+        ``segments`` are functions of the view returning extra header text and ``panels`` functions returning extra lines; ``command`` is how the surface is started."""
         tty = bool(getattr(out, "isatty", lambda: False)()) if live is None else live
         columns = width or (shutil.get_terminal_size((80, 24)).columns if tty else 80)
-        session = Attendance(harness, goal, out, keys, clock, tick, tty, columns)
+        session = Attendance(harness, goal, out, keys, clock, tick, tty, columns, records=records, commands=commands, segments=segments, panels=panels, command=command, representative=representative, stop_limits=stop_limits)
         session.attend(resume_session_id)
         final = session.runs[-1] if session.runs else None
         return SessionReport(final=final, runs=tuple(session.runs), events=tuple(session.events), controls=tuple(session.controls), view=session.view,

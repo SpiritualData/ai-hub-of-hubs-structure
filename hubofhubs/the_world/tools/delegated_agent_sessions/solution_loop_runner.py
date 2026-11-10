@@ -394,6 +394,7 @@ class SolutionLoopRunner(DeepRunnerBase):
         """Run the goal (``brief`` when given, else ``goal``) as one loop of at most ``max_turns`` model calls (15 when unset). ``model`` is used
         in place of the arm's tier model. The wall-clock cap stops the run between calls. ``resume_session_id`` continues a saved session (a
         missing or unreadable one starts fresh); the result's ``session_id`` names the session file the run kept. Never raises."""
+        began = time.monotonic()
         try:
             run_model = model or self.model
             if not run_model and self.injected is None:
@@ -410,6 +411,9 @@ class SolutionLoopRunner(DeepRunnerBase):
                                            requester_user_id=requester_user_id)
             deep = self.deep_result(result, usage, why, run_model or "")
             deep.session_id = session_id
+            deep.resume_handle = session_id            # type: ignore[attr-defined]   # the same account of a run as the other runners give (LimitWatch.finish)
+            deep.spend_usd = float(deep.cost_usd or 0.0)  # type: ignore[attr-defined]
+            deep.elapsed_seconds = time.monotonic() - began   # type: ignore[attr-defined]
             return deep
         except Exception as e:  # noqa: BLE001 -- the DeepRunner port never raises
             log.error("%s failed unexpectedly: %s: %s", type(self).__name__, type(e).__name__, e, exc_info=True)

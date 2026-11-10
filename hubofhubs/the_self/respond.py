@@ -12,7 +12,7 @@ from hubofhubs.the_intelligence.interface import InformationProcessing
 from hubofhubs.the_world.interface import TakingIn
 from hubofhubs.the_self.assembler.interface import WholeAssembling
 from hubofhubs.the_self.role_understanding.interface import RoleUnderstanding
-from hubofhubs.the_self.steps import DONE, listing, take
+from hubofhubs.the_self.steps import DONE, UNAVAILABLE, Step, listing, support, take
 
 
 def sources_of(results: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
@@ -21,6 +21,21 @@ def sources_of(results: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
         for item in result.get("items") or ():
             seen.setdefault(str(item.get("url") or item.get("title")), dict(item))
     return list(seen.values())
+
+
+def cannot_answer(reason: str) -> str:
+    """What the person reads when the step the answer depends on could not run: the plain fact and what to do, never a class name."""
+    detail = reason.split(": ", 1)[-1].strip() if reason else ""
+    return ("I could not finish this" + (f": {detail}" if detail else "") + ". Run it again; if it keeps happening, `ahohs --help` lists what can be set up.")
+
+
+def stop_line(thought: Mapping[str, Any], decision: Mapping[str, Any]) -> str:
+    """Why the run stopped, in words that are true: the attempts spent without the goal met, and who is asked next."""
+    reason = str(thought.get("reason") or "the answer did not meet its standard")
+    asked = f"{decision.get('decision') or ''} {decision.get('to') or ''}".strip()
+    if thought.get("stopped") == "authority":
+        return "stopped: the request does not carry the authority this needs" + (f"; {asked}" if asked else "")
+    return f"stopped after {thought.get('attempts', 1)} attempt(s) without meeting the goal ({reason})" + (f"; {asked}" if asked else "")
 
 
 @implementation("the-self", "composition")
@@ -40,28 +55,34 @@ class SelfComposition:
     def respond(self, request: str, person: str = "", feedback: Optional[Mapping[str, Any]] = None,
                 cancelled: Optional[Callable[[], bool]] = None) -> Result:
         began = time.time()
-        known = take(self.consciousness, "the-consciousness", person=person)
-        context = take(self.body, "the-body", person=person)
+        if not str(request or "").strip():      # nothing was asked: say so, and what to type
+            return Result(input=str(request or ""), seat="the-self", answer="Nothing to answer yet: type a question or a task, for example \"What can you do?\".")
+        known = support(self.consciousness, "the-consciousness", person=person)       # who it is for: it shapes the answer, the answer does not depend on it
+        context = support(self.body, "the-body", person=person)                       # where the data lives: the run record and the sources use it
         who = (known.output or {}) if known.status == DONE else {}
-        processed = take(self.intelligence, "the-intelligence", request=request, person=person, representative=who.get("representative"),
-                         priorities=who.get("priorities"), cancelled=cancelled)
-        thought = (processed.output or {}) if processed.status == DONE else {}
-        stated = take(self.roles, "role-understanding", part_id="the-intelligence")
+        try:                                                                          # the answer depends on Intelligence: when it cannot run, say so plainly
+            processed = take(self.intelligence, "the-intelligence", request=request, person=person, representative=who.get("representative"),
+                             priorities=who.get("priorities"), cancelled=cancelled)
+        except Exception as error:      # noqa: BLE001  the front door ends with a message, never a traceback
+            processed = Step("the-intelligence", UNAVAILABLE, reason=f"{type(error).__name__}: {error}")
+        thought = (processed.output or {}) if processed.status == DONE else {"answer": cannot_answer(processed.reason), "stopped": "unavailable"}
+        stated = support(self.roles, "role-understanding", part_id="the-intelligence")
         log = [known, context, processed, stated]
         run = {"id": int(began * 1000), "request": request, "person": person, "sources": (context.output or {}).get("sources", []) if context.status == DONE else [],
                "steps": listing(log), "answer": thought.get("answer", ""),
                "attempts": thought.get("attempts", 0), "stopped": thought.get("stopped", "")}
-        recorded = take(self.body, "the-body", method="record_run", run=run)
-        audited = take(self.integrity, "system-integrity", method="audit_run", run=run)
+        recorded = support(self.body, "the-body", method="record_run", run=run)
+        audited = support(self.integrity, "system-integrity", method="audit_run", run=run)
         log += [recorded, audited]
-        log.append(take(self.consciousness, "the-consciousness", method="learn", person=person, feedback=feedback))
+        log.append(support(self.consciousness, "the-consciousness", method="learn", person=person, feedback=feedback))
         notes = list(audited.output or []) if audited.status == DONE else []
+        notes += [str(line) for line in thought.get("notes") or ()]
         if thought.get("escalation"):
             decision = thought["escalation"]
-            notes.append(f"stopped for {thought['stopped']}: {decision.get('decision')} {decision.get('to') or ''}".strip())
+            notes.append(stop_line(thought, decision))
         results = thought.get("results") or []
         return Result(input=request, seat="the-self", answer=str(thought.get("answer", "")), items=tuple(sources_of(results)), seconds=time.time() - began,
-                      note="; ".join(notes), steps=tuple(listing(log)))
+                      note="; ".join(notes), steps=tuple(listing(log)), stopped=str(thought.get("stopped", "")))
 
     def serve(self, person: str = "") -> Sequence[Result]:
         requests = take(self.consciousness, "the-consciousness", method="receive", person=person)

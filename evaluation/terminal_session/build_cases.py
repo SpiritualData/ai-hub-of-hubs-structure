@@ -5,7 +5,8 @@ Kinds of case (case sources of one component, reported separately):
   turn     a typed line reaches the front door and its answer and interim update are shown.
   command  /help, /trail and an unknown command are answered by the session and never reach the front door.
   ask      a question the hub asks is shown with its options and the next line answers it (a number picks an option).
-  attend   a person works with a run while it works (watch, stop, resume, steer, tree, approve, refuse, target, frame), scripted on two harnesses.
+  attend   a person works with a run while it works (watch, stop, resume, steer, tree, approve, refuse, target, frame, and the hub's own parts: structure toggle and
+           expand, ceilings, soft limit, stop decision, end of run, follow-up, harness switch, no-goal prompt, representative), scripted on two harnesses.
   exit     /quit, end of input and a front door that cannot start all end the session cleanly.
 
     python3 evaluation/terminal_session/build_cases.py
@@ -66,11 +67,15 @@ REQUIREMENTS = {
     "approve": ["X9", "X19", "X22"], "refuse": ["X9", "X20"], "target": ["X8"], "same_surface": ["X11", "X12"], "plain_and_replay": ["X13", "X18"],
     "frame": ["X14", "X17"], "live_helper": ["X7"], "stop_prompt": ["X4", "X5"], "solution_agents": ["X14", "X15"],
     "check_never_passes": ["X10", "X20"], "repeat_refused": ["X20"],
+    "structure_toggle": ["X24", "X18"], "structure_expand": ["X25", "X18"], "ceiling_status": ["X26", "X3"], "soft_limit_line": ["X27"], "stop_decision_line": ["X28"],
+    "end_of_run": ["X21", "X33"], "follow_up_continues": ["X29", "X5"], "harness_switch": ["X30", "X11"], "no_goal_prompt": ["X31"], "representative": ["X32"],
 }
 SESSIONS = [("watch", "loop"), ("watch", "stream"), ("stop_resume", "loop"), ("stop_resume", "stream"), ("steer", "loop"), ("steer", "stream"),
             ("tree", "loop"), ("tree", "stream"), ("solution_tree", "none"), ("approve", "loop"), ("approve", "stream"), ("refuse", "loop"), ("refuse", "stream"),
             ("target", "loop"), ("target", "stream"), ("same_surface", "both"), ("plain_and_replay", "loop"), ("plain_and_replay", "stream"),
-            ("frame", "loop"), ("frame", "stream"), ("live_helper", "loop"), ("stop_prompt", "loop"), ("solution_agents", "solutions"), ("check_never_passes", "loop"), ("repeat_refused", "loop")]
+            ("frame", "loop"), ("frame", "stream"), ("live_helper", "loop"), ("stop_prompt", "loop"), ("solution_agents", "solutions"), ("check_never_passes", "loop"), ("repeat_refused", "loop"),
+            ("structure_toggle", "stream"), ("structure_expand", "stream"), ("ceiling_status", "stream"), ("soft_limit_line", "stream"), ("stop_decision_line", "stream"),
+            ("end_of_run", "stream"), ("follow_up_continues", "stream"), ("harness_switch", "both"), ("no_goal_prompt", "stream"), ("representative", "stream")]
 for scenario, kit in SESSIONS:
     CASES.append({"id": f"attend-{scenario}-{kit}", "kind": "attend", "origin": "rule: " + scenario.replace("_", " ") + f" on the {kit} harness (docs/explanation/working-with-the-ai-while-it-works.md)",
                   "args": {"scenario": scenario, "kit": kit}, "requirements": REQUIREMENTS[scenario], "expect": {"failed": []}})

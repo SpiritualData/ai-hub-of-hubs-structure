@@ -12,6 +12,7 @@ from support import ROOT  # noqa: E402
 def test_the_tutorial_runs_and_prints_what_it_says(monkeypatch):
     for name in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_API_KEY"):
         monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("PATH", "")      # no Claude CLI on the path: the search arm that needs a key has no stand-in, so the first line lists what is pending
     text = (ROOT / "docs" / "tutorials" / "assemble-and-run-your-first-seat.md").read_text()
     code = "\n".join(re.findall(r"```python\n(.*?)```", text, re.S))
     out = io.StringIO()
@@ -20,6 +21,6 @@ def test_the_tutorial_runs_and_prints_what_it_says(monkeypatch):
     lines = out.getvalue().splitlines()
     assert "web-search" in lines[0] and "file-editing" in lines[0] and "vendor-model-caller" in lines[0]
     assert lines[1].startswith("[Card(id='first'") and lines[2] == "1"
-    assert lines[3].startswith("card-store -> local_card_store (layer: hubofhubs default")
+    assert " -> " in lines[3] and "(layer: hubofhubs default" in lines[3]      # the first reason: a seat, its arm and the layer that chose it
     assert lines[4].startswith("[Card(id='first'")
     assert "GEMINI_API_KEY" in lines[5] and lines[5].startswith("(")

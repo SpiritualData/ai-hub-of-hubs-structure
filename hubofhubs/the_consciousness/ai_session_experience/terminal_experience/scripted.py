@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
-from hubofhubs.the_consciousness.ai_session_experience.session_harnesses import ApprovalGate, Framed, LoopHarness, StreamHarness
+from hubofhubs.the_consciousness.ai_session_experience.session_harnesses import ApprovalGate, Framed, Limited, LoopHarness, StreamHarness
 from hubofhubs.the_world.tools.deep import DeepResult, ProgressEvent
 
 SEARCH, DIVIDER, REPLACE = "<" * 7 + " SEARCH", "=" * 7, ">" * 7 + " REPLACE"
@@ -52,6 +52,26 @@ def check(command: str) -> Beat:
 
 def use(name: str, given: str = "") -> Beat:
     return Beat("use", name, given)
+
+
+def soft_limit() -> Beat:
+    """The runner reports its soft limit: the session is asked to wrap up."""
+    return Beat("soft")
+
+
+def decide(reason: str) -> Beat:
+    """The hub's own iteration decided to go round again, for ``reason``."""
+    return Beat("decide", reason)
+
+
+def refuse_round(reason: str) -> Beat:
+    """The hub's own iteration decided to stop, for ``reason`` (the run ends with it as its end reason)."""
+    return Beat("refuse", reason)
+
+
+def outside(*items: str) -> Beat:
+    """The run wrote or ran something outside its folder (reported, never undone)."""
+    return Beat("outside", text="\n".join(items))
 
 
 def report(text: str) -> Beat:
@@ -142,7 +162,8 @@ def flatten(turns: Sequence[Turn]) -> List[Tuple[str, Optional[Callable[[], None
     return out
 
 
-def loop_kit(folder: str, turns: Sequence[Turn], pause: float = 0.0, max_calls: int = 20, frame: Optional[Dict[str, Any]] = None) -> Kit:
+def loop_kit(folder: str, turns: Sequence[Turn], pause: float = 0.0, max_calls: int = 20, frame: Optional[Dict[str, Any]] = None,
+             limits: Optional[Tuple[Optional[float], Optional[float]]] = None) -> Kit:
     from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import Tool
     from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop_runner import SolutionLoopRunner
     seed(folder)
@@ -166,6 +187,8 @@ def loop_kit(folder: str, turns: Sequence[Turn], pause: float = 0.0, max_calls: 
     tools = gate.wrap({"deploy": Tool("ship the work to the live place (cannot be undone)", lambda given: deploy(folder, given))})
     runner = SolutionLoopRunner(root=folder, complete=complete, sandbox=False, review=False, session_dir=os.path.join(folder, ".sessions"), tools=tools)
     harness: Any = LoopHarness(runner, working_dir=folder, max_calls=max_calls, gate=gate)
+    if limits:
+        harness = Limited(harness, ceiling_usd=limits[0], ceiling_seconds=limits[1])
     if frame:
         harness = Framed(harness, **frame)
     return Kit(harness, trace, folder, runner)
@@ -183,6 +206,9 @@ class ScriptedStreamRunner:
         self.places: Dict[str, Tuple[int, int]] = {}
         self.answers: Dict[str, Tuple[threading.Event, List[Any]]] = {}
         self.stopped_agents: set = set()
+        self.followups: List[List[Turn]] = []      # turns a later goal on the same session adds, one list per follow-up
+        self.end_reason = ""
+        self.outside_items: List[str] = []
         self.count = 0
         self.lock = threading.Lock()
 
@@ -213,6 +239,8 @@ class ScriptedStreamRunner:
         say(ProgressEvent(type="stream", data={"type": "system", "subtype": "init", "session_id": session}))
         spent = 0.0
         output = ""
+        if turn_index >= len(self.turns) and self.followups:
+            self.turns.extend(self.followups.pop(0))
         while turn_index < len(self.turns):
             current = self.turns[turn_index]
             if beat_index == 0:
@@ -230,6 +258,14 @@ class ScriptedStreamRunner:
                 beat = current.beats[beat_index]
                 if beat.kind == "report":
                     output = beat.text
+                elif beat.kind == "soft":
+                    say(ProgressEvent(type="status", text="The soft limit is reached.", data={"phase": "soft_limit"}))
+                elif beat.kind == "decide":
+                    say(ProgressEvent(type="status", text="The hub's code check found things; the session is resumed once more.", data={"phase": "hub_resume", "reason": beat.label}))
+                elif beat.kind == "refuse":
+                    self.end_reason = "resume_stopped:" + beat.label
+                elif beat.kind == "outside":
+                    self.outside_items = beat.text.split("\n")
                 elif not self.beat(beat, say, "", stopped):
                     self.places[session] = (turn_index, beat_index)
                     return DeepResult(met=False, cancelled=True, session_id=session, cost_usd=spent, error="The run was stopped on request.")
@@ -241,7 +277,13 @@ class ScriptedStreamRunner:
                                                    "usage": {"input_tokens": 400 * (turn_index + 1), "output_tokens": 120 * (turn_index + 1)}}))
             turn_index, beat_index = turn_index + 1, 0
         self.places[session] = (turn_index, 0)
-        return DeepResult(met=True, output=output, session_id=session, cost_usd=spent, tokens=520 * len(self.turns))
+        done = DeepResult(met=True, output=output, session_id=session, cost_usd=spent, tokens=520 * len(self.turns))
+        if self.end_reason:
+            done.end_reason = self.end_reason        # type: ignore[attr-defined]
+        if self.outside_items:
+            done.outside_folder = list(self.outside_items)    # type: ignore[attr-defined]
+        done.spend_usd, done.elapsed_seconds = spent, 1.0     # type: ignore[attr-defined]
+        return done
 
     def beat(self, beat: Beat, say: Callable[[Any], None], parent: str, stopped: Callable[[], bool]) -> bool:
         """Run one beat. False when the run was stopped while the beat waited."""
@@ -300,10 +342,13 @@ class ScriptedStreamRunner:
         return True
 
 
-def stream_kit(folder: str, turns: Sequence[Turn], pause: float = 0.0, frame: Optional[Dict[str, Any]] = None) -> Kit:
+def stream_kit(folder: str, turns: Sequence[Turn], pause: float = 0.0, frame: Optional[Dict[str, Any]] = None,
+               limits: Optional[Tuple[Optional[float], Optional[float]]] = None) -> Kit:
     trace = Trace()
     runner = ScriptedStreamRunner(folder, turns, trace, pause)
     harness: Any = StreamHarness(runner)
+    if limits:
+        harness = Limited(harness, ceiling_usd=limits[0], ceiling_seconds=limits[1])
     if frame:
         harness = Framed(harness, **frame)
     return Kit(harness, trace, folder, runner)
@@ -377,4 +422,5 @@ def demo_harness(kind: str, folder: str, pause: float = 0.6, keys: Any = None) -
     return KITS[kind](folder, turns, pause=pause, frame=frame).harness
 
 
-__all__ = ["Beat", "KITS", "Kit", "ScriptedStreamRunner", "Trace", "Turn", "check", "delegate", "demo_harness", "edit", "loop_kit", "read", "report", "run", "stream_kit", "turn", "use"]
+__all__ = ["Beat", "KITS", "Kit", "ScriptedStreamRunner", "Trace", "Turn", "check", "decide", "delegate", "demo_harness", "edit", "loop_kit", "outside", "read", "refuse_round", "report", "run",
+           "soft_limit", "stream_kit", "turn", "use"]

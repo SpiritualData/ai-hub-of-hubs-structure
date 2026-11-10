@@ -38,6 +38,16 @@ terminal (`H`), the consumer's own terminal (`T`), the consumer's chat of every 
 | X16 | see progress that is grounded: counts and targets from the work, not the model's narration | every step row comes from a structural fact (kind, target, state) |
 | X17 | see the solution frame and the metric before and after | a finished milestone run shows the metric before, after and the change |
 | X18 | read explanations only when asked | no explanatory text on the default screen; one action opens the detail |
+| X24 | see the structure of the work as a hierarchy, collapsed until asked: which solution the run and each helper works on | by default one compact line or none; one key shows the tree, the same key hides it, and a helper sits under the solution above it |
+| X25 | open one solution in the tree to read its fields and connections | the selected solution shows its purpose, approach, metric and latest value, selected implementation, next milestone, problems, ideals and delegates, and only that solution |
+| X26 | see spend and elapsed time against the ceilings, quietly | the header shows "spent of ceiling" and "elapsed of ceiling" when the run has ceilings, and no such segment when it has none |
+| X27 | be told once, in one line, that the run is wrapping up and why | the soft limit shows one line naming the ceiling and the share used, and the safe stopping point |
+| X28 | see the hub's own decision to go on or stop, with its reason, in one line | each decision is one line, "hub decision: go on" or "stop", with the reason in plain words, and the closing report says what is left |
+| X29 | type a follow-up after a run ends and have it continue the same session | the next run is a resume of the session just ended, and does the new work |
+| X30 | switch harness between runs and go on with the conversation | the next run is on the new harness, starts a new session with a recap of the earlier run, and an unknown name is refused |
+| X31 | start with no goal and be asked for one | one hint line and a prompt; a blank line runs nothing; the typed goal runs |
+| X32 | see who the AI acts for, and the authority in force when asked | a quiet header segment names the Representative; the opened view lists worker categories allowed, data scope, asking policy and stated stop limits; a command lists and switches Representatives between runs; with none named nothing extra shows |
+| X33 | end a run knowing what was done, what is left and the command that resumes it, plus anything done outside the folder | the closing report names the changed files, a "Left" line, the resume command and an outside-folder report |
 
 ### Manage risk
 
@@ -79,6 +89,16 @@ Read on 2026-11-10 from the code of each surface (the web surfaces read-only; a 
 | X21 | yes | yes: resume | part | part | Aider `/undo` reverts the last commit | resume or undo |
 | X22 | yes | no: an ask is answered after the turn | part | part | Claude Code passes background subagent prompts to the main session while it works | answer while the run goes on |
 | X23 | yes | ? | ? | ? | none measured | nothing restated |
+| X24 | yes: `Tab`, `/tree` | ? | ? | ? | Claude Code `/tasks` lists subagents; none shows the solution hierarchy | a hierarchy of solutions, collapsed |
+| X25 | yes: Right, `/open` | ? | ? | ? | none measured | the selected solution's fields |
+| X26 | yes | ? | ? | ? | Claude Code and Gemini CLI show spend without a ceiling | spend and time against the ceilings |
+| X27 | yes | ? | ? | ? | none measured | one line, with the reason |
+| X28 | yes | ? | ? | ? | none measured | one line, with the reason |
+| X29 | yes: a typed line after a run | part: `--continue` | ? | ? | `claude --continue`, Aider keeps one chat | the same session |
+| X30 | yes: `/harness` | ? | ? | ? | none switches agent harness mid-conversation | a new session with a recap |
+| X31 | yes: bare `ahohs` | ? | ? | ? | `claude`, `codex` and `aider` open a prompt | a prompt, no goal needed |
+| X32 | yes: `--as`, `/as`, `/who` | ? | ? | ? | none measured | who the AI acts for, and the authority |
+| X33 | yes | part | ? | ? | Claude Code prints the resume command at exit | done, left, resume command, outside-folder report |
 
 ## What the best open-source terminal agents do, worth adopting
 
@@ -143,14 +163,18 @@ seats at 15 groups and the area `terminal_agent_experience` is seated on Termina
 
 Events a harness emits: `RunStarted` (goal, harness, session, resumed, solution, milestone, frame, metric and its value before), `Step` (kind read, edit,
 run, check, tool, delegate, note or message-received; state running, done, failed or blocked), `AgentStarted` (with `parent_id` and solution),
-`AgentEnded` (met, unmet, stopped, failed), `Review`, `Waiting` (question, what will change, options), `Usage` (cost, tokens, calls) and `Finished` (outcome
-met, unmet, stopped or failed; report; files changed; session; what was blocked and why; the metric after; messages never taken up).
+`AgentEnded` (met, unmet, stopped, failed), `Review`, `Waiting` (question, what will change, options), `Usage` (cost, tokens, calls, and the ceilings `ceiling_usd` and `ceiling_seconds` when the run has them), `Notice` (a ceiling reached or a decision of the hub: `kind`
+`soft-limit`, `hard-limit`, `decision` with `decision` go on or stop and the `reason` code, or `outside-folder` with `items`) and `Finished` (outcome
+met, unmet, stopped or failed; report; files changed; session; what was blocked and why; the metric after; messages never taken up; `end_reason`, `outside`, spend and time).
 Controls a surface sends: `Stop`, `Resume`, `Steer`, `Approve`, `Refuse`, each able to name one agent. `Capabilities` says which a harness honours, and a
 surface shows the others as not available. `Harness` is two methods: `start(goal, sink, resume_session_id)` and `control(control)`.
 
 Adapters: `LoopLines` (the hub loop's progress strings), `loop_log_events` (helpers from `LoopResult.log`), `StreamJson` (Claude Code stream lines),
 `report_events` (a `SolutionReport` tree), `progress_events` (routes one `ProgressEvent`). Harness adapters: `LoopHarness`, `StreamHarness`, `ApprovalGate`
-(wraps tools so a risky call waits) and `Framed` (adds solution, milestone, frame and a metric before and after to any harness).
+(wraps tools so a risky call waits), `Framed` (adds solution, milestone, frame and a metric before and after to any harness), `Limited` (tells the surface the ceilings, and the spend estimated
+while the run works), `Tailed` (gives a runner that does not forward its stream lines the steps of its work, read from the session's own record) and `Briefed` (standing text after the goal that the
+screen does not show, such as the recap of an earlier run). `progress_events` also turns a runner's `tokens` tick into `Usage` with the ceilings, and its `status` ticks of phase `soft_limit`,
+`hub_resume` and `outside_folder` into `Notice`; a helper whose description starts with `[solution-id]` is placed under that solution.
 
 ## What the loop emits
 
@@ -223,15 +247,25 @@ many calls remain; and one read-only command per reply three times in a row earn
 
 ## Run it
 
-`python -m hubofhubs.the_consciousness.terminal.live --help`. `--demo loop` runs a scripted session on the hub's own loop, `--demo stream` on a fake
+`ahohs` (or `python -m hubofhubs.the_self.assembler.cli`) opens the interactive prompt; `ahohs work "<goal>"` runs a goal on a real harness. Both are described in
+[Talk to the hub in a terminal](../how-to/talk-to-the-hub-in-a-terminal.md). The scripted demo: `python -m hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live --help`. `--demo loop` runs a scripted session on the hub's own loop, `--demo stream` on a fake
 that keeps the stream runner's contract; neither calls a model. On a terminal, Escape or Ctrl-C stops and keeps the session, type `resume` to continue, type
 a line to steer, `y` or `n` answers the question, `@name text` steers one helper and `/stop name` stops one. Piped, it prints plain lines and approves
 by itself.
 
+### Found by real runs of `ahohs work`
+
+Real runs at the fast tier through a pseudo-terminal (a complete run, Escape then resume, a steer, the structure opened, a follow-up, a switch to another harness) found: the
+Claude CLI runners do not forward their stream lines, so a run showed no steps until `Tailed` read them from the session's record; the native runner keeps its sessions in a private
+folder, so `Tailed` finds no record for it and its run shows counts and the report but no steps; a helper's own steps and the files it wrote are in a record of their own, so the changed
+files list a helper's work only through the helper's row; the session can end `met` while a background helper still runs; with permission mode `acceptEdits` a refused command shows as a
+failed step without the reason; a steer is taken up only when the model next reads its input, which took about 15 seconds in a run of many short tool calls; and the first 3 to 4 seconds
+of a run show no step at all.
+
 ## The metric
 
 `metric-terminal-session` stays the solution's one authoritative metric. Its cases gain the kind `attend` (`evaluation/terminal_session/sessions.py`):
-23 scripted sessions, each on the hub loop (a scripted completion behind the loop runner) and on a fake of the stream runner, scoring named checks against
+23 scripted sessions (33 with the hub's own parts: structure, ceilings, decisions, follow-up, harness switch, prompt and Representative, in `evaluation/terminal_session/hub_scenarios.py`), each on the hub loop (a scripted completion behind the loop runner) and on a fake of the stream runner, scoring named checks against
 the ids above. The number is the share of all 37 cases right (14 line-session cases and 23 attended), balanced with time by the fixed weights; the per-id
 shares are reported.
 
@@ -240,6 +274,7 @@ shares are reported.
 | `line_repl` (baseline) | 24 of 37 | 0.6041 | the ids a plain printed line can show (it prints every event as a line and nothing else) |
 | `live_session`, before the loop reported the events itself | 34 of 37 | n/a | the three new cases (a helper announced live, a prompt stop, a solution tree) failed |
 | `live_session` | 37 of 37 | 0.9964 | X1 to X23 |
+| `live_session`, with the hub's own parts (structure, ceilings, decisions, follow-up, harness switch, prompt, Representative) | 49 of 49 | 0.9969 | X1 to X33 |
 
 `live_session` is selected from this result. What it cannot show: the cases are scripted by the author of the arm, so a ceiling proves the contract holds on
 two harnesses and not that a real model's run feels right; X18, X22 and X23 are checked only as the absence of explanations, of a blocked answer and of

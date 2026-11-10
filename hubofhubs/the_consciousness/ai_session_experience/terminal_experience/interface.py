@@ -24,3 +24,9 @@ class Conversing(typing.Protocol):
         it, a typed line steers and is shown as taken up, ``y`` or ``n`` answers a question. It returns a ``SessionReport`` (the last ``Finished``, every run,
         all events, the controls sent and whether each was taken, and the text written)."""
         ...
+
+    def work(self, build: Callable[[str], Harness], out: TextIO, goal: str = "", resume: str = "", lines: Optional[Iterable[str]] = None, **options: Any) -> Any:
+        """The interactive command (``ahohs work``): run ``goal``, or ask for one at a prompt, on the harness ``build(name)`` gives; each line typed after a run is a follow-up
+        that continues the same session, and ``/harness NAME`` switches harness between runs. ``options`` bind a consumer: ``records``, ``commands``, ``segments``, ``panels``,
+        ``front_door``, ``represent`` and ``people``. Returns the terminal, whose ``reports`` hold every run's ``SessionReport``."""
+        ...

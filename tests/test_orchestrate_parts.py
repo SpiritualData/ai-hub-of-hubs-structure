@@ -54,9 +54,9 @@ def delegate(pieces, **kwargs):
 def test_delegation_enforces_authority_budget_and_cancellation():
     pieces = [{"piece": "search", "tool": "web-search"}, {"piece": "edit", "tool": "file-editing"}, {"piece": "think", "tool": ""}]
     tools, results = delegate(pieces)                       # no declared authority: the read-only categories
-    assert [r.get("refused") for r in results] == [None, "authority", None] and results[0]["items"][0]["url"] == "https://e.org/x" and len(tools.calls) == 1
+    assert [r.get("refused") for r in results] == [None, "authority", None] and results[0]["items"][0]["url"] == "https://e.org/x" and len(tools.calls) == 2      # the piece with no worker and an empty view looks on the web (the second call)
     tools, results = delegate(pieces, authority={"allow": ["web-search", "file-editing"]}, budget={"pieces": 1})
-    assert [r.get("refused") for r in results] == [None, "budget", None]
+    assert [r.get("refused") for r in results] == [None, "budget", "budget"]
     stop = lambda: True
     tools, results = delegate(pieces, authority={"allow": ["web-search"]}, cancelled=stop)
     assert [r.get("refused") for r in results] == ["cancelled"] * 3 and tools.calls == []
@@ -70,14 +70,16 @@ def test_a_failing_worker_is_a_result_not_a_crash():
     class Broken(Tools):
         def use(self, category, request, cancel_check=None, authority=None):
             raise RuntimeError("down")
+    results = ToTools(Broken(), Science()).delegate([{"piece": "edit", "tool": "file-editing"}], authority={"allow": ["file-editing"]})
+    assert results[0]["error"] == "RuntimeError: down"                      # the answer depends on an edit, so its failure is an error
     results = ToTools(Broken(), Science()).delegate([{"piece": "search", "tool": "web-search"}])
-    assert results[0]["error"] == "RuntimeError: down"
+    assert "error" not in results[0] and results[0]["unavailable"] == "web search"      # a search only enriches: it is said, and never fails the answer
 
 
 def test_the_writer_cites_and_says_what_was_not_done():
     text = CitedResults().write([{"piece": "q", "text": "1.90.0", "items": [{"title": "Rust", "url": "https://blog.rust-lang.org/"}]},
                                  {"piece": "Delete the backups.", "refused": "authority"}, {"piece": "Edit notes.", "error": "down"}])
-    assert "1.90.0" in text and "https://blog.rust-lang.org/" in text and "Delete the backups. was not done" in text and "Edit notes. failed: down" in text
+    assert "1.90.0" in text and "https://blog.rust-lang.org/" in text and "Delete the backups. was not done" in text and "Edit notes. could not be done: down" in text
 
 
 def test_metric_translation_never_gives_a_child_more_budget_than_its_parent_has():

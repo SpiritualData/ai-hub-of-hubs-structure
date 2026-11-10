@@ -6,10 +6,11 @@ ROOT = Path(__file__).resolve().parent.parent
 PROJECT = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
 
 
-def test_the_default_install_brings_esoi_only():
-    """esoi is a sibling library that is on no package index: the one core dependency is its direct git URL, the same string every
-    consumer uses (tests/test_pins.py pins the exact string)."""
-    assert len(PROJECT["dependencies"]) == 1 and PROJECT["dependencies"][0].startswith("esoi @ git+https://")
+def test_the_default_install_brings_esoi_and_the_selected_arms_libraries():
+    """esoi is a sibling library that is on no package index: its direct git URL is the first dependency, the same string every consumer uses
+    (tests/test_pins.py pins the exact string). The rest are the libraries the selected arms import, derived by scripts/sync_dependencies.py
+    (hubofhubs/the_self/integrity/tests/test_base_dependencies.py)."""
+    assert PROJECT["dependencies"][0].startswith("esoi @ git+https://") and sum(d.startswith("esoi") for d in PROJECT["dependencies"]) == 1
 
 
 def test_distribution_import_name_and_esoi_package_agree():

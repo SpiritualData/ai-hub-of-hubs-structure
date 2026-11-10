@@ -52,5 +52,6 @@ def test_the_run_record_is_kept_in_the_run_store_and_recall_never_returns_it(tmp
 def test_a_request_with_nothing_known_says_so_and_is_not_met(tmp_path):
     empty = hubofhubs.assemble(environ={})
     result = empty["the-self"].respond("Explain how cats spend the day")
-    assert "nothing is known" in result.answer and result.note.startswith("stopped for budget")
+    assert "could not answer" in result.answer and "To enable it" in result.answer and result.stopped == "unavailable"      # nothing known, no search here: said plainly, not a budget stop
+    assert result.note == ""
     assert next(s for s in walk(result.steps) if s["solution"] == "context-retriever")["status"] == "skipped"

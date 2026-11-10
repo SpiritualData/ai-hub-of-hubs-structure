@@ -13,7 +13,7 @@ Part of [The parts working as one whole](../README.md)
 - Entry call: `hubofhubs.run("the-assembler", {})`
 - Selected implementation: One-call assembly of the whole hub (`zero_config`)
 - Metric: Whole assembly
-- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`conftest.py`](../../../conftest.py) and 350 more
+- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`conftest.py`](../../../conftest.py) and 371 more
 
 ## Implementations
 

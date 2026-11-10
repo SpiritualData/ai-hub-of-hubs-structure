@@ -39,8 +39,8 @@ def test_the_self_responds_through_every_container_and_reports_what_has_no_arm(t
 
 def test_without_a_key_a_question_that_needs_the_web_reports_the_failed_piece_and_makes_no_answer_up():
     result = hubofhubs.run("hub-of-hubs", "what is the latest Rust version?", environ={})
-    assert "failed" in result.answer and "no Gemini API key" in result.answer and "1.9" not in result.answer      # the writer says the step failed; nothing is invented
-    assert result.note == "stopped for budget: ask human"      # the failure is never "met": the replan loop spent its budget and Judgment Calls was asked
+    assert "could not answer" in result.answer and "To enable it" in result.answer and "1.9" not in result.answer      # said plainly with how to enable a search; nothing is invented
+    assert result.stopped == "unavailable" and "budget" not in result.answer + result.note      # the real reason, not a spent budget; no replan could have helped
 
 
 def test_the_run_is_recorded_in_the_run_store_and_never_in_the_cards(tmp_path):
@@ -162,7 +162,7 @@ def test_critical_thinking_resolves_the_profile_and_reports_goal_and_quality_ste
     arm = hubofhubs.resolve("critical-thinking", "composition")
     from hubofhubs.the_intelligence.critical_thinking.response_quality.evidence_check import EvidenceCheck
 
-    part = arm(Absent(), Absent(), Absent(), EvidenceCheck(), Absent())
+    part = arm(Absent(), Absent(), Absent(), EvidenceCheck(), Absent(), Absent())
     result = part.evaluate("q", "See https://other.example/x", {"done_standard": "cited"}, "x", priorities={"quality_weights": {"safety": 0.4}})
     assert result["profile"] == "default+prioritization"
     assert [(s["solution"], s["status"]) for s in result["steps"]] == [("goal-completion", "pending"), ("response-quality", "done")]      # a pending check is reported, never faked

@@ -4,7 +4,7 @@ carry the same shapes as JSON (``to_dict`` and ``from_dict``).
 
 Events (a harness emits, a surface draws): ``RunStarted``, ``Step`` (read, edit, run, check, tool, delegate, note, or ``message-received`` when
 the harness took up a message the person sent), ``AgentStarted`` and ``AgentEnded`` (a helper, with its parent), ``Review``, ``Waiting`` (the run
-cannot go on without the person), ``Usage`` (cost, tokens and calls so far) and ``Finished`` (how it ended, what changed, the session to resume).
+cannot go on without the person), ``Usage`` (cost, tokens and calls so far, and the ceilings), ``Notice`` (a ceiling reached or a decision the hub made) and ``Finished`` (how it ended, what changed, the session to resume).
 
 Controls (a surface sends, a harness takes): ``Stop``, ``Resume``, ``Steer``, ``Approve`` and ``Refuse``, each able to name one agent. A harness
 declares in ``Capabilities`` which controls it can honour, and a surface shows the others as not available instead of pretending.
@@ -105,6 +105,23 @@ class Usage(SessionEvent):
     calls: Optional[int] = None
     cache_read_tokens: Optional[int] = None       # tokens read from and written to the provider's cache so far, apart from ``tokens`` (plain input plus output)
     cache_write_tokens: Optional[int] = None
+    ceiling_usd: Optional[float] = None           # the most the run may spend and the longest it may take, when it has a ceiling (None: none, or not said)
+    ceiling_seconds: Optional[float] = None
+
+
+NOTICE_KINDS = ("soft-limit", "hard-limit", "decision", "outside-folder")
+
+
+@dataclass(frozen=True)
+class Notice(SessionEvent):
+    """Something the hub did or decided that a person reads on one line: ``soft-limit`` (the run is wrapping up), ``hard-limit`` (it was stopped at its ceiling),
+    ``decision`` (the hub's own stop or continue, with ``decision`` ``continue`` or ``stop`` and the ``reason`` code) and ``outside-folder`` (``items`` the run wrote or ran outside its folder)."""
+    type: str = "notice"
+    kind: str = "decision"
+    text: str = ""
+    decision: str = ""
+    reason: str = ""
+    items: Tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -120,10 +137,14 @@ class Finished(SessionEvent):
     unseen: Tuple[str, ...] = ()
     metric_after: Optional[float] = None
     blocked: Tuple[str, ...] = ()     # what was refused or blocked, each with its reason
+    end_reason: str = ""              # which ceiling or decision shaped the end, as the runner names it (``stopped_at_hard_limit:spend``, ``resume_stopped:resume_limit``)
+    outside: Tuple[str, ...] = ()     # what the run wrote or ran outside its folder, each one short line
+    spend_usd: Optional[float] = None
+    elapsed_seconds: Optional[float] = None
 
 
 EVENTS: Dict[str, type] = {cls.__dataclass_fields__["type"].default: cls
-                           for cls in (RunStarted, Step, AgentStarted, AgentEnded, Review, Waiting, Usage, Finished)}
+                           for cls in (RunStarted, Step, AgentStarted, AgentEnded, Review, Waiting, Usage, Notice, Finished)}
 
 
 def event_from_dict(data: Mapping[str, Any]) -> SessionEvent:
@@ -226,6 +247,6 @@ def short(text: Any, chars: int = 100) -> str:
     return one if len(one) <= chars else one[:max(chars - 3, 0)] + "..."
 
 
-__all__ = ["AGENT_STATES", "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "MAIN", "OUTCOMES", "Refuse",
+__all__ = ["AGENT_STATES", "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "MAIN", "NOTICE_KINDS", "Notice", "OUTCOMES", "Refuse",
            "Resume", "Review", "RunStarted", "STEP_KINDS", "STEP_STATES", "SessionEvent", "Step", "Steer", "Stop", "Usage", "Waiting",
            "control_from_dict", "event_from_dict", "short"]

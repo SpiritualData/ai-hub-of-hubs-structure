@@ -50,4 +50,7 @@ def assemble(config=None, provided=None, *, arms=None, options=None, environ=Non
         if arms or options or environ or lock:
             raise TypeError("pass either an AssemblyConfig or arms/options/environ/lock, not both")
         return HUB.assemble(config, provided)
-    return HUB.assemble_defaults(AssemblyConfig(selections=dict(arms or {}), options=dict(options or {}), consumer_environ=dict(process_environment() if environ is None else environ), lock=lock), provided)
+    env = dict(process_environment() if environ is None else environ)
+    from hubofhubs.the_self.assembler.availability import stand_ins     # late: it reads the arms, which import this module
+    chosen, _standing = stand_ins(HUB, env, arms, options, lock)
+    return HUB.assemble_defaults(AssemblyConfig(selections=chosen, options=dict(options or {}), consumer_environ=env, lock=lock), provided)

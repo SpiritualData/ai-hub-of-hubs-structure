@@ -11,7 +11,7 @@ from hubofhubs.the_intelligence.proactivity.interface import Proactive
 from hubofhubs.the_intelligence.proactivity.triggers import attach_events, candidate_of, in_priority_order
 from hubofhubs.the_intelligence.mind.interface import Reasoning
 from hubofhubs.the_intelligence.subconscious.interface import Remembering
-from hubofhubs.the_self.steps import Step, listing, skipped, take
+from hubofhubs.the_self.steps import Step, listing, skipped, support, take
 from hubofhubs.the_self.steps import done
 from hubofhubs.the_intelligence.mind.flow import failed_pieces, outside_of
 
@@ -53,18 +53,18 @@ class IntelligenceComposition:
                 objectives: Sequence[Mapping[str, Any]] = (), stated: Optional[Mapping[str, Any]] = None, now: str = "",
                 records: Any = None, own_passes: Optional[Mapping[str, Callable[..., Mapping[str, Any]]]] = None, knowledge: str = "retrieved",
                 ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]:
-        view = take(self.higher, "higher-mind", request=request, person=person, objectives=objectives, stated=stated, now=now)
+        view = support(self.higher, "higher-mind", request=request, person=person, objectives=objectives, stated=stated, now=now)
         long_view = done(view) or {}
-        prepared = take(self.subconscious, "the-subconscious", method="prepare", request=request,
+        prepared = support(self.subconscious, "the-subconscious", method="prepare", request=request,
                         **({"records": records, "knowledge": knowledge} if records is not None else {}))
         briefs = (done(prepared) or {}).get("solutions") or {}
-        considered_step = (take(self.critical, "critical-thinking", method="consider", request=request, briefs=briefs, own_passes=own_passes, ask=ask)
+        considered_step = (support(self.critical, "critical-thinking", method="consider", request=request, briefs=briefs, own_passes=own_passes, ask=ask)
                            if briefs.get("solutions") else skipped("critical-thinking", "the request concerns no solution of the consumer's records"
                                                                    if records is not None else "no ESOI records were given"))
         considered = {**dict(done(considered_step) or {}), "prompts": {b["solution_id"]: b.get("prompt", "") for b in briefs.get("solutions") or []}}
         own_targets = [{**dict(f.get("target") or {}), "solution_id": f["solution_id"], "name": f.get("name", "")}
                        for f in considered.get("findings") or [] if f.get("applies") is not False]
-        translated = take(self.critical, "critical-thinking", method="translate", request=request, parent=most_important(long_view),
+        translated = support(self.critical, "critical-thinking", method="translate", request=request, parent=most_important(long_view),
                           **({"solutions": own_targets} if own_targets else {}))
         target = (done(translated) or {}).get("target")
         profile_inputs = {"representative": representative, "guidance": long_view.get("guidance"), "priorities": priorities}
@@ -84,14 +84,14 @@ class IntelligenceComposition:
             thinking = done(thought) or {}
             text, results = thinking.get("text", ""), thinking.get("results", [])
             evidence = " ".join(str(i.get("url", "")) + " " + str(i.get("snippet", "")) for r in results for i in r.get("items") or ())
-            checked = take(self.critical, "critical-thinking", method="evaluate", request=request, response=text, target=target, evidence=evidence,
+            checked = support(self.critical, "critical-thinking", method="evaluate", request=request, response=text, target=target, evidence=evidence,
                            outcome={"text": text, "refused": next((r["refused"] for r in results if r.get("refused")), ""),
                                     "error": next((r["error"] for r in results if r.get("error")), "")}, **profile_inputs)
             log += [thought, checked]
             goal = (done(checked) or {}).get("goal")
             short: List[Mapping[str, Any]] = []
             if with_solutions:      # each piece against its own solution's target: a piece short of it returns to the Planner like an unmet goal
-                pieces_checked = take(self.critical, "critical-thinking", method="check_pieces", results=results, considered=considered)
+                pieces_checked = support(self.critical, "critical-thinking", method="check_pieces", results=results, considered=considered)
                 log.append(pieces_checked)
                 verdict = done(pieces_checked) or {}
                 short = [p for p in verdict.get("pieces") or [] if p.get("met") is False]
@@ -100,9 +100,15 @@ class IntelligenceComposition:
                                                               + list((verdict.get("combined") or {}).get("reasons") or []))}
             if goal is None or goal.get("met"):      # met, or no check to replan on
                 break
-            if any(r.get("refused") in ("authority", "cancelled") for r in results):
-                stopped = next(r["refused"] for r in results if r.get("refused") in ("authority", "cancelled"))
+            if any(r.get("final") for r in results):
+                stopped = "final"      # a worker's own plain message is the answer and a second attempt would meet the same fact
                 break
+            if any(r.get("unavailable") for r in results):
+                stopped = "unavailable"      # a worker that only enriches could not run: another attempt would meet the same wall, so the answer is what there is
+                break
+            if any(r.get("refused") in ("authority", "cancelled", "asked") for r in results):
+                stopped = next(r["refused"] for r in results if r.get("refused") in ("authority", "cancelled", "asked"))
+                break      # a person's decision, a missing authority or a cancel: another attempt would be refused the same way
             if attempt >= attempts:
                 stopped = "budget"
                 break
@@ -110,11 +116,19 @@ class IntelligenceComposition:
                      "reason": goal.get("reason", "")}
             outside = outside_of(results)
         if with_solutions:      # what the passes and the last checks taught, written back for the next request's prompts
-            log.append(take(self.critical, "critical-thinking", method="write_back", considered=considered, checked=done(pieces_checked) or {}, today=now[:10]))
-        if stopped and stopped != "cancelled":
-            asked = take(self.judgment, "judgment-calls", signal={"severity": "none", "reason": (done(checked) or {}).get("goal", {}).get("reason", "")},
+            log.append(support(self.critical, "critical-thinking", method="write_back", considered=considered, checked=done(pieces_checked) or {}, today=now[:10]))
+        if stopped and stopped not in ("cancelled", "unavailable", "asked", "final"):      # for these the answer already says what to do
+            asked = support(self.judgment, "judgment-calls", signal={"severity": "none", "reason": (done(checked) or {}).get("goal", {}).get("reason", "")},
                          person=str((representative or {}).get("person", "")), context={"stopped": stopped})
             log.append(asked)
             escalation = done(asked)
+        reason = str(((done(checked) or {}).get("goal") or {}).get("reason") or "")
+        missing = [r for r in results if r.get("unavailable")]
+        if missing and not text.strip():      # nothing else answered: the answer is the plain fact and how to enable it
+            text = " ".join(f"I could not answer this because {r['unavailable']} could not run here. To enable it, {r.get('how', 'see `ahohs --help`')}." for r in missing[:1])
+            notes = []
+        else:      # an answer exists but part of it could not be looked up: one line, with how to enable it
+            notes = [f"{r['unavailable']} could not run here, so this answer is weaker. To enable it, {r.get('how', 'see `ahohs --help`')}." for r in missing]
         return {"answer": text, "results": results, "attempts": attempt, "stopped": stopped, "escalation": escalation, "steps": listing(log),
+                "reason": reason, "notes": list(dict.fromkeys(notes)),
                 **({"considered": considered} if with_solutions else {})}

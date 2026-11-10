@@ -31,6 +31,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Glossary](explanation/glossary.md)
 - [The mind map](explanation/the-mind-map.md)
 - [Resolution design](explanation/resolution-design.md)
+- [The front door on a plain install](explanation/the-front-door-on-a-plain-install.md)
 - [Scholarly search](explanation/science-search.md)
 - [Choosing the model for each tier](explanation/tier-selection.md)
 - [Public evidence](explanation/public-evidence.md)

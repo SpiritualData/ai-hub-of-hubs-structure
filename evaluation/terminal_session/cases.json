@@ -844,5 +844,161 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "attend-structure_toggle-stream",
+  "kind": "attend",
+  "origin": "rule: structure toggle on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "structure_toggle",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X24",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-structure_expand-stream",
+  "kind": "attend",
+  "origin": "rule: structure expand on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "structure_expand",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X25",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-ceiling_status-stream",
+  "kind": "attend",
+  "origin": "rule: ceiling status on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "ceiling_status",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X26",
+   "X3"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-soft_limit_line-stream",
+  "kind": "attend",
+  "origin": "rule: soft limit line on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "soft_limit_line",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X27"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-stop_decision_line-stream",
+  "kind": "attend",
+  "origin": "rule: stop decision line on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "stop_decision_line",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X28"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-end_of_run-stream",
+  "kind": "attend",
+  "origin": "rule: end of run on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "end_of_run",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X21",
+   "X33"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-follow_up_continues-stream",
+  "kind": "attend",
+  "origin": "rule: follow up continues on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "follow_up_continues",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X29",
+   "X5"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-harness_switch-both",
+  "kind": "attend",
+  "origin": "rule: harness switch on the both harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "harness_switch",
+   "kit": "both"
+  },
+  "requirements": [
+   "X30",
+   "X11"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-no_goal_prompt-stream",
+  "kind": "attend",
+  "origin": "rule: no goal prompt on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "no_goal_prompt",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X31"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-representative-stream",
+  "kind": "attend",
+  "origin": "rule: representative on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "representative",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X32"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

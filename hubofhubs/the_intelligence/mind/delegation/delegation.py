@@ -13,9 +13,18 @@ from esoi import Lazy
 
 from hubofhubs.the_world.tools.interface import Tooling
 from hubofhubs.the_world.science.interface import WorldKnowing
+from hubofhubs.the_self.role_understanding.interface import RoleUnderstanding
+from hubofhubs.the_self.role_understanding.hub_description import describe_hub
 
-READ_ONLY = ("web-search", "the-science")      # what a representative with no declared authority may use
+ROLE = "role-understanding"                   # the hub's own description of itself: a question about the hub is answered from its records, never searched
+READ_ONLY = ("web-search", "the-science", "read-files", ROLE)      # what a representative with no declared authority may use
 SCIENCE = "the-science"
+SEARCH = "web-search"
+QUERY_LIMIT = 1500      # characters of a request handed to a search: a very long input is cut at a word, the search needs its gist
+# What only enriches an answer. A worker of one of these that cannot run is a result that says so (``unavailable``, with how to enable it), never an error
+# that fails the answer: the hub answers with what it has. Every other category is something the answer depends on, so its failure is an error.
+SUPPORTING = {"web-search": ("web search", "log in to the Claude CLI (run claude once), or set a search key such as SERPER_API_KEY or BRAVE_SEARCH_API_KEY"),
+              "the-science": ("the scholarly search", "check the network connection and try again")}
 
 
 def allowed(category: str, authority: Mapping[str, Any]) -> bool:
@@ -36,11 +45,22 @@ def worker_request(category: str, piece: Mapping[str, Any]) -> Any:
     if piece.get("request") is not None:
         return piece["request"]
     text = str(piece.get("piece", ""))
+    if category == SEARCH and len(text) > QUERY_LIMIT:
+        text = text[:QUERY_LIMIT].rsplit(" ", 1)[0]
     return {"goal": text, "brief": text} if category in ("file-editing", "connected-system-operations", "delegated-agent-sessions") else text
+
+
+def files_text(got: Mapping[str, str], limit: int = 6000) -> str:
+    """What a file read returned, one block per file, each capped so one file cannot flood the answer."""
+    return "\n\n".join(f"{path}:\n{body[:limit]}" + ("\n(shortened)" if len(body) > limit else "") for path, body in got.items())
 
 
 def outcome(category: str, got: Any) -> Dict[str, Any]:
     """A worker's return value as the fields every result carries: ``text``, ``items`` and ``met`` (None when the worker does not say)."""
+    if category == "read-files" and isinstance(got, Mapping):      # path to text
+        return ({"text": files_text(got), "items": [], "met": True} if got else
+                {"text": "I could not find that file in this folder; check the name and run it again from the folder that holds it.", "items": [], "met": False,
+                 "final": True})      # final: the message is the answer, and trying again would find the same
     if hasattr(got, "hits"):      # a search response
         items = [{"title": h.title, "url": h.url, "snippet": h.snippet} for h in got.hits]
         text = got.answer or "\n".join(f"{i['title']}: {i['snippet']}" for i in items)
@@ -55,8 +75,8 @@ class ToTools:
     """Routes a piece to Tools (web search, file editing, connected systems, agent sessions) or to Science for a literature lookup."""
     REQUIRES = ()     # the seats it is handed
 
-    def __init__(self, tools: Lazy[Tooling], science: Lazy[WorldKnowing]):
-        self.tools, self.science = tools, science
+    def __init__(self, tools: Lazy[Tooling], science: Lazy[WorldKnowing], roles: Lazy[RoleUnderstanding] = None):
+        self.tools, self.science, self.roles = tools, science, roles
 
     def delegate(self, pieces: Sequence[Mapping[str, Any]], authority: Optional[Mapping[str, Any]] = None,
                  budget: Optional[Mapping[str, Any]] = None, cancelled: Optional[Callable[[], bool]] = None,
@@ -73,8 +93,11 @@ class ToTools:
                 results.append({**base, "refused": "cancelled"})
                 continue
             if not category:       # no worker is needed: the piece is answered from the view Context Intake built
-                results.append({**base, **from_view(context)})
-                continue
+                found = from_view(context)
+                if found.get("met") is not False or not allowed(SEARCH, authority):
+                    results.append({**base, **found})
+                    continue
+                category = SEARCH      # the view holds nothing to answer from: the web is the one place left to look
             if not allowed(category, authority):
                 results.append({**base, "refused": "authority"})
                 continue
@@ -83,6 +106,9 @@ class ToTools:
                 results.append({**base, "refused": "budget"})
                 continue
             try:
+                if category == ROLE and self.roles is not None:
+                    results.append({**base, "text": describe_hub(self.roles), "met": True})
+                    continue
                 if category == SCIENCE:
                     got = self.science.search(base["piece"])
                     results.append({**base, "text": str(getattr(got, "text", "")), "met": getattr(got, "kind", "") != "error"})
@@ -91,5 +117,9 @@ class ToTools:
                 spent += float(getattr(got, "cost_usd", 0.0) or 0.0)
                 results.append({**base, **outcome(category, got)})
             except Exception as error:      # noqa: BLE001  a failing worker is a result, not a crash of the flow
-                results.append({**base, "error": f"{type(error).__name__}: {error}"})
+                if category in SUPPORTING:      # it only enriches: the answer goes on without it, and says how to enable it
+                    what, how = SUPPORTING[category]
+                    results.append({**base, "unavailable": what, "how": how, "detail": f"{type(error).__name__}: {error}"})
+                else:
+                    results.append({**base, "error": f"{type(error).__name__}: {error}"})
         return results

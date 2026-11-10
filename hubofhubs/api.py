@@ -231,13 +231,13 @@ NAMES = {
     ),
     "hubofhubs.the_consciousness.ai_session_experience.session_events": (
         "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "Refuse", "Resume", "Review", "RunStarted", "SessionEvent",
-        "Step", "Steer", "Stop", "Usage", "Waiting", "control_from_dict", "event_from_dict",
+        "Notice", "Step", "Steer", "Stop", "Usage", "Waiting", "control_from_dict", "event_from_dict",
     ),
     "hubofhubs.the_consciousness.ai_session_experience.session_adapters": (
         "LoopLines", "StreamJson", "loop_log_events", "progress_events", "report_events",
     ),
     "hubofhubs.the_consciousness.ai_session_experience.session_harnesses": (
-        "ApprovalGate", "Framed", "LoopHarness", "StreamHarness",
+        "ApprovalGate", "Briefed", "Framed", "Limited", "LoopHarness", "StreamHarness", "Tailed",
     ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view": (
         "SessionReport", "SessionView", "replay",
@@ -247,6 +247,9 @@ NAMES = {
     ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live": (
         "LiveSession",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.work": (
+        "WorkTerminal", "default_harness", "harness_builder",
     ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace": (
         "WorkTrace", "domain_of", "project", "validate",

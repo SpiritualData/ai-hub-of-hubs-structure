@@ -247,7 +247,7 @@ class LimitWatch:
         reason = self.end_reason()
         if reason and not getattr(result, "end_reason", None):
             result.end_reason = reason
-        if self.hard and getattr(result, "cancelled", False) and not getattr(result, "error", None):
+        if self.hard and getattr(result, "cancelled", False) and not getattr(result, "paused", False):   # the hard limit names itself, not the runner's generic "stopped on request"
             result.error = (f"The run was stopped at its hard limit ({self.hard}). Work already finished is kept; resume session "
                             f"{getattr(result, 'session_id', None)} to continue.")
 
@@ -276,16 +276,20 @@ def current_session_file(root: str, since: float, config_dir: Optional[str] = No
     return best[1]
 
 
+CACHE_WRITE_ONE_HOUR, CACHE_WRITE_FIVE_MINUTES, CACHE_READ = 2.0, 1.25, 0.1   # the provider's multiples of the plain input price for a cached prefix
+
+
 def estimate_spend(path: Optional[str]) -> float:
-    """List-price dollars of the tokens a session's record holds (input, cache writes and output; cache reads are cheap and left out), from the hub's
-    price table; 0.0 for a record that cannot be read or a model the table does not price. An estimate that lets a ceiling act before the CLI reports cost."""
+    """List-price dollars of the tokens a session's record holds, from the hub's price table: plain input, cache writes (by their lifetime) and cache reads at their
+    multiples of the input price, and output. Each model message counts once, however many content blocks the record splits it into. 0.0 for a record that cannot be
+    read or a model the table does not price. An estimate that lets a ceiling act before the CLI reports cost; measured against the CLI's own figure it is within 1 percent."""
     if not path:
         return 0.0
     try:
         from hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner import list_price
-        totals: Dict[str, List[int]] = {}
+        last: Dict[str, Tuple[str, Dict[str, Any]]] = {}
         with open(path, encoding="utf-8", errors="replace") as handle:
-            for line in handle:
+            for number, line in enumerate(handle):
                 try:
                     event = json.loads(line)
                 except ValueError:
@@ -293,9 +297,17 @@ def estimate_spend(path: Optional[str]) -> float:
                 message = event.get("message") if event.get("type") == "assistant" else None
                 usage = (message or {}).get("usage") or {}
                 if usage:
-                    got = totals.setdefault(str(message.get("model") or ""), [0, 0])
-                    got[0] += int(usage.get("input_tokens") or 0) + int(usage.get("cache_creation_input_tokens") or 0)
-                    got[1] += int(usage.get("output_tokens") or 0)
-        return sum(list_price("anthropic", model, tin, tout) for model, (tin, tout) in totals.items() if model)
+                    last[str(message.get("id") or f"line-{number}")] = (str(message.get("model") or ""), usage)     # the last block of a message holds its final counts
+        totals: Dict[str, List[float]] = {}
+        for model, usage in last.values():
+            written = usage.get("cache_creation") or {}
+            hour, five = int(written.get("ephemeral_1h_input_tokens") or 0), int(written.get("ephemeral_5m_input_tokens") or 0)
+            if not written:
+                five = int(usage.get("cache_creation_input_tokens") or 0)
+            got = totals.setdefault(model, [0.0, 0.0])
+            got[0] += (int(usage.get("input_tokens") or 0) + CACHE_WRITE_ONE_HOUR * hour + CACHE_WRITE_FIVE_MINUTES * five
+                       + CACHE_READ * int(usage.get("cache_read_input_tokens") or 0))
+            got[1] += int(usage.get("output_tokens") or 0)
+        return sum(list_price("anthropic", model, int(tin), int(tout)) for model, (tin, tout) in totals.items() if model)
     except Exception:  # noqa: BLE001 -- an estimate that fails is no estimate
         return 0.0

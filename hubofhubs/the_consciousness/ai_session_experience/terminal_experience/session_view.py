@@ -8,16 +8,24 @@ gets the glyphs and colour. Standard library only.
 """
 from __future__ import annotations
 
+import textwrap
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
-    MAIN, AgentEnded, AgentStarted, Finished, Review, RunStarted, SessionEvent, Step, Usage, Waiting, short)
+    MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Usage, Waiting, short)
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines
 
 ASCII_MARK = {"running": "..", "done": "ok", "failed": "!!", "blocked": "xx"}
 GLYPH_MARK = {"running": "●", "done": "✓", "failed": "✗"}
 COLOR = {"running": "33", "done": "32", "failed": "31", "blocked": "31", "dim": "2", "bold": "1", "ask": "35"}
 KIND_WIDTH = 9
+HELP_ROWS = ("Esc or Ctrl-C  stop the run and keep the session (type resume to continue)",
+             "type + Enter    steer the run; @name text steers one helper, /stop name stops one",
+             "Tab             show or hide the structure tree (which solution each helper works on)",
+             "Up, Down, Right the tree: move, open the solution's fields and connections; Left closes",
+             "y or n          answer a question the run asks",
+             "?               show or hide this list (on an empty line)")
 
 
 @dataclass
@@ -62,6 +70,23 @@ class SessionView:
     ended: Optional[float] = None
     typing: str = ""
     final: Optional[Finished] = None
+    ceiling_usd: Optional[float] = None       # the ceilings the run was given, when it says
+    ceiling_seconds: Optional[float] = None
+    soft_limit: bool = False                  # the run was asked to wrap up at its soft limit
+    hard_limit: str = ""                      # which ceiling stopped it ("spend" or "time")
+    decisions: List[str] = field(default_factory=list)      # the hub's own stop or continue, one line each
+    outside: List[str] = field(default_factory=list)
+    command: str = "ahohs work"               # how this surface is started, for the resume command
+    show_structure: bool = False              # the structure tree is open (collapsed by default)
+    selected: int = 0                         # the row of the tree the arrow keys are on
+    opened: List[str] = field(default_factory=list)         # the solutions whose fields are shown
+    structure_compact: str = ""               # the one-line structure summary, kept by the surface from the events
+    structure_panel: List[str] = field(default_factory=list)
+    show_help: bool = False
+    acting_for: str = ""                      # who the AI acts for (a Representative), shown as a quiet header segment; empty shows nothing
+    authority: List[str] = field(default_factory=list)      # the authority in force, opened with the structure panel or /who
+    segments: List[str] = field(default_factory=list)       # extra status segments a consumer supplies, appended to the header
+    panels: List[str] = field(default_factory=list)         # extra panel lines a consumer supplies, drawn under the steps
 
     def apply(self, event: SessionEvent) -> None:
         if isinstance(event, RunStarted):
@@ -70,6 +95,7 @@ class SessionView:
             self.solution, self.milestone, self.frame = event.solution or self.solution, event.milestone or self.milestone, event.frame or self.frame
             self.metric, self.metric_before = event.metric or self.metric, event.metric_before if event.metric_before is not None else self.metric_before
             self.status, self.final, self.ended = "running", None, None
+            self.soft_limit, self.hard_limit = False, ""
         elif isinstance(event, Step):
             if event.kind == "message-received":
                 for message in self.messages:
@@ -95,6 +121,17 @@ class SessionView:
             self.cost_usd = event.cost_usd if event.cost_usd is not None else self.cost_usd
             self.tokens = event.tokens if event.tokens is not None else self.tokens
             self.calls = event.calls if event.calls is not None else self.calls
+            self.ceiling_usd = event.ceiling_usd if event.ceiling_usd is not None else self.ceiling_usd
+            self.ceiling_seconds = event.ceiling_seconds if event.ceiling_seconds is not None else self.ceiling_seconds
+        elif isinstance(event, Notice):
+            if event.kind == "soft-limit":
+                self.soft_limit = True
+            elif event.kind == "hard-limit":
+                self.hard_limit = event.reason or "ceiling"
+            elif event.kind == "decision":
+                self.decisions.append(hub_lines.decision_line(event.decision, event.reason))
+            elif event.kind == "outside-folder":
+                self.outside = [item for item in event.items if item not in self.outside] + self.outside
         elif isinstance(event, Review):
             self.notices.append("review: " + (event.text or "done"))
         elif isinstance(event, Finished):
@@ -103,6 +140,7 @@ class SessionView:
             self.session_id = event.session_id or self.session_id
             self.cost_usd = event.cost_usd if event.cost_usd is not None else self.cost_usd
             self.tokens = event.tokens if event.tokens is not None else self.tokens
+            self.outside = list(event.outside) + [item for item in self.outside if item not in event.outside]
             self.ended = self.now
 
     def sent(self, message_id: str, text: str, agent_id: str = "") -> None:
@@ -173,13 +211,12 @@ def replay(events: Sequence[SessionEvent]) -> "SessionView":
 
 
 def clock(seconds: float) -> str:
-    seconds = int(seconds)
-    return f"{seconds // 60}:{seconds % 60:02d}"
+    return hub_lines.clock(seconds)
 
 
 def money(view: SessionView) -> str:
-    parts = [clock(view.elapsed())]
-    parts.append(f"${view.cost_usd:.4f}" if view.cost_usd is not None else "cost unknown")
+    when, spent = hub_lines.status_segment(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
+    parts = [when, spent]
     if view.calls:
         parts.append(f"{view.calls} calls")
     if view.tokens:
@@ -229,8 +266,18 @@ def event_line(event: SessionEvent, view: SessionView) -> str:
     if isinstance(event, Usage):
         bits = [f"{event.calls} call{'' if event.calls == 1 else 's'}"] if event.calls else []
         if event.cost_usd is not None:
-            bits.append(f"${event.cost_usd:.4f}")
+            ceiling = event.ceiling_usd or view.ceiling_usd
+            bits.append(hub_lines.status_segment(0, event.cost_usd, ceiling, None)[1])
         return f"{stamp}so far: {', '.join(bits)}" if bits else ""
+    if isinstance(event, Notice):
+        if event.kind == "soft-limit":
+            return stamp + hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
+        if event.kind == "hard-limit":
+            return stamp + hub_lines.hard_limit_line(event.reason)
+        if event.kind == "decision":
+            return stamp + hub_lines.decision_line(event.decision, event.reason)
+        if event.kind == "outside-folder":
+            return stamp + "outside the folder: " + "; ".join(short(item, 80) for item in event.items)
     if isinstance(event, Waiting):
         return f"{stamp}WAITING FOR YOU: {event.question}" + (f" It will change: {short(event.preview, 80).rstrip(".")}." if event.preview else "") + " (y to approve, n to refuse)"
     return ""
@@ -240,11 +287,17 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
     """The live screen as lines (no trailing newline). The caller redraws it in place."""
     glyphs = color
     head = f"ahohs  {view.harness or 'run'}  [{view.status}]  {money(view)}"
+    head = " | ".join([head] + ([f"for {view.acting_for}"] if view.acting_for else []) + [segment for segment in view.segments if segment])
     out = [paint(head, "bold", color), paint(f"goal: {short(view.goal, max(width - 8, 20))}", "dim", color)]
     if view.solution or view.milestone:
         out.append(paint(f"serves: {view.solution} | milestone: {short(view.milestone, 50)}", "dim", color))
+    if view.show_structure and view.structure_panel:
+        out.extend(view.structure_panel)
+    elif view.structure_compact:
+        out.append(paint(view.structure_compact, "dim", color))
     shown = list(view.steps.values())[-rows:]
     out.extend(step_row(s, color) for s in shown)
+    out.extend(view.panels)
     if view.agents:
         out.append(paint("agents", "dim", color))
         out.extend("  " + line for line in view.tree_lines(glyphs))
@@ -252,18 +305,24 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'sent, not taken up yet'})")
     for note in view.notices[-2:]:
         out.append(paint(note, "dim", color))
+    if view.soft_limit and view.status in ("running", "waiting", "stopping"):
+        out.append(paint(hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds), "running", color))
+    for line in view.decisions[-1:]:
+        out.append(paint(line, "dim", color))
+    if view.show_help:
+        out.extend(paint(row, "dim", color) for row in HELP_ROWS)
     if view.asking is not None:
         out.append(paint(f"? {view.asking.question}  [y] approve  [n] refuse", "ask", color))
         if view.asking.preview:
             out.append(paint(f"  will change: {short(view.asking.preview, max(width - 20, 20))}", "ask", color))
     keys = {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave"}.get(
-        view.status, "Esc stop | type + Enter to steer | @name text steers one agent | /stop name stops one")
+        view.status, "Esc stop | type + Enter to steer | Tab structure | ? keys")
     out.append(paint(keys, "dim", color))
     out.append(f"> {view.typing}")
     return [line[:max(width - 1, 20)] if "\x1b" not in line else line for line in out]
 
 
-def report(view: SessionView, color: bool = False) -> List[str]:
+def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:
     """The closing account of the run."""
     done = view.final
     outcome = done.outcome if done else view.status
@@ -272,8 +331,8 @@ def report(view: SessionView, color: bool = False) -> List[str]:
              "failed": "Failed"}.get(outcome, outcome)
     out = [paint(title, "bold", color)]
     if done and done.report:
-        out.extend(["", done.report.strip()])
-    if done and done.error and outcome != "met":
+        out.extend(["", *done.report.strip().splitlines()])
+    if done and done.error and outcome not in ("met", "stopped"):
         out.append(f"reason: {short(done.error, 120)}")
     files = view.changed()
     if view.solution or view.milestone:
@@ -285,6 +344,9 @@ def report(view: SessionView, color: bool = False) -> List[str]:
         out.append(line)
     out.append("")
     out.append(f"Changed ({len(files)}): " + (", ".join(files) if files else "nothing"))
+    if view.outside:
+        out.append("Outside the folder (report only, not undone):")
+        out.extend("  " + short(row, 140) for row in view.outside)
     blocked = view.blocked()
     if blocked:
         out.append("Blocked or refused:")
@@ -296,8 +358,19 @@ def report(view: SessionView, color: bool = False) -> List[str]:
     if done and done.unseen:
         out.append("Not yet taken up (sent again on resume): " + "; ".join(short(m, 40) for m in done.unseen))
     out.append(f"Cost and time: {money(view)}")
+    for line in view.decisions:
+        out.append(line)
+    if done:
+        left = hub_lines.left_line(outcome, done.error, done.end_reason, len(done.unseen))
+        if left:
+            out.append("Left: " + left)
     if outcome == "stopped":
         out.append(f"Session {view.session_id or '(none)'} is kept. Type resume to continue it.")
+    if view.session_id and view.command:
+        out.append("To continue later, in this folder: " + hub_lines.resume_command(view.harness, view.session_id, view.command))
+    if width:
+        out = [piece for line in out for piece in ([line] if "\x1b" in line or len(line) <= width or line.startswith(("|", "```", "    ")) else
+                                                  textwrap.wrap(line, width, subsequent_indent="  " if line.startswith("  ") else "", break_long_words=False, break_on_hyphens=False) or [line])]
     return out
 
 

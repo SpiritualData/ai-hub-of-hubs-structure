@@ -269,11 +269,11 @@ class ProviderNativeBackend:
     A provider's result row may carry ``passages`` (a list), ``passage_kind`` and ``date``; they pass through. A row with only
     ``snippet`` keeps ``snippet`` and no kind (the provider does not say what it is). ``instruction`` is handed to the provider
     as ``instruction=`` only when the caller gives one, so a provider written before it existed keeps working."""
-    REQUIRES = ()     # uses a model provider the consumer already holds
+    REQUIRES = ()     # uses a model provider the consumer already holds; ``provider`` has no default, so this arm is not buildable until one is passed
 
     name = "provider-native"
 
-    def __init__(self, provider: Any = None, model: str = "") -> None:
+    def __init__(self, provider: Any, model: str = "") -> None:
         self.provider = provider
         self.model = model
 

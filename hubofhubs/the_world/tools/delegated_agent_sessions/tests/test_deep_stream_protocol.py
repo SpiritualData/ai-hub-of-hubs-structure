@@ -76,3 +76,22 @@ def test_steering_claims_a_message_once_and_keeps_it_on_the_unseen_list_if_the_w
     run.stopping = True
     run.steer()
     assert len(written) == 1
+
+
+def test_a_result_before_the_opening_prompt_came_back_is_not_the_end_of_the_run():
+    """A resumed session first reports the end of work it held from before; that result is not this prompt's answer."""
+    import queue
+    run = StreamRun.__new__(StreamRun)
+    run.prompt, run.control, run.sent, run.clock = "the opening prompt", None, [], __import__("time").monotonic
+    run.events, run.results, run.stderr_parts = queue.Queue(), [], []
+    run.review = run.review_interval = run.timeout = run.cancel_check = None
+    run.echo_wait, run.finished, run.stopping, run.stdin_open, run.eof, run.prompt_started = 5.0, False, False, True, False, False
+    run.interrupt_id = None
+    run.write = lambda line: True
+    for event in ({"type": "result", "subtype": "success", "result": ""},
+                  {"type": "user", "message": {"content": "the opening prompt"}},
+                  {"type": "assistant", "message": {"content": [{"type": "text", "text": "the answer"}]}},
+                  {"type": "result", "subtype": "success", "result": "the answer"}):
+        run.events.put(event)
+    assert run.drive() == ("done", "")
+    assert len(run.results) == 2 and run.results[-1]["result"] == "the answer" and run.last_text == "the answer"

@@ -131,3 +131,40 @@ def test_the_stream_runner_wraps_its_run_in_the_ceilings_and_a_hard_stop_names_t
     seen.clear()
     free.run_goal(goal="g", brief="b")
     assert seen["watch"] is None and seen["control"] is None      # no ceiling at all: the session runs as it always did
+
+
+def test_the_spend_estimate_counts_each_message_once_and_prices_the_cache(tmp_path, monkeypatch):
+    import json
+    import importlib
+    headless_runner = importlib.import_module("hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner")   # the module the estimate itself imports, whatever another test did to the package attribute
+    monkeypatch.setattr(headless_runner, "list_price", lambda provider, model, tin, tout: tin * 1e-6 + tout * 1e-5)    # a flat table: the shape of the sum is what is checked
+    usage = {"input_tokens": 10, "cache_creation_input_tokens": 300, "cache_read_input_tokens": 1000, "output_tokens": 5,
+             "cache_creation": {"ephemeral_1h_input_tokens": 200, "ephemeral_5m_input_tokens": 100}}
+    final = dict(usage, output_tokens=50)       # a message split in two blocks repeats its input counts; the last block holds the final output
+    lines = [{"type": "assistant", "message": {"id": "m1", "model": "x", "usage": usage}},
+             {"type": "assistant", "message": {"id": "m1", "model": "x", "usage": final}},
+             {"type": "user", "message": {"content": "no usage"}}]
+    path = tmp_path / "s.jsonl"
+    path.write_text("\n".join(json.dumps(x) for x in lines) + "\nnot json\n")
+    expected = (10 + 2.0 * 200 + 1.25 * 100 + 0.1 * 1000) * 1e-6 + 50 * 1e-5
+    assert run_ceilings.estimate_spend(str(path)) == pytest.approx(expected)
+    assert run_ceilings.estimate_spend(str(tmp_path / "missing.jsonl")) == 0.0 and run_ceilings.estimate_spend(None) == 0.0
+
+
+def test_a_hard_stop_names_the_hard_limit_whatever_the_runner_said_about_the_stop():
+    from types import SimpleNamespace
+    watch = LimitWatch(None, 1.0)
+    watch.hard = "time"
+    result = SimpleNamespace(cancelled=True, paused=False, error="The run was stopped on request.", session_id="s1", cost_usd=0.0)
+    watch.finish(result)
+    assert "hard limit (time)" in result.error and "resume session s1" in result.error and result.end_reason == "stopped_at_hard_limit:time"
+    paused = SimpleNamespace(cancelled=True, paused=True, error="paused by the person", session_id="s2", cost_usd=0.0)
+    watch.finish(paused)
+    assert paused.error == "paused by the person"
+
+
+def test_the_text_loop_reports_its_run_like_the_other_runners(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a"})
+    runner = runner_for(tmp_path, Script("REPORT: done, nothing left"), session_dir=str(tmp_path / "s"), sandbox=False)
+    result = runner.run_goal(goal="look at a.txt", working_dir=root, run_id="r1")
+    assert result.resume_handle == result.session_id == "r1" and result.spend_usd == result.cost_usd and result.elapsed_seconds >= 0.0

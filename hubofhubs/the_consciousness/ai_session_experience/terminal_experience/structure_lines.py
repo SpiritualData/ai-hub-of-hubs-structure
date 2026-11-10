@@ -42,8 +42,8 @@ def detail_lines(detail: Mapping[str, Any], indent: str, width: int) -> List[str
     return out
 
 
-def structure_lines(view: Mapping[str, Any], width: int = 100) -> List[str]:
-    """The lines of a structure view, collapsed unless a node carries ``detail``."""
+def structure_lines(view: Mapping[str, Any], width: int = 100, selected: str = "") -> List[str]:
+    """The lines of a structure view, collapsed unless a node carries ``detail``. With ``selected`` (a solution id) that row starts with ``>`` and the others with a space."""
     lines: List[str] = []
 
     def walk(nodes: Sequence[Mapping[str, Any]], depth: int) -> None:
@@ -51,11 +51,12 @@ def structure_lines(view: Mapping[str, Any], width: int = 100) -> List[str]:
             pad = "  " * depth
             mark = "-" if node.get("expanded") else ("+" if node.get("expandable") else " ")
             activity = f", {short(node['activity'], 40)}" if node.get("activity") else ""
-            lines.append(f"{pad}{mark} {node.get('name')} ({node.get('solution')}) [{node.get('state')}] {agents_text(node)}{activity}")
+            lead = ("> " if node.get("solution") == selected else "  ") if selected else ""
+            lines.append(f"{lead}{pad}{mark} {node.get('name')} ({node.get('solution')}) [{node.get('state')}] {agents_text(node)}{activity}")
             if node.get("detail") is not None:
                 lines.extend(detail_lines(node["detail"], pad + "    ", max(width - len(pad) - 24, 30)))
             walk(node.get("children") or (), depth + 1)
     walk(view.get("tree") or (), 0)
     for agent in view.get("unplaced") or ():
-        lines.append(f"  helper {short(agent.get('task', ''), 40)} [{agent.get('state')}] (no solution)")
+        lines.append(f"{'  ' if selected else ''}  helper {short(agent.get('task', ''), 40)} [{agent.get('state')}] (no solution)")
     return lines

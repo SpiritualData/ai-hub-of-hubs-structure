@@ -8,7 +8,7 @@ root_python_allow = ["conftest.py"]   # the one shared pytest conftest serves te
 # Evaluation: one component folder per seat under evaluation/ (cases.json, score.py, impls/), results and per-case logs beside the records.
 # The measured code is the package; docs are not code.
 # Arms that may spend money: never run by `esoi run --stale` without --include-paid (esoi harness.paid_reason).
-paid_arms = ["cards_from_files/llm_topic_cards", "goal_completion/fast_tier_stop"]
+paid_arms = ["cards_from_files/llm_topic_cards", "goal_completion/fast_tier_stop", "plain_install/real_login"]
 evaluation_dir = "evaluation"
 results = "esoi/results.csv"
 # The coverage of the whole assembly is recorded by `esoi run assemble_the_whole --impl zero_config --record`; the solution has no arm to select, so it is a shared

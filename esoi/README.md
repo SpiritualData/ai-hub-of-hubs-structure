@@ -42,7 +42,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | World | `the-world` | `hubofhubs.run("the-world", 'latest Rust version')` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole |
+| The Self | `the-self` | `hubofhubs.run("the-self", ...)` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole, The front door works on a plain install |
 | Body | `the-body` | `hubofhubs.run("the-body", '')` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | `hubofhubs.run("the-intelligence", ...)` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
 | Consciousness | `the-consciousness` | `hubofhubs.run("the-consciousness", '')` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
@@ -76,6 +76,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - A request is answered from what bears on it (`metric-the-intelligence`)
 - A representative asks when the person would want to be asked (`metric-the-consciousness`)
 - Integrated efficiency of the whole (`metric-integrated-efficiency`): leader `whole_hub`, 0 of 6 cases
+- The front door works on a plain install (`metric-plain-install`): leader `front_door`, 10 of 10 cases
 
 ## Where to go next
 
@@ -117,7 +118,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
 | World | `the-world` | Search and papers through the tools (`composition`) | Task pass rate and cost per passing task |
-| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole |
+| The Self | `the-self` | Responds through every container (`composition`) | The assembled whole answers a real request, Integrated efficiency of the whole, The front door works on a plain install |
 | Body | `the-body` | Declared sources and enduring integrations (`composition`) | A system applies the hub to itself |
 | Intelligence | `the-intelligence` | One request through the long view, the target, the Mind and the checks (`composition`) | A request is answered from what bears on it |
 | Consciousness | `the-consciousness` | Representative, priorities and feedback (`composition`) | A representative asks when the person would want to be asked |
@@ -141,6 +142,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - A request is answered from what bears on it (`metric-the-intelligence`): `none`
 - A representative asks when the person would want to be asked (`metric-the-consciousness`): `none`
 - Integrated efficiency of the whole (`metric-integrated-efficiency`): `esoi run integrated_efficiency --impl whole_hub`
+- The front door works on a plain install (`metric-plain-install`): `esoi run plain_install --impl front_door --max-calls 60; esoi run plain_install --impl real_login --max-calls 60`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

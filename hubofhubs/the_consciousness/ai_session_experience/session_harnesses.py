@@ -10,6 +10,9 @@ Any other runner joins by implementing ``Harness`` (``start`` and ``control``); 
 from __future__ import annotations
 
 import inspect
+import json
+import os
+import re
 from dataclasses import replace
 import threading
 import time
@@ -18,7 +21,7 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_adapters import LoopLines, StreamJson, loop_log_events, progress_events
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
-    Approve, Capabilities, Control, Finished, Refuse, RunStarted, SessionEvent, Step, Steer, Stop, Usage, Waiting, short)
+    Approve, Capabilities, Control, Finished, Notice, Refuse, RunStarted, SessionEvent, Step, Steer, Stop, Usage, Waiting, short)
 from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
 
 
@@ -220,8 +223,16 @@ class StreamHarness:
             if name not in changed:
                 changed.append(name)
         outcome = ("stopped" if result.cancelled or result.paused else "met" if result.met else "failed" if result.launch_failed else "unmet")
+        why = str(getattr(result, "end_reason", "") or "")
+        if why.startswith("resume_stopped:"):          # the hub's own iteration was put to the stop decision and refused: one line with its reason
+            sink(Notice(kind="decision", decision="stop", reason=why.split(":", 1)[1]))
+        elif why.startswith("stopped_at_hard_limit"):
+            sink(Notice(kind="hard-limit", reason=why.split(":", 1)[-1]))
+        spend, seconds = getattr(result, "spend_usd", None), getattr(result, "elapsed_seconds", None)
         done = Finished(outcome=outcome, report=result.output or "", changed=tuple(changed), session_id=result.session_id or stream.session_id,
-                        error=result.error or "", cost_usd=result.cost_usd or None, tokens=result.tokens or None, unseen=tuple(result.unseen_inputs or ()))
+                        error=result.error or "", cost_usd=result.cost_usd or None, tokens=result.tokens or None, unseen=tuple(result.unseen_inputs or ()),
+                        end_reason=why, outside=tuple(str(item) for item in getattr(result, "outside_folder", None) or ()),
+                        spend_usd=float(spend) if spend else None, elapsed_seconds=float(seconds) if seconds else None)
         sink(done)
         return done
 
@@ -271,4 +282,126 @@ class Framed:
         return self.harness.control(control)
 
 
-__all__ = ["ApprovalGate", "Framed", "LoopHarness", "Refused", "StreamHarness"]
+class Limited:
+    """Tells a surface the ceilings a run was given (``Usage`` with ``ceiling_usd`` and ``ceiling_seconds``, once at each start) so it can show spend and time
+    against them. With ``spend_now`` (a function of the monotonic time the run began, giving the estimated spend so far, or None) the spend is also reported every ``every`` seconds while the run works,
+    since a session's own cost arrives only when it ends."""
+
+    def __init__(self, harness: Any, *, ceiling_usd: Optional[float] = None, ceiling_seconds: Optional[float] = None,
+                 spend_now: Optional[Callable[[float], Optional[float]]] = None, every: float = 2.0):
+        self.harness, self.ceiling_usd, self.ceiling_seconds, self.spend_now, self.every = harness, ceiling_usd, ceiling_seconds, spend_now, every
+        self.name, self.capabilities = harness.name, harness.capabilities
+
+    def start(self, goal: str, sink: Callable[[SessionEvent], None], resume_session_id: str = "") -> Finished:
+        sink(Usage(ceiling_usd=self.ceiling_usd, ceiling_seconds=self.ceiling_seconds))
+        quit_ = threading.Event()
+        began = time.monotonic()
+
+        def tick() -> None:
+            last = None
+            while not quit_.wait(self.every):
+                try:
+                    spent = self.spend_now(began) if self.spend_now else None
+                except Exception:  # noqa: BLE001 -- an estimate that fails is no estimate
+                    spent = None
+                if spent and spent != last:
+                    last = spent
+                    sink(Usage(cost_usd=spent, ceiling_usd=self.ceiling_usd, ceiling_seconds=self.ceiling_seconds))
+        ticker = threading.Thread(target=tick, daemon=True)
+        if self.spend_now:
+            ticker.start()
+        try:
+            return self.harness.start(goal, sink, resume_session_id)
+        finally:
+            quit_.set()
+
+    def control(self, control: Control) -> bool:
+        return self.harness.control(control)
+
+
+class Tailed:
+    """Gives a runner that does not forward its stream lines the steps of its work anyway, by reading the session's own record while the run goes: each new line of it
+    (the same assistant and user lines, with tool calls and results, that a stream session prints) goes through ``StreamJson``. ``locate(resume_session_id, began)`` returns the
+    record's path (or None while there is none); lines already in a resumed session's record are left alone. A harness that forwards its own lines is unharmed: a step with the
+    same id replaces itself. ``root`` is the run's folder, whose prefix is left off the paths shown."""
+
+    def __init__(self, harness: Any, locate: Callable[[str, float], Optional[str]], every: float = 0.3, root: str = ""):
+        self.harness, self.locate, self.every, self.root = harness, locate, every, root.rstrip("/") + "/" if root else ""
+        self.name, self.capabilities = harness.name, harness.capabilities
+
+    def local(self, line: bytes) -> bytes:
+        """``line`` with the run's folder left off the paths inside it (only where a name follows, so a sentence that ends with the folder keeps it)."""
+        return re.sub(re.escape(self.root.encode()) + rb"(?=[A-Za-z0-9_.-])", b"", line) if self.root else line
+
+    def start(self, goal: str, sink: Callable[[SessionEvent], None], resume_session_id: str = "") -> Finished:
+        began = time.monotonic()
+        stream = StreamJson()
+        quit_ = threading.Event()
+        state: Dict[str, Any] = {"path": None, "offset": 0, "tail": b""}
+        if resume_session_id:
+            try:
+                found = self.locate(resume_session_id, began)
+                if found:
+                    state["path"], state["offset"] = found, os.path.getsize(found)
+            except Exception:  # noqa: BLE001 -- no record is no steps, never a failure
+                pass
+
+        def read() -> None:
+            try:
+                if state["path"] is None:
+                    state["path"] = self.locate("", began)
+                if state["path"] is None:
+                    return
+                with open(state["path"], "rb") as handle:
+                    handle.seek(state["offset"])
+                    data = state["tail"] + handle.read()
+                    state["offset"] += len(data) - len(state["tail"])
+            except Exception:  # noqa: BLE001
+                return
+            *whole, state["tail"] = data.split(b"\n")
+            for line in whole:
+                try:
+                    raw = json.loads(self.local(line))      # a path inside the run's folder is shown relative to it
+                except ValueError:
+                    continue
+                if isinstance(raw, dict) and raw.get("type") in ("assistant", "user") and not raw.get("isSidechain"):
+                    for item in stream.events(raw):
+                        sink(item)
+
+        def tick() -> None:
+            while not quit_.wait(self.every):
+                read()
+        thread = threading.Thread(target=tick, daemon=True)
+        thread.start()
+        try:
+            return self.harness.start(goal, sink, resume_session_id)
+        finally:
+            quit_.set()
+            thread.join(timeout=2)
+            read()
+
+    def control(self, control: Control) -> bool:
+        return self.harness.control(control)
+
+
+class Briefed:
+    """Adds standing text after the goal that the harness is given but the person's screen is not (``note``, set or changed between runs): the recap of an earlier run
+    when the person switched harness, or the instruction to start a helper's description with the solution it serves. The run still shows the goal as typed."""
+
+    def __init__(self, harness: Any, note: str = ""):
+        self.harness, self.note = harness, note
+        self.name, self.capabilities = harness.name, harness.capabilities
+
+    def start(self, goal: str, sink: Callable[[SessionEvent], None], resume_session_id: str = "") -> Finished:
+        if not self.note:
+            return self.harness.start(goal, sink, resume_session_id)
+
+        def shown(event: SessionEvent) -> None:
+            sink(replace(event, goal=goal) if isinstance(event, RunStarted) else event)
+        return self.harness.start(goal + "\n\n" + self.note, shown, resume_session_id)
+
+    def control(self, control: Control) -> bool:
+        return self.harness.control(control)
+
+
+__all__ = ["ApprovalGate", "Briefed", "Framed", "Limited", "LoopHarness", "Refused", "StreamHarness", "Tailed"]

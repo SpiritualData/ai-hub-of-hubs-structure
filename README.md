@@ -106,6 +106,19 @@ Ids are listed in [esoi/README.md](esoi/README.md); [tutorial](docs/tutorials/as
 
 Import from one place. Every part is reached by `hubofhubs.run("<id>", ...)` or by its typed handle `hubofhubs.run(Interface)`, and every interface, result type and helper you may need is a name in `hubofhubs.api` (`from hubofhubs.api import CardStore, Card, DeepRunner`). Never import a path inside the hub, such as `hubofhubs.the_world.tools.deep`: parts move as the hub improves, and a name in `hubofhubs.api` keeps working because only its entry in that file changes. `hubofhubs.api.__all__` lists every public name.
 
+## In a terminal
+
+```
+ahohs                                    # a prompt: type a goal, watch it work, type a follow-up to continue the session
+ahohs work "add a changelog entry"       # run a goal in this folder
+ahohs work --resume SESSION --harness stream          # continue a session an earlier run named
+ahohs work --harness native --tier balanced "..."     # choose the harness (native, stream, loop) and the tier
+ahohs work --max-spend 5 --max-time 30m "..."         # ceilings (or unlimited); a soft limit wraps the run up, a hard limit stops it resumably
+ahohs chat                               # talk to the whole hub line by line
+```
+
+Keys while it works: Esc stops and keeps the session, a typed line steers, Tab shows the structure tree (Up, Down, Right and Left move through it and open a solution), `?` lists the keys. A consumer binds `hubofhubs.api.WorkTerminal` to its own harnesses and commands: [talk to the hub in a terminal](docs/how-to/talk-to-the-hub-in-a-terminal.md).
+
 ## What is measured
 
 Each implementation is scored on the cases of its own solution, and the highest score on those cases is selected. The recorded numbers, which parts have no run yet and the leaderboard of every alternative are on [what is measured today](docs/reference/status.md) and in [how we measure](docs/explanation/how-we-measure.md).

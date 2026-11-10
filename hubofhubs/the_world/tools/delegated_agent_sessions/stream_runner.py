@@ -165,6 +165,7 @@ class StreamRun:
         self.interrupt_id: Optional[str] = None
         self.interrupt_acked = False
         self.result_after_interrupt = False
+        self.prompt_started = False   # the session has taken up the opening prompt (its replay came back); a result before that belongs to earlier work
         self.eof = False
         threading.Thread(target=self.read_stdout, daemon=True).start()
         threading.Thread(target=self.read_stderr, daemon=True).start()
@@ -241,7 +242,9 @@ class StreamRun:
         """The model's replay of a user message came back: those steering messages are SEEN."""
         seen_ids: List[str] = []
         body = text.strip()
-        if body == self.prompt.strip():
+        opening = self.prompt.strip()
+        if body == opening or (body and (body in opening or opening in body)):
+            self.prompt_started = True
             return  # the replay of the opening prompt is not a steering message
         waiting = [r for r in self.sent if r.seen_at is None and r.text.strip()]
         # An exact replay marks ONE message (two identical messages are two replays); a replay that
@@ -266,6 +269,7 @@ class StreamRun:
         if kind == "system" and event.get("subtype") == "init":
             self.session_id = str(event.get("session_id") or "") or self.session_id
         elif kind == "assistant":
+            self.prompt_started = True    # the model is answering: work the opening prompt started (a held background notice starts no model turn)
             for block in (event.get("message") or {}).get("content") or []:
                 if isinstance(block, dict) and block.get("type") == "text" and block.get("text"):
                     self.last_text = str(block["text"])
@@ -310,7 +314,9 @@ class StreamRun:
             if event is not None:
                 self.handle(event)
                 if event.get("type") == "result":
-                    if not [r for r in self.sent if r.seen_at is None]:
+                    # A resumed session can first report the end of work it held from before (a background task's notice): that result is not the answer
+                    # to this prompt, so the run waits for the prompt's own replay and result, and gives up waiting only as it does for a steering message.
+                    if self.prompt_started and not [r for r in self.sent if r.seen_at is None]:
                         self.finished = True
                         return "done", ""
                     echo_deadline = self.clock() + self.echo_wait
@@ -318,7 +324,7 @@ class StreamRun:
             # A result left a written message whose replay has not come back. Its replay ends the
             # wait (the turn it starts ends the run); a replay that never comes ends it here.
             if echo_deadline is not None and now >= echo_deadline \
-                    and [r for r in self.sent if r.seen_at is None]:
+                    and ([r for r in self.sent if r.seen_at is None] or not self.prompt_started):
                 self.finished = True
                 return "done", ""
             if now >= next_poll:
@@ -638,7 +644,9 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
         if decision_id:
             return DeepResult(met=False, output=out, decision_id=decision_id, tokens=tokens,
                               cost_usd=cost, session_id=session_id, unseen_inputs=unseen)
-        if final is not None and returncode == 0 and not json_is_error:
+        # A process this run ended itself after its final result (it closed the input, then signalled the process because background work the session
+        # started was still going: the exit status is then the signal's, 143 or negative) is not a failed worker; the result says how the work ended.
+        if final is not None and (returncode == 0 or how == "done") and not json_is_error:
             if goal.strip() and not out.strip():
                 return DeepResult(
                     met=False, output=out, tokens=tokens, cost_usd=cost, session_id=session_id,

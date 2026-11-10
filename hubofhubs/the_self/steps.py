@@ -12,7 +12,8 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence
 from esoi import AssemblyError
 from esoi import declared_entry as declared
 
-DONE, PENDING, SKIPPED = "done", "pending", "skipped"
+DONE, PENDING, SKIPPED, UNAVAILABLE = "done", "pending", "skipped", "unavailable"
+REQUIRED, SUPPORTING = "required", "supporting"
 NO_ARM = "no arm yet"
 
 
@@ -23,11 +24,14 @@ class Step:
     status: str
     output: Any = None
     reason: str = ""
+    depends: str = REQUIRED     # whether the answer depends on this step or the step only enriches it (``support``)
 
     def to_dict(self) -> Dict[str, Any]:
         out = self.output
         steps = out.get("steps") if isinstance(out, Mapping) else None
         row: Dict[str, Any] = {"solution": self.solution, "status": self.status}
+        if self.depends != REQUIRED:
+            row["depends"] = self.depends
         if self.reason:
             row["reason"] = self.reason
         if steps:
@@ -55,6 +59,21 @@ def take(part: Any, solution_id: str, method: str = "", **arguments: Any) -> Ste
     except AssemblyError as error:
         return Step(solution_id, PENDING, reason=pending_reason(error))
     return Step(solution_id, DONE, call(**arguments))
+
+
+def support(part: Any, solution_id: str, method: str = "", **arguments: Any) -> Step:
+    """A step the answer does not depend on (enrichment, retrieval, a check, a record): it is ``take`` with one difference. Whatever stops it, a seat that cannot
+    be built or a call that raises, is an ``unavailable`` step with the reason in plain words, and the flow goes on with what it has. A step the answer
+    depends on uses ``take``, and its failure is the flow's to report."""
+    found = take_or_unavailable(part, solution_id, method, arguments)
+    return Step(found.solution, found.status, found.output, found.reason, SUPPORTING)
+
+
+def take_or_unavailable(part: Any, solution_id: str, method: str, arguments: Dict[str, Any]) -> Step:
+    try:
+        return take(part, solution_id, method, **arguments)
+    except Exception as error:      # noqa: BLE001  a supporting step never fails the answer
+        return Step(solution_id, UNAVAILABLE, reason=f"{type(error).__name__}: {error}")
 
 
 def skipped(solution_id: str, reason: str) -> Step:

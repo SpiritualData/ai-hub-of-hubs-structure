@@ -30,8 +30,8 @@ Part of [Using the tools of the outside world](../README.md)
 ## Metrics
 
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
-- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 9 of 9 cases
+- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `native_tool_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
+- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `subprocess_goal_runner@provider=anthropic,tier=fast`, 7 of 7 cases
 - A run finds what it needs instead of asking (`metric-agent-resourcefulness`)
 
 ## Where to go next

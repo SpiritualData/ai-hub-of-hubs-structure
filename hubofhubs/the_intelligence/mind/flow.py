@@ -12,12 +12,12 @@ from hubofhubs.the_intelligence.mind.planner.solution_pieces import tie
 from hubofhubs.the_intelligence.mind.response_writer.interface import ResponseWriting
 from hubofhubs.the_intelligence.nervous_system.interface import RiskWatching
 from hubofhubs.the_intelligence.nervous_system.signals import RiskSignal
-from hubofhubs.the_self.steps import DONE, Step, listing, skipped, take
+from hubofhubs.the_self.steps import DONE, Step, listing, skipped, support, take
 from hubofhubs.the_self.steps import done
 
 
 ACTION_OF_TOOL = {"web-search": "search", "the-science": "search", "read-files": "read", "file-editing": "update",
-                  "connected-system-operations": "execute", "delegated-agent-sessions": "execute", "": "answer"}
+                  "connected-system-operations": "execute", "delegated-agent-sessions": "execute", "role-understanding": "read", "": "answer"}
 
 
 def failed_pieces(results: Sequence[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
@@ -48,17 +48,17 @@ class MindComposition:
               cancelled: Optional[Callable[[], bool]] = None, instructions: Optional[Mapping[str, Any]] = None,
               considered: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
         authority = authority or {}
-        log: List[Step] = [take(self.intake, "context-intake", request=request, prepared=prepared, outside=outside, instructions=instructions)]
+        log: List[Step] = [support(self.intake, "context-intake", request=request, prepared=prepared, outside=outside, instructions=instructions)]
         resolved: List[Dict[str, Any]] = []
         for reference in [r for r in ((prepared or {}).get("references") or []) if isinstance(r, Mapping)] if self.resolver is not None else []:
-            found = take(self.resolver, "resolve-a-reference", phrase=str(reference.get("phrase") or ""), candidates=list(reference.get("candidates") or []),
+            found = support(self.resolver, "resolve-a-reference", phrase=str(reference.get("phrase") or ""), candidates=list(reference.get("candidates") or []),
                          context=reference.get("context"))
             log.append(found)
             resolved.append({"phrase": str(reference.get("phrase") or ""), **dict(done(found) or {"outcome": "abstain", "id": "", "reason": found.reason})})
         unresolved = [r for r in resolved if r.get("outcome") != "match"]
         planned = take(self.planner, "planner", request=request, context=done(log[0]), target=target, guidance=guidance, unmet=unmet)
         log.append(planned)
-        route = take(self.router, "route-a-request", request=request, context={"view": str(done(log[0]) or "")}) if self.router is not None else None
+        route = support(self.router, "route-a-request", request=request, context={"view": str(done(log[0]) or "")}) if self.router is not None else None
         if route is not None:
             log.append(route)
         clarify = route is not None and (done(route) or {}).get("route") == "clarify"
@@ -69,15 +69,15 @@ class MindComposition:
             if unresolved or clarify:      # nothing acts on a guess: a phrase that named no one candidate, or a request not yet understood, hands nothing on
                 asked.append({**piece, "refused": "reference not found: " + ", ".join(r["phrase"] for r in unresolved) if unresolved else "request needs clarifying"})
                 continue
-            digest = take(self.watch, "nervous-system", method="digest", user_message=request, step=1, max_steps=1,
+            digest = support(self.watch, "nervous-system", method="digest", user_message=request, step=1, max_steps=1,
                           plan_action=ACTION_OF_TOOL.get(str(piece.get("tool") or ""), "execute"), plan_goal=str(piece.get("piece", piece)))
-            signal = take(self.watch, "nervous-system", digest=done(digest)) if digest.status == DONE else digest
+            signal = support(self.watch, "nervous-system", digest=done(digest)) if digest.status == DONE else digest
             log.append(signal)
             if signal.status != DONE:      # a piece whose risk cannot be checked is not handed on
                 asked.append({**piece, "refused": "risk could not be checked"})
                 continue
             risk: RiskSignal = done(signal)
-            decision = take(self.judgment, "judgment-calls", signal={"severity": risk.severity, "reason": risk.reason},
+            decision = support(self.judgment, "judgment-calls", signal={"severity": risk.severity, "reason": risk.reason},
                             person=str(authority.get("person", "")))
             log.append(decision)
             if decision.status != DONE:      # no decision is not a yes: a piece nobody decided on is not handed on, like one whose risk was not checked

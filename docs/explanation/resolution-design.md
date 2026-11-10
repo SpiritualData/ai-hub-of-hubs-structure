@@ -8,7 +8,8 @@ What stays here is the seats, the arms, the registry and the scorer.
 Descriptive wording in the ESOI records stays the owner's: any new prose reads "unconfirmed: for the owner to confirm".
 The hub (package, import name and distribution name `hubofhubs`; the name was unclaimed on PyPI when checked on 2026-10-29, and the
 GitHub repository keeps the name `ai-hub-of-hubs-structure`) holds real executing code: seats as
-Protocols, arms in per-library extras, and the assembly that wires them. Its core is the standard library plus `esoi`.
+Protocols, arms in per-library extras, and the assembly that wires them. Its core imports stay the standard library, the package and `esoi`; third-party libraries are imported lazily inside the arm that needs them,
+and the install carries the libraries of the selected arms (see the adoption checklist).
 It gives a consumer what the earlier name-keyed framework (`repo-utils`) gave: pass a name from configuration or a row
 and get the implementation that holds it, loaded lazily, installed only if needed, without that framework's risks.
 
@@ -39,6 +40,8 @@ the hub only supplies its scope. Today the seats with a selected arm are `card-s
 (the last needs the `vendor-model-caller` seat, which stays pending until its arm is named); every other seat is reported as pending until
 a metric selects an arm or the consumer provides an object. `assemble(environ=mapping)` (the process environment when omitted; `{}` for none) fills the options an arm declares in its
 `ENVIRON` attribute from that mapping (`esoi.runtime.assemble_by_name.assemble`).
+
+**Availability.** When the selected arm of a solution cannot run on this machine (a library, a key in the given mapping, a program on its path), the best-measured arm that can stands in, in the order of `hubofhubs/arm_order.json`; the stand-in is a detail of the result, never a message (`docs/explanation/the-front-door-on-a-plain-install.md`).
 
 **Cascade (QAR's, unchanged).** Explicit name, then the consumer's selections, then the hub default (`selected` in the
 records, or the packaged snapshot in an installed copy). A name that a layer supplies but is unknown is an error, never a
@@ -98,7 +101,7 @@ Sources: the repo-utils sections and GAP entries of the evolvable-structure skil
 
 | Item | Requirement | Proof |
 |---|---|---|
-| Default install | `pip install hubofhubs` brings `esoi` only; every arm is an extra | `tests/test_default_install.py`: dependencies equal `["esoi"]` |
+| Default install | `pip install hubofhubs` brings `esoi` and every library the selected arm of every solution imports (derived from the arms' `REQUIRES`, `scripts/sync_dependencies.py`); the extras are for the alternatives that are not selected | `hubofhubs/the_self/integrity/tests/test_base_dependencies.py` (supersedes the old `tests/test_default_install.py`) |
 | Import boundary | Every import in the package is stdlib, the package or `esoi` (an allowlist) | `tests/test_import_boundary.py` (present) |
 | Inert import | No code, network, thread or file write at import | `tests/test_import_is_inert.py`: subprocess with sockets blocked, read-only directory, empty environment |
 | Reproducible resolution | Same inputs, same result, in any directory, any registration order | `tests/test_resolution_order.py`, plus the hostile-directory and vendored-copy tests (R2) |

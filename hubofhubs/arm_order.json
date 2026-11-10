@@ -1,0 +1,171 @@
+{
+ "agent-action-format": [
+  "any_format",
+  "text_protocol",
+  "native_tool_calls"
+ ],
+ "cards-from-files": [
+  "import_graph_topic_cards",
+  "cochange_topic_cards",
+  "topic_cards_replay",
+  "llm_topic_cards",
+  "graphify_files",
+  "file_plus_topic_cards",
+  "per_file_symbols"
+ ],
+ "command-execution": [
+  "bubblewrap_wrapper",
+  "refusal_floor"
+ ],
+ "context-retriever": [
+  "bm25_body",
+  "bm25_fielded",
+  "hybrid_rrf",
+  "feature_rerank",
+  "abstaining_hybrid",
+  "abstaining_affinity",
+  "abstaining_aware",
+  "abstaining_recency",
+  "feature_rerank_no_priors",
+  "abstaining_fenced",
+  "lsi",
+  "abstaining_learned",
+  "learned_rerank",
+  "bm25_whole_files",
+  "dense_bge_small",
+  "live_scan",
+  "llm_rerank"
+ ],
+ "decision-check": [
+  "agreement_check",
+  "single_verify",
+  "draft_as_given",
+  "agreement_with_known_mistakes",
+  "majority_vote"
+ ],
+ "delegated-agent-sessions": [
+  "acp_deep_runner",
+  "codex_cli_runner",
+  "native_tool_loop_runner",
+  "opencode_runner",
+  "solution_loop_runner",
+  "stream_json_goal_runner",
+  "subprocess_goal_runner"
+ ],
+ "esoi-application": [
+  "record_field_edit",
+  "append_to_description"
+ ],
+ "feedback-learning": [
+  "scoped_record_edit",
+  "kept_note"
+ ],
+ "folder-view": [
+  "evidence_ranked",
+  "model_pick",
+  "ported_baseline"
+ ],
+ "goal-completion": [
+  "independent_review",
+  "pragmatic_stop",
+  "nonempty",
+  "evidence_standard",
+  "fast_tier_stop"
+ ],
+ "guidance": [
+  "rule_gate",
+  "overlap_only",
+  "always_nudge"
+ ],
+ "judgment-calls": [
+  "severity_policy",
+  "ask_every_time"
+ ],
+ "live-objectives": [
+  "rolled_up",
+  "flat_list"
+ ],
+ "long-term-memory": [
+  "file_recall",
+  "card_store_recall",
+  "recent_window"
+ ],
+ "planner": [
+  "cue_router",
+  "one_piece",
+  "model_planner"
+ ],
+ "prioritization": [
+  "stated_fields",
+  "as_given"
+ ],
+ "proactivity": [
+  "calendar_and_events",
+  "elapsed_hours"
+ ],
+ "relevant-solutions": [
+  "records_index",
+  "records_then_model"
+ ],
+ "resolve-a-reference": [
+  "exact_match",
+  "shared_words",
+  "model_judged"
+ ],
+ "response-quality": [
+  "date_arithmetic",
+  "em_dash_free",
+  "evidence_check",
+  "grounded_figures"
+ ],
+ "response-writer": [
+  "cited_results",
+  "model_synthesis"
+ ],
+ "role-understanding": [
+  "checked_role",
+  "recorded_role"
+ ],
+ "route-a-request": [
+  "majority_floor",
+  "plan_derived",
+  "single_classifier"
+ ],
+ "terminal-session": [
+  "live_session",
+  "line_repl"
+ ],
+ "the-hands": [
+  "declared_and_used",
+  "declaration_only"
+ ],
+ "the-intuition": [
+  "co_taken",
+  "nearest_cards"
+ ],
+ "the-science": [
+  "openalex_semantic",
+  "openalex_semantic_and_web",
+  "web_research",
+  "openalex_keywords",
+  "openalex_keywords_model",
+  "openalex"
+ ],
+ "vendor-model-caller": [
+  "multi_provider",
+  "anthropic",
+  "claude_cli",
+  "deepseek",
+  "gemini",
+  "openai"
+ ],
+ "web-search": [
+  "gemini",
+  "provider",
+  "brave",
+  "claude_login",
+  "searxng",
+  "serper",
+  "tavily"
+ ]
+}

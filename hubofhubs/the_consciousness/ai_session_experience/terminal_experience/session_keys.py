@@ -1,6 +1,6 @@
 """Where a person's keys come from. A key source calls ``press(token, text)`` from its own thread: ``esc``, ``interrupt``, ``line`` (with the text), ``typing``
 (the line so far) or ``eof``. ``TtyKeys`` reads a real terminal in cbreak mode with the standard library (Escape alone is told from an arrow key by a
-short wait); ``ScriptedKeys`` is for tests and demos, and can react to what appears on screen ("when the question shows, press y")."""
+short wait; Tab is ``tree``, ``?`` on an empty line is ``help``, the arrows are ``up``, ``down``, ``open`` and ``close``); ``ScriptedKeys`` is for tests and demos, and can react to what appears on screen ("when the question shows, press y")."""
 from __future__ import annotations
 
 import os
@@ -10,6 +10,23 @@ import threading
 from typing import Any, Callable, List, Optional, Tuple
 
 Press = Callable[[str, str], None]
+ARROWS = {"A": "up", "B": "down", "C": "open", "D": "close"}     # the tree keys: Up, Down, Right (open the fields), Left (close)
+
+
+def press_sequence(descriptor: int, press: Press) -> None:
+    """Read the rest of one escape sequence (``[`` or ``O``, parameters, a final letter), a byte at a time so keys sent together stay apart, and press the key it is, if it is one."""
+    first = os.read(descriptor, 1)
+    if first not in (b"[", b"O"):
+        return
+    final = b""
+    for _ in range(8):
+        got = os.read(descriptor, 1)
+        if not got or got.isalpha() or got == b"~":
+            final = got
+            break
+    token = ARROWS.get(final.decode("utf-8", errors="ignore"), "")
+    if token:
+        press(token, "")
 
 
 class ScriptedKeys:
@@ -78,9 +95,13 @@ class TtyKeys:
             if char == "\x1b":
                 more, _, _ = select.select([descriptor], [], [], 0.03)
                 if more:
-                    os.read(descriptor, 8)      # an arrow or other key sequence: not a stop
+                    press_sequence(descriptor, press)      # an arrow or other key sequence: never a stop
                     continue
                 press("esc", "")
+            elif char == "\t":
+                press("tree", "")
+            elif char == "?" and not buffer:
+                press("help", "")
             elif char in ("\r", "\n"):
                 press("line", buffer)
                 buffer = ""

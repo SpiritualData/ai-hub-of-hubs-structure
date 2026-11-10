@@ -13,10 +13,9 @@ module takes a mapping and reads none.
 from hubofhubs.the_self.integrity.binding import Binding
 from hubofhubs.the_self.integrity.measure import evaluate, evaluate_seats, check, metrics
 from esoi import Assembly, AssemblyConfig, AssemblyError
-from hubofhubs.the_self.assembler.oneline import Result, needs
+from hubofhubs.the_self.assembler.oneline import HubRunner, Result, needs
 from hubofhubs.the_self.assembler.resolution import HUB, assemble, assembler, choice, names, register, resolve
-from esoi import entry
 
-run = entry.runner(HUB)   # run(id, input): any solution or intent of the hub, the same call at every level (esoi.entry)
+run = HubRunner(HUB)   # run(id, input): any solution or intent of the hub, the same call at every level (esoi.entry)
 
 __all__ = ["Binding", "evaluate", "evaluate_seats", "check", "metrics", "AssemblyConfig", "AssemblyError", "choice", "names", "resolve", "register", "assemble", "assembler", "Assembly", "run", "needs", "Result"]

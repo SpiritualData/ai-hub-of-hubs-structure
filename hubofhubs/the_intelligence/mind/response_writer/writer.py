@@ -8,17 +8,31 @@ from esoi import Lazy
 
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 
+CHANGES = ("file-editing", "delegated-agent-sessions", "connected-system-operations", "command-execution")
+GO_AHEAD = "To let me change things, run `ahohs work \"<the task>\"` in the folder: it asks before it edits."
 REFUSALS = {"authority": "was not done: it needs authority this request does not carry",
             "budget": "was not done: the budget for this request was spent",
             "cancelled": "was not done: the request was cancelled"}
 
 
+def brief(piece: Any, limit: int = 80) -> str:
+    """The piece named in a message: its words, cut at a word when long, so a very long input is not echoed back whole."""
+    text = " ".join(str(piece or "a step").split())
+    return text if len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "..."
+
+
 def said(result: Mapping[str, Any]) -> str:
     """What one result says for itself: its text, or why the piece was not done."""
+    if result.get("refused") in ("asked", "authority") and result.get("tool") in CHANGES:
+        return f"{brief(result.get('piece'))} was not done: changing things needs your go-ahead first. {GO_AHEAD}"
+    if result.get("refused") == "asked":
+        why = str((result.get("decision") or {}).get("reason") or "").strip().rstrip(".")
+        return (f"{brief(result.get('piece'))} is your decision to make, so I have not acted on it" + (f" ({why})" if why else "")
+                + ". Tell me what to look into and I will gather the facts for you.")
     if result.get("refused"):
-        return f"{result.get('piece', 'a step')} {REFUSALS.get(result['refused'], 'was not done')}"
+        return f"{brief(result.get('piece'))} {REFUSALS.get(result['refused'], 'was not done: it needs your decision first')}"
     if result.get("error"):
-        return f"{result.get('piece', 'a step')} failed: {result['error']}"
+        return f"{brief(result.get('piece'))} could not be done: {str(result['error']).split(': ', 1)[-1]}"
     return str(result.get("text") or "").strip()
 
 

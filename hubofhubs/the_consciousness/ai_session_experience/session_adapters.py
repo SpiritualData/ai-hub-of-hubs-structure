@@ -15,11 +15,12 @@ import re
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
-    MAIN, AgentEnded, AgentStarted, Review, SessionEvent, Step, Usage, Waiting, event_from_dict, short)
+    MAIN, AgentEnded, AgentStarted, Notice, Review, SessionEvent, Step, Usage, Waiting, event_from_dict, short)
 
 LOOP_ACTION = re.compile(r"^call (\d+): (READ|EDIT|RUN|DELEGATE|USE|NOTE)\s*(.*?)\s+(ok|failed)$")
 LOOP_CHECK = re.compile(r"^call (\d+): check (passed|failed)$")
 LOOP_REVIEW = re.compile(r"^review: (.*)$")
+SOLUTION_TAG = re.compile(r"^\s*\[([a-z0-9][a-z0-9_-]*)\]\s*(.*)$", re.S)     # a helper's description may start with the solution it serves: "[the-mind] check the plan"
 LOOP_KINDS = {"READ": "read", "EDIT": "edit", "RUN": "run", "DELEGATE": "delegate", "USE": "tool", "NOTE": "note"}
 
 READ_TOOLS = ("Read", "Glob", "Grep", "LS", "WebFetch", "WebSearch", "NotebookRead")
@@ -121,8 +122,11 @@ class StreamJson:
             self.agents[ident] = who
             self.kinds[ident] = "delegate"
             task = short(given.get("description") or given.get("prompt") or name)
+            tagged = SOLUTION_TAG.match(task)
+            solution = tagged.group(1) if tagged else ""
+            task = short(tagged.group(2) or task) if tagged else task
             self.labels[ident] = task
-            return [AgentStarted(agent_id=ident, parent_id=who, task=task),
+            return [AgentStarted(agent_id=ident, parent_id=who, task=task, solution=solution),
                     Step(agent_id=who, step_id=ident, kind="delegate", label=task, state="running")]
         path = str(given.get("file_path") or given.get("path") or given.get("pattern") or given.get("url") or given.get("query") or "")
         if name in READ_TOOLS:
@@ -165,6 +169,23 @@ def report_events(report: Any, parent: str = MAIN) -> List[SessionEvent]:
     return out
 
 
+def limit_events(kind: str, event: Any, data: Mapping[str, Any]) -> List[SessionEvent]:
+    """The ceilings and the hub's own decisions of a runner (``run_ceilings``, the native runner's iteration) as events: a ``tokens`` tick is the spend and the ceilings, a
+    ``status`` tick with a ``phase`` of ``soft_limit``, ``hub_resume`` or ``outside_folder`` is a ``Notice``. Any other status tick is chatter."""
+    if kind == "tokens":
+        calls = data.get("turns")
+        return [Usage(cost_usd=data.get("cost_usd"), tokens=data.get("tokens") or None, calls=int(calls) if calls else None,
+                      ceiling_usd=data.get("ceiling_usd"), ceiling_seconds=data.get("ceiling_seconds"))]
+    phase = data.get("phase")
+    if phase == "soft_limit":
+        return [Notice(kind="soft-limit", text=short(getattr(event, "text", "")))]
+    if phase == "hub_resume":
+        return [Notice(kind="decision", decision="continue", reason=str(data.get("reason") or ""), text=short(getattr(event, "text", "")))]
+    if phase == "outside_folder":
+        return [Notice(kind="outside-folder", items=tuple(short(item, 160) for item in data.get("items") or ()), text=short(getattr(event, "text", "")))]
+    return []
+
+
 def progress_events(event: Any, loop: Optional[LoopLines] = None, stream: Optional[StreamJson] = None) -> List[SessionEvent]:
     """One ``ProgressEvent`` of the hub's runners as session events: ``stream`` carries a raw stream-json line in ``data``, ``decision`` is a question
     for the person, an ``exec`` tick of the loop is a progress string; anything else is chatter and gives no event."""
@@ -180,6 +201,8 @@ def progress_events(event: Any, loop: Optional[LoopLines] = None, stream: Option
     if kind == "decision":
         return [Waiting(ask_id=str(getattr(event, "decision_id", "") or data.get("decision_id") or "ask"), question=short(getattr(event, "text", "") or data.get("question") or ""),
                         risky=str(data.get("risky") or ""), preview=short(data.get("preview") or "", 160))]
+    if kind in ("status", "tokens") and isinstance(data, Mapping):
+        return limit_events(kind, event, data)
     if kind == "exec" and loop is not None and data.get("phase") == "solution_loop":
         return loop.events(getattr(event, "text", ""))
     return []

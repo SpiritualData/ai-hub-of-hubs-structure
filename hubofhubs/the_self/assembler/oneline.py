@@ -8,13 +8,15 @@ environment, read once in ``hubofhubs.the_self.assembler.resolution.process_envi
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 from esoi import entry as esoi_entry
+from esoi.runtime.assemble_by_name.entry import Runner
 
 from hubofhubs.the_world.tools.deep import ProgressEvent
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace import progress_event, project
+from hubofhubs.the_self.assembler.availability import stand_ins
 from hubofhubs.the_self.assembler.resolution import HUB, process_environment
 
 
@@ -29,9 +31,11 @@ class Result:
     arms: Mapping[str, str] = field(default_factory=dict)   # seat -> arm used
     tokens: Optional[Mapping[str, int]] = None  # model tokens in and out, when the arm counts them
     seconds: float = 0.0
-    note: str = ""                              # what the critic found wrong with the answer, empty when it held
+    note: str = ""                              # what the person should read: what the critic found wrong, or why the answer is weaker; empty when nothing needs saying
     events: Tuple[ProgressEvent, ...] = ()
     steps: Tuple[Dict[str, Any], ...] = ()      # the step of every part of a flow: done, skipped, or pending with the reason (no arm yet)
+    stood_in: Tuple[Dict[str, str], ...] = ()   # detail, never shown by default: each solution whose selected arm could not run here and the arm that did the job instead
+    stopped: str = ""                           # why the run ended early, when it did: "unavailable" (a needed step could not run), "budget", "authority", "cancelled"
 
     def __str__(self) -> str:
         return self.answer
@@ -39,19 +43,34 @@ class Result:
     def to_dict(self) -> Dict[str, Any]:
         return {"input": self.input, "seat": self.seat, "answer": self.answer, "items": list(self.items), "trace": list(self.trace),
                 "arms": dict(self.arms), "tokens": dict(self.tokens) if self.tokens else None, "seconds": round(self.seconds, 3), "note": self.note,
-                "events": [e.to_dict() for e in self.events], "steps": list(self.steps)}
+                "events": [e.to_dict() for e in self.events], "steps": list(self.steps), "stood_in": list(self.stood_in), "stopped": self.stopped}
 
 
 def needs(target: str = "hub-of-hubs", *, arms: Optional[Mapping[str, str]] = None, options: Optional[Mapping[str, Any]] = None,
           provided: Optional[Mapping[str, Any]] = None, environ: Optional[Mapping[str, str]] = None, lock: Any = None) -> Tuple[str, ...]:
     """What your setup still needs for the solution or intent ``target``: one line per missing key, install or choice, naming what
     to set. An empty tuple means ``run(target, ...)`` can start."""
-    env, sid, chosen = esoi_entry.prepare(HUB, target, process_environment() if environ is None else environ, arms)
+    env = process_environment() if environ is None else environ
+    arms, _standing = stand_ins(HUB, env, arms, options, lock)
+    env, sid, chosen = esoi_entry.prepare(HUB, target, env, arms)
     try:
         esoi_entry.build_handle(HUB, sid, env, chosen, options, provided, lock)
     except esoi_entry.Pending as pending:
         return tuple(pending.lines)
     return ()
+
+
+class HubRunner(Runner):
+    """``hubofhubs.run``: esoi's one-line runner, with the best-measured arm that can run here standing in for a selected arm that cannot
+    (``hubofhubs.the_self.assembler.availability``). The stand-ins are recorded in ``Result.stood_in``, a detail, not a message. An arm the
+    caller names in ``arms`` is kept; a solution no arm can serve is left to report its pending step."""
+
+    def __call__(self, target: Any, input: Any = None, **overrides: Any) -> Any:
+        env = overrides.pop("environ", None)
+        env = process_environment() if env is None else env
+        arms, standing = stand_ins(HUB, env, overrides.pop("arms", None), overrides.get("options"), overrides.get("lock"))
+        got = super().__call__(target, input, environ=env, arms=arms, **overrides)
+        return replace(got, stood_in=tuple(s.to_dict() for s in standing)) if standing and isinstance(got, Result) else got
 
 
 def event(kind: str, text: str = "", **data: Any) -> ProgressEvent:

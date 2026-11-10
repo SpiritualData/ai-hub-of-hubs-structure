@@ -308,6 +308,12 @@ SCENARIOS = {"check_never_passes": check_never_passes, "repeat_refused": repeat_
              "same_surface": same_surface, "plain_and_replay": plain_and_replay, "frame": frame}
 
 
+try:
+    from hub_scenarios import SCENARIOS as HUB_SCENARIOS      # the hub's own parts of the terminal: structure, ceilings, decisions, follow-ups, harness switch, representative
+    SCENARIOS.update(HUB_SCENARIOS)
+except ImportError:  # pragma: no cover -- the sibling file travels with this one
+    pass
+
 SECONDS = 8
 
 
