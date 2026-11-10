@@ -13,7 +13,7 @@ Part of [Holding a request to a measure](../README.md)
 - Entry call: `hubofhubs.run("decision-check")`
 - Selected implementation: Independent views, adjudicated on disagreement (`agreement_check`)
 - Metric: Decisions right within a call cap
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](remainder.py) and 184 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](remainder.py) and 203 more
 
 ## Implementations
 

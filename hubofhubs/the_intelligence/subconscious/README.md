@@ -40,7 +40,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): leader `import_graph_topic_cards`, 112 of 252 cases
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-context-retriever`): leader `bm25_body`, 203 of 395 cases
 - Unasked items are taken and useful (`metric-the-intuition`): leader `co_taken`, 20 of 20 cases
-- Solutions needing consideration named, recall first (`metric-relevant-solutions`): no result recorded
+- Solutions needing consideration named, recall first (`metric-relevant-solutions`): leader `records_index`, 49 of 62 cases
 
 ## Where to go next
 
@@ -98,13 +98,14 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Nearest items by wording | `the-intuition:nearest_cards` | [hubofhubs/the_intelligence/subconscious/intuition/nearest_cards.py](intuition/nearest_cards.py) |  |
 | What was taken for similar requests | `the-intuition:co_taken` | [hubofhubs/the_intelligence/subconscious/intuition/co_taken.py](intuition/co_taken.py) |  |
 | Records index | `relevant-solutions:records_index` | [hubofhubs/the_intelligence/subconscious/relevant_solutions/records_index.py](relevant_solutions/records_index.py) |  |
+| Records index, then a cheap model | `relevant-solutions:records_then_model` | [hubofhubs/the_intelligence/subconscious/relevant_solutions/records_then_model.py](relevant_solutions/records_then_model.py) |  |
 
 ### Metrics
 
 - Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size (`metric-cards-from-files`): `esoi run cards_from_files --impl llm_topic_cards; esoi run cards_from_files --impl topic_cards_replay; esoi run cards_from_files --impl cochange_topic_cards; esoi run cards_from_files --impl import_graph_topic_cards; esoi run cards_from_files --impl file_plus_topic_cards; esoi run cards_from_files --impl per_file_symbols; esoi run cards_from_files --impl graphify_files`
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-context-retriever`): `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl abstaining_recency; esoi run context_retrieval --impl abstaining_affinity; esoi run context_retrieval --impl abstaining_aware; esoi run context_retrieval --impl abstaining_fenced; esoi run context_retrieval --impl live_scan; esoi run context_retrieval --impl llm_rerank`
 - Unasked items are taken and useful (`metric-the-intuition`): `esoi run intuition --impl nearest_cards; esoi run intuition --impl co_taken`
-- Solutions needing consideration named, recall first (`metric-relevant-solutions`): `esoi run relevant_solutions --impl records_index`
+- Solutions needing consideration named, recall first (`metric-relevant-solutions`): `esoi run relevant_solutions --impl records_index; esoi run relevant_solutions --impl records_then_model`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

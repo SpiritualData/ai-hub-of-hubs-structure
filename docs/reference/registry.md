@@ -30,7 +30,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
 | intents | Keeping the intent hierarchy and choosing which representative acts | compared | coexist | none | Agent Skills specification; A2A protocol; OpenAI Agents SDK; Claude Agent SDK; semantic-router | 10 | 0 | 2026-10-30 |
-| agent_orchestration | Planning, gathering and answering a request in a bounded loop | compared | coexist | none | Pydantic AI; LangGraph; OpenAI Agents SDK; Google ADK; Microsoft Agent Framework; Claude Agent SDK | 14 | 0 | 2026-10-30 |
+| agent_orchestration | Planning, gathering and answering a request in a bounded loop | compared | coexist | none | Pydantic AI; LangGraph; OpenAI Agents SDK; Google ADK; Microsoft Agent Framework; Claude Agent SDK | 15 | 0 | 2026-10-30 |
 | structured_output | Getting a model's decision back as valid structured data | compared | adopt | none | Anthropic structured outputs; Instructor; Outlines; BAML | 4 | 0 | 2026-10-30 |
 | prompt_optimization | Improving prompts by measured metric | compared | coexist | none | GEPA; DSPy | 2 | 0 | 2026-10-30 |
 | model_providers | Calling any model vendor with tier fallback | compared | coexist | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 10 | 2 | 2026-10-30 |
@@ -45,9 +45,9 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | vector_store | Storing and searching scoped cards and chunks | builds_on | keep | Qdrant | LanceDB; Chroma; pgvector; Weaviate; Vespa; turbopuffer; sqlite-vec; MongoDB Community Search | 9 | 0 | 2026-10-30 |
 | embeddings | Turning text into vectors for the dense arm | builds_on | coexist | fastembed, Voyage embeddings | Qwen3-Embedding-0.6B; EmbeddingGemma-300m; BGE-M3; Gemini embedding | 4 | 2 | 2026-10-30 |
 | context_assembly | Choosing the context a turn sees | compared | coexist | bm25s, Qdrant and fastembed, bge-small-en-v1.5 | Qdrant native weighted RRF hybrid; Qwen3-Embedding-0.6B; EmbeddingGemma-300m; contextual retrieval prefix; LanceDB; PyLate; Haystack; LlamaIndex | 16 | 18 | 2026-10-30 |
-| code_context | Choosing files and symbols for a code task | compared | coexist | Agentic glob and grep inside Claude Code, QAR context cards | Aider repository map; Serena; Augment Context Engine; Cursor semantic search; tree-sitter repository map | 6 | 4 | 2026-10-30 |
+| code_context | Choosing files and symbols for a code task | compared | coexist | Agentic glob and grep inside Claude Code, QAR context cards | Aider repository map; Serena; Augment Context Engine; Cursor semantic search; tree-sitter repository map | 7 | 7 | 2026-10-30 |
 | reranking | Ordering a shortlist of candidate context | compared | coexist | cheap-model batched judge (QAR spec_selection) | Qwen3-Reranker; bge-reranker-v2-m3; Qdrant multivector rescoring; Cohere Rerank; Voyage rerank | 7 | 7 | 2026-10-30 |
-| memory | Remembering what a person taught over time | compared | coexist | QAR card store and conversation recall | Graphiti; Mem0; Hindsight; Cognee; Letta; Supermemory; LangMem; A-MEM | 9 | 0 | 2026-10-30 |
+| memory | Remembering what a person taught over time | compared | coexist | QAR card store and conversation recall | Graphiti; Mem0; Hindsight; Cognee; Letta; Supermemory; LangMem; A-MEM | 11 | 4 | 2026-10-30 |
 | background_memory | Precomputing and whispering context while idle | compared | coexist | QAR anticipation engine and context updates feed | Letta sleep-time compute; claude-subconscious; Anthropic memory tool; LangMem background manager | 3 | 0 | 2026-10-30 |
 | context_compression | Keeping long runs inside the window | compared | keep | QAR prompt budget and recency window | Anthropic compaction and context editing patterns; Factory structured summarization; LLMLingua-2 | 3 | 0 | 2026-10-30 |
 | graph_rag | Answering cross-document and global questions over huge corpora | compared | keep | none | LightRAG; Microsoft LazyGraphRAG; HippoRAG 2; RAPTOR | 5 | 0 | 2026-10-30 |
@@ -57,11 +57,11 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| answer_verification | Checking an answer against the evidence it was built from | compared | coexist | none: no groundedness detector today, claim-vs-execution judge in core/orchestrator_judges.py and the structural sufficiency gate in hubofhubs/the_intelligence/critical_thinking/goal_completion/sufficiency.py are the nearest | Vectara HHEM-2.1-Open; MiniCheck; Granite Guardian 4.1; Anthropic Citations; Amazon Bedrock contextual grounding; NeMo Guardrails fact-check rails | 9 | 1 | 2026-10-30 |
+| answer_verification | Checking an answer against the evidence it was built from | compared | coexist | none: no groundedness detector today, claim-vs-execution judge in core/orchestrator_judges.py and the structural sufficiency gate in hubofhubs/the_intelligence/critical_thinking/goal_completion/sufficiency.py are the nearest | Vectara HHEM-2.1-Open; MiniCheck; Granite Guardian 4.1; Anthropic Citations; Amazon Bedrock contextual grounding; NeMo Guardrails fact-check rails | 10 | 1 | 2026-10-30 |
 | link_checking | No reply carries a link nobody checked | builds_on | keep | hubofhubs/the_intelligence/critical_thinking/response_quality/link_guard.py (803 lines) and link_detect.py | lychee | 1 | 0 | 2026-10-30 |
 | judging | Model-graded judging of answers and decisions | compared | coexist | QAR runtime judges (core/orchestrator_judges.py, quest_judge.py, reach_judge.py) and evaluation/components/claude_judge.py | DeepEval; Inspect AI; TruLens; promptfoo; Patronus Glider | 5 | 0 | 2026-10-30 |
-| metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 3 | 0 | 2026-10-30 |
-| response_quality | Judging a response against the quality profile of the person and situation, with a researched default | compared | watch | Evidence check (links held to their evidence) | RAGAS; MT-Bench LLM-as-a-judge; G-Eval; Prometheus 2; HELM; FActScore; Anthropic HHH criteria; Chatbot Arena | 8 | 0 | 2026-11-04 |
+| metric_enforcement | Holding every request to its ESOI metric and recording the reading | compared | keep | core/goal_metrics.py, metric_meter.py, metric_results.py (784 lines) with a ledger | Langfuse; Arize Phoenix; Opik | 5 | 0 | 2026-10-30 |
+| response_quality | Judging a response against the quality profile of the person and situation, with a researched default | compared | watch | Evidence check (links held to their evidence) | RAGAS; MT-Bench LLM-as-a-judge; G-Eval; Prometheus 2; HELM; FActScore; Anthropic HHH criteria; Chatbot Arena | 11 | 0 | 2026-11-04 |
 
 ### Nervous System (`nervous-system`)
 
@@ -71,7 +71,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | guardrails | Policy rails around inputs, outputs and actions | compared | keep | reply guards (hubofhubs/critique, evaluation/components/reply_guards) are product checks, not safety rails | NeMo Guardrails; Guardrails AI; gpt-oss-safeguard; Llama Guard 4; Qwen3Guard | 4 | 0 | 2026-10-30 |
 | consent_gating | Stopping irreversible or human-only steps and asking the right person | builds_on | keep | core/orchestrator_decisions.py and orchestrator_decide_tool.py (1,288 lines), adapters/acp_deep_runner_session.py answers ACP session/request_permission | MCP elicitation and input_required (spec 2026-07-28); Claude Agent SDK canUseTool and hooks; LangGraph interrupt | 4 | 0 | 2026-10-30 |
 | run_supervision | Watching a run and sending at most one small signal | compared | keep | hubofhubs/the_intelligence/mind/delegation/overseer/risk.py (297 lines) engine plus core/overseer.py and orchestrator_oversee.py (425 lines), five signals | Claude Code auto mode classifier; LlamaFirewall AlignmentCheck; Patronus Percival | 4 | 5 | 2026-10-30 |
-| secrets_hygiene | Keeping secrets and real identifiers out of public code | compared | coexist | esoi.hygiene scanner in the esoi library, 35-case keep_secrets_out set | Gitleaks | 1 | 0 | 2026-10-30 |
+| secrets_hygiene | Keeping secrets and real identifiers out of public code | compared | coexist | esoi.hygiene scanner in the esoi library, 35-case keep_secrets_out set | Gitleaks | 2 | 0 | 2026-10-30 |
 
 ### World (`the-world`)
 
@@ -79,7 +79,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 |---|---|---|---|---|---|---|---|---|
 | channels | Two-way chat channels | builds_on | keep | OpenClaw | none | 1 | 0 | 2026-10-30 |
 | inbound_mail | Turning real people's mail into asks | compared | coexist | none | Google Gmail remote MCP; workspace-mcp; AgentMail; Postmark inbound; Nylas | 4 | 0 | 2026-10-30 |
-| voice | Spoken conversation with the brain | compared | keep | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 7 | 0 | 2026-10-30 |
+| voice | Spoken conversation with the brain | compared | keep | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 8 | 0 | 2026-10-30 |
 | integration_aggregators | One connection to the long tail of apps with managed auth | compared | coexist | none | Composio; Activepieces; Pipedream Connect; Nango; Arcade; Klavis AI; n8n; Zapier MCP | 10 | 0 | 2026-10-30 |
 | agent_auth | Acting as a person on an app without the model seeing the secret | compared | keep | none | Nango; Arcade; Composio managed auth; Pipedream Connect; Paragon ActionKit | 5 | 0 | 2026-10-30 |
 | vendor_mcp | First-party hosted MCP servers of the apps SD already uses | compared | coexist | none | Google Workspace MCP servers; Notion hosted MCP server; makenotion notion-mcp-server | 3 | 0 | 2026-10-30 |
@@ -90,7 +90,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
 | web_search | Grounding answers on the live web | builds_on | adopt | SearXNG, Serper, Brave Search API, Tavily, Gemini Google Search grounding | Exa; Parallel; Perplexity Search API; Brave LLM Context; Anthropic web search server tool | 8 | 11 | 2026-10-30 |
-| page_extraction | Turning a fetched page or file into clean text | builds_on | adopt | trafilatura (optional), own stdlib extractor and BM25 | Crawl4AI; Firecrawl; Jina Reader; Docling; MarkItDown | 7 | 0 | 2026-10-30 |
+| page_extraction | Turning a fetched page or file into clean text | builds_on | adopt | trafilatura (optional), own stdlib extractor and BM25 | Crawl4AI; Firecrawl; Jina Reader; Docling; MarkItDown | 8 | 0 | 2026-10-30 |
 | deep_research | Multi-step open-web research reports | compared | coexist | none | GPT Researcher; Exa deep search and agent; STORM | 5 | 0 | 2026-10-30 |
 | science_find_evidence | Finding papers and sources for a question | compared | adopt | none | OpenAlex API; cyanheads/openalex-mcp-server; Asta Scientific Corpus MCP; Semantic Scholar API; PubMed MCP server; Europe PMC REST API; Crossref REST API; Elicit API v2; Undermind; Consensus hosted MCP; SYNERGY screening datasets | 16 | 5 | 2026-10-30 |
 | science_read_papers | Cited answers and extraction from full-text papers | compared | adopt | none | PaperQA2; Ai2 Scholar QA library; OpenScholar; Edison literature agent client; Docling; marker; unstructured | 7 | 0 | 2026-10-30 |
@@ -127,12 +127,12 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
 | durable_jobs | Running queued work once, surviving restarts | compared | keep | none | DBOS Transact; Temporal; Hatchet; Inngest; Restate | 8 | 0 | 2026-10-30 |
-| agent_harness | Deep work done by a coding-agent harness on a Claude subscription | builds_on | coexist | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 11 | 16 | 2026-10-30 |
+| agent_harness | Deep work done by a coding-agent harness on a Claude subscription | builds_on | coexist | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 14 | 46 | 2026-10-30 |
 | code_search | Finding the right code before and during a run | compared | keep | none | Aider repo map; Claude Code LSP plugin; Serena MCP; SWE-grep; WarpGrep; Claude Code Explore subagent | 7 | 0 | 2026-10-30 |
 | command_sandbox | Running agent commands without risking the host | compared | adopt | none | Anthropic sandbox-runtime; Codex CLI sandbox; bubblewrap; Docker Sandboxes; E2B; Modal | 7 | 0 | 2026-10-30 |
-| subagents | Delegating and recursing inside an agent run | compared | coexist | none | Claude Code subagents; Claude Code dynamic workflows; Recursive Language Models; LangGraph; OpenAI Agents SDK; smolagents; CrewAI; AG2 | 10 | 0 | 2026-10-30 |
+| subagents | Delegating and recursing inside an agent run | compared | coexist | none | Claude Code subagents; Claude Code dynamic workflows; Recursive Language Models; LangGraph; OpenAI Agents SDK; smolagents; CrewAI; AG2 | 11 | 0 | 2026-10-30 |
 | agent_verify | Checking a run's work and undoing it | compared | keep | none | Claude Code checkpointing; Anthropic long-running harness pattern; Aider commit per edit; Agentless validation | 6 | 1 | 2026-10-30 |
-| agent_bench | Choosing a harness by measured results | compared | keep | none | SWE-bench Verified bash-only (Vals); Terminal-Bench 2.0; Aider polyglot; SWE-bench Pro; Holistic Agent Leaderboard | 6 | 7 | 2026-10-30 |
+| agent_bench | Choosing a harness by measured results | compared | keep | none | SWE-bench Verified bash-only (Vals); Terminal-Bench 2.0; Aider polyglot; SWE-bench Pro; Holistic Agent Leaderboard | 6 | 8 | 2026-10-30 |
 | science_run_analysis | Designing and running analyses on data with code | compared | adopt | none | K-Dense Scientific Agent Skills; ToolUniverse; Biomni; Edison Analysis; AstaBench and Asta agents; ScienceAgentBench; Jupyter AI; E2B code interpreter | 9 | 0 | 2026-10-30 |
 
 ### Learning (`the-learning`)

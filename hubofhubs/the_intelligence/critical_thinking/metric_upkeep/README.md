@@ -19,7 +19,7 @@ Part of [Holding a request to a measure](../README.md)
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
-| Record fields | `metric-upkeep:record_fields` | Decides each metric's state from its record fields by code, reads a stale or unmeasured metric through the reader its source names, and adds one intermediate metric for a milestone whose metric moves only through a person, written through ESOI Application after Decision Check agrees the child tracks the parent's done test. | `checked by independent views.` | selected |
+| Record fields | `metric-upkeep:record_fields` | Decides each metric's state from its record fields by code, reads a stale or unmeasured metric through the reader its source names, and adds one intermediate metric for a milestone whose metric moves only through a person, written through ESOI Application after Decision Check agrees the child tracks the parent's done test. | [`hubofhubs/the_intelligence/critical_thinking/metric_upkeep/upkeep.py`](upkeep.py) | selected |
 
 ## Metrics
 

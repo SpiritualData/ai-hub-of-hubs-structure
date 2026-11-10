@@ -45,7 +45,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Metric Translation | `metric-translation` | `hubofhubs.run("metric-translation", {'request': 'what is the latest Rust version?'})` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
 | Metric Upkeep | `metric-upkeep` | `hubofhubs.run("metric-upkeep", ...)` | Record fields (`record_fields`) | Metric states and intermediates are right |
 | Response Quality | `response-quality` | `hubofhubs.run("response-quality", ...)` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
-| Solution Passes | `solution-passes` | `hubofhubs.run("solution-passes", ...)` | Network passes (`network_passes`) | Record-held answers reached and followed |
+| Solution Passes | `solution-passes` | `hubofhubs.run("solution-passes", ...)` | Network passes (`network_passes`) | Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost |
 
 ## Problems and ideals
 
@@ -75,7 +75,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - A goal record with a target and a budget (`metric-metric-translation`)
 - Metric states and intermediates are right (`metric-metric-upkeep`)
 - Balanced score of a response against its quality profile (`metric-response-quality`): leader `date_arithmetic`, 15 of 15 cases
-- Record-held answers reached and followed (`metric-solution-passes`): no result recorded
+- Record-held answers reached and followed (`metric-solution-passes`): leader `network_passes`, 10 of 11 cases
+- Work done right because each touched solution was considered, at a priced cost (`metric-solution-passes-work-outcome`): leader `network_passes`, 10 of 11 cases
 
 ## Where to go next
 
@@ -117,7 +118,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Metric Translation | `metric-translation` | Goal record with default budget (`goal_record`) | A goal record with a target and a budget |
 | Metric Upkeep | `metric-upkeep` | Record fields (`record_fields`) | Metric states and intermediates are right |
 | Response Quality | `response-quality` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
-| Solution Passes | `solution-passes` | Network passes (`network_passes`) | Record-held answers reached and followed |
+| Solution Passes | `solution-passes` | Network passes (`network_passes`) | Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost |
 
 ### Implementations
 
@@ -149,6 +150,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Metric states and intermediates are right (`metric-metric-upkeep`): `none`
 - Balanced score of a response against its quality profile (`metric-response-quality`): `esoi run response_quality --impl evidence_check; esoi run response_quality --impl grounded_figures; esoi run response_quality --impl em_dash_free; esoi run response_quality --impl date_arithmetic`
 - Record-held answers reached and followed (`metric-solution-passes`): `esoi run solution_passes --impl network_passes`
+- Work done right because each touched solution was considered, at a priced cost (`metric-solution-passes-work-outcome`): `esoi run solution_passes --impl network_passes`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

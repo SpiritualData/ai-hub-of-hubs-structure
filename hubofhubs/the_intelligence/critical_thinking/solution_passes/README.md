@@ -12,8 +12,8 @@ Part of [Holding a request to a measure](../README.md)
 - Delegates to: model-plumbing
 - Entry call: `hubofhubs.run("solution-passes", ...)`
 - Selected implementation: Network passes (`network_passes`)
-- Metric: Record-held answers reached and followed
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../decision_check/remainder.py) and 202 more
+- Metric: Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../decision_check/remainder.py) and 203 more
 
 ## Implementations
 
@@ -23,7 +23,8 @@ Part of [Holding a request to a measure](../README.md)
 
 ## Metrics
 
-- Record-held answers reached and followed (`metric-solution-passes`): leader `network_passes`, 6 of 6 cases
+- Record-held answers reached and followed (`metric-solution-passes`): leader `network_passes`, 10 of 11 cases
+- Work done right because each touched solution was considered, at a priced cost (`metric-solution-passes-work-outcome`): leader `network_passes`, 10 of 11 cases
 
 ## Where to go next
 

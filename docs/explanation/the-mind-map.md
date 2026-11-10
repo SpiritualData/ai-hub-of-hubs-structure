@@ -99,7 +99,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Intake Sources | Body | 0 | 0 | 0 | none | `intake-sources` |
 | Hands | Body | 0 | 0 | 0 | none | `the-hands` |
 | Intelligence | the hub | 0 | 0 | 0 | none | `the-intelligence` |
-| Mind | Intelligence | 8 | 1 | 55 | 2026-10-30 | `the-mind` |
+| Mind | Intelligence | 8 | 1 | 56 | 2026-10-30 | `the-mind` |
 | Context Intake | Mind | 0 | 0 | 0 | none | `context-intake` |
 | Planner | Mind | 0 | 0 | 0 | none | `planner` |
 | Delegation | Mind | 0 | 0 | 0 | none | `delegation` |
@@ -110,27 +110,29 @@ The table below is generated from the records. Names lead, each part says what i
 | Long-Term Memory | Higher Mind | 0 | 0 | 0 | none | `long-term-memory` |
 | Objectives | Higher Mind | 0 | 0 | 0 | none | `live-objectives` |
 | Guidance | Higher Mind | 0 | 0 | 0 | none | `guidance` |
-| Subconscious | Intelligence | 10 | 8 | 69 | 2026-10-30 | `the-subconscious` |
+| Subconscious | Intelligence | 10 | 8 | 72 | 2026-10-30 | `the-subconscious` |
 | Intuition | Subconscious | 0 | 0 | 0 | none | `the-intuition` |
 | Cards From Files | Subconscious | 0 | 0 | 0 | none | `cards-from-files` |
 | Context Retriever | Subconscious | 0 | 0 | 0 | none | `context-retriever` |
+| Relevant Solutions | Subconscious | 0 | 0 | 0 | none | `relevant-solutions` |
 | Critical Thinking | Intelligence | 0 | 0 | 0 | none | `critical-thinking` |
 | ESOI Application | Critical Thinking | 0 | 0 | 0 | none | `esoi-application` |
 | Metric Translation | Critical Thinking | 0 | 0 | 0 | none | `metric-translation` |
 | Goal Completion | Critical Thinking | 0 | 0 | 0 | none | `goal-completion` |
-| Response Quality | Critical Thinking | 5 | 5 | 26 | 2026-10-30 | `response-quality` |
+| Response Quality | Critical Thinking | 5 | 5 | 32 | 2026-10-30 | `response-quality` |
 | Decision Check | Critical Thinking | 0 | 0 | 0 | none | `decision-check` |
 | Metric Upkeep | Critical Thinking | 0 | 0 | 0 | none | `metric-upkeep` |
-| Nervous System | Intelligence | 5 | 5 | 29 | 2026-10-30 | `nervous-system` |
+| Solution Passes | Critical Thinking | 0 | 0 | 0 | none | `solution-passes` |
+| Nervous System | Intelligence | 5 | 5 | 30 | 2026-10-30 | `nervous-system` |
 | Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
-| World | the hub | 7 | 1 | 36 | 2026-10-30 | `the-world` |
-| Science | World | 10 | 2 | 73 | 2026-10-30 | `the-science` |
+| World | the hub | 7 | 1 | 37 | 2026-10-30 | `the-world` |
+| Science | World | 10 | 2 | 74 | 2026-10-30 | `the-science` |
 | Tools | World | 0 | 0 | 0 | none | `the-tools` |
 | Web Search | Tools | 0 | 0 | 0 | none | `web-search` |
 | File Reading | Tools | 0 | 0 | 0 | none | `read-files` |
 | File Editing | Tools | 2 | 2 | 10 | 2026-10-30 | `file-editing` |
 | Connected System Operations | Tools | 10 | 2 | 59 | 2026-10-30 | `connected-system-operations` |
-| Delegated Agent Sessions | Tools | 8 | 1 | 64 | 2026-10-30 | `delegated-agent-sessions` |
+| Delegated Agent Sessions | Tools | 8 | 1 | 68 | 2026-10-30 | `delegated-agent-sessions` |
 | Model Plumbing | World | 0 | 0 | 0 | none | `model-plumbing` |
 | Model Tier Chooser | Model Plumbing | 0 | 0 | 0 | none | `model-tier-chooser` |
 | Vendor Model Caller | Model Plumbing | 0 | 0 | 0 | none | `vendor-model-caller` |
@@ -144,5 +146,5 @@ The table below is generated from the records. Names lead, each part says what i
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
 | Terminal Session | Consciousness | 0 | 0 | 0 | none | `terminal-session` |
 
-74 areas and 456 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+74 areas and 473 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

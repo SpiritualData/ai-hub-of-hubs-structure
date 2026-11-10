@@ -86,6 +86,8 @@ at the repository root.
 | Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
 | Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
+| Relevant Solutions, Records index (`relevant-solutions:records_index`) | none | none | none | none | no |
+| Relevant Solutions, Records index, then a cheap model (`relevant-solutions:records_then_model`) | none | none | none | none | no |
 | Request Intake, Every declared source (`request-intake:every_declared_source`) | none | none | none | none | no |
 | Research Freshness Reader, Registry date scan (`research-freshness-reader:registry_scan`) | none | none | none | none | no |
 | Resolve a Reference, Id and exact match (`resolve-a-reference:exact_match`) | none | none | none | none | no |
@@ -102,6 +104,7 @@ at the repository root.
 | Route a Request, Always information (`route-a-request:majority_floor`) | none | none | none | none | no |
 | Route a Request, Route read off the plan (`route-a-request:plan_derived`) | none | none | none | none | no |
 | Route a Request, One cheap classifier call (`route-a-request:single_classifier`) | none | none | none | none | no |
+| Solution Passes, Network passes (`solution-passes:network_passes`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
 | Terminal Session, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |

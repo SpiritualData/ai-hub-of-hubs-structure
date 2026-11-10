@@ -13,7 +13,7 @@ Bring in what is outside the system and let the AI act on it through the best av
 - Entry call: `hubofhubs.run("the-world", 'latest Rust version')`
 - Selected implementation: Search and papers through the tools (`composition`)
 - Metric: Task pass rate and cost per passing task
-- Implemented by: [`hubofhubs/the_world/__init__.py`](the_world/__init__.py), [`hubofhubs/the_world/flow.py`](the_world/flow.py), [`hubofhubs/the_world/interface.py`](the_world/interface.py), [`hubofhubs/the_world/learning/__init__.py`](the_world/learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](the_world/learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](the_world/learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](the_world/learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](the_world/learning/research_freshness_reader/interface.py) and 124 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](the_world/__init__.py), [`hubofhubs/the_world/flow.py`](the_world/flow.py), [`hubofhubs/the_world/interface.py`](the_world/interface.py), [`hubofhubs/the_world/learning/__init__.py`](the_world/learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](the_world/learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](the_world/learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](the_world/learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](the_world/learning/research_freshness_reader/interface.py) and 133 more
 
 ## The Self (`the-self`)
 
@@ -46,7 +46,7 @@ Turn one request and what is known into a response that meets its goal.
 - Entry call: `hubofhubs.run("the-intelligence", ...)`
 - Selected implementation: One request through the long view, the target, the Mind and the checks (`composition`)
 - Metric: A request is answered from what bears on it
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](the_intelligence/critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](the_intelligence/critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](the_intelligence/critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](the_intelligence/critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](the_intelligence/critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](the_intelligence/critical_thinking/decision_check/remainder.py) and 184 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](the_intelligence/critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](the_intelligence/critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](the_intelligence/critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](the_intelligence/critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](the_intelligence/critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](the_intelligence/critical_thinking/decision_check/remainder.py) and 203 more
 
 ## Consciousness (`the-consciousness`)
 
@@ -87,6 +87,7 @@ Keep the system aligned with the humans and policies it works for.
 - [Metric Translation](the_intelligence/critical_thinking/metric_translation/README.md) (solution with implementations): Make what success means for a request explicit and measurable as a goal record: the metric, its target, the done-standard and the budget (attempts, pieces and model calls) that Delegation and Model Plumbing enforce.
 - [Metric Upkeep](the_intelligence/critical_thinking/metric_upkeep/README.md) (solution with implementations): Keep every milestone measurable by the AI's own work, so a turn asked to make progress never has the excuse of waiting on a person.
 - [Response Quality](the_intelligence/critical_thinking/response_quality/README.md) (solution with implementations): Judge a response against the quality profile that applies to this request.
+- [Solution Passes](the_intelligence/critical_thinking/solution_passes/README.md) (solution with implementations): Make every relevant solution judge a request against its own records, at every level of the hierarchy, so durable memory and expertise are never skipped.
 - [Guidance](the_intelligence/higher_mind/guidance/README.md) (solution with implementations): Keep the Planner pointed at the longer-term outcome without taking over the request.
 - [Long-Term Memory](the_intelligence/higher_mind/long_term_memory/README.md) (solution with implementations): Let the AI keep and recall what happened across requests.
 - [Objectives](the_intelligence/higher_mind/objectives/README.md) (solution with implementations): Let the AI keep working toward a goal over many requests and know which objective a request serves.
@@ -99,6 +100,7 @@ Keep the system aligned with the humans and policies it works for.
 - [Cards From Files](the_intelligence/subconscious/cards_from_files/README.md) (solution with implementations): Propose the cards a folder of files needs, in the card store record shape, for the Subconscious to keep and recall.
 - [Context Retriever](the_intelligence/subconscious/context_retriever/README.md) (solution with implementations): Pick, from a corpus of files, cards or memory, the pieces of text a task needs within a token budget.
 - [Intuition](the_intelligence/subconscious/intuition/README.md) (solution with implementations): Let useful information surface unasked.
+- [Relevant Solutions](the_intelligence/subconscious/relevant_solutions/README.md) (solution with implementations): Find, for any request, every solution of the consumer's records that deserves its own consideration, so none is skipped.
 - [Model Tier Chooser](the_world/model_plumbing/model_tier_chooser/README.md) (solution with implementations): Pick, for each model tier, the model that does the most passing work per cost.
 - [Vendor Model Caller](the_world/model_plumbing/vendor_model_caller/README.md) (solution with implementations): Reach one vendor's model, and step to the next provider when one fails.
 - [Connected System Operations](the_world/tools/connected_system_operations/README.md) (solution with implementations): Carry out an operation of a connected system on the AI's behalf.
@@ -188,6 +190,7 @@ flowchart LR
 - Down: [hubofhubs/the_intelligence/critical_thinking/metric_translation](the_intelligence/critical_thinking/metric_translation/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/metric_upkeep](the_intelligence/critical_thinking/metric_upkeep/README.md)
 - Down: [hubofhubs/the_intelligence/critical_thinking/response_quality](the_intelligence/critical_thinking/response_quality/README.md)
+- Down: [hubofhubs/the_intelligence/critical_thinking/solution_passes](the_intelligence/critical_thinking/solution_passes/README.md)
 - Down: [hubofhubs/the_intelligence/higher_mind/guidance](the_intelligence/higher_mind/guidance/README.md)
 - Down: [hubofhubs/the_intelligence/higher_mind/long_term_memory](the_intelligence/higher_mind/long_term_memory/README.md)
 - Down: [hubofhubs/the_intelligence/higher_mind/objectives](the_intelligence/higher_mind/objectives/README.md)
@@ -200,6 +203,7 @@ flowchart LR
 - Down: [hubofhubs/the_intelligence/subconscious/cards_from_files](the_intelligence/subconscious/cards_from_files/README.md)
 - Down: [hubofhubs/the_intelligence/subconscious/context_retriever](the_intelligence/subconscious/context_retriever/README.md)
 - Down: [hubofhubs/the_intelligence/subconscious/intuition](the_intelligence/subconscious/intuition/README.md)
+- Down: [hubofhubs/the_intelligence/subconscious/relevant_solutions](the_intelligence/subconscious/relevant_solutions/README.md)
 - Down: [hubofhubs/the_world/model_plumbing/model_tier_chooser](the_world/model_plumbing/model_tier_chooser/README.md)
 - Down: [hubofhubs/the_world/model_plumbing/vendor_model_caller](the_world/model_plumbing/vendor_model_caller/README.md)
 - Down: [hubofhubs/the_world/tools/connected_system_operations](the_world/tools/connected_system_operations/README.md)

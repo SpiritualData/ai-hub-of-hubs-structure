@@ -12,7 +12,7 @@ Part of [Using the tools of the outside world](../README.md)
 - Delegates to: file-editing, connected-system-operations, planner
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: `stream_json_goal_runner@provider=anthropic,tier=fast`
-- Metric: Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions)
+- Metric: Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions)
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 133 more
 
 ## Implementations
@@ -29,6 +29,7 @@ Part of [Using the tools of the outside world](../README.md)
 
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
 - Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 18 of 18 cases
+- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `subprocess_goal_runner@provider=anthropic,tier=best`, 7 of 7 cases
 
 ## Where to go next
 
