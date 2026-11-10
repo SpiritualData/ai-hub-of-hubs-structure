@@ -22,7 +22,10 @@ def test_every_recorded_component_appears_in_the_leaderboard_and_by_arm():
     for component in recorded_components():
         assert component in by_arm, component
     records = evidence_summary.claims(config, registry, ROOT)
-    assert {r["component"] for r in records} == recorded_components()
+    # a claim rests on a run of the whole case set; a component recorded only in part is listed by arm (above) and claims nothing yet
+    history = evidence_summary.leaderboard.all_results(config.results_path)
+    whole = {component for component in recorded_components() if evidence_summary.latest_whole(history.get(component, {}))}
+    assert {r["component"] for r in records} == whole
     rival_rows = [line for line in board.split("### Conformance tests")[0].splitlines()[2:] if line.startswith("| ") and "`)" in line]
     assert len(rival_rows) == len([r for r in records if not r["conformance"]])
 

@@ -270,7 +270,9 @@ def arms_block(config: Config, registry: Registry, today: Optional[datetime.date
              "|---|---|---|---|---|---|---|---|"]
     for component in sorted(history):
         rows = latest_whole(history[component])
-        if not rows:
+        if not rows:   # recorded, but never on its whole case set: said, so a component with results is never missing from the table
+            lines += [f"| {component} | `{impl}` | no run on the whole case set yet ({len(runs)} partial run(s) recorded) | not stated | not stated | not stated "
+                      "| not compared: no whole run | none recorded |" for impl, runs in sorted(history[component].items())]
             continue
         selected = selected_of.get(component, "")
         policy = chosen.get(component) or leaderboard.Policy()

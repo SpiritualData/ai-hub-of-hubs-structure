@@ -121,6 +121,7 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | route_a_request | plan_derived | 41 | 29.3% (17.6% to 44.5%), 12/41 | $0 | 0 (median) | identical to plan_derived on all 41 cases | none recorded |
 | search_backend | gemini (selected) | 40 | 80.0% (65.2% to 89.5%), 32/40 | $5.625e-05 | 2 (median) | selected | none recorded |
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
+| solution_passes | `network_passes` | no run on the whole case set yet (2 partial run(s) recorded) | not stated | not stated | not stated | not compared: no whole run | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |
 | terminal_session | line_repl (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |
