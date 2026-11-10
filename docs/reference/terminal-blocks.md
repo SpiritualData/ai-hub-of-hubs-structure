@@ -1,6 +1,6 @@
 # Terminal blocks
 
-`hubofhubs.the_consciousness.terminal` turns a run's progress events into `Block` values. It imports no UI library; its core is the standard library and this package. A `Result` from `hubofhubs.run` carries `events`, and the terminal renderers draw them.
+`hubofhubs.the_consciousness.ai_session_experience.terminal_experience` turns a run's progress events into `Block` values. It imports no UI library; its core is the standard library and this package. A `Result` from `hubofhubs.run` carries `events`, and the terminal renderers draw them.
 
 ## Block
 
@@ -35,4 +35,4 @@
 
 ## Words and drift
 
-`hubofhubs/the_consciousness/terminal/strings.py` holds the English sentences under the keys of the Quest app's English pack. `tests/test_terminal_drift.py` compares them with that pack and runs the app's own `workTrace.ts` on 34 fixtures against the Python port (live line, summary, groups), when the sibling checkout, `node` and its compiler are present; otherwise it skips with the reason.
+`hubofhubs/the_consciousness/ai_session_experience/terminal_experience/strings.py` holds the English sentences under the keys of the Quest app's English pack. `tests/test_terminal_drift.py` compares them with that pack and runs the app's own `workTrace.ts` on 34 fixtures against the Python port (live line, summary, groups), when the sibling checkout, `node` and its compiler are present; otherwise it skips with the reason.

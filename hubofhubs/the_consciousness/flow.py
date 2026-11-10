@@ -8,7 +8,7 @@ from hubofhubs.the_consciousness.judgment_calls.interface import JudgmentCalling
 from hubofhubs.the_consciousness.prioritization.interface import Prioritizing
 from hubofhubs.the_consciousness.representatives.interface import Representing
 from hubofhubs.the_consciousness.request_intake.interface import RequestIntaking
-from hubofhubs.the_consciousness.terminal.interface import Conversing
+from hubofhubs.the_consciousness.ai_session_experience.interface import SessionExperiencing
 from hubofhubs.the_self.steps import DONE, listing, skipped, take
 from hubofhubs.the_self.steps import done
 
@@ -21,9 +21,9 @@ class ConsciousnessComposition:
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, representatives: Lazy[Representing], priorities: Lazy[Prioritizing], judgment: Lazy[JudgmentCalling],
-                 feedback: Lazy[FeedbackLearning], esoi: Lazy[EsoiApplying], intake: Lazy[RequestIntaking], terminal: Lazy[Conversing] = None):
+                 feedback: Lazy[FeedbackLearning], esoi: Lazy[EsoiApplying], intake: Lazy[RequestIntaking], session: Lazy[SessionExperiencing] = None):
         self.representatives, self.priorities, self.judgment, self.feedback, self.esoi = representatives, priorities, judgment, feedback, esoi
-        self.intake, self.terminal = intake, terminal
+        self.intake, self.session = intake, session
 
     def represent(self, person: str = "") -> Mapping[str, Any]:
         who = take(self.representatives, "the-representatives", person=person)
@@ -34,8 +34,8 @@ class ConsciousnessComposition:
         return list(done(take(self.intake, "request-intake", person=person)) or [])
 
     def converse(self, front_door: Callable[[str], Any], lines: Iterable[str], out: TextIO, person: str = "") -> Mapping[str, Any]:
-        """The interactive entry: Terminal Session reads what the person types, sends each line through ``front_door`` and draws the work and any question."""
-        held = take(self.terminal, "terminal-session", front_door=front_door, lines=lines, out=out, viewer_id=person)
+        """The interactive entry: AI Session Experience (its terminal) reads what the person types, sends each line through ``front_door`` and draws the work and any question."""
+        held = take(self.session, "ai-session-experience", method="converse", front_door=front_door, lines=lines, out=out, viewer_id=person)
         return {"exit_code": done(held), "steps": listing([held])}
 
     def decide(self, signal: Mapping[str, Any], person: str = "") -> Mapping[str, Any]:

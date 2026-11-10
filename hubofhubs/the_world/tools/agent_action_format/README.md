@@ -10,7 +10,7 @@ Part of [Using the tools of the outside world](../README.md)
 
 - Out of scope: Choosing which model or which loop drives the work (Delegated Agent Sessions does that), running a command safely (Command Execution does that) and editing a single file by instruction (File Editing does that).
 - Delegates to: command-execution, file-editing
-- Entry call: `hubofhubs.run("agent-action-format", {'reply': 'RUN: echo hello', 'working_dir': '.'})`
+- Entry call: `hubofhubs.run("agent-action-format", {'reply': 'READ: README.md', 'working_dir': '.'})`
 - Selected implementation: Either format (`any_format`)
 - Metric: Scripted actions executed as intended, per format
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 161 more

@@ -317,9 +317,9 @@ MIND_TREE = (
     ("the-mind", "the-intelligence"), ("context-intake", "the-mind"), ("planner", "the-mind"),
     ("delegation", "the-mind"), ("response-writer", "the-mind"), ("route-a-request", "the-mind"), ("resolve-a-reference", "the-mind"),
     ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("live-objectives", "higher-mind"), ("guidance", "higher-mind"),
-    ("the-subconscious", "the-intelligence"), ("the-intuition", "the-subconscious"), ("cards-from-files", "the-subconscious"),
+    ("the-subconscious", "the-intelligence"), ("the-intuition", "the-subconscious"), ("cards-from-files", "local-file-context"),
     ("context-retriever", "the-subconscious"), ("relevant-solutions", "the-subconscious"),
-    ("folder-view", "the-subconscious"),
+    ("local-file-context", "the-subconscious"), ("folder-view", "local-file-context"),
     ("critical-thinking", "the-intelligence"), ("esoi-application", "critical-thinking"), ("metric-translation", "critical-thinking"),
     ("goal-completion", "critical-thinking"), ("response-quality", "critical-thinking"), ("decision-check", "critical-thinking"), ("metric-upkeep", "critical-thinking"),
     ("solution-passes", "critical-thinking"),
@@ -333,7 +333,9 @@ MIND_TREE = (
     ("the-learning", "the-world"), ("research-freshness-reader", "the-learning"),
     ("the-consciousness", ""),
     ("the-representatives", "the-consciousness"), ("judgment-calls", "the-consciousness"), ("feedback-learning", "the-consciousness"),
-    ("prioritization", "the-consciousness"), ("request-intake", "the-consciousness"), ("terminal-session", "the-consciousness"),
+    ("prioritization", "the-consciousness"), ("request-intake", "the-consciousness"),
+    ("ai-session-experience", "the-consciousness"), ("terminal-session", "ai-session-experience"), ("frontend-interface", "ai-session-experience"),
+    ("structure-in-view", "ai-session-experience"),
 )
 #: A solution with one of these ids is a mind seat, and its name is the part's name.
 MIND_SEATS = tuple(sid for sid, _inside in MIND_TREE)

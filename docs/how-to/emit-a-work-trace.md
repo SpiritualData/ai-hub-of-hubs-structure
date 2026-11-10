@@ -7,6 +7,6 @@ Show the person the work a solution did, as it happens, without leaking what it 
 3. Send `state="done"` or `"failed"` when the work ends. Running updates are coalesced to about four a second; the final one always goes out.
 4. At the end of the run, `trace.summary()` returns the finished steps to store with the reply.
 
-The projector keeps only allowlisted fields. It never lets through a query, content, a snippet, reasoning, tool arguments, a path or a full URL (a domain only). With `viewer_may_see_titles=False`, `records` are counts only. The wire shape is `docs/reference/work-trace-event.schema.json`; `hubofhubs.the_consciousness.terminal.trace.validate` checks a dict against it.
+The projector keeps only allowlisted fields. It never lets through a query, content, a snippet, reasoning, tool arguments, a path or a full URL (a domain only). With `viewer_may_see_titles=False`, `records` are counts only. The wire shape is `docs/reference/work-trace-event.schema.json`; `hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace.validate` checks a dict against it.
 
 A `label_key` is an i18n key such as `workTrace.web.reading`. The consumer translates it; an unknown key falls back to a generic label for the `kind`.

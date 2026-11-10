@@ -77,6 +77,7 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | folder_view | evidence_ranked (selected) | 41 | 95.1% (83.9% to 98.7%), 39/41 | $0 | 0.3 (median) | selected | none recorded |
 | folder_view | model_pick | 33 | 97.0% (84.7% to 99.5%), 32/33 | 0.5 model calls (no price) | 1 (median) | model_pick: best guess, no per-case rows to test (model_pick 0.97 against evidence_ranked 0.97) | none recorded |
 | folder_view | ported_baseline | 41 | 17.1% (8.5% to 31.3%), 7/41 | $0 | 0.1 (median) | ahead of ported_baseline (two-sided sign test p=1.94e-06) | none recorded |
+| frontend_interface | json_wire (selected) | 28 | 100.0% (87.9% to 100.0%), 28/28 | $0 | 0 (median) | selected | none recorded |
 | goal_completion | evidence_standard (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
 | goal_completion | nonempty | 14 | 78.6% (52.4% to 92.4%), 11/14 | $0 | 0 (median) | ahead of nonempty, not significant (two-sided McNemar p=0.25) | none recorded |
 | guidance | rule_gate (selected) | 24 | 100.0% (86.2% to 100.0%), 24/24 | $0 | 0 (median) | selected | none recorded |
@@ -136,6 +137,7 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | solution_passes | `network_passes` | no run on the whole case set yet (2 partial run(s) recorded) | not stated | not stated | not stated | not compared: no whole run | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |
+| structure_in_view | event_tree (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
 | terminal_session | live_session (selected) | 39 | 100.0% (91.0% to 100.0%), 39/39 | $0 | 0 (median) | selected | none recorded |
 | terminal_session | line_repl | 39 | 66.7% (51.0% to 79.4%), 26/39 | $0 | 0 (median) | ahead of line_repl (two-sided sign test p=0.000244) | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |

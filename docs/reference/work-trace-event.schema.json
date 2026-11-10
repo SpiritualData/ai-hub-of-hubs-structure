@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "WorkTraceEvent",
-  "description": "One unit of work a run did for the reader, re-sent as it changes. The latest event for a step_id replaces earlier ones. Built by hubofhubs.the_consciousness.terminal.trace.project from an allowlist.",
+  "description": "One unit of work a run did for the reader, re-sent as it changes. The latest event for a step_id replaces earlier ones. Built by hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace.project from an allowlist.",
   "type": "object",
   "additionalProperties": false,
   "required": ["v", "trace_id", "step_id", "solution_id", "kind", "label_key", "state", "counts", "items", "affects_user", "started_at"],

@@ -870,7 +870,7 @@ def path_risk(path: str) -> str:
     """Why a path outside the working folder is not to be read unasked (the Folder View's judgment of it and of the folders on its way: credentials, keys,
     backups), or ``""``. A judgment that cannot be had says nothing."""
     try:
-        from hubofhubs.the_intelligence.subconscious.folder_view.judgment import path_verdict
+        from hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.judgment import path_verdict
         parts = [part for part in path.split(os.sep) if part]
         for start in range(len(parts)):      # judged from each level down: an unhelpful folder on the way (a temp folder) must not hide a risky one below it
             verdict = path_verdict(os.sep + os.sep.join(parts[:start]), "/".join(parts[start:]))

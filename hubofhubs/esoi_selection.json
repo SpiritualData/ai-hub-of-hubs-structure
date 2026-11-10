@@ -1,6 +1,10 @@
 {
  "@intents": {
   "intents": {
+   "ai_session_experience": {
+    "arm": "composition",
+    "root": "ai-session-experience"
+   },
    "critical_thinking": {
     "arm": "composition",
     "root": "critical-thinking"
@@ -52,6 +56,7 @@
   },
   "scopes": {
    "agent-action-format": "hubofhubs",
+   "ai-session-experience": "hubofhubs",
    "card-store": "hubofhubs",
    "cards-from-files": "hubofhubs",
    "command-execution": "hubofhubs",
@@ -66,6 +71,7 @@
    "feedback-learning": "hubofhubs",
    "file-editing": "hubofhubs",
    "folder-view": "hubofhubs",
+   "frontend-interface": "hubofhubs",
    "goal-completion": "hubofhubs",
    "guidance": "hubofhubs",
    "higher-mind": "hubofhubs",
@@ -73,6 +79,7 @@
    "internal-context": "hubofhubs",
    "judgment-calls": "hubofhubs",
    "live-objectives": "hubofhubs",
+   "local-file-context": "hubofhubs",
    "long-term-memory": "hubofhubs",
    "metric-translation": "hubofhubs",
    "metric-upkeep": "hubofhubs",
@@ -92,6 +99,7 @@
    "role-understanding": "hubofhubs",
    "route-a-request": "hubofhubs",
    "solution-passes": "hubofhubs",
+   "structure-in-view": "hubofhubs",
    "system-integrity": "hubofhubs",
    "terminal-session": "hubofhubs",
    "the-assembler": "hubofhubs",
@@ -125,6 +133,12 @@
    "text_protocol": "hubofhubs.the_world.tools.agent_action_format.arms"
   }
  },
+ "ai-session-experience": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.the_consciousness.ai_session_experience.flow"
+  }
+ },
  "card-store": {
   "default": "local_card_store",
   "evidence": {
@@ -144,13 +158,13 @@
    "verdict": "WIN"
   },
   "modules": {
-   "cochange_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_topics",
-   "file_plus_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
-   "graphify_files": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_graphify",
-   "import_graph_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_topics",
-   "llm_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
-   "per_file_symbols": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
-   "topic_cards_replay": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files"
+   "cochange_topic_cards": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_topics",
+   "file_plus_topic_cards": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_files",
+   "graphify_files": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_graphify",
+   "import_graph_topic_cards": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_topics",
+   "llm_topic_cards": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_files",
+   "per_file_symbols": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_files",
+   "topic_cards_replay": "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_files"
   }
  },
  "command-execution": {
@@ -296,9 +310,20 @@
    "verdict": "WIN"
   },
   "modules": {
-   "evidence_ranked": "hubofhubs.the_intelligence.subconscious.folder_view.evidence_ranked",
-   "model_pick": "hubofhubs.the_intelligence.subconscious.folder_view.model_pick",
-   "ported_baseline": "hubofhubs.the_intelligence.subconscious.folder_view.ported_baseline"
+   "evidence_ranked": "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.evidence_ranked",
+   "model_pick": "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.model_pick",
+   "ported_baseline": "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.ported_baseline"
+  }
+ },
+ "frontend-interface": {
+  "default": "json_wire",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "json_wire": "hubofhubs.the_consciousness.ai_session_experience.frontend_interface.wire"
   }
  },
  "goal-completion": {
@@ -366,6 +391,12 @@
   "modules": {
    "flat_list": "hubofhubs.the_intelligence.higher_mind.objectives.hierarchy",
    "rolled_up": "hubofhubs.the_intelligence.higher_mind.objectives.hierarchy"
+  }
+ },
+ "local-file-context": {
+  "default": "composition",
+  "modules": {
+   "composition": "hubofhubs.the_intelligence.subconscious.local_file_context.flow"
   }
  },
  "long-term-memory": {
@@ -573,6 +604,17 @@
    "network_passes": "hubofhubs.the_intelligence.critical_thinking.solution_passes.passes"
   }
  },
+ "structure-in-view": {
+  "default": "event_tree",
+  "evidence": {
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
+  },
+  "modules": {
+   "event_tree": "hubofhubs.the_consciousness.ai_session_experience.structure_in_view.tree"
+  }
+ },
  "system-integrity": {
   "default": "prompts_as_data",
   "modules": {
@@ -587,8 +629,8 @@
    "verdict": "WIN"
   },
   "modules": {
-   "line_repl": "hubofhubs.the_consciousness.terminal.repl",
-   "live_session": "hubofhubs.the_consciousness.terminal.live"
+   "line_repl": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl",
+   "live_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live"
   }
  },
  "the-assembler": {

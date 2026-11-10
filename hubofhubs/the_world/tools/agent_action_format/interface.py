@@ -4,7 +4,7 @@ from typing import Any, List, Mapping, Optional, runtime_checkable
 from esoi import solution
 
 
-@solution("agent-action-format", kind="event", entry="execute", example={"reply": "RUN: echo hello", "working_dir": "."})
+@solution("agent-action-format", kind="event", entry="execute", example={"reply": "READ: README.md", "working_dir": "."})
 @runtime_checkable
 class ActionFormat(typing.Protocol):
     """Turns what a model wrote as its actions into effects in a folder: the words of the action are a format, and a model does best in the format it was

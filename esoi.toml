@@ -23,7 +23,7 @@ code_paths = ["hubofhubs", "evaluation", ":(exclude,glob)**/*.md", ":(exclude,gl
 template_version = 4
 # Each solution's records live once, in the folder that holds its code (docs/reference/records-beside-code.md in the esoi repository).
 # The top intent stays in esoi/; `esoi records place --apply` moves records here, `esoi readmes` writes the page of each folder.
-beside_code = ["hubofhubs", "hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*"]
+beside_code = ["hubofhubs", "hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*", "hubofhubs/*/*/*/*"]
 # A folder of helper code that sits below a solution's folder and holds no records of its own (run_store, assemblers, overseer, ...) is covered by
 # a page `esoi readmes` writes. Folders: the five containers, a second-level solution, a third-level solution, and the helpers below them.
 arm_folders = ["hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*", "hubofhubs/*/*/*/*", "hubofhubs/*/*/*/*/*"]
@@ -115,6 +115,20 @@ seconds_per_case = 1
 # terminal-session: one scripted session is a handful of lines through a stub front door in memory, so a session is worth at most a tenth of a cent and one second. The weights
 # are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/terminal_session/build_cases.py.
 [balance.terminal_session]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
+
+# frontend-interface: one case is a few events turned to plain data in memory, so a case is worth at most a tenth of a cent and one second. The weights are the library's defaults and
+# the budgets were fixed before any arm was scored on the cases of evaluation/frontend_interface/build_cases.py.
+[balance.frontend_interface]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
+
+# structure-in-view: one case arranges a handful of events and reads a few rows of records in memory, so a case is worth at most a tenth of a cent and one second. The weights are the
+# library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/structure_in_view/build_cases.py.
+[balance.structure_in_view]
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.001
 seconds_per_case = 1

@@ -178,7 +178,7 @@ What the table says, with its limits:
 
 ## 5. How QAR reuses it
 
-The test for the design is how many lines QAR needs. Target: `hubofhubs.the_consciousness.terminal.run(profile=QUEST_PROFILE)`, where the profile
+The test for the design is how many lines QAR needs. Target: `hubofhubs.the_consciousness.ai_session_experience.terminal_experience.run(profile=QUEST_PROFILE)`, where the profile
 holds only what is QAR's own.
 
 **The customization surface (a `TerminalProfile`):**

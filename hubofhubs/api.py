@@ -25,8 +25,8 @@ MODULES = (
     "hubofhubs.the_body.internal_context.card_store.card_store_identity", "hubofhubs.the_body.internal_context.card_store.card_store_merge",
     "hubofhubs.the_body.internal_context.card_store.card_store_mounts", "hubofhubs.the_body.internal_context.card_store.card_store_tidy",
     "hubofhubs.the_body.internal_context.card_store.card_vectors", "hubofhubs.the_body.internal_context.card_store.embedders",
-    "hubofhubs.the_consciousness.terminal.render", "hubofhubs.the_consciousness.terminal.strings",
-    "hubofhubs.the_consciousness.terminal.trail", "hubofhubs.the_intelligence.critical_thinking.goal_completion.sufficiency",
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.render", "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.strings",
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trail", "hubofhubs.the_intelligence.critical_thinking.goal_completion.sufficiency",
     "hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.bm25_store",
     "hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.hybrid_assembler",
     "hubofhubs.the_intelligence.subconscious.context_retriever.assemblers.vector_assembler",
@@ -192,39 +192,60 @@ NAMES = {
     "hubofhubs.the_consciousness.request_intake.interface": (
         "RequestIntaking",
     ),
-    "hubofhubs.the_consciousness.terminal.interface": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.interface": (
         "Conversing",
     ),
-    "hubofhubs.the_consciousness.terminal": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.structure_lines": (
+        "structure_lines",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.interface": (
+        "SessionExperiencing",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.frontend_interface.interface": (
+        "FrontendInterfacing",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.frontend_interface.wire": (
+        "snapshot_of",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.structure_in_view.interface": (
+        "StructureViewing",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.structure_in_view.tree": (
+        "load_tables", "structure_view",
+    ),
+    "hubofhubs.the_intelligence.subconscious.local_file_context.interface": (
+        "LocalFileContexting",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience": (
         "Block", "TerminalState", "answer_ask", "close_ask", "continue_message", "fold_ask", "settle", "toggle_trail", "toggle_updates",
         "unfold_ask",
     ),
     "hubofhubs.the_consciousness.feedback_learning.propose": (
         "ScopedRecordEdit", "SIGNALS",
     ),
-    "hubofhubs.the_consciousness.terminal.asks": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.asks": (
         "error_block", "is_for_viewer",
     ),
-    "hubofhubs.the_consciousness.terminal.session_events": (
+    "hubofhubs.the_consciousness.ai_session_experience.session_events": (
         "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "Refuse", "Resume", "Review", "RunStarted", "SessionEvent",
         "Step", "Steer", "Stop", "Usage", "Waiting", "control_from_dict", "event_from_dict",
     ),
-    "hubofhubs.the_consciousness.terminal.session_adapters": (
+    "hubofhubs.the_consciousness.ai_session_experience.session_adapters": (
         "LoopLines", "StreamJson", "loop_log_events", "progress_events", "report_events",
     ),
-    "hubofhubs.the_consciousness.terminal.session_harnesses": (
+    "hubofhubs.the_consciousness.ai_session_experience.session_harnesses": (
         "ApprovalGate", "Framed", "LoopHarness", "StreamHarness",
     ),
-    "hubofhubs.the_consciousness.terminal.session_view": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view": (
         "SessionReport", "SessionView", "replay",
     ),
-    "hubofhubs.the_consciousness.terminal.session_keys": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_keys": (
         "ScriptedKeys", "TtyKeys",
     ),
-    "hubofhubs.the_consciousness.terminal.live": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live": (
         "LiveSession",
     ),
-    "hubofhubs.the_consciousness.terminal.trace": (
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace": (
         "WorkTrace", "domain_of", "project", "validate",
     ),
     "hubofhubs.the_intelligence.critical_thinking.decision_check.agreement": (
@@ -303,28 +324,28 @@ NAMES = {
     "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_then_model": (
         "RecordsThenModel",
     ),
-    "hubofhubs.the_intelligence.subconscious.folder_view.interface": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.interface": (
         "FolderViewing",
     ),
-    "hubofhubs.the_intelligence.subconscious.folder_view.choice": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.choice": (
         "FolderChoice", "LeftOut", "Pick",
     ),
-    "hubofhubs.the_intelligence.subconscious.folder_view.judgment": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.judgment": (
         "folder_verdict", "file_verdict", "path_verdict", "scan",
     ),
-    "hubofhubs.the_intelligence.subconscious.folder_view.ported_baseline": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.ported_baseline": (
         "PortedBaseline",
     ),
-    "hubofhubs.the_intelligence.subconscious.folder_view.evidence_ranked": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.evidence_ranked": (
         "EvidenceRanked",
     ),
-    "hubofhubs.the_intelligence.subconscious.folder_view.model_pick": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.model_pick": (
         "ModelPick",
     ),
     "hubofhubs.the_intelligence.subconscious.solution_briefs": (
         "briefs",
     ),
-    "hubofhubs.the_intelligence.subconscious.cards_from_files.knowledge_cards": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.knowledge_cards": (
         "cards_of", "knowledge_card", "solution_card",
     ),
     "hubofhubs.the_intelligence.subconscious.context_retriever.knowledge_pick": (
@@ -473,19 +494,19 @@ NAMES = {
     "hubofhubs.the_intelligence.proactivity.window": (
         "Window",
     ),
-    "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.cards_from_files": (
         "changed_cards", "file_card", "group_card",
     ),
-    "hubofhubs.the_intelligence.subconscious.cards_from_files.conversation_card_builder": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.conversation_card_builder": (
         "ConversationCardBuilder",
     ),
-    "hubofhubs.the_intelligence.subconscious.cards_from_files.conversation_format": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.conversation_format": (
         "compact_message", "conversation_digest", "conversation_messages", "conversation_metadata", "conversation_timestamp",
         "conversation_to_text", "find_conversation_dirs", "is_claude_conversation", "load_conversations", "nl_terms", "parse_date_bound",
         "rank_candidates_by_digest", "resolve_conv_key", "scan_conversation_files", "select_current_slice", "select_related",
         "timestamp_in_range", "truncate_transcript_middle",
     ),
-    "hubofhubs.the_intelligence.subconscious.cards_from_files.interface": (
+    "hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.interface": (
         "CardsFromFiles",
     ),
     "hubofhubs.the_intelligence.subconscious.context_retriever.abstain": (

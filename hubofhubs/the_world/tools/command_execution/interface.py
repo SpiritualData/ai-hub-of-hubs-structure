@@ -5,7 +5,7 @@ from esoi import solution
 from hubofhubs.the_world.tools.command_running import CommandResult
 
 
-@solution("command-execution", kind="event", entry="run", example={"command": "echo hello", "working_dir": "."})
+@solution("command-execution", kind="event", entry="run", example={"command": "sudo true", "working_dir": "."})
 @runtime_checkable
 class CommandExecution(typing.Protocol):
     """Runs one shell command for an agent in a folder and says what happened: bounded in time and output, refusing the few commands that should not run

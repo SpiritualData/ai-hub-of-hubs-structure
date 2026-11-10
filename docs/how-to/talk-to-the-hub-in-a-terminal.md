@@ -8,4 +8,4 @@ Hold a conversation with the whole hub from a terminal, one line at a time, with
 4. When the hub asks a question it is drawn with its numbered options. Your next line answers it: a number picks that option, any other text is your own answer, and it is sent as the next message. `/later` folds the question without answering it.
 5. Leave with `/quit`, Ctrl-D or Ctrl-C. A setup that lacks a key prints what to set and the chat goes on.
 
-The front door takes one input and no history, so each line is its own run. The loop is `LineRepl().converse(front_door, lines, out)` in `hubofhubs/the_consciousness/terminal/repl.py`, so a script or a test can drive it with any callable and any text stream. It draws with the blocks of [Render a run in a terminal](render-a-run-in-a-terminal.md).
+The front door takes one input and no history, so each line is its own run. The loop is `LineRepl().converse(front_door, lines, out)` in `hubofhubs/the_consciousness/ai_session_experience/terminal_experience/repl.py`, so a script or a test can drive it with any callable and any text stream. It draws with the blocks of [Render a run in a terminal](render-a-run-in-a-terminal.md).

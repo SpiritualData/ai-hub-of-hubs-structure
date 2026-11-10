@@ -163,5 +163,10 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
 | consent_gating | Stopping irreversible or human-only steps and asking the right person | builds_on | keep | core/orchestrator_decisions.py and orchestrator_decide_tool.py (1,288 lines), adapters/acp_deep_runner_session.py answers ACP session/request_permission | MCP elicitation and input_required (spec 2026-07-28); Claude Agent SDK canUseTool and hooks; LangGraph interrupt | 4 | 0 | 2026-10-30 |
+
+### Terminal Experience (`terminal-session`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
 | terminal_agent_experience | A person watching, stopping, resuming, steering and approving an AI while it works, on any surface and harness | compared | keep | hubofhubs terminal-session live_session (the reference terminal) and the session event and control contract | Claude Code; OpenAI Codex CLI; opencode; Aider; Goose; Crush; Gemini CLI; Cline CLI; OpenHands CLI; Agent Client Protocol | 9 | 0 | 2026-11-10 |
 <!-- registry:end -->

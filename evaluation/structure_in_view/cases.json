@@ -1,0 +1,425 @@
+[
+ {
+  "id": "structure-hierarchy-nesting",
+  "kind": "hierarchy",
+  "origin": "rule: a solution sits under the solution of its parent agent",
+  "args": {
+   "check": "outline",
+   "events": "session",
+   "records": "tables"
+  },
+  "expect": {
+   "outline": [
+    "root-sol",
+    "  child-a",
+    "    ghost-sol",
+    "  child-b"
+   ]
+  }
+ },
+ {
+  "id": "structure-hierarchy-without-records",
+  "kind": "hierarchy",
+  "origin": "rule: the nesting does not depend on the records",
+  "args": {
+   "check": "outline",
+   "events": "session",
+   "records": "none"
+  },
+  "expect": {
+   "outline": [
+    "root-sol",
+    "  child-a",
+    "    ghost-sol",
+    "  child-b"
+   ]
+  }
+ },
+ {
+  "id": "structure-hierarchy-no-solution-agent",
+  "kind": "hierarchy",
+  "origin": "rule: a sub-agent with no solution is listed apart and is not a node",
+  "args": {
+   "check": "unplaced",
+   "events": "session",
+   "records": "tables"
+  },
+  "expect": {
+   "unplaced": [
+    "helper-x"
+   ]
+  }
+ },
+ {
+  "id": "structure-hierarchy-two-agents-one-node",
+  "kind": "hierarchy",
+  "origin": "rule: two agents on one solution are one node with both agents",
+  "args": {
+   "check": "agents_of",
+   "events": "two_agents",
+   "records": "tables",
+   "solution": "child-a"
+  },
+  "expect": {
+   "agents": [
+    "r1",
+    "r2"
+   ],
+   "nodes": [
+    "root-sol",
+    "child-a"
+   ]
+  }
+ },
+ {
+  "id": "structure-hierarchy-no-events",
+  "kind": "hierarchy",
+  "origin": "rule: no events give an empty tree",
+  "args": {
+   "check": "outline",
+   "events": "none",
+   "records": "tables"
+  },
+  "expect": {
+   "outline": []
+  }
+ },
+ {
+  "id": "structure-agent-solution-of-each",
+  "kind": "agent",
+  "origin": "rule: each sub-agent is on the solution it was started for",
+  "args": {
+   "check": "agents_of",
+   "events": "session",
+   "records": "tables",
+   "solution": "child-b"
+  },
+  "expect": {
+   "agents": [
+    "root-sol-child-b"
+   ],
+   "nodes": [
+    "root-sol",
+    "child-a",
+    "ghost-sol",
+    "child-b"
+   ]
+  }
+ },
+ {
+  "id": "structure-agent-state-and-activity",
+  "kind": "agent",
+  "origin": "rule: a node shows its agent's state and the latest step of the agent",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "solution": "child-a",
+   "paths": [
+    "state",
+    "activity",
+    "agents.0.state"
+   ]
+  },
+  "expect": {
+   "state": "running",
+   "activity": "a.py (done)",
+   "agents.0.state": "running"
+  }
+ },
+ {
+  "id": "structure-agent-unmet-state",
+  "kind": "agent",
+  "origin": "rule: an agent that ended unmet makes its node unmet",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "solution": "child-b",
+   "paths": [
+    "state",
+    "agents.0.calls"
+   ]
+  },
+  "expect": {
+   "state": "unmet",
+   "agents.0.calls": 2
+  }
+ },
+ {
+  "id": "structure-agent-names-from-records",
+  "kind": "agent",
+  "origin": "rule: a known solution shows its display name and an unknown one its id",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "solution": "child-a",
+   "paths": [
+    "name",
+    "known"
+   ]
+  },
+  "expect": {
+   "name": "Child A",
+   "known": true
+  }
+ },
+ {
+  "id": "structure-collapsed-no-detail",
+  "kind": "collapsed",
+  "origin": "rule: with nothing opened no node has detail and no field text is in the data",
+  "args": {
+   "check": "collapsed",
+   "events": "session",
+   "records": "tables"
+  },
+  "expect": {
+   "nodes_with_detail": 0,
+   "field_text_found": []
+  }
+ },
+ {
+  "id": "structure-collapsed-expandable",
+  "kind": "collapsed",
+  "origin": "rule: a known solution says it can be opened, an unknown one does not",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "solution": "ghost-sol",
+   "paths": [
+    "expandable",
+    "expanded"
+   ]
+  },
+  "expect": {
+   "expandable": false,
+   "expanded": false
+  }
+ },
+ {
+  "id": "structure-expanded-fields",
+  "kind": "expanded",
+  "origin": "rule: an opened solution carries purpose, approach, metric with its latest value, selected implementation and milestones",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "expanded": [
+    "root-sol"
+   ],
+   "solution": "root-sol",
+   "paths": [
+    "detail.fields.purpose",
+    "detail.fields.approach",
+    "detail.fields.metric.name",
+    "detail.fields.metric.latest.balanced",
+    "detail.fields.metric.latest.impl",
+    "detail.fields.selected.name",
+    "detail.fields.milestones.0.text",
+    "detail.fields.milestones.0.met",
+    "detail.fields.milestones.1.met"
+   ]
+  },
+  "expect": {
+   "detail.fields.purpose": "Root purpose text.",
+   "detail.fields.approach": "Root approach text.",
+   "detail.fields.metric.name": "Root Metric",
+   "detail.fields.metric.latest.balanced": "0.91",
+   "detail.fields.metric.latest.impl": "arm_a",
+   "detail.fields.selected.name": "Arm A Name",
+   "detail.fields.milestones.0.text": "First goal",
+   "detail.fields.milestones.0.met": true,
+   "detail.fields.milestones.1.met": false
+  }
+ },
+ {
+  "id": "structure-expanded-problems-and-ideals",
+  "kind": "expanded",
+  "origin": "rule: an opened solution carries its problems and ideals with their fields",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "expanded": [
+    "root-sol"
+   ],
+   "solution": "root-sol",
+   "paths": [
+    "detail.connections.problems.0.name",
+    "detail.connections.problems.0.problem",
+    "detail.connections.problems.0.why_it_matters",
+    "detail.connections.problems.1.known",
+    "detail.connections.ideals.0.principle",
+    "detail.connections.ideals.0.state_description"
+   ]
+  },
+  "expect": {
+   "detail.connections.problems.0.name": "Problem One",
+   "detail.connections.problems.0.problem": "Problem one text.",
+   "detail.connections.problems.0.why_it_matters": "Problem one matters.",
+   "detail.connections.problems.1.known": false,
+   "detail.connections.ideals.0.principle": "Ideal one principle.",
+   "detail.connections.ideals.0.state_description": "Ideal one state."
+  }
+ },
+ {
+  "id": "structure-expanded-delegates",
+  "kind": "expanded",
+  "origin": "rule: an opened solution carries the solutions it delegates to with their fields",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "expanded": [
+    "root-sol"
+   ],
+   "solution": "root-sol",
+   "paths": [
+    "detail.connections.delegates.0.name",
+    "detail.connections.delegates.0.purpose",
+    "detail.connections.delegates.1.approach",
+    "detail.connections.delegates.2.known"
+   ]
+  },
+  "expect": {
+   "detail.connections.delegates.0.name": "Child A",
+   "detail.connections.delegates.0.purpose": "Child A purpose text.",
+   "detail.connections.delegates.1.approach": "Child B approach text.",
+   "detail.connections.delegates.2.known": false
+  }
+ },
+ {
+  "id": "structure-expanded-only-the-opened",
+  "kind": "expanded",
+  "origin": "rule: opening one solution leaves the others collapsed",
+  "args": {
+   "check": "expanded_ids",
+   "events": "session",
+   "records": "tables",
+   "expanded": [
+    "child-a"
+   ]
+  },
+  "expect": {
+   "expanded": [
+    "child-a"
+   ],
+   "nodes_with_detail": 1
+  }
+ },
+ {
+  "id": "structure-expanded-all",
+  "kind": "expanded",
+  "origin": "rule: the star opens every known and unknown node",
+  "args": {
+   "check": "expanded_ids",
+   "events": "session",
+   "records": "tables",
+   "expanded": [
+    "*"
+   ]
+  },
+  "expect": {
+   "expanded": [
+    "root-sol",
+    "child-a",
+    "ghost-sol",
+    "child-b"
+   ],
+   "nodes_with_detail": 4
+  }
+ },
+ {
+  "id": "structure-unknown-solution",
+  "kind": "unknown",
+  "origin": "rule: an id the records lack is shown by its id and listed as unknown",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "solution": "ghost-sol",
+   "paths": [
+    "name",
+    "known",
+    "state"
+   ]
+  },
+  "expect": {
+   "name": "ghost-sol",
+   "known": false,
+   "state": "met"
+  }
+ },
+ {
+  "id": "structure-unknown-listed",
+  "kind": "unknown",
+  "origin": "rule: the unknown ids are listed once",
+  "args": {
+   "check": "top",
+   "events": "session",
+   "records": "tables",
+   "paths": [
+    "unknown"
+   ]
+  },
+  "expect": {
+   "unknown": [
+    "ghost-sol"
+   ]
+  }
+ },
+ {
+  "id": "structure-unknown-opened",
+  "kind": "unknown",
+  "origin": "rule: opening an unknown solution says there is no record and raises nothing",
+  "args": {
+   "check": "node",
+   "events": "session",
+   "records": "tables",
+   "expanded": [
+    "ghost-sol"
+   ],
+   "solution": "ghost-sol",
+   "paths": [
+    "detail.known",
+    "detail.note",
+    "detail.fields"
+   ]
+  },
+  "expect": {
+   "detail.known": false,
+   "detail.note": "no record for this solution",
+   "detail.fields": {}
+  }
+ },
+ {
+  "id": "structure-unknown-no-records",
+  "kind": "unknown",
+  "origin": "rule: with no records every solution is unknown and opening one is safe",
+  "args": {
+   "check": "top",
+   "events": "session",
+   "records": "none",
+   "expanded": [
+    "root-sol"
+   ],
+   "paths": [
+    "unknown",
+    "expanded"
+   ]
+  },
+  "expect": {
+   "unknown": [
+    "child-a",
+    "child-b",
+    "ghost-sol",
+    "root-sol"
+   ],
+   "expanded": [
+    "root-sol"
+   ]
+  }
+ }
+]

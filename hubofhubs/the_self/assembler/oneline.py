@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Mapping, Optional, Tuple
 from esoi import entry as esoi_entry
 
 from hubofhubs.the_world.tools.deep import ProgressEvent
-from hubofhubs.the_consciousness.terminal.trace import progress_event, project
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace import progress_event, project
 from hubofhubs.the_self.assembler.resolution import HUB, process_environment
 
 

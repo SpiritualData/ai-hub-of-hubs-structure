@@ -43,14 +43,14 @@ the solution's folder is a sub-intent with an `intent.csv`.
 | `deep/` | `the_world/tools/delegated_agent_sessions` |
 | `websearch/`, `science/` | `the_world/tools/web_search`, `the_world/science` |
 | `models/`, `tiers.py` | `the_world/model_plumbing/vendor_model_caller`, `model_tier_chooser`, `via_vendor.py` |
-| `recall/` | `the_body/internal_context/card_store` (the store and its upkeep), `the_intelligence/subconscious/cards_from_files`, `context_retriever/context_cards`, `context_retriever/assemblers` |
+| `recall/` | `the_body/internal_context/card_store` (the store and its upkeep), `the_intelligence/subconscious/local_file_context/cards_from_files`, `context_retriever/context_cards`, `context_retriever/assemblers` |
 | `retrieval/` | `the_intelligence/subconscious/context_retriever` |
 | `orchestrate/` | `the_intelligence/mind/{context_intake,planner,delegation,response_writer}`, `critical_thinking/metric_translation` |
 | `critique/` | `the_intelligence/critical_thinking/{goal_completion,response_quality}` |
-| `consciousness/`, `terminal/`, `quality.py` | `the_consciousness/{representatives,judgment_calls,request_intake,terminal}` |
+| `consciousness/`, `terminal/`, `quality.py` | `the_consciousness/{representatives,judgment_calls,request_intake,ai_session_experience}` (the terminal is `ai_session_experience/terminal_experience`) |
 | `intake/` | `the_body/intake_sources` |
 | `proactivity/`, `risk.py`, `consent_gate.py`, `signals.py` | `the_intelligence/proactivity`, `the_intelligence/nervous_system` (the overseer is a helper of Delegation) |
-| `ports/` | beside the solution each Protocol serves (`the_world/tools/deep.py`, `the_world/model_plumbing/model.py`, `the_body/internal_context/context.py`, `the_consciousness/terminal/trace.py`, ...) |
+| `ports/` | beside the solution each Protocol serves (`the_world/tools/deep.py`, `the_world/model_plumbing/model.py`, `the_body/internal_context/context.py`, `the_consciousness/ai_session_experience/terminal_experience/trace.py`, ...) |
 | `evidence_summary.py`, `measure.py`, `doctrine.py` and the generators | `the_self/integrity` |
 
 ## Why it is shaped this way

@@ -1,8 +1,10 @@
 # Working with the AI while it works
 
 The experience of a person beside an AI that is doing deep work: watching it, stopping it, steering it, trusting it, and understanding what is
-unusual about it. The hub holds the contract and a reference terminal in the Terminal Session solution of Consciousness
-(`hubofhubs/the_consciousness/terminal/`); a consumer's terminal, chat page and task modal consume the same contract. Researched 2026-11-10.
+unusual about it. The hub holds the contract in the AI Session Experience solution of Consciousness
+(`hubofhubs/the_consciousness/ai_session_experience/`), with three children: Terminal Experience (the reference terminal), Frontend Interface (the contract
+as plain data for a web or mobile frontend) and Structure In View (which solutions the AI is working on, opened only on request). A consumer's terminal, chat page
+and task modal consume the same contract. Researched 2026-11-10.
 
 ## The requirements
 
@@ -120,17 +122,22 @@ The owner's earlier rules, from the records and design pages of the hub and its 
 
 | Part | Lives in | Why |
 |---|---|---|
-| The event and control contract, the adapters from today's runners, the reference terminal, the scripted harnesses and the metric | the hub, Terminal Session (Consciousness) | harness independent and consumer free; a second consumer gets the experience from one line |
+| The event and control contract, the adapters from today's runners, the reference terminal, the scripted harnesses and the metric | the hub, AI Session Experience and Terminal Experience (Consciousness) | harness independent and consumer free; a second consumer gets the experience from one line |
 | Its settings, its Textual screen, its data model, its words for its own product | the consumer | they know the consumer's product |
 | The wire a web page reads | the consumer's backend maps its stream to the same events and the page draws one component | one component for steps, helpers, cost and files in chat and in the task modal |
 
-**Placement decision.** The experience of a person working with the AI while it works is the `terminal-session` solution widened, not a new solution and not
-a sibling. The hub's rule is to extend before adding. Against each sibling: Request Intake takes in what people ask before a run starts; Judgment Calls
+**Placement decision.** The experience of a person working with the AI while it works was first the `terminal-session` solution widened, not a new solution and not
+a sibling. The owner then decided the surfaces are children: AI Session Experience (`ai-session-experience`) is now the parent that keeps the shared contract (events,
+controls and the harness adapters), Terminal Experience keeps the id `terminal-session`, the reference terminal and the scripted metric, Frontend Interface
+(`frontend-interface`) carries the contract as plain data for a separate frontend, and Structure In View (`structure-in-view`) shows how ESOI is involved in what
+the AI is doing. The parent is a sub-intent (`ai_session_experience`) and not only a solution with folders because its parts need their own paragraph saying how
+they share one contract; each child is separate because it has its own alternatives and its own metric (a terminal, a wire shape and a tree of solutions fail in
+different ways). The text below is the original reasoning for extending before adding. The hub's rule is to extend before adding. Against each sibling: Request Intake takes in what people ask before a run starts; Judgment Calls
 decides whether to ask (a decision, not a screen); Prioritization orders what reaches the person; Representatives carry a person's authority and quality
 profile; Feedback Learning edits specs from feedback. None of them draws a run or takes a stop, a correction or an approval while it works, and a sibling
 would need the same metric and the same arms as Terminal Session. Its id and interface (`Conversing`, entry `converse`) stay, its display name is now
 AI Session Experience, its purpose is the whole experience, the interface gains `attend`, and the plain line REPL stays as the baseline arm. The registry caps
-seats at 15 and the area `terminal_agent_experience` is seated on the existing `judgment-calls` seat instead of a sixteenth.
+seats at 15 groups and the area `terminal_agent_experience` is seated on Terminal Experience, which counts under the group of AI Session Experience.
 
 ## The contract
 

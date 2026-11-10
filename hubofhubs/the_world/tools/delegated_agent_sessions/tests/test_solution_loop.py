@@ -615,7 +615,7 @@ def test_long_standing_context_is_kept_in_the_system_text_and_a_corpus_is_mapped
 
 
 def test_an_injected_selection_chooses_the_view_and_the_folders_left_out_are_in_the_map(tmp_path):
-    from hubofhubs.the_intelligence.subconscious.folder_view.choice import FolderChoice, LeftOut, Pick
+    from hubofhubs.the_intelligence.subconscious.local_file_context.folder_view.choice import FolderChoice, LeftOut, Pick
     root = folder(tmp_path, **{"a.txt": "alpha\n", "b.txt": "beta\n", "cache_dir::c.txt": "gamma\n"})
     seen = []
 

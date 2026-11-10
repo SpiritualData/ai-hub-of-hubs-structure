@@ -52,7 +52,7 @@ answer found; the selector is keyword IDF, not production's hybrid.
    The details give each kind's raw and counted results, the store, the topic numbers and the build.
 
 A builder that puts many files in one card pushes the needed file past the third position and fills the view, so `broken/` holds three
-degenerate builders (every file in one card, two cards, one card per folder) that must be right on no topic case; `hubofhubs/the_intelligence/subconscious/cards_from_files/tests/test_topic_cards.py`
+degenerate builders (every file in one card, two cards, one card per folder) that must be right on no topic case; `hubofhubs/the_intelligence/subconscious/local_file_context/cards_from_files/tests/test_topic_cards.py`
 proves it on the real corpus, and proves that a card per file, right on many cases, counts none.
 
 ## Arms
@@ -64,7 +64,7 @@ proves it on the real corpus, and proves that a card per file, right on many cas
 | Model-written topic cards (`llm_topic_cards`) | topic cards a model writes from sampled files, duplicates merged | model calls on every build; listed in `paid_arms` |
 | Topic cards replay (`topic_cards_replay`) | the 103 topic cards of the one paid `llm_topic_cards` build (id 75f9da90), replayed from `datasets/replays/` | none |
 | File plus topic cards (`file_plus_topic_cards`) | `per_file_symbols` cards plus those topic cards (ids prefixed `topic-`); keeps a card per file, so the store term takes its score | none |
-| Cochange topic cards (`cochange_topic_cards`), import graph topic cards (`import_graph_topic_cards`) | topic cards grouped from the co-change history or the import graph, no model (`hubofhubs/the_intelligence/subconscious/cards_from_files/cards_from_topics.py`) | none |
+| Cochange topic cards (`cochange_topic_cards`), import graph topic cards (`import_graph_topic_cards`) | topic cards grouped from the co-change history or the import graph, no model (`hubofhubs/the_intelligence/subconscious/local_file_context/cards_from_files/cards_from_topics.py`) | none |
 | One card (`one_card`), two cards (`two_cards`), one card per folder (`one_card_per_folder`) | baselines, see above | none |
 
 The paid build is persisted once, so it is never bought again for the same code: `datasets/replays/llm_topic_cards_75f9da90.json`

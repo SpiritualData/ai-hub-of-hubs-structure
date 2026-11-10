@@ -30,7 +30,7 @@ from concurrent.futures import ThreadPoolExecutor
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from hubofhubs.the_intelligence.subconscious.cards_from_files.conversation_format import parse_date_bound, timestamp_in_range
+from hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.conversation_format import parse_date_bound, timestamp_in_range
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.reference_resolver import _render_unresolved
 
 # ---------------------------------------------------------------------------

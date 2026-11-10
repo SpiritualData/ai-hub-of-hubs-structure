@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from hubofhubs.the_body.internal_context.card_store.card import Card
-from hubofhubs.the_intelligence.subconscious.cards_from_files.knowledge_cards import QUARANTINED, cards_of
+from hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.knowledge_cards import QUARANTINED, cards_of
 from hubofhubs.the_intelligence.subconscious.context_retriever.knowledge_pick import pick
 from hubofhubs.the_intelligence.subconscious.solution_briefs import briefs
 from hubofhubs.the_intelligence.subconscious.relevant_solutions.network import network_of, split_knowledge

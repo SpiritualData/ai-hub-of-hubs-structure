@@ -7,7 +7,7 @@ solution card and one card per item, retired items quarantined), and the selecte
 Standard library plus the hub."""
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
-from hubofhubs.the_intelligence.subconscious.cards_from_files.knowledge_cards import active, cards_of
+from hubofhubs.the_intelligence.subconscious.local_file_context.cards_from_files.knowledge_cards import active, cards_of
 from hubofhubs.the_intelligence.subconscious.context_retriever.knowledge_pick import pick, section
 
 RETRIEVED, ALL, NONE = "retrieved", "all", "none"

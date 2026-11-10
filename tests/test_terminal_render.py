@@ -4,11 +4,11 @@ from pathlib import Path
 
 from hubofhubs.the_world.tools.deep import ProgressEvent
 from hubofhubs.the_world.tools.events import EVENT_DECISION, EVENT_INTERIM, EVENT_RESULT, EVENT_WORK_TRACE
-from hubofhubs.the_consciousness.terminal import (
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import (
     Ask, Block, TerminalState, answer_ask, ask_block, close_ask, continue_message, earlier_preview, fold_ask, interim_message, parse_answer,
     render, settle, to_text, toggle_trail, toggle_updates, unfold_ask)
 
-PACKAGE = Path(__file__).resolve().parent.parent / "hubofhubs" / "terminal"
+PACKAGE = Path(__file__).resolve().parent.parent / "hubofhubs" / "the_consciousness" / "ai_session_experience" / "terminal_experience"
 
 
 def trace(step, state="running", read=1, items=None, kind="sources", counts=None):
@@ -122,7 +122,7 @@ def test_the_final_folds_every_interim_and_the_row_expands_in_place():
 
 def test_a_replayed_message_shows_once_and_the_preview_is_cut_at_a_word():
     a, b = interim_message("t", 1, "Same."), interim_message("t", 1, "Same again.")
-    from hubofhubs.the_consciousness.terminal import group
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import group
     earlier, latest = group([a, b])
     assert earlier == [] and latest.text == "Same again."
     long = interim_message("t", 1, "word " * 60)
@@ -223,7 +223,7 @@ def test_the_renderers_import_no_ui_library_and_no_consumer():
 
 
 def test_an_unverified_reply_shows_its_words_and_no_continue_while_a_real_stop_keeps_continue():
-    from hubofhubs.the_consciousness.terminal.stopped import stopped_block
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.stopped import stopped_block
     done = stopped_block("stopped", "unverified")
     assert done.text == "Some of this I could not confirm." and done.actions == ()
     assert stopped_block("stopped", "attempt_cap").actions

@@ -150,12 +150,12 @@ EVENT_WORK_TRACE = "work_trace"  # one unit of work the run did FOR THE READER (
 
                                # consulted, a link check), re-sent as it changes; the latest event for a
                                # ``step_id`` replaces earlier ones. Carries ``data`` = a ``WorkTraceEvent``
-                               # dict (``hubofhubs.the_consciousness.terminal.trace``), already projected through the allowlist:
+                               # dict (``hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace``), already projected through the allowlist:
                                # counts, domains and titles only, never queries, content or reasoning.
                                # LIVE-only like ``exec``: it is NOT in SURFACING_EVENTS, so a BACKGROUND
                                # run drops it.
 
-EVENT_SESSION = "session"      # one event of the session contract (``hubofhubs.the_consciousness.terminal.session_events``): a step, a helper's start or end, a
+EVENT_SESSION = "session"      # one event of the session contract (``hubofhubs.the_consciousness.ai_session_experience.session_events``): a step, a helper's start or end, a
                                # message taken up, the calls and cost so far. ``data`` = the event's ``to_dict``-shaped dict. LIVE-only like ``exec``.
 
 # The event types a BACKGROUND (MilestoneSink) run forwards. Everything else is dropped as

@@ -11,11 +11,11 @@ from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from hubofhubs.the_consciousness.terminal.scripted import KITS, check, delegate, edit, read, report, run, tree_kit, turn, use  # noqa: E402
-from hubofhubs.the_consciousness.terminal.session_adapters import report_events  # noqa: E402
-from hubofhubs.the_consciousness.terminal.session_events import Step, Steer  # noqa: E402
-from hubofhubs.the_consciousness.terminal.session_keys import ScriptedKeys  # noqa: E402
-from hubofhubs.the_consciousness.terminal.session_view import replay, step_row  # noqa: E402
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.scripted import KITS, check, delegate, edit, read, report, run, tree_kit, turn, use  # noqa: E402
+from hubofhubs.the_consciousness.ai_session_experience.session_adapters import report_events  # noqa: E402
+from hubofhubs.the_consciousness.ai_session_experience.session_events import Step, Steer  # noqa: E402
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_keys import ScriptedKeys  # noqa: E402
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import replay, step_row  # noqa: E402
 
 
 def attend(arm, kit, keys, live=False):

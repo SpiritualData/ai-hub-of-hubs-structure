@@ -26,8 +26,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Agent Action Format | `agent-action-format` | `hubofhubs.run("agent-action-format", {'reply': 'RUN: echo hello', 'working_dir': '.'})` | Either format (`any_format`) | Scripted actions executed as intended, per format |
-| Command Execution | `command-execution` | `hubofhubs.run("command-execution", {'command': 'echo hello', 'working_dir': '.'})` | Bubblewrap wrapper (`bubblewrap_wrapper`) | Commands run, refused and contained as scripted |
+| Agent Action Format | `agent-action-format` | `hubofhubs.run("agent-action-format", {'reply': 'READ: README.md', 'working_dir': '.'})` | Either format (`any_format`) | Scripted actions executed as intended, per format |
+| Command Execution | `command-execution` | `hubofhubs.run("command-execution", {'command': 'sudo true', 'working_dir': '.'})` | Bubblewrap wrapper (`bubblewrap_wrapper`) | Commands run, refused and contained as scripted |
 | Connected System Operations | `connected-system-operations` | `hubofhubs.run("connected-system-operations", ...)` | none selected | The operation is carried out and nothing else |
 | Delegated Agent Sessions | `delegated-agent-sessions` | `hubofhubs.run("delegated-agent-sessions", ...)` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions), A run finds what it needs instead of asking |
 | File Editing | `file-editing` | `hubofhubs.run("file-editing", ...)` | One-call file edit (`fast_edit`) | Goal met by its own tests |
