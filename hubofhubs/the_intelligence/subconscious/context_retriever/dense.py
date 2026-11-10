@@ -12,7 +12,8 @@ from esoi import implementation
 
 from hubofhubs.the_self.assembler import arm_needs as needs
 from hubofhubs.the_intelligence.subconscious.context_retriever.base import Retriever
-from hubofhubs.the_intelligence.subconscious.context_retriever.units import Corpus
+from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_directory
+from hubofhubs.the_intelligence.subconscious.context_retriever.units import CACHE_FOLDER, Corpus
 
 MODEL = "BAAI/bge-small-en-v1.5"
 QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
@@ -31,7 +32,8 @@ class VectorCache:
         import numpy as np
         self.np = np
         self.model = model
-        self.path = Path(folder or Path(tempfile.gettempdir()) / "hubofhubs_retrieval") / f"vectors_{model.replace('/', '_')}.npz"
+        folder = folder or private_directory(CACHE_FOLDER) or tempfile.mkdtemp(prefix=f"{CACHE_FOLDER}-")   # never a folder another account may write
+        self.path = Path(folder) / f"vectors_{model.replace('/', '_')}.npz"
         self.vectors: Dict[str, Any] = {}
         self.dirty = False
         if self.path.is_file():

@@ -305,20 +305,37 @@ def build_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object
                   meta={p: dict(m) for p, m in (meta or {}).items() if p in known})
 
 
+#: The name of the retrieval cache folder (the corpus here, the vectors of the dense arm); ``private_directory`` makes it this account's own.
+CACHE_FOLDER = "hubofhubs_retrieval"
+
+
 def cached_corpus(files: Mapping[str, str], history: Sequence[Mapping[str, object]] = (), unit: str = "chunk", folder: Optional[str] = None,
                   meta: Optional[Mapping[str, Mapping[str, object]]] = None) -> Corpus:
-    """``build_corpus`` kept on disk by the digest of its inputs, so a rerun over the same files and history skips the cutting and tokenizing."""
+    """``build_corpus`` kept on disk by the digest of its inputs, so a rerun over the same files and history skips the cutting and tokenizing.
+
+    The cache is a pickle, which runs code when it is read, so the default folder is this account's own
+    (``private_directory``); with no such folder and none given, nothing is cached. A caller that names ``folder``
+    answers for who can write there."""
+    import os
     import pickle
-    import tempfile
     from pathlib import Path
+    from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_directory
+    folder = folder or private_directory(CACHE_FOLDER)
+    if not folder:
+        return build_corpus(files, history, unit, meta)
     digest = digest_of(files, history, unit, meta)
-    path = Path(folder or Path(tempfile.gettempdir()) / "hubofhubs_retrieval") / f"corpus_{digest}.pkl"
+    path = Path(folder) / f"corpus_{digest}.pkl"
     if path.is_file():
         try:
             return pickle.loads(path.read_bytes())
         except Exception:  # noqa: BLE001  an unreadable cache is rebuilt
             pass
     corpus = build_corpus(files, history, unit, meta)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(pickle.dumps(corpus))
+    try:  # written whole under another name, then renamed, so a reader never meets half a file
+        path.parent.mkdir(parents=True, exist_ok=True)
+        partial = path.with_name(f"{path.name}.{os.getpid()}.part")
+        partial.write_bytes(pickle.dumps(corpus))
+        os.replace(partial, path)
+    except OSError:  # a cache that cannot be written costs the next run a rebuild, never this one its answer
+        pass
     return corpus

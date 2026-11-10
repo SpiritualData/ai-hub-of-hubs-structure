@@ -58,3 +58,20 @@ def test_the_mix_is_set_by_the_pinned_file_cases():
     sys.path.insert(0, str(Path(__file__).resolve().parents[5] / "evaluation"))
     from context_retrieval import mix
     assert mix.counts(dict(file=63, topic=150, orientation=63, none=48)) == dict(file=63, topic=126, orientation=32, none=32)
+
+
+def test_the_corpus_cache_defaults_to_a_private_folder_and_is_written_whole(tmp_path, monkeypatch):
+    import os
+    import tempfile
+    from hubofhubs.the_intelligence.subconscious.context_retriever import units
+    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
+    files = {"a.md": "# Title\n\nsome words about caching\n"}
+    first = units.cached_corpus(files)
+    folder = tmp_path / f"{units.CACHE_FOLDER}-{os.getuid()}"
+    assert [p.suffix for p in folder.iterdir()] == [".pkl"]                  # in this account's folder, no partial file left
+    assert not (tmp_path / units.CACHE_FOLDER).exists()                      # never the shared name
+    assert units.cached_corpus(files).digest == first.digest
+    os.chmod(folder, 0o777)                                                  # a folder others can write is not read from
+    import pickle
+    monkeypatch.setattr(pickle, "loads", lambda data: (_ for _ in ()).throw(AssertionError("read an unsafe cache")))
+    assert units.cached_corpus(files).digest == first.digest

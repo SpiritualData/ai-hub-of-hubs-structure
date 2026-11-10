@@ -20,16 +20,17 @@ zero-argument callable here (``effort``, ``haiku_thinking_tokens``, ``environmen
 from __future__ import annotations
 
 import json
+import logging
 import os
 import shutil
 import subprocess
 from functools import lru_cache
-import tempfile
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
 from esoi import implementation
 
+from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_directory
 from hubofhubs.the_self.assembler import arm_needs as needs
 from hubofhubs.the_world.tools.delegated_agent_sessions.settings import UsageLimits
 from hubofhubs.the_world.model_plumbing.model import ModelProviderBase
@@ -110,6 +111,9 @@ _PURE_COMPLETION_SYSTEM = (
 _EFFORT_LEVELS = ("low", "medium", "high", "xhigh", "max")
 
 
+log = logging.getLogger(__name__)
+
+
 def value_of(setting: Any) -> Any:
     """A setting that is either a value or a zero-argument callable re-read on every use (a consumer that tunes it while the
     process runs passes the callable)."""
@@ -155,12 +159,17 @@ def _neutral_cwd() -> str:
     and `mkdir(exist_ok=True)`-ensured on every call instead, which is self-healing at the cost of
     one cheap, idempotent syscall per model call.
     """
+    # This account's own folder (``private_directory``), never a fixed name another account on the
+    # machine could make first: the CLI takes project instructions and settings from its working
+    # directory, so a folder someone else can write is someone else steering this account's calls.
     try:
-        d = Path(tempfile.gettempdir()) / "hubofhubs-cli-completion"
-        d.mkdir(parents=True, exist_ok=True)
-        return str(d)
+        d = private_directory("hubofhubs-cli-completion")
     except Exception:  # noqa: BLE001 -- never let scratch-dir trouble break a model call
-        return None  # type: ignore[return-value]
+        d = None
+    if d is None:
+        log.warning("no private scratch folder for the claude CLI; this call runs in the caller's working directory "
+                    "and reads the instructions above it")
+    return d  # type: ignore[return-value]
 
 
 @lru_cache(maxsize=8)
@@ -697,7 +706,9 @@ class ClaudeCliProvider(ModelProviderBase):
             # Not a hiccup: nothing further in this turn can run, so let the caller stop and wait
             # rather than planning on an empty default decision.
             raise
-        except Exception:  # noqa: BLE001, a planner hiccup must never break the loop
+        except Exception as exc:  # noqa: BLE001, a planner hiccup must never break the loop
+            # Said aloud: an empty decision from a failed call must not read as the planner choosing nothing.
+            log.warning("claude CLI planner call failed (%s: %s); returning an empty decision", type(exc).__name__, exc)
             return {}
         return extract_json_object(text)
 

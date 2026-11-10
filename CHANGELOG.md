@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Scratch folders are per account: `private_directory` (`hubofhubs.the_body.internal_context.run_store.jsonl_ledger`) gives `<temp>/<name>-<uid>` at mode 0700 and refuses a link or a folder another account can write. The retrieval caches (`cached_corpus`, `VectorCache`) and the working directory of the `claude_cli` arm use it in place of a fixed name under the temp folder, where a second account on the machine could plant a pickle or project settings. The corpus cache is written whole, then renamed.
+- `claude_cli`: a planner call that fails is logged with its error before the empty decision is returned, and a call with no private scratch folder says so.
+- Records: the `disadvantages` cell of `metric-upkeep:record_fields` is quoted (its comma had shifted `filepath`, `uses_solution_ids` and `sub_intent`), and `hprob-context-too-broad-or-missing` links back to Relevant Solutions.
+
 ## 0.6.0 (2026-11-08)
 
 - Relevant Solutions gate (`hubofhubs.the_intelligence.subconscious.relevant_solutions.gate`): a model pass only for solutions at or above a records-index score (73 by default, fixed from the hub's 62 relevance cases by the precision-at-least-half rule; `threshold_from_cases` re-derives it for a consumer's own records).

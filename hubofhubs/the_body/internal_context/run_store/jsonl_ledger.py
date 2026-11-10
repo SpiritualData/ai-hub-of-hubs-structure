@@ -1,11 +1,13 @@
 """The folder a keyed JSON-lines ledger is kept in. The file-per-key store itself is esoi's ``RunFiles``
 (``esoi.optimization.keep_metric_record.metric_results``): a tool-call ledger and a metric ledger both use it, because both are records "kept by the runner and
 never by a model", written by two processes at once (the brain, and a worker's shell command). This module adds only where
-such a ledger lives."""
+such a ledger lives, and where one account keeps scratch files no other account may plant or read."""
 from __future__ import annotations
 
 import os
+import stat
 import tempfile
+from typing import Optional
 
 
 def default_directory(name: str) -> str:
@@ -25,3 +27,26 @@ def default_directory(name: str) -> str:
     else:
         usable = os.access(tempfile.gettempdir(), os.W_OK | os.X_OK)
     return shared if usable else f"{shared}-{os.getuid()}"
+
+
+def private_directory(name: str) -> Optional[str]:
+    """A scratch folder only this account can write: ``<temp>/<name>-<uid>``, mode 0700, made on each call if it is gone.
+
+    A fixed name straight under the temp folder belongs to whichever account makes it first, and another account then
+    reads whatever that one put there: a cache file it would unpickle, or a folder a command-line tool would take its
+    project settings from. So the folder is this account's own, and it is used only when it really is: a real folder
+    (not a link), owned by this account, writable by nobody else. ``None`` when that cannot be had; the caller then
+    works without the folder and never falls back to a shared one.
+    """
+    uid = os.getuid() if hasattr(os, "getuid") else None
+    path = os.path.join(tempfile.gettempdir(), name if uid is None else f"{name}-{uid}")
+    try:
+        os.makedirs(path, mode=0o700, exist_ok=True)
+        info = os.lstat(path)
+    except OSError:
+        return None
+    if not stat.S_ISDIR(info.st_mode):
+        return None
+    if uid is not None and (info.st_uid != uid or info.st_mode & 0o022):
+        return None
+    return path
