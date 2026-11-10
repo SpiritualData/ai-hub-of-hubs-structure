@@ -58,6 +58,8 @@ def test_invoke_error_surfaces_stdout_envelope(monkeypatch):
         return P()
 
     monkeypatch.setattr(subprocess, "run", fake_run)
+
+    monkeypatch.setattr(ccp, "run_in_group", fake_run)
     try:
         provider._invoke("hi", model="haiku")
         raise AssertionError("expected RuntimeError")
@@ -209,6 +211,7 @@ def test_invoke_uses_neutral_cwd_and_bare_tools_flag(monkeypatch):
 
     monkeypatch.setattr(ccp, "_supported_flags", fake_supported_flags)
     monkeypatch.setattr(subprocess_module, "run", fake_run)
+    monkeypatch.setattr(ccp, "run_in_group", fake_run)
     p._invoke("hi", model="haiku")
 
     assert captured["cwd"] == ccp._neutral_cwd()
@@ -305,6 +308,7 @@ def _argv_for(monkeypatch, *, help_text, system=None):
 
     ccp._supported_flags.cache_clear()
     monkeypatch.setattr(ccp.subprocess, "run", fake_run)
+    monkeypatch.setattr(ccp, "run_in_group", fake_run)
     provider = ClaudeCliProvider(claude_path="/nonexistent/claude")
     provider._invoke("hello", model="haiku", system=system)
     ccp._supported_flags.cache_clear()
@@ -427,6 +431,7 @@ def _envs_for_plan_and_answer(monkeypatch, **provider_kwargs):
 
     ccp._supported_flags.cache_clear()
     monkeypatch.setattr(ccp.subprocess, "run", fake_run)
+    monkeypatch.setattr(ccp, "run_in_group", fake_run)
     provider = ClaudeCliProvider(claude_path="/nonexistent/claude", environment={"HOME": "/h"}, **provider_kwargs)
     provider.plan("decide", model="haiku", tool_schema={"input_schema": {"type": "object"}})
     provider.answer([{"role": "user", "content": "hi"}], model="haiku")
@@ -464,6 +469,7 @@ def _captured_thinking_env(monkeypatch, model, *, thinking_tokens=None, haiku_ca
 
     monkeypatch.setattr(ccp, "_supported_flags", lambda binary: frozenset(ccp._ONE_SHOT_FLAGS.keys()))
     monkeypatch.setattr(subprocess_module, "run", fake_run)
+    monkeypatch.setattr(ccp, "run_in_group", fake_run)
     ClaudeCliProvider(environment={"HOME": "/h"}, haiku_thinking_tokens=haiku_cap)._invoke("hi", model=model, thinking_tokens=thinking_tokens)
     return captured["env"].get("MAX_THINKING_TOKENS")
 
@@ -501,6 +507,7 @@ def test_without_an_environment_the_child_inherits_it_and_the_removals_ride_on_e
 
     ccp._supported_flags.cache_clear()
     monkeypatch.setattr(ccp.subprocess, "run", fake_run)
+    monkeypatch.setattr(ccp, "run_in_group", fake_run)
     ClaudeCliProvider(claude_path="/nonexistent/claude", plan_thinking_tokens=0)._invoke("hi", model="haiku", thinking_tokens=0)
     ccp._supported_flags.cache_clear()
     cmd = seen["cmd"]
@@ -530,6 +537,7 @@ def test_a_usage_limit_is_a_typed_error_from_the_collaborator():
     ccp._supported_flags.cache_clear()
     with pytest.MonkeyPatch.context() as m:
         m.setattr(ccp.subprocess, "run", fake_run)
+        m.setattr(ccp, "run_in_group", fake_run)
         with pytest.raises(ccp.UsageLimitError) as err:
             provider._invoke("hi", model="haiku")
         assert err.value.limit.message == "resets soon"
@@ -565,3 +573,26 @@ def test_an_offline_environment_refuses_to_start_any_model_process(tmp_path, mon
     ClaudeCliProvider(environment={"PATH": only_here}).answer([{"role": "user", "content": "hi"}], model="haiku")
     assert log.exists()
     ccp._supported_flags.cache_clear()
+
+
+def test_run_in_group_timeout_kills_grandchildren(tmp_path):
+    import os
+    import subprocess
+    import time
+
+    pidfile = tmp_path / "grandchild.pid"
+    start = time.time()
+    with pytest.raises(subprocess.TimeoutExpired):
+        ccp.run_in_group(["sh", "-c", f"sleep 30 & echo $! > {pidfile}; sleep 30"],
+                         input=b"", env=None, cwd=None, timeout=1)
+    assert time.time() - start < 8
+    grandchild = int(pidfile.read_text())
+    gone = False
+    for _ in range(20):
+        try:
+            os.kill(grandchild, 0)
+        except ProcessLookupError:
+            gone = True
+            break
+        time.sleep(0.1)
+    assert gone

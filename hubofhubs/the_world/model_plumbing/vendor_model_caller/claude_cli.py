@@ -23,6 +23,7 @@ import json
 import logging
 import os
 import shutil
+import signal
 import subprocess
 from functools import lru_cache
 from pathlib import Path
@@ -170,6 +171,34 @@ def _neutral_cwd() -> str:
         log.warning("no private scratch folder for the claude CLI; this call runs in the caller's working directory "
                     "and reads the instructions above it")
     return d  # type: ignore[return-value]
+
+
+def run_in_group(cmd, *, input, env, cwd, timeout) -> "subprocess.CompletedProcess":
+    """Run ``cmd`` in its own process group; on timeout kill the whole group, not just the child.
+
+    ``subprocess.run`` kills only the direct child on timeout and then waits for the pipes to
+    close, so a grandchild holding stdout/stderr can hang the call past its timeout and live on
+    as an orphan. Here the group is killed with SIGKILL, the pipes are drained for a bounded
+    moment, and the original ``TimeoutExpired`` is re-raised. Any other interruption of the wait
+    (a Ctrl-C in the caller) ends the group the same way, since a session of its own gets no terminal signal.
+    """
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            env=env, cwd=cwd, start_new_session=True)
+    try:
+        out, err = proc.communicate(input, timeout=timeout)
+    except BaseException:  # the timeout, and an interrupt too: its own session no longer hears the terminal's Ctrl-C
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            pass
+        except AttributeError:  # a platform without process groups
+            proc.kill()
+        try:
+            proc.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            pass
+        raise
+    return subprocess.CompletedProcess(cmd, proc.returncode, out, err)
 
 
 @lru_cache(maxsize=8)
@@ -581,13 +610,11 @@ class ClaudeCliProvider(ModelProviderBase):
         if self.disallowed_tools and "--tools" not in supported:
             cmd += ["--disallowed-tools", ",".join(self.disallowed_tools)]
 
-        proc = subprocess.run(
+        proc = run_in_group(
             self.inherit_prefix(thinking_tokens) + cmd,
             input=prompt.encode("utf-8"),
             env=self._build_env(thinking_tokens),
             cwd=_neutral_cwd(),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
             timeout=self.timeout_seconds,
         )
         out = (proc.stdout or b"").decode("utf-8", errors="replace")
