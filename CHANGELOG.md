@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Delegated Agent Sessions, the same repeated comparison on the balanced tier (2026-11-10): over 15 runs each of the three judged deliverables, the hub's own loop passed 14 and Claude Code 8 (one-sided exact test p = 0.018), at under a third of the cost per run and in less time.
 - Delegated Agent Sessions, repeated comparison on the same model (fast tier, 2026-11-09 and 2026-11-10): over 48 runs each of the three judged deliverables of the hard cases, the hub's own loop passed 35 and Claude Code 26 (one-sided exact test p = 0.045), at less than half the cost per run. The deliverable with a limit in one note and the amount used in another passed 4 of 16 for each.
 - `solution_loop_runner`: the files in view at the start of a run are part of the system text, the same at every call, and the message carries only files that changed or were added. A model service keeps a long system text between calls, so a second call, a review and a helper pay a fraction for the source files; a view under `cache_chars` (8,000 characters) stays in the message, where it is cheaper because the instructions alone are then the same for every run (measured: the second of two calls with a shared 60,000-character system text cost one seventeenth of the first).
 - Hard agent-session cases: when the judge passes an item but its quote is not in the evidence word for word, it is asked once to quote again exactly or withdraw the pass, so the judge's own copying no longer fails a deliverable.
