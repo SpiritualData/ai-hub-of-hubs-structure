@@ -184,6 +184,17 @@ and terminator; a fence inside a `REPORT` or an edit block is text. (4) Every ca
 the system text (kept first line as the title in the message, when goal and context fit), the history section is bounded near 20,000 characters (older
 calls shrink first), and each call logs at INFO the size of the system text and of each message section, then the tokens the call reported.
 
+A second real task ended "the model did not use the action protocol" at a high cost, and its log showed a 230,000-character message at every call, written to the cache
+each time (about 82,000 tokens of cache write per call, 32,000 read). Fixed: a system text longer than one argument (about 100 KB) goes to the Claude CLI
+through a private file (`--system-prompt-file`, mode 0600, removed after the call; the runner's `system_chars` setting, default 300,000, says how much stable
+content it may hold). Everything that does not change during a run lives in it, in this order: instructions, goal, context, the folder map as it was at the
+start, the start files; the message holds a one-line goal title, files changed or added since, the history and the note. The view is one budget
+(`view_chars`): files the goal names, then the Folder View's picks, then files only the context names; what does not fit is listed in the map as a file to
+READ. A reply with no action is nudged every time it follows one that acted, the run ends only after two in a row (not met, with the last NOTE, resumable),
+and long prose after work was done is a REPORT candidate. `usage` events carry `cache_read_tokens` and `cache_write_tokens`, and a run ends with one totals
+line. Measured live on the shape of that run (goal 24,000 and context 44,000 characters naming 20 files of 8,000): cache write per call 98,036, 72,671,
+72,735, 72,764, 72,830 before; 55,280, 654, 734, 763 after, with the message at about 300 to 500 characters instead of 224,000.
+
 ## Run it
 
 `python -m hubofhubs.the_consciousness.terminal.live --help`. `--demo loop` runs a scripted session on the hub's own loop, `--demo stream` on a fake

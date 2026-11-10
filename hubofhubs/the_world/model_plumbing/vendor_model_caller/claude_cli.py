@@ -25,6 +25,7 @@ import os
 import shutil
 import signal
 import subprocess
+import tempfile
 import threading
 from functools import lru_cache
 from pathlib import Path
@@ -181,6 +182,7 @@ def _neutral_cwd() -> str:
     return d  # type: ignore[return-value]
 
 
+SYSTEM_ARGUMENT_BYTES = 100_000      # a longer system text (in bytes) is passed as a file, not as one argument
 RUNNING: Dict[int, "subprocess.Popen"] = {}      # thread id -> the completion process that thread is waiting on, so a stop can end it
 
 
@@ -626,11 +628,18 @@ class ClaudeCliProvider(ModelProviderBase):
         # Always passed, because --exclude-dynamic-system-prompt-sections is only honoured
         # alongside it, and because an absent system prompt would otherwise restore the agent's.
         supported = _supported_flags(binary)
+        system_file = ""
+        # A system text longer than one command-line argument may be (the system caps one argument near 128 KiB) goes through a private file the CLI reads.
+        long_system = len((system or "").encode("utf-8")) > SYSTEM_ARGUMENT_BYTES
+        if long_system:
+            handle, system_file = tempfile.mkstemp(prefix="claude-system-", suffix=".txt")      # mode 0600, a random name
+            with os.fdopen(handle, "w", encoding="utf-8") as written:
+                written.write(system)
         if "--exclude-dynamic-system-prompt-sections" in supported:
-            cmd += ["--system-prompt", system or _PURE_COMPLETION_SYSTEM]
+            cmd += ["--system-prompt-file", system_file] if long_system else ["--system-prompt", system or _PURE_COMPLETION_SYSTEM]
         elif system:
             # Older CLI: no way to drop the agent prompt, so keep the previous append behaviour.
-            cmd += ["--append-system-prompt", system]
+            cmd += ["--append-system-prompt-file", system_file] if long_system else ["--append-system-prompt", system]
         for flag in _ONE_SHOT_FLAGS:
             if flag == "--effort":
                 continue           # value-bearing, handled just below
@@ -651,13 +660,20 @@ class ClaudeCliProvider(ModelProviderBase):
         if self.disallowed_tools and "--tools" not in supported and not allow_tools:
             cmd += ["--disallowed-tools", ",".join(self.disallowed_tools)]
 
-        proc = run_in_group(
-            self.inherit_prefix(thinking_tokens) + cmd,
-            input=prompt.encode("utf-8"),
-            env=self._build_env(thinking_tokens),
-            cwd=_neutral_cwd(),
-            timeout=timeout or self.timeout_seconds,
-        )
+        try:
+            proc = run_in_group(
+                self.inherit_prefix(thinking_tokens) + cmd,
+                input=prompt.encode("utf-8"),
+                env=self._build_env(thinking_tokens),
+                cwd=_neutral_cwd(),
+                timeout=timeout or self.timeout_seconds,
+            )
+        finally:
+            if system_file:
+                try:
+                    os.unlink(system_file)
+                except OSError:
+                    pass
         out = (proc.stdout or b"").decode("utf-8", errors="replace")
         if proc.returncode != 0:
             err = (proc.stderr or b"").decode("utf-8", errors="replace").strip()

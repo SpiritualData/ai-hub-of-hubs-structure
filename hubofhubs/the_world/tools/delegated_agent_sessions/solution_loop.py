@@ -43,8 +43,7 @@ LEFT_OUT_LINES = 25               # folders left out that the folder map names, 
 MAP_ENTRIES = 300
 LEXICAL_FILES = 200                # above this many files the folder map is an outline, not a list
 TOOL_LIMIT = 20_000                # characters kept from one tool result (a runbook or a page is read whole where a command's output is clipped)
-GOAL_ROOM = 8_000                  # system text kept free for the start files when a long goal moves into it
-SYSTEM_CHARS = 80_000              # the system text is one command argument for a command-line completion, which the system caps near 128 KiB
+SYSTEM_CHARS = 300_000              # the stable content of a run (instructions, goal, context, map, start files) the system text may hold; a setting of the runner
 NOTHING_NEW = "(nothing has changed or been added since the start: the files shown at the start are current)"
 # The files in view at the start go in the system text, after the instructions: a model service keeps a long system text between calls, so the
 # second call of a run (and a review, and a helper) pays a fraction for them. The message then carries only what changed or was added.
@@ -57,6 +56,7 @@ MAP_FILE_LIMIT = 200_000          # a larger file is not listed or put in view a
 log = logging.getLogger("hubofhubs.deep")
 SNAPSHOT_FILES = 5000
 OLD_RESULT_CHARS = 300
+FINAL_PROSE_CHARS = 300             # a reply with no action this long, after work was done, is taken as a REPORT candidate
 HISTORY_CHARS = 20_000             # the history section of a message passes this and the older calls shrink further
 GOAL_TITLE_CHARS = 200
 COMMAND_LIMIT = 4000
@@ -376,14 +376,28 @@ class View:
         self.skip, self.select = skip, select       # the folders left out (not walked) and the selection that left them out (handed to a helper)
         self.files: "OrderedDict[str, bool]" = OrderedDict()
 
-    def start(self, picks: Sequence[Any]) -> None:
-        """Put the chosen files in view: a named pick is never evicted; the first of the others end up the most recently used, so the last go first
-        when space is needed. A flagged pick (named inside a risky folder) is not shown: the caller decides, and the folder map lists it."""
+    def start(self, picks: Sequence[Any], goal: str = "") -> None:
+        """Put the chosen files in view within ``view_chars`` in all, whoever named them: first the files the goal names, then the Folder View's other picks,
+        then the files only the context names. What does not fit stays out of view (the folder map lists it as a file to READ). A named pick is never
+        evicted later; the first of the others end up the most recently used, so the last go first when space is needed. A flagged pick (named inside a
+        risky folder) is not shown: the caller decides, and the folder map lists it."""
         shown = [p for p in picks if not p.flagged]
-        for pick in shown:
+
+        def rank(pick: Any) -> int:
+            if pick.named and (mentions(goal, pick.path) or mentions(goal, pick.path.rsplit("/", 1)[-1])):
+                return 0
+            return 1 if not pick.named else 2
+        kept: List[Any] = []
+        used = 0
+        for pick in sorted(shown, key=rank):
+            size = self.size(pick.path)
+            if used + size <= self.view_chars:
+                kept.append(pick)
+                used += size
+        for pick in kept:
             if pick.named:
                 self.files[pick.path] = True
-        for pick in reversed([p for p in shown if not p.named]):
+        for pick in reversed([p for p in kept if not p.named]):
             self.files[pick.path] = False
 
     def size(self, rel: str) -> int:
@@ -422,6 +436,12 @@ class View:
 
 
 # --- the reply -------------------------------------------------------------------------------------------------------------------------
+
+def plainly_final(text: str, reply: Reply) -> bool:
+    """Whether a reply with no action reads as a final account of work already done: long prose that asks nothing and holds no note."""
+    body = text.strip()
+    return len(body) >= FINAL_PROSE_CHARS and not reply.notes and not reply.blocked and not body.endswith("?")
+
 
 def parse_reply(text: str, tools: bool = False) -> Reply:
     """The actions in a reply, in order of appearance. The report (from ``REPORT:`` to the end or to ``END REPORT``) is cut out first so that
@@ -557,10 +577,19 @@ def indent(text: str) -> str:
 
 
 def build_prompt(goal: str, context: str, folder_map: str, files_text: str, entries: Sequence[Mapping[str, Any]], note: str,
-                 earlier_goal: str = "", since_start: bool = False) -> str:
+                 earlier_goal: str = "", since_start: bool = False, stable: bool = False, added: Sequence[str] = ()) -> str:
+    """The message of one call. With ``stable`` the goal, context, folder map and start files are in the system text: the message holds the goal's title, the
+    files added to the folder since the start, the files changed or added to the view since the start, the history and the note."""
     parts = [f"GOAL:\n{goal.strip()}"]
     if earlier_goal.strip() and earlier_goal.strip() != goal.strip():
         parts.append(f"EARLIER GOAL:\n{earlier_goal.strip()}")
+    if stable:
+        if added:
+            parts.append("NEW FILES IN THE FOLDER SINCE THE START (not in the map above; READ before relying on them):\n" + "\n".join(added[:MAP_ENTRIES]))
+        parts += [f"{CHANGED_FILES if since_start else VIEW_FILES}\n{files_text}", f"WHAT HAS HAPPENED SO FAR:\n{history_text(entries)}"]
+        if note:
+            parts.append(note)
+        return "\n\n".join(parts)
     if context.strip():
         parts.append(f"CONTEXT:\n{context.strip()}")
     parts += [f"FOLDER MAP (paths relative to the working folder):\n{folder_map}", f"{CHANGED_FILES if since_start else VIEW_FILES}\n{files_text}",
@@ -617,7 +646,7 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
              save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
              tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000,
              select: Optional[Callable[..., Any]] = None, telling: Optional[Telling] = None,
-             abandon: Optional[Callable[[int], None]] = None) -> LoopResult:
+             abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS) -> LoopResult:
     """Work ``goal`` in ``working_dir`` until a call's report is accepted, the model is blocked, ``max_calls`` model calls are spent (the
     ``counter`` is shared with helpers and counts all of them) or ``cancel()`` is true. Never raises. With ``review``, written text in which a code check
     (``unsupported``) finds a figure no source file holds, or a named file that is not in the folder, gets one more call before it is accepted: a
@@ -641,7 +670,8 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
     result = LoopResult()
     try:
         loop(result, goal, working_dir, complete, context, max_calls, depth, cancel, emit, command_timeout, environment, wrap, view_chars,
-             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars, select, telling, abandon)
+             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars, select, telling, abandon,
+             system_chars)
     except Exception as error:  # noqa: BLE001 -- the loop reports a failure, it does not raise
         result.met = False
         result.error = result.error or f"the loop failed: {type(error).__name__}: {error}"
@@ -652,7 +682,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
          environment, wrap, view_chars: int, counter: CallCounter, review: bool = True, state: Optional[LoopState] = None,
          save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
          tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000, select: Optional[Callable[..., Any]] = None,
-         telling: Optional[Telling] = None, abandon: Optional[Callable[[int], None]] = None) -> None:
+         telling: Optional[Telling] = None, abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS) -> None:
     root = os.path.abspath(working_dir)
     say = emit or (lambda _text: None)
     tell = telling if telling is not None else Telling(None)
@@ -670,7 +700,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
     earlier_goal = ""
     earlier_calls = 0
     if state is None:
-        view.start(chosen.picks)
+        view.start(chosen.picks, goal)
     else:
         earlier_goal = state.goal
         earlier_calls = int(state.calls)
@@ -686,29 +716,34 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
     system = SYSTEM.format(delegate=DELEGATE_LINE if depth > 0 else "", tools=tool_lines)
     if wrap:
         system += "\n\nCommands can write inside the working folder and in /tmp, which is kept for the whole run (across a stop and a resume); everything else is read-only."
-    goal_shown = goal
-    if cache_chars and len(goal) >= cache_chars and len(system) + len(goal) + len(context) < SYSTEM_CHARS - GOAL_ROOM:
-        # A long goal (a whole brief) is the same at every call: it goes where it is kept between calls, and the message keeps its first line as the title.
+    # Everything that does not change during a run lives in the system text, in this order: the instructions, the goal, the context, the folder map as it was
+    # at the start and the files in view at the start. The message then holds only a one-line title of the goal, what changed or was added since, the
+    # history and the note. When the stable content does not fit ``system_chars``, files leave the view (the lowest priority first) and the map lists them
+    # as files to READ; the goal and the context are always kept whole. A small run keeps all of it in the message, where it is cheaper.
+    start_listing = listing(root, skip, left_out)
+    start_paths = {rel for rel, _size in start_listing[0]}
+    start_blocks = view.blocks()
+    stable = len(goal) + len(context) + sum(len(b) for b in start_blocks.values()) + len(start_listing[1]) >= cache_chars
+    goal_shown, start, start_map = goal, {}, ""
+    if stable:
         system += f"\n\nGOAL (the full text; the message names it by its first line):\n{goal.strip()}"
+        if context.strip():
+            system += f"\n\nSTANDING CONTEXT:\n{context.strip()}"
         title = next((line.strip() for line in goal.splitlines() if line.strip()), "")
         goal_shown = clip(title, GOAL_TITLE_CHARS) + " (the full goal is in your instructions)"
-    if cache_chars and len(context) >= cache_chars and len(system) + len(context) < (SYSTEM_CHARS - GOAL_ROOM if goal_shown != goal else SYSTEM_CHARS // 2):
-        # Long standing context is the same at every call of a run (and often for every run of a lane): it goes where it is kept between calls.
-        system += f"\n\nSTANDING CONTEXT:\n{context.strip()}"
-        context = ""
-    start = view.blocks()
-    if sum(len(block) for block in start.values()) < cache_chars:
-        start = {}      # a small view is cheaper sent in the message: the instructions alone stay the same for every run and are kept between them
-    else:      # as many start files as the system text may hold (it travels as one command argument); the rest go in the message
-        kept: Dict[str, str] = {}
-        room = SYSTEM_CHARS - len(system) - len(START_FILES)
-        for rel in sorted(start):
-            if len(start[rel]) + 1 <= room:
-                kept[rel] = start[rel]
-                room -= len(start[rel]) + 1
-        start = kept
+        for rel in reversed(list(view.files)):      # over budget: the files used least go first (never the goal or the context)
+            fixed = len(system) + len(start_listing[1]) + len(START_FILES) + sum(len(b) + 1 for b in start_blocks.values()) + 200
+            if fixed <= system_chars or not start_blocks:
+                break
+            if rel in start_blocks:
+                del start_blocks[rel]
+                view.files.pop(rel, None)
+        start = start_blocks
+        start_map = marked(start_listing[1], list(start))
+        system += f"\n\nFOLDER MAP AT THE START (paths relative to the working folder):\n{start_map}"
         if start:
             system += f"\n\n{START_FILES}\n" + "\n".join(start[rel] for rel in sorted(start))
+        context = ""
 
     def fetch() -> List[str]:
         """The messages a person sent since the last look, added to the history; the texts."""
@@ -765,7 +800,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         except Exception:  # noqa: BLE001 -- a store that cannot write never ends a run
             pass
     last_text = ""
-    nudged = False
+    idle = 0      # replies in a row that used no action
     advice = ""
     own_calls = 0
     check_passed = False
@@ -782,7 +817,9 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         own_calls += 1
         result.calls += 1
         files_text, shown = view.render(start)
-        folder_map = marked(listing(root, skip, left_out)[1], shown)
+        current = listing(root, skip, left_out)
+        folder_map = marked(current[1], shown)
+        added = sorted({rel for rel, _size in current[0]} - start_paths) if stable else []
         for rel in shown:
             seen.setdefault(rel)
         note = ""
@@ -791,7 +828,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         elif counter.left() == 1:
             note = "One call remains after this one: aim to finish with a REPORT."
         try:
-            message = build_prompt(goal_shown, context, folder_map, files_text, entries, note, earlier_goal, bool(start))
+            message = build_prompt(goal_shown, context, folder_map, files_text, entries, note, earlier_goal, bool(start), stable, added)
             log.info("loop %s call %d: system %d chars, message %d chars (goal %d, context %d, folder map %d, files %d, history %d)", tell.agent, own_calls,
                      len(system), len(message), len(goal_shown), len(context), len(folder_map), len(files_text), len(history_text(entries)))
             text = ask(system, message) or ""
@@ -817,6 +854,8 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             result.error = f"blocked: {reply.blocked}"
             result.report = last_text
             break
+        if not reply.actions and reply.report is None and (result.commands or changed) and not late and plainly_final(text, reply):
+            reply.report = text.strip()      # work was done and this long prose is its account: a REPORT candidate that still has to pass the acceptance rules below
         if not reply.actions and reply.report is None:
             if own_calls == 1 and text.strip() and not reply.notes and not late:
                 result.met, result.report = True, text.strip()
@@ -824,13 +863,14 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             if late:
                 entry["advice"] = MESSAGE_ADVICE
                 continue
-            if nudged:
-                result.error = "the model did not use the action protocol"
+            idle += 1
+            if idle >= 2:      # two replies in a row without an action: not met, with what the run has so far, and the saved session can be resumed
+                result.error = "the model did not use the action protocol twice in a row"
                 result.report = last_text
                 break
-            nudged = True
             entry["advice"] = NO_ACTION_ADVICE
             continue
+        idle = 0
         failed: List[str] = []
         codes: List[int] = []
         checks: List[Action] = []
@@ -845,7 +885,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             step_id = tell.step(action.kind, action.text, "running" if action.kind in ("run", "use", "delegate") else "done") \
                 if action.kind in ("run", "use", "delegate") else ""
             outcome = execute(action, root, view, changed, seen, result, depth, complete, context, max_calls, cancel, emit, command_timeout,
-                              environment, wrap, view_chars, counter, codes, tools, tell, abandon)
+                              environment, wrap, view_chars, counter, codes, tools, tell, abandon, system_chars)
             entry["outcomes"].append(outcome)
             tell.step(action.kind, action.text, "done" if outcome.ok else "failed", step_id=step_id, detail="" if outcome.ok else outcome.text)
             if action.kind == "read" and outcome.ok:
@@ -996,7 +1036,7 @@ def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDi
 def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, None]", seen, result: LoopResult, depth: int, complete, context: str,
             max_calls: int, cancel, emit, command_timeout: float, environment, wrap, view_chars: int, counter: CallCounter,
             codes: List[int], tools: Optional[Mapping[str, Tool]] = None, tell: Optional[Telling] = None,
-            abandon: Optional[Callable[[int], None]] = None) -> Outcome:
+            abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS) -> Outcome:
     if action.kind == "edit":
         outcome, wrote = apply_block(action, root)
         rel = os.path.relpath(inside(Path(root), action.text), Path(root).resolve()).replace(os.sep, "/") if outcome.ok or wrote else action.text
@@ -1052,7 +1092,7 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
         helper = tell.helper(action.text) if tell is not None else None
         child = run_loop(action.text, working_dir=root, complete=complete, context=context, max_calls=max_calls, depth=depth - 1, cancel=cancel,
                          emit=emit, command_timeout=command_timeout, environment=environment, wrap=wrap, view_chars=view_chars, counter=counter,
-                         review=False, tools=tools, select=view.select, telling=helper, abandon=abandon)      # the parent's review covers what its helpers wrote
+                         review=False, tools=tools, select=view.select, telling=helper, abandon=abandon, system_chars=system_chars)      # the parent's review covers what its helpers wrote
         if helper is not None:
             stopped = not child.met and "cancelled" in child.error
             helper.send("agent-ended", state="met" if child.met else "stopped" if stopped else "unmet", calls=child.calls, summary=short(child.report or child.error, 100))

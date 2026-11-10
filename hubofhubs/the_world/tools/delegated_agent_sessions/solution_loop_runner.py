@@ -36,7 +36,7 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.contract import extract_
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig, log
 from hubofhubs.the_world.tools.delegated_agent_sessions.settings import (
     GoalSettings, GoalSettingsSource, resolve_goal_settings, with_instructions_pack)
-from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import LoopResult, LoopState, Telling, Tool, run_loop, short
+from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import SYSTEM_CHARS, LoopResult, LoopState, Telling, Tool, run_loop, short
 from hubofhubs.the_world.tools.events import EVENT_EXEC
 
 DEFAULT_TIER = "fast"
@@ -60,7 +60,7 @@ class SolutionLoopRunner(DeepRunnerBase):
                  settings: Optional[GoalSettingsSource] = None, model_for: Optional[Callable[[str, str], Optional[str]]] = None,
                  instructions: str = "", complete: Optional[Callable[[str, str], str]] = None,
                  model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None, sandbox: bool = True, review: Any = True,
-                 session_dir: Optional[str] = None, tools: Optional[Mapping[str, Tool]] = None, **ignored: Any):
+                 session_dir: Optional[str] = None, tools: Optional[Mapping[str, Tool]] = None, system_chars: int = SYSTEM_CHARS, **ignored: Any):
         if not providers.drives(type(self), provider):
             raise ValueError(f"{type(self).__name__} drives only {', '.join(providers.providers_of(type(self)))}, not {provider!r}")
         if config is None:
@@ -81,6 +81,7 @@ class SolutionLoopRunner(DeepRunnerBase):
         self.review = review      # True: review written text when the code check finds something; "prose": every written text; False: never
         self.session_dir = session_dir
         self.tools = dict(tools) if tools else None
+        self.system_chars = int(system_chars)      # how much stable content (instructions, goal, context, map, start files) the system text may hold
         self.running: Dict[str, "queue.Queue[str]"] = {}   # run or session id -> the messages waiting for that run
         self.running_lock = threading.Lock()
 
@@ -191,6 +192,10 @@ class SolutionLoopRunner(DeepRunnerBase):
             log.info("loop call tokens: plain input %d, cache read %d, cache write %d, output %d", plain, read, wrote, used_out)
             spent = float(engine.cost_usd or 0.0) - cost
             usage["tokens"] += plain + used_out
+            usage["plain"] += plain
+            usage["read"] += read
+            usage["write"] += wrote
+            usage["output"] += used_out
             usage["cost"] += spent if spent > 0 else price(self.provider, model, used_in, used_out)
             return text
         return complete
@@ -219,7 +224,7 @@ class SolutionLoopRunner(DeepRunnerBase):
         run_model = (model or self.model or "") if self.uses_deep_model else (self.model or "")
         if self.model_translator is not None and run_model:
             run_model = self.model_translator(run_model) or run_model
-        usage: Dict[str, float] = {"cost": 0.0, "tokens": 0}
+        usage: Dict[str, float] = {"cost": 0.0, "tokens": 0, "plain": 0, "read": 0, "write": 0, "output": 0}
         started = time.monotonic()
         cap = self.cfg.timeout_seconds or settings.deep_timeout_seconds or DEFAULT_TIMEOUT_SECONDS
         stopped = {"why": ""}
@@ -255,7 +260,8 @@ class SolutionLoopRunner(DeepRunnerBase):
             if emit is None:
                 return
             if data.get("type") == "usage":
-                data = dict(data, cost_usd=float(usage["cost"]) or None, tokens=int(usage["tokens"]) or None)
+                data = dict(data, cost_usd=float(usage["cost"]) or None, tokens=int(usage["tokens"]) or None,
+                            cache_read_tokens=int(usage["read"]) or None, cache_write_tokens=int(usage["write"]) or None)
             emit(ProgressEvent(type="session", data=data))
 
         telling = Telling(structured if emit is not None else None, agent=agent, solution=solution)
@@ -298,13 +304,16 @@ class SolutionLoopRunner(DeepRunnerBase):
             result = run_loop(goal, working_dir=folder, complete=self.completion(run_model, settings, usage), context=context_text,
                               max_calls=max_calls, depth=1, cancel=cancel, emit=tell if emit is not None else None,
                               command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings), counter=None,
-                              wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling,
+                              wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling, system_chars=self.system_chars,
                               abandon=None if self.injected is not None else abandon_completion)
         finally:
             with self.running_lock:
                 for key in keys:
                     if self.running.get(key) is messages:
                         del self.running[key]
+        if agent == "main":      # one line for the run: did the cache work (reads large, writes small after the first call)?
+            log.info("loop run totals: %d calls, plain input %d, cache read %d, cache write %d, output %d, cost $%.4f", result.calls, int(usage["plain"]),
+                     int(usage["read"]), int(usage["write"]), int(usage["output"]), float(usage["cost"]))
         return result, usage, stopped["why"]
 
     def run_goal(self, *, goal: str, brief: str = "", model: Optional[str] = None, max_turns: Optional[int] = None,

@@ -605,11 +605,13 @@ def test_long_standing_context_is_kept_in_the_system_text_and_a_corpus_is_mapped
     standing = "Always be exact. " * 40
     run_loop("Say ok.", working_dir=root, complete=script, context=standing, cache_chars=200)
     message = script.prompts[0][len(script.systems[0]):]
-    assert "STANDING CONTEXT:" in script.systems[0] and "Always be exact." not in message
-    assert "area0/ (3 files found below)" in message and "top.txt (2 bytes)" in message and "note4.txt" not in message
+    system = script.systems[0]      # the stable content, the folder map included, is in the system text
+    assert "STANDING CONTEXT:" in system and "Always be exact." not in message
+    mapped = system.split("FOLDER MAP AT THE START")[1].split("FILES IN VIEW AT THE START")[0]
+    assert "area0/ (3 files found below)" in mapped and "top.txt (2 bytes)" in mapped and "note4.txt" not in mapped and "FOLDER MAP" not in message
     short = Script("ok")
     run_loop("Say ok.", working_dir=root, complete=short, context="Be brief.", cache_chars=200)
-    assert "CONTEXT:\nBe brief." in short.prompts[0][len(short.systems[0]):]
+    assert "CONTEXT:\nBe brief." in short.systems[0]      # a run whose stable content passes the size keeps all of it in the system text, a short context too
 
 
 def test_an_injected_selection_chooses_the_view_and_the_folders_left_out_are_in_the_map(tmp_path):

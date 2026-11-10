@@ -103,6 +103,8 @@ class Usage(SessionEvent):
     cost_usd: Optional[float] = None
     tokens: Optional[int] = None
     calls: Optional[int] = None
+    cache_read_tokens: Optional[int] = None       # tokens read from and written to the provider's cache so far, apart from ``tokens`` (plain input plus output)
+    cache_write_tokens: Optional[int] = None
 
 
 @dataclass(frozen=True)
