@@ -1,11 +1,11 @@
-"""Learning's review: the record has every part the research standard asks for, exclusions are counted with reasons, grades follow the rule, unknowns are
+"""Learning's review (an investigation of kind review): the record has every part the knowledge search standard asks for, exclusions are counted with reasons, grades follow the rule, unknowns are
 stated, each candidate has a decision, the applied part and the revisit date are set. Fake search results, no model, no network."""
 import csv
 from pathlib import Path
 
 import pytest
 
-from hubofhubs.the_world.learning import research_review as rr, review_store
+from hubofhubs.the_world.learning import investigation_record as inv, investigation_store
 from hubofhubs.the_world.learning.registry_research import RegistryResearch
 from hubofhubs.the_world.learning.research_freshness_reader.registry import RegistryScan
 from hubofhubs.the_world.learning.systematic_review import SystematicReview
@@ -52,27 +52,27 @@ def run(**changes):
 def test_the_record_has_every_part_of_its_size():
     got = run(weight="standard")
     assert got["gaps"] == []
-    row = got["research"]
+    row = got["investigation"]
     assert row["size"] == "standard" and row["kind"] == "review" and row["protocol_date"] == DAY == row["done_on"]
     assert len(row["queries"].split(";")) >= 5 and "web search" in row["sources"] and "scholarly search" in row["sources"]
     assert row["refresh_on"] == "2027-02-08" and row["status"] == "open"
-    assert all(row[c] for c in rr.SYNTHESIS)
+    assert all(row[c] for c in inv.SYNTHESIS)
 
 
 def test_the_smallest_record_is_one_row_with_its_minimum():
     got = run(weight="quick")
-    assert got["gaps"] == [] and got["research"]["size"] == "quick" and got["research"]["refresh_on"] == "2026-12-10"
-    assert len(got["research"]["queries"].split(";")) <= 3 and "scholarly" not in got["research"]["sources"]
+    assert got["gaps"] == [] and got["investigation"]["size"] == "quick" and got["investigation"]["refresh_on"] == "2026-12-10"
+    assert len(got["investigation"]["queries"].split(";")) <= 3 and "scholarly" not in got["investigation"]["sources"]
 
 
 def test_exclusions_are_counted_and_each_has_a_reason():
     got = run()
     reasons = got["screened_out"]
     assert reasons["duplicate of a kept result"] >= 1
-    assert sum(reasons.values()) == int(got["research"]["found"]) - int(got["research"]["kept"])
+    assert sum(reasons.values()) == int(got["investigation"]["found"]) - int(got["investigation"]["kept"])
     assert {"no source address", "matched an exclusion term", "older than 2026-01-01"} <= set(reasons)
     assert any(k.startswith("licence GPL") for k in reasons)
-    assert got["research"]["screened_out"].count(";") + 1 == len(reasons)
+    assert got["investigation"]["screened_out"].count(";") + 1 == len(reasons)
 
 
 def test_grades_follow_the_rule():
@@ -80,18 +80,18 @@ def test_grades_follow_the_rule():
     got = run(candidates=["termlib", "oldkit", "gplkit"])
     termlib = [i for i in got["items"] if "termlib" in i["claim"].lower()]
     assert len(termlib) == 2 and {i["grade"] for i in termlib} == {"A"}             # two independent hosts agree
-    assert rr.grade([]) == "D" and rr.grade([{"independent": "no"}]) == "D" and rr.grade([{"independent": "yes", "relation": "vendor"}]) == "D"
-    assert rr.grade([{"independent": "unknown"}]) == "C" and rr.grade([{"independent": "yes"}]) == "B"
-    assert rr.grade([{"independent": "yes"}, {"independent": "yes"}]) == "A" and items
+    assert inv.grade([]) == "D" and inv.grade([{"independent": "no"}]) == "D" and inv.grade([{"independent": "yes", "relation": "vendor"}]) == "D"
+    assert inv.grade([{"independent": "unknown"}]) == "C" and inv.grade([{"independent": "yes"}]) == "B"
+    assert inv.grade([{"independent": "yes"}, {"independent": "yes"}]) == "A" and items
 
 
 def test_unknowns_are_stated_and_every_candidate_has_a_decision():
     got = run(weight="standard", criteria={"exclude_terms": ["recipes"]}, candidates=["termlib", "oldkit", "gplkit"])
-    decisions = {d.split(":")[0]: d.split(":")[1].strip() for d in got["research"]["decisions"].split(";")}
+    decisions = {d.split(":")[0]: d.split(":")[1].strip() for d in got["investigation"]["decisions"].split(";")}
     assert decisions["oldkit"] == "reject" and decisions["gplkit"] == "adopt" and decisions["termlib"] == "adopt"
-    assert all(d.count(":") >= 2 for d in got["research"]["decisions"].split(";"))
-    assert got["research"]["synthesis_unknown"].startswith(("Not established", "Nothing left"))
-    assert run(criteria={"include_terms": ["nothing-matches"]})["research"]["decisions"].startswith("all: no-candidate")
+    assert all(d.count(":") >= 2 for d in got["investigation"]["decisions"].split(";"))
+    assert got["investigation"]["synthesis_unknown"].startswith(("Not established", "Nothing left"))
+    assert run(criteria={"include_terms": ["nothing-matches"]})["investigation"]["decisions"].startswith("all: no-candidate")
 
 
 def test_standard_opens_kept_items_and_grades_a_snippet_no_higher_than_c():
@@ -99,9 +99,9 @@ def test_standard_opens_kept_items_and_grades_a_snippet_no_higher_than_c():
     by = {i["source"]: i for i in got["items"]}
     assert by["https://github.com/acme/termlib"]["verified"] == "cross-checked" and by["https://github.com/acme/termlib"]["grade"] == "A"
     assert by["https://github.com/acme/oldkit"]["verified"] == "snippet" and by["https://github.com/acme/oldkit"]["grade"] == "C"
-    assert "read as result snippets only, graded C at most" in got["research"]["limitations"]
-    assert rr.cap_grade("A", "snippet", "standard") == "C" and rr.cap_grade("B", "not-opened", "full") == "C" and rr.cap_grade("D", "snippet", "full") == "D"
-    assert rr.cap_grade("A", "opened", "standard") == "A" and rr.cap_grade("B", "snippet", "quick") == "B"
+    assert "read as result snippets only, graded C at most" in got["investigation"]["limitations"]
+    assert inv.cap_grade("A", "snippet", "standard") == "C" and inv.cap_grade("B", "not-opened", "full") == "C" and inv.cap_grade("D", "snippet", "full") == "D"
+    assert inv.cap_grade("A", "opened", "standard") == "A" and inv.cap_grade("B", "snippet", "quick") == "B"
 
 
 def test_quick_opens_nothing_and_stays_cheap():
@@ -125,9 +125,9 @@ def test_the_applied_part_says_what_each_item_changed_or_why_not():
 
 
 def test_the_size_follows_the_weight_of_the_decision():
-    assert rr.choose_size({"reversible_days": 0.2}) == "quick" and rr.choose_size({"selects": True}) == "standard"
-    assert rr.choose_size({"reaches": 3}) == "standard" and rr.choose_size({"outward": True}) == "full"
-    assert rr.choose_size({"dependency": True, "reversible_days": 3}) == "full" and rr.choose_size("standard") == "standard" and rr.choose_size(None) == "quick"
+    assert inv.choose_size({"reversible_days": 0.2}) == "quick" and inv.choose_size({"selects": True}) == "standard"
+    assert inv.choose_size({"reaches": 3}) == "standard" and inv.choose_size({"outward": True}) == "full"
+    assert inv.choose_size({"dependency": True, "reversible_days": 3}) == "full" and inv.choose_size("standard") == "standard" and inv.choose_size(None) == "quick"
 
 
 def test_a_candidate_name_never_contains_the_decision_separator():
@@ -141,7 +141,7 @@ def test_a_failing_source_is_a_limitation_not_a_failed_review():
         def search(self, *a, **k):
             raise RuntimeError("down")
     got = SystematicReview(RegistryScan(), Science(), Broken(), None).review("which libraries", "adopt or build", weight="quick", today=DAY, intent_id="terminal")
-    assert "web search failed" in got["research"]["limitations"] and got["research"]["decisions"].startswith("all: defer: no results came back")
+    assert "web search failed" in got["investigation"]["limitations"] and got["investigation"]["decisions"].startswith("all: defer: no results came back")
     assert got["gaps"] == []
 
 
@@ -152,9 +152,9 @@ def test_a_model_may_screen_and_write_the_synthesis_and_its_failure_changes_noth
         calls.append(prompt)
         return '{"drop": [{"id": "i1", "reason": "x"}]}' if "drop" in prompt else '{"known": "k.", "contested": "c.", "unknown": "u."}'
     with_model = arm(ask).review("which terminal UI libraries are adoptable", "adopt or build", weight="standard", today=DAY, intent_id="terminal", use_model=True)
-    assert len(calls) == 2 and with_model["research"]["synthesis_known"] == "k." and "judged not to bear on the question" in with_model["screened_out"]
+    assert len(calls) == 2 and with_model["investigation"]["synthesis_known"] == "k." and "judged not to bear on the question" in with_model["screened_out"]
     failing = arm(lambda prompt: "not json").review("which terminal UI libraries are adoptable", "adopt or build", weight="standard", today=DAY, intent_id="terminal", use_model=True)
-    assert failing["research"]["synthesis_known"].startswith(("Supported", "Nothing"))
+    assert failing["investigation"]["synthesis_known"].startswith(("Supported", "Nothing"))
 
 
 def test_the_baseline_returns_a_record_that_lacks_the_standard():
@@ -170,18 +170,31 @@ def write(path, header, rows):
 
 def test_due_lists_reviews_experiments_and_registry_areas_past_their_dates(tmp_path, monkeypatch):
     h = tmp_path / "hubofhubs"
-    write(h / "a" / "research.csv", ["research_id", "question", "links", "size", "refresh_on", "status", "done_on"],
+    write(h / "a" / "investigations.csv", ["investigation_id", "question", "links", "size", "refresh_on", "status", "done_on"],
           [["r-old", "q?", "solution:s1", "standard", "2026-11-01", "open", "2026-08-01"], ["r-new", "q2?", "area:fresh", "standard", "2027-01-01", "open", "2026-11-01"],
            ["r-done", "q3?", "", "quick", "2026-10-01", "superseded", "2026-09-01"]])
     write(h / "a" / "experiments.csv", ["experiment_id", "research_question", "links", "status", "reevaluate_time"], [["x-1", "focus", "solution:s1", "running", "2026-11-05"]])
     write(h / "registry" / "hubs.csv", ["area", "seat", "last_researched", "candidate_hubs"],
           [["stale_area", "s2", "2026-06-01", "A;B"], ["fresh", "s3", "2026-07-01", ""], ["recent", "s4", "2026-11-01", ""], ["never", "s5", "", ""]])
     monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", h / "registry")
-    got = review_store.due(DAY, tmp_path)
-    assert [(d["kind"], d["id"]) for d in got] == [("registry-area", "never"), ("registry-area", "stale_area"), ("review", "r-old"), ("experiment", "x-1")]
+    got = investigation_store.due(DAY, tmp_path)
+    assert [(d["kind"], d["id"]) for d in got] == [("registry-area", "never"), ("registry-area", "stale_area"), ("investigation", "r-old"), ("experiment", "x-1")]
     assert all(d["request"] and "days_overdue" in d for d in got)
     assert got[1]["days_overdue"] == (__import__("datetime").date(2026, 11, 10) - __import__("datetime").date(2026, 6, 1)).days - 90
-    assert review_store.standing_schedule()["cadence"] == "weekly" and review_store.standing_schedule()["name"] == review_store.WEEKLY
+    assert investigation_store.standing_schedule()["cadence"] == "weekly" and investigation_store.standing_schedule()["name"] == investigation_store.WEEKLY
+
+
+def test_investigations_stored_under_the_older_file_and_column_names_are_still_read_and_carried_over(tmp_path, monkeypatch):
+    h = tmp_path / "hubofhubs"
+    write(h / "registry" / "research.csv", ["research_id", "question", "links", "size", "refresh_on", "status", "done_on"],
+          [["r-old", "q?", "solution:s1", "standard", "2026-11-01", "open", "2026-08-01"]])
+    write(h / "registry" / "hubs.csv", ["area", "seat", "last_researched", "candidate_hubs"], [])
+    monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", h / "registry")
+    assert [(d["kind"], d["id"]) for d in investigation_store.due(DAY, tmp_path)] == [("investigation", "r-old")]
+    investigation_store.store(run(links=["solution:terminal-experience"]), h / "registry")
+    rows = list(csv.DictReader(open(h / "registry" / "investigations.csv")))
+    assert [r["investigation_id"] for r in rows][0] == "r-old" and "research_id" not in rows[0]
+    assert investigation_store.finding_investigation({"area": "x", "research_id": "r-own"}) == "r-own"
 
 
 def test_an_experiment_with_the_older_field_names_is_still_due(tmp_path, monkeypatch):
@@ -189,7 +202,7 @@ def test_an_experiment_with_the_older_field_names_is_still_due(tmp_path, monkeyp
     write(h / "a" / "experiments.csv", ["experiment_id", "focus", "links", "status", "reevaluate_on"], [["x-old", "old focus", "", "running", "2026-11-05"]])
     write(h / "registry" / "hubs.csv", ["area", "seat", "last_researched", "candidate_hubs"], [])
     monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", h / "registry")
-    got = review_store.due(DAY, tmp_path)
+    got = investigation_store.due(DAY, tmp_path)
     assert [(d["id"], d["question"], d["due_on"]) for d in got] == [("x-old", "old focus", "2026-11-05")]
 
 
@@ -197,13 +210,13 @@ def test_a_stored_review_is_found_from_its_finding_and_supersedes_the_earlier_on
     monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", tmp_path / "registry")
     first = run(links=["area:terminal", "solution:terminal-experience"], today="2026-10-01")
     second = run(links=["area:terminal", "solution:terminal-experience"], today=DAY)
-    review_store.store(first, tmp_path / "registry")
-    review_store.store(second, tmp_path / "registry")
-    rows = list(csv.DictReader(open(tmp_path / "registry" / "research.csv")))
-    assert [r["status"] for r in rows] == ["superseded", "open"] and len(list(csv.DictReader(open(tmp_path / "registry" / "research_items.csv")))) == 2 * len(second["items"])
-    monkeypatch.setattr(review_store, "files", lambda root, name: [tmp_path / "registry" / name])
-    assert review_store.finding_review({"area": "terminal", "date_researched": DAY}) == second["research"]["research_id"]
-    assert review_store.finding_review({"area": "terminal", "date_researched": "2026-01-01"}) == ""
+    investigation_store.store(first, tmp_path / "registry")
+    investigation_store.store(second, tmp_path / "registry")
+    rows = list(csv.DictReader(open(tmp_path / "registry" / "investigations.csv")))
+    assert [r["status"] for r in rows] == ["superseded", "open"] and len(list(csv.DictReader(open(tmp_path / "registry" / "investigation_items.csv")))) == 2 * len(second["items"])
+    monkeypatch.setattr(investigation_store,"files", lambda root, name: [tmp_path / "registry" / name])
+    assert investigation_store.finding_investigation({"area": "terminal", "date_researched": DAY}) == second["investigation"]["investigation_id"]
+    assert investigation_store.finding_investigation({"area": "terminal", "date_researched": "2026-01-01"}) == ""
 
 
 def test_a_finding_names_its_review_and_old_rows_fall_back_to_area_and_date(tmp_path, monkeypatch):
@@ -212,26 +225,84 @@ def test_a_finding_names_its_review_and_old_rows_fall_back_to_area_and_date(tmp_
           [["HF-1", "terminal", DAY, "new"], ["HF-2", "terminal", "2026-01-01", "older day"], ["HF-3", "other", DAY, "other area"]])
     monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", folder)
     got = run(links=["area:terminal", "solution:terminal-experience"])
-    rid = review_store.store(got, folder)
+    rid = investigation_store.store(got, folder)
     rows = {r["finding_id"]: r for r in csv.DictReader(open(folder / "hub_findings.csv"))}
-    assert rows["HF-1"]["research_id"] == rid and rows["HF-2"]["research_id"] == "" and rows["HF-3"]["research_id"] == "" and rows["HF-3"]["summary"] == "other area"
-    assert list(rows["HF-1"])[-1] == "research_id" and review_store.link_findings(rid, got["research"], folder) == 0
-    monkeypatch.setattr(review_store, "files", lambda root, name: [folder / name])
-    assert review_store.finding_review(rows["HF-1"]) == rid
-    assert review_store.finding_review({"area": "terminal", "date_researched": DAY}) == rid and review_store.finding_review(rows["HF-3"]) == ""
-    assert review_store.finding_review({"area": "x", "research_id": "r-own"}) == "r-own"
+    assert rows["HF-1"]["investigation_id"] == rid and rows["HF-2"]["investigation_id"] == "" and rows["HF-3"]["investigation_id"] == "" and rows["HF-3"]["summary"] == "other area"
+    assert list(rows["HF-1"])[-1] == "investigation_id" and investigation_store.link_findings(rid, got["investigation"], folder) == 0
+    monkeypatch.setattr(investigation_store,"files", lambda root, name: [folder / name])
+    assert investigation_store.finding_investigation(rows["HF-1"]) == rid
+    assert investigation_store.finding_investigation({"area": "terminal", "date_researched": DAY}) == rid and investigation_store.finding_investigation(rows["HF-3"]) == ""
+    assert investigation_store.finding_investigation({"area": "x", "investigation_id": "r-own"}) == "r-own"
 
 
 def test_the_record_agrees_with_the_libraries_own_checker():
-    research = pytest.importorskip("esoi.understanding.solution_consideration.research")
+    library = pytest.importorskip("esoi.understanding.solution_consideration.investigations")
     got = run(weight="standard", links=["solution:terminal-experience"])
-    row = dict(got["research"], intent_id="terminal")
-    assert research.row_problems(row, got["items"]) == []
+    row = dict(got["investigation"], intent_id="terminal")
+    assert library.row_problems(row, got["items"]) == []
 
 
 def test_the_weekly_refresh_is_standing_work_proactivity_reads():
     from hubofhubs.the_intelligence.proactivity.triggers import CalendarAndEvents
-    schedule = review_store.standing_schedule(last_run="2026-11-02T09:00:00Z")
+    schedule = investigation_store.standing_schedule(last_run="2026-11-02T09:00:00Z")
     due = CalendarAndEvents().due([schedule], now="2026-11-10T09:00:00Z")
-    assert [t["schedule"] for t in due] == [review_store.WEEKLY] and due[0]["request"] == schedule["request"]
-    assert CalendarAndEvents().due([review_store.standing_schedule(last_run="2026-11-10T08:00:00Z")], now="2026-11-10T09:00:00Z") == []
+    assert [t["schedule"] for t in due] == [investigation_store.WEEKLY] and due[0]["request"] == schedule["request"]
+    assert CalendarAndEvents().due([investigation_store.standing_schedule(last_run="2026-11-10T08:00:00Z")], now="2026-11-10T09:00:00Z") == []
+
+
+def stored(tmp_path, **changes):
+    """A stored investigation (and its items) beside a registry folder of ``tmp_path``, as ``review_store.store`` writes it; returns the root to pass."""
+    folder = tmp_path / "hubofhubs" / "registry"
+    investigation_store.store(run(root=tmp_path, reuse=False, **changes), folder)
+    return tmp_path
+
+
+def test_an_investigation_always_names_a_solution_and_records_a_fallback(tmp_path):
+    given = run(root=tmp_path)
+    assert given["solution_link"] == {"solution": "terminal-experience", "source": "links", "fallback": False}
+    from_request = run(root=tmp_path, links=["area:terminal"], solution_id="web-search")
+    assert from_request["investigation"]["links"] == "area:terminal;solution:web-search" and from_request["solution_link"]["source"] == "request"
+    top = run(root=tmp_path, links=[])
+    assert top["investigation"]["links"] == "solution:" + investigation_store.TOP_SOLUTION and top["solution_link"]["fallback"] is True
+    assert "filed under the top solution" in top["investigation"]["limitations"] and "filed under the top solution" not in given["investigation"]["limitations"]
+    assert top["gaps"] == []
+
+
+def test_a_row_with_no_solution_link_is_advice_not_a_failure():
+    got = run()
+    row = dict(got["investigation"], links="area:terminal")
+    assert any("links name no solution" in g for g in inv.gaps(row, got["items"]))
+    assert not any("links name no solution" in g for g in got["gaps"])
+
+
+def test_ancestors_come_from_the_intent_that_holds_the_solution():
+    assert investigation_store.ancestors("the-learning") == ["the-world"]
+    assert investigation_store.ancestors("model-tier-chooser")[-1] == "the-world" and investigation_store.ancestors("the-world") == []
+
+
+def test_what_was_looked_into_is_read_for_a_solution_and_its_ancestors(tmp_path):
+    root = stored(tmp_path, links=["solution:the-world"])
+    assert [r["linked_to"] for r in investigation_store.investigations_for("the-learning", True, DAY, root)] == ["the-world"]
+    assert investigation_store.investigations_for("the-learning", False, DAY, root) == []
+    assert investigation_store.investigations_for("the-world", False, DAY, root)[0]["fresh"] == "yes"
+    assert arm().investigations_for("the-learning", today=DAY, root=root)
+
+
+def test_a_fresh_investigation_of_the_same_question_is_reused_without_a_search(tmp_path):
+    root = stored(tmp_path, links=["solution:the-world"])
+    got = run(root=root, links=["solution:the-learning"])
+    assert got["reused"] is True and got["queries"] and got["investigation"]["investigation_id"] == investigation_store.rows(root, "investigations.csv")[0]["investigation_id"]
+    assert got["items"] and got["extends"] == "" and got["investigation"]["done_on"] == DAY
+    arm_without_search = SystematicReview(RegistryScan(), None, None, None)
+    assert arm_without_search.review(**dict(question="which terminal UI libraries are adoptable", decision="adopt or build", weight="quick", today=DAY, root=root,
+                                            links=["solution:the-learning"]))["reused"] is True
+
+
+def test_a_stale_or_smaller_investigation_is_extended_by_a_new_search(tmp_path):
+    root = stored(tmp_path, today="2026-08-01")
+    first_id = investigation_store.rows(root, "investigations.csv")[0]["investigation_id"]
+    got = run(root=root)
+    assert got["reused"] is False and got["extends"] == first_id and f"extends {first_id} (stale" in got["investigation"]["limitations"]
+    smaller = run(root=stored(tmp_path / "second"), weight="standard")
+    assert smaller["reused"] is False and "it was a smaller review" in smaller["investigation"]["limitations"]
+    assert run(root=stored(tmp_path / "third"), reuse=False)["reused"] is False

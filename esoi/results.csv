@@ -443,3 +443,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,learning_review,systematic_review,24,24,24/24,0/0,0,0,0,0.0,0.0,,22900dc,9363f51b,,none,
 2026-11-10,learning_review,registry_research,24,1,1/24,0/0,0,0,0,0.0,0.0,,22900dc-dirty,9363f51b,,none,
 2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1073,179.5,0.7599,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,learning_review,systematic_review,30,30,30/30,0/0,0,0,0,0.0,0.5,,f9a28b0-dirty,693a93fd,,none,
+2026-11-10,learning_review,registry_research,30,1,1/30,0/0,0,0,0,0.0,0.0,,f9a28b0-dirty,693a93fd,,none,forced past unsolved failures: baseline arm: its failures are the bar the review arm must beat

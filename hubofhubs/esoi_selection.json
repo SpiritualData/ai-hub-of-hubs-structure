@@ -691,7 +691,7 @@
  "the-learning": {
   "default": "systematic_review",
   "evidence": {
-   "detail": "systematic_review is better than registry_research (two-sided exact McNemar test, Holm-adjusted p=2.38e-07, 23 of 24 cases disagree)",
+   "detail": "systematic_review is better than registry_research (two-sided exact McNemar test, Holm-adjusted p=3.73e-09, 29 of 30 cases disagree)",
    "p": 0.0,
    "verdict": "WIN"
   },

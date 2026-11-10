@@ -1,15 +1,18 @@
-"""Scores a Learning arm on the research standard: given fixed fake search results (no network, no model), does the review record have every part of its size,
+"""Scores a Learning arm on the knowledge search standard: given fixed fake search results (no network, no model), does the investigation record (a review) have every part of its size,
 are exclusions counted and reasoned, are grades applied by the rule, are unknowns stated, does every candidate have a decision, is the applied part present and the
 revisit date set? One number: the share of cases passed. Each case runs one scenario and checks one property of the record."""
 import inspect
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from offline import judge  # noqa: E402
 
+from hubofhubs.the_world.learning import investigation_store  # noqa: E402
 from hubofhubs.the_world.learning.research_freshness_reader.registry import RegistryScan  # noqa: E402
+from hubofhubs.the_world.learning.systematic_review import SystematicReview  # noqa: E402
 from hubofhubs.the_world.observation import Observation  # noqa: E402
 from hubofhubs.the_world.tools.web_search.search_port import SearchHit, SearchResponse  # noqa: E402
 
@@ -37,7 +40,7 @@ class FakeScience:
 
 def facts(record, args):
     """The property of the record a case checks."""
-    row, items = record["research"], record["items"]
+    row, items = record["investigation"], record["items"]
     decisions = {d.split(":")[0].strip(): d.split(":")[1].strip() for d in row["decisions"].split(";") if d.count(":") >= 2}
     checks = {
         "complete": lambda: record["gaps"],
@@ -53,6 +56,10 @@ def facts(record, args):
         "decisions": lambda: decisions,
         "applied": lambda: all(i["applied"] and (i["applied"].startswith("knowledge:") or i["applied"].startswith("not-applied: ")) for i in items),
         "refresh": lambda: row["refresh_on"],
+        "solution_link": lambda: {"links": [l for l in row["links"].split(";") if l.startswith("solution:")], "fallback": record["solution_link"]["fallback"],
+                                  "recorded": "top solution" in row["limitations"]},
+        "reuse": lambda: {"reused": record["reused"], "searched": bool(record["queries"]) and not record["reused"], "same_record": row["investigation_id"] == args["prior_id"],
+                          "extends": record["extends"] == args["prior_id"]},
     }
     return checks[args["check"]]()
 
@@ -80,7 +87,7 @@ def real_review(args, meter):
                      criteria={"since": "2025-01-01"})
     for _ in got["queries"]:
         meter.record()                      # each logged web search is one call of the Claude login arm
-    row, items = got["research"], got["items"]
+    row, items = got["investigation"], got["items"]
     decisions = [d for d in row["decisions"].split(";") if d.strip()]
     return {"complete": got["gaps"] == [], "found_results": int(row["found"]) > 0, "kept_some": len(items) > 0,
             "every_candidate_decided": bool(decisions) and all(d.count(":") >= 2 and d.split(":")[1].strip() in ("adopt", "adapt", "build-on", "reject", "defer", "no-candidate") for d in decisions), "no_high_grade_on_unread": not any(i["verified"] == "snippet" and i["grade"] in ("A", "B") and row["size"] != "quick" for i in items)}
@@ -92,8 +99,13 @@ def adapt(implementation, meter):
             return real_review(args, meter)
         seats = dict(freshness=RegistryScan(), science=FakeScience(args.get("science", [])), web=FakeWeb(args.get("web", [])), plumbing=None)
         arm = implementation(**{k: v for k, v in seats.items() if k in inspect.signature(implementation).parameters})
-        record = arm.review(**args["review"])
-        return facts(record, args)
+        with tempfile.TemporaryDirectory() as root:      # the store the arm looks earlier investigations up in: empty, or holding the case's one earlier investigation
+            if args.get("prior"):
+                made = SystematicReview(**seats).review(**dict(args["review"], **args["prior"], root=root, reuse=False))
+                investigation_store.store(made, Path(root) / "hubofhubs" / "registry")
+                args = dict(args, prior_id=made["investigation"]["investigation_id"])
+            record = arm.review(**dict(args["review"], root=root))
+            return facts(record, args)
     return run
 
 

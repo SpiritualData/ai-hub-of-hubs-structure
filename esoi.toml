@@ -18,7 +18,7 @@ shared_eval_dirs = ["__pycache__", "assemble_the_whole"]
 code_paths = ["hubofhubs", "evaluation", ":(exclude,glob)**/*.md", ":(exclude,glob)hubofhubs/**/problems.csv",
               ":(exclude,glob)hubofhubs/**/ideals.csv", ":(exclude,glob)hubofhubs/**/solutions.csv", ":(exclude,glob)hubofhubs/**/implementations.csv",
               ":(exclude,glob)hubofhubs/**/metrics.csv", ":(exclude,glob)hubofhubs/**/knowledge.csv",
-              ":(exclude,glob)hubofhubs/**/research.csv", ":(exclude,glob)hubofhubs/**/research_items.csv", ":(exclude,glob)hubofhubs/**/experiments.csv"]
+              ":(exclude,glob)hubofhubs/**/investigations.csv", ":(exclude,glob)hubofhubs/**/investigation_items.csv", ":(exclude,glob)hubofhubs/**/experiments.csv"]
 
 [records]
 template_version = 5

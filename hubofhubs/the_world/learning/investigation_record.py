@@ -1,11 +1,12 @@
-"""The rules of a review record: the research standard of the ESOI library (``docs/reference/knowledge-search-standard.md``) as pure functions and one
-dataclass, so Learning's arms, its metric and the stores all speak the same record. No model call, no network, no file written here.
+"""The rules of an investigation record: the knowledge search standard of the ESOI library (``docs/reference/knowledge-search-standard.md``) as pure functions
+and one dataclass, so Learning's arms, its metric and the stores all speak the same record. No model call, no network, no file written here.
 
-A review is a small systematic review sized to the decision it informs: a question and the decision, a method fixed and dated before the first query,
-the exact queries with their dates and hit counts, screening with a count for each reason, items extracted and graded A to D, a synthesis of what is known,
-contested and unknown, limitations, a decision for each candidate, what each item changed (the applied part) and the date to revisit. The record is two
-tables, ``research.csv`` (one row per review) and ``research_items.csv`` (one row per kept item), with the columns of the library's standard; ``gaps``
-lists what a record lacks for its size, as advice.
+An investigation is one piece of information gathering done to answer a question; its ``kind`` is review, trial, observation, interview or other, and Learning
+does reviews. A review is a small systematic review sized to the decision it informs: a question and the decision, a method fixed and dated before the first
+query, the exact queries with their dates and hit counts, screening with a count for each reason, items extracted and graded A to D, a synthesis of what is
+known, contested and unknown, limitations, a decision for each candidate, what each item changed (the applied part) and the date to revisit. The record is two
+tables, ``investigations.csv`` (one row per investigation) and ``investigation_items.csv`` (one row per kept item), with the columns of the library's standard;
+``gaps`` lists what a record lacks for its size, as advice.
 """
 from dataclasses import dataclass, field
 from datetime import date, timedelta
@@ -21,10 +22,10 @@ QUERIES = {"quick": 3, "standard": 5, "full": 8}               # the most querie
 OPEN_LIMIT = {"quick": 0, "standard": 6, "full": 15}           # how many kept items are opened (read through the Science seat) to verify them; quick stays on snippets
 SNIPPET_CAP = "C"                                              # standard and full: an item read only as a snippet is graded no higher than this
 SOURCE_KINDS = {"quick": ("web search",), "standard": ("web search", "scholarly search", "opened pages"), "full": ("web search", "scholarly search", "opened pages")}   # quick searches one kind; standard and full also open the kept pages
-COLUMNS = ["research_id", "kind", "intent_id", "experiment_id", "links", "question", "decision", "size", "protocol_date", "method", "criteria", "sources",
+COLUMNS = ["investigation_id", "kind", "intent_id", "experiment_id", "links", "question", "decision", "size", "protocol_date", "method", "criteria", "sources",
            "queries", "found", "screened_out", "kept", "observe", "change_my_mind", "stop", "done_on", "synthesis_known", "synthesis_contested",
            "synthesis_unknown", "limitations", "decisions", "refresh_on", "status"]
-ITEM_COLUMNS = ["research_id", "item_id", "claim", "source", "source_date", "independent", "verified", "licence", "grade", "knowledge_id", "applied"]
+ITEM_COLUMNS = ["investigation_id", "item_id", "claim", "source", "source_date", "independent", "verified", "licence", "grade", "knowledge_id", "applied"]
 MINIMUM = ("kind", "intent_id", "question", "decision", "size", "protocol_date", "method", "criteria", "sources", "queries", "done_on", "found",
            "screened_out", "kept", "limitations", "decisions", "refresh_on")
 SYNTHESIS = ("synthesis_known", "synthesis_contested", "synthesis_unknown")
@@ -89,8 +90,8 @@ def parts(cell: str) -> List[str]:
 
 
 @dataclass
-class Review:
-    """One review: the row of ``research.csv`` (``row``), the rows of ``research_items.csv`` (``items``), the per-item applied part, and what the search log held."""
+class Investigation:
+    """One investigation (a review): the row of ``investigations.csv`` (``row``), the rows of ``investigation_items.csv`` (``items``), the per-item applied part, and what the search log held."""
     row: Dict[str, str]
     items: List[Dict[str, str]] = field(default_factory=list)
     protocol: Dict[str, Any] = field(default_factory=dict)
@@ -99,12 +100,12 @@ class Review:
     applied: List[Dict[str, str]] = field(default_factory=list)   # item id -> what it changed or why not
 
     def to_dict(self) -> Dict[str, Any]:
-        return {"research": self.row, "items": self.items, "applied": self.applied, "protocol": self.protocol, "queries": self.log,
+        return {"investigation": self.row, "items": self.items, "applied": self.applied, "protocol": self.protocol, "queries": self.log,
                 "screened_out": self.reasons, "gaps": gaps(self.row, self.items)}
 
 
 def gaps(row: Mapping[str, str], items: Sequence[Mapping[str, str]], on: Optional[date] = None) -> List[str]:
-    """What a review record lacks against the standard for its size (advice, never a failure)."""
+    """What an investigation record lacks against the standard for its size (advice, never a failure)."""
     out: List[str] = []
     size = (row.get("size") or "").strip()
     if size not in SIZES:
@@ -112,6 +113,8 @@ def gaps(row: Mapping[str, str], items: Sequence[Mapping[str, str]], on: Optiona
     if (row.get("kind") or "") not in KINDS:
         out.append("kind is not one of " + ", ".join(KINDS))
     out += [f"has no {c}" for c in MINIMUM if not (row.get(c) or "").strip()]
+    if not any(link.startswith("solution:") for link in parts(row.get("links", ""))):
+        out.append("links name no solution (an investigation is filed under at least one solution, up to the top solution); older rows are still read")
     if size in ("standard", "full"):
         out += [f"has no {c}" for c in SYNTHESIS if not (row.get(c) or "").strip()]
     if row.get("protocol_date") and row.get("done_on") and row["protocol_date"] > row["done_on"]:

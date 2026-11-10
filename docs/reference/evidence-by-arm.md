@@ -104,8 +104,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | know_the_world | openalex_keywords_model | 40 | 7.5% (2.6% to 19.9%), 3/40 | $0.0001667 | 0.7 (median) | ahead of openalex_keywords_model, not significant (two-sided McNemar p=0.0234) | none recorded |
 | know_the_world | openalex_semantic_and_web | 150 | 32.7% (25.7% to 40.5%), 49/150 | $0.0002612 | 3.6 (median) | ahead of openalex_semantic_and_web (two-sided sign test p=6.2e-31) | none recorded |
 | know_the_world | web_research | 150 | 12.0% (7.7% to 18.2%), 18/150 | $0.0007 | 2.5 (median) | ahead of web_research (two-sided sign test p=1.12e-25) | none recorded |
-| learning_review | systematic_review (selected) | 24 | 100.0% (86.2% to 100.0%), 24/24 | $0 | 0 (median) | selected | none recorded |
-| learning_review | registry_research | 24 | 4.2% (0.7% to 20.2%), 1/24 | $0 | 0 (median) | ahead of registry_research (two-sided McNemar p=2.38e-07) | none recorded |
+| learning_review | systematic_review (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | selected | none recorded |
+| learning_review | registry_research | 30 | 3.3% (0.6% to 16.7%), 1/30 | $0 | 0 (median) | ahead of registry_research (two-sided McNemar p=3.73e-09) | none recorded |
 | live_objectives | rolled_up (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
 | live_objectives | flat_list | 20 | 40.0% (21.9% to 61.3%), 8/20 | $0 | 0 (median) | ahead of flat_list (two-sided sign test p=0.000488) | none recorded |
 | long_term_memory | file_recall (selected) | 17 | 94.1% (73.0% to 99.0%), 16/17 | $0 | 0 (median) | selected | none recorded |

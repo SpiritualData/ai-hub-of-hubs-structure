@@ -19,8 +19,8 @@ def main(argv):
     system = assemble(config=AssemblyConfig(solutions=("the-learning", "model-plumbing"), names={"the-learning": "systematic_review", "web-search": "claude_login", "vendor-model-caller": "claude_cli"}))
     got = system["the-learning"].review(QUESTION, DECISION, weight=size, links=["solution:terminal-experience"], intent_id="the-world",
                                         criteria={"exclude_terms": ["tutorial for beginners"], "since": "2025-01-01"}, use_model=True)
-    row = got["research"]
-    print(json.dumps({k: row[k] for k in ("research_id", "size", "protocol_date", "sources", "found", "screened_out", "kept", "decisions", "refresh_on",
+    row = got["investigation"]
+    print(json.dumps({k: row[k] for k in ("investigation_id", "size", "protocol_date", "sources", "found", "screened_out", "kept", "decisions", "refresh_on",
                                          "synthesis_known", "synthesis_contested", "synthesis_unknown", "limitations")}, indent=1))
     print("queries:", row["queries"])
     for item in got["items"]:

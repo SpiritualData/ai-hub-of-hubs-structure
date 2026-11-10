@@ -66,7 +66,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Model asked at the tier, within the budget (`metric-model-plumbing`): leader `via_vendor`, 30 of 30 cases
 - Research question finds its paper (`metric-the-science`): leader `openalex_semantic`, 52 of 150 cases
 - The best integration of each category is chosen (`metric-the-tools`)
-- Research kept current and done as a review (`metric-the-learning`): leader `systematic_review`, 24 of 24 cases
+- Research kept current and done as a review (`metric-the-learning`): leader `systematic_review`, 30 of 30 cases
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`)
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`)
 - Registry freshness reading (`metric-research-freshness-reader`): leader `registry_scan`, 41 of 41 cases

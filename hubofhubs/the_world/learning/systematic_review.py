@@ -4,11 +4,11 @@
 runs the queries through the hub's own Web Search and The Science seats (typed needs, never a consumer), screens with a count for each reason, extracts and
 grades each kept item by the library's A to D rule, opens a few kept pages to verify them (standard and full), synthesises what is known, contested and unknown,
 decides for each candidate, states what each item changed (the applied part) and sets the date to revisit. It returns the record the standard defines
-(``research_review.Review``). Screening, extraction, grading and the decisions are rules; with ``use_model`` a fast-tier model also drops results that do not
+(``investigation_record.Investigation``, an investigation of kind review). Screening, extraction, grading and the decisions are rules; with ``use_model`` a fast-tier model also drops results that do not
 bear on the question and writes the synthesis, at most two calls, and its failure leaves the rules' answer.
 
-``due_reviews`` is what a consumer's autopilot asks: the reviews past their revisit date and the registry areas whose research is stale, each with the request
-to run (``review_store.due``); ``standing_schedule`` is the weekly refresh as a schedule Proactivity reads. Standard library plus the hub and ``esoi``.
+``due_investigations`` is what a consumer's autopilot asks: the investigations past their revisit date, the experiments past their reevaluation time and the registry areas whose research is stale, each with the request
+to run (``investigation_store.due``); ``standing_schedule`` is the weekly refresh as a schedule Proactivity reads. Standard library plus the hub and ``esoi``.
 """
 import json
 import re
@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 
 from esoi import Lazy, implementation
 
-from hubofhubs.the_world.learning import research_review as rr, review_store
+from hubofhubs.the_world.learning import investigation_record as inv, investigation_store
 from hubofhubs.the_world.learning.research_freshness_reader.interface import FreshnessReading
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 from hubofhubs.the_world.science.interface import WorldKnowing
@@ -71,7 +71,7 @@ def licence_of(text: str) -> str:
 
 @implementation("the-learning", "systematic_review")
 class SystematicReview:
-    """Searches as a small systematic review and returns the research record; reports what is due."""
+    """Searches as a small systematic review and returns the investigation record; reports what is due."""
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, freshness: FreshnessReading, science: Lazy[WorldKnowing], web: Lazy[SearchBackend], plumbing: Lazy[ModelPlumbing],
@@ -80,23 +80,34 @@ class SystematicReview:
 
     # --- what is stale and what is due -------------------------------------------------------------------------------------------------
     def stale_areas(self, today: str = "") -> Sequence[str]:
-        return review_store.stale_areas(self.freshness, today)
+        return investigation_store.stale_areas(self.freshness, today)
 
-    def due_reviews(self, today: str = "", root: Any = None) -> Sequence[Mapping[str, Any]]:
-        return review_store.due(today, root, self.freshness)
+    def due_investigations(self, today: str = "", root: Any = None) -> Sequence[Mapping[str, Any]]:
+        return investigation_store.due(today, root, self.freshness)
+
+    def investigations_for(self, solution_id: str, include_ancestors: bool = True, today: str = "", root: Any = None) -> Sequence[Mapping[str, str]]:
+        return investigation_store.investigations_for(solution_id, include_ancestors, today, root)
 
     def standing_schedule(self, last_run: str = "") -> Mapping[str, Any]:
-        return review_store.standing_schedule(last_run)
+        return investigation_store.standing_schedule(last_run)
 
     # --- the review --------------------------------------------------------------------------------------------------------------------
     def review(self, question: str, decision: str, weight: Any = None, size: str = "", links: Sequence[str] = (), criteria: Optional[Mapping[str, Any]] = None,
                candidates: Sequence[str] = (), queries: Sequence[str] = (), intent_id: str = "", experiment_id: str = "", today: str = "",
-               refresh_days: Optional[int] = None, research_id: str = "", use_model: bool = False) -> Mapping[str, Any]:
-        size = size or rr.choose_size(weight)
+               refresh_days: Optional[int] = None, investigation_id: str = "", use_model: bool = False, solution_id: str = "", root: Any = None,
+               reuse: bool = True) -> Mapping[str, Any]:
+        size = size or inv.choose_size(weight)
         day = today or date.today().isoformat()
+        links, filed = investigation_store.with_solution(links, solution_id)
+        notes = ["no solution was given, so it is filed under the top solution " + filed["solution"]] if filed["fallback"] else []
+        earlier = investigation_store.earlier_for(question, size, links, day, root) if reuse else None
+        if earlier and earlier["state"] == "fresh":
+            return {**investigation_store.record_of(earlier, root), "solution_link": filed}
+        if earlier:
+            notes.append(f"extends {earlier['investigation_id']} ({earlier['state']}: {'past its revisit date' if earlier['state'] == 'stale' else 'it was a smaller review'})")
         crit = {"include_terms": [], "exclude_terms": [], "since": "", "allow_undated": True, "licence_allow": [], "candidate_hosts": {}, **(criteria or {})}
         plan = self.plan(question, candidates, queries, size)
-        kinds = list(rr.SOURCE_KINDS[size])
+        kinds = list(inv.SOURCE_KINDS[size])
         protocol = {"protocol_date": day, "question": question, "decision": decision, "size": size, "criteria": crit, "queries": plan, "sources": kinds,
                     "candidates": list(candidates)}
         hits, log, limits = self.search(plan, kinds, day)
@@ -111,24 +122,26 @@ class SystematicReview:
         decisions = self.decide(items, crit)
         if not items and limits and not found:
             decisions = ["all: defer: no results came back because a source failed, so nothing was judged, redo the review"]
-        applied = self.apply(items, decisions, links, research_id or self.new_id(day, intent_id, question))
-        rid = research_id or self.new_id(day, intent_id, question)
-        row = {"research_id": rid, "kind": "review", "intent_id": intent_id, "experiment_id": experiment_id, "links": rr.SEP.join(links), "question": question,
+        rid = investigation_id or self.new_id(day, intent_id, question)
+        if earlier and rid == earlier["investigation_id"]:
+            rid += "-extended"           # an extension is a new investigation that names the earlier one, never the same row
+        applied = self.apply(items, decisions, links, rid)
+        row = {"investigation_id": rid, "kind": "review", "intent_id": intent_id, "experiment_id": experiment_id, "links": inv.SEP.join(links), "question": question,
                "decision": decision, "size": size, "protocol_date": day, "method": f"{size} systematic review: protocol fixed on {day} before the first query; rules for screening, "
                "extraction and grading, results screened by criteria, kept items graded A to D", "criteria": self.criteria_text(crit), "sources": ", ".join(kinds),
-               "queries": rr.SEP.join(f"{e['source']} | {e['query']} | {e['date']} | {e['hits']}" for e in log), "done_on": day, "found": str(found),
-               "screened_out": rr.SEP.join(f"{n} {reason}" for reason, n in reasons.items()) or "0 nothing screened out", "kept": str(len(items)),
+               "queries": inv.SEP.join(f"{e['source']} | {e['query']} | {e['date']} | {e['hits']}" for e in log), "done_on": day, "found": str(found),
+               "screened_out": inv.SEP.join(f"{n} {reason}" for reason, n in reasons.items()) or "0 nothing screened out", "kept": str(len(items)),
                "synthesis_known": known, "synthesis_contested": contested, "synthesis_unknown": unknown,
-               "limitations": ", ".join(limits) or "titles and result snippets only for items not opened", "decisions": rr.SEP.join(decisions),
-               "refresh_on": rr.refresh_on(day, size, refresh_days), "status": "open"}
-        for column in rr.COLUMNS:
+               "limitations": ", ".join([", ".join(limits) or "titles and result snippets only for items not opened"] + notes), "decisions": inv.SEP.join(decisions),
+               "refresh_on": inv.refresh_on(day, size, refresh_days), "status": "open"}
+        for column in inv.COLUMNS:
             row.setdefault(column, "")
         for item in items:
-            item["research_id"] = rid
+            item["investigation_id"] = rid
             item["applied"] = applied.get(item["item_id"], "")
-        review = rr.Review(row=row, items=[{c: i.get(c, "") for c in rr.ITEM_COLUMNS} for i in items], protocol=protocol, log=log, reasons=reasons,
+        review = inv.Investigation(row=row, items=[{c: i.get(c, "") for c in inv.ITEM_COLUMNS} for i in items], protocol=protocol, log=log, reasons=reasons,
                            applied=[{"item": k, "applied": v} for k, v in applied.items()])
-        return review.to_dict()
+        return {**review.to_dict(), "solution_link": filed, "reused": False, "extends": earlier["investigation_id"] if earlier else ""}
 
     def new_id(self, day: str, intent_id: str, question: str) -> str:
         slug = re.sub(r"[^a-z0-9]+", "-", question.lower()).strip("-")[:32].strip("-")
@@ -142,7 +155,7 @@ class SystematicReview:
             if len(plan) >= want:
                 break
             plan.append(template.format(q=question))
-        return plan[:max(want, len(queries))][:rr.QUERIES[size] if not queries else len(queries)]
+        return plan[:max(want, len(queries))][:inv.QUERIES[size] if not queries else len(queries)]
 
     def search(self, plan: Sequence[str], kinds: Sequence[str], day: str):
         hits: List[Dict[str, str]] = []
@@ -199,7 +212,7 @@ class SystematicReview:
             own = [h.lower() for h in (crit["candidate_hosts"].get(hit["candidate"]) or ())]
             hit["independent"] = "unknown" if not hit["url"] else "no" if hit["relation"] in ("vendor", "maintainer") or host_of(hit["url"]) in own else "yes"
             by_candidate.setdefault(hit["candidate"], []).append(hit)
-        budget = rr.OPEN_LIMIT[size] if "opened pages" in kinds else 0
+        budget = inv.OPEN_LIMIT[size] if "opened pages" in kinds else 0
         first, rest = [], []                                   # one page per candidate is opened before a second of any candidate
         seen_names = set()
         for n, hit in enumerate(kept):
@@ -229,7 +242,7 @@ class SystematicReview:
             claim = " ".join((hit["snippet"] or hit["title"]).split())
             items.append({"item_id": f"i{n}", "candidate": hit["candidate"], "claim": claim[:300], "source": hit["url"], "source_date": hit["date"][:10] or "undated",
                           "independent": hit["independent"], "verified": verified, "licence": hit["licence"] or licence_of(text) or "unknown",
-                          "grade": rr.cap_grade(rr.grade(sources), verified, size), "knowledge_id": "", "text": text.lower()})
+                          "grade": inv.cap_grade(inv.grade(sources), verified, size), "knowledge_id": "", "text": text.lower()})
         snippets = sum(1 for i in items if i["verified"] == "snippet")
         if snippets and size != "quick":
             limits.append(f"{snippets} kept item(s) read as result snippets only, graded C at most")
@@ -242,7 +255,7 @@ class SystematicReview:
         for i in items:
             by.setdefault(i["candidate"], []).append(i)
         known = [c for c, v in by.items() if any(i["grade"] in ("A", "B") for i in v)]
-        contested = [c for c, v in by.items() if any(n in i["text"] for i in v for n in rr.NEGATIVE) and any(not any(n in i["text"] for n in rr.NEGATIVE) for i in v)]
+        contested = [c for c, v in by.items() if any(n in i["text"] for i in v for n in inv.NEGATIVE) and any(not any(n in i["text"] for n in inv.NEGATIVE) for i in v)]
         unknown = [f"{c} (grade {max(i['grade'] for i in v)} at best)" for c, v in by.items() if all(i["grade"] in ("C", "D") for i in v)]
         unknown += [f"licence of {c}" for c, v in by.items() if all(i["licence"] == "unknown" for i in v)]
         synthesis = (("Supported by a graded source: " + ", ".join(known)) if known else "Nothing reached grade B or better.",
@@ -266,7 +279,7 @@ class SystematicReview:
         for name, group in by.items():
             best = min(i["grade"] for i in group)
             licence = next((i["licence"] for i in group if i["licence"] != "unknown"), "unknown")
-            negative = any(n in i["text"] for i in group for n in rr.NEGATIVE) and all(any(n in i["text"] for n in rr.NEGATIVE) for i in group)
+            negative = any(n in i["text"] for i in group for n in inv.NEGATIVE) and all(any(n in i["text"] for n in inv.NEGATIVE) for i in group)
             if negative:
                 out.append(f"{name}: reject: every kept source reports it archived, deprecated or unmaintained")
             elif crit["licence_allow"] and licence != "unknown" and licence not in crit["licence_allow"]:
