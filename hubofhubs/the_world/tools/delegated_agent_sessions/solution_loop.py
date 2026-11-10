@@ -41,6 +41,8 @@ MAP_ENTRIES = 300
 NOTHING_NEW = "(nothing has changed or been added since the start: the files shown at the start are current)"
 # The files in view at the start go in the system text, after the instructions: a model service keeps a long system text between calls, so the
 # second call of a run (and a review, and a helper) pays a fraction for them. The message then carries only what changed or was added.
+VIEW_FILES = "FILES IN VIEW (current):"
+CHANGED_FILES = "FILES IN VIEW CHANGED OR ADDED SINCE THE START (current):"
 START_FILES = "FILES IN VIEW AT THE START (each is current unless the message shows it again, which then replaces this copy):"
 REVIEW_PROSE = "prose"            # ``review`` value: review every written text, not only one in which the code check found something
 COMMON_WORDS = frozenset("this that with from have will your what which when where there their them then than they into every each about folder file files using write make report tell goal should must also only does done after before been were being more most some such very just like over under between".split())
@@ -424,13 +426,13 @@ def indent(text: str) -> str:
 
 
 def build_prompt(goal: str, context: str, folder_map: str, files_text: str, entries: Sequence[Mapping[str, Any]], note: str,
-                 earlier_goal: str = "") -> str:
+                 earlier_goal: str = "", since_start: bool = False) -> str:
     parts = [f"GOAL:\n{goal.strip()}"]
     if earlier_goal.strip() and earlier_goal.strip() != goal.strip():
         parts.append(f"EARLIER GOAL:\n{earlier_goal.strip()}")
     if context.strip():
         parts.append(f"CONTEXT:\n{context.strip()}")
-    parts += [f"FOLDER MAP (paths relative to the working folder):\n{folder_map}", f"FILES IN VIEW CHANGED OR ADDED SINCE THE START (current):\n{files_text}",
+    parts += [f"FOLDER MAP (paths relative to the working folder):\n{folder_map}", f"{CHANGED_FILES if since_start else VIEW_FILES}\n{files_text}",
               f"WHAT HAS HAPPENED SO FAR:\n{history_text(entries)}"]
     if note:
         parts.append(note)
@@ -482,7 +484,7 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
              environment: Optional[Mapping[str, str]] = None, wrap: Sequence[str] = (), view_chars: int = 100000,
              counter: Optional[CallCounter] = None, review: bool = True, state: Optional[LoopState] = None,
              save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
-             tools: Optional[Mapping[str, Tool]] = None) -> LoopResult:
+             tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000) -> LoopResult:
     """Work ``goal`` in ``working_dir`` until a call's report is accepted, the model is blocked, ``max_calls`` model calls are spent (the
     ``counter`` is shared with helpers and counts all of them) or ``cancel()`` is true. Never raises. With ``review``, written text in which a code check
     (``unsupported``) finds a figure no source file holds, or a named file that is not in the folder, gets one more call before it is accepted: a
@@ -495,7 +497,7 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
     result = LoopResult()
     try:
         loop(result, goal, working_dir, complete, context, max_calls, depth, cancel, emit, command_timeout, environment, wrap, view_chars,
-             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools)
+             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars)
     except Exception as error:  # noqa: BLE001 -- the loop reports a failure, it does not raise
         result.met = False
         result.error = result.error or f"the loop failed: {type(error).__name__}: {error}"
@@ -505,7 +507,7 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
 def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str, max_calls: int, depth: int, cancel, emit, command_timeout: float,
          environment, wrap, view_chars: int, counter: CallCounter, review: bool = True, state: Optional[LoopState] = None,
          save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
-         tools: Optional[Mapping[str, Tool]] = None) -> None:
+         tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000) -> None:
     root = os.path.abspath(working_dir)
     say = emit or (lambda _text: None)
     files, _ = listing(root)
@@ -531,7 +533,10 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
     tool_lines = "".join(f"USE: {name} <input>   {' '.join(tool.description.split())}\n" for name, tool in (tools or {}).items())
     system = SYSTEM.format(delegate=DELEGATE_LINE if depth > 0 else "", tools=tool_lines)
     start = view.blocks()
-    system += f"\n\n{START_FILES}\n" + ("\n".join(start[rel] for rel in sorted(start)) if start else "(none)")
+    if sum(len(block) for block in start.values()) < cache_chars:
+        start = {}      # a small view is cheaper sent in the message: the instructions alone stay the same for every run and are kept between them
+    else:
+        system += f"\n\n{START_FILES}\n" + "\n".join(start[rel] for rel in sorted(start))
 
     def fetch() -> List[str]:
         """The messages a person sent since the last look, added to the history; the texts."""
@@ -585,7 +590,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         elif counter.left() == 1:
             note = "One call remains after this one: aim to finish with a REPORT."
         try:
-            text = complete(system, build_prompt(goal, context, folder_map, files_text, entries, note, earlier_goal)) or ""
+            text = complete(system, build_prompt(goal, context, folder_map, files_text, entries, note, earlier_goal, bool(start))) or ""
         except Exception as error:  # noqa: BLE001
             result.error = f"the model call failed: {type(error).__name__}: {error}"
             break
@@ -758,7 +763,7 @@ def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDi
     files_text, shown = view.render(start)
     prompt = "\n\n".join(filter(None, [f"GOAL:\n{goal.strip()}", f"CONTEXT:\n{context.strip()}" if context.strip() else "",
                                        f"FILES WRITTEN OR CHANGED BY THE WORK: {', '.join(changed)}",
-                                       f"FILES CHANGED OR ADDED SINCE THE START (current):\n{files_text}",
+                                       f"{CHANGED_FILES if start else VIEW_FILES}\n{files_text}",
                                        ("FOUND BY A CODE CHECK (certain, not a judgment; list each under UNSUPPORTED and deal with it: keep a figure only "
                                         "where the written file shows the arithmetic from figures that are in the sources):\n" + "\n".join(found)) if found else "",
                                        REVIEW_ROLE + REVIEW_SYSTEM]))

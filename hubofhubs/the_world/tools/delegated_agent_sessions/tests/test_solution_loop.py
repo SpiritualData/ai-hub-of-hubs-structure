@@ -57,7 +57,7 @@ def test_a_failing_check_feeds_its_output_to_the_second_call(tmp_path):
     first = edit("app.py", "x = 1\n", "x = 2\n") + "CHECK: echo MISSING-THING >&2; exit 1\nREPORT: done\n"
     second = edit("app.py", "x = 2\n", "x = 3\n") + "CHECK: grep -q 'x = 3' app.py\nREPORT: Now x is 3.\n"
     script = Script(first, second)
-    got = run_loop("Make x right", working_dir=root, complete=script)
+    got = run_loop("Make x right", working_dir=root, complete=script, cache_chars=0)
     assert got.met and got.calls == 2 and got.report == "Now x is 3."
     assert "MISSING-THING" in script.prompts[1] and "x = 2" in script.prompts[1] and "x = 1" not in script.prompts[1].split("CHANGED OR ADDED SINCE THE START")[1]
 
@@ -148,7 +148,7 @@ def test_old_results_are_clipped_and_the_latest_is_full():
 def test_each_prompt_is_rebuilt_not_appended(tmp_path):
     root = folder(tmp_path, **{"app.py": "x = 1\n"})
     script = Script(edit("app.py", "x = 1\n", "x = 2\n") + "NOTE: edited", "RUN: echo hi\nNOTE: ran", "REPORT: ok")
-    run_loop("go", working_dir=root, complete=script)
+    run_loop("go", working_dir=root, complete=script, cache_chars=0)
     assert all(prompt.count("GOAL:") == 1 for prompt in script.prompts)
     assert script.prompts[1].split("CHANGED OR ADDED SINCE THE START")[1].count("=== app.py ===") == 1 and "x = 2" in script.prompts[1]
 
@@ -314,7 +314,7 @@ def test_written_text_with_an_unsupported_figure_gets_one_review_that_can_correc
     root = folder(tmp_path, **{"facts.txt": "Sales were 12 units.\n"})
     script = Script(edit("out.md", "", "Sales were 99 units.\n") + "REPORT: wrote out.md",
                     edit("out.md", "Sales were 99 units.\n", "Sales were 12 units.\n") + edit("facts.txt", "Sales were 12 units.\n", "x\n"))
-    got = run_loop("Write out.md with the sales figure from facts.txt.", working_dir=root, complete=script)
+    got = run_loop("Write out.md with the sales figure from facts.txt.", working_dir=root, complete=script, cache_chars=0)
     assert got.met and got.calls == 2 and got.report == "wrote out.md"
     assert (tmp_path / "out.md").read_text() == "Sales were 12 units.\n"
     assert (tmp_path / "facts.txt").read_text() == "Sales were 12 units.\n"      # a reviewer corrects the work, never the sources
@@ -357,7 +357,7 @@ def test_a_folder_larger_than_the_view_shows_only_what_the_goal_points_at(tmp_pa
     files["budget_notes.txt"] = "The venue costs 300.\n" * 5
     root = folder(tmp_path, **files)
     script = Script("It is 300.")
-    run_loop("What does the venue cost according to the budget?", working_dir=root, complete=script, view_chars=400)
+    run_loop("What does the venue cost according to the budget?", working_dir=root, complete=script, cache_chars=0, view_chars=400)
     view = script.prompts[0].split("FILES IN VIEW AT THE START")[1].split("WHAT HAS HAPPENED")[0]
     assert "=== budget_notes.txt ===" in view and "=== misc" not in view
 
@@ -559,7 +559,7 @@ def test_a_figure_worked_out_from_two_source_figures_is_not_listed(tmp_path):
 def test_the_files_in_view_at_the_start_are_in_the_system_text_and_the_same_at_every_call(tmp_path):
     root = folder(tmp_path, **{"app.py": "x = 1\n", "notes.txt": "keep\n"})
     script = Script(edit("app.py", "x = 1\n", "x = 2\n") + "RUN: false\n", "REPORT: done")
-    run_loop("set x to 2", working_dir=root, complete=script, review=False)
+    run_loop("set x to 2", working_dir=root, complete=script, cache_chars=0, review=False)
     assert script.systems[0] == script.systems[1] and "=== notes.txt ===\nkeep" in script.systems[0] and "x = 1" in script.systems[0]
     message = script.prompts[1][len(script.systems[1]):]
     assert "=== app.py ===\nx = 2" in message and "notes.txt ===" not in message      # only what changed is sent again
