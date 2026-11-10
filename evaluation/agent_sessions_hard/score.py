@@ -31,7 +31,7 @@ from agent_sessions_hard.build_cases import digest, private_cases   # noqa: E402
 AGENT_SECONDS = 900
 JUDGE_SECONDS = 300
 JUDGE_TIER = "best"
-EVIDENCE_CHARS = 60000
+EVIDENCE_CHARS = 400000   # every case's records whole: a judge shown only the first records fails a true citation of a later one
 PACKS_ENV = "AGENT_INSTRUCTION_PACKS"
 KEEP_ENV = "AGENT_SESSIONS_HARD_KEEP"
 

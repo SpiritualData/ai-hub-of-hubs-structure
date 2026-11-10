@@ -616,6 +616,9 @@ NAMES = {
         "ACK_TEXT", "ACK_WITHIN_SECONDS", "Acknowledger", "MODEL_ACK_TARGET_SECONDS", "STAGE_MODEL", "STAGE_PLACEHOLDER", "STATUS_KIND_ACK",
         "ack_event", "ack_stage", "is_ack", "model_ack_event",
     ),
+    "hubofhubs.the_world.tools.command_running": (
+        "CommandResult", "refusal", "run_command",
+    ),
     "hubofhubs.the_world.tools.deep": (
         "DeepResult", "DeepRunner", "DeepRunnerBase", "FUTURE_CONTEXT_VIA_FIELD", "FUTURE_CONTEXT_VIA_OUTPUT", "FileWriter",
         "FileWriterBase", "LAUNCH_MISSING_PROGRAM", "LAUNCH_PERMISSION_DENIED", "OperationWriter", "OperationWriterBase", "ProgressEvent",
@@ -670,6 +673,12 @@ NAMES = {
     ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.settings": (
         "GoalSettings",
+    ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop": (
+        "CallCounter", "LoopResult", "run_loop",
+    ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop_runner": (
+        "SolutionLoopRunner", "as_solution_worker",
     ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner": (
         "DEFAULT_ECHO_WAIT_SECONDS", "LOOP_TICK_SECONDS", "MIN_STREAM_CONTROL_VERSION", "Sent", "StreamJsonGoalRunner", "StreamRun",

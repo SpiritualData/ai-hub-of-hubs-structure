@@ -205,14 +205,15 @@
  "delegated-agent-sessions": {
   "default": "stream_json_goal_runner@provider=anthropic,tier=fast",
   "evidence": {
-   "detail": "stream_json_goal_runner@provider=anthropic,tier=fast is better than opencode_runner@provider=gemini,tier=balanced (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00029, 18 of 18 cases disagree); best guess, not yet significant: opencode_runner@provider=gemini,tier=fast 0.642 against stream_json_goal_runner@provider=anthropic,tier=fast 0.948 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=balanced 0.936 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=best 0.875 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast leads subprocess_goal_runner@provider=anthropic,tier=fast (subprocess_goal_runner@provider=anthropic,tier=fast 0.988 against stream_json_goal_runner@provider=anthropic,tier=fast 0.988; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.815, 18 of 18 cases disagree)",
-   "p": 0.00029,
-   "verdict": "WIN"
+   "detail": "beaten by solution_loop_runner@provider=anthropic,tier=fast: stream_json_goal_runner@provider=anthropic,tier=fast is better than opencode_runner@provider=gemini,tier=balanced (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.29e-05, 18 of 18 cases disagree); best guess, not yet significant: opencode_runner@provider=gemini,tier=fast 0.642 against stream_json_goal_runner@provider=anthropic,tier=fast 0.948 on the point estimate; no case counts or per-case rows allow a test; solution_loop_runner@provider=anthropic,tier=fast is better than stream_json_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000145, 18 of 18 cases disagree); best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=balanced 0.936 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=best 0.875 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast is better than subprocess_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.29e-05, 18 of 18 cases disagree)",
+   "p": 2.3e-05,
+   "verdict": "LOSS"
   },
   "modules": {
    "acp_deep_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
    "codex_cli_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner",
    "opencode_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner",
+   "solution_loop_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop_runner",
    "stream_json_goal_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner",
    "subprocess_goal_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner"
   }

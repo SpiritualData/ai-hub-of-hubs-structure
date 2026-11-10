@@ -81,12 +81,13 @@ def harness_class(harness: str) -> Any:
 
 
 def eligible(arm: str, declared: Iterable[str]) -> bool:
-    """Whether a consumer that holds credentials for ``declared`` providers can run ``arm``."""
+    """Whether a consumer that holds credentials for ``declared`` providers can run ``arm`` (never an arm whose harness is ``on_trial``)."""
     harness, provider, tier = split_arm(arm)
     if not provider or provider not in providers.normalise_all(declared):
         return False
     cls = harness_class(harness)
-    return cls is not None and providers.drives(cls, provider)
+    # A harness on trial is measured and ranked, never handed to a consumer: promotion (removing ``on_trial``) is the owner's release decision.
+    return cls is not None and not getattr(cls, "on_trial", False) and providers.drives(cls, provider)
 
 
 def read_snapshot(path: Path = SNAPSHOT) -> Dict[str, Any]:

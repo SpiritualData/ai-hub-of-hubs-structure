@@ -47,8 +47,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Share of connections that need no code (`metric-connection-config-share`)
 - The operation is carried out and nothing else (`metric-connected-system-operations`)
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 18 of 18 cases
-- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `subprocess_goal_runner@provider=anthropic,tier=best`, 7 of 7 cases
+- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
+- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 7 of 7 cases
 - Goal met by its own tests (`metric-file-editing`): leader `fast_edit`, 29 of 30 cases
 - and 2 more: all 12 are in [metrics](#metrics) of the full record below
 
@@ -89,6 +89,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Agent Client Protocol runner | `delegated-agent-sessions:acp_deep_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/acp_runner.py](delegated_agent_sessions/acp_runner.py) |  |
 | Codex CLI, one shot | `delegated-agent-sessions:codex_cli_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py](delegated_agent_sessions/headless_runner.py) |  |
 | opencode, one shot | `delegated-agent-sessions:opencode_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py](delegated_agent_sessions/headless_runner.py) |  |
+| Hub's own tool loop | `delegated-agent-sessions:solution_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/solution_loop_runner.py](delegated_agent_sessions/solution_loop_runner.py) |  |
 | One-call file edit | `file-editing:fast_edit` | [hubofhubs/the_world/tools/file_editing/fast_edit.py](file_editing/fast_edit.py) |  |
 | Folder reader | `read-files:folder_reader` | [hubofhubs/the_world/tools/file_reading/read_files.py](file_reading/read_files.py) |  |
 | Brave Search API | `web-search:brave` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |

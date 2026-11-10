@@ -13,7 +13,7 @@ Part of [Using the tools of the outside world](../README.md)
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: `stream_json_goal_runner@provider=anthropic,tier=fast`
 - Metric: Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions)
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 136 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 141 more
 
 ## Implementations
 
@@ -24,12 +24,13 @@ Part of [Using the tools of the outside world](../README.md)
 | Agent Client Protocol runner | `delegated-agent-sessions:acp_deep_runner` | Runs each goal as one session against the Claude ACP agent. Drives Anthropic models only. | [`hubofhubs/the_world/tools/delegated_agent_sessions/acp_runner.py`](acp_runner.py) |  |
 | Codex CLI, one shot | `delegated-agent-sessions:codex_cli_runner` | Runs Codex CLI headless (codex exec --json) once per goal with the prompt on stdin and reads its event stream for the report, tokens and cost. Drives OpenAI models only. | [`hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py`](headless_runner.py) |  |
 | opencode, one shot | `delegated-agent-sessions:opencode_runner` | Runs opencode headless (opencode run --format json) once per goal and reads its event stream for the report, tokens and cost. Drives any provider it holds a key for, so one harness serves Gemini, OpenAI, Anthropic or DeepSeek keys. | [`hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py`](headless_runner.py) |  |
+| Hub's own tool loop | `delegated-agent-sessions:solution_loop_runner` | The hub as its own harness: instead of delegating the goal to an external coding agent, it maps the working folder, puts the files that matter in view, and asks a pure text completion for actions (read, search and replace edits, run, check, delegate, report) that its own code executes, repeating until a report is accepted. Each call's prompt is rebuilt from the current files and a compact history, so calls stay few and small. An arm is this harness with a tier, written solution_loop_runner@provider=anthropic,tier=fast; the default completion runs on the Claude Code login. | [`hubofhubs/the_world/tools/delegated_agent_sessions/solution_loop_runner.py`](solution_loop_runner.py) |  |
 
 ## Metrics
 
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 18 of 18 cases
-- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `subprocess_goal_runner@provider=anthropic,tier=best`, 7 of 7 cases
+- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
+- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 7 of 7 cases
 
 ## Where to go next
 
