@@ -446,14 +446,18 @@ def test_gemini_fetch_url_and_web_search_count_their_calls_and_tokens(monkeypatc
 # ---- prompt specs (collaborators injected) ----------------------------------------------------------------------------
 
 def test_prompt_spec_renders_with_injected_tiers_and_hook_and_the_no_em_dash_rule():
-    from hubofhubs.the_world.model_plumbing.prompt_spec import NO_EM_DASH_RULE, PromptRegistry, bind_spec_class
+    from hubofhubs.the_world.model_plumbing.prompt_spec import NO_EM_DASH_RULE, US_SPELLING_RULE, PromptRegistry, bind_spec_class, with_us_spelling_rule
     seen = []
     spec_class = bind_spec_class(("fast", "best"), seen.append)
     registry = PromptRegistry(spec_class)
     spec = registry.declare("t.demo", solution="s", metric="m", tier="fast", cache_layer="none", template="Say hi to {name}.")
     assert spec.inputs == ("name",) and registry.get("t.demo") is spec
     text = registry.render("t.demo", name="Ann")
-    assert text.endswith(NO_EM_DASH_RULE) and text.count(NO_EM_DASH_RULE) == 1 and seen == ["t.demo"]
+    assert text.endswith(NO_EM_DASH_RULE + "\n\n" + US_SPELLING_RULE) and text.count(NO_EM_DASH_RULE) == 1 and seen == ["t.demo"]
+    assert text.count(US_SPELLING_RULE) == 1 and "English" in US_SPELLING_RULE and seen == ["t.demo"]
+    assert with_us_spelling_rule(text) == text
+    quiet = registry.declare("t.quiet", solution="s", metric="m", tier="fast", cache_layer="none", template="Reply yes or no.", writes_text=False)
+    assert registry.render("t.quiet") == "Reply yes or no."
     with pytest.raises(ValueError):
         spec.render()
     with pytest.raises(ValueError):

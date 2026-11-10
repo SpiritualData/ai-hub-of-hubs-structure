@@ -4,10 +4,10 @@ A ``PromptSpec`` carries what a prompt usually leaves implicit at its call site:
 ``metric`` ids that justify the call (plain strings; checking them against a consumer's records is the consumer's test),
 the model ``tier``, the ``cache_layer`` where the text sits, the template's ``inputs``, the reply ``output_schema`` and
 the ``template`` itself. ``writes_text`` marks a prompt that tells a model to write text a person may read; ``render`` then
-always carries a no-em-dash rule.
+always carries a no-em-dash rule and an American-spelling rule.
 
-This module is also the home of the rules every prompt of a consumer shares, so they are written once: ``NO_EM_DASH_RULE``
-and ``SOLUTION_ORDER_RULE`` (for a prompt that generates, restructures or proposes the solutions of an intent). A consumer
+This module is also the home of the rules every prompt of a consumer shares, so they are written once: ``NO_EM_DASH_RULE``,
+``US_SPELLING_RULE`` and ``SOLUTION_ORDER_RULE`` (for a prompt that generates, restructures or proposes the solutions of an intent). A consumer
 puts such a rule into its prompt text by name; a new shared rule is a constant here, with a test, never a copy in a consumer.
 
 The consumer's own collaborators are injected, never imported: ``bind_spec_class(tiers, on_render)`` returns a spec class
@@ -32,6 +32,9 @@ NO_EM_DASH_RULE = (
     "Never use em dashes; use two sentences, a comma, a colon, or parentheses instead."
 )
 
+# Appended by ``render`` after the no-em-dash rule. A model may write in the reader's own language, so it binds English only.
+US_SPELLING_RULE = "When you write in English, use American spelling (for example practice, color, organize)."
+
 # For a prompt that generates, restructures or proposes the solutions of an intent.
 SOLUTION_ORDER_RULE = (
     "List solutions in priority order for the intent: what the intent needs first comes first, and a solution others "
@@ -45,6 +48,13 @@ def with_no_em_dash_rule(text: str) -> str:
     if "em dash" in text.lower() or "em-dash" in text.lower():
         return text
     return f"{text.rstrip()}\n\n{NO_EM_DASH_RULE}"
+
+
+def with_us_spelling_rule(text: str) -> str:
+    """``text`` with the American-spelling rule appended unless it already states it (idempotent)."""
+    if "american spelling" in text.lower():
+        return text
+    return f"{text.rstrip()}\n\n{US_SPELLING_RULE}"
 
 
 @dataclass(frozen=True)
@@ -75,7 +85,7 @@ class PromptSpec:
                              f"one of {CACHE_LAYERS}")
 
     def render(self, **values: Any) -> str:
-        """The prompt text, filled with ``values`` and carrying the no-em-dash rule.
+        """The prompt text, filled with ``values`` and carrying the no-em-dash and American-spelling rules.
 
         A spec with no ``inputs`` is returned verbatim (its text may hold literal braces); a spec with inputs is filled
         with ``str.format``. Values must match ``inputs`` exactly, so a typo or a forgotten slot fails here rather than
@@ -88,7 +98,7 @@ class PromptSpec:
         if hook is not None:
             hook(self.id)
         text = self.template.format(**values) if self.inputs else self.template
-        return with_no_em_dash_rule(text) if self.writes_text else text
+        return with_us_spelling_rule(with_no_em_dash_rule(text)) if self.writes_text else text
 
 
 def bind_spec_class(tiers: Tuple[str, ...], on_render: Optional[Callable[[str], None]] = None,
