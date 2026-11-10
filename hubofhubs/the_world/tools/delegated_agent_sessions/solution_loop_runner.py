@@ -34,6 +34,8 @@ from hubofhubs.the_world.tools.command_running import sandbox_wrap
 from hubofhubs.the_world.tools.delegated_agent_sessions import providers
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import extract_escalation_id
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig, log
+from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (
+    DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, SOFT_FRACTION, WRAP_UP_MESSAGE, LimitWatch, active_watch, ceiling_of, decision_of, soft_fraction_of, stop_aware)
 from hubofhubs.the_world.tools.delegated_agent_sessions.settings import (
     GoalSettings, GoalSettingsSource, resolve_goal_settings, with_instructions_pack)
 from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import SYSTEM_CHARS, LoopResult, LoopState, Telling, Tool, run_loop, short
@@ -41,8 +43,16 @@ from hubofhubs.the_world.tools.events import EVENT_EXEC
 
 DEFAULT_TIER = "fast"
 DEFAULT_CALLS = 15
-DEFAULT_TIMEOUT_SECONDS = 1800.0   # a run with no configured cap still ends
 SESSION_FOLDER = "solution-loop-sessions"
+
+
+def soft_limit_floor(facts: Mapping[str, Any]) -> Dict[str, Any]:
+    """The loop's deterministic floor for its own iteration when no stop decision is assembled: go on (what the loop always did) until the soft share of either ceiling is used."""
+    soft = float(facts.get("soft_fraction") or SOFT_FRACTION)
+    for used, cap, name in ((facts.get("spend_usd"), facts.get("ceiling_usd"), "ceiling_spend"), (facts.get("elapsed_seconds"), facts.get("ceiling_seconds"), "ceiling_time")):
+        if cap and float(used or 0.0) >= float(cap) * soft:
+            return {"continue": False, "reason": name}
+    return {"continue": True, "reason": "no_stop_decision"}
 
 
 @implementation("delegated-agent-sessions", "solution_loop_runner")
@@ -60,7 +70,9 @@ class SolutionLoopRunner(DeepRunnerBase):
                  settings: Optional[GoalSettingsSource] = None, model_for: Optional[Callable[[str, str], Optional[str]]] = None,
                  instructions: str = "", complete: Optional[Callable[[str, str], str]] = None,
                  model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None, sandbox: bool = True, review: Any = True,
-                 session_dir: Optional[str] = None, tools: Optional[Mapping[str, Tool]] = None, system_chars: int = SYSTEM_CHARS, **ignored: Any):
+                 session_dir: Optional[str] = None, tools: Optional[Mapping[str, Tool]] = None, system_chars: int = SYSTEM_CHARS,
+                 ceiling_usd: Any = DEFAULT_CEILING_USD, ceiling_seconds: Any = DEFAULT_CEILING_SECONDS, soft_fraction: float = SOFT_FRACTION,
+                 should_continue: Optional[Callable[[Mapping[str, Any]], Any]] = None, stop_inputs: Optional[Mapping[str, Any]] = None, **ignored: Any):
         if not providers.drives(type(self), provider):
             raise ValueError(f"{type(self).__name__} drives only {', '.join(providers.providers_of(type(self)))}, not {provider!r}")
         if config is None:
@@ -82,6 +94,14 @@ class SolutionLoopRunner(DeepRunnerBase):
         self.session_dir = session_dir
         self.tools = dict(tools) if tools else None
         self.system_chars = int(system_chars)      # how much stable content (instructions, goal, context, map, start files) the system text may hold
+        # The same default ceilings as the other runners (``run_ceilings``): high, never unbounded by omission (``UNLIMITED`` is the caller's explicit choice). At the soft
+        # share the loop is steered once through its inbox to finish the step in hand and report; at the hard limit it stops, keeping its saved session to resume.
+        self.ceiling_usd = ceiling_of(ceiling_usd, "ceiling_usd")
+        self.ceiling_seconds = ceiling_of(ceiling_seconds, "ceiling_seconds")
+        self.soft_fraction = soft_fraction_of(soft_fraction)
+        # The one seam for the hub's own iteration (a review call after the code check finds something, a repeated nudge to report again): the default asks Goal Completion's
+        # stop decision, with what the person stated and the policy as ``stop_inputs``, and keeps a floor that refuses new iteration past the soft limit when none is assembled.
+        self.should_continue = should_continue or stop_aware(stated=(stop_inputs or {}).get("stated"), policy=(stop_inputs or {}).get("policy"), fallback=soft_limit_floor)
         self.running: Dict[str, "queue.Queue[str]"] = {}   # run or session id -> the messages waiting for that run
         self.running_lock = threading.Lock()
 
@@ -214,7 +234,8 @@ class SolutionLoopRunner(DeepRunnerBase):
              model: Optional[str] = None, emit: Optional[Callable[..., None]] = None, cancel_check: Optional[Callable[[], bool]] = None,
              run_id: Optional[str] = None, session_id: Optional[str] = None,
              resume_session_id: Optional[str] = None, solution: str = "", milestone: str = "", frame: str = "",
-             agent: str = "main", control: Any = None, requester_user_id: Optional[str] = None) -> Tuple[LoopResult, Dict[str, float], str]:
+             agent: str = "main", control: Any = None, requester_user_id: Optional[str] = None,
+             watch: Optional[LimitWatch] = None) -> Tuple[LoopResult, Dict[str, float], str]:
         """One loop on ``goal``: ``(the loop's result, {"cost", "tokens"}, "" or why it stopped early: "timeout" / "cancelled")``. With a
         ``session_id`` the state is saved there after every call, and the state saved under ``resume_session_id`` starts the loop. Raises only
         what a bad setting raises; ``run_goal`` catches it.
@@ -234,8 +255,11 @@ class SolutionLoopRunner(DeepRunnerBase):
             run_model = self.model_translator(run_model) or run_model
         usage: Dict[str, float] = {"cost": 0.0, "tokens": 0, "plain": 0, "read": 0, "write": 0, "output": 0}
         started = time.monotonic()
-        cap = self.cfg.timeout_seconds or settings.deep_timeout_seconds or DEFAULT_TIMEOUT_SECONDS
+        cap = self.cfg.timeout_seconds or settings.deep_timeout_seconds or (self.ceiling_seconds if self.ceiling_seconds is not None else float("inf"))   # the time ceiling is the cap; UNLIMITED is none
         stopped = {"why": ""}
+        shared = watch or active_watch()        # a tree of workers shares one watch, so its ceilings are for the whole tree
+        watch = shared or LimitWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, emit=emit, log=log, throttle=0.0)
+        call_key = uuid.uuid4().hex
 
         def cancel() -> bool:
             if control is not None:
@@ -255,6 +279,10 @@ class SolutionLoopRunner(DeepRunnerBase):
                         return True
                 except Exception:  # noqa: BLE001 -- a failing cancel check does not stop the run
                     pass
+            watch.track(call_key, usage["cost"])
+            if watch.hard_reached():
+                stopped["why"] = "hard_limit"
+                return True
             if time.monotonic() - started > cap:
                 stopped["why"] = "timeout"
                 return True
@@ -305,6 +333,9 @@ class SolutionLoopRunner(DeepRunnerBase):
                     got.append(messages.get_nowait())
                 except queue.Empty:
                     break
+            watch.track(call_key, usage["cost"])
+            if watch.soften():          # the soft limit: once, ask the loop to finish the step in hand, leave things consistent and report what is done, left and how to resume
+                got.append("From the hub, not the person: " + WRAP_UP_MESSAGE)
             if control is not None:
                 try:
                     claimed = list(control.claim_inputs() or [])
@@ -321,18 +352,35 @@ class SolutionLoopRunner(DeepRunnerBase):
             if not keys:
                 keys.append(uuid.uuid4().hex)
                 self.running[keys[0]] = messages
+        def permit(kind: str, facts: Mapping[str, Any]) -> Tuple[bool, str]:
+            """The hub's own iteration (a review after the code check, a repeated nudge) put to the stop decision with the run's own spend and time."""
+            now_spend, now_time = watch.spend(), watch.elapsed()
+            rounds = [dict(r) for r in facts.get("rounds", [])]
+            marks.append((now_spend, now_time))
+            for round_, (spent, seconds) in zip(rounds, ([marks[0]] * len(rounds) + marks)[-len(rounds):]):
+                round_["spend_usd"], round_["elapsed_seconds"] = spent, seconds
+            return decision_of(self.should_continue(dict(rounds=rounds, findings=[1] * int(rounds[-1].get("findings") or 0) if rounds else [], spend_usd=now_spend,
+                                                         elapsed_seconds=now_time, ceiling_usd=self.ceiling_usd, ceiling_seconds=self.ceiling_seconds,
+                                                         soft_fraction=self.soft_fraction, kind=kind)))
+        marks: List[Tuple[float, float]] = []
+        if shared is None:
+            watch.__enter__()
         try:
             result = run_loop(goal, working_dir=folder, complete=self.completion(run_model, settings, usage), context=context_text,
                               max_calls=max_calls, depth=1, cancel=cancel, emit=tell if emit is not None else None,
                               command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings, requester_user_id, run_id), counter=None,
                               wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling, system_chars=self.system_chars,
-                              abandon=None if self.injected is not None else abandon_completion, stop_now=stop_now)
+                              abandon=None if self.injected is not None else abandon_completion, stop_now=stop_now, permit=permit)
         finally:
+            watch.settle(call_key, usage["cost"])
+            if shared is None:
+                watch.__exit__()
             with self.running_lock:
                 for key in keys:
                     if self.running.get(key) is messages:
                         del self.running[key]
-        result.ended = {"timeout": "time_limit", "paused": "paused"}.get(stopped["why"], result.ended)
+        result.ended = {"timeout": "time_limit", "paused": "paused", "hard_limit": "hard_limit"}.get(stopped["why"], result.ended)
+        result.ceiling = watch.end_reason()      # type: ignore[attr-defined]   # which ceiling shaped the run, for ``deep_result``
         if agent == "main":      # one line for the run: did the cache work (reads large, writes small after the first call), and why did it end?
             log.info("loop run totals: %d calls, plain input %d, cache read %d, cache write %d, output %d, cost $%.4f, ended: %s", result.calls, int(usage["plain"]),
                      int(usage["read"]), int(usage["write"]), int(usage["output"]), float(usage["cost"]), result.ended or "?")
@@ -373,6 +421,9 @@ class SolutionLoopRunner(DeepRunnerBase):
             error = "The run passed its time limit and was stopped."
         elif why in ("cancelled", "paused"):
             error = "The run was stopped on request."
+        elif why == "hard_limit":
+            error = ("The run was stopped at its hard limit (" + str(getattr(result, "ceiling", "")).split(":")[-1] + "). Work already finished is kept; resume the "
+                     "saved session to continue.")
         decision_id = extract_escalation_id(result.report or "", self.goal_settings().escalation_marker)
         if decision_id:      # the worker raised a decision for a person: the run is not met, and the consumer follows the decision
             return DeepResult(met=False, output=result.report, decision_id=decision_id, cost_usd=float(usage.get("cost", 0.0)),
@@ -380,8 +431,9 @@ class SolutionLoopRunner(DeepRunnerBase):
                               changes_landed=len(result.changed), changed_nothing=not result.changed)
         return DeepResult(met=result.met, output=result.report, error=error or None, cost_usd=float(usage.get("cost", 0.0)),
                           tokens=int(usage.get("tokens", 0)), model=model or None, resolved_model=model or None,
-                          cancelled=why in ("cancelled", "paused"), paused=why == "paused", limit_hit=result.ended in ("call_limit", "time_limit"),
-                          exhausted="call limit" in error, end_reason=result.ended,
+                          cancelled=why in ("cancelled", "paused", "hard_limit"), paused=why == "paused",
+                          limit_hit=result.ended in ("call_limit", "time_limit", "hard_limit"),
+                          exhausted="call limit" in error, end_reason=getattr(result, "ceiling", "") or result.ended,
                           changes_landed=len(result.changed), changed_nothing=not result.changed,
                           observations=[f"changed {path}" for path in result.changed], observations_reported=True)
 
@@ -421,12 +473,14 @@ def abandon_completion(thread_id: int) -> None:
 def as_solution_worker(runner: SolutionLoopRunner, working_dir: str, *, max_calls: int = DEFAULT_CALLS,
                        cancel: Optional[Callable[[], bool]] = None, emit: Optional[Callable[..., None]] = None) -> Callable[[Mapping[str, Any]], str]:
     """A ``work`` callable for ``solution_workers.work_solution``: one loop per brief, in ``working_dir``, returning the loop's report (with the
-    reason appended when the loop did not finish). With an ``emit`` each loop reports its structured events under the agent the brief names
+    reason appended when the loop did not finish). The workers of one tree share one set of ceilings (the runner's), so the tree as a whole stops at its hard limit. With an ``emit`` each loop reports its structured events under the agent the brief names
     (``agent_id``, which ``work_solution`` sets when it is given a ``session``), carrying the solution, milestone and frame of its brief."""
+    watch = LimitWatch(runner.ceiling_usd, runner.ceiling_seconds, runner.soft_fraction, emit=emit, log=log, throttle=0.0)   # one set of ceilings for the whole tree of workers
+
     def work(brief: Mapping[str, Any]) -> str:
         result, _usage, _why = runner.work(brief_goal(brief), working_dir=working_dir, max_calls=max_calls, cancel_check=cancel, emit=emit,
                                            solution=str(brief.get("solution_id") or ""), milestone=str(brief.get("milestone") or ""),
-                                           frame=str(brief.get("frame") or ""), agent=str(brief.get("agent_id") or "main"))
+                                           frame=str(brief.get("frame") or ""), agent=str(brief.get("agent_id") or "main"), watch=watch)
         if result.met:
             return result.report
         return (result.report + "\n" if result.report else "") + f"(not finished: {result.error})"

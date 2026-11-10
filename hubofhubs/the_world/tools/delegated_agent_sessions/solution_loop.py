@@ -927,7 +927,7 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
              tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000,
              select: Optional[Callable[..., Any]] = None, telling: Optional[Telling] = None,
              abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS,
-             stop_now: Optional[Callable[[], bool]] = None) -> LoopResult:
+             stop_now: Optional[Callable[[], bool]] = None, permit: Optional[Callable[[str, Mapping[str, Any]], Tuple[bool, str]]] = None) -> LoopResult:
     """Work ``goal`` in ``working_dir`` until a call's report is accepted, the model is blocked, ``max_calls`` model calls are spent (the
     ``counter`` is shared with helpers and counts all of them) or ``cancel()`` is true. Never raises. With ``review``, written text in which a code check
     (``unsupported``) finds a figure no source file holds, or a named file that is not in the folder, gets one more call before it is accepted: a
@@ -947,12 +947,16 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
     a ``message-received`` step when the inbox is drained, a helper's start and end under its parent, and the calls used so far after each model call.
     The ``emit`` strings go on as before. With a ``cancel`` a model call in flight is given up as soon as ``cancel()`` is true: the call runs on its own
     thread, ``abandon(thread id)`` may end what it started (the Claude CLI provider kills its process group), the state saved before the call is
-    kept, and a later run resumes from it."""
+    kept, and a later run resumes from it.
+
+    ``permit(kind, facts) -> (go, reason)`` is the seam for iteration the person did not ask for: the review call after an accepted report in which the code check
+    found something (``review``) and each nudge to report again from the second refusal on (``nudge``; ``facts["rounds"]`` has a round per refusal). A refusal skips the
+    review, or ends the run not met with its report (``ended`` ``stopped:<reason>``); with no ``permit`` both happen as before. A helper's nudges are bounded by the shared counter."""
     result = LoopResult()
     try:
         loop(result, goal, working_dir, complete, context, max_calls, depth, cancel, emit, command_timeout, environment, wrap, view_chars,
              counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars, select, telling, abandon,
-             system_chars, stop_now)
+             system_chars, stop_now, permit)
     except Exception as error:  # noqa: BLE001 -- the loop reports a failure, it does not raise
         result.met = False
         result.error = result.error or f"the loop failed: {type(error).__name__}: {error}"
@@ -965,7 +969,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
          save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
          tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000, select: Optional[Callable[..., Any]] = None,
          telling: Optional[Telling] = None, abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS,
-         stop_now: Optional[Callable[[], bool]] = None) -> None:
+         stop_now: Optional[Callable[[], bool]] = None, permit: Optional[Callable[[str, Mapping[str, Any]], Tuple[bool, str]]] = None) -> None:
     root = os.path.abspath(working_dir)
     say = emit or (lambda _text: None)
     tell = telling if telling is not None else Telling(None)
@@ -1093,6 +1097,20 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
     own_calls = 0
     check_passed = False
     unfinished = 0      # reports in a row refused because the STATE still listed next steps
+    nudges: List[Dict[str, Any]] = []      # one record per refused report: what failed and whether the work changed anything since the last
+    nudged_at = [len(changed)]
+    refused = {"why": ""}
+
+    def allowed(kind: str, rounds: List[Dict[str, Any]]) -> bool:
+        """Whether the hub's own iteration may go on (see ``permit``); a decision that fails is a refusal."""
+        if permit is None:
+            return True
+        try:
+            go, why = permit(kind, {"rounds": [dict(r) for r in rounds], "calls": own_calls})
+        except Exception as error:  # noqa: BLE001
+            go, why = False, f"decision_failed:{type(error).__name__}"
+        refused["why"] = why or "declined"
+        return bool(go)
     while True:
         if own_calls:
             persist()
@@ -1251,12 +1269,23 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         else:
             result.met, result.report, result.ended = True, reply.report, "met"
             found = unsupported(root, list(changed), skip=view.skip) if review and changed else []
-            if (found or (review == REVIEW_PROSE and any(prose(rel) for rel in changed))) and counter.take():
+            wants_review = bool(found or (review == REVIEW_PROSE and any(prose(rel) for rel in changed)))
+            if wants_review and found and not allowed("review", [{"findings": len(found), "changed": len(changed)}]):
+                say(f"review: not run ({refused['why']})")
+                result.log.append({"review": False, "refused": refused["why"]})
+            elif wants_review and counter.take():
                 result.calls += 1
                 outcomes = reviewed(goal, context, root, view, changed, complete, found, system, start)
                 result.log.append({"review": True, "outcomes": outcomes})
                 say(f"review: {'no change' if not outcomes else str(len(outcomes)) + ' correction(s)'}")
             break
+        if entry.get("advice") and not late:      # the report was refused and the model is asked again: the hub's own iteration
+            nudges.append({"findings": max(len(failed), 1), "changed": int(len(changed) > nudged_at[0])})
+            nudged_at[0] = len(changed)
+            if len(nudges) >= 2 and not allowed("nudge", nudges):
+                result.met, result.partial, result.report, result.ended = False, True, reply.report or last_text, f"stopped:{refused['why']}"
+                result.error = f"the hub stopped asking the model to report again ({refused['why']}); the report says what remains"
+                break
         last_text = reply.report or last_text
         result.report = last_text
     result.report = result.report or last_text

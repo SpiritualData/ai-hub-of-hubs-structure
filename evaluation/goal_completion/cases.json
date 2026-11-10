@@ -194,5 +194,2348 @@
    }
   },
   "expect": false
+ },
+ {
+  "id": "stop-met-first-iteration",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.9,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "the check says met after one cheap iteration: nothing more to gain"
+ },
+ {
+  "id": "stop-met-after-progress",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.95,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "progress each round and the last check says met"
+ },
+ {
+  "id": "stop-met-below-metric-target",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.8,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "the done-standard is met even though the metric is short of its ceiling value: the standard decides"
+ },
+ {
+  "id": "stop-progress-rising",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.55,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.75,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "each round closed about a third of the rest for a small share of the budget"
+ },
+ {
+  "id": "stop-progress-falling-errors",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 12,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 8,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "lower",
+     "target": 0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "errors fall 12, 8, 4 for a small spend: worth another round"
+ },
+ {
+  "id": "stop-progress-missing-shrinks",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [
+       "a",
+       "a",
+       "a",
+       "a"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [
+       "a",
+       "a",
+       "a"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [
+       "a",
+       "a"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "what the check finds missing shrinks 4, 3, 2 and the work changes things"
+ },
+ {
+  "id": "stop-plateau-flat-metric",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.61,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.61,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "the last round moved the metric by 0.01 of a 0.4 gap: a plateau"
+ },
+ {
+  "id": "stop-plateau-nothing-changed",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 0,
+      "metric": null,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "the first round changed nothing, so another will not"
+ },
+ {
+  "id": "stop-plateau-missing-unchanged",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [
+       "a",
+       "b",
+       "c"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [
+       "a",
+       "b",
+       "c"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [
+       "a",
+       "b",
+       "c"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "the same three things are missing after three rounds"
+ },
+ {
+  "id": "stop-oscillation-higher",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "0.5, 0.7, 0.5, 0.7: the last round only repeats the cycle"
+ },
+ {
+  "id": "stop-oscillation-lower",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "lower",
+     "target": 0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "errors 6, 4, 6, 4: no new best, going round"
+ },
+ {
+  "id": "stop-regress-higher",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "the last round made it worse: keep the best and stop"
+ },
+ {
+  "id": "stop-regress-lower",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "lower",
+     "target": 0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "errors went 5, 3, 6: worse"
+ },
+ {
+  "id": "stop-near-spend-ceiling",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [
+       "the last two tests"
+      ],
+      "spend_usd": 8.5,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [
+       "the last two tests"
+      ],
+      "spend_usd": 8.5,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "17 of 20 dollars used and not met: a natural, safe stopping point, say what is left"
+ },
+ {
+  "id": "stop-near-time-ceiling",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 6000.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 6000.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "12000 of 14400 seconds used: wrap up"
+ },
+ {
+  "id": "stop-below-soft-but-dear-round",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 7.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 7.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "70 percent of the money used and the last round cost over half of what remained for under half of the gap"
+ },
+ {
+  "id": "stop-one-pass-done-unmet",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [
+       "the summary"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "one_pass": true
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "the person asked for one pass: it is done, report what is left"
+ },
+ {
+  "id": "stop-one-pass-done-met",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.95,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "one_pass": true
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "one pass asked and it met the goal"
+ },
+ {
+  "id": "stop-three-passes-asked",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "max_iterations": 3
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "the person asked for three passes and made three, with progress still being made"
+ },
+ {
+  "id": "stop-person-says-stop",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "stop": true
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "the person asked to stop"
+ },
+ {
+  "id": "stop-keep-going-through-plateau",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "keep_going_until": "every test passes",
+     "until_reached": false
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "the person said keep going until X: a plateau does not outrank that"
+ },
+ {
+  "id": "stop-keep-going-through-regress",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "keep_going_until": "every test passes",
+     "until_reached": false
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "keep going was asked and X is not reached"
+ },
+ {
+  "id": "stop-keep-going-reached",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.9,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "keep_going_until": "every test passes",
+     "until_reached": true
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "what the person asked to keep going until is reached"
+ },
+ {
+  "id": "stop-keep-going-at-ceiling",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 9.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 9.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "keep_going_until": "every test passes",
+     "until_reached": false
+    }
+   }
+  },
+  "expect": "ask",
+  "note": "keep going was asked but the ceiling is reached: raising it is the person's to say"
+ },
+ {
+  "id": "stop-keep-going-met-standard-not-theirs",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.8,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "stated": {
+     "keep_going_until": "the report is in two languages",
+     "until_reached": false
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "the done-standard is met but the person's own stop condition is not"
+ },
+ {
+  "id": "stop-human-blocker-with-progress",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [
+       "a signature"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [
+       "a signature"
+      ],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "needs_human": "a signature"
+   }
+  },
+  "expect": "ask",
+  "note": "what is missing is a signature only a person can give: iterating cannot supply it"
+ },
+ {
+  "id": "stop-human-blocker-plateau",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "needs_human": "a login"
+   }
+  },
+  "expect": "ask",
+  "note": "a login only a person holds: ask, do not iterate"
+ },
+ {
+  "id": "stop-human-blocker-already-met",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.95,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "needs_human": "a signature"
+   }
+  },
+  "expect": "stop_met",
+  "note": "met, so there is nothing to ask"
+ },
+ {
+  "id": "stop-human-blocker-one-pass",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "needs_human": "a payment",
+    "stated": {
+     "one_pass": true
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "the person asked for one pass: stop and report what only they can supply"
+ },
+ {
+  "id": "stop-policy-forbids",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "policy": {
+     "forbids_iteration": true
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "policy does not allow unasked iteration here"
+ },
+ {
+  "id": "stop-policy-iteration-cap",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "policy": {
+     "max_iterations": 2
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "policy allows two iterations and both are used"
+ },
+ {
+  "id": "stop-policy-authority-used",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "policy": {
+     "authority_exhausted": true
+    }
+   }
+  },
+  "expect": "ask",
+  "note": "the Representative's authority is used up: the person can extend it"
+ },
+ {
+  "id": "stop-policy-outranks-keep-going",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "policy": {
+     "forbids_iteration": true
+    },
+    "stated": {
+     "keep_going_until": "all done",
+     "until_reached": false
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "policy bounds what the person's wish can ask of the hub"
+ },
+ {
+  "id": "stop-milestone-reached-unmet-standard",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "milestone": {
+     "text": "the first version",
+     "reached": true
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "the next milestone is already reached: more iteration aims beyond it"
+ },
+ {
+  "id": "stop-milestone-reached-progressing",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.8,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    },
+    "milestone": {
+     "text": "the draft",
+     "reached": true
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "the next milestone is reached even with progress still being made"
+ },
+ {
+  "id": "stop-tiny-gain-high-cost",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.26,
+      "missing": [],
+      "spend_usd": 9.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "0.06 of an 0.8 gap for 9 dollars of the 19 that remained"
+ },
+ {
+  "id": "stop-tiny-gain-high-time",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.25,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 7000.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "a few percent of the gap for much of the time left"
+ },
+ {
+  "id": "stop-large-gain-small-cost",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [],
+      "spend_usd": 0.5,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "0.2 to 0.7 for 50 cents"
+ },
+ {
+  "id": "stop-good-gain-small-cost",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 2.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "0.2 to 0.5 for 2 dollars of 20: a share of the gap well above the share of the budget"
+ },
+ {
+  "id": "stop-claim-met-check-not",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": true,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.3,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": true,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.6,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "the worker says it is met, the check says not, and the metric is moving"
+ },
+ {
+  "id": "stop-claim-met-unchecked-gap",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": null,
+      "claimed_met": true,
+      "outcome": {
+       "text": "Processed the entries.",
+       "coverage": {
+        "processed": 200,
+        "total": 344,
+        "unit": "entries"
+       }
+      },
+      "changed": 1,
+      "metric": null,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "a claim of done with no check, and the outcome shows 200 of 344 covered"
+ },
+ {
+  "id": "stop-claim-met-plateau",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": true,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": true,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": true,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "the worker keeps saying it is done while the metric does not move"
+ },
+ {
+  "id": "stop-shallow-check-passed-gap",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": {
+       "text": "Processed the entries.",
+       "coverage": {
+        "processed": 200,
+        "total": 344,
+        "unit": "entries"
+       }
+      },
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "a check that only asks for text said met, but the outcome declares 200 of 344 covered"
+ },
+ {
+  "id": "stop-shallow-check-passed-refused",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": {
+       "text": "Done.",
+       "refused": "authority"
+      },
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "a check that only asks for text said met, but the outcome says a step was refused"
+ },
+ {
+  "id": "stop-shallow-check-passed-truly-met",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": true,
+      "claimed_met": null,
+      "outcome": {
+       "text": "Processed the entries.",
+       "coverage": {
+        "processed": 344,
+        "total": 344
+       }
+      },
+      "changed": 1,
+      "metric": 0.9,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_met",
+  "note": "the outcome really is complete, so the second reading agrees"
+ },
+ {
+  "id": "stop-good-enough-level",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.8,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.92,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0,
+     "good_enough": 0.9
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "the metric is at the level the person accepts and what is left is small"
+ },
+ {
+  "id": "stop-good-enough-errors",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 9,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 5,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 2,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "lower",
+     "target": 0,
+     "good_enough": 2
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "errors are down to the accepted two"
+ },
+ {
+  "id": "stop-iteration-cap-unasked",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.1,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.25,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.4,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.55,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     },
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": 0.7,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": {
+     "better": "higher",
+     "target": 1.0
+    },
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_good_enough",
+  "note": "five unasked iterations are the bound even while still gaining"
+ },
+ {
+  "id": "stop-first-iteration-progress",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 3,
+      "metric": null,
+      "missing": [],
+      "spend_usd": 1.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "the first round changed things and cost little"
+ },
+ {
+  "id": "stop-first-iteration-dear-and-flat",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [
+     {
+      "verdict": false,
+      "claimed_met": null,
+      "outcome": null,
+      "changed": 1,
+      "metric": null,
+      "missing": [],
+      "spend_usd": 11.0,
+      "seconds": 60.0
+     }
+    ],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "stop_not_worth_it",
+  "note": "the first round cost 11 of 20 dollars and shows nothing that justifies a second"
+ },
+ {
+  "id": "stop-nothing-tried-yet",
+  "kind": "stop",
+  "args": {
+   "history": {
+    "goal": "process every entry",
+    "done_standard": "every entry was processed",
+    "iterations": [],
+    "metric": null,
+    "ceiling": {
+     "spend_usd": 20.0,
+     "seconds": 14400.0,
+     "soft_fraction": 0.8
+    }
+   }
+  },
+  "expect": "continue",
+  "note": "no iteration yet: nothing to judge"
  }
 ]

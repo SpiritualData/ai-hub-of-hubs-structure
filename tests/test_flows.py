@@ -382,3 +382,33 @@ def test_consciousness_converse_hands_the_front_door_to_terminal_session():
     out = io.StringIO()
     result = ConsciousnessComposition(Absent(), Absent(), Absent(), Absent(), Absent(), Absent(), Terminal()).converse(lambda text: "heard " + text, ["hi"], out, "p1")
     assert result["exit_code"] == 0 and out.getvalue() == "heard hi" and result["steps"][0]["status"] == "done"
+
+
+def test_the_mind_resolves_the_phrases_it_is_given_and_routes_the_request_before_it_hands_anything_on():
+    from hubofhubs.the_intelligence.mind.flow import MindComposition
+
+    class Resolver:
+        def resolve(self, phrase, candidates, context=None, ask=None):
+            hit = [c for c in candidates if c["name"] == phrase]
+            return {"outcome": "match", "id": hit[0]["id"], "reason": "exact"} if len(hit) == 1 else {"outcome": "abstain", "id": "", "reason": "no one candidate"}
+
+    class Router:
+        def __init__(self, route):
+            self.route_is = route
+
+        def route(self, request, context=None):
+            return {"route": self.route_is, "reason": "scripted"}
+
+    def mind(route, delegation):
+        return MindComposition(Intake(), Planner(), delegation, Writer(), Watch(), Judgment(), resolver=Resolver(), router=Router(route))
+    ann = {"phrase": "Ann", "candidates": [{"id": "u1", "name": "Ann"}, {"id": "u2", "name": "Bo"}]}
+    delegation = Delegation()
+    out = mind("act", delegation).think("tidy up", authority={"person": "p1"}, prepared={"references": [ann]})
+    assert out["references"] == [{"phrase": "Ann", "outcome": "match", "id": "u1", "reason": "exact"}] and out["route"]["route"] == "act" and delegation.handed[0][0]
+    unknown = Delegation()
+    out = mind("act", unknown).think("tidy up", authority={"person": "p1"}, prepared={"references": [dict(ann, phrase="Cy")]})
+    assert all(not pieces for pieces, _ in unknown.handed) and all(r["refused"] == "reference not found: Cy" for r in out["results"])      # nothing acts on a guess
+    clarify = Delegation()
+    out = mind("clarify", clarify).think("do the thing", authority={"person": "p1"})
+    assert all(not pieces for pieces, _ in clarify.handed) and all(r["refused"] == "request needs clarifying" for r in out["results"])
+    assert MindComposition(Intake(), Planner(), Delegation(), Writer(), Watch(), Judgment()).think("tidy up", authority={"person": "p1"})["route"] is None

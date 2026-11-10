@@ -6,6 +6,8 @@ from hubofhubs.the_intelligence.mind.context_intake.interface import ContextTaki
 from hubofhubs.the_intelligence.mind.delegation.interface import Delegating
 from hubofhubs.the_consciousness.judgment_calls.interface import JudgmentCalling
 from hubofhubs.the_intelligence.mind.planner.interface import Planning
+from hubofhubs.the_intelligence.mind.reference_resolver.interface import ReferenceResolving
+from hubofhubs.the_intelligence.mind.request_router.interface import RequestRouting
 from hubofhubs.the_intelligence.mind.planner.solution_pieces import tie
 from hubofhubs.the_intelligence.mind.response_writer.interface import ResponseWriting
 from hubofhubs.the_intelligence.nervous_system.interface import RiskWatching
@@ -25,7 +27,9 @@ def failed_pieces(results: Sequence[Mapping[str, Any]]) -> List[Mapping[str, Any
 
 @implementation("the-mind", "composition")
 class MindComposition:
-    """The Mind for one request, in order: Context Intake, the Planner, Delegation and the Response Writer. Before a piece of work is handed on,
+    """The Mind for one request, in order: Context Intake, Resolve a Reference (each phrase the prepared context lists with its candidates), the Planner, Route a Request
+    (what the plan asks of the system), Delegation and the Response Writer. A phrase that does not clearly name one candidate, and a request that cannot be acted on yet
+    (the route is ``clarify``), mean no piece is handed on: nothing acts on a guess. Both steps are used only when handed their seats. Before a piece of work is handed on,
     the Nervous System signals how risky it is and Judgment Calls decides for this person; a piece that is not allowed is not delegated, and
     one that is asked about waits for the answer while the others go on. On a replan, Context Intake takes in what the workers brought last time. Given
     what each relevant solution's own pass found (``considered``), each planned piece is tied to the solution it serves and held to that solution's
@@ -33,9 +37,10 @@ class MindComposition:
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, intake: Lazy[ContextTaking], planner: Lazy[Planning], delegation: Lazy[Delegating], writer: Lazy[ResponseWriting],
-                 watch: Lazy[RiskWatching], judgment: Lazy[JudgmentCalling]):
+                 watch: Lazy[RiskWatching], judgment: Lazy[JudgmentCalling], resolver: Lazy[ReferenceResolving] = None, router: Lazy[RequestRouting] = None):
         self.intake, self.planner, self.delegation, self.writer = intake, planner, delegation, writer
         self.watch, self.judgment = watch, judgment
+        self.resolver, self.router = resolver, router
 
     def think(self, request: str, authority: Optional[Mapping[str, Any]] = None, target: Optional[Mapping[str, Any]] = None,
               guidance: Optional[Mapping[str, Any]] = None, profile: Optional[Any] = None, prepared: Optional[Mapping[str, Any]] = None,
@@ -44,12 +49,26 @@ class MindComposition:
               considered: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
         authority = authority or {}
         log: List[Step] = [take(self.intake, "context-intake", request=request, prepared=prepared, outside=outside, instructions=instructions)]
+        resolved: List[Dict[str, Any]] = []
+        for reference in [r for r in ((prepared or {}).get("references") or []) if isinstance(r, Mapping)] if self.resolver is not None else []:
+            found = take(self.resolver, "resolve-a-reference", phrase=str(reference.get("phrase") or ""), candidates=list(reference.get("candidates") or []),
+                         context=reference.get("context"))
+            log.append(found)
+            resolved.append({"phrase": str(reference.get("phrase") or ""), **dict(done(found) or {"outcome": "abstain", "id": "", "reason": found.reason})})
+        unresolved = [r for r in resolved if r.get("outcome") != "match"]
         planned = take(self.planner, "planner", request=request, context=done(log[0]), target=target, guidance=guidance, unmet=unmet)
         log.append(planned)
+        route = take(self.router, "route-a-request", request=request, context={"view": str(done(log[0]) or "")}) if self.router is not None else None
+        if route is not None:
+            log.append(route)
+        clarify = route is not None and (done(route) or {}).get("route") == "clarify"
         allowed: List[Mapping[str, Any]] = []
         asked: List[Mapping[str, Any]] = []
         pieces = tie(done(planned) or [], considered) if considered else list(done(planned) or [])
         for piece in pieces:
+            if unresolved or clarify:      # nothing acts on a guess: a phrase that named no one candidate, or a request not yet understood, hands nothing on
+                asked.append({**piece, "refused": "reference not found: " + ", ".join(r["phrase"] for r in unresolved) if unresolved else "request needs clarifying"})
+                continue
             digest = take(self.watch, "nervous-system", method="digest", user_message=request, step=1, max_steps=1,
                           plan_action=ACTION_OF_TOOL.get(str(piece.get("tool") or ""), "execute"), plan_goal=str(piece.get("piece", piece)))
             signal = take(self.watch, "nervous-system", digest=done(digest)) if digest.status == DONE else digest
@@ -74,7 +93,8 @@ class MindComposition:
                                               for p in asked]
         written = take(self.writer, "response-writer", results=results, profile=profile)
         log += [handed, written]
-        return {"text": done(written) or "", "results": results, "pieces": pieces, "steps": listing(log)}
+        return {"text": done(written) or "", "results": results, "pieces": pieces, "references": resolved, "route": done(route) if route is not None else None,
+                "steps": listing(log)}
 
 
 def outside_of(results: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:

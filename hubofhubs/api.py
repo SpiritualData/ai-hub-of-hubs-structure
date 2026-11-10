@@ -189,6 +189,9 @@ NAMES = {
     "hubofhubs.the_consciousness.representatives.interface": (
         "Representing",
     ),
+    "hubofhubs.the_consciousness.representatives.stop_limits": (
+        "resolve_stop_limits",
+    ),
     "hubofhubs.the_consciousness.request_intake.interface": (
         "RequestIntaking",
     ),
@@ -275,6 +278,9 @@ NAMES = {
     ),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.interface": (
         "GoalCompleting",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.goal_completion.stop_rule": (
+        "STOP_DECISIONS",
     ),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.sufficiency": (
         "AbridgedTurnState", "READ_SPEC_KEYS", "collect_abridged_items", "render_abridged_notice",

@@ -36,7 +36,10 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.contract import Subproce
 from hubofhubs.the_world.tools.delegated_agent_sessions.hub_frame import NATIVE_TOOLS, build_frame, scratch_folder
 from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
 from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
-from hubofhubs.the_world.tools.delegated_agent_sessions.session import claude_project_bases, find_session_file
+from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (   # the ceilings are shared with the other runners; the names stay importable from here
+    BACKSTOP_SECONDS, DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, MAX_RESUMES, SOFT_FRACTION, UNLIMITED, WRAP_UP_MESSAGE, LimitWatch, active_watch, ceiling_of,
+    current_session_file, decision_of, default_should_continue, estimate_spend, soft_fraction_of, stop_aware)
+from hubofhubs.the_world.tools.delegated_agent_sessions.session import find_session_file
 from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import read_text, snapshot, track, unsupported, walk
 from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import StreamJsonGoalRunner
 from hubofhubs.the_self.assembler import arm_needs as needs
@@ -46,46 +49,8 @@ CHECK_MESSAGE = ("A code check of the files you wrote found these. It only reads
                  "a command's output or a web page is not a finding: keep it and say in the file where it came from. Remove or correct a figure only when you cannot "
                  "account for it, and name only files that exist. Then report again.\n")
 
-UNLIMITED = "unlimited"        # the only way to run with no ceiling on a dimension: the caller says so, never by omission
-DEFAULT_CEILING_USD = 20.0     # about 900 times the dearest hard case measured at the fast tier ($0.0225); a consumer can raise or lower it
-DEFAULT_CEILING_SECONDS = 4 * 3600.0   # about 160 times the longest hard case measured (88 s)
-SOFT_FRACTION = 0.8            # the share of either ceiling at which the session is asked to reach a safe stopping point
-BACKSTOP_SECONDS = 120.0       # how long past the time ceiling the CLI's own wall-clock cap waits for the graceful stop
-WRAP_UP_MESSAGE = ("The time or spend allowed for this run is nearly used. Reach the next natural safe stopping point: finish the step in hand, leave every "
-                   "file and any store in a consistent state, do not start new work, and report what is done, what is left and how to resume.")
-MAX_RESUMES = 5   # a bound on the hub's own iteration whatever an injected decision says; the person's own session is not capped by it
 PERMISSION_MODES = ("skip", "acceptEdits", "auto", "bypassPermissions", "manual", "dontAsk", "plan")
 WRITE_TOOLS = ("Write", "Edit", "MultiEdit", "NotebookEdit")
-
-
-def default_should_continue(facts: Mapping[str, Any]) -> Dict[str, Any]:
-    """The hub's default for iteration the person did not ask for (a resume after its own check): at most one, only for a code finding, never when
-    a ceiling is reached. ``facts`` is plain data: ``spend_usd``, ``turns``, ``resumes``, ``findings`` (the code findings), ``changed_outcome``
-    (None before a resume, else whether the last resume changed the findings), ``elapsed_seconds``, ``ceiling_usd``, ``ceiling_seconds``, ``ceiling_turns``
-    (None when unlimited) and ``soft_fraction``. A resume starts new work, so it is refused once the soft share of either ceiling is used.
-    Returns ``{"continue": bool, "reason": str}``; a goal-completion judgment can replace this callable and returns the same shape."""
-    if not facts.get("findings"):
-        return {"continue": False, "reason": "no_code_finding"}
-    if int(facts.get("resumes") or 0) >= 1:
-        return {"continue": False, "reason": "resume_limit"}
-    usd, turns, seconds = facts.get("ceiling_usd"), facts.get("ceiling_turns"), facts.get("ceiling_seconds")
-    soft = float(facts.get("soft_fraction") or SOFT_FRACTION)
-    if usd is not None and float(facts.get("spend_usd") or 0.0) >= float(usd) * soft:
-        return {"continue": False, "reason": "ceiling_spend"}
-    if seconds is not None and float(facts.get("elapsed_seconds") or 0.0) >= float(seconds) * soft:
-        return {"continue": False, "reason": "ceiling_time"}
-    if turns is not None and int(facts.get("turns") or 0) >= int(turns):
-        return {"continue": False, "reason": "ceiling_turns"}
-    return {"continue": True, "reason": "code_finding"}
-
-
-def decision_of(raw: Any) -> Tuple[bool, str]:
-    """A decision as ``(continue, reason)`` from a bool, a ``(bool, reason)`` pair or a mapping with ``continue`` and ``reason``."""
-    if isinstance(raw, Mapping):
-        return bool(raw.get("continue")), str(raw.get("reason") or "")
-    if isinstance(raw, (tuple, list)) and raw:
-        return bool(raw[0]), str(raw[1]) if len(raw) > 1 else ""
-    return bool(raw), "" if raw else "declined"
 
 
 def session_actions(session_id: Optional[str], root: str, config_dir: Optional[str] = None) -> Tuple[int, List[Tuple[str, Any]]]:
@@ -138,47 +103,6 @@ def outside_the_folder(root: str, actions: Sequence[Tuple[str, Any]], limit: int
     return list(dict.fromkeys(found))[:limit]
 
 
-def current_session_file(root: str, since: float, config_dir: Optional[str] = None) -> Optional[str]:
-    """The record of the session the run has open in ``root``: the newest of the project's files touched since ``since`` (a monotonic start, taken
-    as the last few minutes of wall time). ``None`` when there is none."""
-    key = re.sub(r"[^A-Za-z0-9]", "-", os.path.realpath(root))
-    horizon = time.time() - (time.monotonic() - since) - 2.0
-    best: Tuple[float, Optional[str]] = (0.0, None)
-    for base in claude_project_bases(root, config_dir):
-        try:
-            for entry in os.scandir(base / key):
-                if entry.name.endswith(".jsonl") and entry.stat().st_mtime >= horizon and entry.stat().st_mtime > best[0]:
-                    best = (entry.stat().st_mtime, entry.path)
-        except OSError:
-            continue
-    return best[1]
-
-
-def estimate_spend(path: Optional[str]) -> float:
-    """List-price dollars of the tokens a session's record holds (input, cache writes and output; cache reads are cheap and left out), from the hub's
-    price table; 0.0 for a record that cannot be read or a model the table does not price. An estimate that lets a ceiling act before the CLI reports cost."""
-    if not path:
-        return 0.0
-    try:
-        from hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner import list_price
-        totals: Dict[str, List[int]] = {}
-        with open(path, encoding="utf-8", errors="replace") as handle:
-            for line in handle:
-                try:
-                    event = json.loads(line)
-                except ValueError:
-                    continue
-                message = event.get("message") if event.get("type") == "assistant" else None
-                usage = (message or {}).get("usage") or {}
-                if usage:
-                    got = totals.setdefault(str(message.get("model") or ""), [0, 0])
-                    got[0] += int(usage.get("input_tokens") or 0) + int(usage.get("cache_creation_input_tokens") or 0)
-                    got[1] += int(usage.get("output_tokens") or 0)
-        return sum(list_price("anthropic", model, tin, tout) for model, (tin, tout) in totals.items() if model)
-    except Exception:  # noqa: BLE001 -- an estimate that fails is no estimate
-        return 0.0
-
-
 def worth_resuming(root: str, found: Sequence[str], gate: str = "text_only") -> List[str]:
     """The findings a resumed turn is worth its cost for. A named file the folder lacks is certain. A figure no source file holds is certain only when
     the code check could read every source: a folder that also holds a database, a spreadsheet or another binary file can hold the figure where the
@@ -211,34 +135,22 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                  select: Optional[Callable[..., Any]] = None, notes: str = "",
                  ceiling_usd: Union[float, str] = DEFAULT_CEILING_USD, ceiling_seconds: Union[float, str] = DEFAULT_CEILING_SECONDS,
                  ceiling_turns: Optional[int] = None, soft_fraction: float = SOFT_FRACTION, should_continue: Optional[Callable[[Mapping[str, Any]], Any]] = None,
-                 permission: str = "skip", sandbox: bool = False, sandbox_network: bool = True, **kwargs: Any):
-        super().__init__(config, **kwargs)
+                 stop_inputs: Optional[Mapping[str, Any]] = None, permission: str = "skip", sandbox: bool = False, sandbox_network: bool = True, **kwargs: Any):
+        super().__init__(config, ceiling_usd=ceiling_usd, ceiling_seconds=ceiling_seconds, soft_fraction=soft_fraction, **kwargs)   # the ceilings are the stream runner's (run_ceilings)
         self.check = bool(check)               # the hub's code check of written text after the session
         self.session_dir = session_dir
         self.select = select
         self.notes = notes                     # the consumer's standing text for the frame (where its skills live, its conventions)
-        self.ceiling_usd = self.ceiling_of(ceiling_usd, "ceiling_usd")           # the hard limit on spend for the whole run (None only when asked for as UNLIMITED)
-        self.ceiling_seconds = self.ceiling_of(ceiling_seconds, "ceiling_seconds")   # the hard limit on wall time for the whole run
         self.ceiling_turns = ceiling_turns     # an optional hard limit on turns (None: the call's own turn budget stands, nothing added)
-        if not 0.0 < float(soft_fraction) < 1.0:
-            raise ValueError("soft_fraction must be between 0 and 1")
-        self.soft_fraction = float(soft_fraction)   # the share of either ceiling at which the session is asked to wrap up
-        self.should_continue = should_continue or default_should_continue   # the one seam for the hub's own iteration: plain facts in, a decision out
+        # The one seam for the hub's own iteration: plain facts in, a decision out. The default asks Goal Completion's stop decision (resolved by name from the
+        # records, with what the person stated and the policy as ``stop_inputs``), and keeps ``default_should_continue`` as the fallback when none is assembled.
+        self.should_continue = should_continue or stop_aware(stated=(stop_inputs or {}).get("stated"), policy=(stop_inputs or {}).get("policy"))
         if permission not in PERMISSION_MODES:
             raise ValueError(f"permission must be one of {PERMISSION_MODES}")
         self.permission = permission           # "skip" keeps today's --dangerously-skip-permissions; any other value is the CLI's own --permission-mode
         self.sandbox = bool(sandbox)           # run the session inside the hub's bubblewrap sandbox (the folder, the session's temporary folder and the CLI's config writable)
         self.sandbox_network = bool(sandbox_network)
         self.local = threading.local()         # per call: the frame file, the temporary folder and the launcher of the run in this thread
-
-    @staticmethod
-    def ceiling_of(value: Union[float, str, None], name: str) -> Optional[float]:
-        """A ceiling as a positive number, or None for the explicit ``UNLIMITED``. Omission never means unlimited: the defaults are on."""
-        if value == UNLIMITED:
-            return None
-        if isinstance(value, bool) or not isinstance(value, (int, float)) or value <= 0:
-            raise ValueError(f"{name} must be a positive number or UNLIMITED")
-        return float(value)
 
     @property
     def cfg(self) -> SubprocessConfig:  # type: ignore[override]
@@ -358,10 +270,15 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         common = dict(model=model, max_turns=max_turns, emit=emit, run_id=run_id, working_dir=working_dir, prompt_budget_tokens=prompt_budget_tokens,
                       requester_user_id=requester_user_id, cancel_check=cancel_check, control=control)
         self.local.spent, self.local.used_turns = 0.0, 0
-        self.local.started, self.local.softened, self.local.hard = time.monotonic(), False, ""
         self.local.estimated_at, self.local.estimate = 0.0, 0.0
         self.local.spend_before = 0.0
-        common["control"] = self.limit_control(control, root)
+        self.local.watch = active_watch()                  # the run_goal that called this has started the ceilings and wrapped the control
+        owned = self.local.watch is None
+        if owned:                                          # called directly: this run starts them
+            self.local.watch = self.new_watch(root, emit)
+            self.local.watch.__enter__()
+            common["control"] = self.local.watch.wrap(control, self.limit_poll_seconds)
+        self.local.started = self.local.watch.started
         try:
             result = super().run_goal_once(goal=goal, brief=brief, context_preamble=context_preamble, resume_session_id=resume_session_id, **common)
             self.usage(result, root, emit, resumes=0)
@@ -370,6 +287,8 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
             self.finish(result, root, emit)
         finally:
             self.local.started = None
+            if owned:
+                self.local.watch.__exit__()
         return result
 
     # --- the ceilings: a soft limit that asks for a safe stopping point, a hard limit that stops and keeps the session resumable ---------------
@@ -385,65 +304,22 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                                                                       getattr(self.goal_settings(), "claude_config_dir", None)))
         return max(settled, float(getattr(self.local, "estimate", 0.0) or 0.0))
 
-    def limit_state(self, root: str) -> Tuple[str, str]:
-        """``("ok" | "soft" | "hard", what)`` where ``what`` names the ceiling reached (``spend`` or ``time``)."""
-        started = getattr(self.local, "started", None)
-        if started is None:
-            return "ok", ""
-        reached: List[Tuple[float, str]] = []
-        if self.ceiling_seconds is not None:
-            reached.append(((time.monotonic() - started) / self.ceiling_seconds, "time"))
-        if self.ceiling_usd is not None:
-            reached.append((self.spend_now(root) / self.ceiling_usd, "spend"))
-        share, what = max(reached, default=(0.0, ""))
-        return ("hard" if share >= 1.0 else "soft" if share >= self.soft_fraction else "ok"), what if share >= self.soft_fraction else ""
-
-    def limit_control(self, control: Optional[RunControl], root: str) -> Optional[RunControl]:
-        """The caller's control with the ceilings added: at the soft limit the session is steered ONCE (through the control's own steer path) to reach a safe
-        stopping point; at the hard limit the run is stopped the way a person's stop is, keeping the session. The caller's own messages and stop still pass."""
-        if self.ceiling_usd is None and self.ceiling_seconds is None:
-            return control
-        mine = control or RunControl()
-        local = self.local
-
-        def claim() -> List[ControlMessage]:
-            messages = list(mine.claim_inputs() or [])
-            if not local.softened and not local.hard and self.limit_state(root)[0] != "ok":
-                local.softened = True
-                messages.append(ControlMessage(id="hub-wrap-up-" + uuid.uuid4().hex[:8], text=WRAP_UP_MESSAGE))
-                log.info("native loop: the soft limit is reached; the session is asked to reach a safe stopping point")
-                if getattr(local, "emit", None) is not None:
-                    try:
-                        local.emit(ProgressEvent(type=EVENT_STATUS, text="The soft limit is reached: the session is asked to reach a safe stopping point.",
-                                                 data=dict(phase="soft_limit", ceiling_usd=self.ceiling_usd, ceiling_seconds=self.ceiling_seconds)))
-                    except Exception:  # noqa: BLE001
-                        pass
-            return messages
-
-        def stop() -> bool:
-            if mine.cancel_requested():
-                return True
-            state, what = self.limit_state(root)
-            if state == "hard":
-                local.hard = what
-            return state == "hard"
-
-        return RunControl(claim_inputs=claim, mark_seen=mine.mark_seen, cancel_requested=stop, pause_requested=mine.pause_requested,
-                          poll_seconds=min(float(mine.poll_seconds), self.limit_poll_seconds), label=mine.label)
+    def new_watch(self, root: str, emit: Any) -> LimitWatch:
+        """The run's ceilings, priced from this runner's own spend (``spend_now`` keeps its own pace, so the watch asks every time)."""
+        return LimitWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, spend_of=lambda: self.spend_now(root), emit=emit, log=log, throttle=0.0)
 
     def finish(self, result: DeepResult, root: str, emit: Any) -> None:
         """What the caller needs to account for the run and to continue it: ``spend_usd``, ``elapsed_seconds``, ``resume_handle`` (the session id) and, when a
         ceiling shaped the run, which one in ``end_reason``: ``wrapped_up_at_soft_limit`` or ``stopped_at_hard_limit`` with what was reached."""
-        elapsed = time.monotonic() - (getattr(self.local, "started", None) or time.monotonic())
+        elapsed = self.local.watch.elapsed()
         result.spend_usd = max(float(result.cost_usd or 0.0), self.spend_now(root))      # type: ignore[attr-defined]
         result.elapsed_seconds = elapsed                                                # type: ignore[attr-defined]
         result.resume_handle = result.session_id                                        # type: ignore[attr-defined]
-        if getattr(self.local, "hard", ""):
-            result.end_reason = f"stopped_at_hard_limit:{self.local.hard}"
-        elif getattr(self.local, "softened", False):
-            result.end_reason = "wrapped_up_at_soft_limit"
-        if result.cancelled and getattr(self.local, "hard", ""):
-            result.error = (f"The run was stopped at its hard limit ({self.local.hard}). Work already finished is kept; resume session "
+        watch = self.local.watch
+        if watch.hard or watch.softened:
+            result.end_reason = watch.end_reason()
+        if result.cancelled and watch.hard:
+            result.error = (f"The run was stopped at its hard limit ({watch.hard}). Work already finished is kept; resume session "
                             f"{result.session_id} to continue.")
 
     def usage(self, result: DeepResult, root: str, emit: Any, resumes: int) -> None:
@@ -464,7 +340,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         first put to ``should_continue`` with plain facts. A refusal ends the run with its reason in ``end_reason``; nothing else decides."""
         if not (self.check and result.met and result.session_id):
             return result
-        resumes, changed_outcome, last = 0, None, None
+        resumes, changed_outcome, last, rounds = 0, None, None, []
         while True:
             files: "OrderedDict[str, None]" = OrderedDict()
             track(root, before, files)
@@ -473,12 +349,14 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
             self.local.resumed = resumes > 0
             if last is not None:
                 changed_outcome = found != last
+            rounds.append(dict(findings=len(found), spend_usd=float(self.local.spent), elapsed_seconds=self.local.watch.elapsed(),
+                               changed=len(files) if last is None else int(found != last)))
             last = found
             if not everything:
                 return result
-            facts = dict(spend_usd=float(self.local.spent), turns=int(self.local.used_turns), resumes=resumes, findings=list(found),
+            facts = dict(rounds=list(rounds), spend_usd=float(self.local.spent), turns=int(self.local.used_turns), resumes=resumes, findings=list(found),
                          unchecked_findings=[x for x in everything if x not in found], changed_outcome=changed_outcome,
-                         elapsed_seconds=time.monotonic() - (getattr(self.local, "started", None) or time.monotonic()), ceiling_usd=self.ceiling_usd,
+                         elapsed_seconds=self.local.watch.elapsed(), ceiling_usd=self.ceiling_usd,
                          ceiling_seconds=self.ceiling_seconds, ceiling_turns=self.ceiling_turns, soft_fraction=self.soft_fraction)
             try:
                 go, reason = decision_of(self.should_continue(facts))

@@ -3,6 +3,7 @@ from typing import Any, Callable, Mapping, Optional, Sequence
 from esoi import implementation
 from esoi import Lazy
 from hubofhubs.the_consciousness.representatives.quality import resolve_profile
+from hubofhubs.the_consciousness.representatives.stop_limits import resolve_stop_limits
 from hubofhubs.the_intelligence.critical_thinking.decision_check.interface import DecisionChecking
 from hubofhubs.the_intelligence.critical_thinking.esoi_application.interface import EsoiApplying
 from hubofhubs.the_intelligence.critical_thinking.goal_completion.interface import GoalCompleting
@@ -99,6 +100,18 @@ class CriticalThinkingComposition:
         judged = take(self.quality, "response-quality", response=response, evidence=evidence, profile=profile) if response else skipped(
             "response-quality", "no response to judge")
         return {"profile": profile.name, "goal": done(met), "findings": list(done(judged) or []), "steps": listing([met, judged])}
+
+    def decide_stop(self, history: Mapping[str, Any], representative: Optional[Mapping[str, Any]] = None, guidance: Optional[Mapping[str, Any]] = None,
+                    judgment: Optional[Mapping[str, Any]] = None, stated: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]:
+        """Whether iteration the person did not ask for should go on (Goal Completion's ``decide_stop``), with the limits resolved for this request: what the person
+        stated outranks their standing preference, Guidance's policy and the Representative's authority bound it, and a Judgment Calls decision to ask a person makes
+        what is missing a human's. Only hub-initiated iteration is judged; the person's own session is never stopped here. Returns ``decision`` (None when Goal
+        Completion has no arm), ``limits`` and the steps."""
+        limits = resolve_stop_limits(representative, guidance, judgment, stated)
+        full = dict(history, stated={**dict(history.get("stated") or {}), **limits["stated"]}, policy={**dict(history.get("policy") or {}), **limits["policy"]},
+                    needs_human=limits["needs_human"] or history.get("needs_human") or "")
+        found = take(self.goal, "goal-completion", method="decide_stop", history=full)
+        return {"decision": done(found), "limits": limits, "steps": listing([found])}
 
     def check_decision(self, draft: Any, binding: Any, ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]:
         """Has Decision Check test a draft decision (a pick among options, or a reply) with small independent checks within the binding's call cap; the result is the checked decision."""

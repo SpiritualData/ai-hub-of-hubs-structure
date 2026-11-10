@@ -78,8 +78,10 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | folder_view | model_pick | 33 | 97.0% (84.7% to 99.5%), 32/33 | 0.5 model calls (no price) | 1 (median) | model_pick: best guess, no per-case rows to test (model_pick 0.97 against evidence_ranked 0.97) | none recorded |
 | folder_view | ported_baseline | 41 | 17.1% (8.5% to 31.3%), 7/41 | $0 | 0.1 (median) | ahead of ported_baseline (two-sided sign test p=1.94e-06) | none recorded |
 | frontend_interface | json_wire (selected) | 28 | 100.0% (87.9% to 100.0%), 28/28 | $0 | 0 (median) | selected | none recorded |
-| goal_completion | evidence_standard (selected) | 14 | 100.0% (78.5% to 100.0%), 14/14 | $0 | 0 (median) | selected | none recorded |
-| goal_completion | nonempty | 14 | 78.6% (52.4% to 92.4%), 11/14 | $0 | 0 (median) | ahead of nonempty, not significant (two-sided McNemar p=0.25) | none recorded |
+| goal_completion | independent_review (selected) | 65 | 100.0% (94.4% to 100.0%), 65/65 | $0 | 0 (median) | selected | none recorded |
+| goal_completion | evidence_standard | 65 | 47.7% (36.0% to 59.6%), 31/65 | $0 | 0 (median) | ahead of evidence_standard (two-sided sign test p=2.33e-10) | none recorded |
+| goal_completion | nonempty | 65 | 44.6% (33.2% to 56.7%), 29/65 | $0 | 0 (median) | ahead of nonempty (two-sided sign test p=8.73e-11) | none recorded |
+| goal_completion | pragmatic_stop | 65 | 96.9% (89.5% to 99.2%), 63/65 | $0 | 0 (median) | ahead of pragmatic_stop, not significant (two-sided sign test p=0.5) | none recorded |
 | guidance | rule_gate (selected) | 24 | 100.0% (86.2% to 100.0%), 24/24 | $0 | 0 (median) | selected | none recorded |
 | guidance | always_nudge | 24 | 25.0% (12.0% to 44.9%), 6/24 | $0 | 0 (median) | ahead of always_nudge (two-sided sign test p=1.53e-05) | none recorded |
 | guidance | overlap_only | 24 | 41.7% (24.5% to 61.2%), 10/24 | $0 | 0 (median) | ahead of overlap_only (two-sided sign test p=0.000122) | none recorded |

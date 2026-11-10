@@ -71,7 +71,10 @@ at the repository root.
 | Folder View, Names, whole folder, shared words (the harness as it was) (`folder-view:ported_baseline`) | none | none | none | none | no |
 | Frontend Interface, Plain JSON picture of the session (`frontend-interface:json_wire`) | none | none | none | none | no |
 | Goal Completion, Evidence standard (`goal-completion:evidence_standard`) | none | none | none | none | no |
+| Goal Completion, Fast-tier model judgment of the stop (`goal-completion:fast_tier_stop`) | none | none | none | none | no |
+| Goal Completion, Independent review, then the stop rule (`goal-completion:independent_review`) | none | none | none | none | no |
 | Goal Completion, Outcome is not empty (`goal-completion:nonempty`) | none | none | none | none | no |
+| Goal Completion, Pragmatic stop rule (`goal-completion:pragmatic_stop`) | none | none | none | none | no |
 | Guidance, Always nudge (`guidance:always_nudge`) | none | none | none | none | no |
 | Guidance, Overlap only (`guidance:overlap_only`) | none | none | none | none | no |
 | Guidance, Rule gate (`guidance:rule_gate`) | none | none | none | none | no |

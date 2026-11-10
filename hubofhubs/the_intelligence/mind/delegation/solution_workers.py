@@ -5,7 +5,9 @@ Role: work is specified as solutions, each with its own records, a metric and mi
 per solution, each briefed only with its own solution's frame and the one line its parent hands down (the parent's frame and the siblings' output
 never reach it, which is the isolation), each with its own done-standard (the solution's next milestone not yet met) checked by something other
 than the worker. Children go first, in parallel up to ``width``, and report up compactly (``SolutionReport.compact``); the parent then does its own
-part holding those reports and is checked; an unmet part is worked again, with what the check found missing, while rounds remain.
+part holding those reports and is checked; an unmet part is worked again, with what the check found missing, while rounds remain and Goal Completion's stop decision (``stop``, the hub's selected one
+resolved by name when none is given, with what the person stated and the policy as ``stop_inputs``) says another round is worth its cost: a plateau, a regress, a
+met goal, a limit the person stated or a need only a person can meet ends the rounds with that reason in ``SolutionReport.stopped``.
 
 Everything that touches the outside is injected: ``frame`` (the records of a solution), ``children`` (which child solutions a task concerns),
 ``work`` (one solution's part: an external agent session today, an in-hub loop later), ``check`` (the independent verdict on the milestone),
@@ -39,6 +41,7 @@ class SolutionReport:
     output: str = ""
     missing: str = ""
     calls: int = 0
+    stopped: str = ""      # why no further round was worked: the stop decision's code and decision, "" when the rounds ran out or the goal was met
     children: List["SolutionReport"] = field(default_factory=list)
 
     def total_calls(self) -> int:
@@ -116,7 +119,8 @@ def better(old: Tuple[str, Mapping[str, Any]], new: Tuple[str, Mapping[str, Any]
 def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]], children: Callable[[str, str], Sequence[str]],
                   work: Callable[[Mapping[str, Any]], str], check: Callable[[str, str, str], Mapping[str, Any]], task: str = "", handed: str = "",
                   budget: Optional[Mapping[str, int]] = None, already_met: Optional[Callable[[str], bool]] = None,
-                  cancel: Optional[Callable[[], bool]] = None, session: Optional[Callable[[Dict[str, Any]], None]] = None) -> SolutionReport:
+                  cancel: Optional[Callable[[], bool]] = None, session: Optional[Callable[[Dict[str, Any]], None]] = None,
+                  stop: Optional[Callable[[Mapping[str, Any]], Mapping[str, Any]]] = None, stop_inputs: Optional[Mapping[str, Any]] = None) -> SolutionReport:
     """Work ``task`` through the hierarchy under ``solution_id`` and return the tree of reports. Each node: its children first (each a recursive call,
     in parallel up to ``width``, each handed ``HANDED`` filled in), then its own ``work(brief)`` with the children's compact reports, then
     ``check(solution_id, milestone, output) -> {"met", "missing"[, "score"]}``; unmet with rounds left, it works again with ``missing`` in the brief.
@@ -129,6 +133,25 @@ def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]]
     brief then also holds ``agent_id`` (the node's agent), so a worker can report its steps under its solution."""
     bound = {**DEFAULT_BUDGET, **dict(budget or {})}
     counter = Counter(bound["calls"])
+    if stop is None:
+        from hubofhubs.the_intelligence.critical_thinking.goal_completion.stop_rule import selected_stop_decider
+        stop = selected_stop_decider()      # the hub's own resolution; None when none is assembled, and every round then runs as before
+    inputs = dict(stop_inputs or {})
+
+    def another_round(tried: List[Dict[str, Any]]) -> str:
+        """"" when a further round is worth working, else why not (``code:decision``). A decision that fails is a refusal to iterate."""
+        if stop is None:
+            return ""
+        scores = [t["score"] for t in tried]
+        history = {"iterations": [{"verdict": t["met"], "metric": t["score"] if all(x is not None for x in scores) else None, "changed": t["changed"],
+                                   "missing": [t["missing"]] if t["missing"] else [], "spend_usd": 0.0, "seconds": 0.0} for t in tried],
+                   "metric": {"better": "higher", "target": 1.0}, "stated": dict(inputs.get("stated") or {}), "policy": dict(inputs.get("policy") or {}),
+                   "needs_human": inputs.get("needs_human") or ""}
+        try:
+            verdict = dict(stop(history) or {})
+        except Exception as error:      # noqa: BLE001
+            return f"decision_failed:{type(error).__name__}"
+        return "" if verdict.get("decision", "continue") == "continue" else f"{verdict.get('code') or ''}:{verdict.get('decision')}"
 
     begun: set = set()
 
@@ -196,10 +219,14 @@ def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]]
         if session is not None:
             base["agent_id"] = agent_of(path, sid)
         kept: Optional[Tuple[str, Mapping[str, Any]]] = None
+        tried: List[Dict[str, Any]] = []
         for attempt in range(1, int(bound["rounds"]) + 1):
             if cancel is not None and cancel():
                 if kept is None:
                     report.status, report.missing = CANCELLED, "cancelled before this work started"
+                break
+            if tried and (why := another_round(tried)):
+                report.stopped = why
                 break
             if not counter.take():
                 if kept is None:
@@ -213,6 +240,9 @@ def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]]
             except Exception as error:      # noqa: BLE001  one failing worker or check must not stop its siblings or its parent
                 kept = kept or ("", {"met": False, "missing": f"{type(error).__name__}: {error}"})
                 continue
+            score = verdict.get("score")
+            tried.append({"met": bool(verdict.get("met")), "score": float(score) if isinstance(score, (int, float)) and not isinstance(score, bool) else None,
+                          "missing": str(verdict.get("missing") or ""), "changed": int(not tried or output != tried[-1].get("output", "")), "output": output})
             if kept is None or better(kept, (output, verdict)):
                 kept = (output, verdict)
             if kept[1].get("met"):

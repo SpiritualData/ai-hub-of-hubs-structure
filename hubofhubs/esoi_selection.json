@@ -327,15 +327,18 @@
   }
  },
  "goal-completion": {
-  "default": "evidence_standard",
+  "default": "independent_review",
   "evidence": {
-   "detail": "evidence_standard leads nonempty (nonempty 0.786 against evidence_standard 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.25, 3 of 14 cases disagree)",
-   "p": 0.25,
+   "detail": "independent_review is better than evidence_standard (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.33e-10, 34 of 65 cases disagree); independent_review is better than nonempty (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=8.73e-11, 36 of 65 cases disagree); independent_review leads pragmatic_stop (pragmatic_stop 0.979 against independent_review 1; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.5, 2 of 65 cases disagree)",
+   "p": 0.0,
    "verdict": "WIN"
   },
   "modules": {
    "evidence_standard": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion",
-   "nonempty": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion"
+   "fast_tier_stop": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion",
+   "independent_review": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion",
+   "nonempty": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion",
+   "pragmatic_stop": "hubofhubs.the_intelligence.critical_thinking.goal_completion.goal_completion"
   }
  },
  "guidance": {

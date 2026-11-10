@@ -32,6 +32,7 @@ reported (``DeepResult.unseen_inputs``).
 from __future__ import annotations
 
 import json
+import os
 import queue
 import re
 import signal
@@ -52,10 +53,12 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.contract import (
     extract_escalation_id, kill_process_group, log, parse_worker_output, resolve_deep_review_interval_seconds, resolve_deep_timeout_seconds,
     resume_target_missing, signal_process_group)
 from hubofhubs.the_world.tools.delegated_agent_sessions.launch import build_deep_argv
+from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (
+    DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, SOFT_FRACTION, LimitWatch, active_watch, ceiling_of, current_session_file, estimate_spend, soft_fraction_of)
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import (
     describe_session_activity, monitor_claude_session, resolve_session_file, resolved_model_from_session, session_file_size, session_replay_tokens,
     worker_output_is_thin)
-from hubofhubs.the_world.tools.delegated_agent_sessions.settings import with_instructions_pack
+from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettingsSource, with_instructions_pack
 from hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner import SubprocessGoalRunner
 from hubofhubs.the_self.assembler import arm_needs as needs
 
@@ -415,6 +418,25 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
 
     # Class attributes so a test or a consumer can tune them without a new config field.
     echo_wait_seconds = DEFAULT_ECHO_WAIT_SECONDS
+    limit_poll_seconds = 1.0    # how often the ceilings are looked at while the session runs
+
+    def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "",
+                 model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None,
+                 settings: Optional[GoalSettingsSource] = None, provider: str = "anthropic", tier: str = "", instructions: str = "",
+                 ceiling_usd: Any = DEFAULT_CEILING_USD, ceiling_seconds: Any = DEFAULT_CEILING_SECONDS, soft_fraction: float = SOFT_FRACTION):
+        super().__init__(config, root=root, model_translator=model_translator, settings=settings, provider=provider, tier=tier, instructions=instructions)
+        # A default ceiling on money and on time (``run_ceilings``): high, so a person's own session runs on as it would in Claude Code, and never unbounded by omission
+        # (``UNLIMITED`` is the caller's explicit choice). At the soft share the session is steered once to a safe stopping point; at the hard limit it is stopped, kept and resumable.
+        self.ceiling_usd = ceiling_of(ceiling_usd, "ceiling_usd")
+        self.ceiling_seconds = ceiling_of(ceiling_seconds, "ceiling_seconds")
+        self.soft_fraction = soft_fraction_of(soft_fraction)
+
+    def new_watch(self, root: str, emit: Optional[Callable[[ProgressEvent], None]]) -> LimitWatch:
+        """The ceilings of one run, priced from the session's own record (the CLI reports cost only when a session ends)."""
+        config_dir = self.goal_settings().claude_config_dir
+        watch = LimitWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, emit=emit, log=log)
+        watch.spend_of = lambda: estimate_spend(current_session_file(root, watch.started, config_dir))
+        return watch
 
     def run_goal(self, *, goal: str, brief: str, model: Optional[str] = None,
                  max_turns: Optional[int] = None,
@@ -427,6 +449,14 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
                  cancel_check: Optional[Callable[[], bool]] = None,
                  control: Optional[RunControl] = None) -> DeepResult:
         """Run the goal over a live session. Never raises (the DeepRunner port)."""
+        if active_watch() is None and (self.ceiling_usd is not None or self.ceiling_seconds is not None):
+            root = os.path.abspath(self.cfg.working_dir if working_dir is None else working_dir)
+            with self.new_watch(root, emit) as watch:
+                res = self.run_goal(goal=goal, brief=brief, model=model, max_turns=max_turns, emit=emit, context_preamble=context_preamble, run_id=run_id,
+                                    working_dir=working_dir, resume_session_id=resume_session_id, requester_user_id=requester_user_id, cancel_check=cancel_check,
+                                    control=watch.wrap(control, self.limit_poll_seconds))
+            watch.finish(res)
+            return res
         landed_already = self.landed_in(working_dir, resume_session_id)
         model = model or self.tier_model
         try:

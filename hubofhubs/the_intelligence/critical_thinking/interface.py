@@ -7,7 +7,7 @@ from esoi import solution
 @solution("critical-thinking", kind="event", entry="evaluate", example={"request": "what is the latest Rust version?"})
 @runtime_checkable
 class CriticalThinking(typing.Protocol):
-    """Critical Thinking: ``translate`` turns a request into a target, ``pursue`` keeps working on an unmet goal with the untried reads within a budget, ``evaluate`` checks the goal and judges the response against the
+    """Critical Thinking: ``translate`` turns a request into a target, ``pursue`` keeps working on an unmet goal with the untried reads within a budget, ``evaluate`` checks the goal, ``decide_stop`` says whether iteration the person did not ask for should go on (Goal Completion's stop decision, with the limits resolved from the Representative, Guidance, Judgment Calls and what the person stated) and judges the response against the
     quality profile resolved from the Representative, Guidance and Prioritization (the default profile when none is given), ``check_decision`` has small independent checks check a draft decision
     (a pick among options or a reply) within a call cap, ``upkeep`` keeps a milestone's metrics able to show progress and ``progress`` makes one measured AI increment on a milestone
     (upkeep, the increment rule, before, the work, ``pursue`` refusing bookkeeping alone, after). ``consider`` gives each solution a request concerns its own
@@ -27,6 +27,8 @@ class CriticalThinking(typing.Protocol):
                  representative: Optional[Mapping[str, Any]] = None, guidance: Optional[Mapping[str, Any]] = None,
                  priorities: Optional[Mapping[str, Any]] = None, outcome: Optional[Any] = None) -> Mapping[str, Any]: ...
     def check_decision(self, draft: Any, binding: Any, ask: Optional[Callable[[str], str]] = None) -> Mapping[str, Any]: ...
+    def decide_stop(self, history: Mapping[str, Any], representative: Optional[Mapping[str, Any]] = None, guidance: Optional[Mapping[str, Any]] = None,
+                    judgment: Optional[Mapping[str, Any]] = None, stated: Optional[Mapping[str, Any]] = None) -> Mapping[str, Any]: ...
     def pursue(self, goal: str, done_standard: str, draft: Any, attempt: Optional[Callable[[Mapping[str, Any]], Mapping[str, Any]]] = None,
                means: Sequence[Mapping[str, Any]] = (), budget: Optional[Mapping[str, Any]] = None,
                announce: Optional[Callable[[str], Any]] = None, check: Optional[Callable[[Any], Mapping[str, Any]]] = None,

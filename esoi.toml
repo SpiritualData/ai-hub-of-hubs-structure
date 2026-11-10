@@ -8,7 +8,7 @@ root_python_allow = ["conftest.py"]   # the one shared pytest conftest serves te
 # Evaluation: one component folder per seat under evaluation/ (cases.json, score.py, impls/), results and per-case logs beside the records.
 # The measured code is the package; docs are not code.
 # Arms that may spend money: never run by `esoi run --stale` without --include-paid (esoi harness.paid_reason).
-paid_arms = ["cards_from_files/llm_topic_cards"]
+paid_arms = ["cards_from_files/llm_topic_cards", "goal_completion/fast_tier_stop"]
 evaluation_dir = "evaluation"
 results = "esoi/results.csv"
 # The coverage of the whole assembly is recorded by `esoi run assemble_the_whole --impl zero_config --record`; the solution has no arm to select, so it is a shared
@@ -136,6 +136,14 @@ seconds_per_case = 1
 # critical-thinking: one scripted pursuit is a few stub calls in memory, so a pursuit is worth at most a tenth of a cent and one second. The weights are the library's defaults and the
 # budgets were fixed before any arm was scored on the cases of evaluation/critical_thinking/build_cases.py.
 [balance.critical_thinking]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
+
+# goal-completion: a verdict on one outcome, or a stop decision on one iteration history, is a few comparisons in code, so one case is worth at most a tenth of a cent and one second.
+# The weights are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/goal_completion/build_cases.py; the penalties of the stop
+# stage (over-iteration, premature stop and wrong ask 1.0, right action with the wrong kind of stop 0.5) are fixed in evaluation/goal_completion/score.py and recorded in metrics.csv.
+[balance.goal_completion]
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.001
 seconds_per_case = 1
