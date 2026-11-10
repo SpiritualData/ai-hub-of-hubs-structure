@@ -55,12 +55,12 @@ at the repository root.
 | Decision Check, Independent views, decided by majority (`decision-check:majority_vote`) | none | none | none | none | no |
 | Decision Check, One verify call over all the evidence (`decision-check:single_verify`) | none | none | none | none | no |
 | Delegated Agent Sessions, Agent Client Protocol runner (`delegated-agent-sessions:acp_deep_runner`) | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
+| Delegated Agent Sessions, Hub's frame on the model's own tool loop, sized to the task (`delegated-agent-sessions:adaptive_native_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Codex CLI, one shot (`delegated-agent-sessions:codex_cli_runner`) | `OPENAI_API_KEY` (secret)<br>`HUBOFHUBS_WRITE_ROOT` | OpenAI | none | program `codex` | cli |
 | Delegated Agent Sessions, Hub's own loop on native tool calling (`delegated-agent-sessions:native_tool_calling_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | Anthropic (`ANTHROPIC_API_KEY`) | `anthropic` via extra `anthropic` | none | no |
 | Delegated Agent Sessions, Hub's frame on the model's own tool loop (`delegated-agent-sessions:native_tool_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, opencode in the hub's wrapper (`delegated-agent-sessions:opencode_hub_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
 | Delegated Agent Sessions, opencode, one shot (`delegated-agent-sessions:opencode_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
-| Delegated Agent Sessions, Hub's own tool loop (`delegated-agent-sessions:solution_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, one shot (`delegated-agent-sessions:subprocess_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegation, Route to Tools and Science (`delegation:to_tools`) | none | none | none | none | no |
@@ -95,7 +95,7 @@ at the repository root.
 | Metric Translation, Goal record with default budget (`metric-translation:goal_record`) | none | none | none | none | no |
 | Metric Upkeep, Record fields (`metric-upkeep:record_fields`) | none | none | none | none | no |
 | Model Plumbing, Tier chooser then vendor (`model-plumbing:via_vendor`) | none | none | none | none | no |
-| Model Tier Chooser, Passing work per cost selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
+| Model Tier Chooser, Tier metric selector (`model-tier-chooser:tier_selector`) | none | none | none | none | no |
 | Nervous System, Consent gate (`nervous-system:consent_gate`) | none | none | none | none | no |
 | Planner, Split and route by cues (`planner:cue_router`) | none | none | none | none | no |
 | Planner, Plan by a model (`planner:model_planner`) | none | none | none | none | no |
@@ -125,6 +125,8 @@ at the repository root.
 | Route a Request, One cheap classifier call (`route-a-request:single_classifier`) | none | none | none | none | no |
 | Solution Passes, Network passes (`solution-passes:network_passes`) | none | none | none | none | no |
 | Structure In View, Agents arranged by solution, records read on request (`structure-in-view:event_tree`) | none | none | none | none | no |
+| Structure Watch, Best tier call (`structure-watch:best_tier_call`) | none | none | none | none | no |
+| Structure Watch, Findings only (`structure-watch:findings_only`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
 | Terminal Experience, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Terminal Experience, Live session (reference terminal) (`terminal-session:live_session`) | none | none | none | none | no |

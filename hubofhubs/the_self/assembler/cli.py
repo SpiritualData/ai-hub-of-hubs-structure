@@ -51,6 +51,13 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
     session = terminal.WorkTerminal(build, sys.stdout, harness=name, why=why, keys=TtyKeys() if interactive else None, records=records,
                                     live=None if interactive else False, represent=lambda person: hub.run("the-representatives", person), person=args.person,
                                     front_door=lambda text: hub.run("hub-of-hubs", text), once=bool(args.goal) and not interactive, arm=arm)
+    from hubofhubs.the_intelligence.nervous_system.structure_watch.session import work_hook
+    from hubofhubs.the_body.internal_context.run_store.runs import RunStore
+    from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_directory
+    from hubofhubs.the_consciousness.judgment_calls.judgment import SeverityPolicy
+    session.structure_watch = work_hook(records, RunStore(private_directory("hubofhubs-structure-watch") or ""), judge=SeverityPolicy().decide,
+                                         ask=lambda prompt, tier, cap: hub.run("model-plumbing", {"prompt": prompt, "tier": tier}), off=args.structure_watch == "off",
+                                         ceilings={"ceiling_usd": usd if isinstance(usd, (int, float)) else None, "ceiling_seconds": seconds if isinstance(seconds, (int, float)) else None})
     holder["terminal"] = session
     if not args.goal and not interactive:
         print("ahohs work needs a goal when it is not on a terminal: ahohs work \"<goal>\"", file=sys.stderr)
@@ -60,6 +67,12 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1
 
 
+def main_session_tier() -> str:
+    """The default tier of the main session, read from the role tier table (balanced)."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import tier_for
+    return tier_for("main_session")
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     import hubofhubs
     parser = argparse.ArgumentParser(prog="ahohs", description="Run the hub from one line.")
@@ -67,7 +80,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     work = sub.add_parser("work", help="run a goal on a real harness in the live terminal; with no goal, a prompt (also what bare ahohs opens)")
     work.add_argument("goal", nargs="?", default="", help="what to get done in this folder; leave out for a prompt, and type follow-ups that continue the session")
     work.add_argument("--harness", default="", help="native, stream or loop (default: the hub's own pick for a person at a terminal)")
-    work.add_argument("--tier", default="fast", help="model tier: fast, balanced or strong")
+    work.add_argument("--tier", default=main_session_tier(), help="model tier: fast, balanced, quality or best (strong reads as quality); default: the tier policy of the main session")
     work.add_argument("--folder", default=".", help="the folder the work happens in (default: this one)")
     work.add_argument("--resume", default="", metavar="SESSION", help="continue a session an earlier run named (with the same --harness, in the same folder)")
     work.add_argument("--max-spend", default=None, metavar="USD", help="spend ceiling in dollars, or unlimited (default: the hub's high default)")
@@ -79,6 +92,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     work.add_argument("--as", dest="person", default="", metavar="NAME", help="act for this representative (its authority and stop limits apply; /as switches)")
     work.add_argument("--terminal", default="", help="the screen: textual_session, live_session or line_repl (default: the hub's selected one; live_session stands in when Textual is not installed)")
     work.add_argument("--setting-sources", default="project", help="which of the Claude CLI's setting sources a session loads: project (default: this folder's own, never your user-level settings and hooks), or a list such as user,project")
+    work.add_argument("--structure-watch", default="on", choices=("on", "off"), help="on (default): one small best-tier look at the records after a run that changed something, when there are records; off: never")
     work.add_argument("--plain", action="store_true", help="plain lines even on a terminal")
     one = sub.add_parser("run", help="answer one input with the best-measured arm of the whole hub, or of one id")
     one.add_argument("input")

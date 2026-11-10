@@ -1,0 +1,27 @@
+role,kind,tier,person_may_set,evidence,reason
+request_classification,classify,fast,no,"owner's policy, unmeasured","Classification is always fast: a label chosen from structured facts, made on nearly every turn."
+representative_selection,classify,fast,no,"owner's policy, unmeasured",A label choice over declared authority; classification is always fast.
+request_planning,orchestrate,balanced,no,"owner's policy, unmeasured; open measurement: fast against balanced on the routing cases","The planner decides how a turn is handled, one to four calls per turn, and a wrong plan misroutes the whole turn, so it has a significant downstream effect and is not a classification."
+folder_view_picking,gather,fast,no,"owner's policy, unmeasured",Choosing which files to put in view is made on every run and scored by its own metric.
+frame_building,gather,fast,no,"owner's policy, unmeasured",Preparing the notes a session starts with is made on every run; today it calls no model.
+context_retrieval,gather,fast,no,"owner's policy, unmeasured",Writing retrieval queries and ranking context is made many times per turn.
+card_building,gather,fast,no,"owner's policy, unmeasured",Building cards from files is repeated over many files.
+web_search,gather,fast,no,"owner's policy, unmeasured",A search call is straightforward and repeated.
+learning_investigation,gather,fast,no,"owner's policy, unmeasured",An investigation gathers and compares sources and is repeated; its prompts are scored by their own metric.
+liveness_review,orchestrate,fast,no,"owner's policy, unmeasured",Watching that a long run still makes progress is made many times during a run.
+request_extraction,orchestrate,fast,no,"owner's policy, unmeasured","Pulling arguments, a goal condition or a resolved request out of the message on a prompt optimised on its metric is straightforward and made on most turns; the routing decision itself is request_planning."
+status_narration,orchestrate,fast,no,"owner's policy, unmeasured","A short status line while work runs is not the answer, is written many times per turn and is scored by its own metric; the answer and the first acknowledgement are separate roles."
+main_session,work,balanced,yes,"owner's policy, unmeasured; the tier question on the hard set is measured separately (changelog 2026-11-10)",Balanced is the default for deep work. A person's explicit tier always wins. Comparison runs of harnesses pass the tier explicitly and stay on fast.
+sub_agent,work,main_session,no,"owner's policy, unmeasured","A sub-agent does the same work as the session that started it, so it follows the main session's tier, including a person's explicit one."
+after_check_resume,work,main_session,no,"owner's policy, unmeasured",The resumed turn after the code check is the same session and keeps its tier.
+file_editing,work,balanced,no,"owner's policy, unmeasured",A change to files can have a significant downstream effect if wrong.
+connected_system_operations,work,balanced,no,"owner's policy, unmeasured",An operation on a connected system can have a significant downstream effect if wrong.
+stop_decision,review,balanced,no,"owner's policy, unmeasured",Ending a run too early or letting it continue has a significant downstream effect; the default arm reads facts and calls no model.
+critical_review,review,balanced,no,"owner's policy, unmeasured",A wrong decision check or solution pass changes what the turn does next.
+summary,write,balanced,no,"owner's policy, unmeasured",Any response a person reads is at least balanced.
+response_writing,write,balanced,no,"owner's policy, unmeasured",Any response a person reads is at least balanced.
+acknowledgement,write,balanced,no,"owner's policy, unmeasured","The first line a person sees is a response they read, so at least balanced."
+solution_structure_work,structure,quality,no,"owner's policy, unmeasured","Work that changes the longer-term structure (records, a new solution, an arm's design) is quality."
+foundational_task,structure,quality,no,"owner's policy, unmeasured",A task marked foundational is quality.
+deliverable_judge,review,quality,no,"owner's policy, unmeasured","The hard set's judge shapes which arm is selected, a longer-term structure decision."
+structure-watch,structure,best,no,"owner's policy, unmeasured","The small best-tier structure watch (proactive application of ESOI, timed by Proactivity, guarding structural risk) is the only role that may run on the best tier without the person asking. The hub capability itself is built elsewhere; this row only fixes its tier."

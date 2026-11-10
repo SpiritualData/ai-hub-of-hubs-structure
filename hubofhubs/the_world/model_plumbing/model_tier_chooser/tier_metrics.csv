@@ -1,0 +1,45 @@
+tier,role,part,measure,weight,fit,minimum,reason
+fast,,capability,automationbench_aa,0.50,proxy,,"Fast calls are structured and short (classification, routing, extraction, tool-shaped supporting calls); completing multi-step workflows through a strict API interface is the closest public evaluation of that, and it carries half of capability."
+fast,,capability,omniscience_accuracy,0.25,proxy,,"Short factual answers from the model alone: the share of answers that are right, for lookup-like supporting calls."
+fast,,capability,omniscience_non_hallucination,0.25,proxy,,A routing or extraction call must say it does not know instead of inventing a label; the evaluation scores how rarely a model gives a wrong answer instead of abstaining.
+fast,,factor,capability,0.40,,,"Capability counts, but a fast call is made many times or is straightforward, so cost and speed together outweigh it."
+fast,,factor,cost,0.30,,,Calls repeated many times multiply cost: cost is the single largest recurring bill of the tier.
+fast,,factor,speed,0.30,,,Fast calls sit in the path of a turn or run in volume: time to finish a task weighs as much as cost.
+fast,,floor,automationbench_aa,,,0.60,Accuracy floor for structured tasks: an arm below 0.6 of the best eligible score cannot win on cheapness and speed.
+fast,,floor,omniscience_accuracy,,,0.50,Accuracy floor for short answers: an arm below half the best eligible score cannot win on cheapness and speed.
+fast,science,capability,critpt_v2_hard,0.40,proxy,,"Role variant for scientific calls: research-level physics problems with exact answers, the public evaluation closest to scientific reasoning at small scale."
+fast,science,capability,terminal_bench_science,0.40,proxy,,Role variant for scientific calls: agentic scientific computing tasks run in a terminal.
+fast,science,capability,omniscience_non_hallucination,0.20,proxy,,A scientific call must abstain instead of inventing a fact.
+fast,science,factor,capability,0.40,,,Same factor weights as the fast tier: a high-volume scientific call is a fast call.
+fast,science,factor,cost,0.30,,,Same as the fast tier.
+fast,science,factor,speed,0.30,,,Same as the fast tier.
+fast,science,floor,automationbench_aa,,,0.60,"Same accuracy floors as the fast tier, so the role variant never lowers the bar."
+fast,science,floor,omniscience_accuracy,,,0.50,Same accuracy floors as the fast tier.
+balanced,,capability,terminal_bench_4,0.20,direct,,Balanced is the default for deep implementation work: agentic coding in a terminal is the first of two coding evaluations (0.40 together).
+balanced,,capability,frontiercode_2,0.20,direct,,Changes to real repositories graded as a maintainer would (tests and a rubric): the second coding evaluation.
+balanced,,capability,automationbench_aa,0.25,direct,,"Tool use: a wrong call to a connected system can hurt a turn, so tool use carries the largest single share."
+balanced,,capability,gdpval_aa,0.20,direct,,"Writing quality: expert-judged work products (documents, plans, messages) that people read."
+balanced,,capability,omniscience_non_hallucination,0.15,direct,,Answers people read must not invent facts: abstaining when unsure.
+balanced,,factor,capability,0.55,,,"A wrong balanced call can hurt a turn, so capability leads."
+balanced,,factor,cost,0.25,,,Balanced calls are frequent in deep work: cost is a real factor.
+balanced,,factor,speed,0.20,,,"A person waits on balanced calls: speed is a real factor, a little below cost."
+balanced,,floor,capability,,,0.70,A balanced arm must reach 0.7 of the best eligible capability before cost and speed can lift it.
+quality,,capability,frontiercode_2,0.20,direct,,Foundational and structural work is long-horizon coding and design: the largest share goes to changes real maintainers would merge.
+quality,,capability,terminal_bench_4,0.15,direct,,Long-horizon agentic work in a terminal.
+quality,,capability,aa_briefcase,0.15,direct,,"Knowledge-work agent tasks across documents and tools, the other side of structural work."
+quality,,capability,hle_diamond,0.15,direct,,"Expert-level reasoning and knowledge questions, where depth decides."
+quality,,capability,critpt_v2_hard,0.10,direct,,Hard research-level reasoning with exact answers.
+quality,,capability,terminal_bench_science,0.10,direct,,Long-horizon scientific computing.
+quality,,capability,omniscience_accuracy,0.10,direct,,Factual accuracy on questions with no help.
+quality,,capability,automationbench_aa,0.05,direct,,"Tool use still matters, but less than depth."
+quality,,factor,capability,0.85,,,Capability dominates for work that shapes longer-term structure.
+quality,,factor,cost,0.10,,,"Cost still counts, weakly: these calls are few."
+quality,,factor,speed,0.05,,,"Speed still counts, very weakly: these calls are not waited on."
+quality,,floor,capability,,,0.80,A quality arm must reach 0.8 of the best eligible capability.
+best,,capability,intelligence_index,1.00,direct,,"Best is used on request and once a day for structure: the independent composite of nine evaluations, in its own published weights, is the capability measure."
+best,,factor,capability,1.00,,,"Capability only: cost and speed are not factors for best (the owner's rule of 2026-11-10); they never enter the score, and break a tie only."
+all,,freshness,scores,,,45,"A public score, speed or cost row older than 45 days (checked_on) is not used: leaderboards move weekly and a model's row can be replaced."
+all,,freshness,prices,,,90,A list price older than 90 days is reported as stale in the breakdown.
+all,,own_stage,cases,,,100,The hub's own measurement overrides the public default only when each arm it compares ran at least 100 shared cases: fewer leave an interval wider than the gaps between the arms (30 cases give a 95 percent interval of about plus or minus 17 points).
+all,,rule,direct_share,,,0.50,"Fit of evidence (added 2026-11-10 after the first ranking was seen, because that ranking would have raised cost for an install with one provider): a tier selects its default from public numbers only when evaluations marked direct (they measure the tier's own kind of call) carry at least this share of its capability weight; otherwise the held default stays and the proxy ranking is returned for information."
+all,,rule,effort_applied,,,,"Effort must be real (added 2026-11-10 after the first ranking was seen): an arm at an effort other than the model's default is eligible only when the caller for its provider applies the effort the chooser returns; today no caller applies a per-call effort, so only each model's default effort competes, and the cost the metric assumed is the cost paid."

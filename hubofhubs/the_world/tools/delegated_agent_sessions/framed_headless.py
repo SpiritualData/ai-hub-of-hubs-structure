@@ -47,7 +47,6 @@ class HubWrapped:
     """Mixin for a ``HeadlessCliRunner``: the hub's frame, ceilings, stop decision, code check, outside-folder report and session events around one headless run."""
 
     plan_tool = "its todo tool"        # what the harness calls its plan tool, named in the frame's rules
-    on_trial = True                    # measured and ranked beside the other harnesses, not chosen for a consumer until the owner promotes it
 
     def __init__(self, *args: Any, check: bool = True, notes: str = "", select: Optional[Callable[..., Any]] = None,
                  ceiling_usd: Union[float, str] = DEFAULT_CEILING_USD, ceiling_seconds: Union[float, str] = DEFAULT_CEILING_SECONDS, soft_fraction: float = SOFT_FRACTION,

@@ -1,5 +1,15 @@
 # Choosing the model for each tier
 
+**Public stage (2026-11-10).** Each of the four tiers (fast, balanced, quality, best) has its own metric over public evaluations:
+`model_tier_chooser/tier_metrics.csv` holds its weights, cost and speed factors, floors and freshness, each with its reason, and
+`registry/tier_public_scores.csv` holds one row per model and reasoning effort with the numbers, their source URL and the date checked.
+The score is `C^a x K^b x S^c` (capability, cost per task, time per task); best has capability only. A model with no number on a
+required measure is not eligible and nothing is imputed; rows older than 45 days are not used, and then the held default of
+`tier_arms.csv` stays. The hub's own measurement (the rule below) overrides the public default only when each arm compared ran at
+least 100 shared cases. `choose` returns the arm, its effort, the reason with the runner-up and the score breakdown. `science` is a
+call role, not a tier: `choose(role="science")` applies the role's capability weights inside the fast tier and `science` reads as an
+alias of fast. The rest of this page describes the measured stage.
+
 `hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py` picks, per tier, the (provider, model) arm that does the most passing work per unit of cost. The metric
 decides; no provider or model is a default by preference.
 

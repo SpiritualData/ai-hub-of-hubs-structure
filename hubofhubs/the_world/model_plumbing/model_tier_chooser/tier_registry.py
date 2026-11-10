@@ -2,7 +2,7 @@
 from hubofhubs.the_world.model_plumbing.model_tier_chooser.interface import TierSelection
 
 #: the names a runner uses for a tier, and the chooser's tier each one means
-TIER_OF = {"fast": "cheap", "cheap": "cheap", "balanced": "mid", "mid": "mid", "quality": "strong", "best": "strong", "strong": "strong"}
+TIER_OF = {"fast": "fast", "cheap": "fast", "science": "fast", "balanced": "balanced", "mid": "balanced", "quality": "quality", "strong": "quality", "best": "best"}
 
 
 class TierRegistry:

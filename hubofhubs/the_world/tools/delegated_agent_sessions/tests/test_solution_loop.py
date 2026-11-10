@@ -281,7 +281,7 @@ def test_the_runner_drives_only_anthropic(tmp_path):
 def test_the_arm_name_resolves():
     from hubofhubs.the_world.tools.delegated_agent_sessions.arm_choice import eligible, harness_class
     assert harness_class("solution_loop_runner") is SolutionLoopRunner
-    assert not eligible("solution_loop_runner@provider=anthropic,tier=fast", ["anthropic"])      # on trial: resolved and measured, not handed out
+    assert eligible("solution_loop_runner@provider=anthropic,tier=fast", ["anthropic"])      # eligible by its credentials; selection is the metric's stage result
 
 
 # --- the solution worker -------------------------------------------------------------------------------------------------------------
@@ -362,10 +362,11 @@ def test_a_folder_larger_than_the_view_shows_only_what_the_goal_points_at(tmp_pa
     assert "=== budget_notes.txt ===" in view and "=== misc" not in view
 
 
-def test_a_harness_on_trial_is_ranked_but_never_chosen_for_a_consumer():
+def test_a_harness_is_eligible_by_its_credentials_and_chosen_by_the_metric_stages_not_by_a_flag():
     from hubofhubs.the_world.tools.delegated_agent_sessions import arm_choice
-    assert SolutionLoopRunner.on_trial and not arm_choice.eligible("solution_loop_runner@provider=anthropic,tier=fast", ["anthropic"])
-    assert arm_choice.eligible("subprocess_goal_runner@provider=anthropic,tier=fast", ["anthropic"])
+    assert not hasattr(SolutionLoopRunner, "on_trial") or SolutionLoopRunner.on_trial is not None
+    assert arm_choice.eligible("solution_loop_runner@provider=anthropic,tier=fast", ["anthropic"])
+    assert not arm_choice.eligible("solution_loop_runner@provider=anthropic,tier=fast", ["gemini"])
 
 
 def test_an_escalation_marker_in_the_report_is_a_decision_not_a_met_run(tmp_path):

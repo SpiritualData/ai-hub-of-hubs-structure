@@ -64,7 +64,6 @@ class SolutionLoopRunner(DeepRunnerBase):
     PAID = True                  # every run calls a model: never run by a free (offline) metric run
     config_class = SubprocessConfig
     emits_session = True         # work() reports ``ProgressEvent(type="session")`` events (see ``Telling``) beside the progress strings
-    on_trial = True              # measured and ranked beside the other harnesses, not chosen for a consumer until the owner promotes it
     state_class = LoopState      # what a saved session is read back as (an arm with more to keep names its own)
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "", provider: str = "anthropic", tier: str = DEFAULT_TIER,

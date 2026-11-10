@@ -29,7 +29,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - [The long view across requests](higher_mind/README.md) (sub-intent): The AI keeps a long view that spans requests: what it remembers, the objectives it is serving, and an infrequent longer-term nudge for the Planner.
 - [What the Mind sees and does for one request](mind/README.md) (sub-intent): For one request the Mind works from one view of the information, breaks the request into pieces, hands a piece on only when a worker is needed, and writes the plan, request or communication its reader needs.
 - [Finding and preparing information for the Mind](subconscious/README.md) (sub-intent): The information a request needs is found and prepared before the Mind asks for it, from the system's own cards, its files and what comes to mind unasked.
-- [Nervous System](nervous_system/README.md) (solution with implementations): Send one risk signal, a severity and a reason, before irreversible or person-owned steps, without slowing ordinary work and without routing.
+- [Nervous System](nervous_system/README.md) (solution with implementations and parts below it): Send one risk signal, a severity and a reason, before irreversible or person-owned steps, without slowing ordinary work and without routing.
 - [Proactivity](proactivity/README.md) (solution with implementations): Let the system start its standing work when it is due, without being asked.
 
 ## Solutions at a glance
@@ -42,6 +42,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust version?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Nervous System | `nervous-system` | `hubofhubs.run("nervous-system", 'delete the old backup folder')` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Structure Watch | `structure-watch` | `hubofhubs.run("structure-watch", ...)` | Best tier call (`best_tier_call`) | Structure attended to before more is built on it |
 
 ## Problems and ideals
 
@@ -52,6 +53,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees too little or too much (`hprob-the-mind-sees-too-little-or-too-much`): What the planning and responding AI sees for a request is whatever was wired to it: earlier requests and goals are missing, the right information is not found, or too much of it is pasted in.
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
 - Recurring work falls on days and times (`hprob-recurring-work-has-days-and-times`): Standing work for a person often falls on certain days of the week and a time of day in that person's own time zone (a review on weekday mornings, a report on Friday afternoons), and a late start is still worth doing for a while but not forever.
+- Work is built on structure that needs attention (`hprob-structure-built-on-before-it-is-attended-to`): New work piles onto a structure that has an experiment past its reevaluation, a solution with several implementations and no metric, a duplicate, a missed reuse or a milestone past its date, and nobody looks at the structure itself until the cost shows.
 
 **Ideals**
 
@@ -62,6 +64,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is fitted to that request, within a budget, and draws on the long view, the system's own data and the outside.
 - The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 - Recurring work keeps its days and times (`hideal-recurring-work-keeps-its-days-and-times`): Recurring work starts on the days and at the time of day its person keeps, in their own time zone, once per occasion, and a start that is a little late still counts.
+- Structure attended to before more is built on it (`hideal-structure-is-attended-to-before-more-is-built-on-it`): Look at the structure proactively, with few tokens, and say where it needs attention before the next work is built on it; leave it alone when it is fine.
 
 ## Metrics and their leaders
 
@@ -72,6 +75,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): leader `two_stage`, 34 of 36 cases
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`)
 - Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 43 of 43 cases
+- Structure attended to before more is built on it (`metric-structure-watch`): leader `best_tier_call`, 18 of 18 cases
 
 ## Where to go next
 
@@ -81,7 +85,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Sub-intent: [Finding and preparing information for the Mind](subconscious/README.md)
 - Parent intent: [The best parts for AI intelligence, assembled and proven](../../esoi/README.md)
 - Repository: [top README](../../README.md)
-- Records beside the code: [hubofhubs/the_intelligence/nervous_system](nervous_system/README.md), [hubofhubs/the_intelligence/proactivity](proactivity/README.md)
+- Records beside the code: [hubofhubs/the_intelligence/nervous_system](nervous_system/README.md), [hubofhubs/the_intelligence/proactivity](proactivity/README.md), [hubofhubs/the_intelligence/nervous_system/structure_watch](nervous_system/structure_watch/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv), [solutions.csv](solutions.csv), [implementations.csv](implementations.csv), [metrics.csv](metrics.csv)
 - Diagram page: [diagram.md](diagram.md)
 
@@ -96,6 +100,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees too little or too much (`hprob-the-mind-sees-too-little-or-too-much`): What the planning and responding AI sees for a request is whatever was wired to it: earlier requests and goals are missing, the right information is not found, or too much of it is pasted in.
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
 - Recurring work falls on days and times (`hprob-recurring-work-has-days-and-times`): Standing work for a person often falls on certain days of the week and a time of day in that person's own time zone (a review on weekday mornings, a report on Friday afternoons), and a late start is still worth doing for a while but not forever.
+- Work is built on structure that needs attention (`hprob-structure-built-on-before-it-is-attended-to`): New work piles onto a structure that has an experiment past its reevaluation, a solution with several implementations and no metric, a duplicate, a missed reuse or a milestone past its date, and nobody looks at the structure itself until the cost shows.
 
 ### Ideals
 
@@ -106,6 +111,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is fitted to that request, within a budget, and draws on the long view, the system's own data and the outside.
 - The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 - Recurring work keeps its days and times (`hideal-recurring-work-keeps-its-days-and-times`): Recurring work starts on the days and at the time of day its person keeps, in their own time zone, once per occasion, and a start that is a little late still counts.
+- Structure attended to before more is built on it (`hideal-structure-is-attended-to-before-more-is-built-on-it`): Look at the structure proactively, with few tokens, and say where it needs attention before the next work is built on it; leave it alone when it is fine.
 
 ### Solutions
 
@@ -117,6 +123,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Higher Mind | `higher-mind` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Nervous System | `nervous-system` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
 | Proactivity | `proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Structure Watch | `structure-watch` | Best tier call (`best_tier_call`) | Structure attended to before more is built on it |
 
 ### Implementations
 
@@ -129,6 +136,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Consent gate | `nervous-system:consent_gate` | [hubofhubs/the_intelligence/nervous_system/consent_gate.py](nervous_system/consent_gate.py) |  |
 | Calendar periods and events | `proactivity:calendar_and_events` | [hubofhubs/the_intelligence/proactivity/triggers.py](proactivity/triggers.py) |  |
 | Elapsed hours | `proactivity:elapsed_hours` | [hubofhubs/the_intelligence/proactivity/triggers.py](proactivity/triggers.py) |  |
+| Best tier call | `structure-watch:best_tier_call` | [hubofhubs/the_intelligence/nervous_system/structure_watch/watch.py](nervous_system/structure_watch/watch.py) |  |
+| Findings only | `structure-watch:findings_only` | [hubofhubs/the_intelligence/nervous_system/structure_watch/watch.py](nervous_system/structure_watch/watch.py) |  |
 
 ### Metrics
 
@@ -139,6 +148,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest hubofhubs/the_intelligence/mind/delegation/overseer/tests/test_risk.py`
 - Schedules due when they should be (`metric-proactivity`): `esoi run proactivity --impl calendar_and_events; esoi run proactivity --impl elapsed_hours`
+- Structure attended to before more is built on it (`metric-structure-watch`): `esoi run structure_watch --impl best_tier_call; esoi run structure_watch --impl findings_only`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

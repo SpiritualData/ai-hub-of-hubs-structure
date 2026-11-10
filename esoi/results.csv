@@ -212,7 +212,7 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-04,watch_for_risk,consent_gate,60,38,38/60,0/0,0,0,0,0.0,0.0,0.7433,f77566e-dirty,af498ff2,,none,ambiguous_passed=13/24; explicit_passed=25/36
 2026-11-04,request_planning,cue_router,105,67,67/105,0/0,0,0,0,0.0,0.0,,2ef28ad,5c94183d,,none,edit_passed=20/26; none_passed=14/24; science_passed=12/26; search_passed=20/28; steps_passed=1/1
 2026-11-04,request_planning,one_piece,105,24,24/105,0/0,0,0,0,0.0,0.0,,2ef28ad,5c94183d,,none,edit_passed=0/26; none_passed=24/24; science_passed=0/26; search_passed=0/28; steps_passed=0/1
-2026-11-04,agent_sessions,none,12,0,0/12,0/0,0,0,0,0.0,0.0,0.3,9c53b92,5f55d9c8,,none,
+2026-11-04,agent_sessions,none,12,0,0/12,0/0,0,0,0,0.0,0.0,0.05,9c53b92,5f55d9c8,,none,
 2026-11-05,prioritization,as_given,13,1,1/13,0/0,0,0,0,0.0,0.0,0.3538,b3b9026-dirty,98e28943,,none,goal-ladder_passed=0/2; open-asks_passed=0/1; quest-list_passed=1/5; work-order_passed=0/5; mean_pairwise_agreement=0.182
 2026-11-05,prioritization,stated_fields,13,13,13/13,0/0,0,0,0,0.0,0.0,1.0,b3b9026-dirty,98e28943,,none,goal-ladder_passed=2/2; open-asks_passed=1/1; quest-list_passed=5/5; work-order_passed=5/5; mean_pairwise_agreement=1.0
 2026-11-05,proactivity,calendar_and_events,18,18,18/18,0/0,0,0,0,0.0,0.0,,b3b9026-dirty,5ad0325b,,none,
@@ -274,81 +274,81 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-07,decision_check,draft_as_given,21,10,10/21,0/0,0,0,0,0.0,0.0,,f41622c,42a5cba4,,none,pick_passed=6/13; reply_passed=4/8; wrong_picks=7; calls_per_decision=0.0; agreement=1.0
 2026-11-07,decision_check,agreement_check,21,20,20/21,0/0,0,0,0,0.0,156.9,,f41622c,42a5cba4,,none,pick_passed=12/13; reply_passed=8/8; wrong_picks=1; calls_per_decision=3.95; agreement=0.81
 2026-11-07,decision_check,single_verify,21,20,20/21,0/0,0,0,0,0.0,68.4,,f41622c,42a5cba4,,none,pick_passed=12/13; reply_passed=8/8; wrong_picks=1; calls_per_decision=1.0; agreement=0.714
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",3,3,3/3,0/0,3,0,0,0.0086,24.3,0.9856,46cf0b0-dirty,eba551d8,"only:agent-notes-city,agent-code-slugify,agent-research-and-cite",gemini-2.5-flash-lite,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",3,3,3/3,0/0,3,0,0,0.0077,24.0,0.9861,46cf0b0-dirty,eba551d8,"only:agent-notes-city,agent-code-slugify,agent-research-and-cite",claude-haiku-5-5,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0026,8.8,0.9851,d1fb5b3,eba551d8,sample:1,claude-haiku-5-5,
-2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0025,8.0,0.9862,d1fb5b3,eba551d8,sample:1,claude-haiku-5-5,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=balanced",1,1,1/1,0/0,1,0,0,0.0366,7.2,0.9361,fe68366,eba551d8,sample:1,claude-sonnet-5-5,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=best",1,1,1/1,0/0,1,0,0,0.0756,7.4,0.8773,fe68366,eba551d8,sample:1,claude-opus-5-5,
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",1,1,1/1,0/0,1,0,0,0.0029,8.7,0.9848,fe68366,eba551d8,sample:1,gemini-2.5-flash-lite,forced past ceiling: cascade stage run on 2026-11-08
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",1,1,1/1,0/0,1,0,0,0.0159,16.0,0.9561,fe68366,eba551d8,sample:1,gemini-2.5-flash,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",6,6,6/6,0/0,6,0,0,0.0155,50.0,0.9857,802b859,eba551d8,sample:6,claude-haiku-5-5,
-2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",6,6,6/6,0/0,6,0,0,0.0152,48.1,0.9862,6cff7af,eba551d8,sample:6,claude-haiku-5-5,
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",6,4,4/6,0/0,6,0,0,0.0124,27.0,0.7579,6cff7af,eba551d8,sample:6,gemini-2.5-flash-lite,forced past ceiling: cascade stage run on 2026-11-08
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",6,6,6/6,0/0,6,0,0,0.0623,86.9,0.9663,6cff7af,eba551d8,sample:6,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=balanced",6,6,6/6,0/0,6,0,0,0.2185,43.9,0.9362,6cff7af,eba551d8,sample:6,claude-sonnet-5-5,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=best",6,6,6/6,0/0,6,0,0,0.4609,47.5,0.8749,6cff7af,eba551d8,sample:6,claude-opus-5-5,forced past ceiling: cascade stage run on 2026-11-08
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",2,2,2/2,0/0,2,0,0,0.0046,11.3,0.9895,0c98f47,eba551d8,"only:agent-who-owns,agent-research-and-cite",gemini-2.5-flash-lite,
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",6,3,3/6,0/0,6,0,0,0.0151,39.9,0.6379,b605111,eba551d8,sample:6,gemini-2.5-flash-lite,
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",6,6,6/6,0/0,6,0,0,0.0539,74.5,0.971,daec9f9,eba551d8,sample:6,gemini-2.5-flash,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0431,129.8,0.9485,daec9f9,eba551d8,,claude-haiku-5-5,
-2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0428,133.9,0.9482,daec9f9,eba551d8,,claude-haiku-5-5,
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",18,9,9/18,0/0,18,0,0,0.0344,76.2,0.6418,daec9f9,eba551d8,,gemini-2.5-flash-lite,forced past unsolved failures: cascade stage run on 2026-11-08
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,13,13/18,0/0,18,0,0,0.1192,135.9,0.7862,72744b0,eba551d8,,gemini-2.5-flash,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0432,132.6,0.9872,613d3a7,0dcffc5e,,claude-haiku-5-5,
-2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,130.6,0.9873,613d3a7,0dcffc5e,,claude-haiku-5-5,
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,16,16/18,0/0,18,0,0,0.1332,146.0,0.901,613d3a7,0dcffc5e,,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",2,1,1/2,0/0,2,0,0,0.0099,50.8,0.6429,31ad7ae-dirty,795d4780,"only:hard-code-periods,hard-deliverable-research-brief",claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",1,0,0/1,0/0,1,0,0,0.0042,32.4,0.2913,31ad7ae-dirty,795d4780,only:hard-deliverable-research-brief,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0045,18.0,0.9948,89acf11,393c849c,sample:1,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",1,1,1/1,0/0,1,0,0,0.048,11.2,0.99,89acf11,393c849c,sample:1,claude-sonnet-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",1,1,1/1,0/0,1,0,0,0.1171,17.5,0.9781,89acf11,393c849c,sample:1,claude-opus-5-5,
-2026-11-08,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0047,18.5,0.9947,89acf11,393c849c,sample:1,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0049,17.6,0.9949,89acf11,393c849c,sample:1,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0051,18.6,0.9946,89acf11,393c849c,sample:1,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,4,4/7,0/0,7,0,0,0.065,256.1,0.6895,89acf11,393c849c,,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0708,275.2,0.8887,3817ce1,393c849c,,claude-haiku-5-5,forced past unsolved failures: hard stage run on 2026-11-08
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0691,282.6,0.7884,3817ce1,393c849c,,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.7376,204.4,0.8769,cceeb2a,393c849c,,claude-sonnet-5-5,
-2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0676,268.1,0.789,cceeb2a,393c849c,,claude-haiku-5-5,
-2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,7,7/7,0/0,7,0,0,1.8887,315.4,0.9483,cceeb2a,393c849c,,claude-opus-5-5,
-2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0741,295.5,0.8879,cceeb2a,393c849c,,claude-haiku-5-5,
-2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,127.3,0.9876,20876a9,0dcffc5e,,claude-haiku-5-5,
-2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0421,129.2,0.9875,f633f94,0dcffc5e,,claude-haiku-5-5,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",3,3,3/3,0/0,3,0,0,0.0086,24.3,0.9976,46cf0b0-dirty,eba551d8,"only:agent-notes-city,agent-code-slugify,agent-research-and-cite",gemini-2.5-flash-lite,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",3,3,3/3,0/0,3,0,0,0.0077,24.0,0.9977,46cf0b0-dirty,eba551d8,"only:agent-notes-city,agent-code-slugify,agent-research-and-cite",claude-haiku-5-5,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0026,8.8,0.9975,d1fb5b3,eba551d8,sample:1,claude-haiku-5-5,
+2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0025,8.0,0.9977,d1fb5b3,eba551d8,sample:1,claude-haiku-5-5,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=balanced",1,1,1/1,0/0,1,0,0,0.0366,7.2,0.9893,fe68366,eba551d8,sample:1,claude-sonnet-5-5,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=best",1,1,1/1,0/0,1,0,0,0.0756,7.4,0.9796,fe68366,eba551d8,sample:1,claude-opus-5-5,
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",1,1,1/1,0/0,1,0,0,0.0029,8.7,0.9975,fe68366,eba551d8,sample:1,gemini-2.5-flash-lite,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",1,1,1/1,0/0,1,0,0,0.0159,16.0,0.9927,fe68366,eba551d8,sample:1,gemini-2.5-flash,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",6,6,6/6,0/0,6,0,0,0.0155,50.0,0.9976,802b859,eba551d8,sample:6,claude-haiku-5-5,
+2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",6,6,6/6,0/0,6,0,0,0.0152,48.1,0.9977,6cff7af,eba551d8,sample:6,claude-haiku-5-5,
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",6,4,4/6,0/0,6,0,0,0.0124,27.0,0.6819,6cff7af,eba551d8,sample:6,gemini-2.5-flash-lite,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",6,6,6/6,0/0,6,0,0,0.0623,86.9,0.9944,6cff7af,eba551d8,sample:6,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=balanced",6,6,6/6,0/0,6,0,0,0.2185,43.9,0.9894,6cff7af,eba551d8,sample:6,claude-sonnet-5-5,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=best",6,6,6/6,0/0,6,0,0,0.4609,47.5,0.9791,6cff7af,eba551d8,sample:6,claude-opus-5-5,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",2,2,2/2,0/0,2,0,0,0.0046,11.3,0.9982,0c98f47,eba551d8,"only:agent-who-owns,agent-research-and-cite",gemini-2.5-flash-lite,
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",6,3,3/6,0/0,6,0,0,0.0151,39.9,0.523,b605111,eba551d8,sample:6,gemini-2.5-flash-lite,
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",6,6,6/6,0/0,6,0,0,0.0539,74.5,0.9952,daec9f9,eba551d8,sample:6,gemini-2.5-flash,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0431,129.8,0.9451,daec9f9,eba551d8,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0428,133.9,0.9451,daec9f9,eba551d8,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=fast",18,9,9/18,0/0,18,0,0,0.0344,76.2,0.5236,daec9f9,eba551d8,,gemini-2.5-flash-lite,forced past unsolved failures: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,13,13/18,0/0,18,0,0,0.1192,135.9,0.7329,72744b0,eba551d8,,gemini-2.5-flash,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0432,132.6,0.9979,613d3a7,0dcffc5e,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,130.6,0.9979,613d3a7,0dcffc5e,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,16,16/18,0/0,18,0,0,0.1332,146.0,0.8909,613d3a7,0dcffc5e,,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",2,1,1/2,0/0,2,0,0,0.0099,50.8,0.5238,31ad7ae-dirty,795d4780,"only:hard-code-periods,hard-deliverable-research-brief",claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",1,0,0/1,0/0,1,0,0,0.0042,32.4,0.0485,31ad7ae-dirty,795d4780,only:hard-deliverable-research-brief,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0045,18.0,0.9991,89acf11,393c849c,sample:1,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",1,1,1/1,0/0,1,0,0,0.048,11.2,0.9983,89acf11,393c849c,sample:1,claude-sonnet-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",1,1,1/1,0/0,1,0,0,0.1171,17.5,0.9963,89acf11,393c849c,sample:1,claude-opus-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0047,18.5,0.9991,89acf11,393c849c,sample:1,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0049,17.6,0.9991,89acf11,393c849c,sample:1,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",1,1,1/1,0/0,1,0,0,0.0051,18.6,0.9991,89acf11,393c849c,sample:1,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,4,4/7,0/0,7,0,0,0.065,256.1,0.5911,89acf11,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0708,275.2,0.8624,3817ce1,393c849c,,claude-haiku-5-5,forced past unsolved failures: hard stage run on 2026-11-08
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0691,282.6,0.7266,3817ce1,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.7376,204.4,0.8604,cceeb2a,393c849c,,claude-sonnet-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0676,268.1,0.7267,cceeb2a,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,7,7/7,0/0,7,0,0,1.8887,315.4,0.9914,cceeb2a,393c849c,,claude-opus-5-5,
+2026-11-08,agent_sessions_hard,"stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0741,295.5,0.8623,cceeb2a,393c849c,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,127.3,0.9979,20876a9,0dcffc5e,,claude-haiku-5-5,
+2026-11-08,agent_sessions,"subprocess_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0421,129.2,0.9979,f633f94,0dcffc5e,,claude-haiku-5-5,forced past ceiling: cascade stage run on 2026-11-08
 2026-11-08,relevant_solutions,records_index,62,46,37/49,9/13,0,0,0,0.0,0.8,0.7517,00bcf79,ec848095,,none,recall=0.828; precision=0.454; f2=0.6466; missed_cases=16
 2026-11-08,solution_passes,network_passes,6,6,6/6,0/0,0,0,0,0.0,2.2,,00bcf79,8c79356a,"only:reach-graph-arm,reach-keyword-papers,reach-draft-as-given,reach-risk-gate-off,reach-no-edit-arm,reach-fielded-retrieval",none,reaches_passed=6/6; calls_per_case=0.0
-2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,15,15/18,0/0,18,0,0,0.1398,156.2,0.8608,b2b36dd,0dcffc5e,,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08
+2026-11-08,agent_sessions,"opencode_runner@provider=gemini,tier=balanced",18,15,15/18,0/0,18,0,0,0.1398,156.2,0.8379,b2b36dd,0dcffc5e,,gemini-2.5-flash,forced past ceiling: cascade stage run on 2026-11-08
 2026-11-08,relevant_solutions,records_index,62,49,40/49,9/13,0,0,0,0.0,0.8,0.7748,362bbc7,ec848095,,none,recall=0.8763; precision=0.475; f2=0.6796; missed_cases=13
 2026-11-08,relevant_solutions,records_then_model,62,51,42/49,9/13,0,0,0,0.0,259.8,0.6209,a1dfc23,ec848095,,none,recall=0.8925; precision=0.421; f2=0.6727; missed_cases=11
 2026-11-08,solution_passes,network_passes,11,10,10/11,0/0,0,0,0,0.0,349.2,,a1dfc23,8c79356a,"only:verdict-graph-arm,verdict-keyword-papers,verdict-draft-as-given,verdict-risk-gate-off,verdict-no-edit-arm,verdict-fielded-retrieval,depth-volunteer-welcome,depth-release-note,depth-study-plan,depth-video-script,depth-interview-questions",none,one_call_mean=0.942; depth_mean=0.975; depth_calls_per_case=0.0; verdict_passed=6/6; calls_per_case=0.0
-2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0079,94.6,0.9928,2e606ca,0dcffc5e,,claude-haiku-5-5,reused 1 case(s) already run for this implementation version
-2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0798,221.5,0.7904,2e606ca,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0298,184.4,0.7928,2e606ca,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0739,292.2,0.788,2e606ca,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0154,126.5,0.9899,2e606ca,0dcffc5e,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0411,247.9,0.7903,2e606ca,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0086,96.7,0.9926,2e606ca,0dcffc5e,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0462,299.3,0.9883,2e606ca,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.8595,273.6,0.8718,2e606ca,393c849c,,claude-sonnet-5-5,
-2026-11-09,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0421,94.9,0.9899,2e606ca,0dcffc5e,,claude-haiku-5-5,forced past ceiling: same-day baseline: the recorded row is stale since the runner code changed
-2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,6,6/7,0/0,7,0,0,1.7608,272.3,0.8525,2e606ca,393c849c,,claude-opus-5-5,forced past ceiling: same-day baseline under the corrected judge
-2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.012,101.3,0.992,3eeffc8-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.045,248.1,0.9902,3eeffc8-dirty,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0694,255.4,0.7894,3eeffc8-dirty,393c849c,,claude-haiku-5-5,
-2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,6,6/7,0/0,7,0,0,1.988,321.1,0.8459,3eeffc8-dirty,393c849c,,claude-opus-5-5,
-2026-11-09,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0428,99.5,0.9895,a106391,0dcffc5e,,claude-haiku-5-5,
-2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0109,113.3,0.9912,a106391,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0219,211.1,0.992,a106391,393c849c,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0658,232.8,0.9903,a106391,393c849c,,claude-haiku-5-5,forced past ceiling: recorded again at the committed code so the standings read current rows
-2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,7,7/7,0/0,7,0,0,1.7491,280.4,0.9525,a106391,393c849c,,claude-opus-5-5,forced past ceiling: recorded again at the committed code so the standings read current rows
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,7,7/7,0/0,7,0,0,0.7886,245.5,0.9743,d9d4d27,393c849c,,claude-sonnet-5-5,forced past ceiling: same-day balanced-tier comparison under the current judge
-2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",7,7,7/7,0/0,7,0,0,0.7744,250.8,0.9744,d9d4d27,393c849c,,claude-sonnet-5-5,
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0198,141.1,0.9886,550a4e0,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0231,215.9,0.8918,550a4e0,393c849c,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.5114,185.0,0.8824,550a4e0,393c849c,,claude-sonnet-5-5,
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0133,112.4,0.9911,274032e,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0272,240.5,0.9908,274032e,393c849c,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.1923,167.3,0.8899,274032e,393c849c,,claude-sonnet-5-5,
+2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0079,94.6,0.9988,2e606ca,0dcffc5e,,claude-haiku-5-5,reused 1 case(s) already run for this implementation version
+2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0798,221.5,0.727,2e606ca,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0298,184.4,0.7274,2e606ca,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0739,292.2,0.7266,2e606ca,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0154,126.5,0.9983,2e606ca,0dcffc5e,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0411,247.9,0.7269,2e606ca,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0086,96.7,0.9988,2e606ca,0dcffc5e,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0462,299.3,0.9981,2e606ca,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.8595,273.6,0.8596,2e606ca,393c849c,,claude-sonnet-5-5,
+2026-11-09,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0421,94.9,0.9983,2e606ca,0dcffc5e,,claude-haiku-5-5,forced past ceiling: same-day baseline: the recorded row is stale since the runner code changed
+2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,6,6/7,0/0,7,0,0,1.7608,272.3,0.8564,2e606ca,393c849c,,claude-opus-5-5,forced past ceiling: same-day baseline under the corrected judge
+2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.012,101.3,0.9987,3eeffc8-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.045,248.1,0.9984,3eeffc8-dirty,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,5,5/7,0/0,7,0,0,0.0694,255.4,0.7268,3eeffc8-dirty,393c849c,,claude-haiku-5-5,
+2026-11-09,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,6,6/7,0/0,7,0,0,1.988,321.1,0.8553,3eeffc8-dirty,393c849c,,claude-opus-5-5,
+2026-11-09,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0428,99.5,0.9983,a106391,0dcffc5e,,claude-haiku-5-5,
+2026-11-09,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0109,113.3,0.9985,a106391,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0219,211.1,0.9987,a106391,393c849c,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0658,232.8,0.9984,a106391,393c849c,,claude-haiku-5-5,forced past ceiling: recorded again at the committed code so the standings read current rows
+2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,7,7/7,0/0,7,0,0,1.7491,280.4,0.9921,a106391,393c849c,,claude-opus-5-5,forced past ceiling: recorded again at the committed code so the standings read current rows
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,7,7/7,0/0,7,0,0,0.7886,245.5,0.9957,d9d4d27,393c849c,,claude-sonnet-5-5,forced past ceiling: same-day balanced-tier comparison under the current judge
+2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",7,7,7/7,0/0,7,0,0,0.7744,250.8,0.9957,d9d4d27,393c849c,,claude-sonnet-5-5,
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0198,141.1,0.9981,550a4e0,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0231,215.9,0.8629,550a4e0,393c849c,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.5114,185.0,0.8614,550a4e0,393c849c,,claude-sonnet-5-5,
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0133,112.4,0.9985,274032e,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0272,240.5,0.9985,274032e,393c849c,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.1923,167.3,0.8626,274032e,393c849c,,claude-sonnet-5-5,
 2026-11-10,folder_view,evidence_ranked,33,31,25/25,6/8,0,0,0,0.0,13.1,0.9705,4da386a-dirty,32a2c7ee,,none,utility=0.975; small_utility=1.0; small_recall=1.0; corpus_utility=0.961; corpus_recall=0.929; thrift=1.0; safety=1.0; reported=1.0; safety_failures=0
 2026-11-10,folder_view,ported_baseline,33,7,7/25,0/8,0,0,0,0.0,7.2,0.7213,4da386a-dirty,32a2c7ee,,none,"utility=0.611; small_utility=0.799; small_recall=1.0; corpus_utility=0.504; corpus_recall=0.206; thrift=0.878; safety=0.778; reported=0.468; safety_failures=8 | forced past unsolved failures: baseline arm: the floor is recorded whole, its failures are the finding"
 2026-11-10,folder_view,evidence_ranked,33,31,25/25,6/8,0,0,0,0.0,12.9,0.9707,4da386a-dirty,32a2c7ee,,none,utility=0.975; small_utility=1.0; small_recall=1.0; corpus_utility=0.961; corpus_recall=0.929; thrift=1.0; safety=1.0; reported=1.0; safety_failures=0
@@ -373,25 +373,25 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,terminal_session,live_session,39,39,39/39,0/0,0,0,0,0.0,1.1,0.9958,f7766cc-dirty,55c87232,,none,X1=2/2; X2=2/2; X3=2/2; X4=3/3; X5=3/3; X6=2/2; X7=3/3; X8=2/2; X9=4/4; X10=3/3; X11=1/1; X12=1/1; X13=2/2; X14=3/3; X15=2/2; X16=2/2; X17=2/2; X18=2/2; X19=2/2; X20=4/4; X21=2/2; X22=2/2; X23=2/2; ask_passed=3/3; attend_passed=25/25; command_passed=3/3; exit_passed=4/4; turn_passed=4/4
 2026-11-10,terminal_session,live_session,39,39,39/39,0/0,0,0,0,0.0,0.9,0.9965,e6a37bc,55c87232,,none,X1=2/2; X2=2/2; X3=2/2; X4=3/3; X5=3/3; X6=2/2; X7=3/3; X8=2/2; X9=4/4; X10=3/3; X11=1/1; X12=1/1; X13=2/2; X14=3/3; X15=2/2; X16=2/2; X17=2/2; X18=2/2; X19=2/2; X20=4/4; X21=2/2; X22=2/2; X23=2/2; ask_passed=3/3; attend_passed=25/25; command_passed=3/3; exit_passed=4/4; turn_passed=4/4
 2026-11-10,terminal_session,line_repl,39,26,26/39,0/0,0,0,0,0.0,38.9,0.6171,e6a37bc,55c87232,,none,X1=2/2; X2=2/2; X3=2/2; X4=0/3; X5=0/3; X6=0/2; X7=3/3; X8=0/2; X9=0/4; X10=3/3; X11=1/1; X12=1/1; X13=0/2; X14=3/3; X15=2/2; X16=2/2; X17=2/2; X18=0/2; X19=0/2; X20=2/4; X21=0/2; X22=0/2; X23=0/2; ask_passed=3/3; attend_passed=12/25; command_passed=3/3; exit_passed=4/4; turn_passed=4/4
-2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0334,95.6,0.9906,1410e5f,0dcffc5e,,claude-haiku-5-5,reused 2 case(s) already run for this implementation version
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0205,165.0,0.9868,1410e5f,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,103.9,0.9892,1410e5f,0dcffc5e,,claude-haiku-5-5,forced past ceiling: its row is stale after the hub changes of 2026-11-10 and the comparison table needs all three harnesses on the same cases
-2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.1002,339.0,0.8334,1410e5f,557a9bf6,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0334,95.6,0.9984,1410e5f,0dcffc5e,,claude-haiku-5-5,reused 2 case(s) already run for this implementation version
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0205,165.0,0.9978,1410e5f,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0431,103.9,0.9982,1410e5f,0dcffc5e,,claude-haiku-5-5,forced past ceiling: its row is stale after the hub changes of 2026-11-10 and the comparison table needs all three harnesses on the same cases
+2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.1002,339.0,0.787,1410e5f,557a9bf6,,claude-haiku-5-5,
 2026-11-10,command_execution,bubblewrap_wrapper,11,11,11/11,0/0,0,0,0,0.0,1.1,,1410e5f-dirty,8f34e9e1,,none,runs_passed=3/3; bounded_passed=2/2; refused_passed=3/3; contained_passed=2/2; scratch_passed=1/1
 2026-11-10,command_execution,refusal_floor,11,9,9/11,0/0,0,0,0,0.0,1.1,,1410e5f-dirty,8f34e9e1,,none,runs_passed=3/3; bounded_passed=2/2; refused_passed=3/3; contained_passed=0/2; scratch_passed=1/1 | forced past unsolved failures: the baseline is recorded whole: it fails the two containment cases by design
 2026-11-10,agent_action_format,text_protocol,15,9,9/15,0/0,0,0,0,0.0,0.0,,1410e5f-dirty,f6af1d36,,none,protocol_passed=5/5; function-markup_passed=3/3; json-tool-call_passed=1/1; native-tool-calls_passed=0/6
 2026-11-10,agent_action_format,native_tool_calls,15,6,6/15,0/0,0,0,0,0.0,0.0,,1410e5f-dirty,f6af1d36,,none,protocol_passed=0/5; function-markup_passed=0/3; json-tool-call_passed=0/1; native-tool-calls_passed=6/6
 2026-11-10,agent_action_format,any_format,15,15,15/15,0/0,0,0,0,0.0,0.0,,1410e5f-dirty,f6af1d36,,none,protocol_passed=5/5; function-markup_passed=3/3; json-tool-call_passed=1/1; native-tool-calls_passed=6/6
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,5,5/9,0/0,9,0,0,0.0953,560.6,0.6717,1410e5f,557a9bf6,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.0816,285.2,0.9907,1410e5f,557a9bf6,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,5,5/9,0/0,9,0,0,0.0953,560.4,0.6717,1410e5f,557a9bf6,,unknown,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10 | reused 9 case(s) already run for this implementation version
-2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.1002,338.9,0.8334,1410e5f,557a9bf6,,unknown,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10 | reused 9 case(s) already run for this implementation version
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0205,165.0,0.9868,1410e5f,0dcffc5e,,unknown,reused 18 case(s) already run for this implementation version
-2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0334,95.6,0.9906,1410e5f,0dcffc5e,,unknown,reused 18 case(s) already run for this implementation version
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.0523,411.0,0.8322,1410e5f,557a9bf6,,claude-haiku-5-5,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10
-2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0993,306.9,0.912,1410e5f,557a9bf6,,claude-haiku-5-5,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0114,115.5,0.991,1410e5f,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0229,92.7,0.9528,1410e5f,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,5,5/9,0/0,9,0,0,0.0953,560.6,0.5749,1410e5f,557a9bf6,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.0816,285.2,0.9985,1410e5f,557a9bf6,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,5,5/9,0/0,9,0,0,0.0953,560.4,0.5749,1410e5f,557a9bf6,,unknown,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10 | reused 9 case(s) already run for this implementation version
+2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.1002,338.9,0.787,1410e5f,557a9bf6,,unknown,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10 | reused 9 case(s) already run for this implementation version
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0205,165.0,0.9978,1410e5f,0dcffc5e,,unknown,reused 18 case(s) already run for this implementation version
+2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0334,95.6,0.9984,1410e5f,0dcffc5e,,unknown,reused 18 case(s) already run for this implementation version
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.0523,411.0,0.7868,1410e5f,557a9bf6,,claude-haiku-5-5,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10
+2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0993,306.9,0.8927,1410e5f,557a9bf6,,claude-haiku-5-5,forced past ceiling: re-record after the end-rule fix and the revised code check message of 2026-11-10
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0114,115.5,0.9985,1410e5f,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0229,92.7,0.9458,1410e5f,0dcffc5e,,claude-haiku-5-5,
 2026-11-10,frontend_interface,json_wire,28,28,28/28,0/0,0,0,0,0.0,0.0,1.0,bbf5ea4,dfee23c3,,none,control_passed=5/5; event_passed=8/8; facts_passed=11/11; leak_passed=2/2; unknown_passed=2/2
 2026-11-10,structure_in_view,event_tree,20,20,20/20,0/0,0,0,0,0.0,0.0,1.0,bbf5ea4,a70211ff,,none,agent_passed=4/4; collapsed_passed=2/2; expanded_passed=5/5; hierarchy_passed=5/5; unknown_passed=4/4
 2026-11-10,terminal_session,live_session,39,39,39/39,0/0,0,0,0,0.0,1.0,0.9962,bbf5ea4,55c87232,,none,X1=2/2; X2=2/2; X3=2/2; X4=3/3; X5=3/3; X6=2/2; X7=3/3; X8=2/2; X9=4/4; X10=3/3; X11=1/1; X12=1/1; X13=2/2; X14=3/3; X15=2/2; X16=2/2; X17=2/2; X18=2/2; X19=2/2; X20=4/4; X21=2/2; X22=2/2; X23=2/2; ask_passed=3/3; attend_passed=25/25; command_passed=3/3; exit_passed=4/4; turn_passed=4/4
@@ -406,12 +406,12 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,goal_completion,nonempty,65,29,29/65,0/0,0,0,0,0.0,0.0,0.6823,6981441-dirty,2a7c059b,,none,outcome_passed=11/14; stop_passed=18/51; over_iteration=0.1351; premature_stop=0.7857; wrong_ask=0.0784; wrong_stop_kind=0.3939; stop_credit=0.4804
 2026-11-10,goal_completion,pragmatic_stop,65,63,63/65,0/0,0,0,0,0.0,0.0,0.9785,6981441-dirty,2a7c059b,,none,outcome_passed=14/14; stop_passed=49/51; over_iteration=0.0; premature_stop=0.1429; wrong_ask=0.0; wrong_stop_kind=0.0; stop_credit=0.9608
 2026-11-10,goal_completion,independent_review,65,65,65/65,0/0,0,0,0,0.0,0.0,1.0,6981441-dirty,2a7c059b,,none,outcome_passed=14/14; stop_passed=51/51; over_iteration=0.0; premature_stop=0.0; wrong_ask=0.0; wrong_stop_kind=0.0; stop_credit=1.0
-2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0317,99.3,0.9905,7ca325c-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0933,289.3,0.9126,7ca325c-dirty,4fe9b0cc,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0435,104.0,0.9892,7ca325c-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0776,299.2,0.9126,7ca325c-dirty,4fe9b0cc,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0137,115.4,0.952,7ca325c-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.0857,480.6,0.7519,7ca325c-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"native_tool_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0317,99.3,0.9984,7ca325c-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0933,289.3,0.8928,7ca325c-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"stream_json_goal_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0435,104.0,0.9982,7ca325c-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0776,299.2,0.8928,7ca325c-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,17,17/18,0/0,18,0,0,0.0137,115.4,0.9457,7ca325c-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.0857,480.6,0.6809,7ca325c-dirty,4fe9b0cc,,claude-haiku-5-5,
 2026-11-10,plain_install,front_door,10,10,10/10,0/0,0,0,0,0.0,3.3,,7ca325c-dirty,7f68924d,,none,plain_install=1.0; answered=10/10; warnings=0; raw_error_text=0
 2026-11-10,plain_install,real_login,10,7,7/10,0/0,0,0,0,0.0,57.4,,7ca325c-dirty,7f68924d,,none,plain_install=0.7; answered=7/10; warnings=0; raw_error_text=0
 2026-11-10,plain_install,front_door,10,10,10/10,0/0,0,0,0,0.0,3.3,,7ca325c-dirty,b42bfc5b,,none,plain_install=1.0; answered=10/10; warnings=0; raw_error_text=0
@@ -424,24 +424,30 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,terminal_session,line_repl,67,40,40/67,0/0,9,0,0,,201.6,,95067ae,45fefe37,,unknown,X1=3/4; X2=2/3; X3=3/3; X4=0/5; X5=1/6; X6=0/4; X7=5/6; X8=0/2; X9=1/5; X10=7/10; X11=2/3; X12=1/1; X13=0/2; X14=3/3; X15=2/3; X16=2/2; X17=2/2; X18=0/6; X19=1/3; X20=4/6; X21=1/5; X22=0/2; X23=1/5; X24=0/2; X25=0/1; X26=1/1; X27=1/1; X28=1/1; X29=2/3; X30=1/2; X31=0/1; X32=0/1; X33=3/4; ask_pass...
 2026-11-10,terminal_session,textual_session,67,66,66/67,0/0,9,0,0,,150.3,,95067ae,45fefe37,,unknown,X1=4/4; X2=3/3; X3=3/3; X4=5/5; X5=6/6; X6=4/4; X7=6/6; X8=1/2; X9=5/5; X10=10/10; X11=3/3; X12=1/1; X13=2/2; X14=3/3; X15=3/3; X16=2/2; X17=2/2; X18=6/6; X19=3/3; X20=6/6; X21=5/5; X22=2/2; X23=5/5; X24=2/2; X25=1/1; X26=1/1; X27=1/... | reused 67 case(s) already run for this implementation version
 2026-11-10,terminal_session,textual_session,67,67,67/67,0/0,9,0,0,,142.0,,95067ae,45fefe37,,unknown,X1=4/4; X2=3/3; X3=3/3; X4=5/5; X5=6/6; X6=4/4; X7=6/6; X8=2/2; X9=5/5; X10=10/10; X11=3/3; X12=1/1; X13=2/2; X14=3/3; X15=3/3; X16=2/2; X17=2/2; X18=6/6; X19=3/3; X20=6/6; X21=5/5; X22=2/2; X23=5/5; X24=2/2; X25=1/1; X26=1/1; X27=1/1; X28=1/1; X29=3/3; X30=2/2; X31=1/1; X32=1/1; X33=4/4; ask_pas...
-2026-11-10,agent_sessions,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0169,45.0,0.9955,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"opencode_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0574,139.8,0.9855,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0163,139.7,0.9889,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"opencode_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.0748,291.0,0.9907,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
-2026-11-10,agent_sessions,"opencode_hub_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0549,102.1,0.9883,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.0682,377.2,0.8328,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
-2026-11-10,agent_sessions_hard,"opencode_hub_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0701,258.4,0.9139,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0169,45.0,0.9992,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"opencode_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0574,139.8,0.9976,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0163,139.7,0.9982,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"opencode_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.0748,291.0,0.9984,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"opencode_hub_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0549,102.1,0.9981,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.0682,377.2,0.787,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"opencode_hub_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0701,258.4,0.8931,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
 2026-11-10,learning_review,registry_research,19,1,1/19,0/0,0,0,0,0.0,0.0,,22900dc-dirty,78161a03,,none,forced past unsolved failures: baseline arm: its failures are the bar the review arm must beat
 2026-11-10,learning_review,systematic_review,19,19,19/19,0/0,0,0,0,0.0,0.0,,22900dc,78161a03,,none,reused 19 case(s) already run for this implementation version
-2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1334,172.0,0.7597,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,forced past unsolved failures: the one failing case is a judged deliverable that failed in two dev runs and is recorded as measured; the arm was not tuned to a private case
+2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1334,172.0,0.6822,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,forced past unsolved failures: the one failing case is a judged deliverable that failed in two dev runs and is recorded as measured; the arm was not tuned to a private case
 2026-11-10,learning_review,systematic_review,19,19,19/19,0/0,0,0,0,0.0,0.0,,22900dc,78161a03,,none,reused 19 case(s) already run for this implementation version
 2026-11-10,learning_review,systematic_review,24,24,24/24,0/0,0,0,0,0.0,0.0,,22900dc,166c1c4e,,none,reused 24 case(s) already run for this implementation version
 2026-11-10,learning_review,registry_research,24,1,1/24,0/0,0,0,0,0.0,0.0,,22900dc-dirty,166c1c4e,,none,forced past unsolved failures: baseline arm: its failures are the bar the review arm must beat
-2026-11-10,agent_sessions,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0189,50.9,0.9949,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0189,50.9,0.9991,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
 2026-11-10,learning_review,systematic_review,3,0,0/3,0/0,12,0,0,,115.6,,22900dc,9363f51b,"only:real-terminal-libraries,real-search-backends,real-spreadsheet-libraries",unknown,
 2026-11-10,learning_review,systematic_review,3,3,3/3,0/0,12,0,0,,110.8,,22900dc,9363f51b,"only:real-terminal-libraries,real-search-backends,real-spreadsheet-libraries",unknown,
 2026-11-10,learning_review,systematic_review,24,24,24/24,0/0,0,0,0,0.0,0.0,,22900dc,9363f51b,,none,
 2026-11-10,learning_review,registry_research,24,1,1/24,0/0,0,0,0,0.0,0.0,,22900dc-dirty,9363f51b,,none,
-2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1073,179.5,0.7599,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1073,179.5,0.6822,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
 2026-11-10,learning_review,systematic_review,30,30,30/30,0/0,0,0,0,0.0,0.5,,f9a28b0-dirty,693a93fd,,none,
 2026-11-10,learning_review,registry_research,30,1,1/30,0/0,0,0,0,0.0,0.0,,f9a28b0-dirty,693a93fd,,none,forced past unsolved failures: baseline arm: its failures are the bar the review arm must beat
+2026-11-10,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.081,318.3,0.8927,e5eeebd,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.071,271.8,0.893,e5eeebd,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"stream_json_goal_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0867,307.1,0.8928,e5eeebd,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.2425,272.1,0.6814,e5eeebd,4fe9b0cc,,default,
+2026-11-10,structure_watch,best_tier_call,18,18,18/18,0/0,0,0,0,0.0,0.0,1.0,e5eeebd-dirty,f1cc3bfd,,none,
+2026-11-10,structure_watch,findings_only,18,13,13/18,0/0,0,0,0,0.0,0.0,0.8056,e5eeebd-dirty,f1cc3bfd,,none,

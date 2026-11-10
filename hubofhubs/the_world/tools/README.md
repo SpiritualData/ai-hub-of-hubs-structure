@@ -29,7 +29,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Agent Action Format | `agent-action-format` | `hubofhubs.run("agent-action-format", {'reply': 'READ: README.md', 'working_dir': '.'})` | Either format (`any_format`) | Scripted actions executed as intended, per format |
 | Command Execution | `command-execution` | `hubofhubs.run("command-execution", {'command': 'sudo true', 'working_dir': '.'})` | Bubblewrap wrapper (`bubblewrap_wrapper`) | Commands run, refused and contained as scripted |
 | Connected System Operations | `connected-system-operations` | `hubofhubs.run("connected-system-operations", ...)` | none selected | The operation is carried out and nothing else |
-| Delegated Agent Sessions | `delegated-agent-sessions` | `hubofhubs.run("delegated-agent-sessions", ...)` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions), A run finds what it needs instead of asking |
+| Delegated Agent Sessions | `delegated-agent-sessions` | `hubofhubs.run("delegated-agent-sessions", ...)` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Hard deep work finished per cost and time (agent sessions), Open-ended work finished per cost and time (agent sessions), Harness, context, sub-agents and recursion ranked, A run finds what it needs instead of asking |
 | File Editing | `file-editing` | `hubofhubs.run("file-editing", ...)` | One-call file edit (`fast_edit`) | Goal met by its own tests |
 | File Reading | `read-files` | `hubofhubs.run("read-files", {'root': '.', 'paths': []})` | Folder reader (`folder_reader`) | Files read inside the folder |
 | Web Search | `web-search` | `hubofhubs.run("web-search", 'latest Rust version')` | Gemini grounding (`gemini`) | Search finds the source |
@@ -94,7 +94,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Agent Action Format | `agent-action-format` | Either format (`any_format`) | Scripted actions executed as intended, per format |
 | Command Execution | `command-execution` | Bubblewrap wrapper (`bubblewrap_wrapper`) | Commands run, refused and contained as scripted |
 | Connected System Operations | `connected-system-operations` | none selected | The operation is carried out and nothing else |
-| Delegated Agent Sessions | `delegated-agent-sessions` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions), A run finds what it needs instead of asking |
+| Delegated Agent Sessions | `delegated-agent-sessions` | `stream_json_goal_runner@provider=anthropic,tier=fast` | Hard deep work finished per cost and time (agent sessions), Open-ended work finished per cost and time (agent sessions), Harness, context, sub-agents and recursion ranked, A run finds what it needs instead of asking |
 | File Editing | `file-editing` | One-call file edit (`fast_edit`) | Goal met by its own tests |
 | File Reading | `read-files` | Folder reader (`folder_reader`) | Files read inside the folder |
 | Web Search | `web-search` | Gemini grounding (`gemini`) | Search finds the source |
@@ -120,6 +120,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Hub's frame on the model's own tool loop | `delegated-agent-sessions:native_tool_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/native_runner.py](delegated_agent_sessions/native_runner.py) |  |
 | Hub's own loop on native tool calling | `delegated-agent-sessions:native_tool_calling_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/tool_loop_runner.py](delegated_agent_sessions/tool_loop_runner.py) |  |
 | opencode in the hub's wrapper | `delegated-agent-sessions:opencode_hub_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/framed_headless.py](delegated_agent_sessions/framed_headless.py) |  |
+| Hub's frame on the model's own tool loop, sized to the task | `delegated-agent-sessions:adaptive_native_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/adaptive_native_runner.py](delegated_agent_sessions/adaptive_native_runner.py) |  |
 | One-call file edit | `file-editing:fast_edit` | [hubofhubs/the_world/tools/file_editing/fast_edit.py](file_editing/fast_edit.py) |  |
 | Folder reader | `read-files:folder_reader` | [hubofhubs/the_world/tools/file_reading/read_files.py](file_reading/read_files.py) |  |
 | Brave Search API | `web-search:brave` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |

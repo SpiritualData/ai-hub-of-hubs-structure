@@ -13,7 +13,11 @@ Part of [How the AI processes information](../README.md)
 - Entry call: `hubofhubs.run("nervous-system", 'delete the old backup folder')`
 - Selected implementation: Consent gate (`consent_gate`)
 - Metric: Risky steps stopped, ordinary steps let through, Guard marginal value
-- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../critical_thinking/decision_check/remainder.py) and 227 more
+- Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../critical_thinking/decision_check/remainder.py) and 234 more
+
+## One level below
+
+- [Structure Watch](structure_watch/README.md) (solution with implementations): Say where the structure needs attention before more work is built on it, with few tokens and without being asked.
 
 ## Implementations
 
@@ -30,6 +34,7 @@ Part of [How the AI processes information](../README.md)
 
 - Up: [hubofhubs](../../README.md)
 - Intent: [How the AI processes information](../README.md)
+- Down: [hubofhubs/the_intelligence/nervous_system/structure_watch](structure_watch/README.md)
 - Repository: [top README](../../../README.md)
 
 *Generated from the CSV files in this folder by `esoi readmes`. Edit the CSV files, not this page.*

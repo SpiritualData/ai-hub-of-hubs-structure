@@ -3,110 +3,66 @@
   "cost_per_case_usd": 0.1,
   "seconds_per_case": 120,
   "weights": {
-   "accuracy": 0.7,
-   "cost": 0.15,
-   "time": 0.15
+   "accuracy": 0.95,
+   "cost": 0.025,
+   "time": 0.025
   }
  },
- "cascade": "idea [kind=idea | scale=esoi/idea-rating-scale.md | min-pass-rate=0.75 | when=a new arm (harness, provider, tier) is described: its five ratings and reasons are a row of arm_ideas.csv beside the solution, rated before it is built] > offline [real=no | gate=all-pass | when=the harness's own tests pass with no model: test_headless_runner.py replays each harness's recorded event stream through a fake program (report, tokens, cost, launch failure, time limit, cancel, escalation), and the Claude Code runner tests pass; the none arm is the zero bound] > public [real=no | when=the arm has an unexpired prior of grade C or better in public_priors.csv beside the solution, set by the prior rule of docs/explanation/public-evidence.md (direct or borrowed from a published live-benchmark row, never estimated); a prior orders unmeasured arms and never outranks a measured result] > one [sample=sample:1 | real=yes | gate=all-pass | when=the offline stage passed for the harness and the arm's provider has credentials where we measure: one real case runs end to end and its report is read by hand] > staged [sample=sample:6 | real=yes | gate=competitive | max-age-days=90 | when=the one case passed and a call budget is set with --max-calls: two cases of each kind] > whole [sample=full | real=yes | max-age-days=90 | when=the staged sample passed its gate, or did not separate the leading arms]",
+ "cascade": "idea [kind=idea | scale=esoi/idea-rating-scale.md | min-pass-rate=0.75 | when=a new arm (harness, provider, tier) is described: its five ratings and reasons are a row of arm_ideas.csv beside the solution, rated before it is built] > offline [real=no | gate=all-pass | when=the harness's own tests pass with no model: test_headless_runner.py replays each harness's recorded event stream through a fake program (report, tokens, cost, launch failure, time limit, cancel, escalation), and the Claude Code runner tests pass; the none arm is the zero bound] > public [real=no | when=the arm has an unexpired prior of grade C or better in public_priors.csv beside the solution, set by the prior rule of docs/explanation/public-evidence.md (direct or borrowed from a published live-benchmark row, never estimated); a prior orders unmeasured arms and never outranks a measured result] > one [sample=sample:1 | real=yes | gate=all-pass | when=the offline stage passed for the harness and the arm's provider has credentials where we measure: one real case runs end to end and its report is read by hand] > staged [sample=sample:6 | real=yes | gate=competitive | max-age-days=90 | when=the one case passed and a call budget is set with --max-calls: two cases of each kind] > whole [sample=full | real=yes | min-pass-rate=0.94 | max-age-days=90 | when=the staged sample passed its gate, or did not separate the leading arms; the min-pass-rate is the floor an arm must hold here before the hard set counts for it]",
  "kinds": {
   "hard": {
    "balance": {
     "cost_per_case_usd": 1.0,
     "seconds_per_case": 600,
     "weights": {
-     "accuracy": 0.7,
-     "cost": 0.15,
-     "time": 0.15
+     "accuracy": 0.95,
+     "cost": 0.025,
+     "time": 0.025
     }
    },
-   "cascade": "idea [kind=idea | scale=esoi/idea-rating-scale.md | min-pass-rate=0.75 | when=a new arm or instructions pack is described: rated in arm_ideas.csv] > offline [real=no | gate=all-pass | when=each coding case fails as given and passes with a reference fix (checked when the private cases are built), and the runner tests pass] > one [sample=sample:1 | real=yes | gate=all-pass | when=the arm passed the whole stage of metric-delegated-agent-sessions: one hard case, hand-read] > whole [sample=full | real=yes | max-age-days=90 | when=the one case passed, or it failed on a tier whose stronger rung is being measured: every hard case]",
+   "cascade": "idea [kind=idea | scale=esoi/idea-rating-scale.md | min-pass-rate=0.75 | when=a new arm or instructions pack is described: rated in arm_ideas.csv] > offline [real=no | gate=all-pass | when=each coding case fails as given and passes with a reference fix (checked when the private cases are built), and the runner tests pass] > one [sample=sample:1 | real=yes | gate=all-pass | when=the arm passed the whole stage of metric-delegated-agent-sessions: one hard case, hand-read] > whole [sample=full | real=yes | min-pass-rate=0.66 | max-age-days=90 | when=the one case passed, or it failed on a tier whose stronger rung is being measured: every hard case; the six coding cases must pass, the three judged deliverables are decided by repeated runs]",
    "metric": "metric-delegated-agent-sessions-hard",
    "rows": {
-    "solution_loop_runner@provider=anthropic,tier=balanced": {
+    "native_tool_loop_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.8718",
-      "cases": "7",
-      "cases_sha": "393c849c",
+      "balanced": "0.6814",
+      "cases": "9",
+      "cases_sha": "4fe9b0cc",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.8595",
-      "date": "2026-11-09",
+      "cost_usd": "0.2425",
+      "date": "2026-11-10",
       "details": "",
-      "dev": "6/7",
-      "git_sha": "2e606ca",
+      "dev": "6/9",
+      "git_sha": "e5eeebd",
       "heldout": "0/0",
-      "impl": "solution_loop_runner@provider=anthropic,tier=balanced",
-      "model": "claude-sonnet-5-5",
-      "model_calls": "7",
+      "impl": "native_tool_loop_runner@provider=anthropic,tier=fast",
+      "model": "default",
+      "model_calls": "9",
       "passed": "6",
       "sample": "",
-      "seconds": "273.6",
+      "seconds": "272.1",
       "tokens_in": "0",
       "tokens_out": "0"
      }
     },
-    "solution_loop_runner@provider=anthropic,tier=fast": {
+    "stream_json_goal_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.9883",
-      "cases": "7",
-      "cases_sha": "393c849c",
+      "balanced": "0.8928",
+      "cases": "9",
+      "cases_sha": "4fe9b0cc",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.0462",
-      "date": "2026-11-09",
+      "cost_usd": "0.0867",
+      "date": "2026-11-10",
       "details": "",
-      "dev": "7/7",
-      "git_sha": "2e606ca",
+      "dev": "8/9",
+      "git_sha": "e5eeebd",
       "heldout": "0/0",
-      "impl": "solution_loop_runner@provider=anthropic,tier=fast",
+      "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
       "model": "claude-haiku-5-5",
-      "model_calls": "7",
-      "passed": "7",
+      "model_calls": "9",
+      "passed": "8",
       "sample": "",
-      "seconds": "299.3",
-      "tokens_in": "0",
-      "tokens_out": "0"
-     }
-    },
-    "subprocess_goal_runner@provider=anthropic,tier=best": {
-     "3": {
-      "balanced": "0.8525",
-      "cases": "7",
-      "cases_sha": "393c849c",
-      "component": "agent_sessions_hard",
-      "cost_usd": "1.7608",
-      "date": "2026-11-09",
-      "details": "forced past ceiling: same-day baseline under the corrected judge",
-      "dev": "6/7",
-      "git_sha": "2e606ca",
-      "heldout": "0/0",
-      "impl": "subprocess_goal_runner@provider=anthropic,tier=best",
-      "model": "claude-opus-5-5",
-      "model_calls": "7",
-      "passed": "6",
-      "sample": "",
-      "seconds": "272.3",
-      "tokens_in": "0",
-      "tokens_out": "0"
-     }
-    },
-    "subprocess_goal_runner@provider=anthropic,tier=fast": {
-     "3": {
-      "balanced": "0.788",
-      "cases": "7",
-      "cases_sha": "393c849c",
-      "component": "agent_sessions_hard",
-      "cost_usd": "0.0739",
-      "date": "2026-11-09",
-      "details": "",
-      "dev": "5/7",
-      "git_sha": "2e606ca",
-      "heldout": "0/0",
-      "impl": "subprocess_goal_runner@provider=anthropic,tier=fast",
-      "model": "claude-haiku-5-5",
-      "model_calls": "7",
-      "passed": "5",
-      "sample": "",
-      "seconds": "292.2",
+      "seconds": "307.1",
       "tokens_in": "0",
       "tokens_out": "0"
      }
@@ -115,50 +71,55 @@
   }
  },
  "metric": "metric-delegated-agent-sessions",
- "rows": {
-  "solution_loop_runner@provider=anthropic,tier=fast": {
-   "5": {
-    "balanced": "0.9926",
-    "cases": "18",
-    "cases_sha": "0dcffc5e",
-    "component": "agent_sessions",
-    "cost_usd": "0.0086",
-    "date": "2026-11-09",
-    "details": "",
-    "dev": "18/18",
-    "git_sha": "2e606ca",
-    "heldout": "0/0",
-    "impl": "solution_loop_runner@provider=anthropic,tier=fast",
-    "model": "claude-haiku-5-5",
-    "model_calls": "18",
-    "passed": "18",
-    "sample": "",
-    "seconds": "96.7",
-    "tokens_in": "0",
-    "tokens_out": "0"
-   }
+ "rows": {},
+ "stages": {
+  "hard": {
+   "native_tool_loop_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.893",
+     "cases": "9",
+     "cost_usd": "0.071",
+     "date": "2026-11-10",
+     "git_sha": "e5eeebd",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "271.8"
+    },
+    {
+     "balanced": "0.6814",
+     "cases": "9",
+     "cost_usd": "0.2425",
+     "date": "2026-11-10",
+     "git_sha": "e5eeebd",
+     "model": "default",
+     "passed": "6",
+     "seconds": "272.1"
+    }
+   ],
+   "stream_json_goal_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.8927",
+     "cases": "9",
+     "cost_usd": "0.081",
+     "date": "2026-11-10",
+     "git_sha": "e5eeebd",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "318.3"
+    },
+    {
+     "balanced": "0.8928",
+     "cases": "9",
+     "cost_usd": "0.0867",
+     "date": "2026-11-10",
+     "git_sha": "e5eeebd",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "307.1"
+    }
+   ]
   },
-  "stream_json_goal_runner@provider=anthropic,tier=fast": {
-   "5": {
-    "balanced": "0.9899",
-    "cases": "18",
-    "cases_sha": "0dcffc5e",
-    "component": "agent_sessions",
-    "cost_usd": "0.0421",
-    "date": "2026-11-09",
-    "details": "forced past ceiling: same-day baseline: the recorded row is stale since the runner code changed",
-    "dev": "18/18",
-    "git_sha": "2e606ca",
-    "heldout": "0/0",
-    "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
-    "model": "claude-haiku-5-5",
-    "model_calls": "18",
-    "passed": "18",
-    "sample": "",
-    "seconds": "94.9",
-    "tokens_in": "0",
-    "tokens_out": "0"
-   }
-  }
+  "open": {},
+  "real": {}
  }
 }

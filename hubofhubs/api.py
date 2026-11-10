@@ -33,6 +33,7 @@ MODULES = (
     "hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.card_selection", "hubofhubs.the_self.assembler.arm_needs",
     "hubofhubs.the_self.integrity.cases", "hubofhubs.the_self.integrity.render_docs", "hubofhubs.the_self.integrity.scan",
     "hubofhubs.the_self.integrity.score", "hubofhubs.the_world.learning.research_freshness_reader.registry",
+    "hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers",
     "hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers", "hubofhubs.the_world.model_plumbing.prompt_spec",
     "hubofhubs.the_world.model_plumbing.signature_probe", "hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli",
     "hubofhubs.the_world.model_plumbing.vendor_model_caller.outage", "hubofhubs.the_world.tools.connected_system_operations.mcp_client",
@@ -494,6 +495,18 @@ NAMES = {
     "hubofhubs.the_intelligence.nervous_system.interface": (
         "RiskWatching",
     ),
+    "hubofhubs.the_consciousness.judgment_calls.judgment": (
+        "SeverityPolicy",
+    ),
+    "hubofhubs.the_intelligence.nervous_system.structure_watch.interface": (
+        "StructureWatching",
+    ),
+    "hubofhubs.the_intelligence.nervous_system.structure_watch.session": (
+        "work_hook",
+    ),
+    "hubofhubs.the_intelligence.nervous_system.structure_watch.watch": (
+        "BestTierCall", "FindingsOnly",
+    ),
     "hubofhubs.the_intelligence.proactivity.interface": (
         "Proactive",
     ),
@@ -838,6 +851,7 @@ NAMES = {
 RENAMED = {
     "CANDIDATE_FIELDS": "hubofhubs.the_consciousness.prioritization.types:FIELDS",
     "PRIORITY_SUBJECTS": "hubofhubs.the_consciousness.prioritization.types:SUBJECTS",
+    "structure_watch_due": "hubofhubs.the_intelligence.proactivity.standing:due",
     "TRIGGER_KINDS": "hubofhubs.the_intelligence.proactivity.triggers:KINDS",
     "WINDOW_DAYS": "hubofhubs.the_intelligence.proactivity.window:DAYS",
     "acp_protocol_log": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_protocol:log",

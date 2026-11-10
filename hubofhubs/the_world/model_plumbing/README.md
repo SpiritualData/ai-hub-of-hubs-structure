@@ -14,14 +14,14 @@ Model Plumbing is how every part asks a model. Model Tier Chooser picks, per tie
 
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
-- [Model Tier Chooser](model_tier_chooser/README.md) (solution with implementations): Pick, for each model tier, the model that does the most passing work per cost.
+- [Model Tier Chooser](model_tier_chooser/README.md) (solution with implementations): Pick, for each model tier, the model that best fits what the tier is for, by that tier's own metric.
 - [Vendor Model Caller](vendor_model_caller/README.md) (solution with implementations): Reach one vendor's model, and step to the next provider when one fails.
 
 ## Solutions at a glance
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Model Tier Chooser | `model-tier-chooser` | `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})` | Passing work per cost selector (`tier_selector`) | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
+| Model Tier Chooser | `model-tier-chooser` | `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})` | Tier metric selector (`tier_selector`) | Tier default by the tier's own metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
 | Vendor Model Caller | `vendor-model-caller` | `hubofhubs.run("vendor-model-caller", ...)` | Multi-provider router (`multi_provider`) | Provider failover |
 
 ## Problems and ideals
@@ -32,10 +32,14 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ## Metrics and their leaders
 
-- Tier choice by passing work per cost (`metric-model-tier-chooser`): leader `tier_selector`, 36 of 36 cases
+- Tier default by the tier's own metric (`metric-model-tier-chooser`): leader `tier_selector`, 36 of 36 cases
 - Tier passing work per cost (`metric-tier-passing-work-per-cost`)
 - Model quality on hard maths (`metric-model-quality`): leader `deepseek_v4_pro`, 3 of 3 cases
 - Vendor arms answer (`metric-vendor-answers`): leader `claude_cli`, 3 of 3 cases
+- Fast tier default (`metric-tier-fast`)
+- Balanced tier default (`metric-tier-balanced`)
+- Quality tier default (`metric-tier-quality`)
+- Best tier default (`metric-tier-best`)
 - Provider failover (`metric-vendor-model-caller`): leader `multi_provider`, 30 of 30 cases
 
 ## Where to go next
@@ -57,14 +61,14 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Model Tier Chooser | `model-tier-chooser` | Passing work per cost selector (`tier_selector`) | Tier choice by passing work per cost, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
+| Model Tier Chooser | `model-tier-chooser` | Tier metric selector (`tier_selector`) | Tier default by the tier's own metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer |
 | Vendor Model Caller | `vendor-model-caller` | Multi-provider router (`multi_provider`) | Provider failover |
 
 ### Implementations
 
 | Implementation | Handle | Where | Sub-intent |
 |---|---|---|---|
-| Passing work per cost selector | `model-tier-chooser:tier_selector` | [hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py](model_tier_chooser/tiers.py) |  |
+| Tier metric selector | `model-tier-chooser:tier_selector` | [hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py](model_tier_chooser/tiers.py) |  |
 | Anthropic provider | `vendor-model-caller:anthropic` | [hubofhubs/the_world/model_plumbing/vendor_model_caller/anthropic.py](vendor_model_caller/anthropic.py) |  |
 | DeepSeek provider | `vendor-model-caller:deepseek` | [hubofhubs/the_world/model_plumbing/vendor_model_caller/openai.py](vendor_model_caller/openai.py) |  |
 | Gemini provider | `vendor-model-caller:gemini` | [hubofhubs/the_world/model_plumbing/vendor_model_caller/gemini.py](vendor_model_caller/gemini.py) |  |
@@ -74,10 +78,14 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 ### Metrics
 
-- Tier choice by passing work per cost (`metric-model-tier-chooser`): `esoi run reason_and_answer --impl tier_selector`
+- Tier default by the tier's own metric (`metric-model-tier-chooser`): `esoi run reason_and_answer --impl tier_selector`
 - Tier passing work per cost (`metric-tier-passing-work-per-cost`): `python3 -m pytest hubofhubs/the_world/tests/test_tiers.py`
 - Model quality on hard maths (`metric-model-quality`): `esoi run model_quality_aime --impl claude_haiku; esoi run model_quality_aime --impl claude_sonnet; esoi run model_quality_aime --impl claude_opus; esoi run model_quality_aime --impl gemini_2_5_flash_lite; esoi run model_quality_aime --impl gemini_2_5_flash; esoi run model_quality_aime --impl gpt_5_nano; esoi run model_quality_aime --impl gpt_5_mini; esoi run model_quality_aime --impl deepseek_flash`
 - Vendor arms answer (`metric-vendor-answers`): `esoi run call_a_model --impl gemini; esoi run call_a_model --impl openai; esoi run call_a_model --impl deepseek; esoi run call_a_model --impl claude_cli`
+- Fast tier default (`metric-tier-fast`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
+- Balanced tier default (`metric-tier-balanced`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
+- Quality tier default (`metric-tier-quality`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
+- Best tier default (`metric-tier-best`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
 - Provider failover (`metric-vendor-model-caller`): `esoi run provider_failover --impl multi_provider`
 
 

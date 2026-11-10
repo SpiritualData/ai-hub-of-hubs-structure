@@ -81,13 +81,13 @@ def harness_class(harness: str) -> Any:
 
 
 def eligible(arm: str, declared: Iterable[str]) -> bool:
-    """Whether a consumer that holds credentials for ``declared`` providers can run ``arm`` (never an arm whose harness is ``on_trial``)."""
+    """Whether a consumer that holds credentials for ``declared`` providers can run ``arm``: its provider is declared and its harness drives it. Whether an arm
+    has earned selection is the metric's stage result (``selection_stages``), never a flag on the harness."""
     harness, provider, tier = split_arm(arm)
     if not provider or provider not in providers.normalise_all(declared):
         return False
     cls = harness_class(harness)
-    # A harness on trial is measured and ranked, never handed to a consumer: promotion (removing ``on_trial``) is the owner's release decision.
-    return cls is not None and not getattr(cls, "on_trial", False) and providers.drives(cls, provider)
+    return cls is not None and providers.drives(cls, provider)
 
 
 def read_snapshot(path: Path = SNAPSHOT) -> Dict[str, Any]:
@@ -222,6 +222,21 @@ def idea_choice(declared: Iterable[str], rows: List[Dict[str, str]]) -> Optional
                      f"no eligible arm is measured or has a usable public prior; best idea rating {score:.2f} (not measured)")
 
 
+def stage_choice(declared: Iterable[str], stages: Dict[str, Any]) -> Optional[ArmChoice]:
+    """The metric's own selection (``selection_stages.decide``: the open-ended and hard floors, repeated runs, pass rate first and cost within noise)
+    among the arms this consumer can run, from the counting whole runs in the snapshot's ``stages``; None when no arm it can run is selectable."""
+    from hubofhubs.the_world.tools.delegated_agent_sessions import selection_stages
+    runs = {key: {arm: rows for arm, rows in (stages.get(key) or {}).items() if eligible(arm, declared)} for key in ("open", "hard", "real")}
+    arms = sorted(set(runs["open"]) | set(runs["hard"]))
+    verdict = selection_stages.decide(runs["open"], runs["hard"], runs["real"], arms)
+    if not verdict.winner:
+        return None
+    harness, provider, tier = split_arm(verdict.winner)
+    rows = runs["hard"][verdict.winner]
+    return ArmChoice(verdict.winner, harness, provider, tier, "measured", "hard", selection_stages.rate(rows),
+                     f"selected by the metric's stages: {verdict.reason}")
+
+
 def choose_agent_arm(declared: Iterable[str], *, difficulty: str = "", snapshot: Optional[Dict[str, Any]] = None,
                      priors: Optional[List[Dict[str, str]]] = None, ideas: Optional[List[Dict[str, str]]] = None) -> Optional[ArmChoice]:
     """The arm for a consumer holding credentials for ``declared`` providers, or None when it can run no arm. ``difficulty`` names a kind
@@ -229,6 +244,9 @@ def choose_agent_arm(declared: Iterable[str], *, difficulty: str = "", snapshot:
     choice for ordinary work."""
     declared = providers.normalise_all(declared)
     snapshot = read_snapshot() if snapshot is None else snapshot
+    staged = stage_choice(declared, snapshot.get("stages") or {})
+    if staged is not None:
+        return staged
     kind = (snapshot.get("kinds") or {}).get((difficulty or "").strip().lower())
     if kind:
         chosen = measured_choice(declared, kind)
@@ -281,11 +299,31 @@ def standing_of(config: Any, metric_id: str, component: str, today: Optional[dat
             "rows": {arm: {str(i): dict(row) for i, row in sorted(s.rows.items())} for arm, s in sorted(standing.items()) if s.rows}}
 
 
+def counting_runs(config: Any, component: str) -> Dict[str, List[Dict[str, Any]]]:
+    """``{arm: [whole runs]}`` of the component that still describe the code and the cases now on disk (stale ones are left out, as the cascade leaves
+    them out), each as the cells the stage rule reads. The newest log keeps every run, so repeated runs are all here."""
+    from esoi.optimization.leaderboard.case_identity import cases_digest
+    from esoi.optimization.leaderboard.results_log import all_results, is_partial
+    from esoi.optimization.when_metrics_are_run.know_what_a_result_measures.stale_reasons import stale_reason
+    now = cases_digest(component, config.evaluation)
+    out: Dict[str, List[Dict[str, Any]]] = {}
+    for arm, rows in all_results(config.results_path).get(component, {}).items():
+        if not split_arm(arm)[1]:
+            continue
+        kept = [{key: row.get(key, "") for key in ("passed", "cases", "cost_usd", "seconds", "balanced", "date", "git_sha", "model")}
+                for row in rows if not is_partial(row) and not (row.get("sample") or "").strip() and row.get("cases_sha") == now
+                and row.get("model") != "unknown" and not stale_reason(config, component, row, True)]
+        if kept:
+            out[arm] = kept
+    return out
+
+
 def write_snapshot(root: Optional[Path] = None, path: Path = SNAPSHOT, today: Optional[datetime.date] = None) -> Dict[str, Any]:
     """Write what ``choose_agent_arm`` reads: the standing of the main metric, and of each kind of work in ``KINDS``."""
     from esoi.structure.intent_registry.config import load as load_config
     config = load_config(start=root or HERE)
     out = standing_of(config, METRIC, COMPONENT, today)
+    out["stages"] = {"open": counting_runs(config, COMPONENT), "hard": counting_runs(config, KINDS["hard"][1]), "real": {}}
     out["kinds"] = {kind: standing_of(config, metric_id, component, today) for kind, (metric_id, component) in KINDS.items()}
     path.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return out

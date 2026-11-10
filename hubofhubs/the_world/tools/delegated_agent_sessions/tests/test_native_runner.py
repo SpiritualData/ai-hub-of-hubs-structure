@@ -135,8 +135,8 @@ def test_the_new_launch_parameter_adds_only_its_flag():
     assert lean_flags(DeepLaunchSettings(append_system_prompt_file="/x/f.md")) == ["--append-system-prompt-file", "/x/f.md"]
 
 
-def test_the_arm_is_declared_on_trial_and_paid():
-    assert NativeToolLoopRunner.on_trial is True and NativeToolLoopRunner.PAID is True and NativeToolLoopRunner.PROVIDERS == ("anthropic",)
+def test_the_arm_is_declared_paid_and_anthropic_only():
+    assert NativeToolLoopRunner.PAID is True and NativeToolLoopRunner.PROVIDERS == ("anthropic",)
 
 
 def test_a_figure_is_not_a_finding_when_the_folder_holds_data_the_check_cannot_read(tmp_path, monkeypatch):

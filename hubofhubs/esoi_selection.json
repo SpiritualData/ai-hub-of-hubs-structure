@@ -100,6 +100,7 @@
    "route-a-request": "hubofhubs",
    "solution-passes": "hubofhubs",
    "structure-in-view": "hubofhubs",
+   "structure-watch": "hubofhubs",
    "system-integrity": "hubofhubs",
    "terminal-session": "hubofhubs",
    "the-assembler": "hubofhubs",
@@ -248,12 +249,13 @@
  "delegated-agent-sessions": {
   "default": "stream_json_goal_runner@provider=anthropic,tier=fast",
   "evidence": {
-   "detail": "beaten by native_tool_calling_loop_runner@provider=anthropic,tier=fast, native_tool_loop_runner@provider=anthropic,tier=fast: native_tool_calling_loop_runner@provider=anthropic,tier=fast is better than stream_json_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=5.34e-05, 18 of 18 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast is better than stream_json_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0226, 18 of 18 cases disagree); stream_json_goal_runner@provider=anthropic,tier=fast leads opencode_hub_runner@provider=anthropic,tier=fast (opencode_hub_runner@provider=anthropic,tier=fast 0.988 against stream_json_goal_runner@provider=anthropic,tier=fast 0.989; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.238, 18 of 18 cases disagree); stream_json_goal_runner@provider=anthropic,tier=fast is better than opencode_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00087, 18 of 18 cases disagree); stream_json_goal_runner@provider=anthropic,tier=fast is better than opencode_runner@provider=gemini,tier=balanced (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00087, 18 of 18 cases disagree); best guess, not yet significant: opencode_runner@provider=gemini,tier=fast 0.642 against stream_json_goal_runner@provider=anthropic,tier=fast 0.948 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast leads solution_loop_runner@provider=anthropic,tier=fast (solution_loop_runner@provider=anthropic,tier=fast 0.989 against stream_json_goal_runner@provider=anthropic,tier=fast 0.989; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0618, 18 of 18 cases disagree); best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=balanced 0.936 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=best 0.875 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast is better than subprocess_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00525, 18 of 18 cases disagree)",
-   "p": 5.3e-05,
+   "detail": "beaten by opencode_hub_runner@provider=anthropic,tier=fast, opencode_runner@provider=anthropic,tier=fast, solution_loop_runner@provider=anthropic,tier=balanced, subprocess_goal_runner@provider=anthropic,tier=balanced, subprocess_goal_runner@provider=anthropic,tier=best, subprocess_goal_runner@provider=anthropic,tier=fast: stream_json_goal_runner@provider=anthropic,tier=fast leads native_tool_calling_loop_runner@provider=anthropic,tier=fast (native_tool_calling_loop_runner@provider=anthropic,tier=fast 0.682 against stream_json_goal_runner@provider=anthropic,tier=fast 0.893; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); stream_json_goal_runner@provider=anthropic,tier=fast is better than native_tool_loop_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0195, 9 of 9 cases disagree); best guess, not yet significant: opencode_hub_runner@provider=anthropic,tier=fast leads stream_json_goal_runner@provider=anthropic,tier=fast (opencode_hub_runner@provider=anthropic,tier=fast 0.893 against stream_json_goal_runner@provider=anthropic,tier=fast 0.893; two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.719, 9 of 9 cases disagree); more cases would settle it; best guess, not yet significant: opencode_runner@provider=anthropic,tier=fast leads stream_json_goal_runner@provider=anthropic,tier=fast (opencode_runner@provider=anthropic,tier=fast 0.998 against stream_json_goal_runner@provider=anthropic,tier=fast 0.893; two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 8 of 9 cases disagree); more cases would settle it; best guess, not yet significant: solution_loop_runner@provider=anthropic,tier=balanced 0.863 against stream_json_goal_runner@provider=anthropic,tier=fast 0.862 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast leads solution_loop_runner@provider=anthropic,tier=fast (solution_loop_runner@provider=anthropic,tier=fast 0.787 against stream_json_goal_runner@provider=anthropic,tier=fast 0.893; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); best guess, not yet significant: stream_json_goal_runner@instructions=karpathy,provider=anthropic,tier=fast 0.862 against stream_json_goal_runner@provider=anthropic,tier=fast 0.862 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: stream_json_goal_runner@instructions=ponytail,provider=anthropic,tier=fast 0.727 against stream_json_goal_runner@provider=anthropic,tier=fast 0.862 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=balanced 0.996 against stream_json_goal_runner@provider=anthropic,tier=fast 0.862 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=best 0.992 against stream_json_goal_runner@provider=anthropic,tier=fast 0.862 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=fast 0.998 against stream_json_goal_runner@provider=anthropic,tier=fast 0.862 on the point estimate; no case counts or per-case rows allow a test",
+   "p": 0.019531,
    "verdict": "LOSS"
   },
   "modules": {
    "acp_deep_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
+   "adaptive_native_loop_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.adaptive_native_runner",
    "codex_cli_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner",
    "native_tool_calling_loop_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.tool_loop_runner",
    "native_tool_loop_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.native_runner",
@@ -619,6 +621,18 @@
   },
   "modules": {
    "event_tree": "hubofhubs.the_consciousness.ai_session_experience.structure_in_view.tree"
+  }
+ },
+ "structure-watch": {
+  "default": "best_tier_call",
+  "evidence": {
+   "detail": "best_tier_call leads findings_only (findings_only 0.806 against best_tier_call 1; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0625, 5 of 18 cases disagree)",
+   "p": 0.0625,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "best_tier_call": "hubofhubs.the_intelligence.nervous_system.structure_watch.watch",
+   "findings_only": "hubofhubs.the_intelligence.nervous_system.structure_watch.watch"
   }
  },
  "system-integrity": {

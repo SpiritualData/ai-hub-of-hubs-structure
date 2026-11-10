@@ -79,9 +79,9 @@ def test_the_scorer_separates_ideal_from_broken_baselines():
 
 def test_default_arms_are_data_with_one_cheap_default_and_candidates_not_defaults():
     held, candidates = tiers.default_arms()
-    assert held["cheap"] == ("anthropic", "claude-haiku-5-5") and set(held) == {"cheap", "mid", "strong"}
+    assert held["fast"] == ("anthropic", "claude-haiku-5-5") and set(held) == {"fast", "balanced", "quality", "best"}
     assert all(p == "anthropic" for p, _ in held.values())
-    assert candidates["cheap"] and not any(c in held.values() for c in candidates["cheap"])
+    assert candidates["fast"] and not any(c in held.values() for c in candidates["fast"])
 
 
 def test_price_rows_carry_a_source_and_a_checked_date_when_they_hold_a_number():
@@ -110,19 +110,29 @@ def test_the_recorded_prices_are_the_official_ones_with_their_tiers_and_dates():
     assert round(tiers.list_cost(prices, "anthropic", "claude-haiku-5-5", 200_000, 100_000), 6) == 0.35
 
 
-def test_choose_keeps_each_default_with_no_measurement():
-    got = tiers.choose()
-    assert {t: r["arm"] for t, r in got.items()} == {"cheap": ("anthropic", "claude-haiku-5-5"), "mid": ("anthropic", "claude-sonnet-5-5"),
-                                                      "strong": ("anthropic", "claude-opus-5-5")}
+STALE = dict(today="2099-01-01", min_cases=1)       # public numbers too old to use: the held default and the measured stage as before
+
+
+def test_choose_keeps_each_default_with_no_measurement_and_no_current_public_numbers(tmp_path):
+    import shutil
+    for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv"):
+        shutil.copy(registry.DATA / name, tmp_path / name)
+    (tmp_path / "tier_measurements.csv").write_text("tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n")
+    got = tiers.choose(tmp_path, **STALE)
+    assert {t: got[t]["arm"] for t in ("fast", "balanced", "quality", "best")} == {
+        "fast": ("anthropic", "claude-haiku-5-5"), "balanced": ("anthropic", "claude-sonnet-5-5"), "quality": ("anthropic", "claude-opus-5-5"),
+        "best": ("anthropic", "claude-fable-5-2")}
+    assert got["cheap"] is got["fast"] and got["strong"] is got["quality"]       # the older names read as the same entries
+    assert registry.read("tier_credits.csv") == []             # the hub ships the schema only: allowances are the consumer's own
     assert registry.read("tier_credits.csv") == []             # the hub ships the schema only: allowances are the consumer's own
 
 
 def test_the_hub_holds_no_allowance_and_a_consumer_passes_its_own_credits():
     assert registry.read("tier_credits.csv") == []
-    plain = tiers.choose()["cheap"]["scored"]
+    plain = tiers.choose(**STALE)["fast"]["scored"]
     own = [dict(provider="anthropic", balance="", allowance="200", credit_value="0.5")]
     assert tiers.credit_of([], "anthropic") == (0.0, 1.0) and tiers.credit_of(own, "anthropic") == (200.0, 0.5)
-    assert plain == tiers.choose(credits=[])["cheap"]["scored"]
+    assert plain == tiers.choose(credits=[], **STALE)["fast"]["scored"]
     measured = {"cheap": [dict(provider="anthropic", model="claude-haiku-5-5", cases=10, passed=9, tokens_in=1_000_000, tokens_out=200_000)]}
     prices = registry.read("tier_prices.csv")
     free = tiers.pick(measured["cheap"], prices, own)["scored"][0]
@@ -139,8 +149,8 @@ def test_choose_scores_measured_arms_with_the_credits_it_is_given(tmp_path):
         "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
         "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n")
     own = [dict(provider="anthropic", balance="", allowance="200", credit_value="")]
-    without = tiers.choose(tmp_path)["cheap"]["scored"][0]
-    with_credit = tiers.choose(tmp_path, credits=own)["cheap"]["scored"][0]
+    without = tiers.choose(tmp_path, **STALE)["fast"]["scored"][0]
+    with_credit = tiers.choose(tmp_path, credits=own, **STALE)["fast"]["scored"][0]
     assert without["credits_used"] == 0 and with_credit["credits_used"] > 0 and with_credit["money_spent"] == 0
 
 
@@ -149,19 +159,18 @@ def test_choose_offers_only_configured_providers(tmp_path):
     for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv", "tier_measurements.csv"):
         shutil.copy(registry.DATA / name, tmp_path / name)
     (tmp_path / "tier_measurements.csv").write_text("tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n")   # none measured
-    got = tiers.choose(tmp_path, available={"gemini"})
-    assert got["cheap"]["arm"] == ("gemini", "gemini-2.5-flash-lite") and "cheapest priced available" in got["cheap"]["reason"]
-    assert got["mid"]["arm"] == ("gemini", "gemini-2.5-flash") and got["strong"]["arm"] is None
+    got = tiers.choose(tmp_path, available={"gemini"}, **STALE)
+    assert got["fast"]["arm"] == ("gemini", "gemini-3.5-flash-lite") and "cheapest priced available" in got["fast"]["reason"]
+    assert got["balanced"]["arm"] == ("gemini", "gemini-3.8-flash") and got["quality"]["arm"] == ("gemini", "gemini-4-carbon")
     (tmp_path / "tier_measurements.csv").write_text(
         "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
         "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n"
         "cheap,gemini,gemini-3.1-flash-lite,10,9,1000000,200000,test,2026-10-30\n")
-    both = tiers.choose(tmp_path)
-    assert both["cheap"]["arm"] == ("anthropic", "claude-haiku-5-5")          # same passing work, the cheaper arm wins
+    both = tiers.choose(tmp_path, **STALE)
+    assert both["fast"]["arm"] == ("anthropic", "claude-haiku-5-5")          # same passing work, the cheaper arm wins
 
 
-def test_the_shipped_aime_measurements_decide_when_only_other_providers_are_configured():
-    """The recorded model_quality_aime rows are used: without Anthropic the cheap tier goes to the arm with the most passing work per cost."""
-    got = tiers.choose(available={"openai", "gemini", "deepseek"})
-    assert got["cheap"]["arm"] == ("openai", "gpt-5-nano") and "passing cases per cost" in got["cheap"]["reason"]
-    assert got["mid"]["arm"] == ("gemini", "gemini-2.5-flash")
+def test_the_shipped_aime_measurements_decide_when_there_are_no_public_numbers_and_only_other_providers_are_configured():
+    """The recorded model_quality_aime rows are used: without Anthropic the fast tier goes to the arm with the most passing work per cost."""
+    got = tiers.choose(available={"openai", "gemini", "deepseek"}, **STALE)
+    assert got["fast"]["arm"] == ("openai", "gpt-5-nano") and "passing cases per cost" in got["fast"]["reason"]

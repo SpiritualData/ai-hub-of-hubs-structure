@@ -128,7 +128,6 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
     config_class = SubprocessConfig
     limit_poll_seconds = 1.0    # how often the ceilings are looked at while the session runs
     resume_gate = "text_only"   # which code findings are worth a resumed turn (see ``worth_resuming``)
-    on_trial = True          # measured and ranked beside the other harnesses, not chosen for a consumer until the owner promotes it
     tools = NATIVE_TOOLS
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, check: bool = True, session_dir: Optional[str] = None,

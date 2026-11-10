@@ -16,9 +16,11 @@ from datetime import date
 from esoi import implementation
 
 from hubofhubs.the_world.learning.research_freshness_reader import registry
+from hubofhubs.the_world.model_plumbing.model_tier_chooser import public_metric
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 MIN_CASES = 1
+OWN_CASES = 100      # the hub's own measurement overrides a public default only with this many shared cases per arm (tier_metrics.csv holds the value)
 
 
 def in_force(row, day):
@@ -144,33 +146,96 @@ def measured_arms(folder=None):
     """``{tier: [arm]}`` from ``tier_measurements.csv`` (one row per tier and arm: cases, passed, tokens_in, tokens_out)."""
     out = {}
     for r in registry.read("tier_measurements.csv", folder):
-        out.setdefault(r["tier"], []).append(dict(provider=r["provider"], model=r["model"], cases=int(number(r["cases"])),
+        out.setdefault(LEGACY_TIERS.get(r["tier"], r["tier"]), []).append(dict(provider=r["provider"], model=r["model"], cases=int(number(r["cases"])),
                                                    passed=int(number(r["passed"])), tokens_in=int(number(r["tokens_in"])),
                                                    tokens_out=int(number(r["tokens_out"]))))
     return out
 
 
-def choose(folder=None, available=None, credits=None, **bars):
-    """``{tier: {arm, reason, scored}}`` from the registry's own data (arms, prices and measurements) and the ``credits`` rows the
-    consumer passes (None: the folder's ``tier_credits.csv``, which ships empty). ``available`` (the
-    providers a consumer has configured; None for all) restricts the arms. With a measurement the metric decides; with none the
-    held default stays, and when the held default is not available the cheapest priced arm of an available provider is used, with
-    that reason. Nothing is chosen for a tier with no priced available arm (``arm`` is None)."""
+def dearer(prices, arm, reference):
+    """Whether ``arm`` costs more than ``reference`` by list price: input plus output USD per million tokens of the base price rows (the price does
+    not vary with effort). An unpriced arm or reference cannot be shown to cost no more, so it counts as dearer."""
+    a, b = rates(prices, *arm), rates(prices, *reference)
+    return a is None or b is None or sum(a) > sum(b)
+
+
+LEGACY_TIERS = {"cheap": "fast", "mid": "balanced", "strong": "quality"}     # the chooser's older tier names, still read by a consumer that has not moved
+
+
+def providers_available(environ):
+    """The providers whose model caller can run on this install, from the mapping given (no environment is read): a key in the mapping, or for
+    Anthropic a logged-in Claude CLI binary on its PATH. Needs are the callers' own ``REQUIRES`` (``arm_needs``), checked as availability checks them."""
+    from esoi.runtime.assemble_by_name.seat_blockers import unmet_checks
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.anthropic import AnthropicProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli import ClaudeCliProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.openai import DeepSeekProvider, OpenAIProvider
+    callers = (("anthropic", AnthropicProvider), ("anthropic", ClaudeCliProvider), ("gemini", GeminiProvider), ("openai", OpenAIProvider),
+               ("deepseek", DeepSeekProvider))
+    return sorted({name for name, cls in callers if not unmet_checks(cls, environ, {})})
+
+
+def choose(folder=None, available=None, credits=None, today="", role="", environ=None, effort_providers=(), **bars):
+    """``{tier: {arm, effort, reason, scored, stage}}`` for the four tiers (fast, balanced, quality, best), and the older names (cheap, mid, strong) as the
+    same entries. Stage one is the tier's own public metric (``public_metric``: tier_metrics.csv over tier_public_scores.csv); its choice carries the
+    score breakdown in ``scored`` and the runner-up in ``reason``. Stage two is the hub's own measurement (``tier_measurements.csv``): it overrides the
+    public default only when the public arm and the winner each ran at least ``OWN_CASES`` shared cases. Without current public numbers for a tier the
+    held default of ``tier_arms.csv`` stays, and when it is not available the cheapest priced available arm is used, with that reason.
+    ``available`` (providers a consumer has configured; None for all) restricts the arms, or ``environ`` (a mapping the caller gives) derives it with
+    ``providers_available``. A tier whose public evaluations only proxy its use (tier_metrics.csv ``fit``) does not select: the held default stays
+    (stage ``held``) and the proxy ranking is returned in ``scored``. ``effort_providers`` names the providers whose caller applies the returned
+    effort (none today: only each model's default effort competes). ``role`` names a domain of call (for example ``science``) whose metric variant, if the tier has one, replaces the tier's
+    capability weights. ``today`` is an ISO date (default: today). ``credits`` are the consumer's rows (None: the folder's ``tier_credits.csv``)."""
     held, candidates = default_arms(folder)
     prices = registry.read("tier_prices.csv", folder)
     credits = registry.read("tier_credits.csv", folder) if credits is None else list(credits)
     measured = measured_arms(folder)
+    day = today or date.today().isoformat()
+    if available is None and environ is not None:
+        available = providers_available(environ)
     ok = lambda pair: available is None or pair[0] in available
+    rows = public_metric.read_metrics()
+    bars.setdefault("min_cases", public_metric.setting(rows, "own_stage", "cases", OWN_CASES))
     out = {}
-    for tier in sorted(set(held) | set(candidates)):
-        default = held.get(tier) if tier in held and ok(held[tier]) else None
+    for tier in sorted(set(held) | set(candidates) | set(public_metric.TIERS)):
+        ranked = public_metric.choose_public(tier, folder, available, day, role, rows, effort_providers=effort_providers)
+        public = ranked if ranked and ranked["selects"] else None          # a tier whose evidence only proxies its use does not select
+        held_pair = held.get(tier) if tier in held and ok(held[tier]) else None
+        proposed = None
+        if (public and held_pair and tuple(public["arm"]) != tuple(held_pair) and public_metric.metric_for(rows, tier, role)["factors"].get("cost", 0) > 0
+                and dearer(prices, public["arm"], held_pair)):
+            # cascade rule: cheap evidence (public numbers) may not commit to a dearer arm; the own-measurement stage must confirm it first
+            proposed = dict(arm=public["arm"], effort=public["effort"], score=public["ranking"][0]["score"], reason=public["reason"])
+            public = None
+        default = public["arm"] if public else held_pair
         got = pick([a for a in measured.get(tier, []) if ok((a["provider"], a["model"]))], prices, credits, default, **bars)
-        if got["arm"] is None:
-            pairs = [p for p in ([held[tier]] if tier in held else []) + candidates.get(tier, []) if ok(p) and rates(prices, *p)]
-            if pairs:
-                best = min(pairs, key=lambda p: sum(rates(prices, *p)))
-                got = dict(got, arm=best, reason="no measurement and the held arm is not available: the cheapest priced available arm")
+        if public and tuple(got["arm"]) == tuple(public["arm"]):
+            got = dict(public, scored=public["ranking"])
+        elif public:
+            got = dict(got, effort="", stage="own", ranking=public["ranking"], reason="own measurement overrides the public default: " + got["reason"])
+        else:
+            got = dict(got, effort="", stage="held")
+            if got["arm"] is None:
+                pairs = [p for p in ([held[tier]] if tier in held else []) + candidates.get(tier, []) if ok(p) and rates(prices, *p)]
+                if pairs:
+                    best = min(pairs, key=lambda p: sum(rates(prices, *p)))
+                    got = dict(got, arm=best, reason="no current public numbers or measurement and the held arm is not available: the cheapest priced available arm")
+            elif proposed and tuple(got["arm"]) != tuple(default or ()):
+                got = dict(got, stage="own", reason="own measurement confirms a switch the public metric proposed: " + got["reason"])
+            elif proposed:
+                p = proposed["arm"]
+                got = dict(got, proposed=proposed, reason=f"public metric prefers {p[0]}/{p[1]} at {proposed['effort']}, which costs more than the held default; "
+                                                        "needs own measurement to switch")
+            elif ranked and tuple(got["arm"]) == tuple(default or ()) and got["reason"].startswith(("no measured", "the held arm has no measurement")):
+                got["reason"] = "no public evaluation fits this tier's use; proxy ranking recorded for information: kept the held default"
+            elif got["reason"].startswith("no measured"):
+                got["reason"] = "no current public numbers for the tier and no measurement: kept the held default"
+            if ranked:
+                got = dict(got, scored=ranked["ranking"], ranking=ranked["ranking"], excluded=ranked["excluded"])      # the proxy ranking, for reading
         out[tier] = got
+    for old, new in LEGACY_TIERS.items():
+        if new in out:
+            out[old] = out[new]
     return out
 
 

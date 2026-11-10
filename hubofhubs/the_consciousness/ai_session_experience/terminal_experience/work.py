@@ -84,7 +84,7 @@ def default_harness(declared: Sequence[str] = DEFAULT_PROVIDERS) -> Tuple[str, s
     return "stream", "the hub has no measured pick for the arms you can run; the steerable stream harness is used"
 
 
-def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None, ceiling_seconds: Any = None, permission: str = "acceptEdits",
+def harness_builder(*, folder: str, tier: str = "balanced", ceiling_usd: Any = None, ceiling_seconds: Any = None, permission: str = "acceptEdits",
                     environ: Optional[Mapping[str, str]] = None, solution: str = "", milestone: str = "", provider: str = "anthropic",
                     stop_inputs: Optional[Callable[[], Mapping[str, Any]]] = None, setting_sources: str = DEFAULT_SETTING_SOURCES) -> Callable[[str], Harness]:
     """``build(name)`` for the hub's own harnesses. ``ceiling_usd`` and ``ceiling_seconds`` are numbers, ``"unlimited"`` or None for the runners' defaults. ``permission`` is
@@ -99,7 +99,7 @@ def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None,
     if permission not in PERMISSIONS:
         raise ValueError(f"permission is one of {', '.join(PERMISSIONS)}")
     if providers.model_for(provider, tier) is None:
-        raise ValueError(f"no model is chosen for the tier {tier!r}; the tiers are fast, balanced and strong")
+        raise ValueError(f"no model is chosen for the tier {tier!r}; the tiers are fast, balanced, quality and best")
     usd = DEFAULT_CEILING_USD if ceiling_usd is None else (UNLIMITED if ceiling_usd == UNLIMITED else ceiling_usd)
     seconds = DEFAULT_CEILING_SECONDS if ceiling_seconds is None else (UNLIMITED if ceiling_seconds == UNLIMITED else ceiling_seconds)
     shown_usd, shown_seconds = ceiling_of(usd, "ceiling_usd"), ceiling_of(seconds, "ceiling_seconds")
@@ -174,7 +174,7 @@ class WorkTerminal:
                  front_door: Optional[Callable[[str], Any]] = None, command: str = "ahohs work", live: Optional[bool] = None, width: int = 0, tick: float = 0.02,
                  clock: Callable[[], float] = time.monotonic, prompt: str = "> ", why: str = "", once: bool = False,
                  represent: Optional[Callable[[str], Mapping[str, Any]]] = None, people: Sequence[str] = (), person: str = "", arm: Any = None,
-                 reader: Optional[Callable[[str], Optional[str]]] = None):
+                 reader: Optional[Callable[[str], Optional[str]]] = None, structure_watch: Optional[Callable[..., List[str]]] = None):
         self.build, self.out, self.names, self.keys = build, out, tuple(names), keys
         self.lines: Optional[Iterator[str]] = iter(lines) if lines is not None else None
         self.records, self.segments, self.panels, self.front_door = records, segments, panels, front_door
@@ -186,6 +186,7 @@ class WorkTerminal:
         self.represent, self.people, self.person = represent, tuple(people), person       # the Representatives entry (the hub's front door), the people a binding lists, who is acted for now
         self.arm = arm if arm is not None else LiveSession()        # the Terminal Experience arm that draws a run (``attend``); the standard-library one by default
         self.reader = reader                                         # reads one typed line at the prompt (an arm with its own input line gives it); None: ``input()``
+        self.structure_watch = structure_watch                      # ``hook(files, summary)`` -> lines: the structure watch at the end of a run (None: off)
         self.harnesses: Dict[str, Harness] = {}
         self.session = ""
         self.recap = ""
@@ -365,6 +366,9 @@ class WorkTerminal:
         self.last = report
         self.reports.append(report)
         self.recap = ""
+        if self.structure_watch is not None:
+            for line in self.structure_watch(report.view.changed(), goal):
+                self.say(line)
         if report.final is not None and report.final.session_id:
             self.session = report.final.session_id
 

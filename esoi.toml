@@ -58,18 +58,24 @@ cost_per_case_usd = 0.10
 seconds_per_case = 60
 
 # The balanced score of Delegated Agent Sessions (esoi/balance.py), measured on general tasks that are not coding (read files and report, compare, count,
-# put in order): accuracy 70%, cost 15%, time 15%, the library's defaults. A task of this kind is worth at most ten cents and two minutes. The Claude Code runners
-# run on a subscription: their dollars are the CLI's own estimate at list price, counted as cost here.
+# put in order). A task of this kind is worth at most ten cents and two minutes. The Claude Code runners run on a subscription: their dollars are the CLI's own
+# estimate at list price, counted as cost here. Weights changed 2026-11-10 from the library's 0.70/0.15/0.15 to accuracy 95%, cost 2.5%, time 2.5%, before any arm
+# was scored on them, for this reason: the metric alone now selects the arm (no owner flag holds a selection), so no price or time may buy back a failed case. One more
+# passed case is worth accuracy/N, and the most a cheaper or faster arm can gain is cost + time = 1 - accuracy; the first must exceed the second for the
+# largest case set, accuracy/18 > 1 - accuracy, so accuracy > 0.947 (0.95). Cost and time then only order arms of equal pass count, and the cascade's repeated runs say whether
+# that order is more than noise. Pinned by tests/test_metric_weights.py beside the solution, which recomputes the bound from the case counts. Recorded rows were re-scored.
 [balance.agent_sessions]
-weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
 cost_per_case_usd = 0.10
 seconds_per_case = 120
 
 # The balanced score of the hard stage of Delegated Agent Sessions: real deep work (multi-file coding changes with hidden tests, milestone
-# deliverables judged item by item), which takes minutes. Weights are the library's defaults. A task of this kind is worth at most a dollar
-# and ten minutes, fixed before any arm was scored on these cases.
+# deliverables judged item by item), which takes minutes. A task of this kind is worth at most a dollar and ten minutes, fixed before any arm was scored
+# on these cases. Weights changed 2026-11-10 from 0.70/0.15/0.15 to accuracy 95%, cost 2.5%, time 2.5% (reason beside [balance.agent_sessions]: one passed case of
+# nine, accuracy/9, must exceed everything cost and time can add, 1 - accuracy, so accuracy > 0.9; one weight table serves both sets, so a
+# 6 of 9 arm can never outrank an 8 of 9 arm because it is cheap or quick).
 [balance.agent_sessions_hard]
-weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
 cost_per_case_usd = 1.00
 seconds_per_case = 600
 
@@ -105,6 +111,13 @@ seconds_per_case = 30
 weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.005
 seconds_per_case = 10
+
+# structure-watch: a scripted watch is a few rules over records in memory and a fixed reply, so one case is worth at most a tenth of a cent and one second. The weights are the library's
+# defaults and the budgets were fixed before any arm was scored on the cases of evaluation/structure_watch/build_cases.py.
+[balance.structure_watch]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
 
 # prioritization: ordering what competes for attention is a few comparisons in code and runs before every unasked pass, so one ordering is worth at most a tenth of a cent and one
 # second. The weights are the library's defaults and the budgets were fixed before any arm was scored on the cases of evaluation/prioritization/build_cases.py.

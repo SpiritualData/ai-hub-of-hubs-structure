@@ -41,6 +41,10 @@ class SeverityPolicy:
         reason = str(signal.get("reason") or "")
         stopped = str((context or {}).get("stopped") or "")
         severity = MEDIUM if stopped and RANK[severity_of(signal)] < RANK[MEDIUM] else severity_of(signal)
+        if (context or {}).get("needs_person"):        # structure a person wrote, reviewed or owns, what an experiment holds fixed, anything irreversible: a proposal, whatever the severity
+            return {"decision": ASK, "to": policy["ask_to"], "timing": timing(severity), "reason": reason or str(context.get("why") or ""), "severity": severity}
+        if (context or {}).get("ai_owned") and not stopped:      # structure the AI made and nobody reviewed: the AI applies it, and the change is recorded
+            return {"decision": PROCEED, "to": "", "timing": {}, "reason": reason, "severity": severity}
         if stopped:
             reason = reason or f"the request ran out of {stopped}"
         if policy["decline_from"] and RANK[severity] >= RANK[policy["decline_from"]]:
