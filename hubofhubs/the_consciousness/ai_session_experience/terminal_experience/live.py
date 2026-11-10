@@ -204,7 +204,7 @@ class Attendance:
             message, ok = item[1], item[2]
             self.view.sent(message.message_id, message.text, message.agent_id)
             if not self.live:
-                self.painter.line(f"[{int(self.view.now - self.view.started) // 60}:{int(self.view.now - self.view.started) % 60:02d}] you: {short(message.text, 70)} ({'sent' if ok else 'waiting to be sent'})")
+                self.painter.line(f"[{int(self.view.now - self.view.started) // 60}:{int(self.view.now - self.view.started) % 60:02d}] you: {short(message.text, 70)} ({'queued, read after the current step' if ok else 'waiting to be sent'})")
         elif kind == "control":
             if isinstance(item[1], Stop) and item[2] and not item[1].agent_id:
                 self.view.status = "stopping"
@@ -379,10 +379,14 @@ class Attendance:
         finally:
             if self.keys is not None:
                 self.keys.detach()
-            self.painter.erase()
-            for row in report(self.view, color=self.live, width=max(self.width - 1, 40) if self.live else 0):
-                self.out.write(row + "\n")
-            self.out.flush()
+            self.close_out()
+
+    def close_out(self) -> None:
+        """The closing account, written when the session ends (a surface that draws it differently overrides this)."""
+        self.painter.erase()
+        for row in report(self.view, color=self.live, width=max(self.width - 1, 40) if self.live else 0):
+            self.out.write(row + "\n")
+        self.out.flush()
 
     def next_command(self) -> str:
         """After a stop: a resume or quit already typed, or (on a terminal) wait for one. A script that typed none ends here."""

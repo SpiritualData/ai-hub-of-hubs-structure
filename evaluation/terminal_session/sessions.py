@@ -39,7 +39,7 @@ def watch(arm, name):
     failed = []
     if [done_steps(rep, k) for k in ("read", "edit", "run")] != [["a.txt"], ["b.txt"], ["echo hi"]]:
         failed.append("steps-with-kind-and-target")
-    order = [e.kind for e in rep.events if isinstance(e, Step) and e.state == "done"]
+    order = [e.kind for e in rep.events if isinstance(e, Step) and e.state == "done" and e.kind != "note"]
     if order != ["read", "edit", "run"]:
         failed.append("steps-in-order")
     if not (rep.final and rep.final.outcome == "met" and "Changed (1): b.txt" in text):
@@ -173,7 +173,7 @@ def same_surface(arm, name):
     for kit_name in ("loop", "stream"):
         kit = folder_kit(kit_name, [turn(read("a.txt")), turn(edit("b.txt")), turn(report("All done."))], pause=0.0)
         rep, text = attend(arm, kit, ScriptedKeys())
-        rows.append(([(e.kind, e.label) for e in rep.events if isinstance(e, Step) and e.state == "done"], rep.final.outcome if rep.final else "", rep.final.changed if rep.final else ()))
+        rows.append(([(e.kind, e.label) for e in rep.events if isinstance(e, Step) and e.state == "done" and e.kind != "note"], rep.final.outcome if rep.final else "", rep.final.changed if rep.final else ()))
     return [] if rows[0] == rows[1] else ["same-rows-on-two-harnesses"]
 
 
@@ -311,6 +311,12 @@ SCENARIOS = {"check_never_passes": check_never_passes, "repeat_refused": repeat_
 try:
     from hub_scenarios import SCENARIOS as HUB_SCENARIOS      # the hub's own parts of the terminal: structure, ceilings, decisions, follow-ups, harness switch, representative
     SCENARIOS.update(HUB_SCENARIOS)
+except ImportError:  # pragma: no cover -- the sibling file travels with this one
+    pass
+
+try:
+    from documented_scenarios import SCENARIOS as DOCUMENTED       # scenarios taken from the reviewed terminals' documented behaviour and the consumer's requirement tests
+    SCENARIOS.update(DOCUMENTED)
 except ImportError:  # pragma: no cover -- the sibling file travels with this one
     pass
 

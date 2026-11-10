@@ -15,6 +15,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Usage, Waiting, short)
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.markdown_text import markdown_lines
 
 ASCII_MARK = {"running": "..", "done": "ok", "failed": "!!", "blocked": "xx"}
 GLYPH_MARK = {"running": "●", "done": "✓", "failed": "✗"}
@@ -233,7 +234,8 @@ def step_row(step: Step, color: bool = False, who: str = "") -> str:
     who = f"[{who}] " if who else "" if step.agent_id == MAIN else f"[{step.agent_id[:8]}] "
     if step.kind == "message-received":
         return f"{paint(mark, step.state, color)} taken up   {short(step.label, 70)}"
-    return f"{paint(mark, step.state, color)} {step.kind:<{KIND_WIDTH - 1}} {who}{short(step.label, 70)}"
+    why = f" (refused: {short(step.detail, 60)})" if step.state == "blocked" and step.detail else ""      # a refused step shows its reason on its own row
+    return f"{paint(mark, step.state, color)} {step.kind:<{KIND_WIDTH - 1}} {who}{short(step.label, 70)}{why}"
 
 
 def metric_line(view: SessionView) -> str:
@@ -279,7 +281,9 @@ def event_line(event: SessionEvent, view: SessionView) -> str:
         if event.kind == "outside-folder":
             return stamp + "outside the folder: " + "; ".join(short(item, 80) for item in event.items)
     if isinstance(event, Waiting):
-        return f"{stamp}WAITING FOR YOU: {event.question}" + (f" It will change: {short(event.preview, 80).rstrip(".")}." if event.preview else "") + " (y to approve, n to refuse)"
+        helper = view.agents.get(event.agent_id)       # a question from a helper names the helper, so the person knows who is asking
+        asker = f" ({short(helper.task, 30)} asks)" if helper is not None and event.agent_id != MAIN else ""
+        return f"{stamp}WAITING FOR YOU{asker}: {event.question}" + (f" It will change: {short(event.preview, 80).rstrip(".")}." if event.preview else "") + " (y to approve, n to refuse)"
     return ""
 
 
@@ -302,7 +306,7 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         out.append(paint("agents", "dim", color))
         out.extend("  " + line for line in view.tree_lines(glyphs))
     for message in view.messages[-3:]:
-        out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'sent, not taken up yet'})")
+        out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
     for note in view.notices[-2:]:
         out.append(paint(note, "dim", color))
     if view.soft_limit and view.status in ("running", "waiting", "stopping"):
@@ -331,7 +335,7 @@ def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:
              "failed": "Failed"}.get(outcome, outcome)
     out = [paint(title, "bold", color)]
     if done and done.report:
-        out.extend(["", *done.report.strip().splitlines()])
+        out.extend(["", *markdown_lines(done.report, width, color)])
     if done and done.error and outcome not in ("met", "stopped"):
         out.append(f"reason: {short(done.error, 120)}")
     files = view.changed()

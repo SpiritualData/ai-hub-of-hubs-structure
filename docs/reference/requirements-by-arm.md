@@ -125,6 +125,7 @@ at the repository root.
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
 | Terminal Experience, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Terminal Experience, Live session (reference terminal) (`terminal-session:live_session`) | none | none | none | none | no |
+| Terminal Experience, Textual session (full-screen terminal) (`terminal-session:textual_session`) | none | none | `textual` via extra `textual` | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |
 | Consciousness, Representative, priorities and feedback (`the-consciousness:composition`) | none | none | none | none | no |

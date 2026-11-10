@@ -27,6 +27,9 @@ def adapt(implementation, meter):
     arm = implementation()
 
     def run(kind, args):
+        if kind == "pty":       # the real entry: ahohs work on a pseudo-terminal, a real fast-tier session
+            from pty_stage import run_pty_case
+            return {"failed": run_pty_case(implementation, args["scenario"], meter)}
         if kind == "attend":
             from sessions import run_scenario
             return {"failed": run_scenario(arm, args["scenario"], args["kit"])}

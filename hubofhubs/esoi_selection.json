@@ -627,13 +627,14 @@
  "terminal-session": {
   "default": "live_session",
   "evidence": {
-   "detail": "live_session is better than line_repl (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000244, 13 of 39 cases disagree)",
-   "p": 0.000244,
-   "verdict": "WIN"
+   "detail": "live_session is better than line_repl (two-sided exact McNemar test, Holm-adjusted p=2.98e-08, 27 of 67 cases disagree); textual_session is exactly equal to live_session on the metric (textual_session 1 against live_session 1), so live_session stays",
+   "p": 0.0,
+   "verdict": "TIE"
   },
   "modules": {
    "line_repl": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl",
-   "live_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live"
+   "live_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live",
+   "textual_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.textual_session"
   }
  },
  "the-assembler": {

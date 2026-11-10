@@ -142,8 +142,9 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | solution_passes | `network_passes` | no run on the whole case set yet (2 partial run(s) recorded) | not stated | not stated | not stated | not compared: no whole run | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |
 | structure_in_view | event_tree (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
-| terminal_session | live_session (selected) | 39 | 100.0% (91.0% to 100.0%), 39/39 | $0 | 0 (median) | selected | none recorded |
-| terminal_session | line_repl | 39 | 66.7% (51.0% to 79.4%), 26/39 | $0 | 0 (median) | ahead of line_repl (two-sided sign test p=0.000244) | none recorded |
+| terminal_session | live_session (selected) | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0 (median) | selected | none recorded |
+| terminal_session | line_repl | 67 | 59.7% (47.7% to 70.6%), 40/67 | 0.225 model calls (no price) | 0 (median) | ahead of line_repl (two-sided McNemar p=2.98e-08) | none recorded |
+| terminal_session | textual_session | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0.1 (median) | identical to textual_session on all 67 cases | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | none | 60 | 50.0% (37.7% to 62.3%), 30/60 | $0 | 0 (median) | ahead of none, not significant (two-sided sign test p=0.718) | none recorded |
 | watch_for_risk | overseer | 36 | 91.7% (78.2% to 97.1%), 33/36 | $7.576e-05 | 0.4 (median) | ahead of overseer, not significant (two-sided Fisher p=0.718) | none recorded |

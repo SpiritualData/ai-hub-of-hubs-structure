@@ -8,11 +8,11 @@ Part of [Working with the AI while it works](../README.md)
 
 ## Terminal Experience (`terminal-session`)
 
-- Out of scope: The contract of events and controls and the harness adapters (AI Session Experience), plain data for a separate frontend (Frontend Interface), choosing which structure to show and what is inside it (Structure In View), how a run is answered (the front door), and a consumer's own screen.
+- Out of scope: The contract of events and controls and the harness adapters (AI Session Experience), plain data for a separate frontend (Frontend Interface), choosing which structure to show and what is inside it (Structure In View), how a run is answered (the front door), and a consumer's own commands, data and words, which stay in its binding (`commands`, `segments`, `panels`, `front_door`, `represent`, `records`).
 - Entry call: `hubofhubs.run("terminal-session", {'lines': ['/quit']})`
 - Selected implementation: Live session (reference terminal) (`live_session`)
 - Metric: Scripted sessions that end right and requirements met
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/flow.py`](../flow.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/__init__.py`](../frontend_interface/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/interface.py`](../frontend_interface/interface.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/tests/test_wire.py`](../frontend_interface/tests/test_wire.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/wire.py`](../frontend_interface/wire.py) and 60 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/flow.py`](../flow.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/__init__.py`](../frontend_interface/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/interface.py`](../frontend_interface/interface.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/tests/test_wire.py`](../frontend_interface/tests/test_wire.py), [`hubofhubs/the_consciousness/ai_session_experience/frontend_interface/wire.py`](../frontend_interface/wire.py) and 63 more
 
 ## Implementations
 
@@ -20,10 +20,11 @@ Part of [Working with the AI while it works](../README.md)
 |---|---|---|---|---|
 | Line REPL (ahohs chat) | `terminal-session:line_repl` | Prompts, reads a line, runs it through the front door and draws the interim updates, the answer, the summary of the work and any question as plain text. Commands: /help, /trail, /later, /quit. | [`hubofhubs/the_consciousness/ai_session_experience/terminal_experience/repl.py`](repl.py) |  |
 | Live session (reference terminal) | `terminal-session:live_session` | Runs any harness in a thread and draws its events in place on a terminal (plain lines elsewhere): current steps, a sub-agent tree, messages sent and taken up, a risky step waiting for y or n, elapsed time and cost; Escape or Ctrl-C stops and keeps the session, resume continues it, and the closing report lists what changed, what is left and the command that resumes. The structure tree (Tab, arrows) and the authority in force open only on request; the header shows spend and time against the ceilings; the soft limit and the hub's stop decision are one line each; a typed line after a run continues the session and `/harness` switches harness between runs (`WorkTerminal`, `ahohs work`). | [`hubofhubs/the_consciousness/ai_session_experience/terminal_experience/live.py`](live.py) | selected |
+| Textual session (full-screen terminal) | `terminal-session:textual_session` | The shared session driver drawn as a full-screen Textual application (MIT licence): a header, a scrolling transcript of the run, a live panel with the current steps, helpers and structure, an input line with history and slash-command completion, a question answered by one key, Escape to stop and keep the session, a steer shown as queued then taken up, and the final answer rendered as markdown with the rich library. One application stays open across follow-ups and harness switches (`ahohs work`); headless it writes the transcript to the stream it is given. | [`hubofhubs/the_consciousness/ai_session_experience/terminal_experience/textual_session.py`](textual_session.py) |  |
 
 ## Metrics
 
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 39 of 39 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 67 of 67 cases
 
 ## Problems
 

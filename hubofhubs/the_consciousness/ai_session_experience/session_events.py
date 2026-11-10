@@ -93,7 +93,7 @@ class Waiting(SessionEvent):
     ask_id: str = ""
     question: str = ""
     risky: str = ""
-    preview: str = ""             # what will change if the person approves
+    preview: str = ""             # what will change if the person approves (``agent_id`` is the helper that asks, when a helper does)
     options: Tuple[str, ...] = ("approve", "refuse")
 
 

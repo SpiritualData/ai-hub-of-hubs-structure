@@ -149,9 +149,9 @@ The table below is generated from the records. Names lead, each part says what i
 | Prioritization | Consciousness | 0 | 0 | 0 | none | `prioritization` |
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
 | AI Session Experience | Consciousness | 0 | 0 | 0 | none | `ai-session-experience` |
-| Terminal Experience | AI Session Experience | 1 | 1 | 9 | 2026-11-10 | `terminal-session` |
+| Terminal Experience | AI Session Experience | 1 | 1 | 14 | 2026-11-10 | `terminal-session` |
 | Frontend Interface | AI Session Experience | 0 | 0 | 0 | none | `frontend-interface` |
 | Structure In View | AI Session Experience | 0 | 0 | 0 | none | `structure-in-view` |
 
-76 areas and 488 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+76 areas and 493 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

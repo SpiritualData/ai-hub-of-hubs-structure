@@ -36,6 +36,7 @@ voyage = ["voyageai>=0.3"]                # the-subconscious: the Voyage AI embe
 acp = ["agent-client-protocol>=0.4"]      # delegated-agent-sessions arm: the Agent Client Protocol deep runner (imported inside one function)
 bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # the-subconscious: the BM25 content store
 retrieval = ["numpy>=1.26", "scikit-learn>=1.4", "fastembed>=0.8"]   # context-retriever: the dense arm (a local embedding model), the latent semantic index and the learned reranker
+textual = ["textual>=8.0"]                                   # terminal-session arm: textual_session (a full-screen terminal; rich, its dependency, renders the markdown)
 graphify = ["graphifyy==0.9.102"]                           # cards-from-files: the graphify_files builder (code-only extraction, no model)
 
 [tool.setuptools.packages.find]

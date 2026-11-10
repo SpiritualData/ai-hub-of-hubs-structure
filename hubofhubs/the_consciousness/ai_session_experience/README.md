@@ -44,7 +44,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks (`metric-frontend-interface`): leader `json_wire`, 28 of 28 cases
 - Right solution per sub-agent, detail only when opened (`metric-structure-in-view`): leader `event_tree`, 20 of 20 cases
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 39 of 39 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 67 of 67 cases
 
 ## Where to go next
 
@@ -87,6 +87,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Whole delegation tree from the records (not built) | `structure-in-view:records_overlay` |  |  |
 | Line REPL (ahohs chat) | `terminal-session:line_repl` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/repl.py](terminal_experience/repl.py) |  |
 | Live session (reference terminal) | `terminal-session:live_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/live.py](terminal_experience/live.py) |  |
+| Textual session (full-screen terminal) | `terminal-session:textual_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/textual_session.py](terminal_experience/textual_session.py) |  |
 
 ### Metrics
 

@@ -183,8 +183,8 @@ class StreamHarness:
     ``stop_agent(agent_id)`` and ``steer_agent(agent_id, text)``."""
     name = "stream"
 
-    def __init__(self, runner: Any):
-        self.runner = runner
+    def __init__(self, runner: Any, root: str = ""):
+        self.runner, self.root = runner, root
         self.capabilities = Capabilities(stop=True, resume=True, steer=True, approve=hasattr(runner, "approve"), target_agents=hasattr(runner, "stop_agent"),
                                          live_usage=True, live_agents=True, steer_ack=True)
         self.stopped = threading.Event()
@@ -205,9 +205,10 @@ class StreamHarness:
     def start(self, goal: str, sink: Callable[[SessionEvent], None], resume_session_id: str = "") -> Finished:
         self.stopped.clear()
         self.sink = sink
-        stream = StreamJson()
+        stream = StreamJson(self.root)
         run_id = short_id()
         sink(RunStarted(goal=goal, harness=self.name, session_id=resume_session_id, resumed=bool(resume_session_id)))
+        sink(Step(step_id="starting", kind="note", label="starting the session", state="running"))     # the first seconds show that the run began
 
         def emit(event: Any) -> None:
             for item in progress_events(event, stream=stream):
@@ -223,6 +224,10 @@ class StreamHarness:
             if name not in changed:
                 changed.append(name)
         outcome = ("stopped" if result.cancelled or result.paused else "met" if result.met else "failed" if result.launch_failed else "unmet")
+        still = list(stream.open_agents)
+        if outcome == "met" and still:      # a run is not met while a helper it started is still working
+            outcome = "unmet"
+            result.error = result.error or f"{len(still)} helper{'' if len(still) == 1 else 's'} still running when the main session ended"
         why = str(getattr(result, "end_reason", "") or "")
         if why.startswith("resume_stopped:"):          # the hub's own iteration was put to the stop decision and refused: one line with its reason
             sink(Notice(kind="decision", decision="stop", reason=why.split(":", 1)[1]))

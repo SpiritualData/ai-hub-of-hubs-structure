@@ -133,6 +133,7 @@
  ],
  "terminal-session": [
   "live_session",
+  "textual_session",
   "line_repl"
  ],
  "the-hands": [

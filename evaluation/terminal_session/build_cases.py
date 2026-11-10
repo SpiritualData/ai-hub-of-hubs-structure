@@ -68,6 +68,9 @@ REQUIREMENTS = {
     "frame": ["X14", "X17"], "live_helper": ["X7"], "stop_prompt": ["X4", "X5"], "solution_agents": ["X14", "X15"],
     "check_never_passes": ["X10", "X20"], "repeat_refused": ["X20"],
     "structure_toggle": ["X24", "X18"], "structure_expand": ["X25", "X18"], "ceiling_status": ["X26", "X3"], "soft_limit_line": ["X27"], "stop_decision_line": ["X28"],
+    "refused_reason": ["X20"], "helper_file_counts": ["X10", "X7"], "not_met_while_helper_runs": ["X10", "X7"], "first_seconds": ["X1", "X2"],
+    "queued_until_read": ["X6", "X23"], "helper_question_named": ["X9", "X19"], "markdown_answer": ["X10", "X18"], "stopped_keeps_and_names_resume": ["X4", "X21", "X33"],
+    "nothing_changed": ["X10", "X33"],
     "end_of_run": ["X21", "X33"], "follow_up_continues": ["X29", "X5"], "harness_switch": ["X30", "X11"], "no_goal_prompt": ["X31"], "representative": ["X32"],
 }
 SESSIONS = [("watch", "loop"), ("watch", "stream"), ("stop_resume", "loop"), ("stop_resume", "stream"), ("steer", "loop"), ("steer", "stream"),
@@ -76,9 +79,21 @@ SESSIONS = [("watch", "loop"), ("watch", "stream"), ("stop_resume", "loop"), ("s
             ("frame", "loop"), ("frame", "stream"), ("live_helper", "loop"), ("stop_prompt", "loop"), ("solution_agents", "solutions"), ("check_never_passes", "loop"), ("repeat_refused", "loop"),
             ("structure_toggle", "stream"), ("structure_expand", "stream"), ("ceiling_status", "stream"), ("soft_limit_line", "stream"), ("stop_decision_line", "stream"),
             ("end_of_run", "stream"), ("follow_up_continues", "stream"), ("harness_switch", "both"), ("no_goal_prompt", "stream"), ("representative", "stream")]
+DOCUMENTED = {"refused_reason": "Claude Code lists a denied tool; Codex and Crush ask before a command", "helper_file_counts": "Codex lists file-change items; Claude Code tags a helper's lines with its parent",
+              "not_met_while_helper_runs": "Claude Code shows a background helper still running after the main answer", "first_seconds": "every reviewed terminal shows a start before the first model line",
+              "queued_until_read": "Claude Code queues a message typed during a run and passes it in after the current tool calls", "helper_question_named": "Claude Code names the helper whose permission prompt it shows",
+              "markdown_answer": "Aider renders the model's markdown for the terminal", "stopped_keeps_and_names_resume": "Aider keeps the partial answer after Ctrl-C; Codex and Claude Code resume by id",
+              "nothing_changed": "the consumer's result probe: a run that changed nothing says so"}
+SESSIONS += [(name, "raw-stream") for name in DOCUMENTED]
 for scenario, kit in SESSIONS:
-    CASES.append({"id": f"attend-{scenario}-{kit}", "kind": "attend", "origin": "rule: " + scenario.replace("_", " ") + f" on the {kit} harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+    CASES.append({"id": f"attend-{scenario}-{kit}", "kind": "attend", "origin": ("documented: " + DOCUMENTED[scenario] if scenario in DOCUMENTED else "rule: " + scenario.replace("_", " ") + f" on the {kit} harness (docs/explanation/working-with-the-ai-while-it-works.md)"),
                   "args": {"scenario": scenario, "kit": kit}, "requirements": REQUIREMENTS[scenario], "expect": {"failed": []}})
+
+PTY = {"complete": ["X1", "X10", "X33"], "escape_resume": ["X4", "X5", "X21"], "steer": ["X6", "X23"], "structure": ["X7", "X10", "X15", "X24"], "follow_up": ["X29", "X5"],
+       "harness_switch": ["X30", "X11"], "refused": ["X20"], "markdown": ["X10", "X18"], "history": ["X23", "X29"]}
+for scenario, ids in PTY.items():
+    CASES.append({"id": f"pty-{scenario}", "kind": "pty", "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+                  "args": {"scenario": scenario}, "requirements": ids, "expect": {"failed": []}})
 
 if __name__ == "__main__":
     (HERE / "cases.json").write_text(json.dumps(CASES, indent=1) + "\n")

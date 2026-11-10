@@ -138,12 +138,16 @@ class StreamRun:
     ``DeepResult`` (met-vs-limit, usage limit, escalation) is the runner's job.
     """
 
+    emit: Optional[Callable[[ProgressEvent], None]] = None     # where every raw stream line goes as it arrives (a surface draws the steps and helpers from it)
+
     def __init__(self, proc: "subprocess.Popen", prompt: str, control: Optional[RunControl], *,
                  cancel_check: Optional[Callable[[], bool]] = None,
                  grace_seconds: float, echo_wait_seconds: float,
                  timeout_seconds: Optional[float], review: Optional[Callable[[float], Tuple[bool, str]]],
-                 review_interval: Optional[float], clock: Callable[[], float] = time.monotonic) -> None:
+                 review_interval: Optional[float], clock: Callable[[], float] = time.monotonic,
+                 emit: Optional[Callable[[ProgressEvent], None]] = None) -> None:
         self.proc = proc
+        self.emit = emit
         self.prompt = prompt
         self.control = control
         self.cancel_check = cancel_check
@@ -266,6 +270,11 @@ class StreamRun:
 
     def handle(self, event: Dict[str, Any]) -> None:
         kind = event.get("type")
+        if self.emit is not None:
+            try:      # every raw line goes out as it arrives, so a surface draws the steps and helpers without reading the session's file
+                self.emit(ProgressEvent(type="stream", text="", data=event))
+            except Exception:  # noqa: BLE001 -- a surface that raises never ends a run
+                pass
         if kind == "system" and event.get("subtype") == "init":
             self.session_id = str(event.get("session_id") or "") or self.session_id
         elif kind == "assistant":
@@ -581,7 +590,7 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
             grace_seconds=self.cfg.cancel_grace_seconds, echo_wait_seconds=self.echo_wait_seconds,
             timeout_seconds=resolve_deep_timeout_seconds(self.cfg.timeout_seconds, settings),
             review=review,
-            review_interval=resolve_deep_review_interval_seconds(self.cfg.review_interval_seconds, settings))
+            review_interval=resolve_deep_review_interval_seconds(self.cfg.review_interval_seconds, settings), emit=emit)
         try:
             how, detail = run.drive()
         finally:

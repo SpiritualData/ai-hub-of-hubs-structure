@@ -10,12 +10,13 @@ ceilings, the tier and the folder, and the hub's own choice of default. Standard
 """
 from __future__ import annotations
 
+import inspect
 import io
 import time
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Optional, Sequence, TextIO, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Finished, Harness
-from hubofhubs.the_consciousness.ai_session_experience.session_harnesses import Briefed, Framed, Limited, LoopHarness, StreamHarness, Tailed
+from hubofhubs.the_consciousness.ai_session_experience.session_harnesses import Briefed, Framed, Limited, LoopHarness, StreamHarness
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import LiveSession
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView
 
@@ -23,6 +24,8 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.sessi
 HARNESSES = {"native": "native_tool_loop_runner", "stream": "stream_json_goal_runner", "loop": "solution_loop_runner"}
 DEFAULT_PROVIDERS = ("anthropic",)
 PERMISSIONS = ("acceptEdits", "skip")
+#: which of the Claude CLI's setting sources a session loads (``--setting-sources``): the folder's own, never the person's user-level settings and their hooks, unless asked (``user,project``)
+DEFAULT_SETTING_SOURCES = "project"
 KEPT_ENVIRONMENT = ("HOME", "PATH", "USER", "LOGNAME", "LANG", "LC_ALL", "TERM", "TMPDIR", "SHELL", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME", "XDG_RUNTIME_DIR")
 HELPER_NOTE = "When you hand work to a helper, begin its description with [{solution}] (the solution it serves), for example: [{solution}] check the plan."
 INTRO = "Type a goal and press Enter; it runs in this folder. /help lists commands."
@@ -83,7 +86,7 @@ def default_harness(declared: Sequence[str] = DEFAULT_PROVIDERS) -> Tuple[str, s
 
 def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None, ceiling_seconds: Any = None, permission: str = "acceptEdits",
                     environ: Optional[Mapping[str, str]] = None, solution: str = "", milestone: str = "", provider: str = "anthropic",
-                    stop_inputs: Optional[Callable[[], Mapping[str, Any]]] = None) -> Callable[[str], Harness]:
+                    stop_inputs: Optional[Callable[[], Mapping[str, Any]]] = None, setting_sources: str = DEFAULT_SETTING_SOURCES) -> Callable[[str], Harness]:
     """``build(name)`` for the hub's own harnesses. ``ceiling_usd`` and ``ceiling_seconds`` are numbers, ``"unlimited"`` or None for the runners' defaults. ``permission`` is
     ``acceptEdits`` (the run may read and change files; a command is refused and listed as blocked) or ``skip`` (no permission checks, as the hub's own sessions run).
     ``solution`` and ``milestone`` frame the run (its header, the structure view and the closing report name them). ``stop_inputs`` gives, at each build, the stated stop limits and
@@ -92,7 +95,6 @@ def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None,
     from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig
     from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (
         DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, UNLIMITED, ceiling_of, current_session_file, estimate_spend)
-    from hubofhubs.the_world.tools.delegated_agent_sessions.session import find_session_file
     from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings
     if permission not in PERMISSIONS:
         raise ValueError(f"permission is one of {', '.join(PERMISSIONS)}")
@@ -102,7 +104,8 @@ def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None,
     seconds = DEFAULT_CEILING_SECONDS if ceiling_seconds is None else (UNLIMITED if ceiling_seconds == UNLIMITED else ceiling_seconds)
     shown_usd, shown_seconds = ceiling_of(usd, "ceiling_usd"), ceiling_of(seconds, "ceiling_seconds")
     child = child_environment(environ or {})
-    settings = GoalSettings(environment=lambda: dict(child))
+    from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
+    settings = GoalSettings(environment=lambda: dict(child), deep_launch=DeepLaunchSettings(setting_sources=setting_sources))
 
     def build(name: str) -> Harness:
         if name not in HARNESSES:
@@ -117,17 +120,15 @@ def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None,
             from hubofhubs.the_world.tools.delegated_agent_sessions.native_runner import NativeToolLoopRunner
             runner = NativeToolLoopRunner(SubprocessConfig(working_dir=folder), provider=provider, tier=tier, settings=settings, ceiling_usd=usd, ceiling_seconds=seconds,
                                           stop_inputs=stop_inputs() if stop_inputs else None, permission="skip" if permission == "skip" else "acceptEdits")
-            inner = StreamHarness(runner)
+            inner = StreamHarness(runner, root=folder)
         else:
             from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import StreamJsonGoalRunner
             config = SubprocessConfig(working_dir=folder, skip_permissions=permission == "skip", allowed_tools=None if permission == "skip" else edits)
             runner = StreamJsonGoalRunner(config, provider=provider, tier=tier, settings=settings, ceiling_usd=usd, ceiling_seconds=seconds)
-            inner = StreamHarness(runner)
+            inner = StreamHarness(runner, root=folder)
         inner.name = name
         config_dir = settings.claude_config_dir
-        if name != "loop":      # the runners of the Claude CLI do not forward their stream lines: the steps are read from the session's own record
-            find = lambda resume, began: (find_session_file(resume, folder, config_dir) if resume else current_session_file(folder, began, config_dir))
-            inner = Tailed(inner, find, root=folder)
+        # the runners of the Claude CLI forward every raw stream line as a progress event, so no file is tailed for the steps
         harness: Any = Limited(inner, ceiling_usd=shown_usd, ceiling_seconds=shown_seconds,
                                spend_now=None if name == "loop" else (lambda since: estimate_spend(current_session_file(folder, since, config_dir))))
         if solution:
@@ -135,6 +136,22 @@ def harness_builder(*, folder: str, tier: str = "fast", ceiling_usd: Any = None,
             harness = Briefed(harness, HELPER_NOTE.format(solution=solution))
         return harness
     return build
+
+
+def terminal_arm(named: str = "", environ: Optional[Mapping[str, str]] = None) -> Tuple[Any, str, str]:
+    """``(arm, its name, why)``: the Terminal Experience arm that draws the session. A name the person gave is kept; otherwise the selected arm, and when its library or
+    program is missing the best-measured arm that can run stands in (``availability``), with the reason."""
+    from esoi import AssemblyConfig
+    from hubofhubs.the_self.assembler.availability import stand_ins
+    from hubofhubs.the_self.assembler.resolution import HUB
+    env = dict(environ or {})
+    chosen, found = stand_ins(HUB, env, {"terminal-session": named} if named else None)
+    name = chosen.get("terminal-session") or HUB.pick("terminal-session", None, AssemblyConfig(selections={}, consumer_environ=env)).name.split("@")[0]
+    why = "chosen by you" if named else "the hub's selected terminal"
+    for row in found:
+        if row.solution == "terminal-session":
+            why = f"{row.arm} stands in for {row.selected} ({row.reason})"
+    return HUB.load("terminal-session", name)(), name, why
 
 
 def recap_of(report: SessionReport) -> str:
@@ -156,7 +173,8 @@ class WorkTerminal:
                  segments: Sequence[Callable[[SessionView], str]] = (), panels: Sequence[Callable[[SessionView], List[str]]] = (),
                  front_door: Optional[Callable[[str], Any]] = None, command: str = "ahohs work", live: Optional[bool] = None, width: int = 0, tick: float = 0.02,
                  clock: Callable[[], float] = time.monotonic, prompt: str = "> ", why: str = "", once: bool = False,
-                 represent: Optional[Callable[[str], Mapping[str, Any]]] = None, people: Sequence[str] = (), person: str = ""):
+                 represent: Optional[Callable[[str], Mapping[str, Any]]] = None, people: Sequence[str] = (), person: str = "", arm: Any = None,
+                 reader: Optional[Callable[[str], Optional[str]]] = None):
         self.build, self.out, self.names, self.keys = build, out, tuple(names), keys
         self.lines: Optional[Iterator[str]] = iter(lines) if lines is not None else None
         self.records, self.segments, self.panels, self.front_door = records, segments, panels, front_door
@@ -166,6 +184,8 @@ class WorkTerminal:
         self.why = why
         self.once = once      # run the goal given and leave (a pipe or a script that gave a goal and no follow-ups)
         self.represent, self.people, self.person = represent, tuple(people), person       # the Representatives entry (the hub's front door), the people a binding lists, who is acted for now
+        self.arm = arm if arm is not None else LiveSession()        # the Terminal Experience arm that draws a run (``attend``); the standard-library one by default
+        self.reader = reader                                         # reads one typed line at the prompt (an arm with its own input line gives it); None: ``input()``
         self.harnesses: Dict[str, Harness] = {}
         self.session = ""
         self.recap = ""
@@ -190,6 +210,8 @@ class WorkTerminal:
                 return None
             self.out.write(text.rstrip("\n") + "\n") if not getattr(self.out, "isatty", lambda: False)() else None
             return text.rstrip("\n")
+        if self.reader is not None:
+            return self.reader(prompt)
         try:
             import readline  # noqa: F401  (line editing and history for input(), where the platform has it)
         except ImportError:
@@ -336,9 +358,10 @@ class WorkTerminal:
         elif self.recap:
             goal = goal + "\n\n" + self.recap
         authority = self.authority()
-        report = LiveSession().attend(harness, goal, self.out, self.keys, resume_session_id=self.session, tick=self.tick, live=self.live, width=self.width, records=self.records,
-                                      commands=self.extra, segments=self.segments, panels=self.panels, command=self.command,
-                                      representative=authority[0], stop_limits=authority[1])
+        wanted = dict(resume_session_id=self.session, tick=self.tick, live=self.live, width=self.width, records=self.records, commands=self.extra, segments=self.segments,
+                      panels=self.panels, command=self.command, representative=authority[0], stop_limits=authority[1])
+        accepted = inspect.signature(self.arm.attend).parameters       # an arm that takes fewer options (the line REPL) is handed only those
+        report = self.arm.attend(harness, goal, self.out, self.keys, **{name: value for name, value in wanted.items() if name in accepted})
         self.last = report
         self.reports.append(report)
         self.recap = ""
@@ -346,4 +369,4 @@ class WorkTerminal:
             self.session = report.final.session_id
 
 
-__all__ = ["HARNESSES", "WorkTerminal", "child_environment", "default_harness", "dollars_of", "harness_builder", "recap_of", "seconds_of"]
+__all__ = ["HARNESSES", "WorkTerminal", "terminal_arm", "child_environment", "default_harness", "dollars_of", "harness_builder", "recap_of", "seconds_of"]

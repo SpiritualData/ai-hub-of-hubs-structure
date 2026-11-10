@@ -249,7 +249,7 @@ NAMES = {
         "LiveSession",
     ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.work": (
-        "WorkTerminal", "default_harness", "harness_builder",
+        "WorkTerminal", "default_harness", "harness_builder", "terminal_arm",
     ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace": (
         "WorkTrace", "domain_of", "project", "validate",

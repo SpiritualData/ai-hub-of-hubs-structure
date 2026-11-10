@@ -34,20 +34,28 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
             raise ValueError(f"no harness named {name!r}; choose one of {', '.join(terminal.HARNESSES)}")
         holder: dict = {}
         build = terminal.harness_builder(folder=folder, tier=args.tier, ceiling_usd=usd, ceiling_seconds=seconds, permission=args.permission, environ=process_environment(),
-                                         solution=args.solution, milestone=args.milestone, stop_inputs=lambda: holder["terminal"].stop_inputs())
+                                         solution=args.solution, milestone=args.milestone, stop_inputs=lambda: holder["terminal"].stop_inputs(),
+                                         setting_sources=args.setting_sources)
     except ValueError as error:
         print(f"failed: {error}", file=sys.stderr)
         return 2
     interactive = sys.stdin.isatty() and sys.stdout.isatty() and not args.plain
+    try:
+        arm, arm_name, arm_why = terminal.terminal_arm("" if args.plain and not args.terminal else args.terminal, process_environment())
+    except Exception as error:  # noqa: BLE001 -- an arm the person named that cannot run is said, not a traceback
+        print(f"failed: the terminal {args.terminal!r} cannot be used: {error}", file=sys.stderr)
+        return 2
+    if args.plain and not args.terminal:
+        arm, arm_name = terminal.LiveSession(), "live_session"
     records = args.records or (folder if (Path(folder) / "esoi.toml").is_file() else None)
     session = terminal.WorkTerminal(build, sys.stdout, harness=name, why=why, keys=TtyKeys() if interactive else None, records=records,
                                     live=None if interactive else False, represent=lambda person: hub.run("the-representatives", person), person=args.person,
-                                    front_door=lambda text: hub.run("hub-of-hubs", text), once=bool(args.goal) and not interactive)
+                                    front_door=lambda text: hub.run("hub-of-hubs", text), once=bool(args.goal) and not interactive, arm=arm)
     holder["terminal"] = session
     if not args.goal and not interactive:
         print("ahohs work needs a goal when it is not on a terminal: ahohs work \"<goal>\"", file=sys.stderr)
         return 2
-    code = session.run(args.goal, args.resume)
+    code = arm.host_terminal(session, args.goal, args.resume) if interactive and hasattr(arm, "host_terminal") else session.run(args.goal, args.resume)
     last = session.last.final if session.last else None
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1
 
@@ -69,6 +77,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     work.add_argument("--milestone", default="", help="the milestone it serves")
     work.add_argument("--records", default="", help="the ESOI records the structure view reads (default: this folder when it has esoi.toml)")
     work.add_argument("--as", dest="person", default="", metavar="NAME", help="act for this representative (its authority and stop limits apply; /as switches)")
+    work.add_argument("--terminal", default="", help="the screen: textual_session, live_session or line_repl (default: the hub's selected one; live_session stands in when Textual is not installed)")
+    work.add_argument("--setting-sources", default="project", help="which of the Claude CLI's setting sources a session loads: project (default: this folder's own, never your user-level settings and hooks), or a list such as user,project")
     work.add_argument("--plain", action="store_true", help="plain lines even on a terminal")
     one = sub.add_parser("run", help="answer one input with the best-measured arm of the whole hub, or of one id")
     one.add_argument("input")

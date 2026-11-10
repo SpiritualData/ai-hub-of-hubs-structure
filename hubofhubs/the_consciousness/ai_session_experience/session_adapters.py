@@ -68,15 +68,29 @@ def loop_log_events(log: Sequence[Mapping[str, Any]], parent: str = MAIN) -> Lis
     return out
 
 
+def permission_refusal(block: Mapping[str, Any]) -> str:
+    """The reason a tool result gives when the tool was refused by the permission mode (empty when the failure is something else)."""
+    content = block.get("content")
+    text = " ".join(str(part.get("text", "")) for part in content if isinstance(part, dict)) if isinstance(content, list) else str(content or "")
+    low = text.lower()
+    refused = ("needs approval", "haven't granted", "requested permissions", "asks before", "not allowed", "doesn't allow", "was blocked", "permission mode")
+    if any(mark in low for mark in refused) and "permission denied" not in low:      # the CLI's own words when the permission mode refuses a tool (an operating-system "permission denied" is a failure, not a refusal)
+        first = text.strip().splitlines()[0] if text.strip() else "permission refused"
+        return short(first.split(". ")[0], 120)
+    return ""
+
+
 class StreamJson:
     """Turns the lines of a Claude Code ``stream-json`` session into events. ``changed`` collects the files the session wrote."""
 
-    def __init__(self) -> None:
+    def __init__(self, root: str = "") -> None:
+        self.root = root.rstrip("/") + "/" if root else ""      # the run's folder: a path inside it is shown without it
         self.kinds: Dict[str, str] = {}
         self.labels: Dict[str, str] = {}
         self.owners: Dict[str, str] = {}
         self.agents: Dict[str, str] = {}
         self.changed: Dict[str, None] = {}
+        self.open_agents: Dict[str, None] = {}      # helpers started and not yet ended: a run is not met while one is still working
         self.session_id = ""
 
     def owner(self, raw: Mapping[str, Any]) -> str:
@@ -88,6 +102,7 @@ class StreamJson:
         out: List[SessionEvent] = []
         if kind == "system" and raw.get("subtype") == "init":
             self.session_id = str(raw.get("session_id") or self.session_id)
+            out.append(Step(step_id="starting", kind="note", label="session started", state="done"))
         elif kind == "assistant":
             who = self.owner(raw)
             for block in (raw.get("message") or {}).get("content") or []:
@@ -119,6 +134,7 @@ class StreamJson:
         name, ident, given = str(block.get("name") or ""), str(block.get("id") or ""), block.get("input") or {}
         self.owners[ident] = who
         if name in AGENT_TOOLS:
+            self.open_agents[ident] = None
             self.agents[ident] = who
             self.kinds[ident] = "delegate"
             task = short(given.get("description") or given.get("prompt") or name)
@@ -129,6 +145,8 @@ class StreamJson:
             return [AgentStarted(agent_id=ident, parent_id=who, task=task, solution=solution),
                     Step(agent_id=who, step_id=ident, kind="delegate", label=task, state="running")]
         path = str(given.get("file_path") or given.get("path") or given.get("pattern") or given.get("url") or given.get("query") or "")
+        if self.root and path.startswith(self.root):
+            path = path[len(self.root):]
         if name in READ_TOOLS:
             step_kind, label = "read", path or name
         elif name in EDIT_TOOLS:
@@ -146,7 +164,11 @@ class StreamJson:
     def tool_result(self, block: Mapping[str, Any]) -> List[SessionEvent]:
         ident = str(block.get("tool_use_id") or "")
         failed = bool(block.get("is_error"))
+        refusal = permission_refusal(block) if failed else ""
+        if refusal and ident in self.kinds and ident not in self.agents:       # a refused command shows why it was refused, not just that it failed
+            return [Step(agent_id=self.owners.get(ident, MAIN), step_id=ident, kind=self.kinds[ident], label=self.labels.get(ident, ""), state="blocked", detail=refusal)]
         if ident in self.agents:
+            self.open_agents.pop(ident, None)
             return [AgentEnded(agent_id=ident, state="failed" if failed else "met"),
                     Step(agent_id=self.agents[ident], step_id=ident, kind="delegate", label=self.labels.get(ident, "helper"), state="failed" if failed else "done")]
         if ident not in self.kinds:

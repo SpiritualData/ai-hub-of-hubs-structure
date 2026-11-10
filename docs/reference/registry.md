@@ -168,5 +168,5 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| terminal_agent_experience | A person watching, stopping, resuming, steering and approving an AI while it works, on any surface and harness | compared | keep | hubofhubs terminal-session live_session (the reference terminal) and the session event and control contract | Claude Code; OpenAI Codex CLI; opencode; Aider; Goose; Crush; Gemini CLI; Cline CLI; OpenHands CLI; Agent Client Protocol | 9 | 0 | 2026-11-10 |
+| terminal_agent_experience | A person watching, stopping, resuming, steering and approving an AI while it works, on any surface and harness | compared | coexist | hubofhubs terminal-session arms live_session (the reference terminal), line_repl and textual_session (built on Textual, with the consumer's screen as its source), and the session event and control contract | Claude Code; OpenAI Codex CLI; opencode; Aider; Goose; Crush; Gemini CLI; Cline CLI; OpenHands CLI; Agent Client Protocol; Textual; Rich; prompt_toolkit; the production consumer's Textual screen | 14 | 0 | 2026-11-10 |
 <!-- registry:end -->

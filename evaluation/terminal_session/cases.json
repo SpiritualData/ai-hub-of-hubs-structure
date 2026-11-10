@@ -1000,5 +1000,287 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "attend-refused_reason-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Claude Code lists a denied tool; Codex and Crush ask before a command",
+  "args": {
+   "scenario": "refused_reason",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-helper_file_counts-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Codex lists file-change items; Claude Code tags a helper's lines with its parent",
+  "args": {
+   "scenario": "helper_file_counts",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X10",
+   "X7"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-not_met_while_helper_runs-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Claude Code shows a background helper still running after the main answer",
+  "args": {
+   "scenario": "not_met_while_helper_runs",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X10",
+   "X7"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-first_seconds-raw-stream",
+  "kind": "attend",
+  "origin": "documented: every reviewed terminal shows a start before the first model line",
+  "args": {
+   "scenario": "first_seconds",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X1",
+   "X2"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-queued_until_read-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Claude Code queues a message typed during a run and passes it in after the current tool calls",
+  "args": {
+   "scenario": "queued_until_read",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X6",
+   "X23"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-helper_question_named-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Claude Code names the helper whose permission prompt it shows",
+  "args": {
+   "scenario": "helper_question_named",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X9",
+   "X19"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-markdown_answer-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Aider renders the model's markdown for the terminal",
+  "args": {
+   "scenario": "markdown_answer",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X10",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-stopped_keeps_and_names_resume-raw-stream",
+  "kind": "attend",
+  "origin": "documented: Aider keeps the partial answer after Ctrl-C; Codex and Claude Code resume by id",
+  "args": {
+   "scenario": "stopped_keeps_and_names_resume",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X4",
+   "X21",
+   "X33"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-nothing_changed-raw-stream",
+  "kind": "attend",
+  "origin": "documented: the consumer's result probe: a run that changed nothing says so",
+  "args": {
+   "scenario": "nothing_changed",
+   "kit": "raw-stream"
+  },
+  "requirements": [
+   "X10",
+   "X33"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-complete",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "complete"
+  },
+  "requirements": [
+   "X1",
+   "X10",
+   "X33"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-escape_resume",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "escape_resume"
+  },
+  "requirements": [
+   "X4",
+   "X5",
+   "X21"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-steer",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "steer"
+  },
+  "requirements": [
+   "X6",
+   "X23"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-structure",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "structure"
+  },
+  "requirements": [
+   "X7",
+   "X10",
+   "X15",
+   "X24"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-follow_up",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "follow_up"
+  },
+  "requirements": [
+   "X29",
+   "X5"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-harness_switch",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "harness_switch"
+  },
+  "requirements": [
+   "X30",
+   "X11"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-refused",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "refused"
+  },
+  "requirements": [
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-markdown",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "markdown"
+  },
+  "requirements": [
+   "X10",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "pty-history",
+  "kind": "pty",
+  "origin": "real entry: ahohs work on a pseudo-terminal with a real fast-tier session (evaluation/terminal_session/pty_stage.py)",
+  "args": {
+   "scenario": "history"
+  },
+  "requirements": [
+   "X23",
+   "X29"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

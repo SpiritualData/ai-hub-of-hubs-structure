@@ -13,6 +13,7 @@ oldest first. The instruction, with no paid model calls (a subscription model an
    say when a license is unconfirmed), then set `last_researched`, `researched_by` and `recommendation` in `hubs.csv`, and the machine-readable `call` that the recommendation's first decision states (adopt, coexist, keep, watch or avoid; leave it blank only when you cannot tell, and a blank counts as coexist). Update the
    consumer's rows in `hub_capabilities.csv` (a hub connection, never a single service) and `hub_integrations.csv`. Never record
    adoption the consumer's code does not show.
+   For an area that maps to a solution, every finding also carries `adoption` (`arm`: an implementation of that solution is built on it, named in `adopted_as`; `part`: a library, protocol or behaviour of it is used, named in `adopted_as` with where; `not_adopted`: neither) and `adoption_reason` (the licence checked at the source, the language, whether it can be separated from its own agent, how it fits the solution's contract); `tests/test_adoption_and_entry_guards.py` pins it for every area researched from 2026-11-11 and for the areas already decided.
 4. Run the consumer's scorer and `python3 scripts/status.py` (it rewrites the README seat table and `docs/reference/registry.md`), then `esoi hygiene`. No names, ids, emails or machine paths; no
    em dashes.
 5. Commit only those files. If a recommendation is worth building, raise a decision rather than building it unasked.
