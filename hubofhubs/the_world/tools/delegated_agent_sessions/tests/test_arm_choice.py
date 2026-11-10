@@ -86,3 +86,16 @@ def test_hard_work_uses_its_own_metric_and_falls_back_to_ordinary_work():
     assert got.arm == CLAUDE_BEST and got.reason.startswith("for hard work")
     assert arm_choice.choose_agent_arm(["anthropic"], snapshot=snap, priors=[], ideas=[]).arm == CLAUDE_FAST
     assert arm_choice.choose_agent_arm(["gemini"], difficulty="hard", snapshot=snap, priors=[], ideas=[]).arm == GEMINI_FAST
+
+
+def test_harnesses_are_ranked_only_on_the_same_model_and_a_pair_with_none_in_common_is_named_with_the_run_that_settles_it():
+    from hubofhubs.the_world.tools.delegated_agent_sessions import arm_choice as ac
+    rows = {"subprocess_goal_runner@provider=anthropic,tier=fast": {"5": {"model": "m-small", "balanced": "0.98", "passed": "18", "cases": "18"}},
+            "stream_json_goal_runner@provider=anthropic,tier=fast": {"5": {"model": "m-small", "balanced": "0.99", "passed": "18", "cases": "18"}},
+            "subprocess_goal_runner@provider=anthropic,tier=best": {"5": {"model": "m-large", "balanced": "0.95", "passed": "18", "cases": "18"}},
+            "opencode_runner@provider=gemini,tier=balanced": {"5": {"model": "g-mid", "balanced": "0.86", "passed": "15", "cases": "18"}}}
+    ranking = ac.harness_ranking(rows)
+    assert list(ranking) == ["m-small"] and [e["harness"] for e in ranking["m-small"]] == ["stream_json_goal_runner", "subprocess_goal_runner"]
+    missing = ac.missing_same_model_runs(rows)
+    assert len(missing) == 2 and all("opencode_runner" in line and "g-mid" in line for line in missing)
+    assert ac.missing_same_model_runs({k: v for k, v in rows.items() if "opencode" not in k}) == []

@@ -17,6 +17,11 @@ that provider (``PROVIDERS`` on the harness class, see ``providers``). The choic
 A kind of work with a metric of its own (``KINDS``: hard deep work, measured on real past deep tasks) is chosen from that metric's results
 when the caller names it (``difficulty="hard"``) and an eligible arm is measured there; otherwise the choice above stands.
 
+**Harnesses are compared on the same model only.** An arm is a harness on a model, so a result that differs in both says nothing about either
+alone. ``harness_ranking`` ranks harnesses per model, from the rows that ran that model, and never across models; a measured choice names every
+other harness it was not compared with on a shared model (``ArmChoice.uncompared``) and the run that would settle it. Arms of one harness on
+different models are a choice of model, which is the tier chooser's question, and stay comparable.
+
 The reason says which of these decided, so a consumer can log it. Nothing here reads the environment or calls a model.
 """
 from __future__ import annotations
@@ -56,6 +61,7 @@ class ArmChoice:
     score: float = 0.0    # the balanced score, the prior or the idea rating the choice rests on
     reason: str = ""
     kind: str = ""        # the kind of work whose own metric decided (``KINDS``), "" for ordinary work
+    uncompared: Tuple[str, ...] = ()   # harnesses never measured on a model this arm's harness was measured on: not beaten, not compared
 
 
 def split_arm(arm: str) -> Tuple[str, str, str]:
@@ -105,6 +111,45 @@ def number(text: Any) -> Optional[float]:
         return None
 
 
+def latest_row(by_stage: Dict[Any, Dict[str, Any]]) -> Dict[str, Any]:
+    return dict(by_stage[max(by_stage, key=lambda i: int(i))]) if by_stage else {}
+
+
+def harness_ranking(rows: Dict[str, Dict[Any, Dict[str, Any]]]) -> Dict[str, List[Dict[str, Any]]]:
+    """``{model: [{"harness", "arm", "balanced", "passed", "cases"} best first]}`` for every model at least two harnesses ran: the only tables in
+    which one harness is ranked against another. A harness with several arms on a model is listed once, by its best."""
+    by_model: Dict[str, Dict[str, Dict[str, Any]]] = {}
+    for arm, by_stage in (rows or {}).items():
+        row = latest_row(by_stage)
+        model, harness = str(row.get("model") or "").strip(), split_arm(arm)[0]
+        if not model:
+            continue
+        entry = {"harness": harness, "arm": arm, "balanced": number(row.get("balanced")) or 0.0, "passed": row.get("passed", ""), "cases": row.get("cases", "")}
+        held = by_model.setdefault(model, {})
+        if harness not in held or entry["balanced"] > held[harness]["balanced"]:
+            held[harness] = entry
+    return {model: sorted(held.values(), key=lambda e: -e["balanced"]) for model, held in sorted(by_model.items()) if len(held) > 1}
+
+
+def models_of(rows: Dict[str, Dict[Any, Dict[str, Any]]]) -> Dict[str, set]:
+    """``{harness: the models it has a result on}``."""
+    out: Dict[str, set] = {}
+    for arm, by_stage in (rows or {}).items():
+        model = str(latest_row(by_stage).get("model") or "").strip()
+        if model:
+            out.setdefault(split_arm(arm)[0], set()).add(model)
+    return out
+
+
+def missing_same_model_runs(rows: Dict[str, Dict[Any, Dict[str, Any]]]) -> List[str]:
+    """The runs that would let every pair of measured harnesses be compared: for each pair with no model in common, the pair and the models
+    either one has a result on (run the other there)."""
+    models = models_of(rows)
+    names = sorted(models)
+    return [f"{a} and {b} share no model: run {b} on {', '.join(sorted(models[a]))} or {a} on {', '.join(sorted(models[b]))}"
+            for i, a in enumerate(names) for b in names[i + 1:] if not models[a] & models[b]]
+
+
 def measured_choice(declared: Iterable[str], snapshot: Dict[str, Any]) -> Optional[ArmChoice]:
     from esoi.optimization.leaderboard import cascade_stages
     from esoi.optimization.leaderboard.stage_standings import Standing, decide
@@ -121,8 +166,16 @@ def measured_choice(declared: Iterable[str], snapshot: Dict[str, Any]) -> Option
     stage = stages[decision.stage].name if 0 <= decision.stage < len(stages) else ""
     passed = f"{row.get('passed', '?')}/{row.get('cases', '?')}"
     held = f"; held in place: {', '.join(decision.pending)}" if decision.pending else ""
+    # The winner beat only the harnesses measured on a model its own harness was measured on. Any other eligible harness was never compared
+    # with it (a different harness on a different model is two differences), so it is named, not counted as beaten.
+    eligible_rows = {arm: by_stage for arm, by_stage in (snapshot.get("rows") or {}).items() if arm in standing}
+    models = models_of(eligible_rows)
+    uncompared = tuple(sorted(h for h, ms in models.items() if h != harness and not ms & models.get(harness, set())))
+    note = (f"; not compared on the same model with: {', '.join(uncompared)} (a harness is ranked against another only on results with the "
+            f"same model)") if uncompared else ""
     return ArmChoice(decision.winner, harness, provider, tier, "measured", stage, number(row.get("balanced")) or 0.0,
-                     f"best eligible arm at the {stage} stage ({passed} passed, balanced {row.get('balanced', '?')}){held}")
+                     f"best eligible arm at the {stage} stage ({passed} passed, balanced {row.get('balanced', '?')}){held}{note}",
+                     uncompared=uncompared)
 
 
 def prior_balanced(row: Dict[str, str], balance: Optional[Dict[str, Any]]) -> float:
@@ -241,3 +294,8 @@ if __name__ == "__main__":
     written = write_snapshot()
     print(f"{len(written['rows'])} measured arm(s) written to {SNAPSHOT.name}; by kind: "
           + ", ".join(f"{k} {len(v['rows'])}" for k, v in written["kinds"].items()))
+    for label, table in [("ordinary work", written)] + [(f"{k} work", v) for k, v in written["kinds"].items()]:
+        for model, ranked in harness_ranking(table["rows"]).items():
+            print(f"{label}, {model}: " + " > ".join(f"{e['harness']} ({e['passed']}/{e['cases']}, balanced {e['balanced']})" for e in ranked))
+        for line in missing_same_model_runs(table["rows"]):
+            print(f"{label}, not comparable yet: {line}")

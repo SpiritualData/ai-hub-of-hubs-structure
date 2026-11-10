@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- The Learning: `python -m hubofhubs.the_world.learning.research_log research <solution_id>` lists what was researched for a solution, when, and what is due; `research --due` lists solutions with overdue or no research.
+- Delegated Agent Sessions: the idea of the hub as its own harness (`solution_loop_runner`) is rated in `arm_ideas.csv`, before anything is built.
+- Delegated Agent Sessions: harnesses are compared on the same model only. `harness_ranking` ranks harnesses per model and never across models, `missing_same_model_runs` names each pair with no model in common and the run that would settle it, and a measured `ArmChoice` carries `uncompared` and says so in its reason.
 - Solution Passes: `choose_approach` proposes distinct ways to do a piece of work from several cheap views run in parallel and picks one, unlabelled, by the solution's requirements; the ways not taken come back with their weakness so a consumer can keep them as alternatives.
 - Solution Passes: `solution_frame` labels what a worker needs from its solution (approach, next milestone not met, what the metric cannot see, the weakness of the way in use, the last value); `unmet_by_unit` and `keep_better` carry which requirement each unit failed into the next run and keep a rewrite only when it meets more.
 - Delegated Agent Sessions: `exploration_account` counts looks against changes in a session record, and `run_trail`, `merge_trails` and `TrailStore` keep the files the last five runs on one piece of work read and changed, so the next session is handed them.
