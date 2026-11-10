@@ -193,6 +193,16 @@ start, the start files; the message holds a one-line goal title, files changed o
 READ. A reply with no action is nudged every time it follows one that acted, the run ends only after two in a row (not met, with the last NOTE, resumable),
 and long prose after work was done is a REPORT candidate. `usage` events carry `cache_read_tokens` and `cache_write_tokens`, and a run ends with one totals
 line. Measured live on the shape of that run (goal 24,000 and context 44,000 characters naming 20 files of 8,000): cache write per call 98,036, 72,671,
+
+A third real task showed caching working (21 calls, cache read 1,235,840, cache write 314,078) and still produced nothing: the model wrote no NOTE, forgot what it had
+learned, ran one failing command nine times and could not pass a check only a person could satisfy. Fixed: the model keeps a `STATE:` block (done, learned
+with the facts, next, failed) that the loop shows at the top of every message and keeps in the saved session (4,000 characters, the latest replaces the
+previous; a `NOTE` adds a line to it; a reply with actions and no STATE gets a reminder). An exact command or tool call that fails twice with the same first
+error line is told so, and is not run a third time; a command that keeps succeeding unchanged is called out the third time; a check that fails twice for the
+same reason ends the run not met with the model's report (`LoopResult.partial`, the output of the deep result), so the work done is shown. A `READ` may name a file outside
+the working folder (read-only, judged by the Folder View's risk rules, so a credentials folder or a key file is refused with the reason, and a missing file is the only one called missing). A
+consumer binding can hand the loop its own operations as tools that run in process, and `child_environment` is the one the sibling runners give their worker.
+Live, a nine-call task whose fifth step needed a fact printed in the first (after the history was clipped) carried it in STATE and wrote it correctly; the one command that always fails ran twice and was refused the third time.
 72,735, 72,764, 72,830 before; 55,280, 654, 734, 763 after, with the message at about 300 to 500 characters instead of 224,000.
 
 ## Run it

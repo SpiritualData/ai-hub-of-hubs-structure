@@ -813,5 +813,36 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "attend-check_never_passes-loop",
+  "kind": "attend",
+  "origin": "rule: check never passes on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "check_never_passes",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X10",
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-repeat_refused-loop",
+  "kind": "attend",
+  "origin": "rule: repeat refused on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "repeat_refused",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

@@ -46,6 +46,10 @@ def run(command: str) -> Beat:
     return Beat("run", command)
 
 
+def check(command: str) -> Beat:
+    return Beat("check", command)
+
+
 def use(name: str, given: str = "") -> Beat:
     return Beat("use", name, given)
 
@@ -105,6 +109,8 @@ def compile_reply(turn_: Turn) -> str:
             lines.append(f"{beat.label}\n{SEARCH}\n{DIVIDER}\n{beat.text}{REPLACE}")
         elif beat.kind == "run":
             lines.append(f"RUN: {beat.label}")
+        elif beat.kind == "check":
+            lines.append(f"CHECK: {beat.label}")
         elif beat.kind == "use":
             lines.append(f"USE: {beat.label} {beat.text}".rstrip())
         elif beat.kind == "delegate":
@@ -371,4 +377,4 @@ def demo_harness(kind: str, folder: str, pause: float = 0.6, keys: Any = None) -
     return KITS[kind](folder, turns, pause=pause, frame=frame).harness
 
 
-__all__ = ["Beat", "KITS", "Kit", "ScriptedStreamRunner", "Trace", "Turn", "delegate", "demo_harness", "edit", "loop_kit", "read", "report", "run", "stream_kit", "turn", "use"]
+__all__ = ["Beat", "KITS", "Kit", "ScriptedStreamRunner", "Trace", "Turn", "check", "delegate", "demo_harness", "edit", "loop_kit", "read", "report", "run", "stream_kit", "turn", "use"]

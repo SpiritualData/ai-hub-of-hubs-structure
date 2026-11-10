@@ -11,7 +11,7 @@ from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from hubofhubs.the_consciousness.terminal.scripted import KITS, delegate, edit, read, report, run, tree_kit, turn, use  # noqa: E402
+from hubofhubs.the_consciousness.terminal.scripted import KITS, check, delegate, edit, read, report, run, tree_kit, turn, use  # noqa: E402
 from hubofhubs.the_consciousness.terminal.session_adapters import report_events  # noqa: E402
 from hubofhubs.the_consciousness.terminal.session_events import Step, Steer  # noqa: E402
 from hubofhubs.the_consciousness.terminal.session_keys import ScriptedKeys  # noqa: E402
@@ -270,7 +270,40 @@ def solution_agents(arm, name):
     return failed
 
 
-SCENARIOS = {"live_helper": live_helper, "stop_prompt": stop_prompt, "solution_agents": solution_agents, "watch": watch, "stop_resume": stop_resume, "steer": steer, "tree": tree, "solution_tree": solution_tree,
+def check_never_passes(arm, name):
+    """A task whose check can never pass ends with an honest partial report after at most two failed checks, and the person sees that report."""
+    turns = [turn(run("echo did the part"), check("echo missing facts >&2; exit 1"), report("A person must supply the facts for rows 3 to 5."))] * 3
+    kit = folder_kit(name, turns, pause=0.0)
+    rep, text = attend(arm, kit, ScriptedKeys())
+    failed_checks = [e for e in rep.events if isinstance(e, Step) and e.kind == "check" and e.state == "failed"]
+    failed = []
+    if len(failed_checks) > 2 or kit.trace.calls > 2:
+        failed.append("ends-after-two-failed-checks")
+    if not (rep.final and rep.final.outcome == "unmet" and "A person must supply the facts" in rep.final.report):
+        failed.append("partial-report-is-the-output")
+    if "A person must supply the facts" not in text:
+        failed.append("partial-report-shown")
+    return failed
+
+
+def repeat_refused(arm, name):
+    """A failing command repeated is refused on the third try (it is not run again) and the person sees why."""
+    command = "echo x >> n.txt; echo boom >&2; exit 1"
+    kit = folder_kit(name, [turn(run(command))] * 4 + [turn(report("Could not do it: the command fails with boom."))], pause=0.0)
+    rep, text = attend(arm, kit, ScriptedKeys())
+    runs = Path(kit.folder, "n.txt").read_text().count("x")
+    failed = []
+    if runs != 2:
+        failed.append("not-run-the-third-time")
+    refused = [e for e in rep.events if isinstance(e, Step) and e.kind == "run" and e.state == "failed" and "not run" in e.detail]
+    if not refused:
+        failed.append("refusal-shown-with-its-reason")
+    if not (rep.final and "Could not do it" in rep.final.report):
+        failed.append("run-ends-with-its-report")
+    return failed
+
+
+SCENARIOS = {"check_never_passes": check_never_passes, "repeat_refused": repeat_refused, "live_helper": live_helper, "stop_prompt": stop_prompt, "solution_agents": solution_agents, "watch": watch, "stop_resume": stop_resume, "steer": steer, "tree": tree, "solution_tree": solution_tree,
              "approve": lambda arm, name: approval(arm, name, "y"), "refuse": lambda arm, name: approval(arm, name, "n"), "target": target,
              "same_surface": same_surface, "plain_and_replay": plain_and_replay, "frame": frame}
 

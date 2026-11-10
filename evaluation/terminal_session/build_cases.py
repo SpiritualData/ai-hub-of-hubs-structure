@@ -65,11 +65,12 @@ REQUIREMENTS = {
     "watch": ["X1", "X2", "X3", "X10", "X16"], "stop_resume": ["X4", "X5", "X21"], "steer": ["X6", "X23"], "tree": ["X7"], "solution_tree": ["X15"],
     "approve": ["X9", "X19", "X22"], "refuse": ["X9", "X20"], "target": ["X8"], "same_surface": ["X11", "X12"], "plain_and_replay": ["X13", "X18"],
     "frame": ["X14", "X17"], "live_helper": ["X7"], "stop_prompt": ["X4", "X5"], "solution_agents": ["X14", "X15"],
+    "check_never_passes": ["X10", "X20"], "repeat_refused": ["X20"],
 }
 SESSIONS = [("watch", "loop"), ("watch", "stream"), ("stop_resume", "loop"), ("stop_resume", "stream"), ("steer", "loop"), ("steer", "stream"),
             ("tree", "loop"), ("tree", "stream"), ("solution_tree", "none"), ("approve", "loop"), ("approve", "stream"), ("refuse", "loop"), ("refuse", "stream"),
             ("target", "loop"), ("target", "stream"), ("same_surface", "both"), ("plain_and_replay", "loop"), ("plain_and_replay", "stream"),
-            ("frame", "loop"), ("frame", "stream"), ("live_helper", "loop"), ("stop_prompt", "loop"), ("solution_agents", "solutions")]
+            ("frame", "loop"), ("frame", "stream"), ("live_helper", "loop"), ("stop_prompt", "loop"), ("solution_agents", "solutions"), ("check_never_passes", "loop"), ("repeat_refused", "loop")]
 for scenario, kit in SESSIONS:
     CASES.append({"id": f"attend-{scenario}-{kit}", "kind": "attend", "origin": "rule: " + scenario.replace("_", " ") + f" on the {kit} harness (docs/explanation/working-with-the-ai-while-it-works.md)",
                   "args": {"scenario": scenario, "kit": kit}, "requirements": REQUIREMENTS[scenario], "expect": {"failed": []}})

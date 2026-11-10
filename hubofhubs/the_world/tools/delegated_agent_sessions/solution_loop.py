@@ -71,7 +71,10 @@ SYSTEM = """You work in one folder. The files in view are current and complete; 
 READ: <path>     show a file from the folder (several lines allowed)
 RUN: <command>   run a shell command in the folder (several allowed). A command of several lines is a fenced block (```bash then the lines then ```), or a RUN line that ends in a heredoc opener with its body after it: RUN: python3 - <<'EOF' then the code, then EOF alone on a line
 CHECK: <command> your acceptance check for the whole task, run after all other actions
-NOTE: <one line> something you want to remember for the next reply
+STATE: <your working memory>   REWRITE this in every reply that acts; the loop shows it at the top of every message and keeps only the latest (about 4,000 characters), older results are clipped. Write what is DONE, what you LEARNED that matters later (the facts themselves, paths, ids, values), what is NEXT, and what FAILED and must not be retried. Put it last in the reply, or end it with END STATE. Example:
+STATE: done: scanned the board, found 12 rows in /tmp/scan.json. learned: the sheet id is S-42, the assignee id is U-7. next: write rows to out.csv. failed: curl to the old URL (404), do not retry.
+END STATE
+NOTE: <one line> adds a line to your STATE
 REPORT: <text>   the final report; everything after it to the end of the reply (or to a line END REPORT) is the report
 BLOCKED: <reason> the task cannot be done
 {delegate}{tools}To change or create a file write an edit block, the path on its own line, then:
@@ -110,6 +113,10 @@ MARKER = re.compile(r"^[\s>*`#-]*(READ|RUN|CHECK|DELEGATE|NOTE|BLOCKED)\s*:\**\s
 TOOL_MARKER = re.compile(r"^[\s>*`#-]*(READ|RUN|CHECK|DELEGATE|USE|NOTE|BLOCKED)\s*:\**\s*(.*?)\s*$")
 REPORT_START = re.compile(r"^[\s>*`#-]*REPORT\s*:\**\s*(.*)$")
 REPORT_END = re.compile(r"^[\s>*`#-]*END REPORT\b")
+STATE_START = re.compile(r"^[\s>*`#-]*STATE\s*:\**\s*(.*)$")
+STATE_END = re.compile(r"^[\s>*`#-]*END STATE\b")
+STATE_CHARS = 4000               # the working memory the loop keeps and shows at the top of every message
+REPEAT_REFUSED_AFTER = 2         # an exact command or tool call that failed this many times with the same error is not run again
 
 
 class CallCounter:
@@ -176,6 +183,66 @@ class Telling:
         return step_id
 
 
+def normalised(text: str) -> str:
+    return " ".join(str(text).split())
+
+
+def first_error(text: str) -> str:
+    """The first line of a failed result that says why: the output's first non-empty line after the ``exit N`` header, else the header."""
+    lines = [line.strip() for line in str(text).splitlines() if line.strip()]
+    body = [line for line in lines if not re.fullmatch(r"(timed out; )?exit -?\d+", line)]
+    return (body or lines or [""])[0][:200]
+
+
+class Repeats:
+    """What the loop has seen an exact command, tool call or check do: how often it failed with the same first error line, and how often it ran. An exact
+    repeat of a failure is told so the second time and not run the third time; a check that cannot pass by repeating it is told so; a command that keeps
+    succeeding unchanged is told that too."""
+
+    def __init__(self) -> None:
+        self.failed: Dict[str, Tuple[str, int]] = {}
+        self.ran: Dict[str, int] = {}
+
+    def refusal(self, key: str) -> str:
+        found = self.failed.get(key)
+        if found and found[1] >= REPEAT_REFUSED_AFTER:
+            return (f"not run: this exact command has already failed {found[1]} times with the same error ({found[0]}). Do not retry it unchanged: change what it does, "
+                    "try another way, or report what a person has to fix.")
+        return ""
+
+    def failure(self, key: str, text: str) -> Tuple[int, str]:
+        """Record a failure; the number of times it has now failed with this error and the line to add to its result (empty the first time)."""
+        error = first_error(text)
+        before = self.failed.get(key)
+        count = before[1] + 1 if before and before[0] == error else 1
+        self.failed[key] = (error, count)
+        if count < 2:
+            return count, ""
+        return count, f"\nThis has now failed {count} times with the same error ({error}) and must not be retried unchanged."
+
+    def success(self, key: str) -> str:
+        self.failed.pop(key, None)
+        self.ran[key] = self.ran.get(key, 0) + 1
+        if self.ran[key] >= 3:
+            return f"\nThis exact command has now run {self.ran[key]} times; if it is not changing anything, do something different."
+        return ""
+
+
+def bounded_state(text: str) -> str:
+    """The working memory within ``STATE_CHARS``: whole lines from the end when it is longer (the newest lines stay)."""
+    text = text.strip()
+    if len(text) <= STATE_CHARS:
+        return text
+    kept: List[str] = []
+    total = 0
+    for line in reversed(text.splitlines()):
+        if total + len(line) + 1 > STATE_CHARS:
+            break
+        kept.append(line)
+        total += len(line) + 1
+    return "\n".join(reversed(kept)) or text[-STATE_CHARS:]
+
+
 @dataclass
 class LoopResult:
     """How a loop ended. ``calls`` counts the model calls of this loop and of the helpers it delegated to; ``changed`` and ``read`` are
@@ -188,6 +255,8 @@ class LoopResult:
     commands: int = 0
     error: str = ""
     log: List[Dict[str, Any]] = field(default_factory=list)
+    partial: bool = False          # ended not met on purpose: a check cannot pass, and the report says what a person has to do
+    state: str = ""                # the working memory at the end
 
 
 @dataclass
@@ -206,6 +275,7 @@ class Reply:
     report: Optional[str] = None
     blocked: str = ""
     problems: List[str] = field(default_factory=list)
+    state: Optional[str] = None
 
 
 @dataclass
@@ -233,6 +303,7 @@ class LoopState:
     changed: List[str] = field(default_factory=list)
     read: List[str] = field(default_factory=list)
     calls: int = 0
+    state: str = ""
 
     def to_json(self) -> str:
         entries: List[Dict[str, Any]] = []
@@ -243,7 +314,7 @@ class LoopState:
             entries.append({"call": int(entry.get("call", 0)), "note": str(entry.get("note") or ""), "advice": str(entry.get("advice") or ""),
                             "outcomes": [{"label": o.label, "ok": bool(o.ok), "text": o.text} for o in entry.get("outcomes", [])]})
         return json.dumps({"goal": self.goal, "entries": entries, "view": [[path, bool(named)] for path, named in self.view],
-                           "changed": list(self.changed), "read": list(self.read), "calls": int(self.calls)}, ensure_ascii=False)
+                           "changed": list(self.changed), "read": list(self.read), "calls": int(self.calls), "state": self.state}, ensure_ascii=False)
 
     @classmethod
     def from_json(cls, text: str) -> "LoopState":
@@ -258,7 +329,7 @@ class LoopState:
                 entries.append({"call": int(item["call"]), "note": str(item.get("note") or ""), "advice": str(item.get("advice") or ""), "reply": "",
                                 "outcomes": [Outcome(str(o["label"]), bool(o["ok"]), str(o.get("text") or "")) for o in item.get("outcomes", [])]})
             return cls(goal=str(data.get("goal") or ""), entries=entries, view=[(str(p), bool(n)) for p, n in data.get("view", [])],
-                       changed=[str(p) for p in data.get("changed", [])], read=[str(p) for p in data.get("read", [])], calls=int(data.get("calls", 0)))
+                       changed=[str(p) for p in data.get("changed", [])], read=[str(p) for p in data.get("read", [])], calls=int(data.get("calls", 0)), state=str(data.get("state") or ""))
         except (TypeError, KeyError, AttributeError, ValueError) as error:
             raise ValueError(f"not a saved loop state: {error}") from error
 
@@ -451,16 +522,28 @@ def parse_reply(text: str, tools: bool = False) -> Reply:
     reply = Reply()
     body: List[str] = []
     index = 0
+    def ends_chunk(line: str) -> bool:
+        return bool(REPORT_START.match(line) or STATE_START.match(line))
     while index < len(lines):
         found = REPORT_START.match(lines[index])
         if found and reply.report is None:
             chunk = [found.group(1)]
             index += 1
-            while index < len(lines) and not REPORT_END.match(lines[index]):
+            while index < len(lines) and not REPORT_END.match(lines[index]) and not STATE_START.match(lines[index]):
                 chunk.append(lines[index])
                 index += 1
             reply.report = "\n".join(chunk).strip()
+            index += 1 if index < len(lines) and REPORT_END.match(lines[index]) else 0
+            continue
+        found = STATE_START.match(lines[index])
+        if found and reply.state is None:
+            chunk = [found.group(1)]
             index += 1
+            while index < len(lines) and not STATE_END.match(lines[index]) and not REPORT_START.match(lines[index]) and not marker.match(lines[index]):
+                chunk.append(lines[index])
+                index += 1
+            reply.state = "\n".join(chunk).strip()
+            index += 1 if index < len(lines) and STATE_END.match(lines[index]) else 0
             continue
         body.append(lines[index])
         index += 1
@@ -569,6 +652,8 @@ def history_lines(entries: Sequence[Mapping[str, Any]], old_chars: int) -> str:
             lines.append(f"  {outcome.label}: {'ok' if outcome.ok else 'FAILED'}" + (f"\n{indent(text)}" if text.strip() else ""))
         if latest and entry.get("advice"):
             lines.append(f"  {entry['advice']}")
+        if latest and entry.get("reminder"):
+            lines.append(f"  {entry['reminder']}")
     return "\n".join(lines)
 
 
@@ -577,12 +662,14 @@ def indent(text: str) -> str:
 
 
 def build_prompt(goal: str, context: str, folder_map: str, files_text: str, entries: Sequence[Mapping[str, Any]], note: str,
-                 earlier_goal: str = "", since_start: bool = False, stable: bool = False, added: Sequence[str] = ()) -> str:
+                 earlier_goal: str = "", since_start: bool = False, stable: bool = False, added: Sequence[str] = (), state: str = "") -> str:
     """The message of one call. With ``stable`` the goal, context, folder map and start files are in the system text: the message holds the goal's title, the
     files added to the folder since the start, the files changed or added to the view since the start, the history and the note."""
     parts = [f"GOAL:\n{goal.strip()}"]
     if earlier_goal.strip() and earlier_goal.strip() != goal.strip():
         parts.append(f"EARLIER GOAL:\n{earlier_goal.strip()}")
+    if state.strip():
+        parts.append(f"YOUR STATE (what you wrote last; rewrite it in every reply that acts):\n{state.strip()}")
     if stable:
         if added:
             parts.append("NEW FILES IN THE FOLDER SINCE THE START (not in the map above; READ before relying on them):\n" + "\n".join(added[:MAP_ENTRIES]))
@@ -600,6 +687,21 @@ def build_prompt(goal: str, context: str, folder_map: str, files_text: str, entr
 
 
 # --- running the actions ---------------------------------------------------------------------------------------------------------------
+
+def path_risk(path: str) -> str:
+    """Why a path outside the working folder is not to be read unasked (the Folder View's judgment of it and of the folders on its way: credentials, keys,
+    backups), or ``""``. A judgment that cannot be had says nothing."""
+    try:
+        from hubofhubs.the_intelligence.subconscious.folder_view.judgment import path_verdict
+        parts = [part for part in path.split(os.sep) if part]
+        for start in range(len(parts)):      # judged from each level down: an unhelpful folder on the way (a temp folder) must not hide a risky one below it
+            verdict = path_verdict(os.sep + os.sep.join(parts[:start]), "/".join(parts[start:]))
+            if verdict and verdict.risky:
+                return verdict.reason
+    except Exception:  # noqa: BLE001 -- no judgment available: the sandbox still keeps the file read-only
+        return ""
+    return ""
+
 
 def snapshot(root: str, skip: Collection[str] = ()) -> Dict[str, Tuple[int, float]]:
     return {rel: (size, mtime) for rel, size, mtime in walk(root, skip=skip)}
@@ -699,11 +801,14 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
     seen: "OrderedDict[str, None]" = OrderedDict()
     earlier_goal = ""
     earlier_calls = 0
+    state_text = ""
+    repeats = Repeats()
     if state is None:
         view.start(chosen.picks, goal)
     else:
         earlier_goal = state.goal
         earlier_calls = int(state.calls)
+        state_text = bounded_state(state.state)
         entries.extend(dict(entry) for entry in state.entries)
         for rel, named in state.view:
             view.files[rel] = bool(named)
@@ -796,7 +901,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         saved_at[0] = marker
         try:
             save(LoopState(goal=goal, entries=[dict(e) for e in entries], view=list(view.files.items()), changed=list(changed),
-                           read=list(seen), calls=earlier_calls + own_calls))
+                           read=list(seen), calls=earlier_calls + own_calls, state=state_text))
         except Exception:  # noqa: BLE001 -- a store that cannot write never ends a run
             pass
     last_text = ""
@@ -828,7 +933,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         elif counter.left() == 1:
             note = "One call remains after this one: aim to finish with a REPORT."
         try:
-            message = build_prompt(goal_shown, context, folder_map, files_text, entries, note, earlier_goal, bool(start), stable, added)
+            message = build_prompt(goal_shown, context, folder_map, files_text, entries, note, earlier_goal, bool(start), stable, added, state_text)
             log.info("loop %s call %d: system %d chars, message %d chars (goal %d, context %d, folder map %d, files %d, history %d)", tell.agent, own_calls,
                      len(system), len(message), len(goal_shown), len(context), len(folder_map), len(files_text), len(history_text(entries)))
             text = ask(system, message) or ""
@@ -846,6 +951,13 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         result.log.append({"call": own_calls, "reply": text, "outcomes": entry["outcomes"]})
         entries.append(entry)
         late = fetch()     # a message that came in while the model worked: unseen by this reply
+        if reply.actions or reply.report is not None:
+            if reply.state is not None:
+                state_text = bounded_state(reply.state)
+            elif reply.actions and not reply.notes:
+                entry["reminder"] = "Your reply had no STATE, so your last one stays. Rewrite it in your next reply: done, learned (the facts), next, failed and not to retry."
+        for note_line in reply.notes:      # a NOTE adds a line to the STATE
+            state_text = bounded_state(state_text + "\n" + note_line)
         if reply.notes:
             last_text = reply.notes[-1]
         if reply.report is not None:
@@ -885,7 +997,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             step_id = tell.step(action.kind, action.text, "running" if action.kind in ("run", "use", "delegate") else "done") \
                 if action.kind in ("run", "use", "delegate") else ""
             outcome = execute(action, root, view, changed, seen, result, depth, complete, context, max_calls, cancel, emit, command_timeout,
-                              environment, wrap, view_chars, counter, codes, tools, tell, abandon, system_chars)
+                              environment, wrap, view_chars, counter, codes, tools, tell, abandon, system_chars, repeats)
             entry["outcomes"].append(outcome)
             tell.step(action.kind, action.text, "done" if outcome.ok else "failed", step_id=step_id, detail="" if outcome.ok else outcome.text)
             if action.kind == "read" and outcome.ok:
@@ -898,6 +1010,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
                 failed.append(outcome.label)
             say(f"call {own_calls}: {outcome.label} {'ok' if outcome.ok else 'failed'}")
         passed = True
+        stuck_checks: List[str] = []
         for action in checks:
             before = snapshot(root, view.skip)
             check_id = tell.step("check", action.text)
@@ -908,12 +1021,26 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             tell.step("check", action.text, "done" if ok else "failed", step_id=check_id, detail="" if ok else f"exit {done.code}")
             passed = passed and ok
             check_passed = check_passed or ok
-            entry["outcomes"].append(Outcome(f"CHECK {short(action.text)}", ok, f"exit {done.code}\n{done.output}".strip()))
+            check_text = f"exit {done.code}\n{done.output}".strip()
+            if ok:
+                repeats.success("CHECK " + normalised(action.text))
+            else:
+                count, line = repeats.failure("CHECK " + normalised(action.text), check_text)
+                if count >= 2:
+                    stuck_checks.append(first_error(check_text))
+                    check_text += (f"\nThis check has now failed {count} times for the same reason ({first_error(check_text)}). It cannot pass by repeating it. A REPORT is accepted "
+                                   "with this check still failing if it states exactly what remains for a person and why; the run then ends not met, with your report.")
+            entry["outcomes"].append(Outcome(f"CHECK {short(action.text)}", ok, check_text))
             say(f"call {own_calls}: check {'passed' if ok else 'failed'}")
         if reply.report is None:
             continue
         if late:
             entry["advice"] = MESSAGE_ADVICE
+        elif checks and not passed and stuck_checks and reply.report:
+            # A check that cannot pass by repeating it, and a report that says what remains: the run ends not met, with the report, so the work done is shown.
+            result.met, result.partial, result.report = False, True, reply.report
+            result.error = f"the check could not pass ({stuck_checks[0]}); the report says what remains for a person"
+            break
         elif new_reads and not other_work and not checks:
             entry["advice"] = "You read files or used a tool in this reply, so your REPORT was written before seeing the result. It is in view now: report from it."
         elif failed:
@@ -934,6 +1061,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         last_text = reply.report or last_text
         result.report = last_text
     result.report = result.report or last_text
+    result.state = state_text
     result.changed = list(changed)
     result.read = list(seen)
     persist()
@@ -1036,7 +1164,7 @@ def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDi
 def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, None]", seen, result: LoopResult, depth: int, complete, context: str,
             max_calls: int, cancel, emit, command_timeout: float, environment, wrap, view_chars: int, counter: CallCounter,
             codes: List[int], tools: Optional[Mapping[str, Tool]] = None, tell: Optional[Telling] = None,
-            abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS) -> Outcome:
+            abandon: Optional[Callable[[int], None]] = None, system_chars: int = SYSTEM_CHARS, repeats: Optional[Repeats] = None) -> Outcome:
     if action.kind == "edit":
         outcome, wrote = apply_block(action, root)
         rel = os.path.relpath(inside(Path(root), action.text), Path(root).resolve()).replace(os.sep, "/") if outcome.ok or wrote else action.text
@@ -1053,38 +1181,62 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
         return outcome
     if action.kind == "read":
         label = f"READ {action.text}"
+        target = os.path.expanduser(action.text.strip())
+        base = Path(root).resolve()
         try:
             path = inside(Path(root), action.text)
+            rel = os.path.relpath(path, base).replace(os.sep, "/")
         except (ValueError, OSError):
-            return Outcome(label, False, "outside the working folder")
-        rel = os.path.relpath(path, Path(root).resolve()).replace(os.sep, "/")
+            # A file outside the working folder may be read (not written), shown like any other: unless the Folder View judgment finds its path risky (a
+            # credentials folder, a key file).
+            path = Path(target) if os.path.isabs(target) else (base / target)
+            path = Path(os.path.normpath(path))
+            rel = str(path)
+            risk = path_risk(str(path))
+            if risk:
+                return Outcome(label, False, f"not read: {risk}")
+        if path.is_dir():
+            return Outcome(label, False, f"{action.text!r} is a folder; list it with RUN: ls and read a file in it")
         if not path.exists():
             return Outcome(label, False, "no such file")
         if read_text(path) is None:
-            return Outcome(label, False, "not a readable text file")
+            return Outcome(label, False, "not a readable text file (binary, or larger than 2 MB, or not readable by this account)")
         known = rel in view.files
         view.add(rel)
         return Outcome(label, True, "already in view" if known else "added to view; its text is in view from the next reply")
     if action.kind == "run":
+        label = f"RUN {short(action.text)}"
+        key = "RUN " + normalised(action.text)
+        refused_again = repeats.refusal(key) if repeats is not None else ""
+        if refused_again:
+            return Outcome(label, False, refused_again)
         before = snapshot(root, view.skip)
         done = run_command(action.text, working_dir=root, timeout=command_timeout, environment=environment, wrap=wrap, limit=COMMAND_LIMIT)
         track(root, before, changed, view.skip)
-        label = f"RUN {short(action.text)}"
         if done.refused:
             return Outcome(label, False, f"refused: {done.refused}")
         result.commands += 1
         codes.append(done.code)
-        return Outcome(label, done.code == 0, ("timed out; " if done.timed_out else "") + f"exit {done.code}\n{done.output}".rstrip())
+        text = ("timed out; " if done.timed_out else "") + f"exit {done.code}\n{done.output}".rstrip()
+        if repeats is not None:
+            text += repeats.success(key) if done.code == 0 else repeats.failure(key, text)[1]
+        return Outcome(label, done.code == 0, text)
     if action.kind == "use":
         name, _, given = action.text.partition(" ")
         label = f"USE {name} {short(given)}".strip()
         tool = (tools or {}).get(name)
         if tool is None:
             return Outcome(label, False, f"there is no tool named {name!r}; the tools are: {', '.join(tools or {}) or 'none'}")
+        key = "USE " + normalised(action.text)
+        refused_again = repeats.refusal(key) if repeats is not None else ""
+        if refused_again:
+            return Outcome(label, False, refused_again.replace("command", "tool call"))
         try:
-            return Outcome(label, True, clip(str(tool.run(given.strip())), TOOL_LIMIT))
+            text = clip(str(tool.run(given.strip())), TOOL_LIMIT)
+            return Outcome(label, True, text + (repeats.success(key) if repeats is not None else ""))
         except Exception as error:  # noqa: BLE001 -- a failing tool is a failed action, not a failed run
-            return Outcome(label, False, f"{type(error).__name__}: {error}")
+            text = f"{type(error).__name__}: {error}"
+            return Outcome(label, False, text + (repeats.failure(key, text)[1].replace("command", "tool call") if repeats is not None else ""))
     if action.kind == "delegate":
         label = f"DELEGATE {short(action.text)}"
         if depth <= 0:

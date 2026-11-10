@@ -160,11 +160,19 @@ class SolutionLoopRunner(DeepRunnerBase):
     def goal_settings(self) -> GoalSettings:
         return resolve_goal_settings(self.settings_source)
 
-    def child_environment(self, settings: GoalSettings) -> Optional[Dict[str, str]]:
-        """The environment commands run in, or None to inherit when the settings carry none."""
+    def child_environment(self, settings: GoalSettings, requester_user_id: Optional[str] = None, run_id: Optional[str] = None) -> Optional[Dict[str, str]]:
+        """The environment commands run in, or None to inherit when the settings carry none. It is the one the sibling runners give their worker
+        (``SubprocessGoalRunner.build_env``): the settings' environment, the requester through the settings' hook, the run id under the settings' name,
+        unbuffered output, the extra PATH folders, and without the variables that would bill or confuse a nested Claude Code session."""
         env = dict(settings.environment() or {})
         if not env:
             return None
+        settings.apply_requester(env, requester_user_id)
+        env["PYTHONUNBUFFERED"] = "1"
+        if run_id and settings.run_id_env:
+            env[settings.run_id_env] = run_id
+        for name in ("CLAUDECODE", "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"):
+            env.pop(name, None)
         if self.cfg.extra_path_dirs:
             env["PATH"] = os.pathsep.join(list(self.cfg.extra_path_dirs) + [env.get("PATH", "")])
         return env
@@ -206,7 +214,7 @@ class SolutionLoopRunner(DeepRunnerBase):
              model: Optional[str] = None, emit: Optional[Callable[..., None]] = None, cancel_check: Optional[Callable[[], bool]] = None,
              run_id: Optional[str] = None, session_id: Optional[str] = None,
              resume_session_id: Optional[str] = None, solution: str = "", milestone: str = "", frame: str = "",
-             agent: str = "main", control: Any = None) -> Tuple[LoopResult, Dict[str, float], str]:
+             agent: str = "main", control: Any = None, requester_user_id: Optional[str] = None) -> Tuple[LoopResult, Dict[str, float], str]:
         """One loop on ``goal``: ``(the loop's result, {"cost", "tokens"}, "" or why it stopped early: "timeout" / "cancelled")``. With a
         ``session_id`` the state is saved there after every call, and the state saved under ``resume_session_id`` starts the loop. Raises only
         what a bad setting raises; ``run_goal`` catches it.
@@ -303,7 +311,7 @@ class SolutionLoopRunner(DeepRunnerBase):
         try:
             result = run_loop(goal, working_dir=folder, complete=self.completion(run_model, settings, usage), context=context_text,
                               max_calls=max_calls, depth=1, cancel=cancel, emit=tell if emit is not None else None,
-                              command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings), counter=None,
+                              command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings, requester_user_id, run_id), counter=None,
                               wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling, system_chars=self.system_chars,
                               abandon=None if self.injected is not None else abandon_completion)
         finally:
@@ -320,7 +328,7 @@ class SolutionLoopRunner(DeepRunnerBase):
                  emit: Optional[Callable[..., None]] = None, context_preamble: Optional[str] = None, run_id: Optional[str] = None,
                  working_dir: Optional[str] = None, cancel_check: Optional[Callable[[], bool]] = None,
                  resume_session_id: Optional[str] = None, control: Any = None, solution: str = "", milestone: str = "", frame: str = "",
-                 **ignored: Any) -> DeepResult:
+                 requester_user_id: Optional[str] = None, **ignored: Any) -> DeepResult:
         """Run the goal (``brief`` when given, else ``goal``) as one loop of at most ``max_turns`` model calls (15 when unset). ``model`` is used
         in place of the arm's tier model. The wall-clock cap stops the run between calls. ``resume_session_id`` continues a saved session (a
         missing or unreadable one starts fresh); the result's ``session_id`` names the session file the run kept. Never raises."""
@@ -332,7 +340,8 @@ class SolutionLoopRunner(DeepRunnerBase):
             session_id = resume_session_id or run_id or uuid.uuid4().hex
             result, usage, why = self.work(brief or goal, context=preamble or "", working_dir=working_dir, max_calls=int(max_turns or DEFAULT_CALLS),
                                            model=model, emit=emit, cancel_check=cancel_check, run_id=run_id, session_id=session_id,
-                                           resume_session_id=resume_session_id, control=control, solution=solution, milestone=milestone, frame=frame)
+                                           resume_session_id=resume_session_id, control=control, solution=solution, milestone=milestone, frame=frame,
+                                           requester_user_id=requester_user_id)
             deep = self.deep_result(result, usage, why, run_model or "")
             deep.session_id = session_id
             return deep
