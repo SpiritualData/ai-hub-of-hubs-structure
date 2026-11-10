@@ -38,6 +38,12 @@ from hubofhubs.the_world.tools.file_reading.read_files import inside
 
 SKIPPED_FOLDERS = (".git", "__pycache__", "node_modules")
 MAP_ENTRIES = 300
+LEXICAL_FILES = 200                # above this many files, words shared with the goal no longer tell which files matter
+LARGE_FOLDER_FILL = 24_000         # characters of likely files put in view when the folder is too large to show whole
+RELEVANT_SCORE = 3                 # a file needs a word of the goal in its path, or three in its opening, to be shown unasked
+TOOL_LIMIT = 20_000                # characters kept from one tool result (a runbook or a page is read whole where a command's output is clipped)
+PATH_TOKEN = re.compile(r"(?<![\w/.-])/?(?:[\w.-]+/)+[\w.-]+\.\w{1,6}(?![\w])")      # a path with at least one folder and a file suffix
+SYSTEM_CHARS = 80_000              # the system text is one command argument for a command-line completion, which the system caps near 128 KiB
 NOTHING_NEW = "(nothing has changed or been added since the start: the files shown at the start are current)"
 # The files in view at the start go in the system text, after the instructions: a model service keeps a long system text between calls, so the
 # second call of a run (and a review, and a helper) pays a fraction for them. The message then carries only what changed or was added.
@@ -212,19 +218,33 @@ class LoopState:
 # --- the working folder ----------------------------------------------------------------------------------------------------------------
 
 def walk(root: str, limit: int = SNAPSHOT_FILES) -> List[Tuple[str, int, float]]:
-    """``(relative path, size, mtime)`` of the files under ``root``, shallow first, skipping version-control, cache, dependency and hidden folders."""
+    """``(relative path, size, mtime)`` of the files under ``root``, level by level from the top (so a cap keeps the shallow files of a very large
+    folder and stops scanning), skipping version-control, cache, dependency and hidden folders. At most ``limit`` files."""
     found: List[Tuple[str, int, float]] = []
-    for folder, names, files in os.walk(root):
-        names[:] = sorted(n for n in names if n not in SKIPPED_FOLDERS and not n.startswith(".") and not os.path.islink(os.path.join(folder, n)))
-        for name in files:
-            full = os.path.join(folder, name)
+    level = [root]
+    while level and len(found) < limit:
+        deeper: List[str] = []
+        for folder in level:
             try:
-                stat = os.stat(full)
+                entries = sorted(os.scandir(folder), key=lambda e: e.name)
             except OSError:
                 continue
-            found.append((os.path.relpath(full, root).replace(os.sep, "/"), stat.st_size, stat.st_mtime_ns))
+            for entry in entries:
+                try:
+                    if entry.is_symlink():
+                        continue
+                    if entry.is_dir():
+                        if (entry.name not in SKIPPED_FOLDERS and not entry.name.startswith(".")
+                                and not os.path.exists(os.path.join(entry.path, "pyvenv.cfg"))):      # a virtual environment is not the work
+                            deeper.append(entry.path)
+                    elif entry.is_file() and len(found) < limit:
+                        stat = entry.stat()
+                        found.append((os.path.relpath(entry.path, root).replace(os.sep, "/"), stat.st_size, stat.st_mtime_ns))
+                except OSError:
+                    continue
             if len(found) >= limit:
                 break
+        level = deeper
     return sorted(found, key=lambda f: (f[0].count("/"), f[0]))
 
 
@@ -239,16 +259,44 @@ def read_text(path: Path, limit: int = 2_000_000) -> Optional[str]:
         return None
 
 
+def head_text(path: Path, chars: int = 2048) -> Optional[str]:
+    """The first ``chars`` bytes of ``path`` as text, or None when it cannot be read or looks binary. Reading only the head keeps a folder of
+    thousands of files quick to map."""
+    try:
+        with path.open("rb") as handle:
+            data = handle.read(chars)
+    except OSError:
+        return None
+    return None if b"\0" in data else data.decode("utf-8", errors="ignore")
+
+
 def listing(root: str) -> Tuple[List[Tuple[str, int]], str]:
     """The text files that fit ``MAP_FILE_LIMIT`` as ``(path, size)`` and the map text: one line per file (at most ``MAP_ENTRIES``) with a line
     saying how many were left out."""
     base = Path(root)
-    texts = [(rel, size) for rel, size, _ in walk(root) if size <= MAP_FILE_LIMIT and read_text(base / rel) is not None]
+    texts = [(rel, size) for rel, size, _ in walk(root) if size <= MAP_FILE_LIMIT and head_text(base / rel) is not None]
+    if len(texts) > LEXICAL_FILES:
+        return texts, outline(texts)
     shown = texts[:MAP_ENTRIES]
     lines = [f"{rel} ({size} bytes)" for rel, size in shown] or ["(no files yet)"]
     if len(texts) > len(shown):
-        lines.append(f"... {len(texts) - len(shown)} more files not listed")
+        lines.append(f"... {len(texts) - len(shown)} more files not listed; the folder is large, so find what you need with RUN: ls <folder> or RUN: grep -rl <words> <folder>, then READ it")
     return texts, "\n".join(lines)
+
+
+def outline(texts: Sequence[Tuple[str, int]], depth: int = 2, limit: int = 120) -> str:
+    """A large folder as an outline: the files at the top, then each folder down to ``depth`` levels with how many files were found below it. A
+    flat list of hundreds of paths costs every call and still shows a sliver; the outline says where to look."""
+    top = [f"{rel} ({size} bytes)" for rel, size in texts if "/" not in rel][:40]
+    counts: Dict[str, int] = {}
+    for rel, _ in texts:
+        parts = rel.split("/")[:-1]
+        for level in range(1, min(len(parts), depth) + 1):
+            key = "/".join(parts[:level]) + "/"
+            counts[key] = counts.get(key, 0) + 1
+    folders = [f"{key} ({count} files found below)" for key, count in sorted(counts.items())][:limit]
+    return "\n".join(top + folders + ["This folder is large: only its outline is shown. Find what you need with RUN: ls <folder> or "
+                                      "RUN: grep -rl <words> <folder>, then READ it."])
 
 
 def mentions(text: str, name: str) -> bool:
@@ -264,20 +312,34 @@ class View:
 
     def start(self, files: Sequence[Tuple[str, int]], named_text: str) -> None:
         named = [rel for rel, _ in files if mentions(named_text, rel) or mentions(named_text, rel.rsplit("/", 1)[-1])]
+        for token in dict.fromkeys(PATH_TOKEN.findall(named_text)):      # a path the goal or context gives, deeper than the scan reached
+            try:
+                path = inside(Path(self.root), token.strip("./") if not token.startswith("/") else token)
+            except (ValueError, OSError):
+                continue
+            rel = os.path.relpath(path, Path(self.root).resolve()).replace(os.sep, "/")
+            if rel not in named and path.is_file() and path.stat().st_size <= MAP_FILE_LIMIT and head_text(path) is not None:
+                named.append(rel)
         used = 0
         for rel in named:
             self.files[rel] = True
             used += self.size(rel)
         rest = [(rel, size) for rel, size in files if rel not in self.files]
+        budget = self.view_chars
         if used + sum(size for _, size in rest) <= self.view_chars:
             ranked = sorted(rest, key=lambda f: f[1])                       # the whole folder fits: everything is in view
+        elif len(files) > LEXICAL_FILES:
+            ranked = []      # a corpus: shared words pick noise among thousands of files, so only what the goal or context names is shown
         else:                                                               # it does not: only what the goal's own words point at
             words = {w for w in re.findall(r"[a-z0-9]{4,}", named_text.lower()) if w not in COMMON_WORDS}
             scored = [(self.relevance(rel, words), rel, size) for rel, size in rest]
-            ranked = [(rel, size) for score, rel, size in sorted(scored, key=lambda f: (-f[0], f[2])) if score > 0]
+            ranked = [(rel, size) for score, rel, size in sorted(scored, key=lambda f: (-f[0], f[2])) if score >= RELEVANT_SCORE]
+            # Words in common are a weak sign in a large folder: show a little of the likeliest and let the model READ or search for the rest,
+            # so a run in a big corpus does not pay for a view full of loosely related files at every call.
+            budget = min(budget, used + LARGE_FOLDER_FILL)
         chosen: List[str] = []
         for rel, size in ranked:
-            if used + size > self.view_chars:
+            if used + size > budget:
                 continue
             chosen.append(rel)
             used += size
@@ -288,9 +350,9 @@ class View:
         """How many of the goal's words a file's path (counted three times) and its first 2000 characters hold."""
         if not words:
             return 0
-        text = read_text(Path(self.root) / rel) or ""
+        text = head_text(Path(self.root) / rel) or ""
         path_words = set(re.findall(r"[a-z0-9]{4,}", rel.lower()))
-        head_words = set(re.findall(r"[a-z0-9]{4,}", text[:2000].lower()))
+        head_words = set(re.findall(r"[a-z0-9]{4,}", text.lower()))
         return 3 * len(words & path_words) + len(words & head_words)
 
     def size(self, rel: str) -> int:
@@ -532,11 +594,23 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         seen.update((rel, None) for rel in state.read)
     tool_lines = "".join(f"USE: {name} <input>   {' '.join(tool.description.split())}\n" for name, tool in (tools or {}).items())
     system = SYSTEM.format(delegate=DELEGATE_LINE if depth > 0 else "", tools=tool_lines)
+    if cache_chars and len(context) >= cache_chars and len(system) + len(context) < SYSTEM_CHARS // 2:
+        # Long standing context is the same at every call of a run (and often for every run of a lane): it goes where it is kept between calls.
+        system += f"\n\nSTANDING CONTEXT:\n{context.strip()}"
+        context = ""
     start = view.blocks()
     if sum(len(block) for block in start.values()) < cache_chars:
         start = {}      # a small view is cheaper sent in the message: the instructions alone stay the same for every run and are kept between them
-    else:
-        system += f"\n\n{START_FILES}\n" + "\n".join(start[rel] for rel in sorted(start))
+    else:      # as many start files as the system text may hold (it travels as one command argument); the rest go in the message
+        kept: Dict[str, str] = {}
+        room = SYSTEM_CHARS - len(system) - len(START_FILES)
+        for rel in sorted(start):
+            if len(start[rel]) + 1 <= room:
+                kept[rel] = start[rel]
+                room -= len(start[rel]) + 1
+        start = kept
+        if start:
+            system += f"\n\n{START_FILES}\n" + "\n".join(start[rel] for rel in sorted(start))
 
     def fetch() -> List[str]:
         """The messages a person sent since the last look, added to the history; the texts."""
@@ -826,7 +900,7 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
         if tool is None:
             return Outcome(label, False, f"there is no tool named {name!r}; the tools are: {', '.join(tools or {}) or 'none'}")
         try:
-            return Outcome(label, True, clip(str(tool.run(given.strip())), COMMAND_LIMIT))
+            return Outcome(label, True, clip(str(tool.run(given.strip())), TOOL_LIMIT))
         except Exception as error:  # noqa: BLE001 -- a failing tool is a failed action, not a failed run
             return Outcome(label, False, f"{type(error).__name__}: {error}")
     if action.kind == "delegate":

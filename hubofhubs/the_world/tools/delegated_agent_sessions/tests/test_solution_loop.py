@@ -563,3 +563,50 @@ def test_the_files_in_view_at_the_start_are_in_the_system_text_and_the_same_at_e
     assert script.systems[0] == script.systems[1] and "=== notes.txt ===\nkeep" in script.systems[0] and "x = 1" in script.systems[0]
     message = script.prompts[1][len(script.systems[1]):]
     assert "=== app.py ===\nx = 2" in message and "notes.txt ===" not in message      # only what changed is sent again
+
+
+def test_a_path_the_goal_gives_is_in_view_though_the_scan_stopped_before_it(tmp_path, monkeypatch):
+    from hubofhubs.the_world.tools.delegated_agent_sessions import solution_loop
+    files = {f"top{n}.txt": "filler\n" for n in range(6)}
+    files["deep::down::plan.md"] = "The plan is to ship on Friday.\n"
+    root = folder(tmp_path, **files)
+    monkeypatch.setattr(solution_loop, "SNAPSHOT_FILES", 4)
+    assert len(solution_loop.walk(root, 4)) == 4 and all("/" not in rel for rel, _, _ in solution_loop.walk(root, 4))      # shallow first, capped
+    script = Script("Friday.")
+    run_loop("When does deep/down/plan.md say we ship?", working_dir=root, complete=script, view_chars=40)
+    assert "=== deep/down/plan.md ===" in script.prompts[0]
+
+
+def test_a_long_view_keeps_the_system_text_under_the_argument_limit(tmp_path):
+    from hubofhubs.the_world.tools.delegated_agent_sessions import solution_loop
+    root = folder(tmp_path, **{f"part{n}.txt": "w" * 30000 for n in range(4)})
+    script = Script("ok")
+    run_loop("Summarise the parts.", working_dir=root, complete=script, view_chars=200000)
+    assert len(script.systems[0]) <= solution_loop.SYSTEM_CHARS and all(f"=== part{n}.txt ===" in script.prompts[0] for n in range(4))
+
+
+def test_a_corpus_shows_only_named_files_and_skips_a_virtual_environment(tmp_path, monkeypatch):
+    from hubofhubs.the_world.tools.delegated_agent_sessions import solution_loop
+    files = {f"notes::note{n}.txt": "the venue budget\n" for n in range(8)}
+    files["env::pyvenv.cfg"] = "home = x\n"
+    files["env::lib::thing.py"] = "venue = 1\n"
+    root = folder(tmp_path, **files)
+    monkeypatch.setattr(solution_loop, "LEXICAL_FILES", 5)
+    script = Script("ok")
+    run_loop("What is the venue budget in notes/note3.txt?", working_dir=root, complete=script, view_chars=60)
+    assert "=== notes/note3.txt ===" in script.prompts[0] and script.prompts[0].count("=== notes/") == 1 and "env/lib" not in script.prompts[0]
+
+
+def test_long_standing_context_is_kept_in_the_system_text_and_a_corpus_is_mapped_as_an_outline(tmp_path, monkeypatch):
+    from hubofhubs.the_world.tools.delegated_agent_sessions import solution_loop
+    root = folder(tmp_path, **{f"area{n % 3}::note{n}.txt": "x\n" for n in range(9)}, **{"top.txt": "t\n"})
+    monkeypatch.setattr(solution_loop, "LEXICAL_FILES", 5)
+    script = Script("ok")
+    standing = "Always be exact. " * 40
+    run_loop("Say ok.", working_dir=root, complete=script, context=standing, cache_chars=200)
+    message = script.prompts[0][len(script.systems[0]):]
+    assert "STANDING CONTEXT:" in script.systems[0] and "Always be exact." not in message
+    assert "area0/ (3 files found below)" in message and "top.txt (2 bytes)" in message and "note4.txt" not in message
+    short = Script("ok")
+    run_loop("Say ok.", working_dir=root, complete=short, context="Be brief.", cache_chars=200)
+    assert "CONTEXT:\nBe brief." in short.prompts[0][len(short.systems[0]):]
