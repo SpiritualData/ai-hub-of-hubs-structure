@@ -12,18 +12,27 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
 from hubofhubs.the_intelligence.critical_thinking.decision_check.checks import parse_json, run_parallel
 
+#: Each view is forced along its own dimension. Three views asked the same open question return the recorded approach three times in other words (seen
+#: live), which is no choice at all: so one view states the recorded way concretely, one builds from the hardest requirement, one changes the form.
 DEFAULT_VIEWS = (
-    "Propose the most direct way to do this work: the fewest steps from where things stand to the result.",
-    "Propose the way that reuses the most of what already exists, and adds the least that is new.",
-    "Propose the way a careful specialist in this kind of work would take, one that guards against the usual ways such work goes wrong.",
+    "State the way already recorded for this work, made concrete for these requirements (when no way is recorded, the most direct way).",
+    "Find the requirement that is hardest to meet here and name it. Propose a way built around meeting that one first, which therefore differs from the "
+    "recorded way in what is done first and what is left out.",
+    "Propose a way that changes the form of the work: a different unit, order, grouping or source for the same result, chosen so that the gap the "
+    "recorded way leaves is closed and not worked around.",
 )
 
 PROPOSE_PROMPT = """The work: {frame}
 
+What the result must meet:
+{requirements}
+
 {instruction}
 
-Reply with JSON only: {{"name": "<2 to 5 words naming the approach>", "how": "<2 to 3 sentences: how the work is done this way>", "disadvantage": "<its main weakness, one sentence>"}}.
-Use only the work as given. Do not use em dashes."""
+A rewording of the recorded way is worthless unless the instruction above asks for the recorded way: say in "how" the one thing this way does that the
+recorded way does not. Reply with JSON only: {{"name": "<2 to 5 words naming the approach>", "how": "<2 to 3 sentences: how the work is done this way>",
+"disadvantage": "<its main weakness against these requirements, one sentence>"}}.
+Use only the work as given: no fact about the subject that it does not state. Do not use em dashes."""
 
 PICK_PROMPT = """The work: {frame}
 
@@ -57,7 +66,8 @@ def normalised(name: str) -> str:
 def choose_approach(frame: str, requirements: Sequence[str], decide: Callable[[str], str], views: Sequence[str] = DEFAULT_VIEWS,
                     width: int = 3) -> Dict[str, Any]:
     """``{"chosen": {name, how, disadvantage}, "alternatives": [the others], "calls": n, "reason": str}``; ``chosen`` is None when no view gave a valid approach."""
-    jobs = [(lambda instruction=instruction: decide(PROPOSE_PROMPT.format(frame=frame, instruction=instruction))) for instruction in views]
+    listed = "\n".join(f"- {r}" for r in requirements) or "- (none stated)"
+    jobs = [(lambda instruction=instruction: decide(PROPOSE_PROMPT.format(frame=frame, instruction=instruction, requirements=listed))) for instruction in views]
     replies = run_parallel(jobs, width)
     calls = len(jobs)
     found: List[Dict[str, str]] = []
@@ -72,7 +82,7 @@ def choose_approach(frame: str, requirements: Sequence[str], decide: Callable[[s
     order = list(range(len(found)))
     random.Random(int(hashlib.sha1(frame.encode("utf-8")).hexdigest()[:8], 16)).shuffle(order)
     listing = "\n".join(f"{n}. {found[i]['name']}: {found[i]['how']} Weakness: {found[i]['disadvantage'] or 'not stated'}" for n, i in enumerate(order, 1))
-    data = parse_json(decide(PICK_PROMPT.format(frame=frame, requirements="\n".join(f"- {r}" for r in requirements) or "- (none stated)", listing=listing)))
+    data = parse_json(decide(PICK_PROMPT.format(frame=frame, requirements=listed, listing=listing)))
     calls += 1
     index = data.get("index")
     answered = isinstance(index, int) and not isinstance(index, bool) and 1 <= index <= len(order)
