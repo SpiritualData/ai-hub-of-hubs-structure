@@ -341,3 +341,5 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0219,211.1,0.992,a106391,393c849c,,claude-haiku-5-5,
 2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0658,232.8,0.9903,a106391,393c849c,,claude-haiku-5-5,forced past ceiling: recorded again at the committed code so the standings read current rows
 2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=best",7,7,7/7,0/0,7,0,0,1.7491,280.4,0.9525,a106391,393c849c,,claude-opus-5-5,forced past ceiling: recorded again at the committed code so the standings read current rows
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,7,7/7,0/0,7,0,0,0.7886,245.5,0.9743,d9d4d27,393c849c,,claude-sonnet-5-5,forced past ceiling: same-day balanced-tier comparison under the current judge
+2026-11-10,agent_sessions_hard,"subprocess_goal_runner@provider=anthropic,tier=balanced",7,7,7/7,0/0,7,0,0,0.7744,250.8,0.9744,d9d4d27,393c849c,,claude-sonnet-5-5,

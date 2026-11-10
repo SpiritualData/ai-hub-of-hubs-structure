@@ -38,6 +38,10 @@ from hubofhubs.the_world.tools.file_reading.read_files import inside
 
 SKIPPED_FOLDERS = (".git", "__pycache__", "node_modules")
 MAP_ENTRIES = 300
+NOTHING_NEW = "(nothing has changed or been added since the start: the files shown at the start are current)"
+# The files in view at the start go in the system text, after the instructions: a model service keeps a long system text between calls, so the
+# second call of a run (and a review, and a helper) pays a fraction for them. The message then carries only what changed or was added.
+START_FILES = "FILES IN VIEW AT THE START (each is current unless the message shows it again, which then replaces this copy):"
 REVIEW_PROSE = "prose"            # ``review`` value: review every written text, not only one in which the code check found something
 COMMON_WORDS = frozenset("this that with from have will your what which when where there their them then than they into every each about folder file files using write make report tell goal should must also only does done after before been were being more most some such very just like over under between".split())
 PROSE_SUFFIXES = ("", ".md", ".txt", ".rst", ".adoc", ".html", ".htm")
@@ -70,6 +74,8 @@ the lines they become
 A new file uses an empty SEARCH section. Copy SEARCH lines exactly from the files in view.
 
 How to work: several actions per reply are welcome and preferred. Read everything you need at once and make all edits at once. Do the work fully in as few replies as possible. When the task has a way to check itself (tests, or a rubric you can verify with a command), put that command in CHECK with your REPORT in the same reply; if CHECK exits 0 the work ends there. The REPORT states concretely what you found or changed and answers the goal directly, restating every fact the goal asks for. When the goal asks you to write a document, begin your reply with a section headed REQUIREMENTS: a numbered list of (a) each separate thing the goal asks for, in the form it asks for, and (b) each limit, deadline, rule or instruction any file states that the document has to respect (a word limit someone set, a date, a thing someone said not to do), naming the file. For each limit, find the current amount in the files and state the room left, with the arithmetic (a limit of 500 with 420 used leaves 80), and plan inside it. Read every file in view for these before you list them. Then write the document so that every number is met, and say in the REPORT how each one is met. Deliver every part the goal asks for: when the files do not settle a part, build it from what they do say and mark it as a proposal, and never invent a figure, name, date or source. Never change files the goal did not ask you to change. Never claim what you did not do."""
+REVIEW_ROLE = ("FOR THIS MESSAGE YOUR ROLE IS DIFFERENT FROM THE ONE DESCRIBED AT THE TOP: the work is finished and you are its reviewer. Of the "
+               "actions listed at the top only edit blocks apply. ")
 REVIEW_SYSTEM = """You review finished work against its goal. You did not do the work. The files shown are current. Reply in this order:
 
 REQUIREMENTS: a numbered list of (a) each separate thing the goal asks for, in the form it asks for, and (b) each limit, deadline, rule or instruction the other files state that the work has to respect (a word limit someone set, a date, a thing someone said not to do).
@@ -298,21 +304,26 @@ class View:
                 break
             del self.files[victim]
 
-    def render(self) -> Tuple[str, List[str]]:
-        """The text of the files in view as they are on disk now, and their paths."""
-        parts: List[str] = []
-        shown: List[str] = []
+    def blocks(self) -> "OrderedDict[str, str]":
+        """``{path: its block of text}`` for the files in view, as they are on disk now."""
+        out: "OrderedDict[str, str]" = OrderedDict()
         for rel in list(self.files):
             text = read_text(Path(self.root) / rel)
             if text is None:
                 continue
-            shown.append(rel)
             if not text.strip():
                 text = "(empty file)\n"
             elif len(text) > self.view_chars:
                 text = text[:self.view_chars] + f"\n[the file goes on: {len(text) - self.view_chars} more characters; use RUN: sed -n to see them]\n"
-            parts.append(f"=== {rel} ===\n{text if text.endswith(chr(10)) else text + chr(10)}")
-        return "\n".join(parts) if parts else "(none)", shown
+            out[rel] = f"=== {rel} ===\n{text if text.endswith(chr(10)) else text + chr(10)}"
+        return out
+
+    def render(self, start: Optional[Mapping[str, str]] = None) -> Tuple[str, List[str]]:
+        """The text of the files in view as they are on disk now, and their paths. With ``start`` (the blocks shown at the start of the run, which
+        the model already holds), only the files that changed or were added since are in the text; the paths are still all of them."""
+        blocks = self.blocks()
+        parts = [block for rel, block in blocks.items() if start is None or start.get(rel) != block]
+        return "\n".join(parts) if parts else ("(none)" if start is None else NOTHING_NEW), list(blocks)
 
 
 # --- the reply -------------------------------------------------------------------------------------------------------------------------
@@ -419,7 +430,7 @@ def build_prompt(goal: str, context: str, folder_map: str, files_text: str, entr
         parts.append(f"EARLIER GOAL:\n{earlier_goal.strip()}")
     if context.strip():
         parts.append(f"CONTEXT:\n{context.strip()}")
-    parts += [f"FOLDER MAP (paths relative to the working folder):\n{folder_map}", f"FILES IN VIEW (current):\n{files_text}",
+    parts += [f"FOLDER MAP (paths relative to the working folder):\n{folder_map}", f"FILES IN VIEW CHANGED OR ADDED SINCE THE START (current):\n{files_text}",
               f"WHAT HAS HAPPENED SO FAR:\n{history_text(entries)}"]
     if note:
         parts.append(note)
@@ -519,6 +530,8 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         seen.update((rel, None) for rel in state.read)
     tool_lines = "".join(f"USE: {name} <input>   {' '.join(tool.description.split())}\n" for name, tool in (tools or {}).items())
     system = SYSTEM.format(delegate=DELEGATE_LINE if depth > 0 else "", tools=tool_lines)
+    start = view.blocks()
+    system += f"\n\n{START_FILES}\n" + ("\n".join(start[rel] for rel in sorted(start)) if start else "(none)")
 
     def fetch() -> List[str]:
         """The messages a person sent since the last look, added to the history; the texts."""
@@ -562,7 +575,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         fetch()
         own_calls += 1
         result.calls += 1
-        files_text, shown = view.render()
+        files_text, shown = view.render(start)
         folder_map = marked(listing(root)[1], shown)
         for rel in shown:
             seen.setdefault(rel)
@@ -654,7 +667,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             found = unsupported(root, list(changed)) if review and changed else []
             if (found or (review == REVIEW_PROSE and any(prose(rel) for rel in changed))) and counter.take():
                 result.calls += 1
-                outcomes = reviewed(goal, context, root, view, changed, complete, found)
+                outcomes = reviewed(goal, context, root, view, changed, complete, found, system, start)
                 result.log.append({"review": True, "outcomes": outcomes})
                 say(f"review: {'no change' if not outcomes else str(len(outcomes)) + ' correction(s)'}")
             break
@@ -735,19 +748,22 @@ def unsupported(root: str, changed: Sequence[str], limit: int = 20) -> List[str]
     return found[:limit]
 
 
-def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDict[str, None]", complete, found: Sequence[str] = ()) -> List[Outcome]:
+def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDict[str, None]", complete, found: Sequence[str] = (),
+             system: str = "", start: Optional[Mapping[str, str]] = None) -> List[Outcome]:
     """One review of finished work by a call that sees the goal and the files as they are, never the worker's replies. Its edit blocks are applied to
     the files the work changed (a reviewer corrects the work, it does not widen it); any other reply changes nothing. A failure changes nothing."""
     for rel in changed:
         if read_text(Path(root) / rel) is not None:
             view.add(rel, named=True)
-    files_text, shown = view.render()
+    files_text, shown = view.render(start)
     prompt = "\n\n".join(filter(None, [f"GOAL:\n{goal.strip()}", f"CONTEXT:\n{context.strip()}" if context.strip() else "",
-                                       f"FILES WRITTEN OR CHANGED BY THE WORK: {', '.join(changed)}", f"FILES (current):\n{files_text}",
+                                       f"FILES WRITTEN OR CHANGED BY THE WORK: {', '.join(changed)}",
+                                       f"FILES CHANGED OR ADDED SINCE THE START (current):\n{files_text}",
                                        ("FOUND BY A CODE CHECK (certain, not a judgment; list each under UNSUPPORTED and deal with it: keep a figure only "
-                                        "where the written file shows the arithmetic from figures that are in the sources):\n" + "\n".join(found)) if found else ""]))
-    try:
-        reply = parse_reply(complete(REVIEW_SYSTEM, prompt) or "")
+                                        "where the written file shows the arithmetic from figures that are in the sources):\n" + "\n".join(found)) if found else "",
+                                       REVIEW_ROLE + REVIEW_SYSTEM]))
+    try:      # the same system text as the worker's calls, so the files it holds are not paid for again; the reviewer's role is in the message
+        reply = parse_reply(complete(system or REVIEW_SYSTEM, prompt) or "")
     except Exception:  # noqa: BLE001 -- a review that cannot run leaves the accepted work as it is
         return []
     outcomes = []

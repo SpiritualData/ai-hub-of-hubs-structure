@@ -23,7 +23,7 @@ class Script:
 
     def __call__(self, system, prompt):
         self.systems.append(system)
-        self.prompts.append(prompt)
+        self.prompts.append(system + "\n\n" + prompt)      # everything the model was given: the instructions and start files, then the message
         reply = self.replies.pop(0) if self.replies else "BLOCKED: script ended"
         return reply(prompt) if callable(reply) else reply
 
@@ -59,7 +59,7 @@ def test_a_failing_check_feeds_its_output_to_the_second_call(tmp_path):
     script = Script(first, second)
     got = run_loop("Make x right", working_dir=root, complete=script)
     assert got.met and got.calls == 2 and got.report == "Now x is 3."
-    assert "MISSING-THING" in script.prompts[1] and "x = 2" in script.prompts[1] and "x = 1" not in script.prompts[1].split("FILES IN VIEW")[1].split("WHAT HAS")[0]
+    assert "MISSING-THING" in script.prompts[1] and "x = 2" in script.prompts[1] and "x = 1" not in script.prompts[1].split("CHANGED OR ADDED SINCE THE START")[1]
 
 
 def test_an_unmatched_search_is_reported_and_the_loop_continues(tmp_path):
@@ -150,7 +150,7 @@ def test_each_prompt_is_rebuilt_not_appended(tmp_path):
     script = Script(edit("app.py", "x = 1\n", "x = 2\n") + "NOTE: edited", "RUN: echo hi\nNOTE: ran", "REPORT: ok")
     run_loop("go", working_dir=root, complete=script)
     assert all(prompt.count("GOAL:") == 1 for prompt in script.prompts)
-    assert script.prompts[1].count("=== app.py ===") == 1 and "x = 2" in script.prompts[1]
+    assert script.prompts[1].split("CHANGED OR ADDED SINCE THE START")[1].count("=== app.py ===") == 1 and "x = 2" in script.prompts[1]
 
 
 def test_delegate_runs_a_child_and_shares_the_counter(tmp_path):
@@ -318,7 +318,7 @@ def test_written_text_with_an_unsupported_figure_gets_one_review_that_can_correc
     assert got.met and got.calls == 2 and got.report == "wrote out.md"
     assert (tmp_path / "out.md").read_text() == "Sales were 12 units.\n"
     assert (tmp_path / "facts.txt").read_text() == "Sales were 12 units.\n"      # a reviewer corrects the work, never the sources
-    assert "You review finished work" in script.systems[1] and "wrote out.md" not in script.prompts[1]
+    assert "You review finished work" in script.prompts[1] and script.systems[1] == script.systems[0] and "wrote out.md" not in script.prompts[1]
     assert "out.md: the figure 99 is in no source file" in script.prompts[1]
 
 
@@ -358,7 +358,7 @@ def test_a_folder_larger_than_the_view_shows_only_what_the_goal_points_at(tmp_pa
     root = folder(tmp_path, **files)
     script = Script("It is 300.")
     run_loop("What does the venue cost according to the budget?", working_dir=root, complete=script, view_chars=400)
-    view = script.prompts[0].split("FILES IN VIEW (current):")[1].split("WHAT HAS HAPPENED")[0]
+    view = script.prompts[0].split("FILES IN VIEW AT THE START")[1].split("WHAT HAS HAPPENED")[0]
     assert "=== budget_notes.txt ===" in view and "=== misc" not in view
 
 
@@ -426,7 +426,7 @@ def test_a_second_run_continues_the_history_and_the_view(tmp_path):
     assert two.met and two.session_id == "s1"
     prompt = second.prompts[0]
     assert "first-run-output" in prompt and "step one" in prompt and "=== b.txt ===" in prompt
-    assert "EARLIER GOAL:\ncheck a.txt" in prompt and prompt.startswith("GOAL:\ncheck a.txt again with b.txt")
+    assert "EARLIER GOAL:\ncheck a.txt" in prompt and "\n\nGOAL:\ncheck a.txt again with b.txt" in prompt
     assert "Call 3:" not in prompt and "Call 2:" in prompt
 
 
@@ -554,3 +554,12 @@ def test_a_figure_worked_out_from_two_source_figures_is_not_listed(tmp_path):
     root = folder(tmp_path, **{"limit.txt": "Keep it under 9,000 words.\n", "count.txt": "It is at 7,950 words.\n",
                                "out.md": "There is room for 1,050 words (9,000 less 7,950). We need 3,333 more readers.\n"})
     assert unsupported(root, ["out.md"]) == ["out.md: the figure 3333 is in no source file"]
+
+
+def test_the_files_in_view_at_the_start_are_in_the_system_text_and_the_same_at_every_call(tmp_path):
+    root = folder(tmp_path, **{"app.py": "x = 1\n", "notes.txt": "keep\n"})
+    script = Script(edit("app.py", "x = 1\n", "x = 2\n") + "RUN: false\n", "REPORT: done")
+    run_loop("set x to 2", working_dir=root, complete=script, review=False)
+    assert script.systems[0] == script.systems[1] and "=== notes.txt ===\nkeep" in script.systems[0] and "x = 1" in script.systems[0]
+    message = script.prompts[1][len(script.systems[1]):]
+    assert "=== app.py ===\nx = 2" in message and "notes.txt ===" not in message      # only what changed is sent again
