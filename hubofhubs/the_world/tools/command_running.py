@@ -5,7 +5,9 @@ few commands that should not run unattended. ``run_command`` runs ``bash -c`` wi
 floor of what is not run at all.
 
 ``refusal`` is a floor, not a sandbox. It scans the command's words, so a program that opens a path itself (``python -c "open('/etc/x')"``)
-passes. A deployment that needs real confinement passes ``wrap``, an argv prefix of a sandbox launcher put before ``bash``.
+passes. A deployment that needs real confinement passes ``wrap``, an argv prefix of a sandbox launcher put before ``bash``; ``sandbox_wrap``
+builds the bubblewrap prefix (whole disk read-only, the working folder and a private temp folder writable). With a ``wrap`` the sandbox enforces
+the folder boundary, so ``refusal`` leaves out its path checks and keeps the rest of the floor.
 Standard library and the hub's process-group helpers only; nothing here reads the environment.
 """
 from __future__ import annotations
@@ -14,10 +16,11 @@ import os
 import posixpath
 import re
 import shlex
+import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass
-from typing import Iterable, List, Mapping, Sequence
+from typing import Iterable, List, Mapping, Sequence, Tuple
 
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import kill_process_group
 
@@ -86,10 +89,27 @@ def path_part(token: str) -> str:
     return token.split("=", 1)[1] if re.match(r"^-{1,2}[A-Za-z][\w-]*=", token) else token
 
 
-def refusal(command: str, working_dir: str) -> str:
+def sandbox_wrap(working_dir: str, *, program: str = "bwrap", network: bool = True, extra_read_write: Sequence[str] = ()) -> Tuple[str, ...]:
+    """The bubblewrap argv prefix that runs a command with the whole filesystem read-only and only ``working_dir``, a private temp folder and
+    each ``extra_read_write`` folder writable. ``--unshare-net`` is added only when ``network`` is False. Returns ``()`` when ``program`` is not
+    on PATH, so the caller runs unconfined (with ``refusal`` as the only floor)."""
+    if shutil.which(program) is None:
+        return ()
+    folder = os.path.abspath(working_dir)
+    argv = [program, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--tmpfs", "/tmp", "--bind", folder, folder,
+            "--chdir", folder, "--die-with-parent"]
+    if not network:
+        argv.append("--unshare-net")
+    for path in extra_read_write:
+        place = os.path.abspath(path)
+        argv += ["--bind", place, place]
+    return tuple(argv)
+
+
+def refusal(command: str, working_dir: str, *, paths: bool = True) -> str:
     """The reason ``command`` should not run, or '' when it may. A floor, not a sandbox (see the module text): it refuses ``sudo``,
-    ``rm -r`` of the disk or the home folder, ``git push``, shutdown or reboot, a download piped into a shell, and any absolute, home or
-    ``..`` path word that leads outside ``working_dir`` and the temp folder."""
+    ``rm -r`` of the disk or the home folder, ``git push``, shutdown or reboot, a download piped into a shell, and (when ``paths``) any
+    absolute, home or ``..`` path word that leads outside ``working_dir`` and the temp folder."""
     root = posixpath.normpath(os.path.abspath(working_dir))
     allowed = {root, posixpath.normpath(tempfile.gettempdir())}
     if SHELL_PIPE.search(command) and DOWNLOADER.search(command):
@@ -108,7 +128,7 @@ def refusal(command: str, working_dir: str) -> str:
             return "removing everything under the disk root or the home folder is not run"
         if name == "git" and "push" in rest[1:4]:
             return "git push is not run; changes stay in the folder"
-        for index, token in enumerate(rest):
+        for index, token in enumerate(rest if paths else ()):
             word = path_part(token)
             if not word:
                 continue
@@ -126,9 +146,9 @@ def run_command(command: str, *, working_dir: str, timeout: float = 60.0, enviro
                 wrap: Sequence[str] = (), limit: int = 4000) -> CommandResult:
     """Run ``command`` with ``bash -c`` in ``working_dir`` (its own process group, stdin closed). After ``timeout`` seconds the whole
     group is killed and ``timed_out`` is set. Output merges stdout and stderr and is clipped to ``limit`` characters, head and tail kept.
-    ``wrap`` is an argv prefix (a sandbox launcher) put before ``bash``; ``environment`` replaces the child's environment when given.
+    ``wrap`` is an argv prefix (a sandbox launcher, see ``sandbox_wrap``) put before ``bash``; the sandbox then enforces the folder boundary, so the path checks of ``refusal`` are skipped; ``environment`` replaces the child's environment when given.
     A refused command does not run (``refused`` holds the reason). Never raises."""
-    reason = refusal(command, working_dir)
+    reason = refusal(command, working_dir, paths=not wrap)
     if reason:
         return CommandResult(code=126, output=f"refused: {reason}", refused=reason)
     argv = [*wrap, "bash", "-c", command]

@@ -103,12 +103,25 @@ THE RECORDS THE AGENT HAD:
 """
 
 
-def judge(case, deliverable):
-    """[(item, ok, why)] from one judge call on the strongest Anthropic tier; a pass whose quote is not in the evidence fails."""
+REQUOTE_PROMPT = """You passed these rubric items, but the words you quoted are not in the evidence word for word. For each, copy one short
+continuous passage (one sentence or less) exactly as it is written in the deliverable or the records, changing nothing, that shows the item
+is met. If no passage shows it, change the verdict to fail. Reply with JSON only, the same shape: {{"items": [{{"item": "<the item>",
+"verdict": "pass" or "fail", "quote": "<exact words>"}}]}}
+
+ITEMS TO QUOTE AGAIN:
+{items}
+
+THE DELIVERABLE ({file}):
+{deliverable}
+
+THE RECORDS THE AGENT HAD:
+{records}
+"""
+
+
+def ask_judge(prompt):
+    """The judge's list of verdicts for one prompt, or None when two tries gave nothing readable."""
     from hubofhubs.api import model_for
-    records = "\n\n".join(f"--- {n}\n{t}" for n, t in case["files"].items())[:EVIDENCE_CHARS]
-    prompt = JUDGE_PROMPT.format(goal=case["goal"], items="\n".join(f"- {i}" for i in case["rubric"]["items"]),
-                                 file=case["rubric"]["file"], deliverable=deliverable, records=records)
     env = {n: os.environ[n] for n in ("HOME", "PATH") if n in os.environ}
     for attempt in range(2):
         try:
@@ -116,15 +129,33 @@ def judge(case, deliverable):
                                    "--setting-sources", "", "--strict-mcp-config", "--max-turns", "1"],
                                   input=prompt, capture_output=True, text=True, timeout=JUDGE_SECONDS, env=env)
             reply = json.loads(done.stdout).get("result", "")
-            verdicts = json.loads(re.search(r"\{.*\}", reply, re.S).group(0))["items"]
-            break
+            return json.loads(re.search(r"\{.*\}", reply, re.S).group(0))["items"]
         except (subprocess.TimeoutExpired, ValueError, AttributeError, KeyError, TypeError):
-            verdicts = None
+            continue
+    return None
+
+
+def judge(case, deliverable):
+    """[(item, ok, why)] from one judge call on the strongest Anthropic tier; a pass whose quote is not in the evidence fails. A pass whose
+    quote is not word for word is the judge's copying, not the deliverable's fault, so the judge is asked once to quote those items again
+    exactly (or withdraw the pass); a second quote that is not in the evidence fails the item."""
+    items = case["rubric"]["items"]
+    records = "\n\n".join(f"--- {n}\n{t}" for n, t in case["files"].items())[:EVIDENCE_CHARS]
+    verdicts = ask_judge(JUDGE_PROMPT.format(goal=case["goal"], items="\n".join(f"- {i}" for i in items),
+                                             file=case["rubric"]["file"], deliverable=deliverable, records=records))
     if verdicts is None:
-        return [(i, False, "the judge gave no readable verdict", "") for i in case["rubric"]["items"]]
+        return [(i, False, "the judge gave no readable verdict", "") for i in items]
     evidence = squash(deliverable) + " " + squash(records)
+    verdicts = (list(verdicts) + [{}] * len(items))[:len(items)]
+    loose = [n for n, v in enumerate(verdicts) if v.get("verdict") == "pass" and not quoted(v.get("quote"), evidence)]
+    if loose:
+        again = ask_judge(REQUOTE_PROMPT.format(items="\n".join(f"- {items[n]}" for n in loose), file=case["rubric"]["file"],
+                                                deliverable=deliverable, records=records))
+        for n, verdict in zip(loose, again or []):
+            if isinstance(verdict, dict):
+                verdicts[n] = verdict
     out = []
-    for item, verdict in zip(case["rubric"]["items"], verdicts + [{}] * len(case["rubric"]["items"])):
+    for item, verdict in zip(items, verdicts):
         ok = verdict.get("verdict") == "pass" and quoted(verdict.get("quote"), evidence)
         why = "" if ok else ("judged fail" if verdict.get("verdict") != "pass" else "the quote is not in the evidence")
         out.append((item, ok, why, str(verdict.get("quote") or "")[:400]))

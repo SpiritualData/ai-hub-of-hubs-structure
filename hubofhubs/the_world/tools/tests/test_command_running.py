@@ -1,4 +1,5 @@
 """run_command and refusal: bounded commands in a folder, and the floor of what is not run."""
+import os
 import tempfile
 import time
 
@@ -47,3 +48,53 @@ def test_refusals(tmp_path):
 def test_a_refused_command_does_not_run(tmp_path):
     done = run_command("touch made.txt; sudo true", working_dir=str(tmp_path))
     assert done.refused and done.code != 0 and not (tmp_path / "made.txt").exists()
+
+
+# --- the sandbox ---------------------------------------------------------------------------------------------------------------------
+
+import shutil
+import pytest
+
+from hubofhubs.the_world.tools.command_running import sandbox_wrap
+
+needs_bwrap = pytest.mark.skipif(shutil.which("bwrap") is None, reason="bubblewrap is not installed")
+
+
+def test_sandbox_wrap_is_empty_without_the_program(tmp_path):
+    assert sandbox_wrap(str(tmp_path), program="no-such-sandbox-program") == ()
+
+
+@needs_bwrap
+def test_sandbox_wrap_arguments(tmp_path):
+    other = tmp_path / "other"
+    argv = sandbox_wrap(str(tmp_path), extra_read_write=[str(other)])
+    assert argv[0] == "bwrap" and "--die-with-parent" in argv and "--unshare-net" not in argv
+    assert ("--bind", str(other), str(other)) == tuple(argv[argv.index(str(other)) - 1:argv.index(str(other)) + 2])
+    assert "--unshare-net" in sandbox_wrap(str(tmp_path), network=False)
+
+
+@needs_bwrap
+def test_a_sandboxed_command_writes_only_in_the_folder_and_reads_the_disk(tmp_path):
+    work = tmp_path / "work"
+    work.mkdir()
+    outside = tempfile.mkdtemp()
+    try:
+        wrap = sandbox_wrap(str(work))
+        inside = run_command("echo hi > made.txt", working_dir=str(work), wrap=wrap)
+        assert inside.code == 0 and (work / "made.txt").read_text() == "hi\n"
+        target = f"{outside}/escaped.txt"
+        blocked = run_command(f"echo no > {target}", working_dir=str(work), wrap=wrap)
+        assert blocked.code != 0 and not blocked.refused
+        assert not os.path.exists(target)
+        reading = run_command("cat /etc/hostname", working_dir=str(work), wrap=wrap)
+        assert reading.code == 0 and reading.output.strip()
+        assert run_command("echo x > /etc/hostname-copy", working_dir=str(work), wrap=wrap).code != 0
+    finally:
+        shutil.rmtree(outside, ignore_errors=True)
+
+
+def test_a_wrap_skips_the_path_checks_but_keeps_the_rest_of_the_floor(tmp_path):
+    assert refusal("cat /etc/hostname", str(tmp_path)) and not refusal("cat /etc/hostname", str(tmp_path), paths=False)
+    assert refusal("sudo ls", str(tmp_path), paths=False) and refusal("git push", str(tmp_path), paths=False)
+    done = run_command("sudo true", working_dir=str(tmp_path), wrap=("env",))
+    assert done.refused

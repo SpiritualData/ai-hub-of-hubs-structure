@@ -375,3 +375,182 @@ def test_an_escalation_marker_in_the_report_is_a_decision_not_a_met_run(tmp_path
                                 settings=GoalSettings(escalation_marker="RAISED:"))
     got = runner.run_goal(goal="Decide the budget.", brief="", working_dir=root)
     assert got.met is False and got.decision_id == "dec_123abc"
+
+
+# --- resume, steering, tools, sandbox --------------------------------------------------------------------------------------------------
+
+import json
+import os
+import shutil
+import tempfile
+import threading
+
+import pytest
+
+from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import LoopState, Tool
+
+
+def keeper(root, sessions, complete, **kw):
+    return SolutionLoopRunner(root=str(root), complete=complete, model_for=lambda provider, tier: "stub-model", session_dir=str(sessions), **kw)
+
+
+def test_loop_state_round_trips_through_json():
+    state = LoopState(goal="g", entries=[{"call": 1, "note": "n", "advice": "a", "reply": "x", "outcomes": [Outcome("RUN x", True, "exit 0")]},
+                                         {"message": "hello"}], view=[("a.txt", True), ("b.txt", False)], changed=["a.txt"], read=["a.txt", "b.txt"], calls=3)
+    back = LoopState.from_json(state.to_json())
+    assert back.goal == "g" and back.view == [("a.txt", True), ("b.txt", False)] and back.calls == 3 and back.changed == ["a.txt"]
+    assert back.entries[0]["outcomes"][0] == Outcome("RUN x", True, "exit 0") and back.entries[0]["advice"] == "a" and back.entries[1] == {"message": "hello"}
+    assert "reply" not in json.loads(state.to_json())["entries"][0]
+    with pytest.raises(ValueError):
+        LoopState.from_json("not json")
+
+
+def test_save_is_called_after_every_call(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+    saved = []
+    script = Script("RUN: echo one\nNOTE: first", "RUN: echo two\nNOTE: second", "REPORT: done")
+    got = run_loop("go", working_dir=root, complete=script, save=lambda state: saved.append(state.calls))
+    assert got.met and saved == [1, 2, 3]
+
+
+def test_a_second_run_continues_the_history_and_the_view(tmp_path):
+    work, sessions = tmp_path / "work", tmp_path / "sessions"
+    work.mkdir()
+    folder(work, **{"a.txt": "ALPHA\n", "b.txt": "BETA\n"})
+    first = Script("READ: b.txt\nRUN: echo first-run-output\nNOTE: step one", "RUN: echo again\nNOTE: step two")
+    runner = keeper(work, sessions, first)
+    one = runner.run_goal(goal="check a.txt", run_id="s1", max_turns=2)
+    assert not one.met and one.session_id == "s1" and (sessions / "s1.json").exists()
+    second = Script("REPORT: carried on")
+    two = keeper(work, sessions, second).run_goal(goal="check a.txt again with b.txt", resume_session_id="s1", max_turns=2)
+    assert two.met and two.session_id == "s1"
+    prompt = second.prompts[0]
+    assert "first-run-output" in prompt and "step one" in prompt and "=== b.txt ===" in prompt
+    assert "EARLIER GOAL:\ncheck a.txt" in prompt and prompt.startswith("GOAL:\ncheck a.txt again with b.txt")
+    assert "Call 3:" not in prompt and "Call 2:" in prompt
+
+
+def test_the_same_goal_shows_no_earlier_goal(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+    state = LoopState(goal="same", entries=[], view=[("a.txt", False)])
+    script = Script("REPORT: ok")
+    run_loop("same", working_dir=root, complete=script, state=state)
+    assert "EARLIER GOAL" not in script.prompts[0]
+
+
+def test_a_corrupt_session_file_starts_fresh(tmp_path):
+    work, sessions = tmp_path / "work", tmp_path / "sessions"
+    work.mkdir()
+    sessions.mkdir()
+    (sessions / "bad.json").write_text("{ this is not json")
+    script = Script("The answer.")
+    got = keeper(work, sessions, script).run_goal(goal="question", resume_session_id="bad")
+    assert got.met and got.session_id == "bad" and "Nothing yet" in script.prompts[0]
+
+
+def test_a_message_in_the_inbox_reaches_the_next_prompt_and_is_kept_clipped(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+    waiting = []
+    script = Script(lambda prompt: (waiting.append("Use the blue one instead") or "RUN: echo one\nNOTE: first"), "RUN: echo two\nNOTE: second", "REPORT: done")
+
+    def inbox():
+        got, waiting[:] = list(waiting), []
+        return got
+
+    got = run_loop("go", working_dir=root, complete=script, inbox=inbox)
+    line = "MESSAGE FROM THE PERSON (follow it; it overrides the plan so far): Use the blue one instead"
+    assert "MESSAGE" not in script.prompts[0] and line in script.prompts[1] and line in script.prompts[2] and got.met
+
+
+def test_a_report_is_not_accepted_while_an_unseen_message_arrived(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+    arrivals = [[], ["Also mention the date"], []]
+    script = Script("REPORT: done", "REPORT: done with the date")
+    got = run_loop("go", working_dir=root, complete=script, inbox=lambda: arrivals.pop(0) if arrivals else [])
+    assert got.calls == 2 and got.report == "done with the date"
+    assert "Also mention the date" in script.prompts[1] and "not accepted" in script.prompts[1]
+
+
+def test_steer_is_false_with_nothing_running_and_true_during_a_run(tmp_path):
+    work, sessions = tmp_path / "work", tmp_path / "sessions"
+    work.mkdir()
+    started, release = threading.Event(), threading.Event()
+    prompts = []
+
+    def complete(system, prompt):
+        prompts.append(prompt)
+        if len(prompts) == 1:
+            started.set()
+            assert release.wait(10)
+            return "RUN: echo one\nNOTE: first"
+        return "REPORT: answered"
+
+    runner = keeper(work, sessions, complete)
+    assert runner.steer("anyone there?") is False
+    done = []
+    thread = threading.Thread(target=lambda: done.append(runner.run_goal(goal="g", run_id="r1")))
+    thread.start()
+    assert started.wait(10)
+    assert runner.steer("switch to plan B") is True and runner.steer("x", run_id="other") is False and runner.steer("y", run_id="r1") is True
+    release.set()
+    thread.join(10)
+    assert done[0].met and "switch to plan B" in prompts[1] and runner.steer("late") is False
+
+
+def test_a_tool_is_listed_called_and_its_result_is_in_the_next_prompt(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+    calls = []
+    tools = {"search": Tool("look a thing up on the web", lambda text: calls.append(text) or "FOUND-IT: " + text)}
+    script = Script("USE: search blue whales\nREPORT: guess", "REPORT: whales are blue")
+    got = run_loop("go", working_dir=root, complete=script, tools=tools)
+    assert "USE: search <input>   look a thing up on the web" in script.systems[0]
+    assert calls == ["blue whales"] and "FOUND-IT: blue whales" in script.prompts[1]
+    assert got.met and got.calls == 2 and got.report == "whales are blue"
+
+
+def test_without_tools_a_use_line_is_not_an_action(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+    script = Script("USE: search x\nNOTE: n", "REPORT: ok")
+    run_loop("go", working_dir=root, complete=script)
+    assert "USE: search" not in script.systems[0] and "no tool" not in script.prompts[1]
+
+
+def test_an_unknown_tool_or_a_failing_tool_fails_the_action(tmp_path):
+    root = folder(tmp_path, **{"a.txt": "a\n"})
+
+    def broken(text):
+        raise RuntimeError("boom")
+
+    tools = {"search": Tool("find", lambda text: "x"), "broken": Tool("fails", broken)}
+    script = Script("USE: nothere hello\nUSE: broken z\nNOTE: try", "REPORT: ok")
+    got = run_loop("go", working_dir=root, complete=script, tools=tools)
+    assert "there is no tool named 'nothere'" in script.prompts[1] and "RuntimeError: boom" in script.prompts[1] and "FAILED" in script.prompts[1]
+    assert got.calls == 2
+
+
+def test_the_runner_hands_its_tools_to_the_loop(tmp_path):
+    work, sessions = tmp_path / "work", tmp_path / "sessions"
+    work.mkdir()
+    script = Script("USE: ping 1\nREPORT: early", "REPORT: pong seen")
+    got = keeper(work, sessions, script, tools={"ping": Tool("pings", lambda text: "pong " + text)}).run_goal(goal="g")
+    assert got.met and "pong 1" in script.prompts[1]
+
+
+@pytest.mark.skipif(shutil.which("bwrap") is None, reason="bubblewrap is not installed")
+def test_the_runner_runs_commands_in_the_sandbox(tmp_path):
+    work, sessions = tmp_path / "work", tmp_path / "sessions"
+    work.mkdir()
+    outside = tempfile.mkdtemp()
+    try:
+        script = Script(f"RUN: echo in > inside.txt\nRUN: echo out > {outside}/out.txt\nRUN: cat /etc/hostname\nNOTE: tried", "REPORT: done")
+        keeper(work, sessions, script).run_goal(goal="g")
+        assert (work / "inside.txt").read_text() == "in\n" and not (os.path.exists(f"{outside}/out.txt"))
+        assert "RUN echo out" in script.prompts[1] and "FAILED" in script.prompts[1]
+    finally:
+        shutil.rmtree(outside, ignore_errors=True)
+
+
+def test_a_figure_worked_out_from_two_source_figures_is_not_listed(tmp_path):
+    root = folder(tmp_path, **{"limit.txt": "Keep it under 9,000 words.\n", "count.txt": "It is at 7,950 words.\n",
+                               "out.md": "There is room for 1,050 words (9,000 less 7,950). We need 3,333 more readers.\n"})
+    assert unsupported(root, ["out.md"]) == ["out.md: the figure 3333 is in no source file"]
