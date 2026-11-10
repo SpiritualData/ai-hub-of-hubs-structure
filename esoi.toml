@@ -20,7 +20,7 @@ code_paths = ["hubofhubs", "evaluation", ":(exclude,glob)**/*.md", ":(exclude,gl
               ":(exclude,glob)hubofhubs/**/metrics.csv", ":(exclude,glob)hubofhubs/**/knowledge.csv"]
 
 [records]
-template_version = 7
+template_version = 5
 # Each solution's records live once, in the folder that holds its code (docs/reference/records-beside-code.md in the esoi repository).
 # The top intent stays in esoi/; `esoi records place --apply` moves records here, `esoi readmes` writes the page of each folder.
 beside_code = ["hubofhubs", "hubofhubs/*", "hubofhubs/*/*", "hubofhubs/*/*/*", "hubofhubs/*/*/*/*"]
