@@ -366,6 +366,9 @@ NAMES = {
         "DEFAULT_PLANNER_RECENT_FULL", "DEFAULT_PLANNER_TRANSCRIPT_MAX_CHARS", "PENDING_READ_MAX_RUNS", "result_landed_work",
         "result_reports_something",
     ),
+    "hubofhubs.the_intelligence.mind.delegation.solution_workers": (
+        "SolutionReport", "work_solution",
+    ),
     "hubofhubs.the_intelligence.mind.delegation.overseer.oversee": (
         "OverseeMixin",
     ),

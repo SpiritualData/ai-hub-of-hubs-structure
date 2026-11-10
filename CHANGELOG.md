@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Delegation: `work_solution` works a task through the solution hierarchy with one injected worker per solution: each brief holds only its own solution's frame and the one line its parent hands down, children run first in parallel and report up compactly, each solution's next milestone is checked by something other than the worker, and the whole tree shares a `{depth, width, calls, rounds}` budget. `records_frame` and `delegates_of` read the hub's records.
+- Registry: six capability areas are seated on the solution responsible for them (sub-agents on Delegation, keeping a long run small on the Subconscious, consent on Judgment Calls, command sandbox on Tools, code search on File Reading, checking a run's work on Goal Completion).
 - The Learning: `python -m hubofhubs.the_world.learning.research_log research <solution_id>` lists what was researched for a solution, when, and what is due; `research --due` lists solutions with overdue or no research.
 - Delegated Agent Sessions: the idea of the hub as its own harness (`solution_loop_runner`) is rated in `arm_ideas.csv`, before anything is built.
 - Delegated Agent Sessions: harnesses are compared on the same model only. `harness_ranking` ranks harnesses per model and never across models, `missing_same_model_runs` names each pair with no model in common and the run that would settle it, and a measured `ArmChoice` carries `uncompared` and says so in its reason.
