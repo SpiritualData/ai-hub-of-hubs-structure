@@ -6,6 +6,10 @@ the model ``tier``, the ``cache_layer`` where the text sits, the template's ``in
 the ``template`` itself. ``writes_text`` marks a prompt that tells a model to write text a person may read; ``render`` then
 always carries a no-em-dash rule.
 
+This module is also the home of the rules every prompt of a consumer shares, so they are written once: ``NO_EM_DASH_RULE``
+and ``SOLUTION_ORDER_RULE`` (for a prompt that generates, restructures or proposes the solutions of an intent). A consumer
+puts such a rule into its prompt text by name; a new shared rule is a constant here, with a test, never a copy in a consumer.
+
 The consumer's own collaborators are injected, never imported: ``bind_spec_class(tiers, on_render)`` returns a spec class
 that validates ``tier`` against the consumer's tier names and calls ``on_render(spec_id)`` each time a spec renders (a usage
 log tags the model call that follows). A ``PromptRegistry`` holds the specs of one spec class. No model call is made here
@@ -26,6 +30,13 @@ CALLER_TIER = "caller"
 # Appended by ``render`` to every prompt that tells a model what to write.
 NO_EM_DASH_RULE = (
     "Never use em dashes; use two sentences, a comma, a colon, or parentheses instead."
+)
+
+# For a prompt that generates, restructures or proposes the solutions of an intent.
+SOLUTION_ORDER_RULE = (
+    "List solutions in priority order for the intent: what the intent needs first comes first, and a solution others "
+    "depend on comes before them. Place a new solution by that priority, never by appending it. Elaborate a solution "
+    "only through a sub-intent (an implementation of it), never by linking solutions to a parent solution."
 )
 
 

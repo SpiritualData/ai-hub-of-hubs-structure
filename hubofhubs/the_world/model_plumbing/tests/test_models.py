@@ -485,3 +485,9 @@ def test_failover_stops_at_a_bad_request_and_raises_when_no_configured_model_is_
     with pytest.raises(Exception, match="overloaded"):
         MultiProvider(both, {"anthropic": both, "gemini": both}, fallback_models=("gemini-y",)).answer([], model="claude-x")
     assert both.calls == ["claude-x", "gemini-y"]
+
+
+def test_the_solution_order_rule_is_shared_text_without_em_dashes():
+    from hubofhubs.the_world.model_plumbing.prompt_spec import SOLUTION_ORDER_RULE
+    assert "priority order for the intent" in SOLUTION_ORDER_RULE and "sub-intent" in SOLUTION_ORDER_RULE
+    assert "—" not in SOLUTION_ORDER_RULE and "quest" not in SOLUTION_ORDER_RULE.lower()
