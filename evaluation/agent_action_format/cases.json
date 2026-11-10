@@ -1,0 +1,219 @@
+[
+ {
+  "id": "agent-action-format-run-one-line",
+  "format": "protocol",
+  "args": {
+   "reply": "RUN: echo hi > out.txt\nCHECK: test -s out.txt\nREPORT: wrote out.txt",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "out.txt": "hi"
+   },
+   "ran": 2
+  }
+ },
+ {
+  "id": "agent-action-format-run-several-lines",
+  "format": "protocol",
+  "args": {
+   "reply": "RUN:\n```bash\nset -e\nmkdir -p d\nfor i in 1 2 3; do echo $i >> d/n.txt; done\n```\nREPORT: made d/n.txt",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "d/n.txt": "1\n2\n3"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-edit-block",
+  "format": "protocol",
+  "args": {
+   "reply": "I fix it.\na.py\n```\n<<<<<<< SEARCH\nx = 1\n=======\nx = 2\n>>>>>>> REPLACE\n```\nREPORT: changed",
+   "files": {
+    "a.py": "x = 1\n"
+   }
+  },
+  "expect": {
+   "has": {
+    "a.py": "x = 2"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-bold-marker",
+  "format": "protocol",
+  "args": {
+   "reply": "**RUN:** echo bold > bold.txt\nREPORT: ok",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "bold.txt": "bold"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-read-a-file",
+  "format": "protocol",
+  "args": {
+   "reply": "READ: notes.txt\nREPORT: the limit",
+   "files": {
+    "notes.txt": "limit 100\n"
+   }
+  },
+  "expect": {
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-markup-run",
+  "format": "function-markup",
+  "args": {
+   "reply": "<function_calls>\n<invoke name=\"RUN\">\n<parameter name=\"command\">echo viaMarkup > m.txt</parameter>\n</invoke>\n</function_calls>\nREPORT: done",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "m.txt": "viaMarkup"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-markup-bash-name",
+  "format": "function-markup",
+  "args": {
+   "reply": "<invoke name=\"Bash\"><parameter name=\"command\">echo b > b.txt</parameter></invoke>\nREPORT: made b.txt",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "b.txt": "b"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-markup-wrapping-protocol",
+  "format": "function-markup",
+  "args": {
+   "reply": "<invoke name=\"RUN\">\nRUN: echo wrapped > w.txt\n</parameter>\n</invoke>\nREPORT: ok",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "w.txt": "wrapped"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-json-fence",
+  "format": "json-tool-call",
+  "args": {
+   "reply": "```json\n{\"action\": \"RUN\", \"command\": \"echo j > j.txt\"}\n```\nREPORT: made j.txt",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "j.txt": "j"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-native-bash",
+  "format": "native-tool-calls",
+  "args": {
+   "reply": "[{\"name\": \"Bash\", \"input\": {\"command\": \"echo nb > nb.txt\"}}]",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "nb.txt": "nb"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-native-write-and-read",
+  "format": "native-tool-calls",
+  "args": {
+   "reply": "[{\"name\": \"Write\", \"input\": {\"file_path\": \"w/x.txt\", \"content\": \"hello\"}}, {\"name\": \"Read\", \"input\": {\"file_path\": \"w/x.txt\"}}]",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "w/x.txt": "hello"
+   },
+   "ran": 2
+  }
+ },
+ {
+  "id": "agent-action-format-native-edit",
+  "format": "native-tool-calls",
+  "args": {
+   "reply": "[{\"name\": \"Edit\", \"input\": {\"file_path\": \"a.py\", \"old_string\": \"x = 1\", \"new_string\": \"x = 2\"}}]",
+   "files": {
+    "a.py": "x = 1\n"
+   }
+  },
+  "expect": {
+   "has": {
+    "a.py": "x = 2"
+   },
+   "ran": 1
+  }
+ },
+ {
+  "id": "agent-action-format-native-several-calls",
+  "format": "native-tool-calls",
+  "args": {
+   "reply": "[{\"name\": \"Bash\", \"input\": {\"command\": \"mkdir -p out\"}}, {\"name\": \"Write\", \"input\": {\"file_path\": \"out/a.txt\", \"content\": \"A\"}}, {\"name\": \"Bash\", \"input\": {\"command\": \"cat out/a.txt > out/b.txt\"}}]",
+   "files": {}
+  },
+  "expect": {
+   "has": {
+    "out/b.txt": "A"
+   },
+   "ran": 3
+  }
+ },
+ {
+  "id": "agent-action-format-native-edit-not-unique-is-refused",
+  "format": "native-tool-calls",
+  "args": {
+   "reply": "[{\"name\": \"Edit\", \"input\": {\"file_path\": \"a.py\", \"old_string\": \"x\", \"new_string\": \"y\"}}]",
+   "files": {
+    "a.py": "x\nx\n"
+   }
+  },
+  "expect": {
+   "has": {
+    "a.py": "x\nx"
+   },
+   "ran": 1,
+   "failed": 1
+  }
+ },
+ {
+  "id": "agent-action-format-native-path-outside-is-refused",
+  "format": "native-tool-calls",
+  "args": {
+   "reply": "[{\"name\": \"Write\", \"input\": {\"file_path\": \"../escape.txt\", \"content\": \"no\"}}]",
+   "files": {}
+  },
+  "expect": {
+   "absent": [
+    "../escape.txt"
+   ],
+   "ran": 1,
+   "failed": 1
+  }
+ }
+]

@@ -51,8 +51,10 @@
    }
   },
   "scopes": {
+   "agent-action-format": "hubofhubs",
    "card-store": "hubofhubs",
    "cards-from-files": "hubofhubs",
+   "command-execution": "hubofhubs",
    "connected-system-operations": "hubofhubs",
    "context-intake": "hubofhubs",
    "context-retriever": "hubofhubs",
@@ -110,6 +112,19 @@
    "web-search": "hubofhubs"
   }
  },
+ "agent-action-format": {
+  "default": "any_format",
+  "evidence": {
+   "detail": "any_format is better than native_tool_calls (two-sided exact McNemar test, Holm-adjusted p=0.00781, 9 of 15 cases disagree); any_format is better than text_protocol (two-sided exact McNemar test, Holm-adjusted p=0.0312, 6 of 15 cases disagree)",
+   "p": 0.007812,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "any_format": "hubofhubs.the_world.tools.agent_action_format.arms",
+   "native_tool_calls": "hubofhubs.the_world.tools.agent_action_format.arms",
+   "text_protocol": "hubofhubs.the_world.tools.agent_action_format.arms"
+  }
+ },
  "card-store": {
   "default": "local_card_store",
   "evidence": {
@@ -136,6 +151,18 @@
    "llm_topic_cards": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
    "per_file_symbols": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files",
    "topic_cards_replay": "hubofhubs.the_intelligence.subconscious.cards_from_files.cards_from_files"
+  }
+ },
+ "command-execution": {
+  "default": "bubblewrap_wrapper",
+  "evidence": {
+   "detail": "bubblewrap_wrapper leads refusal_floor (refusal_floor 0.818 against bubblewrap_wrapper 1; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.5, 2 of 11 cases disagree)",
+   "p": 0.5,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "bubblewrap_wrapper": "hubofhubs.the_world.tools.command_execution.arms",
+   "refusal_floor": "hubofhubs.the_world.tools.command_execution.arms"
   }
  },
  "connected-system-operations": {
@@ -206,13 +233,14 @@
  "delegated-agent-sessions": {
   "default": "stream_json_goal_runner@provider=anthropic,tier=fast",
   "evidence": {
-   "detail": "beaten by solution_loop_runner@provider=anthropic,tier=fast: stream_json_goal_runner@provider=anthropic,tier=fast is better than opencode_runner@provider=gemini,tier=balanced (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=2.29e-05, 18 of 18 cases disagree); best guess, not yet significant: opencode_runner@provider=gemini,tier=fast 0.642 against stream_json_goal_runner@provider=anthropic,tier=fast 0.948 on the point estimate; no case counts or per-case rows allow a test; solution_loop_runner@provider=anthropic,tier=fast is better than stream_json_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00029, 18 of 18 cases disagree); best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=balanced 0.936 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=best 0.875 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast is better than subprocess_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00131, 18 of 18 cases disagree)",
-   "p": 2.3e-05,
+   "detail": "beaten by solution_loop_runner@provider=anthropic,tier=fast: stream_json_goal_runner@provider=anthropic,tier=fast is better than native_tool_loop_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0151, 18 of 18 cases disagree); stream_json_goal_runner@provider=anthropic,tier=fast is better than opencode_runner@provider=gemini,tier=balanced (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=3.05e-05, 18 of 18 cases disagree); best guess, not yet significant: opencode_runner@provider=gemini,tier=fast 0.642 against stream_json_goal_runner@provider=anthropic,tier=fast 0.948 on the point estimate; no case counts or per-case rows allow a test; solution_loop_runner@provider=anthropic,tier=fast is better than stream_json_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0309, 18 of 18 cases disagree); best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=balanced 0.936 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; best guess, not yet significant: subprocess_goal_runner@provider=anthropic,tier=best 0.875 against stream_json_goal_runner@provider=anthropic,tier=fast 0.986 on the point estimate; no case counts or per-case rows allow a test; stream_json_goal_runner@provider=anthropic,tier=fast is better than subprocess_goal_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.00394, 18 of 18 cases disagree)",
+   "p": 3.1e-05,
    "verdict": "LOSS"
   },
   "modules": {
    "acp_deep_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
    "codex_cli_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner",
+   "native_tool_loop_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.native_runner",
    "opencode_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner",
    "solution_loop_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop_runner",
    "stream_json_goal_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner",

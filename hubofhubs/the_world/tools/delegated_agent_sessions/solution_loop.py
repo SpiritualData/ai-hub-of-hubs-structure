@@ -56,7 +56,6 @@ MAP_FILE_LIMIT = 200_000          # a larger file is not listed or put in view a
 log = logging.getLogger("hubofhubs.deep")
 SNAPSHOT_FILES = 5000
 OLD_RESULT_CHARS = 300
-FINAL_PROSE_CHARS = 300             # a reply with no action this long, after work was done, is taken as a REPORT candidate
 HISTORY_CHARS = 20_000             # the history section of a message passes this and the older calls shrink further
 GOAL_TITLE_CHARS = 200
 COMMAND_LIMIT = 4000
@@ -535,6 +534,29 @@ def markup_action(name: str, params: Mapping[str, Any], tools: bool) -> Optional
     return Action(kind, value) if value.strip() else None
 
 
+WRAPPER_TAGS = re.compile(r"</?\s*(?:invoke|parameter|function_calls|antml:[a-z_]+)\b[^>]*>", re.IGNORECASE)
+
+
+def unwrap_protocol(body: List[str], start: int, end: int, text: str) -> str:
+    """Markup that only wraps protocol lines (an ``<invoke name="RUN">`` with no parameter whose body itself starts with ``RUN:``, a heredoc and a stray
+    ``</parameter>``) is that one command: the wrapper tags are dropped from the lines (in ``body``) and the plain protocol parses them. Returns the chunk's
+    text again."""
+    changed = False
+    for found in INVOKE.finditer(text):
+        inner = found.group(2)
+        if PARAM.search(inner):
+            continue
+        first = next((line for line in WRAPPER_TAGS.sub("", inner).splitlines() if line.strip()), "")
+        if not PROTOCOL_LINE.match(first):
+            continue
+        first_line = start + text[:found.start()].count("\n")
+        last_line = start + text[:found.end()].count("\n")
+        for k in range(first_line, last_line + 1):
+            body[k] = WRAPPER_TAGS.sub("", body[k])
+        changed = True
+    return "\n".join(body[start:end]) if changed else text
+
+
 def lenient_actions(body: List[str], mask: List[bool], tools: bool) -> Tuple[List[Action], str]:
     """The actions written as function-call markup (``<invoke name="RUN"><parameter name="command">..</parameter></invoke>``, with or without
     ``<function_calls>``, and a stray ``<parameter name="command">`` as a RUN) or as a JSON object (``{"action": "RUN", "command": "..."}`` on a line or in a
@@ -551,6 +573,7 @@ def lenient_actions(body: List[str], mask: List[bool], tools: bool) -> Tuple[Lis
         while index < len(body) and not mask[index]:
             index += 1
         text = "\n".join(body[start:index])
+        text = unwrap_protocol(body, start, index, text)
         spans: List[Tuple[int, int]] = []
 
         def line_of(offset: int) -> int:
@@ -634,10 +657,37 @@ def read_only(action: Action) -> bool:
     return bool(words) and os.path.basename(words[0]) in READ_ONLY_COMMANDS
 
 
-def plainly_final(text: str, reply: Reply) -> bool:
-    """Whether a reply with no action reads as a final account of work already done: long prose that asks nothing and holds no note."""
-    body = text.strip()
-    return len(body) >= FINAL_PROSE_CHARS and not reply.notes and not reply.blocked and not body.endswith("?")
+FENCED_SHELL = re.compile(r"^\s*```\s*(bash|sh|shell|zsh)\s*$", re.IGNORECASE | re.MULTILINE)
+PROTOCOL_LINE = re.compile(r"^[\s>*`#-]*(READ|RUN|CHECK|DELEGATE|USE)\s*:", re.MULTILINE)
+REPORTING_STEP = re.compile(r"\b(report|reporting|deliver|delivering|check|verify|confirm|finish|finalize|final)\b")
+STATE_NEXT = re.compile(r"\bnext\s*:\s*(.*?)(?=\b(?:failed|done|learned)\s*:|\Z)", re.IGNORECASE | re.DOTALL)
+NOTHING_NEXT = frozenset(["", "none", "nothing", "n/a", "na", "nil", "-", "done", "complete", "completed", "finished", "nothing left", "nothing more", "nothing else",
+                          "no next steps", "no further steps", "report", "reporting", "report now", "the report", "write the report", "final report", "give the report"])
+
+
+def reads_as_work(text: str, reply: Reply) -> bool:
+    """Whether a reply holds work and not an answer: a STATE block, action markup, a fenced shell command, a protocol line or an edit block. Such a reply is
+    never taken as a final report, whatever its length (a reply of this kind ended a run as met while its own STATE said nothing was written)."""
+    return bool(reply.state is not None or reply.problems or reply.unmapped or MARKUP_TAG.search(text) or FENCED_SHELL.search(text) or PROTOCOL_LINE.search(text)
+                or re.search(HEAD, text, re.MULTILINE))
+
+
+def next_steps(state: str) -> str:
+    """What a STATE says is next (``next: ...``), or ``""`` when it names nothing that remains: absent, empty or a word such as none, done or report."""
+    found = STATE_NEXT.search(state or "")
+    if not found:
+        return ""
+    value = " ".join(found.group(1).split()).strip(" .;:-").lower()
+    if value in NOTHING_NEXT or value.startswith(("none", "nothing", "no further", "no more", "no next")):
+        return ""
+    kept = [c.strip() for c in re.split(r",|;|\.|\bthen\b|\band\b", value) if c.strip() and not REPORTING_STEP.search(c)]
+    return " ".join(found.group(1).split())[:300] if kept else ""      # a next made only of checking and reporting is the end of the work, not more work
+
+
+def says_actions(text: str) -> bool:
+    """Whether a text holds action markup, a protocol line, a STATE line or an edit block: raw reply text that is not an account of anything."""
+    return bool(MARKUP_TAG.search(text) or PROTOCOL_LINE.search(text) or STATE_START.match(text.strip()) or re.search(r"^[\s>*`#-]*STATE\s*:", text, re.MULTILINE)
+                or re.search(HEAD, text, re.MULTILINE))
 
 
 def parse_reply(text: str, tools: bool = False) -> Reply:
@@ -1042,6 +1092,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
     advice = ""
     own_calls = 0
     check_passed = False
+    unfinished = 0      # reports in a row refused because the STATE still listed next steps
     while True:
         if own_calls:
             persist()
@@ -1105,10 +1156,8 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             result.error, result.ended = f"blocked: {reply.blocked}", "blocked"
             result.report = last_text
             break
-        if not reply.actions and reply.report is None and (result.commands or changed) and not late and plainly_final(text, reply):
-            reply.report = text.strip()      # work was done and this long prose is its account: a REPORT candidate that still has to pass the acceptance rules below
         if not reply.actions and reply.report is None:
-            if own_calls == 1 and text.strip() and not reply.notes and not late and not reply.unmapped:
+            if own_calls == 1 and text.strip() and not reply.notes and not late and not reads_as_work(text, reply):
                 result.met, result.report, result.ended = True, text.strip(), "met"
                 break
             if late:
@@ -1184,6 +1233,15 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             break
         elif new_reads and not other_work and not checks:
             entry["advice"] = "You read files or used a tool in this reply, so your REPORT was written before seeing the result. It is in view now: report from it."
+        elif not failed and next_steps(reply.state if reply.state is not None else state_text):
+            remaining = next_steps(reply.state if reply.state is not None else state_text)
+            unfinished += 1
+            if unfinished >= 2:      # the model wrote the same kind of report again: the run ends not met with what it has, so nobody reads it as finished
+                result.met, result.partial, result.report, result.ended = False, True, reply.report, "unfinished"
+                result.error = f"the report was written while the STATE still listed next steps ({remaining})"
+                break
+            entry["advice"] = (f"Your REPORT was not accepted: your STATE still lists next steps ({remaining}). The run is not finished. Do them now, then report. "
+                               "If what remains waits on a person, reply BLOCKED: <what and why> instead of REPORT.")
         elif failed:
             entry["advice"] = f"Your REPORT was not accepted because these actions failed: {'; '.join(failed)}. Fix them and report again."
         elif checks and not passed:
@@ -1203,6 +1261,8 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         result.report = last_text
     result.report = result.report or last_text
     result.state = state_text
+    if not result.met and (not result.report.strip() or says_actions(result.report)):
+        result.report = state_text      # never raw action markup: the last accepted note or report, else the working memory
     result.ended = result.ended or ("met" if result.met else "failed")
     result.changed = list(changed)
     result.read = list(seen)

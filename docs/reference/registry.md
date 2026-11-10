@@ -105,12 +105,6 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | science_graph | Representing papers, constructs and theories as a graph | compared | adopt | none | SemOpenAlex; ORKG; Microsoft GraphRAG; LightRAG; Graphiti; Cognee; rdflib and pySHACL | 7 | 0 | 2026-10-30 |
 | science_estimate_truth | Estimating how likely a hypothesis is to hold | compared | keep | none | BrainBench; Co-Scientist tournament pattern; automated multi-model review of AI scientists | 3 | 0 | 2026-10-30 |
 
-### Tools (`the-tools`)
-
-| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
-|---|---|---|---|---|---|---|---|---|
-| command_sandbox | Running agent commands without risking the host | compared | adopt | none | Anthropic sandbox-runtime; Codex CLI sandbox; bubblewrap; Docker Sandboxes; E2B; Modal | 7 | 0 | 2026-10-30 |
-
 ### File Editing (`file-editing`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
@@ -143,6 +137,18 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | agent_verify | Checking a run's work and undoing it | compared | keep | none | Claude Code checkpointing; Anthropic long-running harness pattern; Aider commit per edit; Agentless validation | 6 | 1 | 2026-10-30 |
 | agent_bench | Choosing a harness by measured results | compared | keep | none | SWE-bench Verified bash-only (Vals); Terminal-Bench 2.0; Aider polyglot; SWE-bench Pro; Holistic Agent Leaderboard | 6 | 8 | 2026-10-30 |
 | science_run_analysis | Designing and running analyses on data with code | compared | adopt | none | K-Dense Scientific Agent Skills; ToolUniverse; Biomni; Edison Analysis; AstaBench and Asta agents; ScienceAgentBench; Jupyter AI; E2B code interpreter | 9 | 0 | 2026-10-30 |
+
+### Command Execution (`command-execution`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| command_sandbox | Running agent commands without risking the host | compared | adopt | none | Anthropic sandbox-runtime; Codex CLI sandbox; bubblewrap; Docker Sandboxes; E2B; Modal | 7 | 0 | 2026-10-30 |
+
+### Agent Action Format (`agent-action-format`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| agent_action_format | The action format between a model and its harness: the provider-trained tool calls, an edit format per model family, or a private text protocol | compared | coexist | Claude Code built-in tools (Bash, Read, Edit, Write, Glob, Grep, WebSearch, WebFetch, task tools), the hub's own text protocol (READ, RUN, CHECK, STATE, REPORT and search and replace edit blocks) | Anthropic bash and text editor client tools; OpenAI apply_patch and shell tools; Gemini CLI tools; Aider edit formats; mini-swe-agent bash-only | 6 | 1 | 2026-11-10 |
 
 ### Learning (`the-learning`)
 

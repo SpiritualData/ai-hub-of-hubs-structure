@@ -41,6 +41,8 @@ class DeepLaunchSettings:
     exclude_dynamic_sections  True adds ``--exclude-dynamic-system-prompt-sections`` (per-machine text moves out of the prefix).
     max_budget_usd            None: no flag. A positive number: ``--max-budget-usd <n>``, the worker's spend ceiling.
     max_turns                 None: the call's own turn budget stands. A positive number replaces it for every launch.
+    append_system_prompt_file None: no flag. A path: ``--append-system-prompt-file <path>``, text added to the CLI's own system prompt (the hub's
+                              frame of a run, kept in a file because a long frame does not fit one argument).
     """
 
     tools: Optional[Tuple[str, ...]] = None
@@ -49,6 +51,7 @@ class DeepLaunchSettings:
     exclude_dynamic_sections: bool = False
     max_budget_usd: Optional[float] = None
     max_turns: Optional[int] = None
+    append_system_prompt_file: Optional[str] = None
 
     def is_default(self) -> bool:
         return self == DeepLaunchSettings()
@@ -68,6 +71,8 @@ class DeepLaunchSettings:
             parts.append(f"max_budget_usd={self.max_budget_usd:g}")
         if self.max_turns is not None:
             parts.append(f"max_turns={self.max_turns}")
+        if self.append_system_prompt_file is not None:
+            parts.append("append_system_prompt_file=1")
         return ",".join(parts) or "default"
 
 
@@ -84,6 +89,8 @@ def lean_flags(settings: DeepLaunchSettings) -> List[str]:
         flags.append("--exclude-dynamic-system-prompt-sections")
     if settings.max_budget_usd is not None and settings.max_budget_usd > 0:
         flags += ["--max-budget-usd", f"{settings.max_budget_usd:g}"]
+    if settings.append_system_prompt_file:
+        flags += ["--append-system-prompt-file", settings.append_system_prompt_file]
     return flags
 
 

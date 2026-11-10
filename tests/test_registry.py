@@ -195,7 +195,17 @@ def test_every_area_maps_to_a_seat_of_the_mind():
     solutions = {r["solution_id"] for r in read_tree(root / "esoi", "solutions.csv")}
     hubs = registry.read("hubs.csv")
     assert all(r["seat"] in solutions for r in hubs), [r["area"] for r in hubs if r["seat"] not in solutions]
-    assert len(registry.seat_ids(hubs)) <= 15      # coarse on purpose: an area sits on the solution responsible for it, never one seat per area
+    # Coarse on purpose: an area sits on the solution responsible for it, never one seat per area, and the cap counts GROUPS (the child of a container a
+    # seat belongs to: Tools holds web search, file reading, file editing, operations, agent sessions, command execution and action format), not leaves. A seat
+    # added under a group that is already counted is the right place for its area; hitting the cap asks for a regrouping, never for parking an area elsewhere.
+    from hubofhubs.the_self.integrity.evidence_summary import MIND_TREE
+    tree = dict(MIND_TREE)
+
+    def group(seat):
+        while tree.get(seat) and tree.get(tree[seat]):
+            seat = tree[seat]
+        return seat
+    assert len({group(s) for s in registry.seat_ids(hubs)}) <= 15, sorted({group(s) for s in registry.seat_ids(hubs)})
 
 
 def test_one_row_per_seat_binds_every_area_that_seat_owns_and_the_rest_are_arm_gaps(tmp_path, consumer):

@@ -14,6 +14,9 @@ at the repository root.
 
 | Part and arm | Environment variables | Accounts and APIs | Python (extra of `hubofhubs`) | Programs, services, downloads | Can run out of process |
 |---|---|---|---|---|---|
+| Agent Action Format, Either format (`agent-action-format:any_format`) | none | none | none | none | no |
+| Agent Action Format, Native tool calls (`agent-action-format:native_tool_calls`) | none | none | none | none | no |
+| Agent Action Format, Hub text protocol (`agent-action-format:text_protocol`) | none | none | none | none | no |
 | Card Store, Local card store (`card-store:local_card_store`) | none | none | none | none | no |
 | Cards From Files, Cochange topic cards (`cards-from-files:cochange_topic_cards`) | none | none | none | none | no |
 | Cards From Files, File plus topic cards (`cards-from-files:file_plus_topic_cards`) | none | none | none | none | no |
@@ -22,6 +25,8 @@ at the repository root.
 | Cards From Files, Model-written topic cards (`cards-from-files:llm_topic_cards`) | none | none | none | none | no |
 | Cards From Files, One card per file (`cards-from-files:per_file_symbols`) | none | none | none | none | no |
 | Cards From Files, Topic cards replay (`cards-from-files:topic_cards_replay`) | none | none | none | none | no |
+| Command Execution, Bubblewrap wrapper (`command-execution:bubblewrap_wrapper`) | none | none | none | program `bwrap` (optional) | no |
+| Command Execution, Refusal floor alone (`command-execution:refusal_floor`) | none | none | none | none | no |
 | Connected System Operations, One-call MCP write (`connected-system-operations:mcp_operations`) | none | none | `mcp` via extra `mcp` | none | no |
 | Context Intake, Merge into one labelled view (`context-intake:one_view`) | none | none | none | none | no |
 | Context Retriever, Hybrid with soft affinity to the request's focus (`context-retriever:abstaining_affinity`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
@@ -49,6 +54,7 @@ at the repository root.
 | Decision Check, One verify call over all the evidence (`decision-check:single_verify`) | none | none | none | none | no |
 | Delegated Agent Sessions, Agent Client Protocol runner (`delegated-agent-sessions:acp_deep_runner`) | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
 | Delegated Agent Sessions, Codex CLI, one shot (`delegated-agent-sessions:codex_cli_runner`) | `OPENAI_API_KEY` (secret)<br>`HUBOFHUBS_WRITE_ROOT` | OpenAI | none | program `codex` | cli |
+| Delegated Agent Sessions, Hub's frame on the model's own tool loop (`delegated-agent-sessions:native_tool_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, opencode, one shot (`delegated-agent-sessions:opencode_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
 | Delegated Agent Sessions, Hub's own tool loop (`delegated-agent-sessions:solution_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |

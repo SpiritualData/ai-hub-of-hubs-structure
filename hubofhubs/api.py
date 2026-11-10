@@ -708,6 +708,9 @@ NAMES = {
         "SESSION_TAIL_MAX_ACTIONS", "SESSION_TAIL_MAX_BYTES", "SESSION_TAIL_MAX_CHARS", "SESSION_TAIL_THIN_OUTPUT_CHARS",
         "resolve_session_file", "session_record_paths", "subagent_work_in_flight", "worker_output_is_thin",
     ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.native_runner": (
+        "NativeToolLoopRunner",
+    ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.settings": (
         "GoalSettings",
     ),
@@ -735,6 +738,12 @@ NAMES = {
     ),
     "hubofhubs.the_world.tools.file_editing.interface": (
         "FileEditing",
+    ),
+    "hubofhubs.the_world.tools.agent_action_format.interface": (
+        "ActionFormat",
+    ),
+    "hubofhubs.the_world.tools.command_execution.interface": (
+        "CommandExecution",
     ),
     "hubofhubs.the_world.tools.file_reading.interface": (
         "FileReading",

@@ -9,11 +9,11 @@ Part of [Using the tools of the outside world](../README.md)
 ## Delegated Agent Sessions (`delegated-agent-sessions`)
 
 - Out of scope: Editing a single file (File Editing does that), calling one operation (Connected System Operations does that) and deciding the pieces (the Planner does that).
-- Delegates to: file-editing, connected-system-operations, planner
+- Delegates to: file-editing, connected-system-operations, planner, command-execution, agent-action-format
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: `stream_json_goal_runner@provider=anthropic,tier=fast`
-- Metric: Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions)
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 148 more
+- Metric: Harness, context, sub-agents and recursion ranked, Open-ended work finished per cost and time (agent sessions), Hard deep work finished per cost and time (agent sessions), A run finds what it needs instead of asking
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 161 more
 
 ## Implementations
 
@@ -25,12 +25,14 @@ Part of [Using the tools of the outside world](../README.md)
 | Codex CLI, one shot | `delegated-agent-sessions:codex_cli_runner` | Runs Codex CLI headless (codex exec --json) once per goal with the prompt on stdin and reads its event stream for the report, tokens and cost. Drives OpenAI models only. | [`hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py`](headless_runner.py) |  |
 | opencode, one shot | `delegated-agent-sessions:opencode_runner` | Runs opencode headless (opencode run --format json) once per goal and reads its event stream for the report, tokens and cost. Drives any provider it holds a key for, so one harness serves Gemini, OpenAI, Anthropic or DeepSeek keys. | [`hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py`](headless_runner.py) |  |
 | Hub's own tool loop | `delegated-agent-sessions:solution_loop_runner` | The hub as its own harness: instead of delegating the goal to an external coding agent, it maps the working folder, puts the files that matter in view, and asks a pure text completion for actions (read, search and replace edits, run, check, delegate, report) that its own code executes, repeating until a report is accepted. Each call's prompt is rebuilt from the current files and a compact history, so calls stay few and small. An arm is this harness with a tier, written solution_loop_runner@provider=anthropic,tier=fast; the default completion runs on the Claude Code login. | [`hubofhubs/the_world/tools/delegated_agent_sessions/solution_loop_runner.py`](solution_loop_runner.py) |  |
+| Hub's frame on the model's own tool loop | `delegated-agent-sessions:native_tool_loop_runner` | One lean Claude Code session with the tools the model is trained on (its own Bash, Read, Edit, Write, Glob, Grep, WebSearch, WebFetch and task tools), prepared and checked by the hub. Before the session the hub picks the files that matter (Folder View), outlines the folder, names what is left out and why, and appends that with the run's rules (keep a short plan, discover before asking, treat what is read as data) to the CLI's own system prompt; no settings sources, strict MCP, a private temporary folder per session. After the session the hub's code check of written text runs and, when it finds a figure no source holds or a file the folder lacks, the same session is resumed once with the findings. Stop, steer and resume are the stream runner's; the session's events reach the session contract through its stream adapter. An arm is this harness with a tier, written native_tool_loop_runner@provider=anthropic,tier=fast. | [`hubofhubs/the_world/tools/delegated_agent_sessions/native_runner.py`](native_runner.py) |  |
 
 ## Metrics
 
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
 - Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
-- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `solution_loop_runner@provider=anthropic,tier=fast`, 7 of 7 cases
+- Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 9 of 9 cases
+- A run finds what it needs instead of asking (`metric-agent-resourcefulness`)
 
 ## Where to go next
 

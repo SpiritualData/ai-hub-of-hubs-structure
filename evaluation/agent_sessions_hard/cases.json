@@ -15,6 +15,16 @@
   "digest": "c4f7372482fb"
  },
  {
+  "id": "hard-code-long-stock-reconcile",
+  "stratum": "code",
+  "digest": "b4ea0abb3b8d"
+ },
+ {
+  "id": "hard-code-long-weekly-orders",
+  "stratum": "code",
+  "digest": "47f61ed3a78e"
+ },
+ {
   "id": "hard-code-periods",
   "stratum": "code",
   "digest": "0026609bcd67"

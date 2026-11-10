@@ -6,6 +6,8 @@ from esoi import implementation
 from esoi import Lazy
 from esoi import call_entry, declared_entry as declared
 from hubofhubs.the_self.assembler.resolution import HUB
+from hubofhubs.the_world.tools.agent_action_format.interface import ActionFormat
+from hubofhubs.the_world.tools.command_execution.interface import CommandExecution
 from hubofhubs.the_world.tools.delegated_agent_sessions.interface import AgentSessions
 from hubofhubs.the_world.tools.connected_system_operations.interface import ConnectedOperating
 from hubofhubs.the_world.tools.file_editing.interface import FileEditing
@@ -20,9 +22,9 @@ class ToolsComposition:
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, search: SearchBackend, reader: Lazy[FileReading], files: Lazy[FileEditing], operations: Lazy[ConnectedOperating],
-                 sessions: Lazy[AgentSessions]):
+                 sessions: Lazy[AgentSessions], commands: Lazy[CommandExecution], formats: Lazy[ActionFormat]):
         self.parts = {"web-search": search, "read-files": reader, "file-editing": files, "connected-system-operations": operations,
-                      "delegated-agent-sessions": sessions}
+                      "delegated-agent-sessions": sessions, "command-execution": commands, "agent-action-format": formats}
 
     def use(self, category: str, request: Any, cancel_check: Optional[Callable[[], bool]] = None, authority: Optional[Mapping[str, Any]] = None) -> Any:
         if category not in self.parts:

@@ -328,6 +328,7 @@ MIND_TREE = (
     ("the-science", "the-world"),
     ("the-tools", "the-world"), ("web-search", "the-tools"), ("read-files", "the-tools"), ("file-editing", "the-tools"),
     ("connected-system-operations", "the-tools"), ("delegated-agent-sessions", "the-tools"),
+    ("command-execution", "the-tools"), ("agent-action-format", "the-tools"),
     ("model-plumbing", "the-world"), ("model-tier-chooser", "model-plumbing"), ("vendor-model-caller", "model-plumbing"),
     ("the-learning", "the-world"), ("research-freshness-reader", "the-learning"),
     ("the-consciousness", ""),

@@ -145,6 +145,8 @@ CLAUDE_BINARY = requirements.binary("claude", "install Claude Code: https://code
 CLAUDE_ACCOUNT = requirements.resource("Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); "
                           "a run bills that account (https://code.claude.com/docs/en/setup)")
 CLAUDE_CLI_BOUNDARY = requirements.isolatable("cli")
+BUBBLEWRAP = requirements.binary("bwrap", "install bubblewrap (the bubblewrap package of the distribution; https://github.com/containers/bubblewrap); without it commands run with the refusal floor alone",
+                                 version_args=("--version",), required=False)
 ACP_BINARY = requirements.binary("claude-agent-acp", "install the Claude ACP agent with npm; it needs Node 22 or later", version_args=("--version",))
 NODE_BINARY = requirements.binary("node", "install Node 22 or later (the ACP agent declares it)", version_args=("--version",))
 ACP_BOUNDARY = requirements.isolatable("subprocess")

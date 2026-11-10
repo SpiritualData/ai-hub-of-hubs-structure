@@ -128,12 +128,14 @@ The table below is generated from the records. Names lead, each part says what i
 | Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
 | World | the hub | 7 | 1 | 37 | 2026-10-30 | `the-world` |
 | Science | World | 10 | 2 | 74 | 2026-10-30 | `the-science` |
-| Tools | World | 1 | 0 | 7 | 2026-10-30 | `the-tools` |
+| Tools | World | 0 | 0 | 0 | none | `the-tools` |
 | Web Search | Tools | 0 | 0 | 0 | none | `web-search` |
 | File Reading | Tools | 0 | 0 | 0 | none | `read-files` |
 | File Editing | Tools | 2 | 2 | 10 | 2026-10-30 | `file-editing` |
 | Connected System Operations | Tools | 10 | 2 | 59 | 2026-10-30 | `connected-system-operations` |
 | Delegated Agent Sessions | Tools | 6 | 1 | 50 | 2026-10-30 | `delegated-agent-sessions` |
+| Command Execution | Tools | 1 | 0 | 7 | 2026-10-30 | `command-execution` |
+| Agent Action Format | Tools | 1 | 1 | 6 | 2026-11-10 | `agent-action-format` |
 | Model Plumbing | World | 0 | 0 | 0 | none | `model-plumbing` |
 | Model Tier Chooser | Model Plumbing | 0 | 0 | 0 | none | `model-tier-chooser` |
 | Vendor Model Caller | Model Plumbing | 0 | 0 | 0 | none | `vendor-model-caller` |
@@ -147,5 +149,5 @@ The table below is generated from the records. Names lead, each part says what i
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
 | AI Session Experience | Consciousness | 0 | 0 | 0 | none | `terminal-session` |
 
-75 areas and 482 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+76 areas and 488 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

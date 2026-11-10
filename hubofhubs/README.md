@@ -13,7 +13,7 @@ Bring in what is outside the system and let the AI act on it through the best av
 - Entry call: `hubofhubs.run("the-world", 'latest Rust version')`
 - Selected implementation: Search and papers through the tools (`composition`)
 - Metric: Task pass rate and cost per passing task
-- Implemented by: [`hubofhubs/the_world/__init__.py`](the_world/__init__.py), [`hubofhubs/the_world/flow.py`](the_world/flow.py), [`hubofhubs/the_world/interface.py`](the_world/interface.py), [`hubofhubs/the_world/learning/__init__.py`](the_world/learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](the_world/learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](the_world/learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](the_world/learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](the_world/learning/research_freshness_reader/interface.py) and 148 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](the_world/__init__.py), [`hubofhubs/the_world/flow.py`](the_world/flow.py), [`hubofhubs/the_world/interface.py`](the_world/interface.py), [`hubofhubs/the_world/learning/__init__.py`](the_world/learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](the_world/learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](the_world/learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](the_world/learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](the_world/learning/research_freshness_reader/interface.py) and 161 more
 
 ## The Self (`the-self`)
 
@@ -104,6 +104,8 @@ Keep the system aligned with the humans and policies it works for.
 - [Relevant Solutions](the_intelligence/subconscious/relevant_solutions/README.md) (solution with implementations): Find, for any request, every solution of the consumer's records that deserves its own consideration, so none is skipped.
 - [Model Tier Chooser](the_world/model_plumbing/model_tier_chooser/README.md) (solution with implementations): Pick, for each model tier, the model that does the most passing work per cost.
 - [Vendor Model Caller](the_world/model_plumbing/vendor_model_caller/README.md) (solution with implementations): Reach one vendor's model, and step to the next provider when one fails.
+- [Agent Action Format](the_world/tools/agent_action_format/README.md) (solution with implementations): Execute a model's actions in the format that model is trained on, so no call is spent on a protocol it must be taught.
+- [Command Execution](the_world/tools/command_execution/README.md) (solution with implementations): Run an agent's commands in its folder without hanging, flooding its prompt or touching what the person did not hand over.
 - [Connected System Operations](the_world/tools/connected_system_operations/README.md) (solution with implementations): Carry out an operation of a connected system on the AI's behalf.
 - [Delegated Agent Sessions](the_world/tools/delegated_agent_sessions/README.md) (solution with implementations): Get open-ended work done by an agent in its own session.
 - [File Editing](the_world/tools/file_editing/README.md) (solution with implementations): Make the file change that was asked for, and no other.
@@ -208,6 +210,8 @@ flowchart LR
 - Down: [hubofhubs/the_intelligence/subconscious/relevant_solutions](the_intelligence/subconscious/relevant_solutions/README.md)
 - Down: [hubofhubs/the_world/model_plumbing/model_tier_chooser](the_world/model_plumbing/model_tier_chooser/README.md)
 - Down: [hubofhubs/the_world/model_plumbing/vendor_model_caller](the_world/model_plumbing/vendor_model_caller/README.md)
+- Down: [hubofhubs/the_world/tools/agent_action_format](the_world/tools/agent_action_format/README.md)
+- Down: [hubofhubs/the_world/tools/command_execution](the_world/tools/command_execution/README.md)
 - Down: [hubofhubs/the_world/tools/connected_system_operations](the_world/tools/connected_system_operations/README.md)
 - Down: [hubofhubs/the_world/tools/delegated_agent_sessions](the_world/tools/delegated_agent_sessions/README.md)
 - Down: [hubofhubs/the_world/tools/file_editing](the_world/tools/file_editing/README.md)

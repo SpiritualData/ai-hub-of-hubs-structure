@@ -112,15 +112,13 @@ def test_two_replies_in_a_row_without_an_action_end_the_run_not_met_with_the_wor
     assert (tmp_path / "made.txt").exists() and saved and isinstance(saved[-1], LoopState) and saved[-1].calls == 3
 
 
-def test_long_prose_with_no_action_after_work_is_taken_as_the_report_and_a_short_one_is_not(tmp_path):
+def test_long_prose_with_no_action_is_never_the_report_a_run_ends_met_only_on_an_explicit_report(tmp_path):
     answer = "I made made.txt and checked it exists. " * 12
-    script = Script("RUN: echo one > made.txt\nNOTE: made", answer)
+    script = Script("RUN: echo one > made.txt\nNOTE: made", answer, answer)
     got = run_loop("Make it", working_dir=str(tmp_path), complete=script, review=False)
-    assert got.met and got.report == answer.strip()
-    script = Script("RUN: echo one > made.txt\nNOTE: made", "Done.", "Done.")
-    assert not run_loop("Make it", working_dir=str(tmp_path / "x") if (tmp_path / "x").mkdir() is None else str(tmp_path), complete=script, review=False).met
-    script = Script("RUN: echo one\nNOTE: made", ("Which one do you want? " * 20).strip() + "?", "x")
-    assert not run_loop("Make it", working_dir=str(tmp_path), complete=script, review=False).met
+    assert not got.met and got.ended == "no_action" and got.report == "made"      # the prose is not taken as a report; the output is the last note
+    script = Script("RUN: echo two > made.txt\nNOTE: made", "REPORT: made made.txt\n")
+    assert run_loop("Make it", working_dir=str(tmp_path), complete=script, review=False).met
 
 
 # --- 3. cache visibility ------------------------------------------------------------------------------------------------------------------
