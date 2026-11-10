@@ -441,5 +441,330 @@
    "exit_code": 0,
    "ended": true
   }
+ },
+ {
+  "id": "attend-watch-loop",
+  "kind": "attend",
+  "origin": "rule: watch on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "watch",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X1",
+   "X2",
+   "X3",
+   "X10",
+   "X16"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-watch-stream",
+  "kind": "attend",
+  "origin": "rule: watch on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "watch",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X1",
+   "X2",
+   "X3",
+   "X10",
+   "X16"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-stop_resume-loop",
+  "kind": "attend",
+  "origin": "rule: stop resume on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "stop_resume",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X4",
+   "X5",
+   "X21"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-stop_resume-stream",
+  "kind": "attend",
+  "origin": "rule: stop resume on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "stop_resume",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X4",
+   "X5",
+   "X21"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-steer-loop",
+  "kind": "attend",
+  "origin": "rule: steer on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "steer",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X6",
+   "X23"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-steer-stream",
+  "kind": "attend",
+  "origin": "rule: steer on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "steer",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X6",
+   "X23"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-tree-loop",
+  "kind": "attend",
+  "origin": "rule: tree on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "tree",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X7"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-tree-stream",
+  "kind": "attend",
+  "origin": "rule: tree on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "tree",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X7"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-solution_tree-none",
+  "kind": "attend",
+  "origin": "rule: solution tree on the none harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "solution_tree",
+   "kit": "none"
+  },
+  "requirements": [
+   "X15"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-approve-loop",
+  "kind": "attend",
+  "origin": "rule: approve on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "approve",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X9",
+   "X19",
+   "X22"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-approve-stream",
+  "kind": "attend",
+  "origin": "rule: approve on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "approve",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X9",
+   "X19",
+   "X22"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-refuse-loop",
+  "kind": "attend",
+  "origin": "rule: refuse on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "refuse",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X9",
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-refuse-stream",
+  "kind": "attend",
+  "origin": "rule: refuse on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "refuse",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X9",
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-target-loop",
+  "kind": "attend",
+  "origin": "rule: target on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "target",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X8"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-target-stream",
+  "kind": "attend",
+  "origin": "rule: target on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "target",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X8"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-same_surface-both",
+  "kind": "attend",
+  "origin": "rule: same surface on the both harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "same_surface",
+   "kit": "both"
+  },
+  "requirements": [
+   "X11",
+   "X12"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-plain_and_replay-loop",
+  "kind": "attend",
+  "origin": "rule: plain and replay on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "plain_and_replay",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X13",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-plain_and_replay-stream",
+  "kind": "attend",
+  "origin": "rule: plain and replay on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "plain_and_replay",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X13",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-frame-loop",
+  "kind": "attend",
+  "origin": "rule: frame on the loop harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "frame",
+   "kit": "loop"
+  },
+  "requirements": [
+   "X14",
+   "X17"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "attend-frame-stream",
+  "kind": "attend",
+  "origin": "rule: frame on the stream harness (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "frame",
+   "kit": "stream"
+  },
+  "requirements": [
+   "X14",
+   "X17"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

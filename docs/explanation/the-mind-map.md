@@ -115,6 +115,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Cards From Files | Subconscious | 0 | 0 | 0 | none | `cards-from-files` |
 | Context Retriever | Subconscious | 0 | 0 | 0 | none | `context-retriever` |
 | Relevant Solutions | Subconscious | 0 | 0 | 0 | none | `relevant-solutions` |
+| Folder View | Subconscious | 0 | 0 | 0 | none | `folder-view` |
 | Critical Thinking | Intelligence | 0 | 0 | 0 | none | `critical-thinking` |
 | ESOI Application | Critical Thinking | 0 | 0 | 0 | none | `esoi-application` |
 | Metric Translation | Critical Thinking | 0 | 0 | 0 | none | `metric-translation` |
@@ -140,11 +141,11 @@ The table below is generated from the records. Names lead, each part says what i
 | Research Freshness Reader | Learning | 0 | 0 | 0 | none | `research-freshness-reader` |
 | Consciousness | the hub | 0 | 0 | 0 | none | `the-consciousness` |
 | Representatives | Consciousness | 0 | 0 | 0 | none | `the-representatives` |
-| Judgment Calls | Consciousness | 1 | 1 | 4 | 2026-10-30 | `judgment-calls` |
+| Judgment Calls | Consciousness | 2 | 2 | 13 | 2026-10-30 | `judgment-calls` |
 | Feedback Learning | Consciousness | 0 | 0 | 0 | none | `feedback-learning` |
 | Prioritization | Consciousness | 0 | 0 | 0 | none | `prioritization` |
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
-| Terminal Session | Consciousness | 0 | 0 | 0 | none | `terminal-session` |
+| AI Session Experience | Consciousness | 0 | 0 | 0 | none | `terminal-session` |
 
-74 areas and 473 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+75 areas and 482 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

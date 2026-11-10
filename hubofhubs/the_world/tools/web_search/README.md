@@ -13,13 +13,14 @@ Part of [Using the tools of the outside world](../README.md)
 - Entry call: `hubofhubs.run("web-search", 'latest Rust version')`
 - Selected implementation: Gemini grounding (`gemini`)
 - Metric: Search finds the source
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 141 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 143 more
 
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
 | Brave Search API | `web-search:brave` | Searches the Brave Search API through the generic JSON-API backend; the entry is data. | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
+| Claude Code login search | `web-search:claude_login` | Searches the web through the Claude Code login: one headless claude call allowed only the CLI's own web search tool, which returns titles, links, snippets and dates as JSON. | [`hubofhubs/the_world/tools/web_search/claude_login.py`](claude_login.py) |  |
 | Gemini grounding | `web-search:gemini` | Searches through Gemini's Google Search grounding tool and resolves the redirect links to the real pages. | [`hubofhubs/the_world/tools/web_search/gemini.py`](gemini.py) | selected |
 | Provider-native search | `web-search:provider` | Wraps any model provider object that exposes web_search(query, model, max_results). | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |
 | SearXNG metasearch | `web-search:searxng` | Searches a self-hosted SearXNG instance by base url. | [`hubofhubs/the_world/tools/web_search/backends.py`](backends.py) |  |

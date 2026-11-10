@@ -610,3 +610,35 @@ def test_long_standing_context_is_kept_in_the_system_text_and_a_corpus_is_mapped
     short = Script("ok")
     run_loop("Say ok.", working_dir=root, complete=short, context="Be brief.", cache_chars=200)
     assert "CONTEXT:\nBe brief." in short.prompts[0][len(short.systems[0]):]
+
+
+def test_an_injected_selection_chooses_the_view_and_the_folders_left_out_are_in_the_map(tmp_path):
+    from hubofhubs.the_intelligence.subconscious.folder_view.choice import FolderChoice, LeftOut, Pick
+    root = folder(tmp_path, **{"a.txt": "alpha\n", "b.txt": "beta\n", "cache_dir::c.txt": "gamma\n"})
+    seen = []
+
+    def select(goal, context, folder_root, budget, file_limit=5000):
+        seen.append((goal, folder_root, budget))
+        return FolderChoice(picks=[Pick("b.txt", "chosen by the stub")], left_out=[LeftOut("cache_dir/", "a cache of the stub", "cache")])
+
+    script = Script("ok")
+    run_loop("Say ok.", working_dir=root, complete=script, select=select, cache_chars=0, view_chars=5000)
+    prompt = script.prompts[0]
+    assert seen == [("Say ok.", str(tmp_path), 5000)] and "=== b.txt ===" in prompt and "=== a.txt ===" not in prompt
+    assert "cache_dir/ (a cache of the stub)" in prompt and "cache_dir/c.txt" not in prompt and "a.txt (6 bytes)  [not in view" in prompt
+
+
+def test_the_default_selection_is_the_hubs_selected_folder_view_and_leaves_out_what_the_evidence_says(tmp_path):
+    root = folder(tmp_path, **{"app::package.json": "{}", "app::dist::bundle.js": "x", "app::src::main.js": "main\n", "credentials::keys.txt": "k", "notes.md": "note\n"})
+    script = Script("ok")
+    run_loop("Say ok.", working_dir=root, complete=script, cache_chars=0)
+    prompt = script.prompts[0]
+    assert "app/dist/ (build output)" in prompt and "credentials/ (holds credentials or secrets)" in prompt
+    assert "keys.txt" not in prompt.replace("credentials/ (holds", "") and "=== notes.md ===" in prompt
+
+
+def test_a_file_named_inside_a_risky_folder_is_listed_not_shown(tmp_path):
+    root = folder(tmp_path, **{"secrets::prod.yaml": "token: x\n", "docs::guide.md": "guide\n"})
+    script = Script("ok")
+    run_loop("Check secrets/prod.yaml and docs/guide.md.", working_dir=root, complete=script, cache_chars=0)
+    assert "=== docs/guide.md ===" in script.prompts[0] and "=== secrets/prod.yaml ===" not in script.prompts[0] and "secrets/ (holds" in script.prompts[0]

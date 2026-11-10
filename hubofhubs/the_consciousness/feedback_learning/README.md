@@ -13,7 +13,7 @@ Part of [Adapting to the humans the system works with](../README.md)
 - Entry call: `hubofhubs.run("feedback-learning", {'person': '', 'feedback': {}})`
 - Selected implementation: Scoped record edit (`scoped_record_edit`)
 - Metric: A correction given once is followed afterwards
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/communication.py`](../communication.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](interface.py), [`hubofhubs/the_consciousness/feedback_learning/propose.py`](propose.py), [`hubofhubs/the_consciousness/feedback_learning/tests/test_feedback_learning.py`](tests/test_feedback_learning.py), [`hubofhubs/the_consciousness/flow.py`](../flow.py) and 35 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/communication.py`](../communication.py), [`hubofhubs/the_consciousness/feedback_learning/__init__.py`](__init__.py), [`hubofhubs/the_consciousness/feedback_learning/interface.py`](interface.py), [`hubofhubs/the_consciousness/feedback_learning/propose.py`](propose.py), [`hubofhubs/the_consciousness/feedback_learning/tests/test_feedback_learning.py`](tests/test_feedback_learning.py), [`hubofhubs/the_consciousness/flow.py`](../flow.py) and 43 more
 
 ## Implementations
 

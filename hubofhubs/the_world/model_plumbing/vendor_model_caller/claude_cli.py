@@ -109,6 +109,13 @@ _PURE_COMPLETION_SYSTEM = (
 # the bill, so the reasoning budget alone was roughly a third of the total. the ``effort`` setting
 # passes the CLI's ``--effort`` through so a deployment can spend reasoning where it helps and not
 # where it does not; unset leaves the CLI's own default alone.
+# The CLI's own web tools, the only tools a web call is allowed; a call is capped in turns and in seconds.
+WEB_SEARCH_TOOLS = ("WebSearch",)
+WEB_FETCH_TOOLS = ("WebFetch",)
+WEB_MAX_TURNS = 4
+WEB_TIMEOUT_SECONDS = 120.0
+WEB_SYSTEM = ("You are a web research assistant. Use only the web tool you were given, copy what it returns, never invent a page, "
+              "title or url, and reply in exactly the format asked.")
 _EFFORT_LEVELS = ("low", "medium", "high", "xhigh", "max")
 
 
@@ -561,7 +568,8 @@ class ClaudeCliProvider(ModelProviderBase):
 
     @retry_transient(max_retries=3, base_delay=1.0)
     def _invoke(self, prompt: str, *, model: Optional[str], system: Optional[str] = None,
-                thinking_tokens: Optional[int] = None) -> str:
+                thinking_tokens: Optional[int] = None, allow_tools: Optional[List[str]] = None,
+                max_turns: Optional[int] = None, timeout: Optional[float] = None) -> str:
         """Run one headless ``claude -p`` completion and return the model's text.
 
         Uses ``--output-format json`` and returns the envelope's ``result`` field. Raises
@@ -570,6 +578,10 @@ class ClaudeCliProvider(ModelProviderBase):
 
         The prompt is piped via stdin (not passed as a CLI argument) so large prompts do not
         hit the OS ARG_MAX limit.
+
+        ``allow_tools`` names the only tools the call may use (the web search and page tools of ``web_search`` and ``fetch_url``): the
+        CLI is then given just those (``--tools``, ``--allowed-tools``) and every other built-in tool is named in ``--disallowed-tools``,
+        with ``max_turns`` and ``timeout`` capping the call. Left None, the call is a pure completion with no tool at all.
         """
         self.refuse_when_offline()
         # While the lane knows Claude Code is at its usage limit, do not spawn a CLI that can only
@@ -600,14 +612,21 @@ class ClaudeCliProvider(ModelProviderBase):
         for flag in _ONE_SHOT_FLAGS:
             if flag == "--effort":
                 continue           # value-bearing, handled just below
+            if flag == "--tools" and allow_tools:
+                continue           # a web call is given exactly its web tools, below
             if flag in supported:
                 cmd += _ONE_SHOT_FLAGS[flag]
+        if allow_tools:
+            cmd += ["--tools", ",".join(allow_tools), "--allowed-tools", ",".join(allow_tools),
+                    "--disallowed-tools", ",".join(t for t in _PURE_COMPLETION_DISALLOWED if t not in allow_tools)]
+            if max_turns:
+                cmd += ["--max-turns", str(int(max_turns))]
         effort = cli_effort(self.effort)
         if effort and "--effort" in supported:
             cmd += ["--effort", effort]
         # Only needed as the FALLBACK. When ``--tools ""`` was accepted above there is no tool left
         # to disallow, and naming them again would only re-introduce the schemas we just removed.
-        if self.disallowed_tools and "--tools" not in supported:
+        if self.disallowed_tools and "--tools" not in supported and not allow_tools:
             cmd += ["--disallowed-tools", ",".join(self.disallowed_tools)]
 
         proc = run_in_group(
@@ -615,7 +634,7 @@ class ClaudeCliProvider(ModelProviderBase):
             input=prompt.encode("utf-8"),
             env=self._build_env(thinking_tokens),
             cwd=_neutral_cwd(),
-            timeout=self.timeout_seconds,
+            timeout=timeout or self.timeout_seconds,
         )
         out = (proc.stdout or b"").decode("utf-8", errors="replace")
         if proc.returncode != 0:
@@ -744,6 +763,77 @@ class ClaudeCliProvider(ModelProviderBase):
         # ``layers`` accepted for interface parity but ignored; ``messages`` are flattened as before.
         prompt = _flatten_messages(messages)
         return self._invoke(prompt, model=model, system=system)
+
+    # --- the CLI's own web tools ----------------------------------------------
+
+    def supports_web_search(self, model: Optional[str] = None) -> bool:
+        """True when the ``claude`` program can be found; a search runs on the same login as every other call, so it needs no key."""
+        binary = self._resolve_binary()
+        return bool(shutil.which(binary) or Path(binary).expanduser().is_file())
+
+    def web_model(self, model: Optional[str]) -> Optional[str]:
+        """The model a web call runs on: the one the caller named, else the fast tier's pick among Anthropic's models."""
+        if model:
+            return model
+        from hubofhubs.the_world.tools.delegated_agent_sessions import providers
+        return providers.model_for("anthropic", "fast")
+
+    def web_call(self, prompt: str, *, model: Optional[str], tools: List[str]) -> str:
+        """One headless CLI call allowed only ``tools``, in the private neutral folder, capped in turns and time."""
+        return self._invoke(prompt, model=self.web_model(model), system=WEB_SYSTEM, allow_tools=tools,
+                            max_turns=WEB_MAX_TURNS, timeout=min(self.timeout_seconds, WEB_TIMEOUT_SECONDS))
+
+    def web_search(self, query: str, *, model: Optional[str] = None, max_results: int = 5,
+                   instruction: Optional[str] = None) -> Dict[str, Any]:
+        """Search the live web with the CLI's own search tool, on the login, with no key: ``{"answer", "results": [{title, url, snippet,
+        date}], "error"}``. Never raises for a bad reply: an empty or malformed one is no results and an ``error`` message (a usage limit
+        and the offline refusal still raise, as for every call here). The model copies the tool's results, so a url can be mistranscribed."""
+        ask = f"{instruction.strip()}\n\n" if instruction and instruction.strip() else ""
+        prompt = (f"{ask}Search the web for: {query}\n\n"
+                  f"Reply with ONLY one JSON object, no prose and no code fence: "
+                  f'{{"answer": "<one or two sentences, from the pages>", "results": [{{"title": "", "url": "", "snippet": "", "date": ""}}]}} '
+                  f"with at most {int(max_results)} results. Every url must be one the search tool returned, copied exactly; never write "
+                  f"a url you did not see. A snippet is text copied from the page or the search result. Give a date only when the "
+                  f'result shows one, else "".')
+        return self.web_reply(prompt, model, WEB_SEARCH_TOOLS, max_results)
+
+    def supports_url_fetch(self, model: Optional[str] = None) -> bool:
+        return self.supports_web_search(model)
+
+    def fetch_url(self, url: str, *, model: Optional[str] = None, instruction: Optional[str] = None) -> Dict[str, Any]:
+        """Read ONE page with the CLI's own fetch tool: ``{"text", "url", "status"}``, the shape of the Gemini arm. Raises when the page
+        gave no text, so a caller can fall back to a direct request."""
+        ask = instruction or ("Return the full visible text of this page, verbatim and complete, as plain text with its structure "
+                              "preserved. Do not summarize, comment, or add anything.")
+        text = self.web_call(f"{ask}\n\nFetch this page with the fetch tool: {url}", model=model, tools=list(WEB_FETCH_TOOLS))
+        if not text.strip():
+            raise RuntimeError(f"claude CLI returned no content for {url}")
+        return {"text": text, "url": url, "status": "ok"}
+
+    def web_reply(self, prompt: str, model: Optional[str], tools: tuple, max_results: int) -> Dict[str, Any]:
+        """Run a web search prompt and read its JSON leniently; a reply that holds no result is an empty result with an error."""
+        try:
+            text = self.web_call(prompt, model=model, tools=list(tools))
+        except (OfflineRefusal, UsageLimitError, getattr(self.usage_limits, "UsageLimitError", UsageLimitError)):
+            raise
+        except Exception as exc:  # noqa: BLE001 -- a search that fails is an empty result, never an exception out of the adapter
+            log.warning("claude CLI web search failed (%s: %s)", type(exc).__name__, exc)
+            return {"answer": "", "results": [], "error": f"{type(exc).__name__}: {exc}"}
+        parsed = extract_json_object(text)
+        rows = parsed.get("results") if isinstance(parsed, dict) else None
+        results: List[Dict[str, Any]] = []
+        for row in rows if isinstance(rows, list) else []:
+            if not isinstance(row, dict) or len(results) >= max_results:
+                continue
+            url = str(row.get("url") or "").strip()
+            if not url.lower().startswith(("http://", "https://")):
+                continue
+            results.append({"title": str(row.get("title") or ""), "url": url, "snippet": str(row.get("snippet") or ""),
+                            "date": str(row.get("date") or "")})
+        answer = str(parsed.get("answer") or "") if isinstance(parsed, dict) else ""
+        if not results:
+            return {"answer": answer, "results": [], "error": "the reply held no results with an http url" if text.strip() else "empty reply"}
+        return {"answer": answer, "results": results}
 
     def list_models(self) -> List[str]:
         # The CLI has no models.list, but it can only ever run CLAUDE models, so this provider

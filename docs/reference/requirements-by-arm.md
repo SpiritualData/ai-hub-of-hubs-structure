@@ -59,6 +59,9 @@ at the repository root.
 | Feedback Learning, Kept note (`feedback-learning:kept_note`) | none | none | none | none | no |
 | Feedback Learning, Scoped record edit (`feedback-learning:scoped_record_edit`) | none | none | none | none | no |
 | File Editing, One-call file edit (`file-editing:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
+| Folder View, Folders judged by evidence, files ranked by what the work points at (`folder-view:evidence_ranked`) | none | none | none | none | no |
+| Folder View, Evidence candidates, then one cheap model call (`folder-view:model_pick`) | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| Folder View, Names, whole folder, shared words (the harness as it was) (`folder-view:ported_baseline`) | none | none | none | none | no |
 | Goal Completion, Evidence standard (`goal-completion:evidence_standard`) | none | none | none | none | no |
 | Goal Completion, Outcome is not empty (`goal-completion:nonempty`) | none | none | none | none | no |
 | Guidance, Always nudge (`guidance:always_nudge`) | none | none | none | none | no |
@@ -107,7 +110,8 @@ at the repository root.
 | Route a Request, One cheap classifier call (`route-a-request:single_classifier`) | none | none | none | none | no |
 | Solution Passes, Network passes (`solution-passes:network_passes`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
-| Terminal Session, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
+| AI Session Experience, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
+| AI Session Experience, Live session (reference terminal) (`terminal-session:live_session`) | none | none | none | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |
 | Consciousness, Representative, priorities and feedback (`the-consciousness:composition`) | none | none | none | none | no |
@@ -136,6 +140,7 @@ at the repository root.
 | Vendor Model Caller, Multi-provider router (`vendor-model-caller:multi_provider`) | none | none | none | none | no |
 | Vendor Model Caller, OpenAI provider (`vendor-model-caller:openai`) | `OPENAI_API_KEY` (secret)<br>`OPENAI_BASE_URL` | OpenAI | `openai` via extra `openai` | none | no |
 | Web Search, Brave Search API (`web-search:brave`) | none | Brave Search (`BRAVE_SEARCH_API_KEY` or `BRAVE_API_KEY`) | `httpx` via extra `web` | none | no |
+| Web Search, Claude Code login search (`web-search:claude_login`) | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | no |
 | Web Search, Gemini grounding (`web-search:gemini`) | none | Gemini (`GEMINI_API_KEY` or `GOOGLE_API_KEY` or `GOOGLE_AI_API_KEY`) | `google.genai` via extra `gemini`<br>`httpx` via extra `web`<br>`filelock` via extra `locks` (optional) | none | no |
 | Web Search, Provider-native search (`web-search:provider`) | none | none | none | none | no |
 | Web Search, SearXNG metasearch (`web-search:searxng`) | `SEARXNG_URL` | none | `httpx` via extra `web` | service SearXNG (`SEARXNG_URL`) | no |

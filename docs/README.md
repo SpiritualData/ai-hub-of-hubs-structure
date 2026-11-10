@@ -36,6 +36,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Public evidence](explanation/public-evidence.md)
 - [What public research says about each seat](explanation/what-public-research-says.md)
 - [A terminal and harness experience for the hub](explanation/terminal-harness.md)
+- [Working with the AI while it works](explanation/working-with-the-ai-while-it-works.md)
 - [Where each part of the hub lives](explanation/layout-of-the-hub.md)
 
 ## Reference

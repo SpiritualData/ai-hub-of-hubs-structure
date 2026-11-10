@@ -10,10 +10,12 @@ none is kept. The session ends on ``/quit``, end of input or Ctrl-C. Standard li
 """
 from __future__ import annotations
 
+import time
 from typing import Any, Callable, Iterable, TextIO
 
 from esoi import EntryError, Pending, implementation
 
+from hubofhubs.the_consciousness.terminal.session_view import SessionReport, SessionView, event_line, report
 from hubofhubs.the_consciousness.terminal import TerminalState, answer_ask, close_ask, fold_ask, render, settle, to_text
 
 HELP = "\n".join((
@@ -111,3 +113,23 @@ class LineRepl:
             out.write("\n")
         out.write("Goodbye.\n")
         return 0
+
+    def attend(self, harness: Any, goal: str, out: TextIO, keys: Any = None, resume_session_id: str = "", clock: Callable[[], float] = time.monotonic,
+               tick: float = 0.02, live: Any = None, width: int = 0) -> SessionReport:
+        """The plain way to watch a run: run it to its end on this thread, write each event as a line, then the closing report. No key is read, so the
+        run cannot be stopped, steered or answered while it works (a question waits for its harness to give up)."""
+        view = SessionView()
+        view.started = view.now = clock()
+        events = []
+
+        def sink(event: Any) -> None:
+            events.append(event)
+            view.now = clock()
+            view.apply(event)
+            line = event_line(event, view)
+            if line:
+                out.write(line + "\n")
+        done = harness.start(goal, sink, resume_session_id)
+        for row in report(view):
+            out.write(row + "\n")
+        return SessionReport(final=done, runs=(done,), events=tuple(events), controls=(), view=view, text=out.getvalue() if hasattr(out, "getvalue") else "")

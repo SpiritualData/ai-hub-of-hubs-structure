@@ -1,0 +1,181 @@
+# Working with the AI while it works
+
+The experience of a person beside an AI that is doing deep work: watching it, stopping it, steering it, trusting it, and understanding what is
+unusual about it. The hub holds the contract and a reference terminal in the Terminal Session solution of Consciousness
+(`hubofhubs/the_consciousness/terminal/`); a consumer's terminal, chat page and task modal consume the same contract. Researched 2026-11-10.
+
+## The requirements
+
+Each requirement is stated once, has a stable id and is testable by a scripted session. Surfaces are scored against these ids: the hub's reference
+terminal (`H`), the consumer's own terminal (`T`), the consumer's chat of every type (`C`) and the consumer's AI task modal (`M`).
+
+### Watch and control the work
+
+| Id | A person can... | Test (scripted session) |
+|---|---|---|
+| X1 | watch the work as it happens: each read, change and command appears as a step with its kind and target | steps appear in order with kind and target before the run ends |
+| X2 | see which agent is acting and how far along the run is | the current step and the count of steps and calls are on screen |
+| X3 | see cost and time so far, and cost marked unknown when the harness does not report it, never shown as zero | elapsed time shown; a run with no cost report shows "unknown" |
+| X4 | stop the run at once (Escape, Ctrl-C, a Stop button) without losing finished work | after the stop, files written so far exist and a session is named |
+| X5 | resume what was stopped, without redoing finished work | after resume the run ends met, every earlier step ran once |
+| X6 | give feedback while the run works and see it taken up | the message shows as sent, then as taken up, and is in the next model call |
+| X7 | see sub-agents as a tree with the right parent | the tree on screen has each helper under the agent that started it |
+| X8 | steer or stop one sub-agent, or be told plainly that this harness cannot | the helper stops and the rest goes on, or a notice says it is not available |
+| X9 | approve or refuse a risky step, which does not run before the answer | the step is absent while waiting, runs after approve, never runs after refuse |
+| X10 | see the result and the files changed | the closing report names the outcome and each changed file |
+| X11 | switch harness and see the same screen | the same script on two harnesses gives the same rows and outcome |
+| X12 | work the same from a terminal, a chat page and a task modal | the surface consumes the shared events and controls, no private ones |
+| X13 | use it without colour or cursor control, and reconnect or replay to the same screen | a non-terminal run has no escape codes; replaying the events redraws the same rows |
+
+### Understand and benefit from what is unique here
+
+| Id | A person can... | Test |
+|---|---|---|
+| X14 | see which solution and milestone the work serves | the run header names the solution and milestone |
+| X15 | see sub-agents follow the solution hierarchy | helpers are named by solution and sit under the solution they serve |
+| X16 | see progress that is grounded: counts and targets from the work, not the model's narration | every step row comes from a structural fact (kind, target, state) |
+| X17 | see the solution frame and the metric before and after | a finished milestone run shows the metric before, after and the change |
+| X18 | read explanations only when asked | no explanatory text on the default screen; one action opens the detail |
+
+### Manage risk
+
+| Id | A person can... | Test |
+|---|---|---|
+| X19 | see what will change before an irreversible step | the question names the effect (the preview) before the answer |
+| X20 | see what was blocked or refused and why | a refused or blocked step is listed with its reason |
+| X21 | undo or resume after the run ends | a finished or stopped run offers resume, or names what to undo |
+| X22 | be asked rarely, and answer a question while the run goes on | an open question does not stop other steps from showing; no question for a step that needs none |
+| X23 | not be shown settings they just made, or chrome that repeats what is already visible | the screen never restates a choice the person just made |
+
+## What each surface has today
+
+Read on 2026-11-10 from the code of each surface (the web surfaces read-only; a second pass scores them against these ids). `yes` met, `part` partly,
+`no` absent, `?` not checked. H is the hub's reference terminal after this work; its scripted score is in the section on the metric.
+
+| Id | H | T (QAR terminal) | C (Quest AI chat) | M (AI task modal) | What the best open-source terminals do | Ideal |
+|---|---|---|---|---|---|---|
+| X1 | yes | yes: exec lines rolled into counts, targets in the live line | part: `exec`, `status`, `work_trace` drawn; `read` is emitted and not drawn | part: activity log of started, status, exec, output | Claude Code and Codex show each tool call as a typed item; Aider shows SEARCH/REPLACE blocks | each step with kind and target, replaced in place |
+| X2 | yes | yes: elapsed clock, count of files read | part | yes: elapsed clock and token counter | Gemini CLI and Codex report per-turn stats | current step, count, time |
+| X3 | yes (unknown marked) | yes since 2026-11-10: cost in the closing line when reported | no | part: tokens only | Claude Code `total_cost_usd`; Gemini CLI stats per model; Aider `/tokens` only | cost so far, unknown never zero |
+| X4 | yes | yes: Escape and Ctrl+C keep the session | yes: Stop, cooperative, global | part: Stop is an undo | Claude Code Esc keeps work; Aider Ctrl-C keeps the partial reply; Codex `turn/interrupt` ends interrupted | stop at once, keep work |
+| X5 | yes | yes: `/resume`, `--resume`, `--continue` | no for a turn (reconnect replays the stream) | part: pause and resume on the live card only | `claude --resume`, `codex resume`, `openhands --resume` | resume by session, no repeat |
+| X6 | yes | part: delivered once and confirmed; the taken-up mark is in the control, not shown as a row | part: queued in memory, no pickup event | yes: claim and seen shown in the timeline | Claude Code queues Enter and sends after tool calls; Codex has `codex queue` | sent, then taken up |
+| X7 | yes | no: a flat jobs list | no: one `delegated` event | no | Claude Code shows nested subagents as a tree with a (+N) count | tree with parent |
+| X8 | yes (honest when unsupported) | no | no | no | Claude Code `/tasks` then `x` stops one subagent; typing into its transcript takes over | stop or steer one |
+| X9 | yes | part: a planner confirm waits between steps | yes: ApprovalCard approve or decline | part: approve and restart | Claude Code names the asking subagent, Esc denies one call; Codex `requestApproval`; opencode permission reply | a step waits for the answer |
+| X10 | yes | yes since 2026-11-10: closing line names files changed | no | no | Aider `/diff` and auto-commit; Codex file-change items | files changed, diff on demand |
+| X11 | yes | no (harness set in config) | no | no | opencode and Codex expose a server; Toad and Zed use ACP so one screen drives many agents | same screen on any harness |
+| X12 | yes | no: consumes its own events | no | no | opencode TUI, web and editor are clients of one server | one contract, three surfaces |
+| X13 | yes | no: Textual only | part: reconnect with `resume_from_event` | part: poll with a 120 s cap | Codex and Claude Code have JSON streams for non-terminal use | plain fallback, replay to same screen |
+| X14 | yes (when the harness is framed) | no | ? | ? | none found | run names solution and milestone |
+| X15 | yes (events carry the solution) | no | no | no | none found | helpers named by solution |
+| X16 | yes | yes: Trail from structural events | yes: work trace | ? | typed items rather than prose | no narration as evidence |
+| X17 | yes (Framed harness) | yes: metric lines in the milestone block | ? | ? | none found | before, after, change |
+| X18 | yes | yes: detail behind Alt+T and Alt+D | ? | ? | Claude Code transcript mode | detail on demand |
+| X19 | yes | no | no | no | Codex sandbox and approval modes; Claude Code plan mode | the effect before the step |
+| X20 | yes | part: stopped reasons | ? | ? | Claude Code `permission_denied` event | refused steps with reason |
+| X21 | yes | yes: resume | part | part | Aider `/undo` reverts the last commit | resume or undo |
+| X22 | yes | no: an ask is answered after the turn | part | part | Claude Code passes background subagent prompts to the main session while it works | answer while the run goes on |
+| X23 | yes | ? | ? | ? | none measured | nothing restated |
+
+## What the best open-source terminal agents do, worth adopting
+
+Sources opened 2026-11-10 unless a date is given; "not confirmed" means the page read did not say. The earlier hub page `terminal-harness.md` compares
+the same projects as terminals (read 2026-11-01); the registry area `terminal_agent_experience` holds this pass as findings.
+
+| Behaviour | Where | Source |
+|---|---|---|
+| Escape interrupts and keeps the work; Enter during a run queues the message and it is sent after the current tool calls; Escape does not discard the draft | Claude Code | [interactive mode](https://code.claude.com/docs/en/interactive-mode) |
+| Nested subagents as a tree below the prompt with a (+N) count; permission prompts of a background subagent surface in the main session naming it; `x` stops one; typing into its row takes it over | Claude Code | [sub-agents](https://code.claude.com/docs/en/sub-agents) |
+| Stream events with `parent_tool_use_id` for helpers, `permission_denied`, a final `result` with `total_cost_usd`; `interrupt()` in the SDK | Claude Code | [headless](https://code.claude.com/docs/en/headless) |
+| Typed items (command, file change, MCP call, plan update), `turn/interrupt` ending the turn `interrupted`, approval and user-input requests as events, `exec resume <id>`, `queue` for a message | Codex CLI | [repository](https://github.com/openai/codex) |
+| One server, many clients: SSE event stream, `prompt_async`, `abort`, a permission reply with `remember` | opencode | [server docs](https://opencode.ai/docs/server/) |
+| Ctrl-C is always safe and the partial reply stays; `/undo` reverts what it committed; `/diff` since the last message | Aider | [commands](https://aider.chat/docs/usage/commands.html) |
+| `stream-json` events init, message, tool_use, tool_result, error, result with per-model token stats | Gemini CLI | [headless](https://geminicli.com/docs/cli/headless) |
+| Plan mode read-only, act mode default, `--json` agent_event and run_result lines | Cline CLI | [overview](https://docs.cline.bot/cline-cli/overview) |
+| Ask before tool calls by default, allow and deny lists, read-only commands unprompted | Crush (source-available licence: not linkable) | [repository](https://github.com/charmbracelet/crush) |
+| `--resume [ID]`, `--always-approve` and `--llm-approve`, JSONL headless; the CLI is no longer actively maintained | OpenHands CLI | [reference](https://docs.openhands.dev/openhands/usage/cli/command-reference) |
+
+Not confirmed from the pages read: Codex TUI keys, opencode event names beyond `server.connected`, anything about Goose's live screen, Amp (its manual pages
+returned errors). No published study compares these screens; the nearest source is a position poster (grade D), so the metric below is this hub's own.
+
+## Earlier inputs that shaped the requirements
+
+The owner's earlier rules, from the records and design pages of the hub and its consumer and from his standing feedback (private notes are paraphrased, not copied):
+
+| Requirement | Input and where it lives |
+|---|---|
+| X4, X5, X21 | After any stop or disconnect the AI resumes as if nothing happened; a paused run shows what is done and one Resume action (consumer page `pause-and-resume`); Ctrl+C stops the work first and asks twice before quitting; leaving a voice session never cancels work, Stop is the only cancel |
+| X6 | A message sent to a running task must reach it and a queued message must never sit forgotten at the end of a turn (consumer playbook, steering); never disable the input while the agent runs (consumer page `terminal-ux-prior-art`) |
+| X1, X2, X3 | Status lines must be true: no "starting" or "retrying" unless it really happens; say "starting" quickly and keep an elapsed clock running through every wait; status lines fit 80 columns |
+| X16 | One calm trace per turn, collapsed by default, built from structural facts, counts never above what the run did (consumer page `live-work-trace`; the hub's work trace schema); the closing line comes from structured fields, never the worker's words |
+| X10, X17 | A milestone turn does the work the AI can do and shows a before and after metric; bookkeeping is never the output (standing feedback on measurable progress); the finished view shows a code-written before and after, separate from prose |
+| X14, X15 | Milestone work follows the solution hierarchy and a solution frame: classify the deliverable, a deep worker follows a skill, completion measures before and after (milestone-work design notes) |
+| X9, X19, X22 | Ask a human rarely, only for what only a human has, outward mail, or a large irreversible step; a costly or slow step starts only on confirmation, with time and cost stated; an ask is a real visible record, not chat text; approvals live in the conversation thread |
+| X18, X23 | No explanation the person must read on every visit: an info icon, a collapsed row or a first-use hint; do not restate what the controls already show or warn about a deliberate choice |
+| X11, X12 | The consumer's standing rule that generic engines move into the hub seat by seat, and that a second consumer's need goes in the library |
+| X13 | Logs never on the screen; the transcript is kept apart from rendering so nothing is lost on reconnect |
+
+## What belongs where
+
+| Part | Lives in | Why |
+|---|---|---|
+| The event and control contract, the adapters from today's runners, the reference terminal, the scripted harnesses and the metric | the hub, Terminal Session (Consciousness) | harness independent and consumer free; a second consumer gets the experience from one line |
+| Its settings, its Textual screen, its data model, its words for its own product | the consumer | they know the consumer's product |
+| The wire a web page reads | the consumer's backend maps its stream to the same events and the page draws one component | one component for steps, helpers, cost and files in chat and in the task modal |
+
+**Placement decision.** The experience of a person working with the AI while it works is the `terminal-session` solution widened, not a new solution and not
+a sibling. The hub's rule is to extend before adding. Against each sibling: Request Intake takes in what people ask before a run starts; Judgment Calls
+decides whether to ask (a decision, not a screen); Prioritization orders what reaches the person; Representatives carry a person's authority and quality
+profile; Feedback Learning edits specs from feedback. None of them draws a run or takes a stop, a correction or an approval while it works, and a sibling
+would need the same metric and the same arms as Terminal Session. Its id and interface (`Conversing`, entry `converse`) stay, its display name is now
+AI Session Experience, its purpose is the whole experience, the interface gains `attend`, and the plain line REPL stays as the baseline arm. The registry caps
+seats at 15 and the area `terminal_agent_experience` is seated on the existing `judgment-calls` seat instead of a sixteenth.
+
+## The contract
+
+Events a harness emits: `RunStarted` (goal, harness, session, resumed, solution, milestone, frame, metric and its value before), `Step` (kind read, edit,
+run, check, tool, delegate, note or message-received; state running, done, failed or blocked), `AgentStarted` (with `parent_id` and solution),
+`AgentEnded` (met, unmet, stopped, failed), `Review`, `Waiting` (question, what will change, options), `Usage` (cost, tokens, calls) and `Finished` (outcome
+met, unmet, stopped or failed; report; files changed; session; what was blocked and why; the metric after; messages never taken up).
+Controls a surface sends: `Stop`, `Resume`, `Steer`, `Approve`, `Refuse`, each able to name one agent. `Capabilities` says which a harness honours, and a
+surface shows the others as not available. `Harness` is two methods: `start(goal, sink, resume_session_id)` and `control(control)`.
+
+Adapters: `LoopLines` (the hub loop's progress strings), `loop_log_events` (helpers from `LoopResult.log`), `StreamJson` (Claude Code stream lines),
+`report_events` (a `SolutionReport` tree), `progress_events` (routes one `ProgressEvent`). Harness adapters: `LoopHarness`, `StreamHarness`, `ApprovalGate`
+(wraps tools so a risky call waits) and `Framed` (adds solution, milestone, frame and a metric before and after to any harness).
+
+## What the loop does not emit yet
+
+Built against today's strings, so the loop can adopt these shapes later (all would be `ProgressEvent(type="session", data=<event.to_dict()>)`):
+
+1. A helper when it starts: `{"type":"agent-started","agent_id","parent_id","task","solution"}` and when it ends `{"type":"agent-ended","agent_id","state","calls"}`. Today the helper appears only after it ends, and its steps are drawn under the main agent.
+2. A step per action with its own id and the agent it belongs to: `{"type":"step","step_id","agent_id","kind","label","state":"running"|"done"|"failed"}`, running before the command starts.
+3. The message taken up: `{"type":"step","kind":"message-received","step_id":<message id>}` when the inbox is drained. Today the harness reads the runner's inbox to guess it.
+4. Usage after each call: `{"type":"usage","cost_usd","tokens","calls"}`. Today cost is known only when the run ends.
+5. A stop that names the call in flight: the loop stops between calls, so a stop waits for the model call to return.
+
+The stream runner does not forward its raw lines either; it should emit each as `ProgressEvent(type="stream", data=<line>)`. The `permission_denied` line shape used by the adapter is assumed from the event name in the CLI documentation and is not verified.
+
+## Run it
+
+`python -m hubofhubs.the_consciousness.terminal.live --help`. `--demo loop` runs a scripted session on the hub's own loop, `--demo stream` on a fake
+that keeps the stream runner's contract; neither calls a model. On a terminal, Escape or Ctrl-C stops and keeps the session, type `resume` to continue, type
+a line to steer, `y` or `n` answers the question, `@name text` steers one helper and `/stop name` stops one. Piped, it prints plain lines and approves
+by itself.
+
+## The metric
+
+`metric-terminal-session` stays the solution's one authoritative metric. Its cases gain the kind `attend` (`evaluation/terminal_session/sessions.py`):
+20 scripted sessions, each on the hub loop (a scripted completion behind the loop runner) and on a fake of the stream runner, scoring named checks against
+the ids above. The number is the share of all 34 cases right (14 line-session cases and 20 attended), balanced with time by the fixed weights; the per-id
+shares are reported.
+
+| Arm | Cases right | Balanced | Ids fully met |
+|---|---|---|---|
+| `line_repl` (baseline) | 22 of 34 | 0.6091 | X1, X2, X3, X7, X10, X11, X12, X14, X15, X16, X17 (it prints every event as a line and nothing else) |
+| `live_session` | 34 of 34 | 0.9969 | X1 to X23 |
+
+`live_session` is selected from this result. What it cannot show: the cases are scripted by the author of the arm, so a ceiling proves the contract holds on
+two harnesses and not that a real model's run feels right; X18, X22 and X23 are checked only as the absence of explanations, of a blocked answer and of
+restated messages; a person's trial on a real terminal is the next stage.

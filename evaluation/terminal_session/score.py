@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from offline import judge  # noqa: E402
 
 from esoi import Pending  # noqa: E402
@@ -26,6 +27,9 @@ def adapt(implementation, meter):
     arm = implementation()
 
     def run(kind, args):
+        if kind == "attend":
+            from sessions import run_scenario
+            return {"failed": run_scenario(arm, args["scenario"], args["kit"])}
         calls = []
 
         def door(text):
@@ -45,8 +49,11 @@ def adapt(implementation, meter):
 
 
 def score_case(fn, case):
-    return dict(judge(fn(case["kind"], case["args"]), case), kind=case["kind"])
+    return dict(judge(fn(case["kind"], case["args"]), case), kind=case["kind"], requirements=case.get("requirements", []))
 
 
 def aggregate(rows):
-    return {f"{k}_passed": f"{sum(bool(r['ok']) for r in rows if r.get('kind') == k)}/{sum(r.get('kind') == k for r in rows)}" for k in sorted({r.get("kind") for r in rows})}
+    wanted = sorted({x for r in rows for x in r.get("requirements", [])}, key=lambda x: int(x[1:]))
+    by_req = {x: f"{sum(bool(r['ok']) for r in rows if x in r.get('requirements', []))}/{sum(x in r.get('requirements', []) for r in rows)}" for x in wanted}
+    return {**by_req, **{f"{k}_passed": f"{sum(bool(r['ok']) for r in rows if r.get('kind') == k)}/{sum(r.get('kind') == k for r in rows)}" for k in sorted({r.get("kind") for r in rows})}}
+

@@ -12,6 +12,7 @@ from hubofhubs.the_body.internal_context.card_store.card import Card
 from hubofhubs.the_intelligence.subconscious.cards_from_files.interface import CardsFromFiles
 from hubofhubs.the_body.internal_context.interface import InternalContexting
 from hubofhubs.the_intelligence.subconscious.context_retriever.interface import ContextRetrieval
+from hubofhubs.the_intelligence.subconscious.folder_view.interface import FolderViewing
 from hubofhubs.the_intelligence.subconscious.intuition.interface import Intuiting
 from hubofhubs.the_intelligence.subconscious.solution_briefs import RETRIEVED, briefs
 from hubofhubs.the_intelligence.subconscious.relevant_solutions.interface import SolutionRelevance
@@ -26,19 +27,21 @@ class CardRecall:
     REQUIRES = ()     # the seats it is handed
 
     def __init__(self, internal: InternalContexting, builder: Lazy[CardsFromFiles], intuition: Lazy[Intuiting], retriever: Lazy[ContextRetrieval],
-                 relevance: Lazy[SolutionRelevance] = None):
+                 relevance: Lazy[SolutionRelevance] = None, folder_view: Lazy[FolderViewing] = None):
         self.internal = internal
         self.builder = builder
         self.intuition = intuition
         self.retriever = retriever
         self.relevance = relevance
+        self.folder_view = folder_view
 
     def prepare(self, request: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = 4000, records: Any = None,
-                knowledge: str = RETRIEVED, limit: int = 5, depth: int = 3) -> Mapping[str, Any]:
+                knowledge: str = RETRIEVED, limit: int = 5, depth: int = 3, folder: str = "") -> Mapping[str, Any]:
         """What the Mind is handed for a request: the recalled cards, what Intuition offers (a pending step while it has no arm) and the pieces the Context
         Retriever picks from what Internal Context returns and the files given. With the consumer's ESOI ``records``, also ``solutions``: the solutions the
         request concerns (Relevant Solutions), each with its generated prompt and the knowledge that bears on it, and the scopes above and the dependents of
-        each. Every step is reported, none is made up."""
+        each. With a working ``folder``, also ``folder_view``: the files of the folder to show first and the folders left out, with the reason of each (Folder View).
+        Every step is reported, none is made up."""
         held = take(self.internal, "internal-context", method="corpus")
         corpus = {**(held.output or {}), **(files or {})}
         offered = take(self.intuition, "the-intuition", request=request)
@@ -53,6 +56,11 @@ class CardRecall:
                 offered_ids = [str(o.get("id") or o.get("card_id") or "") for o in (offered.output or []) if isinstance(o, Mapping)]
                 out["solutions"] = briefs(network_of(records), (found.output or {}).get("solutions") or [], request, knowledge,
                                           self.knowledge_retriever(), offered_ids, self.internal.keep)
+        if folder and self.folder_view is not None:
+            viewed = take(self.folder_view, "folder-view", goal=request, context="", root=folder, budget_chars=max(1, budget_tokens) * 4)
+            log.append(viewed)
+            if viewed.status == DONE:
+                out["folder_view"] = viewed.output.to_dict()
         return {**out, "steps": listing(log)}
 
     def knowledge_retriever(self) -> Any:

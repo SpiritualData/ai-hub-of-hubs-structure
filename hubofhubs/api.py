@@ -205,6 +205,25 @@ NAMES = {
     "hubofhubs.the_consciousness.terminal.asks": (
         "error_block", "is_for_viewer",
     ),
+    "hubofhubs.the_consciousness.terminal.session_events": (
+        "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "Refuse", "Resume", "Review", "RunStarted", "SessionEvent",
+        "Step", "Steer", "Stop", "Usage", "Waiting", "control_from_dict", "event_from_dict",
+    ),
+    "hubofhubs.the_consciousness.terminal.session_adapters": (
+        "LoopLines", "StreamJson", "loop_log_events", "progress_events", "report_events",
+    ),
+    "hubofhubs.the_consciousness.terminal.session_harnesses": (
+        "ApprovalGate", "Framed", "LoopHarness", "StreamHarness",
+    ),
+    "hubofhubs.the_consciousness.terminal.session_view": (
+        "SessionReport", "SessionView", "replay",
+    ),
+    "hubofhubs.the_consciousness.terminal.session_keys": (
+        "ScriptedKeys", "TtyKeys",
+    ),
+    "hubofhubs.the_consciousness.terminal.live": (
+        "LiveSession",
+    ),
     "hubofhubs.the_consciousness.terminal.trace": (
         "WorkTrace", "domain_of", "project", "validate",
     ),
@@ -283,6 +302,24 @@ NAMES = {
     ),
     "hubofhubs.the_intelligence.subconscious.relevant_solutions.records_then_model": (
         "RecordsThenModel",
+    ),
+    "hubofhubs.the_intelligence.subconscious.folder_view.interface": (
+        "FolderViewing",
+    ),
+    "hubofhubs.the_intelligence.subconscious.folder_view.choice": (
+        "FolderChoice", "LeftOut", "Pick",
+    ),
+    "hubofhubs.the_intelligence.subconscious.folder_view.judgment": (
+        "folder_verdict", "file_verdict", "path_verdict", "scan",
+    ),
+    "hubofhubs.the_intelligence.subconscious.folder_view.ported_baseline": (
+        "PortedBaseline",
+    ),
+    "hubofhubs.the_intelligence.subconscious.folder_view.evidence_ranked": (
+        "EvidenceRanked",
+    ),
+    "hubofhubs.the_intelligence.subconscious.folder_view.model_pick": (
+        "ModelPick",
     ),
     "hubofhubs.the_intelligence.subconscious.solution_briefs": (
         "briefs",
@@ -718,6 +755,9 @@ NAMES = {
     ),
     "hubofhubs.the_world.tools.web_search.fetch": (
         "FetchedPage", "PageFetchError", "UnsupportedContentTypeError", "canonicalize_url", "default_page_fetcher",
+    ),
+    "hubofhubs.the_world.tools.web_search.claude_login": (
+        "ClaudeLoginBackend",
     ),
     "hubofhubs.the_world.tools.web_search.gemini": (
         "GeminiGroundingBackend",

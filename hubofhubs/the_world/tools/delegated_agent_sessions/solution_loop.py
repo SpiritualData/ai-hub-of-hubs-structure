@@ -29,20 +29,18 @@ import threading
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import Any, Callable, Collection, Dict, List, Mapping, Optional, Sequence, Tuple
 
 from hubofhubs.the_world.tools.command_running import clip, run_command
 from hubofhubs.the_world.tools.file_editing.editblock import (DIVIDER, HEAD, UPDATED, apply_edit, find_original_update_blocks,
                                                               find_similar_lines)
 from hubofhubs.the_world.tools.file_reading.read_files import inside
 
-SKIPPED_FOLDERS = (".git", "__pycache__", "node_modules")
+FOLDER_VIEW = "folder-view"       # the solution that chooses the files in view and judges which folders to leave out (Subconscious)
+LEFT_OUT_LINES = 25               # folders left out that the folder map names, with the reason
 MAP_ENTRIES = 300
-LEXICAL_FILES = 200                # above this many files, words shared with the goal no longer tell which files matter
-LARGE_FOLDER_FILL = 24_000         # characters of likely files put in view when the folder is too large to show whole
-RELEVANT_SCORE = 3                 # a file needs a word of the goal in its path, or three in its opening, to be shown unasked
+LEXICAL_FILES = 200                # above this many files the folder map is an outline, not a list
 TOOL_LIMIT = 20_000                # characters kept from one tool result (a runbook or a page is read whole where a command's output is clipped)
-PATH_TOKEN = re.compile(r"(?<![\w/.-])/?(?:[\w.-]+/)+[\w.-]+\.\w{1,6}(?![\w])")      # a path with at least one folder and a file suffix
 SYSTEM_CHARS = 80_000              # the system text is one command argument for a command-line completion, which the system caps near 128 KiB
 NOTHING_NEW = "(nothing has changed or been added since the start: the files shown at the start are current)"
 # The files in view at the start go in the system text, after the instructions: a model service keeps a long system text between calls, so the
@@ -51,7 +49,6 @@ VIEW_FILES = "FILES IN VIEW (current):"
 CHANGED_FILES = "FILES IN VIEW CHANGED OR ADDED SINCE THE START (current):"
 START_FILES = "FILES IN VIEW AT THE START (each is current unless the message shows it again, which then replaces this copy):"
 REVIEW_PROSE = "prose"            # ``review`` value: review every written text, not only one in which the code check found something
-COMMON_WORDS = frozenset("this that with from have will your what which when where there their them then than they into every each about folder file files using write make report tell goal should must also only does done after before been were being more most some such very just like over under between".split())
 PROSE_SUFFIXES = ("", ".md", ".txt", ".rst", ".adoc", ".html", ".htm")
 MAP_FILE_LIMIT = 200_000          # a larger file is not listed or put in view at launch (READ can still show its start)
 SNAPSHOT_FILES = 5000
@@ -215,16 +212,22 @@ class LoopState:
             raise ValueError(f"not a saved loop state: {error}") from error
 
 
+def selected_folder_view() -> Callable[..., Any]:
+    """The ``choose`` of the hub's selected Folder View implementation, resolved by name from the records (the way ``arm_choice`` resolves a harness)."""
+    from esoi import selection
+    return selection.resolve(FOLDER_VIEW, scope="hubofhubs")().choose
+
+
 # --- the working folder ----------------------------------------------------------------------------------------------------------------
 
-def walk(root: str, limit: int = SNAPSHOT_FILES) -> List[Tuple[str, int, float]]:
+def walk(root: str, limit: int = SNAPSHOT_FILES, skip: Collection[str] = ()) -> List[Tuple[str, int, float]]:
     """``(relative path, size, mtime)`` of the files under ``root``, level by level from the top (so a cap keeps the shallow files of a very large
-    folder and stops scanning), skipping version-control, cache, dependency and hidden folders. At most ``limit`` files."""
+    folder and stops scanning). A folder whose relative path is in ``skip`` (the folders the selection left out) is not entered. At most ``limit`` files."""
     found: List[Tuple[str, int, float]] = []
-    level = [root]
+    level = [(root, "")]
     while level and len(found) < limit:
-        deeper: List[str] = []
-        for folder in level:
+        deeper: List[Tuple[str, str]] = []
+        for folder, rel_folder in level:
             try:
                 entries = sorted(os.scandir(folder), key=lambda e: e.name)
             except OSError:
@@ -233,13 +236,13 @@ def walk(root: str, limit: int = SNAPSHOT_FILES) -> List[Tuple[str, int, float]]
                 try:
                     if entry.is_symlink():
                         continue
+                    rel = (rel_folder + "/" if rel_folder else "") + entry.name
                     if entry.is_dir():
-                        if (entry.name not in SKIPPED_FOLDERS and not entry.name.startswith(".")
-                                and not os.path.exists(os.path.join(entry.path, "pyvenv.cfg"))):      # a virtual environment is not the work
-                            deeper.append(entry.path)
+                        if rel not in skip:
+                            deeper.append((entry.path, rel))
                     elif entry.is_file() and len(found) < limit:
                         stat = entry.stat()
-                        found.append((os.path.relpath(entry.path, root).replace(os.sep, "/"), stat.st_size, stat.st_mtime_ns))
+                        found.append((rel, stat.st_size, stat.st_mtime_ns))
                 except OSError:
                     continue
             if len(found) >= limit:
@@ -270,18 +273,29 @@ def head_text(path: Path, chars: int = 2048) -> Optional[str]:
     return None if b"\0" in data else data.decode("utf-8", errors="ignore")
 
 
-def listing(root: str) -> Tuple[List[Tuple[str, int]], str]:
+def listing(root: str, skip: Collection[str] = (), left_out: Sequence[Any] = ()) -> Tuple[List[Tuple[str, int]], str]:
     """The text files that fit ``MAP_FILE_LIMIT`` as ``(path, size)`` and the map text: one line per file (at most ``MAP_ENTRIES``) with a line
-    saying how many were left out."""
+    saying how many were left out, then the folders the selection left out, each with its reason in a few words."""
     base = Path(root)
-    texts = [(rel, size) for rel, size, _ in walk(root) if size <= MAP_FILE_LIMIT and head_text(base / rel) is not None]
+    texts = [(rel, size) for rel, size, _ in walk(root, skip=skip) if size <= MAP_FILE_LIMIT and head_text(base / rel) is not None]
     if len(texts) > LEXICAL_FILES:
-        return texts, outline(texts)
+        return texts, outline(texts) + left_out_text(left_out)
     shown = texts[:MAP_ENTRIES]
     lines = [f"{rel} ({size} bytes)" for rel, size in shown] or ["(no files yet)"]
     if len(texts) > len(shown):
         lines.append(f"... {len(texts) - len(shown)} more files not listed; the folder is large, so find what you need with RUN: ls <folder> or RUN: grep -rl <words> <folder>, then READ it")
-    return texts, "\n".join(lines)
+    return texts, "\n".join(lines) + left_out_text(left_out)
+
+
+def left_out_text(left_out: Sequence[Any]) -> str:
+    """The folders (and risky files) not scanned, one line each, so the model knows they exist and can ask: risky ones first, then the rest."""
+    if not left_out:
+        return ""
+    ordered = sorted(left_out, key=lambda x: (not x.risky, x.path))
+    lines = [f"{x.path} ({x.reason})" for x in ordered[:LEFT_OUT_LINES]]
+    if len(ordered) > LEFT_OUT_LINES:
+        lines.append(f"... {len(ordered) - LEFT_OUT_LINES} more left out")
+    return "\nLEFT OUT, not scanned or shown (they exist; look with RUN: ls only if the work needs them, and never open a secret or key unasked):\n" + "\n".join(lines)
 
 
 def outline(texts: Sequence[Tuple[str, int]], depth: int = 2, limit: int = 120) -> str:
@@ -306,54 +320,20 @@ def mentions(text: str, name: str) -> bool:
 class View:
     """The files in view, least recently used first. A named file (one the goal or context mentions) is never evicted."""
 
-    def __init__(self, root: str, view_chars: int):
+    def __init__(self, root: str, view_chars: int, skip: Collection[str] = (), select: Optional[Callable[..., Any]] = None):
         self.root, self.view_chars = root, view_chars
+        self.skip, self.select = skip, select       # the folders left out (not walked) and the selection that left them out (handed to a helper)
         self.files: "OrderedDict[str, bool]" = OrderedDict()
 
-    def start(self, files: Sequence[Tuple[str, int]], named_text: str) -> None:
-        named = [rel for rel, _ in files if mentions(named_text, rel) or mentions(named_text, rel.rsplit("/", 1)[-1])]
-        for token in dict.fromkeys(PATH_TOKEN.findall(named_text)):      # a path the goal or context gives, deeper than the scan reached
-            try:
-                path = inside(Path(self.root), token.strip("./") if not token.startswith("/") else token)
-            except (ValueError, OSError):
-                continue
-            rel = os.path.relpath(path, Path(self.root).resolve()).replace(os.sep, "/")
-            if rel not in named and path.is_file() and path.stat().st_size <= MAP_FILE_LIMIT and head_text(path) is not None:
-                named.append(rel)
-        used = 0
-        for rel in named:
-            self.files[rel] = True
-            used += self.size(rel)
-        rest = [(rel, size) for rel, size in files if rel not in self.files]
-        budget = self.view_chars
-        if used + sum(size for _, size in rest) <= self.view_chars:
-            ranked = sorted(rest, key=lambda f: f[1])                       # the whole folder fits: everything is in view
-        elif len(files) > LEXICAL_FILES:
-            ranked = []      # a corpus: shared words pick noise among thousands of files, so only what the goal or context names is shown
-        else:                                                               # it does not: only what the goal's own words point at
-            words = {w for w in re.findall(r"[a-z0-9]{4,}", named_text.lower()) if w not in COMMON_WORDS}
-            scored = [(self.relevance(rel, words), rel, size) for rel, size in rest]
-            ranked = [(rel, size) for score, rel, size in sorted(scored, key=lambda f: (-f[0], f[2])) if score >= RELEVANT_SCORE]
-            # Words in common are a weak sign in a large folder: show a little of the likeliest and let the model READ or search for the rest,
-            # so a run in a big corpus does not pay for a view full of loosely related files at every call.
-            budget = min(budget, used + LARGE_FOLDER_FILL)
-        chosen: List[str] = []
-        for rel, size in ranked:
-            if used + size > budget:
-                continue
-            chosen.append(rel)
-            used += size
-        for rel in reversed(chosen):    # the first chosen end up the most recently used, so the last go first when space is needed
-            self.files[rel] = False
-
-    def relevance(self, rel: str, words: set) -> int:
-        """How many of the goal's words a file's path (counted three times) and its first 2000 characters hold."""
-        if not words:
-            return 0
-        text = head_text(Path(self.root) / rel) or ""
-        path_words = set(re.findall(r"[a-z0-9]{4,}", rel.lower()))
-        head_words = set(re.findall(r"[a-z0-9]{4,}", text.lower()))
-        return 3 * len(words & path_words) + len(words & head_words)
+    def start(self, picks: Sequence[Any]) -> None:
+        """Put the chosen files in view: a named pick is never evicted; the first of the others end up the most recently used, so the last go first
+        when space is needed. A flagged pick (named inside a risky folder) is not shown: the caller decides, and the folder map lists it."""
+        shown = [p for p in picks if not p.flagged]
+        for pick in shown:
+            if pick.named:
+                self.files[pick.path] = True
+        for pick in reversed([p for p in shown if not p.named]):
+            self.files[pick.path] = False
 
     def size(self, rel: str) -> int:
         text = read_text(Path(self.root) / rel)
@@ -503,8 +483,8 @@ def build_prompt(goal: str, context: str, folder_map: str, files_text: str, entr
 
 # --- running the actions ---------------------------------------------------------------------------------------------------------------
 
-def snapshot(root: str) -> Dict[str, Tuple[int, float]]:
-    return {rel: (size, mtime) for rel, size, mtime in walk(root)}
+def snapshot(root: str, skip: Collection[str] = ()) -> Dict[str, Tuple[int, float]]:
+    return {rel: (size, mtime) for rel, size, mtime in walk(root, skip=skip)}
 
 
 def short(text: str, chars: int = 120) -> str:
@@ -546,7 +526,8 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
              environment: Optional[Mapping[str, str]] = None, wrap: Sequence[str] = (), view_chars: int = 100000,
              counter: Optional[CallCounter] = None, review: bool = True, state: Optional[LoopState] = None,
              save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
-             tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000) -> LoopResult:
+             tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000,
+             select: Optional[Callable[..., Any]] = None) -> LoopResult:
     """Work ``goal`` in ``working_dir`` until a call's report is accepted, the model is blocked, ``max_calls`` model calls are spent (the
     ``counter`` is shared with helpers and counts all of them) or ``cancel()`` is true. Never raises. With ``review``, written text in which a code check
     (``unsupported``) finds a figure no source file holds, or a named file that is not in the folder, gets one more call before it is accepted: a
@@ -555,11 +536,16 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
 
     ``state`` continues an earlier run (its history and view; the files are rendered fresh from disk; calls count from zero for this run) and
     ``save`` gets the new ``LoopState`` after every call's actions. ``inbox`` returns the messages a person sent; ``tools`` are the operations
-    the model may ``USE``."""
+    the model may ``USE``.
+
+    ``select`` chooses the files put in view before the first call and leaves out the folders not worth scanning: the entry point of the Folder View
+    solution, called as ``select(goal, context, root, budget_chars, file_limit=...)`` and returning its ``FolderChoice``. When none is given the hub's
+    selected implementation of the solution is used (resolved by name from the records), so the choice stays swappable by metric; a caller that holds
+    more evidence binds it, for instance ``functools.partial(arm.choose, trail=...)``."""
     result = LoopResult()
     try:
         loop(result, goal, working_dir, complete, context, max_calls, depth, cancel, emit, command_timeout, environment, wrap, view_chars,
-             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars)
+             counter if counter is not None else CallCounter(max_calls), review, state, save, inbox, tools, cache_chars, select)
     except Exception as error:  # noqa: BLE001 -- the loop reports a failure, it does not raise
         result.met = False
         result.error = result.error or f"the loop failed: {type(error).__name__}: {error}"
@@ -569,18 +555,24 @@ def run_loop(goal: str, *, working_dir: str, complete: Callable[[str, str], str]
 def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str, max_calls: int, depth: int, cancel, emit, command_timeout: float,
          environment, wrap, view_chars: int, counter: CallCounter, review: bool = True, state: Optional[LoopState] = None,
          save: Optional[Callable[[LoopState], None]] = None, inbox: Optional[Callable[[], Sequence[str]]] = None,
-         tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000) -> None:
+         tools: Optional[Mapping[str, Tool]] = None, cache_chars: int = 8000, select: Optional[Callable[..., Any]] = None) -> None:
     root = os.path.abspath(working_dir)
     say = emit or (lambda _text: None)
-    files, _ = listing(root)
-    view = View(root, view_chars)
+    select = select or selected_folder_view()
+    chosen = select(goal, context, root, view_chars, file_limit=SNAPSHOT_FILES)
+    skip = frozenset(x.path.rstrip('/') for x in chosen.left_out if not x.is_file)
+    left_out = list(chosen.left_out)
+    files, _ = listing(root, skip, left_out)
+    view = View(root, view_chars, skip, select)
+    if chosen.left_out:
+        say(f"{len(chosen.left_out)} folders or files left out of the scan: {', '.join(x.path for x in chosen.left_out[:5])}")
     entries: List[Dict[str, Any]] = []
     changed: "OrderedDict[str, None]" = OrderedDict()
     seen: "OrderedDict[str, None]" = OrderedDict()
     earlier_goal = ""
     earlier_calls = 0
     if state is None:
-        view.start(files, goal + "\n" + context)
+        view.start(chosen.picks)
     else:
         earlier_goal = state.goal
         earlier_calls = int(state.calls)
@@ -655,7 +647,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
         own_calls += 1
         result.calls += 1
         files_text, shown = view.render(start)
-        folder_map = marked(listing(root)[1], shown)
+        folder_map = marked(listing(root, skip, left_out)[1], shown)
         for rel in shown:
             seen.setdefault(rel)
         note = ""
@@ -720,10 +712,10 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             say(f"call {own_calls}: {outcome.label} {'ok' if outcome.ok else 'failed'}")
         passed = True
         for action in checks:
-            before = snapshot(root)
+            before = snapshot(root, view.skip)
             done = run_command(action.text, working_dir=root, timeout=command_timeout, environment=environment, wrap=wrap, limit=COMMAND_LIMIT)
             result.commands += 0 if done.refused else 1
-            track(root, before, changed)
+            track(root, before, changed, view.skip)
             ok = done.code == 0 and not done.refused
             passed = passed and ok
             check_passed = check_passed or ok
@@ -743,7 +735,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             entry["advice"] = "Your REPORT was not accepted because a RUN exited non-zero (see above). Fix the cause, then report again."
         else:
             result.met, result.report = True, reply.report
-            found = unsupported(root, list(changed)) if review and changed else []
+            found = unsupported(root, list(changed), skip=view.skip) if review and changed else []
             if (found or (review == REVIEW_PROSE and any(prose(rel) for rel in changed))) and counter.take():
                 result.calls += 1
                 outcomes = reviewed(goal, context, root, view, changed, complete, found, system, start)
@@ -805,13 +797,13 @@ def derived(known: Sequence[str], limit: int = 150) -> set:
     return out
 
 
-def unsupported(root: str, changed: Sequence[str], limit: int = 20) -> List[str]:
+def unsupported(root: str, changed: Sequence[str], limit: int = 20, skip: Collection[str] = ()) -> List[str]:
     """What code alone can tell about written text, with no model: each figure in a changed prose file that appears in no other file of the folder,
     and each file it names that is not in the folder. A figure worked out from the sources is listed too; the reviewer decides."""
     written = {rel: read_text(Path(root) / rel) or "" for rel in changed if prose(rel)}
     if not written:
         return []
-    paths = [rel for rel, _, _ in walk(root)]
+    paths = [rel for rel, _, _ in walk(root, skip=skip)]
     sources = " ".join(read_text(Path(root) / rel) or "" for rel in paths if rel not in changed)
     known = set(figures(sources))
     known |= derived(known)
@@ -884,9 +876,9 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
         view.add(rel)
         return Outcome(label, True, "already in view" if known else "added to view; its text is in view from the next reply")
     if action.kind == "run":
-        before = snapshot(root)
+        before = snapshot(root, view.skip)
         done = run_command(action.text, working_dir=root, timeout=command_timeout, environment=environment, wrap=wrap, limit=COMMAND_LIMIT)
-        track(root, before, changed)
+        track(root, before, changed, view.skip)
         label = f"RUN {short(action.text)}"
         if done.refused:
             return Outcome(label, False, f"refused: {done.refused}")
@@ -909,7 +901,7 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
             return Outcome(label, False, "delegation is not available here")
         child = run_loop(action.text, working_dir=root, complete=complete, context=context, max_calls=max_calls, depth=depth - 1, cancel=cancel,
                          emit=emit, command_timeout=command_timeout, environment=environment, wrap=wrap, view_chars=view_chars, counter=counter,
-                         review=False, tools=tools)      # the parent's review covers what its helpers wrote
+                         review=False, tools=tools, select=view.select)      # the parent's review covers what its helpers wrote
         result.calls += child.calls
         result.commands += child.commands
         result.log.append({"delegated": action.text, "calls": child.calls, "met": child.met})
@@ -924,8 +916,8 @@ def execute(action: Action, root: str, view: View, changed: "OrderedDict[str, No
     return Outcome(action.kind.upper(), False, "unknown action")
 
 
-def track(root: str, before: Mapping[str, Tuple[int, float]], changed: "OrderedDict[str, None]") -> None:
+def track(root: str, before: Mapping[str, Tuple[int, float]], changed: "OrderedDict[str, None]", skip: Collection[str] = ()) -> None:
     """Add to ``changed`` every file a command created or modified (compared with the snapshot taken before it)."""
-    for rel, state in snapshot(root).items():
+    for rel, state in snapshot(root, skip).items():
         if before.get(rel) != state:
             changed.setdefault(rel)

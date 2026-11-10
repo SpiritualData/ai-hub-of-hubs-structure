@@ -93,6 +93,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | One-call file edit | `file-editing:fast_edit` | [hubofhubs/the_world/tools/file_editing/fast_edit.py](file_editing/fast_edit.py) |  |
 | Folder reader | `read-files:folder_reader` | [hubofhubs/the_world/tools/file_reading/read_files.py](file_reading/read_files.py) |  |
 | Brave Search API | `web-search:brave` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |
+| Claude Code login search | `web-search:claude_login` | [hubofhubs/the_world/tools/web_search/claude_login.py](web_search/claude_login.py) |  |
 | Gemini grounding | `web-search:gemini` | [hubofhubs/the_world/tools/web_search/gemini.py](web_search/gemini.py) |  |
 | Provider-native search | `web-search:provider` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |
 | SearXNG metasearch | `web-search:searxng` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |

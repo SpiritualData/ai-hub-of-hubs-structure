@@ -221,6 +221,14 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.002
 seconds_per_case = 2
 
+# The balanced score of Folder View (which files of a working folder a piece of work is shown, and which folders are left out): the library's default weights,
+# fixed before any arm was scored on the cases of evaluation/folder_view/build_cases.py. One choice runs before each run of a harness and scans a folder of up to a
+# few thousand files, so it is worth at most a fifth of a cent and five seconds (the scoring time includes building the case's folder).
+[balance.folder_view]
+weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
+cost_per_case_usd = 0.002
+seconds_per_case = 5
+
 # Relevant Solutions builds on the library's Solution Relevance: its general cases are the foundation and the hub's own cases (mined from this
 # repository's history and hand-labelled requests) are added.
 [builds_on.relevant_solutions.esoi]

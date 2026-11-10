@@ -390,7 +390,9 @@ def select_search_backend(
 
     Settings, under the names in ``keys``:
       enabled         -- "false"/"0"/"off"/"no" disables web search entirely (default on).
-      backend         -- force exactly one: serper|brave|tavily|searxng|gemini|provider, or a name from the apis file.
+      backend         -- force exactly one: serper|brave|tavily|searxng|gemini|provider|claude_login, or a name from the apis file.
+                         ``claude_login`` searches through the Claude Code login with no key (one agent process per search); it is
+                         never part of "auto", only chosen by name.
                          If its key/config is missing, logs a warning and returns None rather than silently falling back.
       apis_file       -- path to a JSON file of search APIs described as data (``apis.py``); their names join the chain.
       model           -- Gemini grounding model (default "gemini-2.5-flash-lite").
@@ -426,6 +428,10 @@ def select_search_backend(
         if name == "gemini":
             key = gemini_api_key_from_env(env)
             return {"api_key": key, "model": model} if key else None
+        if name == "claude_login":
+            # Only by name (``backend``): a deployment that never names it gets what it got before. It builds its own provider
+            # when the caller gave none; ``provider_model`` is optional (empty = the fast tier's model).
+            return {"provider": provider, "model": provider_model}
         if name == "provider":
             if provider is None or not provider_model:
                 return None

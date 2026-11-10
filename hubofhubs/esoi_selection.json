@@ -63,6 +63,7 @@
    "esoi-application": "hubofhubs",
    "feedback-learning": "hubofhubs",
    "file-editing": "hubofhubs",
+   "folder-view": "hubofhubs",
    "goal-completion": "hubofhubs",
    "guidance": "hubofhubs",
    "higher-mind": "hubofhubs",
@@ -257,6 +258,19 @@
   },
   "modules": {
    "fast_edit": "hubofhubs.the_world.tools.file_editing.fast_edit"
+  }
+ },
+ "folder-view": {
+  "default": "evidence_ranked",
+  "evidence": {
+   "detail": "best guess, not yet significant: model_pick 0.97 against evidence_ranked 0.97 on the point estimate; no case counts or per-case rows allow a test; evidence_ranked is better than ported_baseline (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1.94e-06, 36 of 41 cases disagree)",
+   "p": 2e-06,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "evidence_ranked": "hubofhubs.the_intelligence.subconscious.folder_view.evidence_ranked",
+   "model_pick": "hubofhubs.the_intelligence.subconscious.folder_view.model_pick",
+   "ported_baseline": "hubofhubs.the_intelligence.subconscious.folder_view.ported_baseline"
   }
  },
  "goal-completion": {
@@ -538,14 +552,15 @@
   }
  },
  "terminal-session": {
-  "default": "line_repl",
+  "default": "live_session",
   "evidence": {
-   "detail": "no rival implementation was measured on the same cases",
-   "p": null,
-   "verdict": "UNMEASURED"
+   "detail": "live_session is better than line_repl (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.000488, 12 of 34 cases disagree)",
+   "p": 0.000488,
+   "verdict": "WIN"
   },
   "modules": {
-   "line_repl": "hubofhubs.the_consciousness.terminal.repl"
+   "line_repl": "hubofhubs.the_consciousness.terminal.repl",
+   "live_session": "hubofhubs.the_consciousness.terminal.live"
   }
  },
  "the-assembler": {
@@ -684,6 +699,7 @@
   },
   "modules": {
    "brave": "hubofhubs.the_world.tools.web_search.backends",
+   "claude_login": "hubofhubs.the_world.tools.web_search.claude_login",
    "gemini": "hubofhubs.the_world.tools.web_search.gemini",
    "provider": "hubofhubs.the_world.tools.web_search.backends",
    "searxng": "hubofhubs.the_world.tools.web_search.backends",
