@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import glob as globbing
 import json
+import shlex
 from pathlib import Path
 from typing import Any, List, Mapping, Optional
 
@@ -119,3 +120,34 @@ class AnyFormat:
             if found:
                 return found
         return self.text.execute(reply, working_dir, environment)
+
+
+@implementation("agent-action-format", "apply_patch_v4a")
+class ApplyPatchV4A:
+    """Reads OpenAI's tool calls: ``apply_patch`` (an operation with a V4A diff) and ``shell`` (a command as an argument list), as a JSON list or one object of ``{"name", "input"}``."""
+    REQUIRES = ()
+    FORMATS = ("apply-patch-v4a", "openai-shell")
+
+    def execute(self, reply: str, working_dir: str, environment: Optional[Mapping[str, str]] = None) -> List[Mapping[str, Any]]:
+        from hubofhubs.the_world.tools.agent_action_format.v4a import apply_operation
+        root = str(Path(working_dir).resolve())
+        try:
+            data = json.loads(reply)
+        except ValueError:
+            return []
+        out: List[Mapping[str, Any]] = []
+        for call in data if isinstance(data, list) else [data]:
+            if not isinstance(call, dict):
+                continue
+            name, given = str(call.get("name") or ""), call.get("input") or {}
+            if name == "apply_patch":
+                ok, text = apply_operation(root, given.get("operation", given) if isinstance(given, dict) else {})
+                out.append(outcome("edit", ok, text))
+            elif name == "shell":
+                command = given.get("command") if isinstance(given, dict) else ""
+                words = command if isinstance(command, list) else [str(command or "")]
+                script = words[-1] if len(words) >= 3 and words[0] in ("bash", "sh") and words[1] in ("-c", "-lc") else " ".join(shlex.quote(str(w)) for w in words)
+                out.append(run_one(script, root, environment))
+            else:
+                out.append(outcome(name.lower() or "tool", False, f"no tool named {name!r}"))
+        return out

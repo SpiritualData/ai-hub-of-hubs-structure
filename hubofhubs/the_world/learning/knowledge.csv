@@ -1,2 +1,3 @@
-knowledge_id,claim,kind,source,solution_ids,status,status_by,recorded,expiration
-k-the-learning-1,evolvable-structure/docs/guides/measure-per-circumstance.md,best guess,"the solution's knowledge field of the-learning, migrated 2026-11-08",the-learning,active,,2026-11-08,
+knowledge_id,claim,kind,source,solution_ids,status,status_by,recorded,expiration,research_id
+k-the-learning-1,evolvable-structure/docs/guides/measure-per-circumstance.md,best guess,"the solution's knowledge field of the-learning, migrated 2026-11-08",the-learning,active,,2026-11-08,,
+k-the-learning-2,"A knowledge search done as a small systematic review (question, method fixed beforehand, counted screening, graded items, a decision per candidate, what it changed, a revisit date) can be reproduced and checked, where an unrecorded search cannot.",best guess,"the ESOI library's knowledge search standard (docs/reference/knowledge-search-standard.md), 2026-11-10",the-learning,active,,2026-11-10,2027-11-10,

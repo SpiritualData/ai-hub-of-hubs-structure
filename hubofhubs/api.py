@@ -741,6 +741,12 @@ NAMES = {
     "hubofhubs.the_world.tools.delegated_agent_sessions.native_runner": (
         "NativeToolLoopRunner",
     ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.tool_loop_runner": (
+        "NativeToolCallingLoopRunner",
+    ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.framed_headless": (
+        "HubWrapped", "OpencodeHubRunner",
+    ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.settings": (
         "GoalSettings",
     ),

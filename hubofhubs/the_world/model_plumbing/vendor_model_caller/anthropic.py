@@ -114,6 +114,22 @@ class AnthropicProvider(ModelProviderBase):
         resp = self.create(**kwargs)
         return "".join(getattr(b, "text", "") for b in resp.content if getattr(b, "type", None) == "text")
 
+    @retry_transient(max_retries=6, base_delay=3.0)     # an agent turn is long and costly to lose: a shared key's rate limit is waited out (3 to 96 seconds between tries)
+    def tool_turn(self, transcript: List[Dict[str, Any]], *, model: str, system: str = "", tools: Optional[List[Any]] = None,
+                  max_tokens: int = 8192) -> Any:
+        """One turn of an agent loop over Anthropic tool use: the neutral ``transcript`` (see ``tool_calling``) and the ``tools`` (``ToolSpec``) become a
+        Messages request with a cached system text, tool list and transcript prefix; returns a ``ModelTurn`` (text, tool calls, tokens, cache reads)."""
+        from hubofhubs.the_world.model_plumbing.vendor_model_caller import tool_calling as tc
+        kwargs: Dict[str, Any] = {"model": self.resolve_model(model), "max_tokens": max_tokens, "messages": tc.anthropic_messages(transcript)}
+        if system.strip():
+            kwargs["system"] = [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}]
+        if tools:
+            kwargs["tools"] = tc.anthropic_tools(tools)
+        turn = tc.anthropic_turn(self.create(**kwargs))
+        self.cache_read_tokens = getattr(self, "cache_read_tokens", 0) + turn.cache_read
+        self.cache_creation_tokens = getattr(self, "cache_creation_tokens", 0) + turn.cache_write
+        return turn
+
     def supports_web_search(self, model: Optional[str] = None) -> bool:
         return bool(self.api_key)
 

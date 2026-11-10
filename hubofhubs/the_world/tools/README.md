@@ -60,7 +60,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Commands run, refused and contained as scripted (`metric-command-execution`): leader `bubblewrap_wrapper`, 11 of 11 cases
 - The operation is carried out and nothing else (`metric-connected-system-operations`)
 - Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`)
-- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `native_tool_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
+- Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `native_tool_calling_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
 - and 5 more: all 15 are in [metrics](#metrics) of the full record below
 
 ## Where to go next
@@ -106,7 +106,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Hub text protocol | `agent-action-format:text_protocol` | [hubofhubs/the_world/tools/agent_action_format/arms.py](agent_action_format/arms.py) |  |
 | Native tool calls | `agent-action-format:native_tool_calls` | [hubofhubs/the_world/tools/agent_action_format/arms.py](agent_action_format/arms.py) |  |
 | Either format | `agent-action-format:any_format` | [hubofhubs/the_world/tools/agent_action_format/arms.py](agent_action_format/arms.py) |  |
-| OpenAI apply_patch (not built) | `agent-action-format:apply_patch_v4a` |  |  |
+| OpenAI apply_patch and shell | `agent-action-format:apply_patch_v4a` | [hubofhubs/the_world/tools/agent_action_format/arms.py](agent_action_format/arms.py) |  |
 | Refusal floor alone | `command-execution:refusal_floor` | [hubofhubs/the_world/tools/command_execution/arms.py](command_execution/arms.py) |  |
 | Bubblewrap wrapper | `command-execution:bubblewrap_wrapper` | [hubofhubs/the_world/tools/command_execution/arms.py](command_execution/arms.py) |  |
 | Anthropic sandbox runtime (not built) | `command-execution:sandbox_runtime` |  |  |
@@ -118,6 +118,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | opencode, one shot | `delegated-agent-sessions:opencode_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/headless_runner.py](delegated_agent_sessions/headless_runner.py) |  |
 | Hub's own tool loop | `delegated-agent-sessions:solution_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/solution_loop_runner.py](delegated_agent_sessions/solution_loop_runner.py) |  |
 | Hub's frame on the model's own tool loop | `delegated-agent-sessions:native_tool_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/native_runner.py](delegated_agent_sessions/native_runner.py) |  |
+| Hub's own loop on native tool calling | `delegated-agent-sessions:native_tool_calling_loop_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/tool_loop_runner.py](delegated_agent_sessions/tool_loop_runner.py) |  |
+| opencode in the hub's wrapper | `delegated-agent-sessions:opencode_hub_runner` | [hubofhubs/the_world/tools/delegated_agent_sessions/framed_headless.py](delegated_agent_sessions/framed_headless.py) |  |
 | One-call file edit | `file-editing:fast_edit` | [hubofhubs/the_world/tools/file_editing/fast_edit.py](file_editing/fast_edit.py) |  |
 | Folder reader | `read-files:folder_reader` | [hubofhubs/the_world/tools/file_reading/read_files.py](file_reading/read_files.py) |  |
 | Brave Search API | `web-search:brave` | [hubofhubs/the_world/tools/web_search/backends.py](web_search/backends.py) |  |

@@ -132,7 +132,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
 | durable_jobs | Running queued work once, surviving restarts | compared | keep | none | DBOS Transact; Temporal; Hatchet; Inngest; Restate | 8 | 0 | 2026-10-30 |
-| agent_harness | Deep work done by a coding-agent harness on a Claude subscription | builds_on | coexist | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 14 | 46 | 2026-10-30 |
+| agent_harness | Deep work done by a coding-agent harness on a Claude subscription | builds_on | coexist | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 16 | 46 | 2026-10-30 |
 | code_search | Finding the right code before and during a run | compared | keep | none | Aider repo map; Claude Code LSP plugin; Serena MCP; SWE-grep; WarpGrep; Claude Code Explore subagent | 7 | 0 | 2026-10-30 |
 | agent_verify | Checking a run's work and undoing it | compared | keep | none | Claude Code checkpointing; Anthropic long-running harness pattern; Aider commit per edit; Agentless validation | 6 | 1 | 2026-10-30 |
 | agent_bench | Choosing a harness by measured results | compared | keep | none | SWE-bench Verified bash-only (Vals); Terminal-Bench 2.0; Aider polyglot; SWE-bench Pro; Holistic Agent Leaderboard | 6 | 8 | 2026-10-30 |

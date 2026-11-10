@@ -201,17 +201,29 @@ class HeadlessCliRunner(DeepRunnerBase):
             return DeepResult(met=False, error="The harness ended without a final message.", **common)
         return DeepResult(met=True, **common)
 
-    def continue_command(self, binary: str, session_id: str, model: str, working_dir: str) -> Optional[List[str]]:
-        """The command that continues session ``session_id`` with one more message (read from stdin when it ends with ``-``), or
+    def continue_command(self, binary: str, session_id: str, model: str, working_dir: str, message: str = CONTINUE_MESSAGE) -> Optional[List[str]]:
+        """The command that continues session ``session_id`` with one more message (``message``, or read from stdin when it ends with ``-``), or
         None when the harness cannot continue a session headless."""
         return None
+
+    def frame_config(self) -> Dict[str, Any]:
+        """The harness's own configuration that carries the hub's frame as its project instructions (a wrapper arm overrides this); empty for a bare arm."""
+        return {}
+
+    def tool_steps(self, raw: str) -> List[Dict[str, Any]]:
+        """The tool calls an event stream shows, as ``{"kind", "label", "ok"}`` (empty when the harness's stream is not read for them)."""
+        return []
+
+    def spawn(self, argv: List[str], cwd: str, settings: GoalSettings) -> Any:
+        """Start one harness process."""
+        return subprocess.Popen(argv, cwd=cwd, env=self.child_environment(settings), stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
 
     def launch(self, argv, prompt, cwd, settings, cancel_check, started, binary):
         """Run one harness command: ``(stdout, stderr, how it ended, exit code)``, or a ``DeepResult`` when it could not start."""
         stdin_text = prompt if argv and argv[-1] == "-" else None
         try:
-            proc = subprocess.Popen(argv, cwd=cwd, env=self.child_environment(settings), stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+            proc = self.spawn(argv, cwd, settings)
         except FileNotFoundError:
             return DeepResult(met=False, launch_failed=True, launch_problem=LAUNCH_MISSING_PROGRAM,
                               error=f"the {binary!r} program is not installed or not on the PATH")
@@ -258,7 +270,7 @@ class CodexCliRunner(HeadlessCliRunner):
         policy = ["--dangerously-bypass-approvals-and-sandbox"] if self.cfg.skip_permissions else ["--sandbox", "workspace-write"]
         return [binary, "exec", "--json", "--skip-git-repo-check", *policy, "-C", working_dir, "-m", model, "-"]
 
-    def continue_command(self, binary, session_id, model, working_dir):
+    def continue_command(self, binary, session_id, model, working_dir, message=CONTINUE_MESSAGE):
         policy = ["--dangerously-bypass-approvals-and-sandbox"] if self.cfg.skip_permissions else ["--sandbox", "workspace-write"]
         return [binary, "exec", "resume", "--json", "--skip-git-repo-check", *policy, "-m", model, session_id, "-"]
 
@@ -299,18 +311,31 @@ class OpencodeRunner(HeadlessCliRunner):
         message = ["-f", prompt_file, "--", "Carry out the task in the attached file."] if prompt_file else ["--", prompt]
         return [binary, "run", "--format", "json", "--dir", working_dir, "-m", target, *message]
 
-    def continue_command(self, binary, session_id, model, working_dir):
+    def continue_command(self, binary, session_id, model, working_dir, message=CONTINUE_MESSAGE):
         target = f"{OPENCODE_PROVIDER.get(self.provider, self.provider)}/{model}"
-        return [binary, "run", "--format", "json", "--dir", working_dir, "-m", target, "--session", session_id, "--", CONTINUE_MESSAGE]
+        return [binary, "run", "--format", "json", "--dir", working_dir, "-m", target, "--session", session_id, "--", message]
 
     def harness_environment(self, env):
-        if self.cfg.skip_permissions:
-            env.setdefault("OPENCODE_CONFIG_CONTENT", OPENCODE_PERMISSIONS)
+        config: Dict[str, Any] = json.loads(OPENCODE_PERMISSIONS) if self.cfg.skip_permissions else {}
+        config.update(self.frame_config())      # a wrapper arm adds the hub's frame as opencode's own ``instructions``
+        if config:
+            env.setdefault("OPENCODE_CONFIG_CONTENT", json.dumps(config))
         if self.provider == "gemini" and not env.get("GOOGLE_GENERATIVE_AI_API_KEY"):
             key = next((env[n] for n in providers.credential_names("gemini") if env.get(n)), "")
             if key:
                 env["GOOGLE_GENERATIVE_AI_API_KEY"] = key
         return env
+
+    def tool_steps(self, raw):
+        steps = []
+        for event in json_lines(raw):
+            part = event.get("part") or {}
+            if event.get("type") == "tool_use" and part.get("type") == "tool":
+                state = part.get("state") or {}
+                data = state.get("input") or {}
+                steps.append({"kind": str(part.get("tool") or "tool"), "ok": state.get("status") == "completed",
+                              "label": str(data.get("command") or data.get("filePath") or data.get("pattern") or part.get("tool") or "")[:200], "input": data})
+        return steps
 
     def parse(self, raw):
         got = Parsed(cost_usd=0.0)

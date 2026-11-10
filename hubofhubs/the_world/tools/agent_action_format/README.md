@@ -13,7 +13,7 @@ Part of [Using the tools of the outside world](../README.md)
 - Entry call: `hubofhubs.run("agent-action-format", {'reply': 'READ: README.md', 'working_dir': '.'})`
 - Selected implementation: Either format (`any_format`)
 - Metric: Scripted actions executed as intended, per format
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 163 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py), [`hubofhubs/the_world/learning/research_freshness_reader/__init__.py`](../../learning/research_freshness_reader/__init__.py), [`hubofhubs/the_world/learning/research_freshness_reader/interface.py`](../../learning/research_freshness_reader/interface.py) and 177 more
 
 ## Implementations
 
@@ -22,7 +22,7 @@ Part of [Using the tools of the outside world](../README.md)
 | Hub text protocol | `agent-action-format:text_protocol` | Reads the hub loop's protocol (RUN, READ, CHECK, search and replace edit blocks) and the function-call markup a model writes when it forgets the protocol, including markup that wraps protocol lines. | [`hubofhubs/the_world/tools/agent_action_format/arms.py`](arms.py) |  |
 | Native tool calls | `agent-action-format:native_tool_calls` | Reads tool calls in the shape of Claude Code's tools (Bash, Read, Write, Edit, Glob) as a JSON list and runs each in the folder, refusing an edit whose old text is not unique and a path outside the folder. | [`hubofhubs/the_world/tools/agent_action_format/arms.py`](arms.py) |  |
 | Either format | `agent-action-format:any_format` | Takes native tool calls when the reply is a JSON list of them and the text protocol otherwise, so a harness that drives several model families reads each in the format it emits. | [`hubofhubs/the_world/tools/agent_action_format/arms.py`](arms.py) | selected |
-| OpenAI apply_patch (not built) | `agent-action-format:apply_patch_v4a` | Would read the V4A patch format of OpenAI's apply_patch tool and the shell tool, the format OpenAI documents for its coding agents. | no code yet |  |
+| OpenAI apply_patch and shell | `agent-action-format:apply_patch_v4a` | Reads the tool calls of OpenAI's coding agents: apply_patch (an operation with a V4A diff: create_file, update_file or delete_file; hunks located by their context, exactly and then ignoring white space) and shell (the command as an argument list), as a JSON list of calls, and runs each in the folder. | [`hubofhubs/the_world/tools/agent_action_format/arms.py`](arms.py) |  |
 
 ## Metrics
 

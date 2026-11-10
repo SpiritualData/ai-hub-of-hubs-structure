@@ -13,5 +13,7 @@ flowchart LR
     s2["Learning<br/><i>the-learning</i>"]
     s3["Research Freshness Reader<br/><i>research-freshness-reader</i>"]
     s0 -->|"The model's answer to a prompt at a tier"| s1
+    s0 -->|"The model's answer to a prompt at a tier"| s2
+    s1 -->|"Observations of papers, with their sources"| s2
     s3 -->|"Days since the date, or the combined freshness reading with the stale areas named"| s2
 ```

@@ -65,6 +65,7 @@ class SolutionLoopRunner(DeepRunnerBase):
     config_class = SubprocessConfig
     emits_session = True         # work() reports ``ProgressEvent(type="session")`` events (see ``Telling``) beside the progress strings
     on_trial = True              # measured and ranked beside the other harnesses, not chosen for a consumer until the owner promotes it
+    state_class = LoopState      # what a saved session is read back as (an arm with more to keep names its own)
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "", provider: str = "anthropic", tier: str = DEFAULT_TIER,
                  settings: Optional[GoalSettingsSource] = None, model_for: Optional[Callable[[str, str], Optional[str]]] = None,
@@ -158,7 +159,7 @@ class SolutionLoopRunner(DeepRunnerBase):
                 log.info("no saved session %s: starting fresh", session_id)
                 return None
             with open(path, encoding="utf-8") as handle:
-                return LoopState.from_json(handle.read())
+                return self.state_class.from_json(handle.read())
         except (OSError, ValueError) as error:
             log.warning("saved session %s cannot be read (%s): starting fresh", session_id, error)
             return None
@@ -366,11 +367,9 @@ class SolutionLoopRunner(DeepRunnerBase):
         if shared is None:
             watch.__enter__()
         try:
-            result = run_loop(goal, working_dir=folder, complete=self.completion(run_model, settings, usage), context=context_text,
-                              max_calls=max_calls, depth=1, cancel=cancel, emit=tell if emit is not None else None,
-                              command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings, requester_user_id, run_id), counter=None,
-                              wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling, system_chars=self.system_chars,
-                              abandon=None if self.injected is not None else abandon_completion, stop_now=stop_now, permit=permit)
+            result = self.engine(goal, folder=folder, run_model=run_model, settings=settings, usage=usage, context_text=context_text, max_calls=max_calls, cancel=cancel,
+                                 emit=emit, tell=tell, command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings, requester_user_id, run_id),
+                                 wrap=wrap, state=state, save=save, inbox=inbox, telling=telling, stop_now=stop_now, permit=permit)
         finally:
             watch.settle(call_key, usage["cost"])
             if shared is None:
@@ -385,6 +384,16 @@ class SolutionLoopRunner(DeepRunnerBase):
             log.info("loop run totals: %d calls, plain input %d, cache read %d, cache write %d, output %d, cost $%.4f, ended: %s", result.calls, int(usage["plain"]),
                      int(usage["read"]), int(usage["write"]), int(usage["output"]), float(usage["cost"]), result.ended or "?")
         return result, usage, stopped["why"]
+
+    def engine(self, goal: str, *, folder: str, run_model: str, settings: GoalSettings, usage: Dict[str, float], context_text: str, max_calls: int, cancel: Any,
+               emit: Any, tell: Any, command_timeout: float, environment: Any, wrap: Any, state: Any, save: Any, inbox: Any, telling: Any, stop_now: Any, permit: Any) -> LoopResult:
+        """Run the loop proper once the run's ceilings, control, steering and saved state are set up: the hub's text loop over a pure completion. An arm with another
+        way of working (a native tool-calling loop) overrides this and keeps everything around it."""
+        return run_loop(goal, working_dir=folder, complete=self.completion(run_model, settings, usage), context=context_text,
+                        max_calls=max_calls, depth=1, cancel=cancel, emit=tell if emit is not None else None,
+                        command_timeout=command_timeout, environment=environment, counter=None,
+                        wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling, system_chars=self.system_chars,
+                        abandon=None if self.injected is not None else abandon_completion, stop_now=stop_now, permit=permit)
 
     def run_goal(self, *, goal: str, brief: str = "", model: Optional[str] = None, max_turns: Optional[int] = None,
                  emit: Optional[Callable[..., None]] = None, context_preamble: Optional[str] = None, run_id: Optional[str] = None,

@@ -21,6 +21,8 @@ flowchart LR
     s2["Learning<br/><i>the-learning</i>"]
     s3["Research Freshness Reader<br/><i>research-freshness-reader</i>"]
     s0 -->|"The model's answer to a prompt at a tier"| s1
+    s0 -->|"The model's answer to a prompt at a tier"| s2
+    s1 -->|"Observations of papers, with their sources"| s2
     s3 -->|"Days since the date, or the combined freshness reading with the stale areas named"| s2
 ```
 
@@ -40,7 +42,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Model Plumbing | `model-plumbing` | `hubofhubs.run("model-plumbing", ...)` | Tier chooser then vendor (`via_vendor`) | Model asked at the tier, within the budget |
 | Science | `the-science` | `hubofhubs.run("the-science", 'meditation and attention')` | OpenAlex semantic search (`openalex_semantic`) | Research question finds its paper |
 | Tools | `the-tools` | `hubofhubs.run("the-tools", ...)` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user |
-| Learning | `the-learning` | `hubofhubs.run("the-learning", '2026-11-03')` | Stale areas from the registry dates (`registry_research`) | Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants |
+| Learning | `the-learning` | `hubofhubs.run("the-learning", '2026-11-03')` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants |
 | Research Freshness Reader | `research-freshness-reader` | `hubofhubs.run("research-freshness-reader", '2026-10-01')` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
 ## Problems and ideals
@@ -64,7 +66,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Model asked at the tier, within the budget (`metric-model-plumbing`): leader `via_vendor`, 30 of 30 cases
 - Research question finds its paper (`metric-the-science`): leader `openalex_semantic`, 52 of 150 cases
 - The best integration of each category is chosen (`metric-the-tools`)
-- Days since each seat was researched (`metric-the-learning`)
+- Research kept current and done as a review (`metric-the-learning`): leader `systematic_review`, 24 of 24 cases
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`)
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`)
 - Registry freshness reading (`metric-research-freshness-reader`): leader `registry_scan`, 41 of 41 cases
@@ -104,7 +106,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Model Plumbing | `model-plumbing` | Tier chooser then vendor (`via_vendor`) | Model asked at the tier, within the budget |
 | Science | `the-science` | OpenAlex semantic search (`openalex_semantic`) | Research question finds its paper |
 | Tools | `the-tools` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user |
-| Learning | `the-learning` | Stale areas from the registry dates (`registry_research`) | Days since each seat was researched, Public stage sourced and triangulated, Best in circumstance with variants |
+| Learning | `the-learning` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants |
 | Research Freshness Reader | `research-freshness-reader` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
 ### Implementations
@@ -114,7 +116,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Web research | `the-science:web_research` | [hubofhubs/the_world/tools/web_search/research.py](tools/web_search/research.py) |  |
 | Categories of tools | `the-tools:composition` | [hubofhubs/the_world/tools/flow.py](tools/flow.py) | [tools](tools/README.md) |
 | Tier chooser then vendor | `model-plumbing:via_vendor` | [hubofhubs/the_world/model_plumbing/via_vendor.py](model_plumbing/via_vendor.py) | [model_plumbing](model_plumbing/README.md) |
-| Stale areas from the registry dates | `the-learning:registry_research` | [hubofhubs/the_world/learning/registry_research.py](learning/registry_research.py) |  |
+| Stale areas and one search | `the-learning:registry_research` | [hubofhubs/the_world/learning/registry_research.py](learning/registry_research.py) |  |
+| Systematic review | `the-learning:systematic_review` | [hubofhubs/the_world/learning/systematic_review.py](learning/systematic_review.py) |  |
 | OpenAlex keyword search | `the-science:openalex` | [hubofhubs/the_world/science/openalex.py](science/openalex.py) |  |
 | OpenAlex semantic search | `the-science:openalex_semantic` | [hubofhubs/the_world/science/openalex_semantic.py](science/openalex_semantic.py) |  |
 | OpenAlex keywords, rule rewrite | `the-science:openalex_keywords` | [hubofhubs/the_world/science/openalex_keywords.py](science/openalex_keywords.py) |  |
@@ -127,9 +130,9 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Model asked at the tier, within the budget (`metric-model-plumbing`): `esoi run model_call --impl via_vendor`
 - Research question finds its paper (`metric-the-science`): `esoi run know_the_world --impl openalex_semantic_and_web; esoi run know_the_world --impl openalex_semantic; esoi run know_the_world --impl web_research; esoi run know_the_world --impl openalex; esoi run know_the_world --impl openalex_keywords; esoi run know_the_world --impl openalex_keywords_model`
 - The best integration of each category is chosen (`metric-the-tools`): `none`
-- Days since each seat was researched (`metric-the-learning`): `none`
-- Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`): `none`
-- Best in circumstance with variants (`metric-best-in-circumstance-with-variants`): `none`
+- Research kept current and done as a review (`metric-the-learning`): `esoi run learning_review --impl systematic_review; esoi run learning_review --impl registry_research`
+- Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`): `python3 -m pytest tests/test_public_benchmarks.py`
+- Best in circumstance with variants (`metric-best-in-circumstance-with-variants`): `python3 -m pytest hubofhubs/the_world/tests/test_tiers.py`
 - Registry freshness reading (`metric-research-freshness-reader`): `esoi run stay_current --impl registry_scan`
 
 

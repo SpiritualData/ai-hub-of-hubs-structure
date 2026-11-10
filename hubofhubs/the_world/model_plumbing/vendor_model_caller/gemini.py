@@ -125,6 +125,20 @@ class GeminiProvider(ModelProviderBase):
         response = self.request(model, [{"role": "user", "parts": [{"text": prompt}, *images]}] if images else prompt, None, reasoning)
         return response.text if response and response.text else ""
 
+    @retry_transient(max_retries=3, base_delay=1.0)
+    def tool_turn(self, transcript: List[Dict[str, Any]], *, model: str, system: str = "", tools: Optional[List[Any]] = None, max_tokens: int = 8192) -> Any:
+        """One turn of an agent loop over Gemini function calling (written against the documented ``generate_content`` interface; not measured in this
+        repository): the neutral ``transcript`` (see ``tool_calling``) and ``tools`` become ``contents`` and function declarations, automatic function calling
+        is off (the loop runs the tools), and a ``ModelTurn`` comes back with the vendor's own turn kept in ``raw`` so thought signatures survive."""
+        from hubofhubs.the_world.model_plumbing.vendor_model_caller import tool_calling as tc
+        config: Dict[str, Any] = {"max_output_tokens": max_tokens, "automatic_function_calling": {"disable": True}}
+        if system.strip():
+            config["system_instruction"] = system
+        if tools:
+            config["tools"] = tc.gemini_tools(tools)
+        response = self.request(self.resolve_model(model), tc.gemini_contents(transcript), config)
+        return tc.gemini_turn(response)
+
     def supports_web_search(self, model: Optional[str] = None) -> bool:
         return bool(self.api_key)
 

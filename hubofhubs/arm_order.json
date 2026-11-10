@@ -2,7 +2,8 @@
  "agent-action-format": [
   "any_format",
   "text_protocol",
-  "native_tool_calls"
+  "native_tool_calls",
+  "apply_patch_v4a"
  ],
  "cards-from-files": [
   "import_graph_topic_cards",
@@ -46,7 +47,9 @@
  "delegated-agent-sessions": [
   "acp_deep_runner",
   "codex_cli_runner",
+  "native_tool_calling_loop_runner",
   "native_tool_loop_runner",
+  "opencode_hub_runner",
   "opencode_runner",
   "solution_loop_runner",
   "stream_json_goal_runner",
@@ -143,6 +146,10 @@
  "the-intuition": [
   "co_taken",
   "nearest_cards"
+ ],
+ "the-learning": [
+  "systematic_review",
+  "registry_research"
  ],
  "the-science": [
   "openalex_semantic",

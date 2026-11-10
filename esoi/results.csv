@@ -424,3 +424,22 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,terminal_session,line_repl,67,40,40/67,0/0,9,0,0,,201.6,,95067ae,45fefe37,,unknown,X1=3/4; X2=2/3; X3=3/3; X4=0/5; X5=1/6; X6=0/4; X7=5/6; X8=0/2; X9=1/5; X10=7/10; X11=2/3; X12=1/1; X13=0/2; X14=3/3; X15=2/3; X16=2/2; X17=2/2; X18=0/6; X19=1/3; X20=4/6; X21=1/5; X22=0/2; X23=1/5; X24=0/2; X25=0/1; X26=1/1; X27=1/1; X28=1/1; X29=2/3; X30=1/2; X31=0/1; X32=0/1; X33=3/4; ask_pass...
 2026-11-10,terminal_session,textual_session,67,66,66/67,0/0,9,0,0,,150.3,,95067ae,45fefe37,,unknown,X1=4/4; X2=3/3; X3=3/3; X4=5/5; X5=6/6; X6=4/4; X7=6/6; X8=1/2; X9=5/5; X10=10/10; X11=3/3; X12=1/1; X13=2/2; X14=3/3; X15=3/3; X16=2/2; X17=2/2; X18=6/6; X19=3/3; X20=6/6; X21=5/5; X22=2/2; X23=5/5; X24=2/2; X25=1/1; X26=1/1; X27=1/... | reused 67 case(s) already run for this implementation version
 2026-11-10,terminal_session,textual_session,67,67,67/67,0/0,9,0,0,,142.0,,95067ae,45fefe37,,unknown,X1=4/4; X2=3/3; X3=3/3; X4=5/5; X5=6/6; X6=4/4; X7=6/6; X8=2/2; X9=5/5; X10=10/10; X11=3/3; X12=1/1; X13=2/2; X14=3/3; X15=3/3; X16=2/2; X17=2/2; X18=6/6; X19=3/3; X20=6/6; X21=5/5; X22=2/2; X23=5/5; X24=2/2; X25=1/1; X26=1/1; X27=1/1; X28=1/1; X29=3/3; X30=2/2; X31=1/1; X32=1/1; X33=4/4; ask_pas...
+2026-11-10,agent_sessions,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0169,45.0,0.9955,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"opencode_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0574,139.8,0.9855,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0163,139.7,0.9889,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"opencode_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.0748,291.0,0.9907,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions,"opencode_hub_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0549,102.1,0.9883,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",9,7,7/9,0/0,9,0,0,0.0682,377.2,0.8328,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"opencode_hub_runner@provider=anthropic,tier=fast",9,8,8/9,0/0,9,0,0,0.0701,258.4,0.9139,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,
+2026-11-10,learning_review,registry_research,19,1,1/19,0/0,0,0,0,0.0,0.0,,22900dc-dirty,78161a03,,none,forced past unsolved failures: baseline arm: its failures are the bar the review arm must beat
+2026-11-10,learning_review,systematic_review,19,19,19/19,0/0,0,0,0,0.0,0.0,,22900dc,78161a03,,none,reused 19 case(s) already run for this implementation version
+2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1334,172.0,0.7597,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,forced past unsolved failures: the one failing case is a judged deliverable that failed in two dev runs and is recorded as measured; the arm was not tuned to a private case
+2026-11-10,learning_review,systematic_review,19,19,19/19,0/0,0,0,0,0.0,0.0,,22900dc,78161a03,,none,reused 19 case(s) already run for this implementation version
+2026-11-10,learning_review,systematic_review,24,24,24/24,0/0,0,0,0,0.0,0.0,,22900dc,166c1c4e,,none,reused 24 case(s) already run for this implementation version
+2026-11-10,learning_review,registry_research,24,1,1/24,0/0,0,0,0,0.0,0.0,,22900dc-dirty,166c1c4e,,none,forced past unsolved failures: baseline arm: its failures are the bar the review arm must beat
+2026-11-10,agent_sessions,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0189,50.9,0.9949,22900dc-dirty,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,learning_review,systematic_review,3,0,0/3,0/0,12,0,0,,115.6,,22900dc,9363f51b,"only:real-terminal-libraries,real-search-backends,real-spreadsheet-libraries",unknown,
+2026-11-10,learning_review,systematic_review,3,3,3/3,0/0,12,0,0,,110.8,,22900dc,9363f51b,"only:real-terminal-libraries,real-search-backends,real-spreadsheet-libraries",unknown,
+2026-11-10,learning_review,systematic_review,24,24,24/24,0/0,0,0,0,0.0,0.0,,22900dc,9363f51b,,none,
+2026-11-10,learning_review,registry_research,24,1,1/24,0/0,0,0,0,0.0,0.0,,22900dc-dirty,9363f51b,,none,
+2026-11-10,agent_sessions_hard,"native_tool_calling_loop_runner@provider=anthropic,tier=fast",9,6,6/9,0/0,9,0,0,0.1073,179.5,0.7599,22900dc-dirty,4fe9b0cc,,claude-haiku-5-5,

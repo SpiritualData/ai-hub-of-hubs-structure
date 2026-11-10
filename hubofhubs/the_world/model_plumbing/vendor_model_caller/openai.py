@@ -88,6 +88,24 @@ class OpenAIProvider(ModelProviderBase):
         response = self.complete(model, api_messages)
         return response.choices[0].message.content if response and response.choices else ""
 
+    @retry_transient(max_retries=3, base_delay=1.0)
+    def tool_turn(self, transcript: List[Dict[str, Any]], *, model: str, system: str = "", tools: Optional[List[Any]] = None, max_tokens: int = 8192) -> Any:
+        """One turn of an agent loop over the OpenAI Responses API (written against the documented interface; not measured in this repository): function
+        tools and the built-in ``apply_patch`` tool, the whole transcript sent each call (stateless, reasoning items kept encrypted in ``raw``)."""
+        from hubofhubs.the_world.model_plumbing.vendor_model_caller import tool_calling as tc
+        kwargs: Dict[str, Any] = {"model": self.resolve_model(model), "input": tc.openai_input(transcript), "max_output_tokens": max_tokens,
+                                  "store": False, "include": ["reasoning.encrypted_content"]}
+        if system.strip():
+            kwargs["instructions"] = system
+        if tools:
+            kwargs["tools"] = tc.openai_tools(tools)
+        response = self.get_client().responses.create(**kwargs, **self.create_kwargs)
+        self.call_count += 1
+        turn = tc.openai_turn(response)
+        self.tokens_in += turn.tokens_in
+        self.tokens_out += turn.tokens_out
+        return turn
+
     @retry_transient(max_retries=2, base_delay=1.0)
     def fetch_models(self) -> List[str]:
         return [m.id for m in self.get_client().models.list().data if hasattr(m, "id") and self.model_marker in m.id.lower()]

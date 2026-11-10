@@ -15,6 +15,7 @@ at the repository root.
 | Part and arm | Environment variables | Accounts and APIs | Python (extra of `hubofhubs`) | Programs, services, downloads | Can run out of process |
 |---|---|---|---|---|---|
 | Agent Action Format, Either format (`agent-action-format:any_format`) | none | none | none | none | no |
+| Agent Action Format, OpenAI apply_patch and shell (`agent-action-format:apply_patch_v4a`) | none | none | none | none | no |
 | Agent Action Format, Native tool calls (`agent-action-format:native_tool_calls`) | none | none | none | none | no |
 | Agent Action Format, Hub text protocol (`agent-action-format:text_protocol`) | none | none | none | none | no |
 | AI Session Experience, One session, three views (`ai-session-experience:composition`) | none | none | none | none | no |
@@ -55,7 +56,9 @@ at the repository root.
 | Decision Check, One verify call over all the evidence (`decision-check:single_verify`) | none | none | none | none | no |
 | Delegated Agent Sessions, Agent Client Protocol runner (`delegated-agent-sessions:acp_deep_runner`) | none | none | `acp` via extra `acp` | program `claude-agent-acp`<br>program `node`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | subprocess |
 | Delegated Agent Sessions, Codex CLI, one shot (`delegated-agent-sessions:codex_cli_runner`) | `OPENAI_API_KEY` (secret)<br>`HUBOFHUBS_WRITE_ROOT` | OpenAI | none | program `codex` | cli |
+| Delegated Agent Sessions, Hub's own loop on native tool calling (`delegated-agent-sessions:native_tool_calling_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | Anthropic (`ANTHROPIC_API_KEY`) | `anthropic` via extra `anthropic` | none | no |
 | Delegated Agent Sessions, Hub's frame on the model's own tool loop (`delegated-agent-sessions:native_tool_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| Delegated Agent Sessions, opencode in the hub's wrapper (`delegated-agent-sessions:opencode_hub_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
 | Delegated Agent Sessions, opencode, one shot (`delegated-agent-sessions:opencode_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
 | Delegated Agent Sessions, Hub's own tool loop (`delegated-agent-sessions:solution_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
@@ -134,7 +137,8 @@ at the repository root.
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
 | Intuition, What was taken for similar requests (`the-intuition:co_taken`) | none | none | none | none | no |
 | Intuition, Nearest items by wording (`the-intuition:nearest_cards`) | none | none | none | none | no |
-| Learning, Stale areas from the registry dates (`the-learning:registry_research`) | none | none | none | none | no |
+| Learning, Stale areas and one search (`the-learning:registry_research`) | none | none | none | none | no |
+| Learning, Systematic review (`the-learning:systematic_review`) | none | none | none | none | no |
 | Mind, The four parts of the Mind in order (`the-mind:composition`) | none | none | none | none | no |
 | Representatives, Declared authority (`the-representatives:declared_authority`) | none | none | none | none | no |
 | Science, OpenAlex keyword search (`the-science:openalex`) | none | OpenAlex (`OPENALEX_API_KEY`), keyless works | `httpx` via extra `science`<br>`filelock` via extra `locks` (optional) | none | no |
