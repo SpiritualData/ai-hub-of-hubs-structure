@@ -34,9 +34,14 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | structured_output | Getting a model's decision back as valid structured data | compared | adopt | none | Anthropic structured outputs; Instructor; Outlines; BAML | 4 | 0 | 2026-10-30 |
 | prompt_optimization | Improving prompts by measured metric | compared | coexist | none | GEPA; DSPy | 2 | 0 | 2026-10-30 |
 | model_providers | Calling any model vendor with tier fallback | compared | coexist | none | Bifrost; OpenRouter; Vercel AI Gateway; Portkey gateway; any-llm; LiteLLM | 10 | 2 | 2026-10-30 |
-| deep_run_cost | Keeping a long agent run small and cached | compared | keep | none | Claude Code prompt caching; PreToolUse output-filter hooks; observation masking; context editing; OpenHands condenser; CliffCompaction | 7 | 3 | 2026-10-30 |
 | prompt_cache | Reusing prompt prefixes to cut cost and time | compared | keep | QAR stable render order | Anthropic prompt caching; LMCache | 3 | 0 | 2026-10-30 |
 | model_quality | Knowing how well each model does hard exact-answer maths, to choose a model per tier | compared | keep | none | GPT-5-nano; GPT-5-mini; Gemini 2.5 Flash; DeepSeek-v3.2 (Think); Claude-Sonnet-4.5 (Think) | 5 | 6 | 2026-10-31 |
+
+### Delegation (`delegation`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| subagents | Delegating and recursing inside an agent run | compared | coexist | none | Claude Code subagents; Claude Code dynamic workflows; Recursive Language Models; LangGraph; OpenAI Agents SDK; smolagents; CrewAI; AG2 | 11 | 0 | 2026-10-30 |
 
 ### Subconscious (`the-subconscious`)
 
@@ -44,6 +49,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 |---|---|---|---|---|---|---|---|---|
 | vector_store | Storing and searching scoped cards and chunks | builds_on | keep | Qdrant | LanceDB; Chroma; pgvector; Weaviate; Vespa; turbopuffer; sqlite-vec; MongoDB Community Search | 9 | 0 | 2026-10-30 |
 | embeddings | Turning text into vectors for the dense arm | builds_on | coexist | fastembed, Voyage embeddings | Qwen3-Embedding-0.6B; EmbeddingGemma-300m; BGE-M3; Gemini embedding | 4 | 2 | 2026-10-30 |
+| deep_run_cost | Keeping a long agent run small and cached | compared | keep | none | Claude Code prompt caching; PreToolUse output-filter hooks; observation masking; context editing; OpenHands condenser; CliffCompaction | 7 | 3 | 2026-10-30 |
 | context_assembly | Choosing the context a turn sees | compared | coexist | bm25s, Qdrant and fastembed, bge-small-en-v1.5 | Qdrant native weighted RRF hybrid; Qwen3-Embedding-0.6B; EmbeddingGemma-300m; contextual retrieval prefix; LanceDB; PyLate; Haystack; LlamaIndex | 16 | 18 | 2026-10-30 |
 | code_context | Choosing files and symbols for a code task | compared | coexist | Agentic glob and grep inside Claude Code, QAR context cards | Aider repository map; Serena; Augment Context Engine; Cursor semantic search; tree-sitter repository map | 7 | 7 | 2026-10-30 |
 | reranking | Ordering a shortlist of candidate context | compared | coexist | cheap-model batched judge (QAR spec_selection) | Qwen3-Reranker; bge-reranker-v2-m3; Qdrant multivector rescoring; Cohere Rerank; Voyage rerank | 7 | 7 | 2026-10-30 |
@@ -69,7 +75,6 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 |---|---|---|---|---|---|---|---|---|
 | injection_defense | Untrusted text and tool output must not steer the agent or leak data | compared | coexist | untrusted-content framing in adapters/remote_files_adapter.py and planner prompt rules (core/planner_context.py), no classifier, no data-flow control | ProtectAI deberta-v3-base-prompt-injection-v2; Llama Prompt Guard 2; PIGuard; LlamaFirewall; Azure Prompt Shields; Google Model Armor; OpenAI Guardrails; Microsoft Agent Framework FIDES; CaMeL | 16 | 1 | 2026-10-30 |
 | guardrails | Policy rails around inputs, outputs and actions | compared | keep | reply guards (hubofhubs/critique, evaluation/components/reply_guards) are product checks, not safety rails | NeMo Guardrails; Guardrails AI; gpt-oss-safeguard; Llama Guard 4; Qwen3Guard | 4 | 0 | 2026-10-30 |
-| consent_gating | Stopping irreversible or human-only steps and asking the right person | builds_on | keep | core/orchestrator_decisions.py and orchestrator_decide_tool.py (1,288 lines), adapters/acp_deep_runner_session.py answers ACP session/request_permission | MCP elicitation and input_required (spec 2026-07-28); Claude Agent SDK canUseTool and hooks; LangGraph interrupt | 4 | 0 | 2026-10-30 |
 | run_supervision | Watching a run and sending at most one small signal | compared | keep | hubofhubs/the_intelligence/mind/delegation/overseer/risk.py (297 lines) engine plus core/overseer.py and orchestrator_oversee.py (425 lines), five signals | Claude Code auto mode classifier; LlamaFirewall AlignmentCheck; Patronus Percival | 4 | 5 | 2026-10-30 |
 | secrets_hygiene | Keeping secrets and real identifiers out of public code | compared | coexist | esoi.hygiene scanner in the esoi library, 35-case keep_secrets_out set | Gitleaks | 2 | 0 | 2026-10-30 |
 
@@ -100,6 +105,12 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | science_graph | Representing papers, constructs and theories as a graph | compared | adopt | none | SemOpenAlex; ORKG; Microsoft GraphRAG; LightRAG; Graphiti; Cognee; rdflib and pySHACL | 7 | 0 | 2026-10-30 |
 | science_estimate_truth | Estimating how likely a hypothesis is to hold | compared | keep | none | BrainBench; Co-Scientist tournament pattern; automated multi-model review of AI scientists | 3 | 0 | 2026-10-30 |
 
+### Tools (`the-tools`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| command_sandbox | Running agent commands without risking the host | compared | adopt | none | Anthropic sandbox-runtime; Codex CLI sandbox; bubblewrap; Docker Sandboxes; E2B; Modal | 7 | 0 | 2026-10-30 |
+
 ### File Editing (`file-editing`)
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
@@ -129,8 +140,6 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | durable_jobs | Running queued work once, surviving restarts | compared | keep | none | DBOS Transact; Temporal; Hatchet; Inngest; Restate | 8 | 0 | 2026-10-30 |
 | agent_harness | Deep work done by a coding-agent harness on a Claude subscription | builds_on | coexist | Claude Code CLI, Agent Client Protocol agents (claude-agent-acp) | Codex CLI; mini-swe-agent; Goose; OpenCode; OpenHands software-agent-sdk; Cline; Aider | 14 | 46 | 2026-10-30 |
 | code_search | Finding the right code before and during a run | compared | keep | none | Aider repo map; Claude Code LSP plugin; Serena MCP; SWE-grep; WarpGrep; Claude Code Explore subagent | 7 | 0 | 2026-10-30 |
-| command_sandbox | Running agent commands without risking the host | compared | adopt | none | Anthropic sandbox-runtime; Codex CLI sandbox; bubblewrap; Docker Sandboxes; E2B; Modal | 7 | 0 | 2026-10-30 |
-| subagents | Delegating and recursing inside an agent run | compared | coexist | none | Claude Code subagents; Claude Code dynamic workflows; Recursive Language Models; LangGraph; OpenAI Agents SDK; smolagents; CrewAI; AG2 | 11 | 0 | 2026-10-30 |
 | agent_verify | Checking a run's work and undoing it | compared | keep | none | Claude Code checkpointing; Anthropic long-running harness pattern; Aider commit per edit; Agentless validation | 6 | 1 | 2026-10-30 |
 | agent_bench | Choosing a harness by measured results | compared | keep | none | SWE-bench Verified bash-only (Vals); Terminal-Bench 2.0; Aider polyglot; SWE-bench Pro; Holistic Agent Leaderboard | 6 | 8 | 2026-10-30 |
 | science_run_analysis | Designing and running analyses on data with code | compared | adopt | none | K-Dense Scientific Agent Skills; ToolUniverse; Biomni; Edison Analysis; AstaBench and Asta agents; ScienceAgentBench; Jupyter AI; E2B code interpreter | 9 | 0 | 2026-10-30 |
@@ -142,4 +151,10 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 | evals | Measuring and selecting between implementations | compared | coexist | esoi (evolvable-structure Python tools) | Inspect AI; promptfoo; DeepEval; DSPy and GEPA | 6 | 0 | 2026-10-30 |
 | model_pricing | Knowing current model prices, limits and capabilities | compared | adopt | tier_prices.csv (hand-kept, sourced) | models.dev; LiteLLM price list; Artificial Analysis API | 5 | 0 | 2026-10-30 |
 | context_benchmarks | Public case sets for judging context arms | compared | keep | none | LongMemEval; DolphinBench; MemoryBench; CORE-Bench; ContextBench; GraphRAG-Bench | 6 | 0 | 2026-10-30 |
+
+### Judgment Calls (`judgment-calls`)
+
+| Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
+|---|---|---|---|---|---|---|---|---|
+| consent_gating | Stopping irreversible or human-only steps and asking the right person | builds_on | keep | core/orchestrator_decisions.py and orchestrator_decide_tool.py (1,288 lines), adapters/acp_deep_runner_session.py answers ACP session/request_permission | MCP elicitation and input_required (spec 2026-07-28); Claude Agent SDK canUseTool and hooks; LangGraph interrupt | 4 | 0 | 2026-10-30 |
 <!-- registry:end -->

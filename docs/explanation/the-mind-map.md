@@ -99,10 +99,10 @@ The table below is generated from the records. Names lead, each part says what i
 | Intake Sources | Body | 0 | 0 | 0 | none | `intake-sources` |
 | Hands | Body | 0 | 0 | 0 | none | `the-hands` |
 | Intelligence | the hub | 0 | 0 | 0 | none | `the-intelligence` |
-| Mind | Intelligence | 8 | 1 | 56 | 2026-10-30 | `the-mind` |
+| Mind | Intelligence | 7 | 1 | 49 | 2026-10-30 | `the-mind` |
 | Context Intake | Mind | 0 | 0 | 0 | none | `context-intake` |
 | Planner | Mind | 0 | 0 | 0 | none | `planner` |
-| Delegation | Mind | 0 | 0 | 0 | none | `delegation` |
+| Delegation | Mind | 1 | 0 | 11 | 2026-10-30 | `delegation` |
 | Response Writer | Mind | 0 | 0 | 0 | none | `response-writer` |
 | Route a Request | Mind | 0 | 0 | 0 | none | `route-a-request` |
 | Resolve a Reference | Mind | 0 | 0 | 0 | none | `resolve-a-reference` |
@@ -110,7 +110,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Long-Term Memory | Higher Mind | 0 | 0 | 0 | none | `long-term-memory` |
 | Objectives | Higher Mind | 0 | 0 | 0 | none | `live-objectives` |
 | Guidance | Higher Mind | 0 | 0 | 0 | none | `guidance` |
-| Subconscious | Intelligence | 10 | 8 | 72 | 2026-10-30 | `the-subconscious` |
+| Subconscious | Intelligence | 11 | 8 | 79 | 2026-10-30 | `the-subconscious` |
 | Intuition | Subconscious | 0 | 0 | 0 | none | `the-intuition` |
 | Cards From Files | Subconscious | 0 | 0 | 0 | none | `cards-from-files` |
 | Context Retriever | Subconscious | 0 | 0 | 0 | none | `context-retriever` |
@@ -123,16 +123,16 @@ The table below is generated from the records. Names lead, each part says what i
 | Decision Check | Critical Thinking | 0 | 0 | 0 | none | `decision-check` |
 | Metric Upkeep | Critical Thinking | 0 | 0 | 0 | none | `metric-upkeep` |
 | Solution Passes | Critical Thinking | 0 | 0 | 0 | none | `solution-passes` |
-| Nervous System | Intelligence | 5 | 5 | 30 | 2026-10-30 | `nervous-system` |
+| Nervous System | Intelligence | 4 | 4 | 26 | 2026-10-30 | `nervous-system` |
 | Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
 | World | the hub | 7 | 1 | 37 | 2026-10-30 | `the-world` |
 | Science | World | 10 | 2 | 74 | 2026-10-30 | `the-science` |
-| Tools | World | 0 | 0 | 0 | none | `the-tools` |
+| Tools | World | 1 | 0 | 7 | 2026-10-30 | `the-tools` |
 | Web Search | Tools | 0 | 0 | 0 | none | `web-search` |
 | File Reading | Tools | 0 | 0 | 0 | none | `read-files` |
 | File Editing | Tools | 2 | 2 | 10 | 2026-10-30 | `file-editing` |
 | Connected System Operations | Tools | 10 | 2 | 59 | 2026-10-30 | `connected-system-operations` |
-| Delegated Agent Sessions | Tools | 8 | 1 | 68 | 2026-10-30 | `delegated-agent-sessions` |
+| Delegated Agent Sessions | Tools | 6 | 1 | 50 | 2026-10-30 | `delegated-agent-sessions` |
 | Model Plumbing | World | 0 | 0 | 0 | none | `model-plumbing` |
 | Model Tier Chooser | Model Plumbing | 0 | 0 | 0 | none | `model-tier-chooser` |
 | Vendor Model Caller | Model Plumbing | 0 | 0 | 0 | none | `vendor-model-caller` |
@@ -140,7 +140,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Research Freshness Reader | Learning | 0 | 0 | 0 | none | `research-freshness-reader` |
 | Consciousness | the hub | 0 | 0 | 0 | none | `the-consciousness` |
 | Representatives | Consciousness | 0 | 0 | 0 | none | `the-representatives` |
-| Judgment Calls | Consciousness | 0 | 0 | 0 | none | `judgment-calls` |
+| Judgment Calls | Consciousness | 1 | 1 | 4 | 2026-10-30 | `judgment-calls` |
 | Feedback Learning | Consciousness | 0 | 0 | 0 | none | `feedback-learning` |
 | Prioritization | Consciousness | 0 | 0 | 0 | none | `prioritization` |
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |

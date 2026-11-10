@@ -195,7 +195,7 @@ def test_every_area_maps_to_a_seat_of_the_mind():
     solutions = {r["solution_id"] for r in read_tree(root / "esoi", "solutions.csv")}
     hubs = registry.read("hubs.csv")
     assert all(r["seat"] in solutions for r in hubs), [r["area"] for r in hubs if r["seat"] not in solutions]
-    assert len(registry.seat_ids(hubs)) <= 12
+    assert len(registry.seat_ids(hubs)) <= 15      # coarse on purpose: an area sits on the solution responsible for it, never one seat per area
 
 
 def test_one_row_per_seat_binds_every_area_that_seat_owns_and_the_rest_are_arm_gaps(tmp_path, consumer):
