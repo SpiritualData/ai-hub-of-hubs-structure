@@ -5,13 +5,17 @@ the environment.
 """
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import re
+import shlex
 import threading
 import time
 from typing import Callable, Dict, List, Optional, Set
 from pathlib import Path
 
+from hubofhubs.the_body.internal_context.run_store.runs import RunStore
 from hubofhubs.the_world.tools.deep import ProgressEvent
 from hubofhubs.the_world.tools.events import EVENT_EXEC, EVENT_STATUS
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import DEFAULT_MONITOR_HEARTBEAT_SECONDS, log
@@ -712,3 +716,264 @@ def worker_output_is_thin(output: Optional[str]) -> bool:
     same situation in practice, so both earn the session-record fallback.
     """
     return len((output or "").strip()) <= SESSION_TAIL_THIN_OUTPUT_CHARS
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# How much a run looked around before it did anything, and the trail it leaves for the next run on the same work.
+# Both are read from the session record alone: no model, no network.
+# ---------------------------------------------------------------------------------------------------------------------
+
+# Tools that only look. A shell command is look-only when every part of it starts with one of the words below.
+LOOK_TOOLS = frozenset({"read", "grep", "glob", "ls", "notebookread"})
+LOOK_COMMANDS = frozenset({"ls", "cat", "head", "tail", "grep", "rg", "find", "tree", "wc"})
+READ_COMMANDS = frozenset({"cat", "head", "tail"})
+FILES_READ_CAP = 40
+_PATH_KEYS = ("file_path", "notebook_path", "path")
+_SHELL_SPLIT = re.compile(r"&&|\|\||;|\|")
+
+
+def _shell_parts(command: str) -> List[List[str]]:
+    """A shell command as the word lists of its parts (split on ``&&``, ``||``, ``;`` and ``|``), a leading ``cd`` part left out."""
+    parts: List[List[str]] = []
+    for piece in _SHELL_SPLIT.split(command or ""):
+        try:
+            words = shlex.split(piece)
+        except ValueError:
+            words = piece.split()
+        if words:
+            parts.append(words)
+    if len(parts) > 1 and parts[0][0] == "cd":
+        parts = parts[1:]
+    return parts
+
+
+def _look_only_command(command: str) -> bool:
+    """Whether a shell command only looks: each part starts with a look word (or ``sed -n``) and nothing is redirected into a file."""
+    if ">" in (command or ""):
+        return False
+    parts = _shell_parts(command)
+    if not parts:
+        return False
+    for words in parts:
+        if words[0] in LOOK_COMMANDS:
+            continue
+        if words[0] == "sed" and "-n" in words[1:3]:
+            continue
+        return False
+    return True
+
+
+def _read_paths(block: dict) -> List[str]:
+    """The files a looking tool use opened: a Read's path, and the file arguments of a plain ``cat``, ``head`` or ``tail``."""
+    name = str(block.get("name") or "").lower()
+    inp = block.get("input") if isinstance(block.get("input"), dict) else {}
+    if name in ("read", "notebookread"):
+        found = inp.get("file_path") or inp.get("notebook_path")
+        return [str(found)] if found else []
+    if name != "bash":
+        return []
+    paths: List[str] = []
+    for words in _shell_parts(str(inp.get("command") or "")):
+        if words[0] in READ_COMMANDS:
+            skip_next = False
+            for word in words[1:]:
+                if skip_next:
+                    skip_next = False
+                elif word in ("-n", "-c") and words[0] != "cat":
+                    skip_next = True
+                elif not word.startswith("-") and not any(ch in word for ch in "*?[$`"):
+                    paths.append(word)
+        elif words[0] == "sed" and "-n" in words[1:3]:
+            positional = [w for w in words[1:] if not w.startswith("-")]
+            paths.extend(positional[1:])
+    return paths
+
+
+def _changed_path(block: dict) -> Optional[str]:
+    inp = block.get("input") if isinstance(block.get("input"), dict) else {}
+    found = inp.get("file_path") or inp.get("notebook_path")
+    return str(found) if found else None
+
+
+def _session_tool_uses(path: Path) -> tuple:
+    """``(tool_use blocks in the order they happened, ids of the tool uses whose result was an error)`` over the run and its subagents.
+
+    Order is by each record's timestamp when every tool use has one (a subagent's calls then fall where they happened), else the
+    run's own record first and each subagent's after it."""
+    entries: List[tuple] = []
+    failed: Set[str] = set()
+    for record_path in session_record_paths(path):
+        try:
+            with open(record_path, "r", encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    if '"tool_use"' not in line and '"tool_result"' not in line:
+                        continue
+                    try:
+                        record = json.loads(line)
+                        content = (record.get("message") or {}).get("content")
+                    except (ValueError, AttributeError):
+                        continue
+                    stamp = record.get("timestamp") if isinstance(record.get("timestamp"), str) else None
+                    for block in content if isinstance(content, list) else []:
+                        if not isinstance(block, dict):
+                            continue
+                        if block.get("type") == "tool_use":
+                            entries.append((stamp, len(entries), block))
+                        elif block.get("type") == "tool_result" and block.get("is_error") is True:
+                            failed.add(str(block.get("tool_use_id") or ""))
+        except OSError as e:
+            log.debug("could not read session record %s: %s", record_path, e)
+    if entries and all(stamp for stamp, _, _ in entries):
+        entries.sort(key=lambda e: (e[0], e[1]))
+    return [block for _, _, block in entries], failed
+
+
+def exploration_account(session_file) -> dict:
+    """How much a run only looked before it first changed something, counted from its session record. Never raises.
+
+    ``explore_before_first_write``: tool uses that only look (Read, Grep, Glob, LS, and shell commands made of ls, cat, head, tail,
+    grep, rg, find, tree, wc or ``sed -n``) before the first Edit, Write, NotebookEdit or shell command that does more than look.
+    ``explore_total``: all looking tool uses. ``tool_calls_total``: every tool use, subagents' included.
+    ``first_write_index``: the position (from 0) of that first change, None when the run never changed anything.
+    ``files_read``: the files opened, in order, each once, at most ``FILES_READ_CAP``. ``files_changed``: the files an edit or write
+    touched and that did not end in an error, each once. ``explore_before_first_file_change`` is the same count as
+    ``explore_before_first_write`` but stops only at an Edit, Write or NotebookEdit, so a run that mostly calls tools through the shell
+    (which count as a change above) still shows how much it looked before touching a file."""
+    account = {"explore_before_first_write": 0, "explore_total": 0, "tool_calls_total": 0, "first_write_index": None,
+               "explore_before_first_file_change": 0, "files_read": [], "files_changed": []}
+    try:
+        if session_file is None:
+            return account
+        blocks, failed = _session_tool_uses(Path(session_file))
+        read: List[str] = []
+        changed: List[str] = []
+        file_changed = False
+        for index, block in enumerate(blocks):
+            name = str(block.get("name") or "").lower()
+            inp = block.get("input") if isinstance(block.get("input"), dict) else {}
+            if name in LOOK_TOOLS:
+                looks = True
+            elif name == "bash":
+                looks = _look_only_command(str(inp.get("command") or ""))
+            else:
+                looks = False
+            writes = name in FILE_CHANGE_TOOLS or (name == "bash" and not looks)
+            if looks:
+                account["explore_total"] += 1
+                if account["first_write_index"] is None:
+                    account["explore_before_first_write"] += 1
+                if not file_changed:
+                    account["explore_before_first_file_change"] += 1
+                for found in _read_paths(block):
+                    if found not in read:
+                        read.append(found)
+            elif writes and account["first_write_index"] is None:
+                account["first_write_index"] = index
+            if name in FILE_CHANGE_TOOLS:
+                file_changed = True
+            if name in FILE_CHANGE_TOOLS and str(block.get("id") or "") not in failed:
+                found = _changed_path(block)
+                if found and found not in changed:
+                    changed.append(found)
+        account["tool_calls_total"] = len(blocks)
+        account["files_read"] = read[:FILES_READ_CAP]
+        account["files_changed"] = changed
+    except Exception as e:  # noqa: BLE001, a measurement must never become a failure mode
+        log.debug("could not account for exploration in %s: %s", session_file, e)
+    return account
+
+
+# The trail: which files the last few runs on one piece of work read and changed, kept so the next run opens them first.
+TRAIL_RUNS_KEPT = 5
+TRAIL_FILES_LISTED = 12
+
+
+def _inside(path: str, working_dir: str) -> Optional[str]:
+    """``path`` relative to ``working_dir``, or None when it lies outside it (or is the folder itself)."""
+    try:
+        base = os.path.realpath(working_dir)
+        target = os.path.realpath(path if os.path.isabs(path) else os.path.join(base, path))
+        relative = os.path.relpath(target, base)
+    except (OSError, ValueError):
+        return None
+    if relative in (".", "") or relative == ".." or relative.startswith(".." + os.sep) or os.path.isabs(relative):
+        return None
+    return relative.replace(os.sep, "/")
+
+
+def run_trail(account: dict, working_dir: Optional[str]) -> dict:
+    """One run's trail, ``{"read": [...], "changed": [...]}``, from its ``exploration_account``: paths relative to the working folder,
+    those outside it dropped. A changed file is not also listed as read."""
+    if not working_dir:
+        return {"read": [], "changed": []}
+    changed: List[str] = []
+    for path in account.get("files_changed") or []:
+        rel = _inside(str(path), working_dir)
+        if rel and rel not in changed:
+            changed.append(rel)
+    read: List[str] = []
+    for path in account.get("files_read") or []:
+        rel = _inside(str(path), working_dir)
+        if rel and rel not in read and rel not in changed:
+            read.append(rel)
+    return {"read": read, "changed": changed}
+
+
+def merge_trails(runs: List[dict], *, keep: int = TRAIL_RUNS_KEPT) -> List[dict]:
+    """The newest ``keep`` runs' trails as one ranked list of ``{"path", "runs", "changed"}``: files a run changed first, then by how
+    many runs touched them, then the more recent. ``runs`` is oldest first."""
+    recent = [r for r in (runs or []) if isinstance(r, dict)][-max(keep, 0):] if keep else []
+    seen: Dict[str, dict] = {}
+    for position, run in enumerate(recent):
+        changed = set(run.get("changed") or [])
+        for path in list(run.get("changed") or []) + list(run.get("read") or []):
+            row = seen.setdefault(path, {"path": path, "runs": 0, "changed": False, "last": -1})
+            if row["last"] != position:
+                row["runs"] += 1
+            row["last"] = position
+            row["changed"] = row["changed"] or path in changed
+    ranked = sorted(seen.values(), key=lambda r: (not r["changed"], -r["runs"], -r["last"], r["path"]))
+    return [{"path": r["path"], "runs": r["runs"], "changed": r["changed"]} for r in ranked]
+
+
+class TrailStore:
+    """The trail per working folder and piece of work, kept in a ``RunStore`` folder: one file per piece of work, under one folder per
+    working folder. Every method is best-effort: a store that cannot be read or written answers empty and records nothing."""
+
+    def __init__(self, folder: str):
+        self.folder = folder
+
+    @staticmethod
+    def _digest(text: str) -> str:
+        return hashlib.sha1(text.encode("utf-8")).hexdigest()[:12]
+
+    def _store(self, working_dir: str) -> RunStore:
+        return RunStore(os.path.join(self.folder, self._digest(os.path.realpath(working_dir))))
+
+    def runs(self, working_dir: Optional[str], goal_key: Optional[str]) -> List[dict]:
+        """The kept runs' trails, oldest first. Empty when there is no working folder, no key or nothing kept."""
+        if not working_dir or not goal_key:
+            return []
+        try:
+            row = self._store(working_dir).get("run-" + self._digest(goal_key)) or {}
+            return [r for r in row.get("runs") or [] if isinstance(r, dict)]
+        except Exception as e:  # noqa: BLE001
+            log.debug("could not read the trail of %s: %s", goal_key, e)
+            return []
+
+    def ranked(self, working_dir: Optional[str], goal_key: Optional[str], *, limit: int = TRAIL_FILES_LISTED) -> List[dict]:
+        """The ranked files (``merge_trails``) of the kept runs, at most ``limit``."""
+        return merge_trails(self.runs(working_dir, goal_key))[:limit]
+
+    def record(self, working_dir: Optional[str], goal_key: Optional[str], trail: dict) -> bool:
+        """Add one run's trail, keeping the newest ``TRAIL_RUNS_KEPT`` runs. False (never an error) when nothing was recorded."""
+        if not working_dir or not goal_key or not (trail.get("read") or trail.get("changed")):
+            return False
+        try:
+            kept = (self.runs(working_dir, goal_key) + [{"read": list(trail.get("read") or []),
+                                                          "changed": list(trail.get("changed") or [])}])[-TRAIL_RUNS_KEPT:]
+            self._store(working_dir).add({"id": self._digest(goal_key), "runs": kept})
+            return True
+        except Exception as e:  # noqa: BLE001
+            log.warning("could not record the trail of %s: %s", goal_key, e)
+            return False

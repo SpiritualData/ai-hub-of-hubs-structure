@@ -239,8 +239,14 @@ NAMES = {
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.sufficiency": (
         "AbridgedTurnState", "READ_SPEC_KEYS", "collect_abridged_items", "render_abridged_notice",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.solution_passes.approach_choice": (
+        "DEFAULT_VIEWS", "choose_approach",
+    ),
     "hubofhubs.the_intelligence.critical_thinking.pursuit": (
         "BoundedReplan", "Increment", "LADDER", "REFUSED_BOOKKEEPING", "bookkeeping_only", "choose_increment", "doable_by_ai", "only_bookkeeping_writes",
+    ),
+    "hubofhubs.the_intelligence.critical_thinking.solution_passes.solution_run": (
+        "keep_better", "met_count", "solution_frame", "unmet_by_unit",
     ),
     "hubofhubs.the_intelligence.critical_thinking.metric_upkeep.interface": (
         "MetricUpkeeping",

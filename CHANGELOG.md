@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Solution Passes: `choose_approach` proposes distinct ways to do a piece of work from several cheap views run in parallel and picks one, unlabelled, by the solution's requirements; the ways not taken come back with their weakness so a consumer can keep them as alternatives.
+- Solution Passes: `solution_frame` labels what a worker needs from its solution (approach, next milestone not met, what the metric cannot see, the weakness of the way in use, the last value); `unmet_by_unit` and `keep_better` carry which requirement each unit failed into the next run and keep a rewrite only when it meets more.
+- Delegated Agent Sessions: `exploration_account` counts looks against changes in a session record, and `run_trail`, `merge_trails` and `TrailStore` keep the files the last five runs on one piece of work read and changed, so the next session is handed them.
 - Scratch folders are per account: `private_directory` (`hubofhubs.the_body.internal_context.run_store.jsonl_ledger`) gives `<temp>/<name>-<uid>` at mode 0700 and refuses a link or a folder another account can write. The retrieval caches (`cached_corpus`, `VectorCache`) and the working directory of the `claude_cli` arm use it in place of a fixed name under the temp folder, where a second account on the machine could plant a pickle or project settings. The corpus cache is written whole, then renamed.
 - `claude_cli`: a planner call that fails is logged with its error before the empty decision is returned, and a call with no private scratch folder says so.
 - Records: the `disadvantages` cell of `metric-upkeep:record_fields` is quoted (its comma had shifted `filepath`, `uses_solution_ids` and `sub_intent`), and `hprob-context-too-broad-or-missing` links back to Relevant Solutions.

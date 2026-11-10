@@ -1,6 +1,6 @@
 """What is left of a reply after some of its sentences are taken out must still read as an answer.
 
-Removing a sentence can leave a later one pointing at it: "Its current value is 50 percent." after the sentence that named the milestone, or "The quest's own check shows the
+Removing a sentence can leave a later one pointing at it: "Its current value is 50 percent." after the sentence that named the milestone, or "The team's own check shows the
 same figure." after the sentence that stated the figure. ``dangling`` finds such sentences structurally: a sentence that opens with a back-reference word (a pronoun or a
 demonstrative) right after a removed sentence, a sentence holding "the same ..." right after one, and a demonstrative with a noun ("that blocker") whose noun was only ever said in
 removed sentences. It reads grammar words only (pronouns and demonstratives, a closed class), never what the reply means.
