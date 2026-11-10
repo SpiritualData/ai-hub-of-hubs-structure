@@ -346,3 +346,6 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0198,141.1,0.9886,550a4e0,0dcffc5e,,claude-haiku-5-5,
 2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,6,6/7,0/0,7,0,0,0.0231,215.9,0.8918,550a4e0,393c849c,,claude-haiku-5-5,
 2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.5114,185.0,0.8824,550a4e0,393c849c,,claude-sonnet-5-5,
+2026-11-10,agent_sessions,"solution_loop_runner@provider=anthropic,tier=fast",18,18,18/18,0/0,18,0,0,0.0133,112.4,0.9911,274032e,0dcffc5e,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=fast",7,7,7/7,0/0,7,0,0,0.0272,240.5,0.9908,274032e,393c849c,,claude-haiku-5-5,
+2026-11-10,agent_sessions_hard,"solution_loop_runner@provider=anthropic,tier=balanced",7,6,6/7,0/0,7,0,0,0.1923,167.3,0.8899,274032e,393c849c,,claude-sonnet-5-5,
