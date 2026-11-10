@@ -151,7 +151,7 @@ def test_usage_carries_cache_read_and_write_and_the_run_ends_with_one_totals_lin
     usage = [e.data for e in seen if e.type == "session" and e.data["type"] == "usage"]
     assert [u["cache_write_tokens"] for u in usage][0] == 80_000 and usage[-1]["cache_read_tokens"] == 60_000 and usage[-1]["cache_write_tokens"] == 82_000
     totals = [r.getMessage() for r in caplog.records if "totals" in r.getMessage()]
-    assert totals == ["loop run totals: 3 calls, plain input 6, cache read 60000, cache write 82000, output 300, cost $0.0300"]
+    assert totals == ["loop run totals: 3 calls, plain input 6, cache read 60000, cache write 82000, output 300, cost $0.0300, ended: met"]
     assert any("plain input 2, cache read 0, cache write 80000, output 100" in r.getMessage() for r in caplog.records)
 
 

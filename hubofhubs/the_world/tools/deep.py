@@ -127,6 +127,9 @@ class DeepResult:
     # before its first model turn: ``error`` carries its own words). A consumer that tells a person why
     # nothing ran words these two in its own plain language; only meaningful with ``launch_failed``.
     launch_problem: str = ""
+    # WHY a loop-style runner ended, when it can say: ``met``, ``blocked``, ``no_action`` (two replies in a row without an action), ``call_limit``, ``time_limit``,
+    # ``cancelled``, ``paused``, ``partial`` (a report after a check that cannot pass), ``model_failed`` or ``failed``. Empty for a runner that cannot tell.
+    end_reason: str = ""
     # The words in ``output`` were WRITTEN BY A MODEL answering in-process (a runner that declares
     # ``uses_deep_model = False``), not produced by a Claude Code worker that went and read things.
     # Set by the orchestrator from the runner it dispatched to, never by a runner. The link guard's

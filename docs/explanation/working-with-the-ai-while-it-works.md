@@ -203,6 +203,15 @@ same reason ends the run not met with the model's report (`LoopResult.partial`, 
 the working folder (read-only, judged by the Folder View's risk rules, so a credentials folder or a key file is refused with the reason, and a missing file is the only one called missing). A
 consumer binding can hand the loop its own operations as tools that run in process, and `child_environment` is the one the sibling runners give their worker.
 Live, a nine-call task whose fifth step needed a fact printed in the first (after the history was clipped) carried it in STATE and wrote it correctly; the one command that always fails ran twice and was refused the third time.
+
+A fourth task ended incomplete after five loops because the model wrote its actions as function-call markup, which the parser ignored: two such replies in a row
+ended the loop and the consumer relaunched cold each time. Now `<invoke name="RUN|READ|CHECK|USE|DELEGATE">` with `<parameter>` bodies (with or without
+`<function_calls>`, a stray `<parameter name="command">` as a RUN, multi-line bodies as one command) and a JSON action on a line or in a fenced json block are read as the
+same actions, never inside a REPORT or an edit block, and markup that names no action is quoted (120 characters) in what the model is told and in the end reason. Every loop
+now ends for a named reason (`LoopResult.ended`, `DeepResult.end_reason`, the totals line): met, blocked, no_action, call_limit, time_limit, cancelled, paused, partial, model_failed
+or failed. The wall-clock cap waits for the model call in flight and ends the loop between calls (only a person's stop abandons a call); the consumer's turn limit is the call
+limit of one loop; a follow-up with the same `run_id` and no session id resumes a saved session that did not end met, with its STATE and history; the STATE header says how
+many calls remain; and one read-only command per reply three times in a row earns a reminder to batch.
 72,735, 72,764, 72,830 before; 55,280, 654, 734, 763 after, with the message at about 300 to 500 characters instead of 224,000.
 
 ## Run it

@@ -260,6 +260,19 @@ class SolutionLoopRunner(DeepRunnerBase):
                 return True
             return False
 
+        def stop_now() -> bool:
+            """A person's stop (not the wall-clock cap): what may give up a model call that is still in flight."""
+            try:
+                if control is not None and control.pause_requested():
+                    stopped["why"] = "paused"
+                    return True
+                if (control is not None and control.cancel_requested()) or (cancel_check is not None and cancel_check()):
+                    stopped["why"] = "cancelled"
+                    return True
+            except Exception:  # noqa: BLE001 -- a failing check does not stop the run
+                pass
+            return False
+
         def tell(text: str) -> None:
             if emit is not None:
                 emit(ProgressEvent(type=EVENT_EXEC, text=text, data={"run_id": run_id, "phase": "solution_loop"}))
@@ -313,15 +326,16 @@ class SolutionLoopRunner(DeepRunnerBase):
                               max_calls=max_calls, depth=1, cancel=cancel, emit=tell if emit is not None else None,
                               command_timeout=max(1.0, min(60.0, float(cap))), environment=self.child_environment(settings, requester_user_id, run_id), counter=None,
                               wrap=wrap, state=state, save=save, inbox=inbox, tools=self.tools, review=self.review, telling=telling, system_chars=self.system_chars,
-                              abandon=None if self.injected is not None else abandon_completion)
+                              abandon=None if self.injected is not None else abandon_completion, stop_now=stop_now)
         finally:
             with self.running_lock:
                 for key in keys:
                     if self.running.get(key) is messages:
                         del self.running[key]
-        if agent == "main":      # one line for the run: did the cache work (reads large, writes small after the first call)?
-            log.info("loop run totals: %d calls, plain input %d, cache read %d, cache write %d, output %d, cost $%.4f", result.calls, int(usage["plain"]),
-                     int(usage["read"]), int(usage["write"]), int(usage["output"]), float(usage["cost"]))
+        result.ended = {"timeout": "time_limit", "paused": "paused"}.get(stopped["why"], result.ended)
+        if agent == "main":      # one line for the run: did the cache work (reads large, writes small after the first call), and why did it end?
+            log.info("loop run totals: %d calls, plain input %d, cache read %d, cache write %d, output %d, cost $%.4f, ended: %s", result.calls, int(usage["plain"]),
+                     int(usage["read"]), int(usage["write"]), int(usage["output"]), float(usage["cost"]), result.ended or "?")
         return result, usage, stopped["why"]
 
     def run_goal(self, *, goal: str, brief: str = "", model: Optional[str] = None, max_turns: Optional[int] = None,
@@ -338,6 +352,10 @@ class SolutionLoopRunner(DeepRunnerBase):
                 return DeepResult(met=False, launch_failed=True, error=f"no {self.tier} model is chosen for the provider {self.provider} in the tier registry")
             preamble = self.cfg.context_preamble if context_preamble is None else context_preamble
             session_id = resume_session_id or run_id or uuid.uuid4().hex
+            if not resume_session_id and run_id:      # a follow-up of the same run that names no session: a session kept under its run id that did not end met is continued
+                kept = self.load_session(run_id)
+                if kept is not None and kept.ended != "met":
+                    resume_session_id = run_id
             result, usage, why = self.work(brief or goal, context=preamble or "", working_dir=working_dir, max_calls=int(max_turns or DEFAULT_CALLS),
                                            model=model, emit=emit, cancel_check=cancel_check, run_id=run_id, session_id=session_id,
                                            resume_session_id=resume_session_id, control=control, solution=solution, milestone=milestone, frame=frame,
@@ -362,7 +380,8 @@ class SolutionLoopRunner(DeepRunnerBase):
                               changes_landed=len(result.changed), changed_nothing=not result.changed)
         return DeepResult(met=result.met, output=result.report, error=error or None, cost_usd=float(usage.get("cost", 0.0)),
                           tokens=int(usage.get("tokens", 0)), model=model or None, resolved_model=model or None,
-                          cancelled=why in ("cancelled", "paused"), paused=why == "paused", limit_hit="call limit" in error, exhausted="call limit" in error,
+                          cancelled=why in ("cancelled", "paused"), paused=why == "paused", limit_hit=result.ended in ("call_limit", "time_limit"),
+                          exhausted="call limit" in error, end_reason=result.ended,
                           changes_landed=len(result.changed), changed_nothing=not result.changed,
                           observations=[f"changed {path}" for path in result.changed], observations_reported=True)
 

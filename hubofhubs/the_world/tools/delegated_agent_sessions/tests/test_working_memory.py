@@ -18,7 +18,7 @@ class Script:
 
 
 def top(prompt):
-    return prompt.split("YOUR STATE (what you wrote last; rewrite it in every reply that acts):\n")[1].split("\n\n")[0] if "YOUR STATE" in prompt else ""
+    return prompt.split(" calls remain):\n")[1].split("\n\n")[0] if "YOUR STATE" in prompt else ""
 
 
 # --- 1. working memory ----------------------------------------------------------------------------------------------------------------
