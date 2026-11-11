@@ -5,6 +5,8 @@ import stat
 import sys
 import textwrap
 
+import pytest
+
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig
 from hubofhubs.the_world.tools.delegated_agent_sessions.framed_headless import OpencodeHubRunner
 from hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner import OpencodeRunner
@@ -83,3 +85,13 @@ def test_the_code_check_continues_the_session_only_when_the_stop_decision_allows
 def test_the_hard_limit_stops_the_process_and_keeps_the_session_to_resume(tmp_path):
     result = build(tmp_path, fake(tmp_path, sleep=30.0), ceiling_seconds=1.5, ceiling_usd=5.0, check=False).run_goal(goal="g", brief="g")
     assert not result.met and result.cancelled and "hard limit" in result.error
+
+
+def test_the_hubs_continuation_adds_the_resumed_invocations_own_steps_to_the_account(tmp_path):
+    # opencode records cost and tokens per step and a resumed invocation prints only its own new steps (checked in opencode's stored sessions: step costs are not
+    # running totals), so the account of a run with one continuation is the sum of the two invocations, unlike a Claude Code session whose reported cost is cumulative.
+    (tmp_path / "work").mkdir()
+    (tmp_path / "work" / "source.txt").write_text("Revenue figures: 1.00 dollars in total.\n")
+    allow = lambda facts: {"continue": True, "reason": "code_finding"}
+    result = build(tmp_path, fake(tmp_path), should_continue=allow).run_goal(goal="g", brief="g")
+    assert len(calls(tmp_path)) == 2 and result.cost_usd == pytest.approx(0.02) and result.tokens == 220

@@ -145,7 +145,8 @@ def test_a_run_that_stops_without_a_report_is_continued_once(tmp_path):
     script.chmod(script.stat().st_mode | stat.S_IEXEC)
     runner = build(OpencodeRunner, tmp_path, str(script), provider="gemini")
     res = runner.run_goal(goal="g", brief="b")
-    assert res.met and "Rotterdam" in res.output and res.cost_usd == pytest.approx(0.004)
+    # opencode prints only the new steps of a continued session (its stored step costs are not running totals), so the two invocations add: 0.001 + 0.003.
+    assert res.met and "Rotterdam" in res.output and res.cost_usd == pytest.approx(0.004) and res.tokens == 100 + 1 + 900 + 10 + 950 + 12
     calls = [line for line in (tmp_path / "argv.txt").read_text().splitlines() if line.startswith("run --format json")]
     assert len(calls) == 2 and "--session ses_9" in calls[1]
 
