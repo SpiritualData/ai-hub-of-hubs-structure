@@ -306,3 +306,12 @@ def test_a_stale_or_smaller_investigation_is_extended_by_a_new_search(tmp_path):
     smaller = run(root=stored(tmp_path / "second"), weight="standard")
     assert smaller["reused"] is False and "it was a smaller review" in smaller["investigation"]["limitations"]
     assert run(root=stored(tmp_path / "third"), reuse=False)["reused"] is False
+
+
+def test_the_top_solution_is_the_overall_solution_the_top_intent_names():
+    """The solution an investigation falls back to is the one the top intent's record names as its overall solution, not a second copy of the answer."""
+    from esoi.structure.intent_registry.records import overall_solution
+    root = Path(__file__).resolve().parents[4]
+    with open(root / "esoi" / "intent.csv", newline="", encoding="utf-8") as handle:
+        top = list(csv.DictReader(handle))[0]
+    assert top["overall_solution_id"] == investigation_store.TOP_SOLUTION and overall_solution(top) == investigation_store.TOP_SOLUTION
