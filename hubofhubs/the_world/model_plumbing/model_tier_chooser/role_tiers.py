@@ -3,8 +3,8 @@
 A call names its ROLE (``tier_for("request_classification")``) and the table gives the tier; no call site names a tier of its own and no code names a
 model. Tier names are the hub's four, the same as its main consumer's: ``fast``, ``balanced``, ``quality`` and ``best``. ``strong`` stays readable as an
 alias of ``quality`` (here, in ``ALIASES``, and nowhere else), and the older chooser names ``cheap`` and ``mid`` read as ``fast`` and ``balanced``.
-The chooser measures three tiers (cheap, mid, strong): ``quality`` is its strong arm and ``best`` is that same arm until an arm is measured for ``best``;
-``resolution_note`` says so, so nothing claims a model it did not run. A person's explicit tier wins for a role whose ``person_may_set`` is ``yes``; a role
+The chooser names a model for each of the four tiers from public evaluations (``cheap``, ``mid`` and ``strong`` are its older names for fast, balanced and quality; ``best`` is its own tier,
+capability only): a call on ``best`` runs on the best tier's own default model, or fails with the reason when none is chosen, and never on another tier's model; ``resolution_note`` says so. A person's explicit tier wins for a role whose ``person_may_set`` is ``yes``; a role
 whose tier is the name of another role follows it. ``best`` is reached only by a person's explicit tier or by the role ``structure-watch`` (``BEST_ROLE``), which another part of the hub builds. The ``evidence`` cell says ``measured: ...`` with the case, or ``owner's policy, unmeasured``.
 Standard library only; the table path is an argument, nothing is read from the environment."""
 from __future__ import annotations
@@ -16,8 +16,7 @@ from typing import Dict, Mapping, Optional
 TABLE = Path(__file__).with_name("role_tiers.csv")
 TIERS = ("fast", "balanced", "quality", "best")
 ALIASES = {"strong": "quality", "cheap": "fast", "mid": "balanced", "science": "fast"}     # science is a call role, not a tier: it reads as fast
-CHOOSER_TIER = {"fast": "cheap", "balanced": "mid", "quality": "strong", "best": "strong"}
-MEASURED_TIERS = ("fast", "balanced", "quality")
+CHOOSER_TIER = {"fast": "cheap", "balanced": "mid", "quality": "strong", "best": "best"}
 BEST_ROLE = "structure-watch"
 
 
@@ -35,7 +34,7 @@ def chooser_tier(tier: str) -> str:
 def resolution_note(tier: str) -> str:
     """What to say when the tier does not have an arm measured for itself, else an empty string."""
     if normalise(tier) == "best":
-        return "no arm is measured for the best tier: it runs on the strongest measured arm (the quality tier's)"
+        return "the best tier runs on its own default model, chosen from public evaluations for capability alone; with no model chosen for it the call fails with the reason and does not run on another tier"
     return ""
 
 

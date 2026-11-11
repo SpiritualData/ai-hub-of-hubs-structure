@@ -41,8 +41,8 @@ def test_no_role_but_the_structure_watch_resolves_to_best_unless_the_person_set_
 
 def test_strong_is_an_alias_of_quality_in_one_place():
     assert policy.normalise("Strong") == "quality" and policy.normalise("cheap") == "fast" and policy.normalise("mid") == "balanced"
-    assert policy.chooser_tier("quality") == "strong" and policy.chooser_tier("best") == "strong"
-    assert policy.resolution_note("best") and not policy.resolution_note("quality")
+    assert policy.chooser_tier("quality") == "strong" and policy.chooser_tier("best") == "best"
+    assert "own default model" in policy.resolution_note("best") and "quality" not in policy.resolution_note("best") and not policy.resolution_note("quality")
 
 
 def test_an_unknown_role_fails_loudly_and_a_loop_is_refused():
