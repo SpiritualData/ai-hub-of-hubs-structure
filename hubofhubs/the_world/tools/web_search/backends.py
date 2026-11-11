@@ -49,18 +49,25 @@ MAX_MODEL_CANDIDATES = 3
 
 
 def gemini_search_models(limit: int = MAX_MODEL_CANDIDATES) -> List[str]:
-    """The Gemini models a grounded search may run on, best first, read from the hub's tables and never named in code: the tier of the
-    ``web_search`` role (``role_tiers.csv``), the model the tier chooser picked among Gemini arms for it, then the tier's other Gemini
-    arms (``tier_arms.csv``) as the fallbacks a client error moves on to. Empty when the tables cannot be read."""
+    """The Gemini models a grounded search may run on, best first, read from the hub's tables and never named in code. Only the Gemini arms of the
+    tier the ``web_search`` role names (``role_tiers.csv``, held and candidate rows of ``tier_arms.csv``) are ever returned, so a search never runs on
+    another tier's model: the tier chooser's pick first when it is one of them, then the others cheapest first (the fallbacks a client error moves on
+    to). Empty when the tier has no Gemini arm or the tables cannot be read; the backend then fails with that reason."""
     try:
         from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers
-        from hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers import choose, default_arms
+        from hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers import choose, default_arms, rates
+        from hubofhubs.the_world.learning.research_freshness_reader import registry
         tier = role_tiers.tier_for(SEARCH_ROLE)
-        chosen = (choose(available=["gemini"]).get(tier) or {})
         held, candidates = default_arms()
-        pairs = [chosen.get("arm")] + [(r["provider"], r["model"]) for r in chosen.get("ranking") or []]
-        pairs += [held.get(tier)] + list(candidates.get(tier, []))
-        models = [pair[1] for pair in pairs if pair and pair[0] == "gemini"]
+        arms = [m for p, m in ([held[tier]] if tier in held else []) + list(candidates.get(tier, [])) if p == "gemini"]
+        prices = registry.read("tier_prices.csv")
+
+        def cost(model: str) -> float:
+            got = rates(prices, "gemini", model)
+            return sum(got) if got else float("inf")
+
+        pick = ((choose(available=["gemini"]).get(tier) or {}).get("arm") or (None, None))[1]
+        models = ([pick] if pick in arms else []) + sorted((m for m in arms if m != pick), key=cost)
     except Exception as exc:  # noqa: BLE001 - an unreadable table leaves the caller to say there is no model
         logger.warning("web search: no Gemini model could be chosen from the tier tables: %s", exc)
         return []

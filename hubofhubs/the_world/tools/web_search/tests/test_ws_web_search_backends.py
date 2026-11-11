@@ -620,3 +620,23 @@ def test_gemini_clients_are_built_on_the_beta_api_path():
             else:
                 sys.modules[k] = v
     assert seen["http_options"] == {"api_version": "v1beta"}
+
+
+def test_gemini_search_models_are_only_the_arms_of_the_tier_the_role_names(monkeypatch):
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers import default_arms
+    from hubofhubs.the_world.tools.web_search import backends
+    tier = role_tiers.tier_for(backends.SEARCH_ROLE)
+    held, candidates = default_arms()
+    allowed = {m for p, m in [held.get(tier, (None, None))] + list(candidates.get(tier, [])) if p == "gemini"}
+    other_tiers = {m for t in set(held) | set(candidates) if t != tier for p, m in [held.get(t, (None, None))] + list(candidates.get(t, [])) if p == "gemini"} - allowed
+    models = backends.gemini_search_models(limit=10)
+    assert models and set(models) <= allowed and not set(models) & other_tiers
+
+
+def test_a_tier_with_no_gemini_arm_fails_the_search_with_the_reason(monkeypatch):
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers
+    monkeypatch.setattr(role_tiers, "tier_for", lambda role, requested="", table=None: "no-such-tier")      # a tier that holds no Gemini arm
+    backend = GeminiGroundingBackend(api_key="gm-key", client=_RefusingThenAnswering(set()), http=lambda *a, **k: FakeResponse())
+    with pytest.raises(SearchBackendError, match="did not run on another tier"):
+        backend.search("x")

@@ -125,7 +125,7 @@ class GeminiGroundingBackend:
             return [self.model]
         chosen = gemini_search_models()
         if not chosen:
-            raise SearchBackendError("gemini-grounding: no Gemini model is named and none could be chosen from the tier tables")
+            raise SearchBackendError("gemini-grounding: no Gemini model is named and the tier of the web_search role has no Gemini arm in the tier tables, so the search did not run on another tier")
         return chosen
 
     def _generate_with_fallback(self, client: Any, types: Any, tool: Any, prompt: str) -> Any:
