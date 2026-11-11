@@ -757,6 +757,12 @@ NAMES = {
     "hubofhubs.the_world.tools.delegated_agent_sessions.native_runner": (
         "NativeToolLoopRunner",
     ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.solution_agents_runner": (
+        "SolutionAgentsNativeRunner",
+    ),
+    "hubofhubs.the_world.tools.delegated_agent_sessions.solution_agents": (
+        "SolutionSpec",
+    ),
     "hubofhubs.the_world.tools.delegated_agent_sessions.tool_loop_runner": (
         "NativeToolCallingLoopRunner",
     ),

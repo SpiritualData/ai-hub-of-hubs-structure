@@ -1,6 +1,6 @@
-from types import SimpleNamespace
 """Learning's review (an investigation of kind review): the record has every part the knowledge search standard asks for, exclusions are counted with reasons, grades follow the rule, unknowns are
 stated, each candidate has a decision, the applied part and the revisit date are set. Fake search results, no model, no network."""
+from types import SimpleNamespace
 import csv
 from pathlib import Path
 

@@ -25,16 +25,16 @@
    "rows": {
     "native_tool_loop_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.928167",
+      "balanced": "0.9282",
       "cases": "9",
       "cases_sha": "4fe9b0cc",
       "cases_total": "27",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.0676333",
-      "date": "2026-11-10",
+      "cost_usd": "0.0643333",
+      "date": "2026-11-11",
       "details": "",
       "dev": "9/9",
-      "git_sha": "ebe1ba0",
+      "git_sha": "b0f10c9",
       "heldout": "0/0",
       "impl": "native_tool_loop_runner@provider=anthropic,tier=fast",
       "model": "claude-haiku-5-5",
@@ -43,32 +43,57 @@
       "passed_total": "25",
       "runs": "3",
       "sample": "",
-      "seconds": "281",
+      "seconds": "271",
+      "tokens_in": "0",
+      "tokens_out": "0"
+     }
+    },
+    "solution_agents_native_runner@provider=anthropic,tier=fast": {
+     "3": {
+      "balanced": "0.8929",
+      "cases": "9",
+      "cases_sha": "4fe9b0cc",
+      "cases_total": "27",
+      "component": "agent_sessions_hard",
+      "cost_usd": "0.073",
+      "date": "2026-11-11",
+      "details": "",
+      "dev": "8/9",
+      "git_sha": "b0f10c9",
+      "heldout": "0/0",
+      "impl": "solution_agents_native_runner@provider=anthropic,tier=fast",
+      "model": "claude-haiku-5-5",
+      "model_calls": "9",
+      "passed": "8",
+      "passed_total": "24",
+      "runs": "3",
+      "sample": "",
+      "seconds": "292.4",
       "tokens_in": "0",
       "tokens_out": "0"
      }
     },
     "stream_json_goal_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.892767",
+      "balanced": "0.928",
       "cases": "9",
       "cases_sha": "4fe9b0cc",
       "cases_total": "27",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.083",
-      "date": "2026-11-10",
-      "details": "forced past ceiling: the earlier failure was a missing private case folder in the environment, not a run",
-      "dev": "7/9",
-      "git_sha": "ebe1ba0",
+      "cost_usd": "0.081",
+      "date": "2026-11-11",
+      "details": "forced past ceiling: rerun on current code for pooled stages",
+      "dev": "8/9",
+      "git_sha": "b0f10c9",
       "heldout": "0/0",
       "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
       "model": "claude-haiku-5-5",
       "model_calls": "9",
-      "passed": "7",
-      "passed_total": "24",
+      "passed": "8",
+      "passed_total": "25",
       "runs": "3",
       "sample": "",
-      "seconds": "311.333",
+      "seconds": "301.5",
       "tokens_in": "0",
       "tokens_out": "0"
      }
@@ -77,75 +102,277 @@
   }
  },
  "metric": "metric-delegated-agent-sessions",
- "rows": {},
+ "rows": {
+  "native_tool_loop_runner@provider=anthropic,tier=fast": {
+   "5": {
+    "balanced": "0.9986",
+    "cases": "18",
+    "cases_sha": "0dcffc5e",
+    "component": "agent_sessions",
+    "cost_usd": "0.0259",
+    "date": "2026-11-11",
+    "details": "forced past ceiling: rerun on current code for pooled stages",
+    "dev": "18/18",
+    "git_sha": "b0f10c9",
+    "heldout": "0/0",
+    "impl": "native_tool_loop_runner@provider=anthropic,tier=fast",
+    "model": "claude-haiku-5-5",
+    "model_calls": "18",
+    "passed": "18",
+    "sample": "",
+    "seconds": "86.9",
+    "tokens_in": "0",
+    "tokens_out": "0"
+   }
+  },
+  "solution_agents_native_runner@provider=anthropic,tier=fast": {
+   "5": {
+    "balanced": "0.9986",
+    "cases": "18",
+    "cases_sha": "0dcffc5e",
+    "component": "agent_sessions",
+    "cost_usd": "0.0265",
+    "date": "2026-11-11",
+    "details": "",
+    "dev": "18/18",
+    "git_sha": "b0f10c9",
+    "heldout": "0/0",
+    "impl": "solution_agents_native_runner@provider=anthropic,tier=fast",
+    "model": "claude-haiku-5-5",
+    "model_calls": "18",
+    "passed": "18",
+    "sample": "",
+    "seconds": "89.3",
+    "tokens_in": "0",
+    "tokens_out": "0"
+   }
+  },
+  "stream_json_goal_runner@provider=anthropic,tier=fast": {
+   "5": {
+    "balanced": "0.9982",
+    "cases": "18",
+    "cases_sha": "0dcffc5e",
+    "component": "agent_sessions",
+    "cost_usd": "0.0436",
+    "date": "2026-11-11",
+    "details": "forced past ceiling: rerun on current code for pooled stages",
+    "dev": "18/18",
+    "git_sha": "b0f10c9",
+    "heldout": "0/0",
+    "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
+    "model": "claude-haiku-5-5",
+    "model_calls": "18",
+    "passed": "18",
+    "sample": "",
+    "seconds": "102.8",
+    "tokens_in": "0",
+    "tokens_out": "0"
+   }
+  }
+ },
  "stages": {
+  "depth": {
+   "native_tool_loop_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.8083",
+     "cases": "5",
+     "cost_usd": "0.0218",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "4",
+     "seconds": "87.4"
+    },
+    {
+     "balanced": "0.8088",
+     "cases": "5",
+     "cost_usd": "0.0102",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "4",
+     "seconds": "65.6"
+    },
+    {
+     "balanced": "0.9982",
+     "cases": "5",
+     "cost_usd": "0.0123",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "5",
+     "seconds": "102.3"
+    }
+   ],
+   "solution_agents_native_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.999",
+     "cases": "5",
+     "cost_usd": "0.0204",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "5",
+     "seconds": "47.8"
+    },
+    {
+     "balanced": "0.999",
+     "cases": "5",
+     "cost_usd": "0.0121",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "5",
+     "seconds": "53.1"
+    },
+    {
+     "balanced": "0.9991",
+     "cases": "5",
+     "cost_usd": "0.0105",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "5",
+     "seconds": "48.3"
+    }
+   ]
+  },
   "hard": {
    "native_tool_loop_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.893",
+     "balanced": "0.7875",
      "cases": "9",
-     "cost_usd": "0.0674",
-     "date": "2026-11-10",
-     "git_sha": "ebe1ba0",
+     "cost_usd": "0.0667",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
      "model": "claude-haiku-5-5",
-     "passed": "8",
-     "seconds": "281.5"
-    },
-    {
-     "balanced": "0.893",
-     "cases": "9",
-     "cost_usd": "0.0683",
-     "date": "2026-11-10",
-     "git_sha": "ebe1ba0",
-     "model": "claude-haiku-5-5",
-     "passed": "8",
-     "seconds": "281.4"
+     "passed": "7",
+     "seconds": "269.1"
     },
     {
      "balanced": "0.9985",
      "cases": "9",
-     "cost_usd": "0.0672",
-     "date": "2026-11-10",
-     "git_sha": "ebe1ba0",
+     "cost_usd": "0.0668",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
      "model": "claude-haiku-5-5",
      "passed": "9",
-     "seconds": "280.1"
+     "seconds": "277.4"
+    },
+    {
+     "balanced": "0.9986",
+     "cases": "9",
+     "cost_usd": "0.0595",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "9",
+     "seconds": "266.5"
+    }
+   ],
+   "solution_agents_native_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.8928",
+     "cases": "9",
+     "cost_usd": "0.0784",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "305.3"
+    },
+    {
+     "balanced": "0.893",
+     "cases": "9",
+     "cost_usd": "0.067",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "278.8"
+    },
+    {
+     "balanced": "0.8929",
+     "cases": "9",
+     "cost_usd": "0.0736",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "293.1"
     }
    ],
    "stream_json_goal_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.8928",
+     "balanced": "0.9986",
      "cases": "9",
-     "cost_usd": "0.0824",
-     "date": "2026-11-10",
-     "git_sha": "ebe1ba0",
-     "model": "claude-haiku-5-5",
-     "passed": "8",
-     "seconds": "311.6"
-    },
-    {
-     "balanced": "0.9983",
-     "cases": "9",
-     "cost_usd": "0.0803",
-     "date": "2026-11-10",
-     "git_sha": "ebe1ba0",
+     "cost_usd": "0.074",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
      "model": "claude-haiku-5-5",
      "passed": "9",
-     "seconds": "312.0"
+     "seconds": "260.1"
     },
     {
-     "balanced": "0.7872",
+     "balanced": "0.8927",
      "cases": "9",
-     "cost_usd": "0.0863",
-     "date": "2026-11-10",
-     "git_sha": "ebe1ba0",
+     "cost_usd": "0.0814",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
      "model": "claude-haiku-5-5",
-     "passed": "7",
-     "seconds": "310.4"
+     "passed": "8",
+     "seconds": "329.5"
+    },
+    {
+     "balanced": "0.8927",
+     "cases": "9",
+     "cost_usd": "0.0876",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "314.9"
     }
    ]
   },
-  "open": {},
+  "open": {
+   "native_tool_loop_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.9986",
+     "cases": "18",
+     "cost_usd": "0.0259",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "18",
+     "seconds": "86.9"
+    }
+   ],
+   "solution_agents_native_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.9986",
+     "cases": "18",
+     "cost_usd": "0.0265",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "18",
+     "seconds": "89.3"
+    }
+   ],
+   "stream_json_goal_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.9982",
+     "cases": "18",
+     "cost_usd": "0.0436",
+     "date": "2026-11-11",
+     "git_sha": "b0f10c9",
+     "model": "claude-haiku-5-5",
+     "passed": "18",
+     "seconds": "102.8"
+    }
+   ]
+  },
   "real": {}
  }
 }

@@ -1,6 +1,4 @@
 rule,path,reason
-S24,"delegated-agent-sessions:native_tool_loop_runner@provider=anthropic,tier=fast","Not run yet on the depth set: a paid arm, and the spend is approved by the owner who runs it, repeated at least three times per arm. The set is built and its free proofs pass; the zero bound is recorded."
-S24,"delegated-agent-sessions:solution_agents_native_runner@provider=anthropic,tier=fast","Not run yet on the depth set: a paid arm, run by the owner, repeated at least three times per arm. The set is built and its free proofs pass; the zero bound is recorded."
 S24,web-search:searxng,Not measured: no credential (SEARXNG_URL is not set and public instances are not used). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,web-search:brave,Not measured: no credential (no Brave key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
 S24,web-search:serper,Not measured: no credential (no Serper key is available). Shown with public evidence only (docs/reference/public-benchmarks.md).
