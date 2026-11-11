@@ -141,36 +141,26 @@ def test_the_hub_holds_no_allowance_and_a_consumer_passes_its_own_credits():
     assert free["cost"] < paid["cost"]                          # half-value credits cost half, so the same work is cheaper
 
 
-def test_choose_scores_measured_arms_with_the_credits_it_is_given(tmp_path):
-    import shutil
-    for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv", "tier_measurements.csv"):
-        shutil.copy(registry.DATA / name, tmp_path / name)
+def test_pick_scores_measured_arms_from_the_registry_with_the_credits_it_is_given(tmp_path):
     (tmp_path / "tier_measurements.csv").write_text(
         "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
         "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n")
+    arms = tiers.measured_arms(tmp_path)["fast"]                     # the older tier name reads as fast
+    prices = registry.read("tier_prices.csv")
     own = [dict(provider="anthropic", balance="", allowance="200", credit_value="")]
-    without = tiers.choose(tmp_path, **STALE)["fast"]["scored"][0]
-    with_credit = tiers.choose(tmp_path, credits=own, **STALE)["fast"]["scored"][0]
+    without = tiers.pick(arms, prices, [])["scored"][0]
+    with_credit = tiers.pick(arms, prices, own)["scored"][0]
     assert without["credits_used"] == 0 and with_credit["credits_used"] > 0 and with_credit["money_spent"] == 0
 
 
-def test_choose_offers_only_configured_providers(tmp_path):
-    import shutil
-    for name in ("tier_arms.csv", "tier_prices.csv", "tier_credits.csv", "tier_measurements.csv"):
-        shutil.copy(registry.DATA / name, tmp_path / name)
-    (tmp_path / "tier_measurements.csv").write_text("tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n")   # none measured
-    got = tiers.choose(tmp_path, available={"gemini"}, **STALE)
-    assert got["fast"]["arm"] == ("gemini", "gemini-3.5-flash-lite") and "cheapest priced available" in got["fast"]["reason"]
-    assert got["balanced"]["arm"] == ("gemini", "gemini-3.8-flash") and got["quality"]["arm"] == ("gemini", "gemini-4-carbon")
-    (tmp_path / "tier_measurements.csv").write_text(
-        "tier,provider,model,cases,passed,tokens_in,tokens_out,source,measured_on\n"
-        "cheap,anthropic,claude-haiku-5-5,10,9,1000000,200000,test,2026-10-30\n"
-        "cheap,gemini,gemini-3.1-flash-lite,10,9,1000000,200000,test,2026-10-30\n")
-    both = tiers.choose(tmp_path, **STALE)
-    assert both["fast"]["arm"] == ("anthropic", "claude-haiku-5-5")          # same passing work, the cheaper arm wins
+def test_choose_offers_only_configured_providers_and_never_reads_measurements():
+    got = tiers.choose(available={"gemini"}, today="2026-11-10")
+    assert all(got[t]["arm"][0] == "gemini" for t in ("fast", "balanced", "quality", "best")) and got["fast"]["stage"] == "public"
+    assert tiers.choose(available={"nobody"}, today="2026-11-10")["fast"]["arm"] is None
 
 
-def test_the_shipped_aime_measurements_decide_when_there_are_no_public_numbers_and_only_other_providers_are_configured():
-    """The recorded model_quality_aime rows are used: without Anthropic the fast tier goes to the arm with the most passing work per cost."""
-    got = tiers.choose(available={"openai", "gemini", "deepseek"}, **STALE)
-    assert got["fast"]["arm"] == ("openai", "gpt-5-nano") and "passing cases per cost" in got["fast"]["reason"]
+def test_the_shipped_aime_measurements_still_rank_arms_through_pick():
+    """The recorded model_quality_aime rows are used by pick, not by choose: the arm with the most passing work per cost among the measured ones."""
+    measured = [a for a in tiers.measured_arms()["fast"] if a["provider"] in {"openai", "gemini", "deepseek"}]
+    got = tiers.pick(measured, registry.read("tier_prices.csv"), min_cases=1)
+    assert got["arm"] == ("openai", "gpt-5-nano") and "passing cases per cost" in got["reason"]
