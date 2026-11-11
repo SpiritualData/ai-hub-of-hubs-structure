@@ -64,3 +64,37 @@ def test_fisher_matches_a_known_value():
 def comb16():
     from math import comb
     return comb(16, 8)
+
+
+HARD = {"a": [run(8, 9, 0.9, 300)] * 3, "b": [run(8, 9, 0.9, 300)] * 3}
+
+
+def test_without_depth_runs_the_depth_stage_skips_and_nothing_changes():
+    verdict = stages.decide(OPEN, HARD, arms=["a", "b"], depth_runs={})
+    assert verdict.winner == stages.decide(OPEN, HARD, arms=["a", "b"]).winner
+    assert verdict.stages["a"]["depth"].startswith("not run")
+
+
+def test_an_arm_below_the_depth_floor_is_not_selectable():
+    depth = {"a": [run(5, 5, 0.3, 100)] * 3, "b": [run(3, 5, 0.1, 50)] * 3}
+    verdict = stages.decide(OPEN, HARD, arms=["a", "b"], depth_runs=depth)
+    assert verdict.winner == "a" and verdict.stages["b"]["depth"].startswith("stopped: pass rate")
+
+
+def test_an_arm_with_too_few_depth_runs_waits_once_another_arm_has_enough():
+    depth = {"a": [run(4, 5, 0.3, 100)] * 3, "b": [run(5, 5, 0.1, 50)]}
+    verdict = stages.decide(OPEN, HARD, arms=["a", "b"], depth_runs=depth)
+    assert verdict.winner == "a" and "needed" in verdict.stages["b"]["depth"]
+
+
+def test_an_arm_that_passes_every_stage_passes_the_depth_stage_at_the_floor():
+    depth = {"a": [run(4, 5, 0.3, 100)] * 3, "b": [run(4, 5, 0.3, 100)] * 3}
+    verdict = stages.decide(OPEN, HARD, arms=["a", "b"], depth_runs=depth)
+    assert verdict.stages["a"]["depth"].startswith("passed") and verdict.winner == "a"
+
+
+def test_depth_cost_breaks_a_tie_when_every_contender_ran_the_depth_set():
+    hard = {"a": [run(8, 9, 0.5, 300)] * 3, "b": [run(8, 9, 0.6, 300)] * 3}
+    depth = {"a": [run(5, 5, 2.5, 100)] * 3, "b": [run(5, 5, 0.5, 100)] * 3}
+    assert stages.decide(OPEN, hard, arms=["a", "b"]).winner == "a"
+    assert stages.decide(OPEN, hard, arms=["a", "b"], depth_runs=depth).winner == "b"

@@ -9,6 +9,9 @@ before any arm was scored on them, and read by ``arm_choice`` and by the test th
    tests and must all pass; the three judged deliverables vary from run to run and are decided by the repeated runs of stage 3, not by a floor).
 3. ``repeated``: at least ``MIN_RUNS`` counting hard runs, so that a difference can be told from noise. When no arm has them the stage is not run and
    skips; an arm with fewer runs than another arm has stays selectable only until an arm with enough runs exists.
+3b. ``depth``: the depth set (``evaluation/agent_sessions_depth``), after ``repeated``. When any arm has at least ``MIN_RUNS`` counting depth runs, every
+   arm needs that many and a pooled pass rate of at least ``DEPTH_FLOOR``; when no arm has them the stage skips. When every contender has depth runs,
+   cost and seconds per case for the tie-break are those of the hard and depth sets added, so sub-agent overuse on the small case costs.
 4. ``real_task``: a recorded run of a consumer's own deep task, with its outcome. When no arm has one the stage is not run and skips.
 
 Among the selectable arms the metric picks the one whose pooled hard pass rate is highest, then every arm whose pass rate is not significantly lower
@@ -23,9 +26,10 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 OPEN_FLOOR = 0.94
 HARD_FLOOR = 0.66
+DEPTH_FLOOR = 0.8   # four of the five depth cases (evaluation/agent_sessions_depth), all scored by code; fixed before any arm was scored on them
 MIN_RUNS = 3
 ALPHA = 0.05
-STAGES = ("open_ended", "hard", "repeated", "real_task")
+STAGES = ("open_ended", "hard", "repeated", "depth", "real_task")
 
 
 def number(value: Any) -> float:
@@ -70,7 +74,7 @@ class Verdict:
 
 
 def stage_report(arm: str, open_rows: Sequence[Mapping[str, Any]], hard_rows: Sequence[Mapping[str, Any]], real_rows: Sequence[Mapping[str, Any]],
-                 repeat_needed: bool) -> Tuple[bool, Dict[str, str]]:
+                 repeat_needed: bool, depth_rows: Sequence[Mapping[str, Any]] = (), depth_needed: bool = False) -> Tuple[bool, Dict[str, str]]:
     """``(selectable, {stage: outcome})`` of one arm; the first failed floor ends its report."""
     out: Dict[str, str] = {}
     if not open_rows or rate(open_rows) < OPEN_FLOOR:
@@ -85,6 +89,13 @@ def stage_report(arm: str, open_rows: Sequence[Mapping[str, Any]], hard_rows: Se
         out["repeated"] = f"stopped: {len(hard_rows)} counting hard run(s), {MIN_RUNS} needed"
         return False, out
     out["repeated"] = f"passed ({len(hard_rows)} runs)" if repeat_needed else "not run (no arm has enough runs yet)"
+    if depth_needed and len(depth_rows) < MIN_RUNS:
+        out["depth"] = f"stopped: {len(depth_rows)} counting depth run(s), {MIN_RUNS} needed"
+        return False, out
+    if depth_needed and rate(depth_rows) < DEPTH_FLOOR:
+        out["depth"] = f"stopped: pass rate {rate(depth_rows):.3f} is below the floor {DEPTH_FLOOR}"
+        return False, out
+    out["depth"] = "passed {}/{} over {} run(s)".format(*pooled(depth_rows), len(depth_rows)) if depth_needed else "not run (no arm has enough runs yet)"
     if real_rows and not all(str(r.get("ok", "1")) in ("1", "True", "true") for r in real_rows):
         out["real_task"] = "stopped: a recorded real task failed"
         return False, out
@@ -93,16 +104,20 @@ def stage_report(arm: str, open_rows: Sequence[Mapping[str, Any]], hard_rows: Se
 
 
 def decide(open_runs: Mapping[str, Sequence[Mapping[str, Any]]], hard_runs: Mapping[str, Sequence[Mapping[str, Any]]],
-           real_runs: Optional[Mapping[str, Sequence[Mapping[str, Any]]]] = None, arms: Optional[Sequence[str]] = None) -> Verdict:
+           real_runs: Optional[Mapping[str, Sequence[Mapping[str, Any]]]] = None, arms: Optional[Sequence[str]] = None,
+           depth_runs: Optional[Mapping[str, Sequence[Mapping[str, Any]]]] = None) -> Verdict:
     """The metric's selection among ``arms`` (default every arm with a run), from each arm's counting whole runs of the open-ended set, of the hard set and
     its real-task results, all on the current cases."""
     real_runs = real_runs or {}
+    depth_runs = depth_runs or {}
     names = sorted(set(arms) if arms is not None else set(open_runs) | set(hard_runs))
     repeat_needed = any(len(hard_runs.get(a, ())) >= MIN_RUNS for a in names)
+    depth_needed = any(len(depth_runs.get(a, ())) >= MIN_RUNS for a in names)
     verdict = Verdict()
     selectable: List[str] = []
     for arm in names:
-        ok, report = stage_report(arm, open_runs.get(arm, ()), hard_runs.get(arm, ()), real_runs.get(arm, ()), repeat_needed)
+        ok, report = stage_report(arm, open_runs.get(arm, ()), hard_runs.get(arm, ()), real_runs.get(arm, ()), repeat_needed,
+                                  depth_runs.get(arm, ()), depth_needed)
         verdict.stages[arm] = report
         if ok:
             selectable.append(arm)
@@ -114,7 +129,11 @@ def decide(open_runs: Mapping[str, Sequence[Mapping[str, Any]]], hard_runs: Mapp
     band = 1.0 / (ln / len(hard_runs[leader]))   # less than one case per run is within noise, the same unit the weights protect
     contenders = [a for a in selectable if a == leader or (rate(hard_runs[leader]) - rate(hard_runs[a]) < band
                                                           and fisher_two_sided(lp, ln, *pooled(hard_runs[a])) >= ALPHA)]
-    verdict.winner = min(contenders, key=lambda a: (per_case(hard_runs[a], "cost_usd"), per_case(hard_runs[a], "seconds"), a))
+    with_depth = depth_needed and all(depth_runs.get(a) for a in contenders)   # overuse on the depth set shows as cost, so it counts when every contender ran it
+
+    def spend(a: str, key: str) -> float:
+        return per_case(hard_runs[a], key) + (per_case(depth_runs[a], key) if with_depth else 0.0)
+    verdict.winner = min(contenders, key=lambda a: (spend(a, "cost_usd"), spend(a, "seconds"), a))
     if verdict.winner == leader:
         verdict.reason = (f"highest pooled hard pass rate {rate(hard_runs[leader]):.3f} over {len(hard_runs[leader])} run(s)"
                           + (f"; {len(contenders) - 1} other arm(s) not significantly lower and none cheaper" if len(contenders) > 1 else ""))

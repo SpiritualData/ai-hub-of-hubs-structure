@@ -214,7 +214,7 @@ def work_solution(solution_id: str, *, frame: Callable[[str], Mapping[str, Any]]
             with ThreadPoolExecutor(max_workers=max(1, min(int(bound["width"]), len(kids)))) as pool:
                 report.children = list(pool.map(child, kids))
         reports = [c.compact() for c in report.children]
-        base = {"solution_id": sid, "name": report.name, "frame": solution_frame(fields), "milestone": report.milestone, "task": task_text,
+        base = {"solution_id": sid, "name": report.name, "frame": solution_frame({**fields, "next_milestone": fields.get("next_milestone") or fields.get("milestone")}), "milestone": report.milestone, "task": task_text,
                 "handed": handed_line, "reports": reports}
         if session is not None:
             base["agent_id"] = agent_of(path, sid)

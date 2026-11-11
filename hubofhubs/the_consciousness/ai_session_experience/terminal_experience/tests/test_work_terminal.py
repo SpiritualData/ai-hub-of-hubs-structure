@@ -142,7 +142,7 @@ def test_the_words_the_header_and_the_resume_command_use():
     for bad in ("0", "x"):
         with pytest.raises(ValueError):
             seconds_of(bad)
-    assert set(HARNESSES) == {"native", "stream", "loop"}
+    assert set(HARNESSES) == {"native", "stream", "loop", "adaptive", "solution_agents"}
 
 
 def test_tailed_reads_the_steps_from_the_sessions_record_and_leaves_earlier_lines_alone():

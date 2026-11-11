@@ -21,7 +21,10 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live 
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView
 
 #: the names a person types, and the harness of Delegated Agent Sessions each one is
-HARNESSES = {"native": "native_tool_loop_runner", "stream": "stream_json_goal_runner", "loop": "solution_loop_runner"}
+HARNESSES = {"native": "native_tool_loop_runner", "stream": "stream_json_goal_runner", "loop": "solution_loop_runner",
+             "adaptive": "adaptive_native_loop_runner", "solution_agents": "solution_agents_native_runner"}
+NATIVE_CLASSES = {"native": ("native_runner", "NativeToolLoopRunner"), "adaptive": ("adaptive_native_runner", "AdaptiveNativeRunner"),
+                  "solution_agents": ("solution_agents_runner", "SolutionAgentsNativeRunner")}
 DEFAULT_PROVIDERS = ("anthropic",)
 PERMISSIONS = ("acceptEdits", "skip")
 #: which of the Claude CLI's setting sources a session loads (``--setting-sources``): the folder's own, never the person's user-level settings and their hooks, unless asked (``user,project``)
@@ -116,9 +119,11 @@ def harness_builder(*, folder: str, tier: str = "balanced", ceiling_usd: Any = N
             runner = SolutionLoopRunner(root=folder, provider=provider, tier=tier, settings=settings, ceiling_usd=usd, ceiling_seconds=seconds,
                                       stop_inputs=stop_inputs() if stop_inputs else None)
             inner: Any = LoopHarness(runner, working_dir=folder)
-        elif name == "native":
-            from hubofhubs.the_world.tools.delegated_agent_sessions.native_runner import NativeToolLoopRunner
-            runner = NativeToolLoopRunner(SubprocessConfig(working_dir=folder), provider=provider, tier=tier, settings=settings, ceiling_usd=usd, ceiling_seconds=seconds,
+        elif name in NATIVE_CLASSES:
+            import importlib
+            module, class_name = NATIVE_CLASSES[name]
+            native_class = getattr(importlib.import_module("hubofhubs.the_world.tools.delegated_agent_sessions." + module), class_name)
+            runner = native_class(SubprocessConfig(working_dir=folder), provider=provider, tier=tier, settings=settings, ceiling_usd=usd, ceiling_seconds=seconds,
                                           stop_inputs=stop_inputs() if stop_inputs else None, permission="skip" if permission == "skip" else "acceptEdits")
             inner = StreamHarness(runner, root=folder)
         else:

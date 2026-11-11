@@ -52,6 +52,8 @@
   "native_tool_loop_runner",
   "opencode_hub_runner",
   "opencode_runner",
+  "solution_agents_native_runner",
+  "solution_loop_runner",
   "stream_json_goal_runner",
   "subprocess_goal_runner"
  ],

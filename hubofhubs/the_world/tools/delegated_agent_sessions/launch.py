@@ -43,6 +43,10 @@ class DeepLaunchSettings:
     max_turns                 None: the call's own turn budget stands. A positive number replaces it for every launch.
     append_system_prompt_file None: no flag. A path: ``--append-system-prompt-file <path>``, text added to the CLI's own system prompt (the hub's
                               frame of a run, kept in a file because a long frame does not fit one argument).
+    agents_file               None: no flag. A path: ``--agents <path>`` (with ``--print`` the CLI reads the custom agents, a JSON object of name to
+                              description, prompt, tools and model, from that file).
+    settings_file             None: no flag. A path: ``--settings <path>``, additional settings that apply although the setting sources are empty (the hub
+                              passes the hook that allows only its own sub-agents through it).
     """
 
     tools: Optional[Tuple[str, ...]] = None
@@ -52,6 +56,8 @@ class DeepLaunchSettings:
     max_budget_usd: Optional[float] = None
     max_turns: Optional[int] = None
     append_system_prompt_file: Optional[str] = None
+    agents_file: Optional[str] = None
+    settings_file: Optional[str] = None
 
     def is_default(self) -> bool:
         return self == DeepLaunchSettings()
@@ -73,6 +79,10 @@ class DeepLaunchSettings:
             parts.append(f"max_turns={self.max_turns}")
         if self.append_system_prompt_file is not None:
             parts.append("append_system_prompt_file=1")
+        if self.agents_file is not None:
+            parts.append("agents_file=1")
+        if self.settings_file is not None:
+            parts.append("settings_file=1")
         return ",".join(parts) or "default"
 
 
@@ -91,6 +101,10 @@ def lean_flags(settings: DeepLaunchSettings) -> List[str]:
         flags += ["--max-budget-usd", f"{settings.max_budget_usd:g}"]
     if settings.append_system_prompt_file:
         flags += ["--append-system-prompt-file", settings.append_system_prompt_file]
+    if settings.agents_file:
+        flags += ["--agents", settings.agents_file]
+    if settings.settings_file:
+        flags += ["--settings", settings.settings_file]
     return flags
 
 

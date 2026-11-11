@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass, field
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, Sequence
 
 from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import (
     SNAPSHOT_FILES, View, left_out_text, listing, marked, selected_folder_view)
@@ -28,6 +28,10 @@ How to work:
 - Never open a secret or key unasked, and never write one into a file or a reply.
 - Report what you did and what you saw, in a few lines; state only figures that your sources hold; name only files that exist."""
 
+#: the rules of a frame ordered for the provider's prompt cache: the folder map is the same for every goal, so it carries no mark of what is in view, and the rule says so
+STABLE_RULES = RULES.replace("A file marked as not in view must be read before you rely on it.",
+                             "Any other file of the folder map has not been read: read it before you rely on it.")
+
 
 @dataclass
 class Frame:
@@ -36,21 +40,29 @@ class Frame:
     left_out: List[str] = field(default_factory=list)
 
 
-def build_frame(goal: str, context: str, root: str, *, select: Optional[Callable[..., Any]] = None, view_chars: int = VIEW_CHARS, notes: str = "") -> Frame:
+def build_frame(goal: str, context: str, root: str, *, select: Optional[Callable[..., Any]] = None, view_chars: int = VIEW_CHARS, notes: str = "",
+                stable: bool = False, extras: Sequence[str] = (), known: str = "") -> Frame:
     """The frame for a run in ``root``: the rules, the folder map (an outline when the folder is large), the folders left out with their reasons and
     the files in view; ``notes`` is the consumer's own standing text, put after the rules. A folder the selection cannot read gives the rules and an empty
-    map, never an error."""
+    map, never an error.
+
+    With ``stable`` the frame is ordered for the provider's prompt cache, which keys on the start of the prompt: first what is the same for every goal in this folder
+    (the rules, ``notes``, each of ``extras`` such as the solution agents note and the skills, then the folder map with no mark of what is in view), then ``known``
+    (what is known for this goal), and the files in view last. With the defaults the text is the frame this function has always built."""
     folder = os.path.abspath(root)
+    rules = STABLE_RULES if stable else RULES
+    head = [rules] + ([notes.strip()] if notes.strip() else []) + [x.strip() for x in extras if x.strip()]
     try:
         chosen = (select or selected_folder_view())(goal, context, folder, view_chars, file_limit=SNAPSHOT_FILES)
     except Exception:  # noqa: BLE001 -- a failing selection leaves the run with the rules and an empty view
-        return Frame(RULES + ("\n\n" + notes.strip() if notes.strip() else ""))
+        return Frame("\n\n".join(head + ([known.strip()] if stable and known.strip() else [])))
     skip = frozenset(x.path.rstrip("/") for x in chosen.left_out if not x.is_file)
     _files, folder_map = listing(folder, skip, list(chosen.left_out))
     view = View(folder, view_chars, skip, select)
     view.start(chosen.picks, goal)
     blocks = view.blocks()
-    parts = [RULES] + ([notes.strip()] if notes.strip() else []) + ["FOLDER MAP (paths relative to the working folder):\n" + marked(folder_map, list(blocks))]
+    shown_map = folder_map if stable else marked(folder_map, list(blocks))
+    parts = head + ["FOLDER MAP (paths relative to the working folder):\n" + shown_map] + ([known.strip()] if stable and known.strip() else [])
     if blocks:
         parts.append("FILES IN VIEW (current):\n" + "\n".join(blocks.values()))
     return Frame("\n\n".join(parts), list(blocks), [x.path for x in chosen.left_out])

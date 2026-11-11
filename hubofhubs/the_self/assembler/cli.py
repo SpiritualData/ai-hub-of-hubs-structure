@@ -79,7 +79,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     sub = parser.add_subparsers(dest="command", required=False)
     work = sub.add_parser("work", help="run a goal on a real harness in the live terminal; with no goal, a prompt (also what bare ahohs opens)")
     work.add_argument("goal", nargs="?", default="", help="what to get done in this folder; leave out for a prompt, and type follow-ups that continue the session")
-    work.add_argument("--harness", default="", help="native, stream or loop (default: the hub's own pick for a person at a terminal)")
+    work.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick for a person at a terminal)")
     work.add_argument("--tier", default=main_session_tier(), help="model tier: fast, balanced, quality or best (strong reads as quality); default: the tier policy of the main session")
     work.add_argument("--folder", default=".", help="the folder the work happens in (default: this one)")
     work.add_argument("--resume", default="", metavar="SESSION", help="continue a session an earlier run named (with the same --harness, in the same folder)")

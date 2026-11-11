@@ -79,6 +79,16 @@ weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
 cost_per_case_usd = 1.00
 seconds_per_case = 600
 
+# The balanced score of the depth stage of Delegated Agent Sessions (evaluation/agent_sessions_depth): five public cases that need depth (parts read
+# separately, records in the folder, a skills folder, an earlier finding) or show that depth is waste (one small fix). A case is worth at most half a
+# dollar and five minutes, fixed before any arm was scored. The weights are those of the other two sets (tests/test_metric_weights.py pins that
+# they are equal), and one case, accuracy/5, exceeds everything cost and time can add, so an arm that uses sub-agents everywhere cannot buy a failed
+# case back; the overuse on the small case shows in cost and time and decides only among arms with equal pass counts.
+[balance.agent_sessions_depth]
+weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
+cost_per_case_usd = 0.50
+seconds_per_case = 300
+
 # The balanced score of cards-from-files (esoi/balance.py). One case is finding the file one task needs, which is part of a
 # small file edit (worth at most ten cents and a minute, [balance.file_edit_goals]) and what a worker without cards spends a
 # few tool calls on, so a case is worth at most a fifth of an edit. One build serves every case of a run, so a card build of

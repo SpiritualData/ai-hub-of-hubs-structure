@@ -130,6 +130,9 @@ class DeepResult:
     # WHY a loop-style runner ended, when it can say: ``met``, ``blocked``, ``no_action`` (two replies in a row without an action), ``call_limit``, ``time_limit``,
     # ``cancelled``, ``paused``, ``partial`` (a report after a check that cannot pass), ``model_failed`` or ``failed``. Empty for a runner that cannot tell.
     end_reason: str = ""
+    # How many sub-agent calls ran and how many assistant turns the session took, for a runner that counts them (the solution agents arm); None for one that does not.
+    subagent_calls: Optional[int] = None
+    turns: Optional[int] = None
     # The words in ``output`` were WRITTEN BY A MODEL answering in-process (a runner that declares
     # ``uses_deep_model = False``), not produced by a Claude Code worker that went and read things.
     # Set by the orchestrator from the runner it dispatched to, never by a runner. The link guard's

@@ -24,4 +24,7 @@ acknowledgement,write,balanced,no,"owner's policy, unmeasured","The first line a
 solution_structure_work,structure,quality,no,"owner's policy, unmeasured","Work that changes the longer-term structure (records, a new solution, an arm's design) is quality."
 foundational_task,structure,quality,no,"owner's policy, unmeasured",A task marked foundational is quality.
 deliverable_judge,review,quality,no,"owner's policy, unmeasured","The hard set's judge shapes which arm is selected, a longer-term structure decision."
+solution_agent_gather,gather,fast,no,"owner's policy, unmeasured","A solution agent that reads files or searches for a part of the work is a gather call, repeated within a run and read by the session that started it."
+solution_agent_work,work,balanced,no,"owner's policy, unmeasured","A solution agent that changes files can have a significant downstream effect if wrong, like any change to files."
+solution_agent_review,review,quality,no,"owner's policy, unmeasured","A solution agent that checks a change to specification records or to many files before it is reported shapes what is kept, so it runs on the quality tier."
 structure-watch,structure,best,no,"owner's policy, unmeasured","The small best-tier structure watch (proactive application of ESOI, timed by Proactivity, guarding structural risk) is the only role that may run on the best tier without the person asking. The hub capability itself is built elsewhere; this row only fixes its tier."

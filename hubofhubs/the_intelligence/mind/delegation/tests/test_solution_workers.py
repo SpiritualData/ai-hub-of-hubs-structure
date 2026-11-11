@@ -163,3 +163,9 @@ def test_records_frame_and_delegates_of_read_the_hub_records():
     assert delegates_of(net)("p", "t") == ["q"]
     assert records_frame(net)("p") == {"name": "P", "approach": "Do p.", "milestone": "two"}
     assert records_frame(net)("q")["milestone"] == "" and records_frame(net)("q")["approach"] == "Does q."
+
+
+def test_a_workers_frame_holds_the_next_milestone_the_records_frame_names():
+    briefs = []
+    run(work=make_work(briefs))
+    assert all(f"Next unmet milestone: milestone of {b['solution_id']}" in b["frame"] for b in briefs)

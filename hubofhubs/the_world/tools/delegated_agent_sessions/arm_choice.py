@@ -41,6 +41,7 @@ COMPONENT = "agent_sessions"
 #: kinds of work measured on a metric of their own: {difficulty: (metric id, component)}. A consumer that knows a run's difficulty asks
 #: for that kind; with no measured eligible arm for it, the choice for ordinary work stands.
 KINDS = {"hard": ("metric-delegated-agent-sessions-hard", "agent_sessions_hard")}
+DEPTH_COMPONENT = "agent_sessions_depth"   # the depth stage of the selection rule (selection_stages), read from the same results log
 HERE = Path(__file__).resolve().parent
 SNAPSHOT = HERE / "arm_standings.json"
 PRIORS = HERE / "public_priors.csv"
@@ -226,9 +227,9 @@ def stage_choice(declared: Iterable[str], stages: Dict[str, Any]) -> Optional[Ar
     """The metric's own selection (``selection_stages.decide``: the open-ended and hard floors, repeated runs, pass rate first and cost within noise)
     among the arms this consumer can run, from the counting whole runs in the snapshot's ``stages``; None when no arm it can run is selectable."""
     from hubofhubs.the_world.tools.delegated_agent_sessions import selection_stages
-    runs = {key: {arm: rows for arm, rows in (stages.get(key) or {}).items() if eligible(arm, declared)} for key in ("open", "hard", "real")}
+    runs = {key: {arm: rows for arm, rows in (stages.get(key) or {}).items() if eligible(arm, declared)} for key in ("open", "hard", "real", "depth")}
     arms = sorted(set(runs["open"]) | set(runs["hard"]))
-    verdict = selection_stages.decide(runs["open"], runs["hard"], runs["real"], arms)
+    verdict = selection_stages.decide(runs["open"], runs["hard"], runs["real"], arms, depth_runs=runs["depth"])
     if not verdict.winner:
         return None
     harness, provider, tier = split_arm(verdict.winner)
@@ -323,7 +324,8 @@ def write_snapshot(root: Optional[Path] = None, path: Path = SNAPSHOT, today: Op
     from esoi.structure.intent_registry.config import load as load_config
     config = load_config(start=root or HERE)
     out = standing_of(config, METRIC, COMPONENT, today)
-    out["stages"] = {"open": counting_runs(config, COMPONENT), "hard": counting_runs(config, KINDS["hard"][1]), "real": {}}
+    out["stages"] = {"open": counting_runs(config, COMPONENT), "hard": counting_runs(config, KINDS["hard"][1]), "real": {},
+                      "depth": counting_runs(config, DEPTH_COMPONENT)}
     out["kinds"] = {kind: standing_of(config, metric_id, component, today) for kind, (metric_id, component) in KINDS.items()}
     path.write_text(json.dumps(out, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return out
