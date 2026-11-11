@@ -164,6 +164,9 @@ NAMES = {
     "hubofhubs.the_body.internal_context.run_store.jsonl_ledger": (
         "default_directory",
     ),
+    "hubofhubs.the_body.internal_context.run_store.runs": (
+        "RunStore",
+    ),
     "hubofhubs.the_body.internal_context.run_store.tool_ledger": (
         "FileToolLedger", "STUCK_OUTPUT_ALIKE", "STUCK_REASON_ALIKE", "ToolOutcome", "alike", "changed_something", "describe_failure",
         "failure_signature", "outcome_from_result", "repeated_failure", "unrecovered_failures",
