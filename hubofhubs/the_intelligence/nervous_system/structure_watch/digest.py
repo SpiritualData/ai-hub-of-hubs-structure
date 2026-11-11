@@ -86,6 +86,21 @@ def milestones_of(structure: Mapping[str, Any]) -> List[Mapping[str, Any]]:
     return out
 
 
+def last_results(structure: Mapping[str, Any]) -> Dict[str, str]:
+    """``{solution id: date of its latest recorded result}``. A result names the component that was measured; it belongs to a solution when the component is the solution's id or is run by one of its
+    metrics (``esoi run <component>`` in the metric's ``command``), so a component named differently from its solution still counts."""
+    runs_of: Dict[str, set] = {}
+    for row in rows_of(structure, "metrics"):
+        for component in re.findall(r"esoi run (\w+)", str(row.get("command") or "")):
+            runs_of.setdefault(component, set()).update(x.strip() for x in str(row.get("solution_ids") or "").split(";") if x.strip())
+    latest: Dict[str, str] = {}
+    for r in structure.get("results") or ():
+        component, date = str(r.get("component", "")), str(r.get("date", ""))
+        for sid in runs_of.get(component, set()) | {component.replace("_", "-")}:
+            latest[sid] = max(latest.get(sid, ""), date)
+    return latest
+
+
 def finding(kind: str, subject: str, severity: str, detail: str, step: str, affects: Sequence[str] = ()) -> Dict[str, Any]:
     return {"kind": kind, "subject": subject, "severity": severity, "detail": one(detail), "step": step, "affects": sorted(set(a for a in affects if a))}
 
@@ -136,17 +151,36 @@ def findings_of(structure: Mapping[str, Any], changes: Sequence[Mapping[str, str
         linked = {e.partition(":")[2].strip() for e in parts(row.get("links", "")) if e.startswith("solution:")}
         if (row.get("status") or "open").strip() == "open" and due and due <= today and linked & planned:
             out.append(finding("investigation_stale", f"investigations:{row.get('investigation_id')}", "medium", f"refresh was due {row.get('refresh_on')} and planned work relies on it", "investigate", sorted(linked & planned)))
-    latest: Dict[str, str] = {}
-    for r in structure.get("results") or ():
-        latest[str(r.get("component", "")).replace("_", "-")] = max(latest.get(str(r.get("component", "")).replace("_", "-"), ""), str(r.get("date", "")))
+    latest = last_results(structure)
     since = str(structure.get("changed_at") or "")
     for change in changes:
         sid = solution_of(structure, change["key"])
         if change["what"] == "changed" and sid and sid in latest and since and latest[sid] < since:
             dependents = [o for o, r in solutions.items() if sid in (r.get("delegates_to") or "").split(";")]
             out.append(finding("changed_without_rerun", change["key"], "medium", f"changed since its metric last ran ({latest[sid]})" + (f"; {len(dependents)} solution(s) delegate to it" if dependents else ""), "rerun-metric", [sid] + dependents[:3]))
+    started = min((str(r.get("at") or "")[:10] for r in structure.get("runs") or () if r.get("at")), default="")
+    for sid in sorted(touched & set(solutions)):
+        count = impls.get(sid, 0)
+        if sid in latest and started and latest[sid] < started and count:
+            out.append(finding("result_older_than_recent_work", f"solutions:{sid}", "medium", f"recent work touched it after its metric last ran ({latest[sid]})", "rerun-metric", [sid]))
+        elif sid not in latest and count >= 2 and (solutions[sid].get("authoritative_metric_id") or solutions[sid].get("metric_ids") or "").strip():
+            out.append(finding("touched_without_result", f"solutions:{sid}", "low", f"recent work touched it, it has {count} implementations and no recorded result", "rerun-metric", [sid]))
     rank = {s: i for i, s in enumerate(SEVERITIES)}
-    return sorted(out, key=lambda f: (-rank[f["severity"]], f["kind"], f["subject"]))
+    return sorted(out, key=lambda f: (-rank[f["severity"]], not (set(f["affects"]) & touched), f["kind"], f["subject"]))     # most severe first, then what recent work touched
+
+
+def gaps_of(structure: Mapping[str, Any]) -> str:
+    """One line of what the records lack as a whole (counts by rule, so the model sees the size of the structure without its rows)."""
+    solutions = rows_of(structure, "solutions")
+    impls: Dict[str, int] = {}
+    for row in rows_of(structure, "implementations"):
+        impls[str(row.get("solution_id"))] = impls.get(str(row.get("solution_id")), 0) + 1
+    measured = set(last_results(structure))
+    no_metric = sum(1 for r in solutions if not (r.get("authoritative_metric_id") or r.get("metric_ids") or "").strip())
+    no_select = sum(1 for r in solutions if impls.get(str(r.get("solution_id")), 0) >= 2 and not (r.get("selected") or "").strip())
+    no_result = sum(1 for r in solutions if impls.get(str(r.get("solution_id")), 0) and str(r.get("solution_id")) not in measured)
+    return (f"{len(solutions)} solutions, {sum(impls.values())} implementations, {len(rows_of(structure, 'metrics'))} metrics; "
+            f"{no_metric} solutions without a metric, {no_select} with several implementations and none selected, {no_result} with implementations and no recorded result")
 
 
 def digest_of(structure: Mapping[str, Any], before: Mapping[str, str]) -> Tuple[str, str, List[Dict[str, Any]], List[Dict[str, str]]]:
@@ -158,10 +192,10 @@ def digest_of(structure: Mapping[str, Any], before: Mapping[str, str]) -> Tuple[
     exps = [r for r in rows_of(structure, "experiments") if (r.get("status") or "").strip() in ("running", "reevaluating")][:3]
     plan = [f"milestone {m['id']}" + (f" (target {m['target']})" if m.get("target") else "") + f": {one(m.get('text'), 90)}" for m in ms]
     plan += [f"experiment {r.get('experiment_id')} reevaluate {r.get('reevaluate_time') or r.get('reevaluate_condition')}; holds fixed: {one(r.get('held_fixed'), 90)}" for r in exps]
-    runs = [f"{one(r.get('at'), 20)} {one(r.get('summary'), 100)} (solutions: {', '.join(r.get('solutions') or ())})" for r in (structure.get("runs") or ())[-4:]]
+    runs = [f"{one(r.get('at'), 20)} {one(r.get('summary'), 100)} (solutions: {', '.join(r.get('solutions') or ())})" for r in (structure.get("runs") or ())[-6:]]
     chg = [f"{c['what']} {c['key']}" for c in changes[:8]] + ([f"... and {len(changes) - 8} more"] if len(changes) > 8 else [])
     while True:
-        text = "\n".join(["INTENT: " + one(structure.get("intent"), 80), "CHANGED SINCE LAST WATCH:"] + [" - " + c for c in chg or ["nothing recorded"]]
+        text = "\n".join(["INTENT: " + one(structure.get("intent"), 80), "RECORDS: " + gaps_of(structure), "CHANGED SINCE LAST WATCH:"] + [" - " + c for c in chg or ["nothing recorded"]]
                          + ["RECENT RUNS:"] + [" - " + r for r in runs or ["none"]] + ["PLANNED NEXT:"] + [" - " + p for p in plan or ["none"]]
                          + ["FINDINGS BY RULE (subject | severity | step | detail):"] + [f" - {f['subject']} | {f['severity']} | {f['step']} | {f['detail']}" for f in found or []])
         if len(text) <= budget or not (found or chg or runs):

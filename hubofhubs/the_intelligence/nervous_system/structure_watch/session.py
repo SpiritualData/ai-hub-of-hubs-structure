@@ -13,13 +13,32 @@ from hubofhubs.the_intelligence.proactivity import standing
 TABLES = ("solutions", "implementations", "metrics", "experiments", "investigations")
 
 
+def recent_runs(base: Path, structure: Mapping[str, Any], count: int = 6) -> List[Mapping[str, Any]]:
+    """The recent work, oldest first, from the folder's own history when it has one: each of the last ``count`` commits as a run (when, subject, the solutions whose implementation files it changed).
+    No history, or no git, is no runs: the watch then looks at the records alone."""
+    import subprocess
+    try:
+        out = subprocess.run(["git", "-C", str(base), "log", f"-{count}", "--format=%x1e%aI%x1f%s", "--name-only", "--", "."], capture_output=True, text=True, timeout=20, check=True).stdout
+    except Exception:      # noqa: BLE001 no history is not an error
+        return []
+    runs = []
+    for block in reversed([b for b in out.split("\x1e") if b.strip()]):
+        head, _, files = block.partition("\n")
+        when, _, subject = head.partition("\x1f")
+        runs.append({"at": when.strip(), "summary": subject.strip(), "solutions": solutions_of_files(structure, [f for f in files.split() if f])})
+    return runs
+
+
 def structure_of(root: Any, runs: Optional[List[Mapping[str, Any]]] = None, now: str = "") -> Mapping[str, Any]:
     from esoi import read_tree
     base = Path(str(root))
     tables = {name: list(read_tree(base, name + ".csv")) for name in TABLES}
     path = base / "esoi" / "results.csv"
     results = list(csv.DictReader(path.open(encoding="utf-8"))) if path.is_file() else []
-    return {"intent": base.name, "tables": tables, "results": results, "runs": list(runs or ()), "now": now or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    out = {"intent": base.name, "tables": tables, "results": results, "runs": list(runs or ()), "now": now or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    if runs is None:
+        out["runs"] = recent_runs(base, out)
+    return out
 
 
 def solutions_of_files(structure: Mapping[str, Any], files: List[str]) -> List[str]:
@@ -54,7 +73,7 @@ def work_hook(records: Any, store: Any, ask: Optional[Callable[..., Any]] = None
                 return []
             run = {"at": now, "summary": summary, "solutions": solutions_of_files(probe, files)}
             arm = (BestTierCall if ask is not None else FindingsOnly)(ask=ask, store=store, judge=judge, applier=applier, ceilings=ceilings)
-            return lines_of(arm.watch(dict(probe, runs=[run]), now))
+            return lines_of(arm.watch(dict(probe, runs=list(probe["runs"]) + [run]), now))
         except Exception as error:      # noqa: BLE001 a watch never ends a run badly
             return [f"structure watch did not run: {type(error).__name__}"]
     return hook
