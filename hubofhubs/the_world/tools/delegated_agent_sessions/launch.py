@@ -47,6 +47,8 @@ class DeepLaunchSettings:
                               description, prompt, tools and model, from that file).
     settings_file             None: no flag. A path: ``--settings <path>``, additional settings that apply although the setting sources are empty (the hub
                               passes the hook that allows only its own sub-agents through it).
+    chrome                    True adds ``--chrome`` (the CLI's browser integration: the worker can drive the signed-in browser of the
+                              account it runs under, which an unattended run needs for anything done on a web page).
     """
 
     tools: Optional[Tuple[str, ...]] = None
@@ -58,6 +60,7 @@ class DeepLaunchSettings:
     append_system_prompt_file: Optional[str] = None
     agents_file: Optional[str] = None
     settings_file: Optional[str] = None
+    chrome: bool = False
 
     def is_default(self) -> bool:
         return self == DeepLaunchSettings()
@@ -83,6 +86,8 @@ class DeepLaunchSettings:
             parts.append("agents_file=1")
         if self.settings_file is not None:
             parts.append("settings_file=1")
+        if self.chrome:
+            parts.append("chrome=1")
         return ",".join(parts) or "default"
 
 
@@ -105,6 +110,8 @@ def lean_flags(settings: DeepLaunchSettings) -> List[str]:
         flags += ["--agents", settings.agents_file]
     if settings.settings_file:
         flags += ["--settings", settings.settings_file]
+    if settings.chrome:
+        flags.append("--chrome")
     return flags
 
 
