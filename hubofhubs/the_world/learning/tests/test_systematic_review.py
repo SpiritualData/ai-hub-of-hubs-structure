@@ -1,3 +1,4 @@
+from types import SimpleNamespace
 """Learning's review (an investigation of kind review): the record has every part the knowledge search standard asks for, exclusions are counted with reasons, grades follow the rule, unknowns are
 stated, each candidate has a decision, the applied part and the revisit date are set. Fake search results, no model, no network."""
 import csv
@@ -104,7 +105,7 @@ def test_standard_opens_kept_items_and_grades_a_snippet_no_higher_than_c():
     assert inv.cap_grade("A", "opened", "standard") == "A" and inv.cap_grade("B", "snippet", "quick") == "B"
 
 
-def test_quick_opens_nothing_and_stays_cheap():
+def test_quick_opens_its_top_three_pages_and_an_unreadable_page_stays_a_snippet():
     opened = []
 
     class Counting(Science):
@@ -112,7 +113,15 @@ def test_quick_opens_nothing_and_stays_cheap():
             opened.append(url)
             return super().fetch(url, **k)
     got = SystematicReview(RegistryScan(), Counting(), Web(), None).review("which terminal UI libraries are adoptable", "adopt or build", weight="quick", today=DAY, intent_id="terminal")
-    assert opened == [] and {i["verified"] for i in got["items"]} == {"snippet"}
+    assert len(opened) == 3 and len(set(opened)) == 3
+    verified = [i["verified"] for i in got["items"]]
+    assert verified.count("snippet") == len(verified) - len([v for v in verified if v != "snippet"]) and any(v != "snippet" for v in verified)
+
+    class Unreadable(Science):
+        def fetch(self, url, **k):
+            return SimpleNamespace(kind="error", text="")
+    again = SystematicReview(RegistryScan(), Unreadable(), Web(), None).review("which terminal UI libraries are adoptable", "adopt or build", weight="quick", today=DAY, intent_id="terminal")
+    assert {i["verified"] for i in again["items"]} == {"snippet"} and "a page could not be opened" in again["investigation"]["limitations"]
 
 
 def test_the_applied_part_says_what_each_item_changed_or_why_not():

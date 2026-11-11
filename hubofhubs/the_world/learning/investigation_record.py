@@ -19,9 +19,9 @@ VERIFIED = ("opened", "cross-checked", "snippet", "not-opened", "observed")
 REFRESH_DAYS = {"quick": 30, "standard": 90, "full": 180}     # when a review is redone, by size (a registry area keeps the registry's own 90)
 GRACE_DAYS = {"quick": 7, "standard": 14, "full": 30}         # findings are applied, or marked not applied, within this many days
 QUERIES = {"quick": 3, "standard": 5, "full": 8}               # the most queries the plan issues at each size (the standard's minimum is five for standard)
-OPEN_LIMIT = {"quick": 0, "standard": 6, "full": 15}           # how many kept items are opened (read through the Science seat) to verify them; quick stays on snippets
+OPEN_LIMIT = {"quick": 3, "standard": 6, "full": 15}           # how many kept items are opened (read through the Science seat) to verify them; quick opens the top three, and an item whose page cannot be read stays a snippet
 SNIPPET_CAP = "C"                                              # standard and full: an item read only as a snippet is graded no higher than this
-SOURCE_KINDS = {"quick": ("web search",), "standard": ("web search", "scholarly search", "opened pages"), "full": ("web search", "scholarly search", "opened pages")}   # quick searches one kind; standard and full also open the kept pages
+SOURCE_KINDS = {"quick": ("web search", "opened pages"), "standard": ("web search", "scholarly search", "opened pages"), "full": ("web search", "scholarly search", "opened pages")}   # quick searches the web and opens its top three kept pages; standard and full also search scholarly sources and open more
 COLUMNS = ["investigation_id", "kind", "intent_id", "experiment_id", "links", "question", "decision", "size", "protocol_date", "method", "criteria", "sources",
            "queries", "found", "screened_out", "kept", "observe", "change_my_mind", "stop", "done_on", "synthesis_known", "synthesis_contested",
            "synthesis_unknown", "limitations", "decisions", "refresh_on", "status"]
@@ -65,7 +65,7 @@ def grade(sources: Sequence[Mapping[str, Any]]) -> str:
 
 def cap_grade(grade: str, verified: str, size: str) -> str:
     """The grade an item may carry given how it was read: at standard and full size an item read only as a snippet (or not opened) is C at most, whatever its
-    sources say; opened and cross-checked items keep the rule's grade. Quick keeps the rule's grade and says in its limitations that it read snippets."""
+    sources say; opened and cross-checked items keep the rule's grade. Quick keeps the rule's grade, opens its top three pages, and says in its limitations which items it read as snippets only."""
     if size in ("standard", "full") and verified in ("snippet", "not-opened") and grade in ("A", "B"):
         return SNIPPET_CAP
     return grade
