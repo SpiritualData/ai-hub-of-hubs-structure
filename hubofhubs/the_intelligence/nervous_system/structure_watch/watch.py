@@ -4,7 +4,7 @@ Both return the same result: ``called``, ``reason`` (``first``, ``changed``, ``u
 ``tokens_out``, ``digest_hash``, ``items`` (at most ``MAX_ITEMS``, each with ``subject``, ``what``, ``why_now``, ``risk``, ``severity``, ``step`` and a ``route``) and ``suppressed`` (items
 raised before and not worse). The route is decided by Judgment Calls for each item: a person's proposal (``proposal``) for structure a person wrote or reviewed or owns, what a running
 experiment holds fixed and anything irreversible, or applied by the AI itself (``applied``) for structure the AI made and nobody reviewed, with ``change`` recording what, why,
-before and after so it can be undone. The marks of who reviewed a record come with the structure (``review``: ``{table:id: "person" | "ai"}``); a record with no mark is a person's.
+before and after so it can be undone. The marks of who reviewed a record are the ``review`` the caller gives (``{table:id: "person" | "ai"}``) or, when it gives none, each record's stored ``reviewed_by`` column; a record with no mark is a person's.
 Hard caps: ``INPUT_TOKENS`` in, ``OUTPUT_TOKENS`` out, ``MAX_ITEMS`` items. Standard library plus the hub and ``esoi``."""
 import json
 import re
@@ -101,7 +101,10 @@ class Watch:
 
     def route(self, structure: Mapping[str, Any], item: Dict[str, Any]) -> Dict[str, Any]:
         """Ask Judgment Calls whether this item needs a person (a proposal) or the AI applies it itself, and carry out the applied ones, recording what, why, before and after."""
-        review = structure.get("review") or {}
+        review = structure.get("review")
+        if not review:      # the stored mark of each record (its ``reviewed_by`` column), read by the library; a record with none is a person's
+            from esoi.structure.intent_registry import records
+            review = records.review_marks(structure.get("tables") or {})
         held = set()
         for row in rows_of(structure, "experiments"):
             if (row.get("status") or "").strip() in ("running", "reevaluating"):

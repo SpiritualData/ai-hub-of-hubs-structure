@@ -92,3 +92,22 @@ def test_a_result_belongs_to_the_solution_whose_metric_runs_its_component():
     from hubofhubs.the_intelligence.nervous_system.structure_watch.digest import last_results
     s = {"tables": {"metrics": [{"metric_id": "m", "command": "esoi run agent_sessions --impl none", "solution_ids": "delegated-agent-sessions"}]}, "results": [{"date": "2026-11-10", "component": "agent_sessions"}]}
     assert last_results(s) == {"delegated-agent-sessions": "2026-11-10", "agent-sessions": "2026-11-10"}
+
+
+def test_the_stored_review_mark_decides_applied_with_undo_or_proposal():
+    """A record marked ``ai`` (its ``reviewed_by`` column) that no person reviewed is changed by the AI and recorded with an undo; a person-marked or unmarked record stays a proposal."""
+    def solution(sid, mark):
+        return {"solution_id": sid, "name": sid, "purpose": "p", "authoritative_metric_id": "", "metric_ids": "", "selected": "", "reviewed_by": mark}
+    structure = {"intent": "x", "tables": {"solutions": [solution("a", "ai"), solution("b", "person"), solution("c", "")], "implementations": [], "metrics": []}, "now": "2026-11-10T09:00:00Z"}
+    edit = lambda sid: {"kind": "spec_edit", "target": sid, "field": "purpose", "value": "new text"}
+    reply = json.dumps({"items": [{"subject": f"solutions:{sid}", "what": "no metric", "why_now": "work", "risk": "r", "severity": "high", "step": "add-metric", "step_text": "t", "edit": edit(sid)} for sid in "abc"]})
+    applied = []
+
+    def applier(change):
+        applied.append(change["edit"]["target"])
+        return {"applied": True, "before": "p", "after": "new text"}
+    got = BestTierCall(ask=lambda *a: reply, judge=SeverityPolicy().decide, applier=applier).watch(structure, "2026-11-10T09:00:00Z")
+    routes = {i["subject"]: i["route"] for i in got["items"]}
+    assert routes == {"solutions:a": "applied", "solutions:b": "proposal", "solutions:c": "proposal"} and applied == ["a"]
+    change = next(i for i in got["items"] if i["subject"] == "solutions:a")["change"]
+    assert change["before"] == "p" and change["after"] == "new text" and change["undo"]["value"] == "p"
