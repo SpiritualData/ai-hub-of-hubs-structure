@@ -38,4 +38,4 @@ def test_esoi_uses_the_exact_direct_url_string_the_consumers_use():
 
 def test_the_version_is_bumped_with_the_pin():
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
-    assert project["version"] == "0.7.0"
+    assert project["version"] == "0.7.1"

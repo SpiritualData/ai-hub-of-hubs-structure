@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.7.1 (2026-11-10)
+
+Gemini calls use the v1beta endpoint, and the web search pick stays inside the web_search role's tier (fast). The esoi pin stays at `v0.7.0` (esoi is unchanged).
+
 - 2026-11-11, Web search no longer fails where the Gemini client library's default API path is the stable one. (1) Cause: google-genai 3.x defaults to the stable `v1` path, where Google Search grounding and `url_context` are refused on Gemini 2.x models ("Search as tool is not enabled for api version v1"), so every grounded search answered 400 and a review found nothing; the library's 2.x default is the beta path, which hid it. Both Gemini clients (`GeminiGroundingBackend`, `GeminiProvider`) now set the beta path explicitly (`API_VERSION`). (2) No model is named in the search code any more: `DEFAULT_GEMINI_MODEL` (a pinned Gemini 2.5 id) is gone and the grounding backend reads its model from the tier tables (`gemini_search_models`: the tier of the `web_search` role, the chooser's Gemini pick for it, then the tier's other Gemini arms). (2b) The search model is only ever an arm of the tier the `web_search` role names (fast): the fast tier's Gemini rows of `tier_arms.csv`, the chooser's pick first when it is one of them, then the others cheapest first. It never takes another tier's model (the chooser's public pick for Gemini can be a quality arm); with no fast Gemini arm the search fails with that reason. (3) A client error (400 to 499 except 401, 403, 429) moves the search on to the next model of the tier, the model that answers is kept, and the last error is raised with its status when every model refuses. (4) A review now says why it found nothing: `review` returns `search_failures` (the reasons, never part of the record a person reads) and `source_failed` (searches failed and nothing was found), so a caller can tell a failed search from an empty one.
 
 ## 0.7.0 (2026-11-10)
