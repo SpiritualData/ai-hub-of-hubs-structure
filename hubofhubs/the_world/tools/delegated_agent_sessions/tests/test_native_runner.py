@@ -53,8 +53,10 @@ for line in sys.stdin:
     if "write the report" in text:
         open("report.md", "w").write("The total is 4242 units.")
     reply = "done: figures fixed" if "code check" in text else "report written"
+    # Like the real CLI, the cost is the session's running total: a resumed session reports the earlier turns too.
+    launches = sum(1 for row in open(log) if '"argv"' in row)
     print(json.dumps({{"type": "result", "subtype": "success", "is_error": False, "result": reply, "session_id": "sess-1",
-                      "total_cost_usd": 0.01, "usage": {{"input_tokens": 100, "output_tokens": 20}}}}), flush=True)
+                      "total_cost_usd": 0.01 * launches, "usage": {{"input_tokens": 100, "output_tokens": 20}}}}), flush=True)
     break
 '''
 
@@ -112,7 +114,7 @@ def test_a_figure_no_source_holds_resumes_the_same_session_once_with_the_finding
     messages = [r["message"] for r in records(log) if "message" in r]
     assert len(launches) == 2 and launches[1]["argv"][launches[1]["argv"].index("--resume") + 1] == launches[0]["argv"][launches[0]["argv"].index("--session-id") + 1]
     assert "4242" in messages[1] and "code check" in messages[1]
-    assert got.met and got.output == "done: figures fixed" and got.tokens == 240 and got.cost_usd == pytest.approx(0.02)
+    assert got.met and got.output == "done: figures fixed" and got.tokens == 240 and got.cost_usd == pytest.approx(0.02)   # the session total after two turns, not 0.01 + 0.02
 
 
 def test_the_code_check_can_be_turned_off(tmp_path, monkeypatch):

@@ -378,7 +378,12 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                     pass
             message = CHECK_MESSAGE + "\n".join(found)
             again = super().run_goal_once(goal=message, brief=message, context_preamble="", resume_session_id=result.session_id, **common)
-            again.cost_usd = float(result.cost_usd or 0.0) + float(again.cost_usd or 0.0)
+            # The CLI's reported cost is the session's running total: a resumed session starts from the cost stored with it, so its report already holds the
+            # earlier turn. Adding the two counts the first turn twice. A continuation that started a fresh session (the old one was gone) is a new total.
+            if again.session_id == result.session_id:
+                again.cost_usd = max(float(result.cost_usd or 0.0), float(again.cost_usd or 0.0))
+            else:
+                again.cost_usd = float(result.cost_usd or 0.0) + float(again.cost_usd or 0.0)
             again.tokens = int(result.tokens or 0) + int(again.tokens or 0)
             resumes += 1
             self.usage(again, root, emit, resumes)
