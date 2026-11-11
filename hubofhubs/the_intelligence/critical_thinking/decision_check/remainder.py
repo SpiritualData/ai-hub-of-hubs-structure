@@ -157,9 +157,12 @@ MIN_WORDS = 2
 def complete(text: str) -> bool:
     """True when ``text`` reads as whole sentences by structure: it starts as a sentence starts (a capital letter or a digit, after any opening quote or bracket), ends with a
     sentence's closing mark (a full stop, question or exclamation mark, or a colon that introduces what follows, before any closing quote or bracket), and holds at least
-    ``MIN_WORDS`` words. A rewrite that dropped the end of its sentence ("The step is due") is not complete. A line of a list or a heading is not judged here."""
+    ``MIN_WORDS`` words, and every quotation it opens it closes. A rewrite that dropped the end of its sentence ("The step is due") is not complete, nor is one that
+    replaced a span starting inside a quoted name (measured 2026-11-11: 'Start with "It was due 8 November' lost the goal's name and kept its opening quote).
+    A line of a list or a heading is not judged here."""
     text = " ".join(str(text or "").split())
-    return bool(text) and bool(SENTENCE_START.match(text)) and bool(SENTENCE_END.search(text)) and len(WORD.findall(text)) >= MIN_WORDS
+    quotes_closed = text.count('"') % 2 == 0 and text.count("\u201c") == text.count("\u201d")
+    return bool(text) and bool(SENTENCE_START.match(text)) and bool(SENTENCE_END.search(text)) and len(WORD.findall(text)) >= MIN_WORDS and quotes_closed
 
 
 def rewrite_allowed(text: str, units: Sequence[Unit], index: int, question: str) -> bool:

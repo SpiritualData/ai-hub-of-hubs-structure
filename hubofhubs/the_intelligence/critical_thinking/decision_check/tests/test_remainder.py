@@ -156,3 +156,10 @@ def test_a_coherence_rewrite_must_be_a_complete_sentence():
     got, how = cohere(units, "", lambda prompt: json.dumps({"sentences": [{"n": 2, "action": "rewrite", "text": "The step is due"}]}))
     assert joined(got) == "The owner is you." and how == "removed"
     assert complete("The step is due Friday.") and not complete("The step is due") and not complete("Mary ow")
+
+
+def test_a_sentence_with_a_quotation_it_never_closes_is_not_complete():
+    from hubofhubs.the_intelligence.critical_thinking.decision_check.remainder import complete
+    assert complete('Start with "Order wax and wicks." It was due 8 November.')
+    assert not complete('Start with "It was due 8 November and is now 3 days overdue.')
+    assert not complete("Start with \u201cIt was due 8 November and is now 3 days overdue.")

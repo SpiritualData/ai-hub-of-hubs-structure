@@ -132,8 +132,8 @@ def test_a_reply_is_repaired_only_at_the_confirmed_failing_span():
         assert "The deadline is June 5." in prompt.split("Evidence it must agree with:")[1]
         return json.dumps({"action": "rewrite", "text": "The deadline is June 5."})
     got = arm().check(REPLY, reply_binding(), Scripted(reply))
-    # A repair never adds a figure the reply did not state (the 5 is new), so the wrong sentence is removed rather than rewritten with the evidence's figure.
-    assert got["outcome"] == "repaired" and got["text"] == "I read the report. I created the task."
+    # The 5 is new to the reply but is in the confirmation's quote, which code found in the evidence, so the wrong sentence is corrected, not cut.
+    assert got["outcome"] == "repaired" and got["text"] == "I read the report. I created the task. The deadline is June 5."
     assert got["dropped"] == 1 and got["calls"] == 4      # one view, two agreeing confirmations (no third), one repair
 
 
@@ -336,6 +336,24 @@ def test_a_rewrite_never_adds_a_figure_the_reply_did_not_state_so_it_becomes_a_r
         return json.dumps({"action": "rewrite", "text": "69 of them are assigned to you."})
     got = arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=8), Scripted(reply))
     assert got["text"] == "The quest has 598 goals." and "69" not in got["text"]
+
+
+def test_a_rewrite_may_state_a_figure_from_the_quoted_evidence_that_contradicts_the_span_but_not_an_unquoted_one():
+    draft = "None of the 43 goals is done, and 8 are overdue. Start with the income list."
+    views = [View("facts", "A statement must hold.", "43 goals: 1 done, 34 open, 8 overdue")]
+
+    def run(quote, rewrite):
+        def reply(prompt):
+            if "List each part" in prompt:
+                return json.dumps({"findings": [{"span": "None of the 43 goals is done, and 8 are overdue.", "quote": ""}]})
+            if CONFIRMING in prompt:
+                return verdicts(prompt, True, quote)
+            return json.dumps({"action": "rewrite", "text": rewrite})
+        return arm().check(draft, CheckBinding(kind="reply", views=views, max_calls=8), Scripted(reply))["text"]
+
+    assert run("1 done, 34 open, 8 overdue", "1 of the 43 goals is done, and 8 are overdue.").startswith("1 of the 43 goals is done")
+    assert "69" not in run("1 done, 34 open, 8 overdue", "69 of the 43 goals are done.")          # not in the quote: removed
+    assert "1 of" not in run("1 done, 99 open", "1 of the 43 goals is done, and 8 are overdue.")   # a quote not in the evidence allows nothing
 
 
 def test_a_view_that_answers_first_has_its_spans_confirmed_before_a_slow_view_returns():

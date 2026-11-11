@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- 2026-11-11, Decision Check reply repair: a rewrite may state a figure from the confirmation's quote that code found in the evidence (the corrected count), never any other new figure; before, a correct correction became a removal and the reply lost the sentence it was about. A rewrite that leaves a quotation open (it replaced a span starting inside a quoted name) is not complete, so the sentence is removed instead of shipped garbled.
+
 ## 0.7.1 (2026-11-10)
 
 Gemini calls use the v1beta endpoint, and the web search pick stays inside the web_search role's tier (fast). The esoi pin stays at `v0.7.0` (esoi is unchanged).

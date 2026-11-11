@@ -155,7 +155,8 @@ class Arm:
                 view = by_id[f["view"]]
                 quote = next((a["quote"] for a in votes[i] if a["fails"] and a["quote"]), f["quote"])
                 evidence = quote if quoted(quote, view.evidence) else view.evidence
-                f.update(quote=quote)
+                # The words that contradict the span, checked by code to be in the evidence: a rewrite may state their figures (the corrected count), never others.
+                f.update(quote=quote, basis=quote if quoted(quote, view.evidence) else "")
                 prompt = REPAIR_PROMPT.format(instruction=view.instruction, sentence=sentence_of(draft, f["span"]), span=f["span"], evidence=evidence)
                 pool.submit(("repair", i), prompt)
 
@@ -200,8 +201,10 @@ class Arm:
                         f = grounded[what]
                         data = parse_json(raw) if raw is not None else {}
                         action, text = data.get("action"), str(data.get("text") or "").strip()
-                        # A rewrite states no figure the span did not (compared by value: "1,000" is "1000", "02" is "2").
-                        if action == "rewrite" and text and text != f["span"] and not figures(text) - figures(f["span"]):
+                        # A rewrite states no figure that neither the span nor the quoted evidence that contradicts it states (compared by value: "1,000" is
+                        # "1000", "02" is "2"). Measured 2026-11-11: with only the span's figures allowed, a correct count corrected from the evidence ("1 of
+                        # 43 done") became a removal, and the reply lost the goal it was about.
+                        if action == "rewrite" and text and text != f["span"] and not figures(text) - figures(f["span"]) - figures(f.get("basis") or ""):
                             repairs[what] = dict(f, action="rewrite", text=text)
                         else:
                             why = ("no call was left for a rewrite" if raw is None else "the rewrite added a figure the reply did not state" if action == "rewrite" and text
