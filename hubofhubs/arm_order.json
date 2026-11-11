@@ -106,7 +106,8 @@
  ],
  "proactivity": [
   "calendar_and_events",
-  "elapsed_hours"
+  "elapsed_hours",
+  "standing_work_standard"
  ],
  "relevant-solutions": [
   "records_index",

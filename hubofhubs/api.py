@@ -513,6 +513,9 @@ NAMES = {
     "hubofhubs.the_intelligence.proactivity.interface": (
         "Proactive",
     ),
+    "hubofhubs.the_intelligence.proactivity.standing_work": (
+        "STANDING_WORK_STANDARD",
+    ),
     "hubofhubs.the_intelligence.proactivity.triggers": (
         "attach_events", "candidate_of", "in_priority_order",
     ),

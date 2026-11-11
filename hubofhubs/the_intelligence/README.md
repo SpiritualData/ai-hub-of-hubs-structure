@@ -41,7 +41,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Mind | `the-mind` | `hubofhubs.run("the-mind", {'request': 'what is the latest Rust version?'})` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | `hubofhubs.run("higher-mind", {'request': 'what is the latest Rust version?'})` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Nervous System | `nervous-system` | `hubofhubs.run("nervous-system", 'delete the old backup folder')` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
-| Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Proactivity | `proactivity` | `hubofhubs.run("proactivity", {'schedules': [], 'now': '2026-07-12T09:00:00Z'})` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be, Standing work that moves its own metric |
 | Structure Watch | `structure-watch` | `hubofhubs.run("structure-watch", ...)` | Best tier call (`best_tier_call`) | Structure attended to before more is built on it |
 
 ## Problems and ideals
@@ -53,6 +53,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees too little or too much (`hprob-the-mind-sees-too-little-or-too-much`): What the planning and responding AI sees for a request is whatever was wired to it: earlier requests and goals are missing, the right information is not found, or too much of it is pasted in.
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
 - Recurring work falls on days and times (`hprob-recurring-work-has-days-and-times`): Standing work for a person often falls on certain days of the week and a time of day in that person's own time zone (a review on weekday mornings, a report on Friday afternoons), and a late start is still worth doing for a while but not forever.
+- Standing work spins its wheels (`hprob-standing-work-spins-its-wheels`): Work that repeats unattended drifts into re-reading a number that cannot move, writing briefs and drafts that no one acts on, staging every item for approval and reporting the same missing access each run, so each run looks busy while little outside it changes.
 - Work is built on structure that needs attention (`hprob-structure-built-on-before-it-is-attended-to`): New work piles onto a structure that has an experiment past its reevaluation, a solution with several implementations and no metric, a duplicate, a missed reuse or a milestone past its date, and nobody looks at the structure itself until the cost shows.
 
 **Ideals**
@@ -64,6 +65,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is fitted to that request, within a budget, and draws on the long view, the system's own data and the outside.
 - The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 - Recurring work keeps its days and times (`hideal-recurring-work-keeps-its-days-and-times`): Recurring work starts on the days and at the time of day its person keeps, in their own time zone, once per occasion, and a start that is a little late still counts.
+- Standing work changes something outside itself (`hideal-standing-work-changes-something-outside-itself`): Each run of standing work changes something outside itself that its own acts can move within days, and leaves the next step ordered for the next run.
 - Structure attended to before more is built on it (`hideal-structure-is-attended-to-before-more-is-built-on-it`): Look at the structure proactively, with few tokens, and say where it needs attention before the next work is built on it; leave it alone when it is fine.
 
 ## Metrics and their leaders
@@ -75,6 +77,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): leader `two_stage`, 34 of 36 cases
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`)
 - Schedules due when they should be (`metric-proactivity`): leader `calendar_and_events`, 43 of 43 cases
+- Standing work that moves its own metric (`metric-standing-work-moves-its-metric`)
 - Structure attended to before more is built on it (`metric-structure-watch`): leader `best_tier_call`, 18 of 18 cases
 
 ## Where to go next
@@ -100,6 +103,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees too little or too much (`hprob-the-mind-sees-too-little-or-too-much`): What the planning and responding AI sees for a request is whatever was wired to it: earlier requests and goals are missing, the right information is not found, or too much of it is pasted in.
 - The system only reacts (`hprob-system-waits-to-be-asked`): An AI that acts only when asked misses the standing work (a daily review, a weekly report) and the moment something changed, so people must remember to ask.
 - Recurring work falls on days and times (`hprob-recurring-work-has-days-and-times`): Standing work for a person often falls on certain days of the week and a time of day in that person's own time zone (a review on weekday mornings, a report on Friday afternoons), and a late start is still worth doing for a while but not forever.
+- Standing work spins its wheels (`hprob-standing-work-spins-its-wheels`): Work that repeats unattended drifts into re-reading a number that cannot move, writing briefs and drafts that no one acts on, staging every item for approval and reporting the same missing access each run, so each run looks busy while little outside it changes.
 - Work is built on structure that needs attention (`hprob-structure-built-on-before-it-is-attended-to`): New work piles onto a structure that has an experiment past its reevaluation, a solution with several implementations and no metric, a duplicate, a missed reuse or a milestone past its date, and nobody looks at the structure itself until the cost shows.
 
 ### Ideals
@@ -111,6 +115,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - The Mind sees what the request needs (`hideal-the-mind-sees-what-the-request-needs`): What the Mind sees for a request is fitted to that request, within a budget, and draws on the long view, the system's own data and the outside.
 - The system acts on time (`hideal-the-system-acts-on-time`): Standing work happens when it is due, in the person's own time, or when something happens that calls for it, without anyone having to ask.
 - Recurring work keeps its days and times (`hideal-recurring-work-keeps-its-days-and-times`): Recurring work starts on the days and at the time of day its person keeps, in their own time zone, once per occasion, and a start that is a little late still counts.
+- Standing work changes something outside itself (`hideal-standing-work-changes-something-outside-itself`): Each run of standing work changes something outside itself that its own acts can move within days, and leaves the next step ordered for the next run.
 - Structure attended to before more is built on it (`hideal-structure-is-attended-to-before-more-is-built-on-it`): Look at the structure proactively, with few tokens, and say where it needs attention before the next work is built on it; leave it alone when it is fine.
 
 ### Solutions
@@ -122,7 +127,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Mind | `the-mind` | The four parts of the Mind in order (`composition`) | Answer quality per dollar and per second |
 | Higher Mind | `higher-mind` | Objectives, memory and guidance for one request (`composition`) | The long view survives between requests |
 | Nervous System | `nervous-system` | Consent gate (`consent_gate`) | Risky steps stopped, ordinary steps let through, Guard marginal value |
-| Proactivity | `proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be |
+| Proactivity | `proactivity` | Calendar periods and events (`calendar_and_events`) | Schedules due when they should be, Standing work that moves its own metric |
 | Structure Watch | `structure-watch` | Best tier call (`best_tier_call`) | Structure attended to before more is built on it |
 
 ### Implementations
@@ -136,6 +141,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Consent gate | `nervous-system:consent_gate` | [hubofhubs/the_intelligence/nervous_system/consent_gate.py](nervous_system/consent_gate.py) |  |
 | Calendar periods and events | `proactivity:calendar_and_events` | [hubofhubs/the_intelligence/proactivity/triggers.py](proactivity/triggers.py) |  |
 | Elapsed hours | `proactivity:elapsed_hours` | [hubofhubs/the_intelligence/proactivity/triggers.py](proactivity/triggers.py) |  |
+| Standing work standard | `proactivity:standing_work_standard` | [hubofhubs/the_intelligence/proactivity/standing_work.py](proactivity/standing_work.py) |  |
 | Best tier call | `structure-watch:best_tier_call` | [hubofhubs/the_intelligence/nervous_system/structure_watch/watch.py](nervous_system/structure_watch/watch.py) |  |
 | Findings only | `structure-watch:findings_only` | [hubofhubs/the_intelligence/nervous_system/structure_watch/watch.py](nervous_system/structure_watch/watch.py) |  |
 
@@ -148,6 +154,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Risky steps stopped, ordinary steps let through (`metric-nervous-system`): `esoi run watch_for_risk --impl consent_gate; esoi run watch_for_risk --impl none`
 - Guard marginal value (`metric-guard-marginal-value-over-native-and-harness`): `python3 -m pytest hubofhubs/the_intelligence/mind/delegation/overseer/tests/test_risk.py`
 - Schedules due when they should be (`metric-proactivity`): `esoi run proactivity --impl calendar_and_events; esoi run proactivity --impl elapsed_hours`
+- Standing work that moves its own metric (`metric-standing-work-moves-its-metric`): `python3 -m pytest hubofhubs/the_intelligence/proactivity/tests/test_standing_work.py`
 - Structure attended to before more is built on it (`metric-structure-watch`): `esoi run structure_watch --impl best_tier_call; esoi run structure_watch --impl findings_only`
 
 

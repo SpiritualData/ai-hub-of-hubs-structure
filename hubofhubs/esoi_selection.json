@@ -500,7 +500,8 @@
   },
   "modules": {
    "calendar_and_events": "hubofhubs.the_intelligence.proactivity.triggers",
-   "elapsed_hours": "hubofhubs.the_intelligence.proactivity.triggers"
+   "elapsed_hours": "hubofhubs.the_intelligence.proactivity.triggers",
+   "standing_work_standard": "hubofhubs.the_intelligence.proactivity.standing_work"
   }
  },
  "read-files": {
