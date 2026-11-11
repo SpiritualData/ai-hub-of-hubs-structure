@@ -60,6 +60,8 @@ class SubprocessGoalRunner(DeepRunner):
     config_class = SubprocessConfig   # the dataclass this runner is built from (core.resolve.resolve_config)
     model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None
     settings_source: Optional[GoalSettingsSource] = None
+    provider: str = "anthropic"
+    tier: str = ""
     tier_model: Optional[str] = None   # the model of the arm's tier, used when a call names no model
     instructions: str = ""   # the name of the arm's instructions pack, "" for none
 
@@ -68,6 +70,7 @@ class SubprocessGoalRunner(DeepRunner):
                  settings: Optional[GoalSettingsSource] = None, provider: str = "anthropic", tier: str = "", instructions: str = ""):
         if not providers.drives(type(self), provider):
             raise ValueError(f"{type(self).__name__} drives only {', '.join(providers.providers_of(type(self)))}, not {provider!r}")
+        self.provider, self.tier = provider, tier or ""
         self.tier_model = providers.model_for(provider, tier) if tier else None
         self.instructions = instructions   # the instructions pack this arm adds to every run (``settings.with_instructions_pack``)
         if config is None:
@@ -202,6 +205,10 @@ class SubprocessGoalRunner(DeepRunner):
         notices."""
         landed_already = self.landed_in(working_dir, resume_session_id)
         model = model or self.tier_model
+        if not model and self.tier:
+            # An arm that names a tier never falls back to the balanced default of the launcher: a tier with no chosen model is a failed launch with the reason.
+            return DeepResult(met=False, launch_failed=True,
+                              error=f"no {self.tier} model is chosen for the provider {self.provider} in the tier registry, so the run did not start on another tier")
         try:
             res = self.run_goal_once(goal=goal, brief=brief, model=model, max_turns=max_turns,
                                      emit=emit, context_preamble=context_preamble, run_id=run_id,

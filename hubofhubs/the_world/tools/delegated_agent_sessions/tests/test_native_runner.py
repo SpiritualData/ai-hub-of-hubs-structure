@@ -53,7 +53,8 @@ for line in sys.stdin:
     if "write the report" in text:
         open("report.md", "w").write("The total is 4242 units.")
     reply = "done: figures fixed" if "code check" in text else "report written"
-    # Like the real CLI, the cost is the session's running total: a resumed session reports the earlier turns too.
+    # Like the real CLI, the cost is the session's running total: a resumed session reports the earlier turns too. Its ``usage`` is per turn (checked on a real
+    # session: turn one 229 output tokens, the resumed turn 3, and the cost and ``modelUsage`` totals 232), so the tokens below are the same each turn and add up.
     launches = sum(1 for row in open(log) if '"argv"' in row)
     print(json.dumps({{"type": "result", "subtype": "success", "is_error": False, "result": reply, "session_id": "sess-1",
                       "total_cost_usd": 0.01 * launches, "usage": {{"input_tokens": 100, "output_tokens": 20}}}}), flush=True)
@@ -331,3 +332,23 @@ def test_the_hubs_own_resume_counts_against_the_same_ceiling(tmp_path, monkeypat
     assert default_should_continue(facts)["reason"] == "ceiling_time"
     assert default_should_continue({**facts, "elapsed_seconds": 79.0})["continue"] is True
     assert default_should_continue({**facts, "ceiling_seconds": None, "ceiling_usd": None, "elapsed_seconds": 10 ** 9})["continue"] is True   # unlimited: not gated by the ceilings
+
+
+def test_a_tier_with_no_chosen_model_fails_the_launch_instead_of_running_on_the_balanced_default(tmp_path, monkeypatch):
+    # A stored hard run had one case on the balanced model in a fast-tier run: the tier chooser returned no model for that construction and the launcher's own
+    # balanced default filled the gap. A runner that names a tier now refuses to start without that tier's model, for each Claude Code runner.
+    from hubofhubs.the_world.tools.delegated_agent_sessions import providers
+    from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import StreamJsonGoalRunner
+    from hubofhubs.the_world.tools.delegated_agent_sessions.subprocess_runner import SubprocessGoalRunner
+    monkeypatch.setattr(providers, "model_for", lambda provider, tier, folder=None: None)
+    for index, cls in enumerate((NativeToolLoopRunner, StreamJsonGoalRunner, SubprocessGoalRunner)):
+        runner, log, _work = runner_for(tmp_path / str(index), monkeypatch) if cls is NativeToolLoopRunner else (None, None, None)
+        if runner is None:
+            work = tmp_path / str(index) / "work"
+            work.mkdir(parents=True)
+            log = tmp_path / str(index) / "log.jsonl"
+            monkeypatch.setenv("FAKE_LOG", str(log))
+            cfg = SubprocessConfig(working_dir=str(work), claude_path=fake_claude(tmp_path / str(index)), timeout_seconds=60)
+            runner = cls(cfg, settings=GoalSettings(environment=lambda: {"PATH": "/usr/bin:/bin", "FAKE_LOG": str(log)}), provider="anthropic", tier="fast")
+        got = runner.run_goal(goal="write the report", brief="b")
+        assert got.launch_failed and not got.met and "fast model" in got.error and not log.exists(), cls.__name__
