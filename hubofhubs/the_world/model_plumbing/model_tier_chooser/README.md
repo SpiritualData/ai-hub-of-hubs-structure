@@ -12,7 +12,7 @@ Part of [Asking a model through one measured path](../README.md)
 - Delegates to: vendor-model-caller
 - Entry call: `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})`
 - Selected implementation: Tier metric selector (`tier_selector`)
-- Metric: Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer
+- Metric: Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py) and 189 more
 
 ## Implementations
@@ -31,6 +31,7 @@ Part of [Asking a model through one measured path](../README.md)
 - Balanced tier default (`metric-tier-balanced`)
 - Quality tier default (`metric-tier-quality`)
 - Best tier default (`metric-tier-best`)
+- Fast roles pooled cases (`metric-fast-roles-pool`): leader `tier_arm@candidate=3,tier=fast`, 108 of 112 cases
 
 ## Where to go next
 

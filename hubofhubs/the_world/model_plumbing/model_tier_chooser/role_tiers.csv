@@ -1,8 +1,8 @@
 role,kind,tier,person_may_set,evidence,reason
-request_classification,classify,fast,no,"owner's policy, unmeasured","Classification is always fast: a label chosen from structured facts, made on nearly every turn."
-representative_selection,classify,fast,no,"owner's policy, unmeasured",A label choice over declared authority; classification is always fast.
+request_classification,classify,fast,no,"measured: evaluation/fast_roles_pool, 62 cases (goal doability and quest ranking, production prompts), 2026-11-10: fast default 60/62, balanced reference 60/62; three candidates 58/62 to 60/62 (metric-fast-roles-pool)","Classification is always fast: a label chosen from structured facts, made on nearly every turn."
+representative_selection,classify,fast,no,"measured: evaluation/fast_roles_pool, 9 assignee cases, 2026-11-10: fast default 8/9, balanced reference 7/9; too few cases to rank, enough to show fast is not worse (metric-fast-roles-pool)",A label choice over declared authority; classification is always fast.
 request_planning,orchestrate,balanced,no,"owner's policy, unmeasured; open measurement: fast against balanced on the routing cases","The planner decides how a turn is handled, one to four calls per turn, and a wrong plan misroutes the whole turn, so it has a significant downstream effect and is not a classification."
-folder_view_picking,gather,fast,no,"owner's policy, unmeasured",Choosing which files to put in view is made on every run and scored by its own metric.
+folder_view_picking,gather,fast,no,"measured: evaluation/fast_roles_pool, the 41 Folder View cases, 2026-11-10: fast default 40/41, balanced reference 40/41, evidence arm with no model 40/41, so the cases do not separate tiers (metric-fast-roles-pool)",Choosing which files to put in view is made on every run and scored by its own metric.
 frame_building,gather,fast,no,"owner's policy, unmeasured",Preparing the notes a session starts with is made on every run; today it calls no model.
 context_retrieval,gather,fast,no,"owner's policy, unmeasured",Writing retrieval queries and ranking context is made many times per turn.
 card_building,gather,fast,no,"owner's policy, unmeasured",Building cards from files is repeated over many files.

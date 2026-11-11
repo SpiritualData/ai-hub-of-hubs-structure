@@ -76,6 +76,11 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | decision_check | single_verify | 21 | 95.2% (77.3% to 99.2%), 20/21 | $0 | 2.8 (median) | identical to single_verify on all 21 cases | none recorded |
 | esoi_application | record_field_edit (selected) | 10 | 100.0% (72.2% to 100.0%), 10/10 | $0 | 0 (median) | selected | none recorded |
 | esoi_application | append_to_description | 10 | 0.0% (0.0% to 27.8%), 0/10 | no passing case | 0 (median) | ahead of append_to_description (two-sided McNemar p=0.00195) | none recorded |
+| fast_roles_pool | tier_arm@tier=fast (selected) | 112 | 96.4% (91.2% to 98.6%), 108/112 | $0.0003843 | 2.45 (median) | selected | none recorded |
+| fast_roles_pool | tier_arm@candidate=1,tier=fast | 112 | 94.6% (88.8% to 97.5%), 106/112 | $0.001076 | 1.9 (median) | ahead of tier_arm@candidate=1,tier=fast, not significant (two-sided McNemar p=1) | none recorded |
+| fast_roles_pool | tier_arm@candidate=2,tier=fast | 112 | 94.6% (88.8% to 97.5%), 106/112 | $0.00147 | 1.6 (median) | ahead of tier_arm@candidate=2,tier=fast, not significant (two-sided McNemar p=1) | none recorded |
+| fast_roles_pool | tier_arm@candidate=3,tier=fast | 112 | 96.4% (91.2% to 98.6%), 108/112 | $0.0001148 | 1.75 (median) | identical to tier_arm@candidate=3,tier=fast on all 112 cases | none recorded |
+| fast_roles_pool | tier_arm@tier=balanced | 112 | 95.5% (90.0% to 98.1%), 107/112 | $0.006412 | 2.3 (median) | ahead of tier_arm@tier=balanced, not significant (two-sided McNemar p=1) | none recorded |
 | feedback_learning | scoped_record_edit (selected) | 19 | 100.0% (83.2% to 100.0%), 19/19 | $0 | 0 (median) | selected | none recorded |
 | feedback_learning | kept_note | 19 | 0.0% (0.0% to 16.8%), 0/19 | no passing case | 0 (median) | ahead of kept_note (two-sided McNemar p=3.81e-06) | none recorded |
 | file_edit_goals | fast_edit (selected) | 30 | 96.7% (83.3% to 99.4%), 29/30 | $0.0001793 | 1.8 (median) | selected | none recorded |
