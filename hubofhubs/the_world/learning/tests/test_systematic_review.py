@@ -152,6 +152,7 @@ def test_a_failing_source_is_a_limitation_not_a_failed_review():
     got = SystematicReview(RegistryScan(), Science(), Broken(), None).review("which libraries", "adopt or build", weight="quick", today=DAY, intent_id="terminal")
     assert "web search failed" in got["investigation"]["limitations"] and got["investigation"]["decisions"].startswith("all: defer: no results came back")
     assert got["gaps"] == []
+    assert got["source_failed"] is True and got["search_failures"] == ["web search: down"]     # the reason reaches the caller, which can tell a failed search from an empty one
 
 
 def test_a_model_may_screen_and_write_the_synthesis_and_its_failure_changes_nothing():

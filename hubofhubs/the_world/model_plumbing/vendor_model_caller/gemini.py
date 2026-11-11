@@ -14,6 +14,7 @@ from hubofhubs.the_world.model_plumbing.vendor_model_caller.retry import parse_j
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 log = logging.getLogger("hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini")
+API_VERSION = "v1beta"      # Google Search grounding and url_context exist only on the beta path; a client library whose default is the stable path (google-genai 3.x) refuses them on older models
 FALLBACK_MODELS = ("gemini-2.0-flash", "gemini-1.5-pro")
 
 
@@ -54,7 +55,7 @@ class GeminiProvider(ModelProviderBase):
                 raise RuntimeError("google-genai is not installed. Install it with: pip install google-genai")
             if not self.api_key:
                 raise RuntimeError(f"{self.env_name} is not configured" if self.env_name else "a Google API key is not configured")
-            self.client = google.genai.Client(api_key=self.api_key)
+            self.client = google.genai.Client(api_key=self.api_key, http_options={"api_version": API_VERSION})
         return self.client
 
     def request(self, model: str, contents: Any, config: Any = None, reasoning: Optional[str] = None) -> Any:

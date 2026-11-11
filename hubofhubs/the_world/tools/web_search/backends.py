@@ -10,7 +10,7 @@ each provider's current pricing before relying on these):
   * Brave Search API   $5/1k, with a $5/month free credit.
   * Tavily             usage-based; see tavily.com/pricing.
   * SearXNG            self-hosted, no per-call cost (your own infra bill instead).
-  * Gemini 2.5 Flash-Lite grounding: 1,500 grounded prompts/day free, then ~$35/1k.
+  * Gemini 2.x grounding: 1,500 grounded prompts/day free, then ~$35/1k.
   * Gemini 3.x grounding: 5,000 grounded prompts/month free, then ~$14/1k.
 
 ``select_search_backend`` picks one (or a fallback chain) from environment config; see its
@@ -44,7 +44,27 @@ KEY_APIS = {"serper": needs.SERPER_API, "brave": needs.BRAVE_API, "tavily": need
 logger = logging.getLogger("hubofhubs.the_world.tools.web_search.backends")
 
 DEFAULT_TIMEOUT = 8.0
-DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-lite"
+SEARCH_ROLE = "web_search"            # the row of role_tiers.csv that names the tier a search call runs on
+MAX_MODEL_CANDIDATES = 3
+
+
+def gemini_search_models(limit: int = MAX_MODEL_CANDIDATES) -> List[str]:
+    """The Gemini models a grounded search may run on, best first, read from the hub's tables and never named in code: the tier of the
+    ``web_search`` role (``role_tiers.csv``), the model the tier chooser picked among Gemini arms for it, then the tier's other Gemini
+    arms (``tier_arms.csv``) as the fallbacks a client error moves on to. Empty when the tables cannot be read."""
+    try:
+        from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers
+        from hubofhubs.the_world.model_plumbing.model_tier_chooser.tiers import choose, default_arms
+        tier = role_tiers.tier_for(SEARCH_ROLE)
+        chosen = (choose(available=["gemini"]).get(tier) or {})
+        held, candidates = default_arms()
+        pairs = [chosen.get("arm")] + [(r["provider"], r["model"]) for r in chosen.get("ranking") or []]
+        pairs += [held.get(tier)] + list(candidates.get(tier, []))
+        models = [pair[1] for pair in pairs if pair and pair[0] == "gemini"]
+    except Exception as exc:  # noqa: BLE001 - an unreadable table leaves the caller to say there is no model
+        logger.warning("web search: no Gemini model could be chosen from the tier tables: %s", exc)
+        return []
+    return list(dict.fromkeys(models))[:limit]
 
 HttpCallable = Callable[..., Any]
 
@@ -395,7 +415,8 @@ def select_search_backend(
                          never part of "auto", only chosen by name.
                          If its key/config is missing, logs a warning and returns None rather than silently falling back.
       apis_file       -- path to a JSON file of search APIs described as data (``apis.py``); their names join the chain.
-      model           -- Gemini grounding model (default "gemini-2.5-flash-lite").
+      model           -- Gemini grounding model (default: chosen from the hub's tier tables for the ``web_search`` role, see
+                         ``gemini_search_models``; a client error moves on to the next model of the tier).
       provider_model  -- model id for provider-native search (required for "provider").
     Vendor keys keep their vendors' names: SERPER_API_KEY, BRAVE_SEARCH_API_KEY / BRAVE_API_KEY, TAVILY_API_KEY /
     WEB_SEARCH_API_KEY, SEARXNG_URL (or ``keys.searxng_url``), GEMINI_API_KEY / GOOGLE_API_KEY / GOOGLE_AI_API_KEY.
@@ -414,7 +435,7 @@ def select_search_backend(
     if enabled in ("false", "0", "off", "no"):
         return None
 
-    model = env.get(keys.model) or DEFAULT_GEMINI_MODEL
+    model = env.get(keys.model) or ""
     provider_model = env.get(keys.provider_model) or ""
     file_backends = dict(extra) if extra is not None else load_file_specs(env.get(keys.apis_file, ""))
     resolve_name = resolver or hub_resolver

@@ -7,16 +7,25 @@ constructor argument (``backends.gemini_api_key_from_env(env)`` reads it from a 
 from __future__ import annotations
 
 import concurrent.futures
+import logging
 import threading
 from typing import Any, Dict, List, Optional
 
 from esoi import implementation
 
 from hubofhubs.the_world.tools.web_search.search_port import SearchBackendError, SearchHit, SearchResponse
-from hubofhubs.the_world.tools.web_search.backends import HttpCallable, DEFAULT_GEMINI_MODEL, default_http
+from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import API_VERSION
+from hubofhubs.the_world.tools.web_search.backends import HttpCallable, default_http, gemini_search_models
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 REDIRECT_TIMEOUT = 3.0
+logger = logging.getLogger("hubofhubs.the_world.tools.web_search.gemini")
+
+
+def client_error_code(exc: Exception) -> Optional[int]:
+    """The HTTP status (400 to 499, except a rate limit or an auth refusal, which a different model cannot cure) of a Gemini client error, else None."""
+    code = getattr(exc, "code", None)
+    return code if isinstance(code, int) and 400 <= code < 500 and code not in (401, 403, 429) else None
 
 
 def timeout_error() -> type:
@@ -54,12 +63,12 @@ class GeminiGroundingBackend:
     def __init__(
         self,
         api_key: str = "",
-        model: str = DEFAULT_GEMINI_MODEL,
+        model: str = "",
         client: Any = None,
         http: HttpCallable = default_http,
     ) -> None:
         self.api_key = api_key
-        self.model = model
+        self.model = model                # empty: chosen from the hub's tier tables on the first search (``gemini_search_models``)
         self.http = http
         self._client = client
         self.tokens_in = 0
@@ -77,7 +86,7 @@ class GeminiGroundingBackend:
             raise SearchBackendError("gemini-grounding: google-genai is not installed (install the hubofhubs[gemini] extra)") from exc
         if not self.api_key:
             raise SearchBackendError("gemini-grounding: no Gemini API key configured")
-        self._client = genai.Client(api_key=self.api_key)
+        self._client = genai.Client(api_key=self.api_key, http_options={"api_version": API_VERSION})
         return self._client
 
     def search(self, query: str, *, max_results: int = 5, instruction: Optional[str] = None) -> SearchResponse:
@@ -92,11 +101,11 @@ class GeminiGroundingBackend:
             )
             if instruction and instruction.strip():
                 prompt += f"\n\nAdditional instruction from the caller: {instruction.strip()}"
-            response = self._generate(client, types, tool, prompt)
+            response = self._generate_with_fallback(client, types, tool, prompt)
         except SearchBackendError:
             raise
         except Exception as exc:  # noqa: BLE001
-            raise SearchBackendError(f"gemini-grounding: {exc}") from exc
+            raise SearchBackendError(f"gemini-grounding: {exc}", status_code=client_error_code(exc)) from exc
 
         self.calls += 1
         meta = getattr(response, "usage_metadata", None)
@@ -110,21 +119,47 @@ class GeminiGroundingBackend:
             raise SearchBackendError(f"gemini-grounding: no results for {query!r}")
         return SearchResponse(hits=hits, answer=answer, queries_issued=queries_issued or [query])
 
-    def _generate(self, client: Any, types: Any, tool: Any, prompt: str) -> Any:
+    def _models(self) -> List[str]:
+        """The model first, then (when it was not named by the caller) the tier's other Gemini models, from the hub's tables."""
+        if self.model:
+            return [self.model]
+        chosen = gemini_search_models()
+        if not chosen:
+            raise SearchBackendError("gemini-grounding: no Gemini model is named and none could be chosen from the tier tables")
+        return chosen
+
+    def _generate_with_fallback(self, client: Any, types: Any, tool: Any, prompt: str) -> Any:
+        """``_generate`` on each candidate model in turn: a client error (the model or its tool refused the request) moves on to the next
+        model, and the one that answers is kept for the next search. Any other error, and the last client error, is raised."""
+        last: Optional[Exception] = None
+        for model in self._models():
+            try:
+                response = self._generate(client, types, tool, prompt, model)
+            except Exception as exc:  # noqa: BLE001
+                if client_error_code(exc) is None:
+                    raise
+                logger.warning("gemini grounding: %s refused the request (%s); trying the next model", model, exc)
+                last = exc
+                continue
+            self.model = model
+            return response
+        raise last  # type: ignore[misc]
+
+    def _generate(self, client: Any, types: Any, tool: Any, prompt: str, model: str) -> Any:
         """One ``generate_content`` call; Gemini 3.x gets minimal thinking (retried once without
         it if the model rejects the config), matching ``gemini_provider.GeminiProvider._generate``.
         """
-        if "gemini-3" in self.model:
+        if not model.startswith("gemini-2"):
             try:
                 config = types.GenerateContentConfig(
                     tools=[tool], thinking_config={"thinking_level": "minimal"}
                 )
-                return client.models.generate_content(model=self.model, contents=prompt, config=config)
+                return client.models.generate_content(model=model, contents=prompt, config=config)
             except Exception as exc:  # noqa: BLE001
                 if "think" not in str(exc).lower():
                     raise
         config = types.GenerateContentConfig(tools=[tool])
-        return client.models.generate_content(model=self.model, contents=prompt, config=config)
+        return client.models.generate_content(model=model, contents=prompt, config=config)
 
     def _parse_grounding(self, response: Any, max_results: int) -> Any:
         queries_issued: List[str] = []

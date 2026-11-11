@@ -110,7 +110,8 @@ class SystematicReview:
         kinds = list(inv.SOURCE_KINDS[size])
         protocol = {"protocol_date": day, "question": question, "decision": decision, "size": size, "criteria": crit, "queries": plan, "sources": kinds,
                     "candidates": list(candidates)}
-        hits, log, limits = self.search(plan, kinds, day)
+        failures: List[str] = []
+        hits, log, limits = self.search(plan, kinds, day, failures)
         kept, reasons = self.screen(hits, crit, candidates)
         found = len(hits)
         if use_model and kept:
@@ -141,7 +142,8 @@ class SystematicReview:
             item["applied"] = applied.get(item["item_id"], "")
         review = inv.Investigation(row=row, items=[{c: i.get(c, "") for c in inv.ITEM_COLUMNS} for i in items], protocol=protocol, log=log, reasons=reasons,
                            applied=[{"item": k, "applied": v} for k, v in applied.items()])
-        return {**review.to_dict(), "solution_link": filed, "reused": False, "extends": earlier["investigation_id"] if earlier else ""}
+        return {**review.to_dict(), "solution_link": filed, "reused": False, "extends": earlier["investigation_id"] if earlier else "",
+                "search_failures": list(dict.fromkeys(failures)), "source_failed": bool(failures) and not found}
 
     def new_id(self, day: str, intent_id: str, question: str) -> str:
         slug = re.sub(r"[^a-z0-9]+", "-", question.lower()).strip("-")[:32].strip("-")
@@ -157,7 +159,7 @@ class SystematicReview:
             plan.append(template.format(q=question))
         return plan[:max(want, len(queries))][:inv.QUERIES[size] if not queries else len(queries)]
 
-    def search(self, plan: Sequence[str], kinds: Sequence[str], day: str):
+    def search(self, plan: Sequence[str], kinds: Sequence[str], day: str, failures: Optional[List[str]] = None):
         hits: List[Dict[str, str]] = []
         log: List[Dict[str, Any]] = []
         limits: List[str] = []
@@ -171,6 +173,8 @@ class SystematicReview:
                         found = [as_hit(h) for h in self.science.search(query, max_results=MAX_RESULTS).hits]
                 except Exception as error:    # a source that fails is a limitation, never a failed review
                     limits.append(f"{kind} failed for one query ({type(error).__name__})")
+                    if failures is not None:       # the reason, for the caller to act on; never part of the record a person reads
+                        failures.append(f"{kind}: {str(error)[:300]}")
                 log.append({"source": kind, "query": query, "date": day, "hits": len(found)})
                 hits += [dict(h, found_by=kind) for h in found]
         return hits, log, list(dict.fromkeys(limits))

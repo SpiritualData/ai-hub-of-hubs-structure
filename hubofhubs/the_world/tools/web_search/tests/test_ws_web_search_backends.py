@@ -536,3 +536,87 @@ def test_a_bad_apis_file_loads_nothing_and_does_not_raise(tmp_path):
     assert load_file_specs(str(path)) == {}
     path.write_text('[{"name": "half"}]')
     assert load_file_specs(str(path)) == {}
+
+
+# ---------------------------------------------------------------------------
+# GeminiGroundingBackend: the model comes from the tier tables; a client error moves on to the next model
+# ---------------------------------------------------------------------------
+
+
+class _RefusingThenAnswering:
+    """A client whose first model answers 400 (as a model or tool the API refuses does) and whose later models answer."""
+
+    def __init__(self, refused):
+        self.refused = set(refused)
+        self.tried = []
+        self.models = self
+
+    def generate_content(self, *, model, contents, config):
+        self.tried.append(model)
+        if model in self.refused:
+            err = RuntimeError("400 INVALID_ARGUMENT. refused")
+            err.code = 400
+            raise err
+        return _make_fake_genai_response()
+
+
+def test_gemini_search_models_come_from_the_tier_tables():
+    from hubofhubs.the_world.tools.web_search.backends import gemini_search_models
+    models = gemini_search_models()
+    assert models and all(m.startswith("gemini") for m in models)
+    assert len(models) == len(set(models))
+
+
+def test_gemini_grounding_without_a_named_model_uses_the_tier_choice_and_falls_back_on_a_client_error():
+    from hubofhubs.the_world.tools.web_search.backends import gemini_search_models
+    chosen = gemini_search_models()
+    assert len(chosen) >= 2
+    client = _RefusingThenAnswering({chosen[0]})
+    backend = GeminiGroundingBackend(api_key="gm-key", client=client, http=lambda *a, **k: FakeResponse())
+    resp = backend.search("best keyboards 2024")
+    assert resp.answer == "Grounded answer."
+    assert client.tried[0] == chosen[0] and client.tried[-1] == chosen[1]
+    assert backend.model == chosen[1]           # the model that answered is kept for the next search
+
+
+def test_gemini_grounding_raises_the_last_client_error_with_its_status_when_every_model_refuses():
+    from hubofhubs.the_world.tools.web_search.backends import gemini_search_models
+    client = _RefusingThenAnswering(set(gemini_search_models()))
+    backend = GeminiGroundingBackend(api_key="gm-key", client=client, http=lambda *a, **k: FakeResponse())
+    with pytest.raises(SearchBackendError) as caught:
+        backend.search("x")
+    assert caught.value.status_code == 400
+
+
+def test_gemini_grounding_a_named_model_is_the_only_one_tried():
+    client = _RefusingThenAnswering({"named-model"})
+    backend = GeminiGroundingBackend(api_key="gm-key", model="named-model", client=client, http=lambda *a, **k: FakeResponse())
+    with pytest.raises(SearchBackendError):
+        backend.search("x")
+    assert client.tried == ["named-model"]
+
+
+def test_gemini_clients_are_built_on_the_beta_api_path():
+    import sys
+    import types as pytypes
+    seen = {}
+
+    class FakeClient:
+        def __init__(self, **kwargs):
+            seen.update(kwargs)
+
+    fake = pytypes.ModuleType("google.genai")
+    fake.Client = FakeClient
+    google = pytypes.ModuleType("google")
+    google.genai = fake
+    saved = {k: sys.modules.get(k) for k in ("google", "google.genai")}
+    sys.modules["google"], sys.modules["google.genai"] = google, fake
+    try:
+        GeminiGroundingBackend(api_key="gm-key")._get_client()
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                sys.modules.pop(k, None)
+            else:
+                sys.modules[k] = v
+    assert seen["http_options"] == {"api_version": "v1beta"}
