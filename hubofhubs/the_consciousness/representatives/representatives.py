@@ -20,7 +20,7 @@ def least_authority(person: str) -> Dict[str, Any]:
 class DeclaredAuthority:
     """Each representative is what was declared for it (a mapping of representative id to authority, preferences, quality profile and optionally
     the ``person`` it stands for, or ``character: True`` for one with no person). One with no declaration, or no id at all, gets the least authority
-    over the asker's own data only; a character's data scope never reaches past what its asker may open."""
+    over the asker's own data only; a character's data scope never reaches past what its asker may open, and with no asker it is empty. A representative with no asker is asked by the person it stands for."""
     REQUIRES = ()     # the declarations are a constructor argument
 
     def __init__(self, declarations: Optional[Mapping[str, Mapping[str, Any]]] = None):
@@ -35,6 +35,8 @@ class DeclaredAuthority:
             scope = [stands_for, *scope]
         if person and person != stands_for:
             scope = [d for d in scope if d == person]       # what the asker may open is the ceiling
+        elif not stands_for:
+            scope = []                                      # a character with no asker reaches no one's data (fails closed)
         authority["person"] = stands_for
         authority["data_scope"] = scope
         return {"representative": representative, "person": stands_for, "authority": authority,

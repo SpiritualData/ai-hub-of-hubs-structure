@@ -508,3 +508,4 @@ date,component,impl,cases,passed,dev,heldout,model_calls,tokens_in,tokens_out,co
 2026-11-11,long_term_memory,card_store_recall,25,23,23/25,0/0,0,0,0,0.0,0.0,0.944,43d392a-dirty,4cbfb801,,none,
 2026-11-11,long_term_memory,recent_window,25,17,17/25,0/0,0,0,0,0.0,0.0,0.776,43d392a-dirty,4cbfb801,,none,
 2026-11-11,agent_sessions_hard,"native_tool_loop_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.0705,283.5,0.9985,43d392a,4fe9b0cc,,claude-haiku-5-5,
+2026-11-11,agent_sessions_hard,"solution_agents_native_runner@provider=anthropic,tier=fast",9,9,9/9,0/0,9,0,0,0.3531,450.6,0.9969,53b5f8b,4fe9b0cc,,claude-haiku-5-5,forced past ceiling: pooled runs on current code

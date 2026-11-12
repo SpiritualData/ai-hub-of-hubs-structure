@@ -26,7 +26,7 @@ class ConsciousnessComposition:
         self.intake, self.session = intake, session
 
     def represent(self, person: str = "") -> Mapping[str, Any]:
-        who = take(self.representatives, "the-representatives", person=person)
+        who = take(self.representatives, "the-representatives", representative=person, person=person)
         weighed = take(self.priorities, "prioritization", person=person)
         return {"person": person, "representative": done(who) or {"person": person}, "priorities": done(weighed), "steps": listing([who, weighed])}
 

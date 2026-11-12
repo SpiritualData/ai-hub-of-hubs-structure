@@ -18,9 +18,10 @@ def test_a_character_with_no_person_is_its_own_identity_and_never_reaches_past_i
                              "bailey": {"person": "ana", "authority": {"data_scope": ["team"]}}})
     batman = arm.represent("batman")
     assert batman["representative"] == "batman" and batman["person"] == "" and batman["preferences"] == {"voice": "gruff"}
-    assert batman["authority"]["data_scope"] == ["ana", "bo"]
+    assert batman["authority"]["data_scope"] == []                                        # no asker, no one's data
     assert arm.represent("batman", "ana")["authority"]["data_scope"] == ["ana"]            # the asker is the ceiling
     assert arm.represent("batman", "cho")["authority"]["data_scope"] == []
+    assert arm.represent("batman", "ana")["authority"]["data_scope"] == ["ana"]
     bailey_for_bo = arm.represent("bailey", "bo")
     assert bailey_for_bo["person"] == "ana" and bailey_for_bo["authority"]["data_scope"] == []   # a rep asked by B never carries A's scope
     assert arm.represent("bailey", "ana")["authority"]["data_scope"] == ["ana", "team"] and arm.represent("bailey")["authority"]["data_scope"] == ["ana", "team"]
@@ -42,3 +43,14 @@ def test_a_flow_that_stopped_is_always_asked_about():
     assert SeverityPolicy().decide({"severity": "none"}, "ana", {"stopped": "budget"})["decision"] == "ask"
     assert AskEveryTime().decide({"severity": "none"}, "ana", {"stopped": "authority"})["decision"] == "ask"
     assert AskEveryTime().decide({"severity": "none"})["decision"] == "proceed"
+
+
+def test_the_consciousness_flow_carries_a_declared_persons_authority():
+    from hubofhubs.the_consciousness.flow import ConsciousnessComposition
+    arm = DeclaredAuthority({"ana": {"authority": {"allow": ["web-search", "file-editing"], "data_scope": ["team"]}, "preferences": {"tone": "brief"}}})
+    class Priorities:
+        def prioritize(self, person: str = "", **kwargs):
+            return []
+    flow = ConsciousnessComposition(arm, Priorities(), None, None, None, None)
+    carried = flow.represent("ana")["representative"]
+    assert carried["authority"]["allow"] == ["web-search", "file-editing"] and carried["authority"]["data_scope"] == ["ana", "team"] and carried["preferences"] == {"tone": "brief"}

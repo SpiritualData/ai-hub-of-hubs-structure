@@ -21,9 +21,8 @@ from hubofhubs.the_body.internal_context.card_store.card import Card
 from hubofhubs.the_body.internal_context.card_store.interface import CardStore
 from hubofhubs.the_body.internal_context.card_store.text_sampling import keywords_from_text
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags import affinity_factor
-from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.scope_tags import scope_tags_allow
 
-HOME_BOOST = 1.5      # affinity mode: an item of the turn's own scope ranks first (placeholder weights, the same as Quest AI Runner's)
+HOME_BOOST = 1.5      # an item of the turn's own affinity scope ranks first (placeholder weights, the same as Quest AI Runner's)
 AWAY_FACTOR = 0.6
 MAX_AGE_DAYS = 180.0
 HALF_LIFE_DAYS = 60.0
