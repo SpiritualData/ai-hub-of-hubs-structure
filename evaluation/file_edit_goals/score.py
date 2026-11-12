@@ -5,8 +5,8 @@ body) and ``test_solution.py`` (the benchmark's own tests). The arm gets the goa
 Afterwards the test file is rewritten from the case (an arm cannot pass by editing the check) and pytest runs in a new process with a time
 limit. Pass = pytest exits 0. The folder is removed after each case.
 
-Arms: ``fast_edit`` (one model call on the cheapest Gemini text model) and the Claude Code CLI runners (the cheapest Claude model,
-``haiku``, on the existing subscription). The two groups use different models: a circumstance, stated in README.md.
+Arm: ``fast_edit`` (one model call through the Claude CLI provider on the operator's subscription login; ``impls/fast_edit.py``). The model of
+``fast_edit`` is never named here: it is the model the tier chooser names for the tier (``FILE_EDIT_TIER``, default ``fast``; ``fast_edit@tier=balanced`` and ``fast_edit@tier=quality`` record the other tiers), resolved on the day of the run.
 """
 import os
 import shutil
@@ -17,12 +17,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from priced import first_env, price_of, priced  # noqa: E402
-
-GEMINI_MODEL = "gemini-2.5-flash-lite"
-CLAUDE_MODEL = "haiku"
-MAX_TURNS = 15            # agent turn limit per goal
-AGENT_SECONDS = 240       # wall-clock limit per goal for an agent run
+TIER_VARIABLE = "FILE_EDIT_TIER"   # the tier the fast_edit arm runs on when the arm name does not say; fast, balanced or quality
+TIERS = ("fast", "balanced", "quality")
 CHECK_SECONDS = 30
 
 GOAL = ("Implement the function `{entry}` in solution.py so that every test in test_solution.py passes. "
@@ -56,51 +52,41 @@ class SandboxWriter:
         return WriteResult(ok=True, rel_path=rel_path, bytes_written=len(content.encode("utf-8")), created=created)
 
 
-class TierIsModel:
-    """The tier registry of the fast edit arm: this evaluation pins the model, so a tier is the model id."""
+class DayChooser:
+    """The model tier chooser's answer for the day of the run, in the shape ``TierRegistry`` reads (``choose()``)."""
 
-    def resolve_tier(self, tier):
-        return GEMINI_MODEL
-
-
-def gemini_provider(meter):
-    from hubofhubs.the_world.model_plumbing.vendor_model_caller.gemini import GeminiProvider
-    provider = priced(GeminiProvider, price_of("gemini", GEMINI_MODEL))(api_key=first_env("GOOGLE_API_KEY", "GEMINI_API_KEY", "GOOGLE_AI_API_KEY"))
-    meter.model = GEMINI_MODEL
-    return meter.wrap(provider, ("answer",))
+    def choose(self):
+        import datetime
+        from hubofhubs.the_world.model_plumbing.model_tier_chooser import tiers
+        return tiers.choose(today=datetime.date.today().isoformat())
 
 
-def agent_config(root):
-    from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig
-    from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
-    # No user, project or local settings and no ambient MCP servers, so the run does not depend on this machine's configuration.
-    return SubprocessConfig(working_dir=str(root), review_interval_seconds=0, timeout_seconds=AGENT_SECONDS,
-                            launch=DeepLaunchSettings(setting_sources="", strict_mcp=True))
+def tier_of(param=None, environ=None):
+    """The tier of a ``fast_edit`` run: the arm name's ``tier`` parameter, else ``FILE_EDIT_TIER``, else ``fast``. A run on a tier other than fast must say so in
+    the arm name (``fast_edit@tier=balanced``), because the arm name is what the results row and the role tier table match on."""
+    from esoi import RunError
+    environ = os.environ if environ is None else environ
+    given = (environ.get(TIER_VARIABLE) or "").strip().lower()
+    tier = param or given or "fast"
+    if tier not in TIERS or (param == "fast"):
+        raise RunError(f"the tier is one of {', '.join(TIERS)} ({TIER_VARIABLE}), and fast is the arm fast_edit with no parameter; got {tier!r} from {'the arm name' if param else TIER_VARIABLE}")
+    if not param and tier != "fast":
+        raise RunError(f"{TIER_VARIABLE}={tier} must also be in the arm name, so the record carries it: --impl fast_edit@tier={tier}")
+    return tier
 
 
-def agent_settings():
-    """The worker starts from HOME and PATH only (its login lives under HOME); nothing else of this machine's environment reaches it."""
-    from hubofhubs.the_world.tools.delegated_agent_sessions.settings import GoalSettings
-    env = {name: os.environ[name] for name in ("HOME", "PATH") if name in os.environ}
-    return GoalSettings(environment=lambda: dict(env))
-
-
-def adapt(implementation, meter):
-    """``implementation`` is the declared runner class; returns ``run(kind, args) -> DeepResult`` for one case folder."""
-    name = implementation.__name__
-
-    def run(kind, args):
-        root, goal = args["root"], args["goal"]
-        if name == "FastEditRunner":
-            runner = implementation(provider=gemini_provider(meter), writer=SandboxWriter(root), registry=TierIsModel())
-            return runner.run_goal(goal=goal, brief=goal, model=GEMINI_MODEL)
-        meter.model = CLAUDE_MODEL
-        runner = implementation(agent_config(root), settings=agent_settings())
-        result = runner.run_goal(goal=goal, brief=goal, model=CLAUDE_MODEL, max_turns=MAX_TURNS)
-        meter.record()   # one agent session; the CLI does not report its turn count to the runner
-        meter.cost_usd += float(getattr(result, "cost_usd", 0.0) or 0.0)   # the CLI's own estimate; the subscription is not charged per call
-        return result
-    return run
+def claude_provider(meter, tier):
+    """The Claude CLI provider (subscription login, no key) and the model the tier chooser names for ``tier`` today; ``meter.model`` is that model."""
+    from esoi import RunError
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.tier_registry import TierRegistry
+    from hubofhubs.the_world.model_plumbing.vendor_model_caller.claude_cli import ClaudeCliProvider
+    chosen = (DayChooser().choose().get(tier) or {}).get("arm")
+    if not chosen or chosen[0] != "anthropic":
+        raise RunError(f"the {tier} tier names {chosen!r} today, not an Anthropic model, so the Claude CLI cannot run it")
+    model = TierRegistry(DayChooser()).resolve_tier(tier)
+    meter.model = model
+    provider = ClaudeCliProvider(claude_path="claude", timeout_seconds=300, environment={k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"})
+    return meter.wrap(provider, ("answer",)), model
 
 
 def write_case(root, case):

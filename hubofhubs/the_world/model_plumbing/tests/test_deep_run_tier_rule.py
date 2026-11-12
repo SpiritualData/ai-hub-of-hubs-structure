@@ -144,7 +144,7 @@ def results_file(tmp_path, *rows):
 
 
 def test_file_editing_follows_the_rule_with_its_own_evidence_and_the_same_bar_stated_once():
-    assert "file_editing" in DEEP and rt.own_evidence_for(RULES, "file_editing") == dict(component="file_edit_goals", arms={"fast": "fast_edit"})
+    assert "file_editing" in DEEP and rt.own_evidence_for(RULES, "file_editing") == dict(component="file_edit_goals", arms={"fast": "fast_edit", "balanced": "fast_edit@tier=balanced", "quality": "fast_edit@tier=quality"})
     assert [r["value"] for r in RULES if r["part"] == "sufficiency" and r["key"] == "pass_rate_bar"] == ["0.66"]          # no second bar
     assert rt.own_evidence_for(RULES, "main_session") == {}
 
@@ -153,7 +153,7 @@ def test_file_editing_default_resolves_to_fast_when_a_current_run_of_the_fast_ti
     path = results_file(tmp_path, dict(FAST_EDIT_ROW, passed="30", date="2026-10-30"), FAST_EDIT_ROW, dict(FAST_EDIT_ROW, impl="none", passed="0", model="none"),
                         dict(FAST_EDIT_ROW, sample="sample:3", passed="0", cases="3"))
     own = rt.own_pass_rates(RULES, "file_editing", "2026-11-11", {"fast": "m-fast-then"}, path)
-    assert own == ({"fast": dict(passed=29, total=30, arms=1, first="2026-10-31", last="2026-10-31")}, [])         # the latest full run; the zero bound and samples are not a tier
+    assert own == ({"fast": dict(passed=29, total=30, arms=1, first="2026-10-31", last="2026-10-31")}, ["no full recorded run of the balanced arm fast_edit@tier=balanced", "no full recorded run of the quality arm fast_edit@tier=quality"])         # the latest full run; the zero bound and samples are not a tier
     row = rt.role_row(INPUTS["file_editing"], RULES, {}, {}, "2026-11-11", {"file_editing": "quality"}, own=own)
     assert row["tier"] == "fast" and row["evidence"].startswith("sufficiency rule") and "file_edit_goals" in row["evidence"] and "fast 29 of 30" in row["evidence"]
     assert rt.sufficient_tier(RULES, own[0], what="x")["bar"] == 0.66
@@ -174,7 +174,7 @@ def test_file_editing_evidence_from_another_model_or_past_the_expiry_is_not_used
 
 def test_file_editing_on_disk_uses_its_own_evidence_and_says_what_it_found():
     row = TABLE["file_editing"]
-    assert row["person_may_set"] == "yes" and row["constraint"] == "" and "file_edit_goals" in row["evidence"] and "29 of 30" in row["evidence"]
+    assert row["person_may_set"] == "yes" and row["constraint"] == "" and "file_edit_goals" in row["evidence"] and "fast 30 of 30" in row["evidence"]
     assert "different model" in row["evidence"] or row["tier"] == "fast"      # recorded under another model than the fast tier names: not used, so the tier is kept
     assert not set(rt.measured_pass_rates()) - {"fast"} and "deep-work" not in row["evidence"]
 

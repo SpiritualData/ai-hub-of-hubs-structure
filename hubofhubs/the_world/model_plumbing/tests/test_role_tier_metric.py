@@ -35,7 +35,7 @@ def test_the_rule_file_is_consistent_and_every_part_has_a_reason():
     assert {r["key"] for r in RULES if r["part"] == "stakes"} == {"call", "turn", "task", "structure"}
     assert {r["key"] for r in RULES if r["part"] == "volume"} == {"small", "medium", "large", "session"}
     assert rt.ladder_for(RULES) == ("fast", "balanced", "quality")
-    assert [r["key"] for r in RULES if r["part"] == "revision"] == ["1", "2", "3", "4", "5"]      # the revisions on the owner's instruction are recorded, with his words
+    assert [r["key"] for r in RULES if r["part"] == "revision"] == ["1", "2", "3", "4", "5", "6"]      # the revisions on the owner's instruction are recorded, with his words
     assert any(r["part"] == "assumption" for r in RULES)                                # the dollar values and the cost weight are stated as assumptions
 
 
