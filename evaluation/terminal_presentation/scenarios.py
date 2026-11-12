@@ -165,6 +165,9 @@ SECONDS = 30
 def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
     """The scenario's result. An arm shown only through an external program (``presentation = "external"``) is not captured here: its screen checks are marked not run."""
     if presentation_of(arm) == "external":
+        if getattr(arm, "external_scenarios", ""):       # an arm whose real client is run on a pseudo-terminal names the module that does it (opencode_external)
+            import importlib
+            return importlib.import_module(arm.external_scenarios).run_scenario(name)
         import external
         return external.run_scenario(name)
     done: Dict[str, Any] = {}

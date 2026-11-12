@@ -31,7 +31,7 @@ from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
 ANSI = re.compile(r"\x1b\[[0-9;?<>=]*[ -/]*[@-~]|\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)|\x1b[()][A-Z0-9]|\x1b[=>78]")
-ARM_NAMES = {"LiveSession": "live_session", "TextualSession": "textual_session", "PolishedSession": "polished_session", "LineRepl": "line_repl"}
+ARM_NAMES = {"LiveSession": "live_session", "TextualSession": "textual_session", "PolishedSession": "polished_session", "AdoptedSession": "adopted_session", "LineRepl": "line_repl"}
 SLOTS = threading.Semaphore(2)       # never more than two model sessions at once
 ROOT = Path(__file__).resolve().parents[2]
 

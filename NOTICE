@@ -23,3 +23,15 @@ That file's header states, as required by Apache-2.0 section 4(b), exactly what
 was changed: Aider runtime coupling removed, unreachable dead code dropped, the
 apply function made pure (it no longer touches the filesystem), and a whole-file
 block parser ported from WholeFileCoder.get_edits.
+
+hubofhubs/the_consciousness/ai_session_experience/terminal_experience/vendor/mistral_vibe_ui contains code copied
+and MODIFIED from the Textual interface of Mistral Vibe (https://github.com/mistralai/mistral-vibe), the folder
+vibe/cli/textual_ui and the parts of vibe/app_server and a few other modules that interface reads, at release tag
+v2.26.1 (a frozen snapshot, vendored 2026-11-11; upstream later replaced this interface).
+
+  Copyright 2025 Mistral AI
+  Licensed under the Apache License, Version 2.0 (the upstream licence text is the LICENSE file in that folder).
+
+Each copied file opens with a docstring that names its upstream file and says what was changed, as required by
+Apache-2.0 section 4(b); the README.md in that folder lists what was taken and what was cut. The tag carries no
+NOTICE file of its own, so there is none to reproduce.

@@ -2,7 +2,7 @@
 package = "hubofhubs"
 plugins = ["scripts/esoi_rules.py"]   # the hub's own rule L1 (research is recorded as an investigation)
 layers = ["core"]
-other_layers = ["docs", "tests", "scripts", "evaluation"]
+other_layers = ["docs", "tests", "scripts", "evaluation", "vendor"]   # vendor: third-party code kept as its authors wrote it (a folder named vendor; esoi asks it no docstring and finds no port in it)
 max_lines = 1500
 root_python_allow = ["conftest.py"]   # the one shared pytest conftest serves tests/ and the tests/ folders beside each solution
 

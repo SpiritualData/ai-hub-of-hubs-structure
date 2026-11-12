@@ -35,15 +35,34 @@ def module_level_imports(source: str) -> set[str]:
     return found
 
 
-def offenders(source: str) -> set[str]:
+# Third-party code kept as its authors wrote it lives in a folder named ``vendor`` (esoi treats that name as third-party too: no docstring or port rule). It may import, at module level, only the
+# libraries of the extra that carries it; nothing outside a vendor folder may, which the rule above keeps enforcing for the hub's own code.
+VENDOR_LIBRARIES = {"textual", "rich", "pydantic", "pygments"}
+
+
+def offenders(source: str, vendor: bool = False) -> set[str]:
+    if vendor:
+        return top_level_imports(source) - ALLOWED - LAZY - VENDOR_LIBRARIES
     return (top_level_imports(source) - ALLOWED - LAZY) | (module_level_imports(source) & LAZY)
+
+
+def in_vendor(path: Path) -> bool:
+    return "vendor" in path.relative_to(ROOT).parts
 
 
 def test_every_package_import_is_allowed():
     files = [p for d in PACKAGE_DIRS if (ROOT / d).is_dir() for p in (ROOT / d).rglob("*.py") if "tests" not in p.parts]   # tests beside the code may use pytest and the shared test support
     assert files, "no package files found"
-    bad = {str(p.relative_to(ROOT)): sorted(offenders(p.read_text())) for p in files if offenders(p.read_text())}
+    bad = {str(p.relative_to(ROOT)): sorted(offenders(p.read_text(), in_vendor(p))) for p in files if offenders(p.read_text(), in_vendor(p))}
     assert not bad, f"imports outside stdlib, the package and esoi: {bad}"
+
+
+def test_each_vendor_folder_carries_its_licence_and_says_what_it_took():
+    sources = sorted({p.parent for d in PACKAGE_DIRS for p in (ROOT / d).rglob("LICENSE") if in_vendor(p)} | {p.parent for d in PACKAGE_DIRS for p in (ROOT / d).rglob("README.md") if in_vendor(p)})
+    assert sources, "no vendor folder found"
+    for folder in sources:
+        assert (folder / "LICENSE").is_file() and (folder / "README.md").is_file(), f"{folder.relative_to(ROOT)} needs its LICENSE and a README.md saying what was taken and what was cut"
+        assert str(folder.relative_to(ROOT)) in (ROOT / "NOTICE").read_text(), f"{folder.relative_to(ROOT)} is not named in NOTICE"
 
 
 def test_checker_rejects_unlisted_modules():
@@ -54,3 +73,6 @@ def test_checker_rejects_unlisted_modules():
     assert offenders("def f():\n    import httpx") == set()        # an extra's library, imported lazily
     assert offenders("import httpx") == {"httpx"}                     # but never at module level
     assert offenders("try:\n    import pypdf\nexcept ImportError:\n    pass") == {"pypdf"}
+    assert offenders("import textual\nimport pydantic", vendor=True) == set()     # a vendor folder may import the libraries of the extra that carries it
+    assert offenders("import requests", vendor=True) == {"requests"}              # and nothing else
+    assert offenders("import pydantic") == {"pydantic"}                           # the hub's own code never imports them at module level

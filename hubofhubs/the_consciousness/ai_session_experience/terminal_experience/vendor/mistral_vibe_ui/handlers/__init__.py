@@ -1,0 +1,1 @@
+"""The event handler of the vendored Vibe screen: typed history entries in, widgets out. Vendored from Mistral Vibe v2.26.1 (Apache-2.0, vibe/cli/textual_ui/handlers); the package file is new and holds nothing."""

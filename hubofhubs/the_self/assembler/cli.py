@@ -64,7 +64,7 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
         return 2
     if hasattr(arm, "configure"):       # an arm that starts a program of its own (the ACP client arm) is told what the agent it points at is started with
         arm.configure(harness=name, folder=folder, tier=args.tier, max_spend=args.max_spend, max_time=args.max_time, permission=args.permission, solution=args.solution,
-                      milestone=args.milestone, person=args.person, setting_sources=args.setting_sources, environ=process_environment())
+                      milestone=args.milestone, person=args.person, setting_sources=args.setting_sources, environ=process_environment(), mode=getattr(args, "opencode_mode", ""))
     code = arm.host_terminal(session, args.goal, args.resume) if interactive and hasattr(arm, "host_terminal") else session.run(args.goal, args.resume)
     last = session.last.final if session.last else None
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1
@@ -132,10 +132,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     work.add_argument("--milestone", default="", help="the milestone it serves")
     work.add_argument("--records", default="", help="the ESOI records the structure view reads (default: this folder when it has esoi.toml)")
     work.add_argument("--as", dest="person", default="", metavar="NAME", help="act for this representative (its authority and stop limits apply; /as switches)")
-    work.add_argument("--terminal", default="", help="the screen: live_session, textual_session, polished_session, acp_client_session (an installed ACP client such as Toad draws it) or line_repl (default: the hub's selected one; the best-measured arm that can run stands in when one's library or program is missing, with the reason shown)")
+    work.add_argument("--terminal", default="", help="the screen: live_session, textual_session, polished_session, adopted_session (the interface of an existing terminal agent, vendored), acp_client_session (an installed ACP client such as Toad draws it) or line_repl (default: the hub's selected one; the best-measured arm that can run stands in when one's library or program is missing, with the reason shown)")
     work.add_argument("--setting-sources", default="project", help="which of the Claude CLI's setting sources a session loads: project (default: this folder's own, never your user-level settings and hooks), or a list such as user,project")
     work.add_argument("--structure-watch", default="on", choices=("on", "off"), help="on (default): one small best-tier look at the records after a run that changed something, when there are records; off: never")
     work.add_argument("--plain", action="store_true", help="plain lines even on a terminal")
+    work.add_argument("--opencode-mode", default="", choices=("", "full", "inline"), help="with --terminal opencode_client_session: full (the client's full-screen interface, default) or inline (opencode mini, into the terminal's own scrollback)")
+    from hubofhubs.the_consciousness.ai_session_experience.opencode_server.command import add_arguments as add_opencode_server
+    add_opencode_server(sub)
     acp = sub.add_parser("acp", help="serve the hub's session harness as an Agent Client Protocol agent on stdio (an ACP terminal client launches it, for example: toad acp \"ahohs acp\" .); needs the extra acp")
     acp.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick)")
     acp.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best")
@@ -182,6 +185,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         return work_command(args, hubofhubs)
     if args.command == "acp":
         return acp_command(args)
+    if args.command == "opencode-server":
+        from hubofhubs.the_consciousness.ai_session_experience.opencode_server.command import serve_command
+        return serve_command(args)
     if args.command == "chat":
         from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl import LineRepl
         chosen = dict(item.split("=", 1) for item in args.arm)

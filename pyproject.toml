@@ -38,6 +38,7 @@ acp = ["agent-client-protocol>=1.0"]      # (floor raised to 1.0, the version `a
 bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # the-subconscious: the BM25 content store
 retrieval = ["numpy>=1.26", "scikit-learn>=1.4", "fastembed>=0.8"]   # context-retriever: the dense arm (a local embedding model), the latent semantic index and the learned reranker
 textual = ["textual>=8.0"]                                   # terminal-session arm: textual_session (a full-screen terminal; rich, its dependency, renders the markdown)
+adopted_ui = ["textual>=8.0", "pydantic>=2.7"]             # terminal-session arm: adopted_session (the vendored Mistral Vibe v2.26.1 interface; needs Python 3.12 or later, its typed entries are pydantic models)
 graphify = ["graphifyy==0.9.102"]                           # cards-from-files: the graphify_files builder (code-only extraction, no model)
 
 [tool.setuptools.packages.find]
@@ -49,4 +50,4 @@ testpaths = ["tests", "hubofhubs"]
 python_files = ["test_*.py"]
 
 [tool.setuptools.package-data]
-hubofhubs = ["registry/*.csv", "esoi_selection.json", "arm_order.json", "the_world/model_plumbing/model_tier_chooser/role_tiers.csv", "the_world/model_plumbing/model_tier_chooser/role_tier_metrics.csv", "the_world/model_plumbing/model_tier_chooser/tier_metrics.csv"]
+hubofhubs = ["the_consciousness/ai_session_experience/opencode_server/plugin/hub_session/tui.tsx", "registry/*.csv", "esoi_selection.json", "arm_order.json", "the_world/model_plumbing/model_tier_chooser/role_tiers.csv", "the_world/model_plumbing/model_tier_chooser/role_tier_metrics.csv", "the_world/model_plumbing/model_tier_chooser/tier_metrics.csv"]
