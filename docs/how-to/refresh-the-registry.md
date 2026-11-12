@@ -34,7 +34,7 @@ already looked into before it acts with `system["the-learning"].investigations_f
    and an area researched once in 90 days cannot catch it. Besides the area's own queries, run these and record the queries in the investigation: (a) repositories created
    since `last_researched` ordered by stars (`gh search repos "agent" --created=">DATE" --sort stars`, and the same for `mcp`, `coworker`, `harness`, `sandbox`); (b) the
    trending and release lists of the main agent ecosystems; (c) what Joshua or a person's note names. For each repository with over about 1,000 stars that fits no area, add a
-   finding to the nearest area (role `watch`, `adoption` and its reason), or raise a new area. A candidate named by a person is added the same day, not at the next refresh.
+   finding to the nearest area (role `watch`, `adoption` and its reason), or raise a new area. A candidate named by a person is added the same day, not at the next refresh. This sweep is also its own due item every day (`new-tools-sweep`), so it runs even when no area is stale.
 3. Replace the area's rows in `hub_findings.csv` (ids `<prefix>-1`, `<prefix>-2` and so on, where the prefix is the area's
    `finding_id` in `hubs.csv`; at least 2 candidates unless the area names a single one, and at most 16, since a sub-solution
    area may weigh many; split an area that needs more; license, role, one line, evidence URL, today's date, and
@@ -50,7 +50,7 @@ already looked into before it acts with `system["the-learning"].investigations_f
 
 An autopilot asks the assembled Learning solution: `system["the-learning"].due_investigations("2026-11-10")` (the date is optional) returns a list, most overdue
 first, of `{"kind", "id", "question", "links", "due_on", "days_overdue", "request"}`, where `kind` is `investigation` (an open investigation past its `refresh_on`),
-`experiment` (a running experiment past its `reevaluate_time`, the older `reevaluate_on` is read too) or `registry-area` (an area older than ninety days or never recorded as an investigation), and `request` is the
+`experiment` (a running experiment past its `reevaluate_time`, the older `reevaluate_on` is read too) or `registry-area` (an area older than ninety days or never recorded as an investigation) or `new-tools-sweep` (step 2b on its own, due daily until a review linked `sweep:new-tools` is stored that day, so a new kind of tool is not left waiting up to ninety days for its nearest area), and `request` is the
 instruction to run for it. The weekly refresh is declared as standing work: `system["the-learning"].standing_schedule(last_run)` returns a schedule
 (`name` `learning-weekly-refresh`, `cadence` weekly, `request`) that Proactivity reads, so `proactive([schedule, ...], now)` says when to ask `due_investigations`.
 

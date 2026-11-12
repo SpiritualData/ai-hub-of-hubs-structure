@@ -31,6 +31,8 @@ INVESTIGATIONS, ITEMS, EXPERIMENTS = "investigations.csv", "investigation_items.
 OLDER_FILES = {INVESTIGATIONS: "research.csv", ITEMS: "research_items.csv"}
 OLDER_ID = "research_id"
 WEEKLY = "learning-weekly-refresh"
+SWEEP_LINK = "sweep:new-tools"
+SWEEP_DAYS = 1      # the sweep for tools outside every area is daily: a tool can pass 10,000 stars within weeks of release
 
 
 def day_of(today: Any = "") -> date:
@@ -181,7 +183,8 @@ def area_request(area: Mapping[str, str]) -> Dict[str, Any]:
 
 def due(today: Any = "", root: Any = None, freshness: Any = None) -> List[Dict[str, Any]]:
     """What learning is due on ``today`` (ISO, default today): investigations past ``refresh_on``, experiments past ``reevaluate_time`` (the older name
-    ``reevaluate_on`` is read too), and registry areas stale or never investigated. Each is ``kind`` (investigation, experiment, registry-area), ``id``, ``question``,
+    ``reevaluate_on`` is read too), registry areas stale or never investigated, and the daily sweep for new tools outside every area. Each is ``kind`` (investigation,
+    experiment, registry-area, new-tools-sweep), ``id``, ``question``,
     ``links``, ``due_on``, ``days_overdue`` and the ``request`` to run."""
     day = day_of(today)
     out: List[Dict[str, Any]] = []
@@ -214,7 +217,30 @@ def due(today: Any = "", root: Any = None, freshness: Any = None) -> List[Dict[s
         out.append({"kind": "registry-area", "id": area["area"], "question": request["question"], "links": request["links"], "due_on": due_on,
                     "days_overdue": (age - registry.STALENESS_DAYS) if age is not None else 10 ** 4,
                     "request": f"Investigate the registry area {area['area']} (a standard size review), store the record beside the registry, and update hubs.csv and hub_findings.csv"})
+    sweep = new_tools_sweep(day, root)
+    if sweep and registry.read("hubs.csv"):
+        out.append(sweep)
     return sorted(out, key=lambda d: (-d["days_overdue"], d["kind"], d["id"]))
+
+
+def new_tools_sweep(day: date, root: Any = None) -> Optional[Dict[str, Any]]:
+    """The sweep for new tools that fit no registry area, due every ``SWEEP_DAYS`` days. Areas are refreshed one by one once a quarter and each searches
+    only its own name, so a tool of a new kind (a desktop coworker that bundles channels, approvals and a sandbox) enters no area's search; this item makes
+    the search for such tools due on its own cadence. Its record is linked ``sweep:new-tools`` and the last one's ``done_on`` sets the next due day."""
+    done = [r.get("done_on", "") for r in rows(root, INVESTIGATIONS) if SWEEP_LINK in split_ids(r.get("links", "")) and r.get("done_on")]
+    last = max(done) if done else ""
+    age = (day - date.fromisoformat(last)).days if last else None
+    if age is not None and age < SWEEP_DAYS:
+        return None
+    since = last or date.fromordinal(day.toordinal() - SWEEP_DAYS).isoformat()
+    return {"kind": "new-tools-sweep", "id": "new-tools", "question": f"Which open-source AI agent tools released or rising since {since} fit no registry area, "
+                                                                     "and is any worth a finding or a new area?",
+            "links": [SWEEP_LINK], "due_on": date.fromordinal(date.fromisoformat(last).toordinal() + SWEEP_DAYS).isoformat() if last else "",
+            "days_overdue": (age - SWEEP_DAYS) if age is not None else 0,
+            "request": (f"Sweep for new tools since {since} as step 2b of docs/how-to/refresh-the-registry.md says: repositories created since then ordered by stars "
+                        "(agent, mcp, coworker, harness, sandbox), the trending and release lists of the main agent ecosystems, and tools a person's note names; for each "
+                        "one over about 1,000 stars that no area lists, add a watch finding to the nearest area or raise a new area; store the review linked "
+                        f"{SWEEP_LINK}, even when it finds nothing")}
 
 
 def standing_schedule(last_run: str = "") -> Dict[str, Any]:

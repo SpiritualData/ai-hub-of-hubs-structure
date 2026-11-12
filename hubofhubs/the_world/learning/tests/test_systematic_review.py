@@ -188,10 +188,25 @@ def test_due_lists_reviews_experiments_and_registry_areas_past_their_dates(tmp_p
           [["stale_area", "s2", "2026-06-01", "A;B"], ["fresh", "s3", "2026-07-01", ""], ["recent", "s4", "2026-11-01", ""], ["never", "s5", "", ""]])
     monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", h / "registry")
     got = investigation_store.due(DAY, tmp_path)
-    assert [(d["kind"], d["id"]) for d in got] == [("registry-area", "never"), ("registry-area", "stale_area"), ("investigation", "r-old"), ("experiment", "x-1")]
+    assert [(d["kind"], d["id"]) for d in got] == [("registry-area", "never"), ("registry-area", "stale_area"), ("investigation", "r-old"), ("experiment", "x-1"),
+                                                     ("new-tools-sweep", "new-tools")]
     assert all(d["request"] and "days_overdue" in d for d in got)
     assert got[1]["days_overdue"] == (__import__("datetime").date(2026, 11, 10) - __import__("datetime").date(2026, 6, 1)).days - 90
     assert investigation_store.standing_schedule()["cadence"] == "weekly" and investigation_store.standing_schedule()["name"] == investigation_store.WEEKLY
+
+
+def test_the_new_tools_sweep_is_due_daily_until_a_sweep_is_stored_that_day(tmp_path, monkeypatch):
+    h = tmp_path / "hubofhubs"
+    write(h / "registry" / "hubs.csv", ["area", "seat", "last_researched", "candidate_hubs"], [["recent", "s4", "2026-11-01", ""]])
+    monkeypatch.setattr("hubofhubs.the_world.learning.research_freshness_reader.registry.DATA", h / "registry")
+    got = investigation_store.due(DAY, tmp_path)
+    assert [(d["kind"], d["links"]) for d in got] == [("new-tools-sweep", [investigation_store.SWEEP_LINK])] and "step 2b" in got[0]["request"]
+    write(h / "registry" / "investigations.csv", ["investigation_id", "question", "links", "size", "refresh_on", "status", "done_on"],
+          [["s-1", "q?", investigation_store.SWEEP_LINK, "standard", "", "open", "2026-11-08"]])
+    assert investigation_store.due(DAY, tmp_path)[0]["days_overdue"] == 1
+    write(h / "registry" / "investigations.csv", ["investigation_id", "question", "links", "size", "refresh_on", "status", "done_on"],
+          [["s-2", "q?", investigation_store.SWEEP_LINK, "standard", "", "open", DAY]])
+    assert investigation_store.due(DAY, tmp_path) == []
 
 
 def test_investigations_stored_under_the_older_file_and_column_names_are_still_read_and_carried_over(tmp_path, monkeypatch):
