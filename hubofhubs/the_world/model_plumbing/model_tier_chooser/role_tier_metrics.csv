@@ -1,0 +1,41 @@
+part,kind,role,key,weight,fit,value,reason
+rule,all,,base_gain,,,0.10,"Written 2026-11-11 before any role was computed. The gain the next tier up must show before a role leaves a tier, in shares of the better model's score on the kind's evaluations (0 to 1): twice the 5 percent tolerance the tier chooser already allows for benchmark noise, because the evaluations publish no interval in our data. The full threshold is base_gain x frequency factor x price premium / stakes factor."
+rule,all,,price_premium,,,log2,"The price premium is log2 of the next tier's list price (input plus output USD per million tokens, the price row in force that day) over this tier's, never below 1: every doubling of price asks for the base gain once more, and a step that costs less than double asks for it once. List prices come from the tier prices file, never from a name in code."
+rule,all,,top_of_metric,,,quality,"The metric climbs the ladder only as far as quality. Best is never reached by the metric: it is set by a person or by the structure watch (the constraint best_only_on_request_or_watch)."
+rule,all,,noise_note,,,,"If this rule is wrong it is changed in a new recorded row with its date and the reason, with the table recomputed once; it is never retuned to move a role. This metric family was retuned after seeing results three times and that is a recorded weakness."
+ladder,all,,fast,,,1,"Today one ladder for every kind: fast, balanced, quality, in this order, each tier filled by the model the tier choice names that day. A kind or a role may later carry its own ladder rows (a ladder row with a kind or role set replaces this one for it, the way a role variant replaces a tier's weights in tier_metrics.csv), so a type of task can have its own tiers."
+ladder,all,,balanced,,,2,Second rung.
+ladder,all,,quality,,,3,Top rung the metric reaches.
+frequency,all,,many,,,2.0,"More than four calls in a turn or a run, or one call per item over many items (per file, per search, per step of a run). Many calls multiply the cost of a dearer tier and are the owner's reason for fast, so the gain asked for doubles."
+frequency,all,,turn,,,1.0,One to four calls in a turn or a run. The reference.
+frequency,all,,rare,,,0.5,"Fewer than one call per turn or run (on a condition, a schedule or a request). The owner allows a higher tier for an infrequent call that shows a significant improvement, so half the gain is asked for."
+stakes,all,,call,,,1,"An error stays inside the call: a later step, a validator or the call's own metric catches it. Divides nothing."
+stakes,all,,turn,,,2,"An error changes what the turn does or says. The owner's reason for balanced: a significant downstream effect for the turn, so half the gain is asked for."
+stakes,all,,structure,,,4,"An error persists in records, structure or the design of an arm. The owner's reason for quality: a quarter of the gain is asked for."
+evaluation,classify,,automationbench_aa,0.50,proxy,,"Structured workflow completion on declared inputs: the nearest public evaluation to choosing a label from facts. No public evaluation measures classification on current models, so it is a proxy."
+evaluation,classify,,omniscience_non_hallucination,0.50,proxy,,Abstaining instead of inventing: a label must not be invented. A proxy for the same reason.
+evaluation,gather,,automationbench_aa,0.40,direct,,"Structured tool and workflow completion: gathering is reading, filtering and ranking records through connected tools and files."
+evaluation,gather,,omniscience_non_hallucination,0.30,direct,,"Not inventing: gathered material must be what the sources say, and a gather call that invents misleads every later call."
+evaluation,gather,,omniscience_accuracy,0.30,proxy,,Short factual answers: a proxy for picking the right item from many.
+evaluation,orchestrate,,automationbench_aa,0.40,direct,,"Structured tool and workflow completion: orchestrating is choosing steps, arguments and routes for connected tools."
+evaluation,orchestrate,,omniscience_non_hallucination,0.30,direct,,A plan or an extraction must not invent facts or arguments.
+evaluation,orchestrate,,terminal_bench_4,0.30,proxy,,"Multi-step agentic completion: a proxy for a plan that holds across steps; it measures running a plan, not choosing one."
+evaluation,work,,terminal_bench_4,0.30,direct,,Agentic work in a terminal: the work the main session and its sub-agents do.
+evaluation,work,,frontiercode_2,0.30,direct,,Real repository changes: file editing and change work.
+evaluation,work,,automationbench_aa,0.25,direct,,Tool use against connected systems: operations on connected systems.
+evaluation,work,,aa_briefcase,0.15,proxy,,Knowledge-work agent tasks (Elo): a proxy for work that is not code.
+evaluation,review,,hle_diamond,0.30,proxy,,"Expert-level reasoning: a reviewer must see what a non-expert misses. Proxy: it grades answers, not reviews."
+evaluation,review,,critpt_v2_hard,0.20,proxy,,Research-level reasoning: a proxy for judging a hard claim.
+evaluation,review,,aa_briefcase,0.30,proxy,,Knowledge-work agent tasks (Elo): a proxy for judging a work product against a brief.
+evaluation,review,,omniscience_non_hallucination,0.20,direct,,A reviewer must not invent flaws or pass an invented claim.
+evaluation,write,,gdpval_aa,0.60,direct,,"Expert-judged work products (Elo): the nearest public measure of prose a person reads and judges."
+evaluation,write,,omniscience_non_hallucination,0.40,direct,,Prose a person reads must not state invented facts.
+evaluation,structure,,hle_diamond,0.25,proxy,,Expert-level reasoning: structure work is judged by experts. A proxy: it grades answers.
+evaluation,structure,,critpt_v2_hard,0.15,proxy,,Research-level reasoning.
+evaluation,structure,,aa_briefcase,0.25,direct,,"Long knowledge-work agent tasks (Elo): multi-step deliverables, the shape of structure work."
+evaluation,structure,,terminal_bench_4,0.20,direct,,Long-horizon agentic work.
+evaluation,structure,,frontiercode_2,0.15,direct,,"Long-horizon code: records and arms are code and specification changes."
+constraint,classify,,classify_fast_only,,,fixed:fast,"Classification is fast tier only, always (the owner's hard rule, kept as a recorded constraint): a classification prompt is improved by training on past cases on the fast tier, not by buying a larger model, and the calls are many. An explicit tier from a person does not change it."
+constraint,write,,person_reads_balanced_min,,,min:balanced,"Any response a person reads is at least balanced (the owner's rule): a person reads the error directly, so the lowest tier is not allowed for prose a person reads."
+constraint,,main_session,deep_work_default_balanced,,,fixed:balanced,"Balanced is the default for deep work (the owner's stated rule of 2026-11-10), added 2026-11-11 after the first computation showed the metric alone picking quality for this role; the row still shows that pick and its numbers so the disagreement stays visible. A person's explicit tier still wins (the role lets a person set it). The roles that follow the main session keep following it."
+constraint,,structure-watch,best_only_on_request_or_watch,,,fixed:best,"Best only where a person asks for it or sets it, plus the structure watch (the owner's rule): the watch is the one small call that guards structural risk, so it runs on the best tier without being asked. The metric never reaches best."

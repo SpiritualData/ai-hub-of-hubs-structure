@@ -171,6 +171,23 @@ def keep(case, text, verdicts):
         out.write_text(json.dumps({"deliverable": text, "verdicts": verdicts}, indent=1), encoding="utf-8")
 
 
+def run_fields(result):
+    """What a run did with sub-agents, for the case's record (``runs.csv`` keeps the whole row; ``per_case.csv`` has no column for it): ``turns``, ``subagent_calls`` (calls that
+    ran), ``subagent_refused``, ``agents_offered`` (how many solution agents the run was offered; 0 means the work was sized too small) and ``subagents`` (``solution=count``
+    pairs, ``;`` between). Only what the result exposes: an arm with no sub-agents adds nothing."""
+    fields = {}
+    for key in ("turns", "subagent_calls"):
+        value = getattr(result, key, None)
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            fields[key] = int(value)
+    report = getattr(result, "subagent_report", None)
+    if isinstance(report, dict):
+        fields["agents_offered"] = len(report.get("offered") or [])
+        fields["subagent_refused"] = sum((report.get("refused") or {}).values())
+        fields["subagents"] = ";".join(f"{name}={count}" for name, count in sorted((report.get("ran") or {}).items()))
+    return fields
+
+
 def score_case(fn, stub):
     case = body(stub)
     root = Path(tempfile.mkdtemp(prefix="agent_session_hard_"))
@@ -201,6 +218,6 @@ def score_case(fn, stub):
         met = bool(getattr(result, "met", False))
         ok = met and not problems
         note = "" if ok else (getattr(result, "error", None) or "; ".join(problems) or "the run did not meet the goal")
-        return dict(ok=ok, got=report[:60], note=str(note)[:300])
+        return dict(ok=ok, got=report[:60], note=str(note)[:300], **run_fields(result))
     finally:
         shutil.rmtree(root, ignore_errors=True)

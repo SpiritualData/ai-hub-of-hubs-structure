@@ -23,6 +23,12 @@ class PlanDecision:
     # one. None = not assessed; the ladder is then unchanged.
     deep_difficulty: Optional[str] = None
     deep_difficulty_reason: Optional[str] = None  # one short clause, logged with the choice
+    # The model the PERSON asked for, in their own message, to run this work on ("do this on opus",
+    # "use haiku for the lookups"). A structured self-report on the same planning call (zero extra
+    # LLM calls), never read out of the message by a word list. Verbatim family, tier or model id;
+    # None when they named none. The consumer decides whether it can run it; it outranks a
+    # standing default (a conversation's pinned work model) because it is the more specific, newer ask.
+    deep_model_request: Optional[str] = None
     # WHAT a "deep" (or deferred_deep) change lands on, judged on the same planning call (zero
     # extra LLM calls): "records" | "code_or_files" | "other" | None (the labels are the consumer's). A
     # "records" target gates the deep-runner ladder so a change to records never lands on a file-editing rung. None = not assessed; the ladder is unchanged.

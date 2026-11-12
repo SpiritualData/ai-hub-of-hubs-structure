@@ -172,8 +172,8 @@ def choose(folder=None, available=None, credits=None, today="", role="", environ
     strong) as the same entries. The model a tier defaults to is decided by public evaluations, list price and published speed only
     (``public_metric``: tier_metrics.csv over tier_public_scores.csv and tier_prices.csv): the cheapest and fastest arm that is at least as good as the
     tier's held default (``tier_arms.csv``) on every evaluation the tier names, less a tolerance, with capability above that earning a small bonus; ``scored`` is the ranking and ``reason`` names the runner-up. ``evidence`` is ``proxy``
-    when the evaluations only stand in for the tier's use. The hub's own measurements do not decide the model of a tier: a solution's own metric
-    informs which tier its call role uses (role_tiers.csv). With no arm clearing the minimums the held default of ``tier_arms.csv`` stays (stage
+    when the evaluations only stand in for the tier's use. The hub's own measurements do not decide the model of a tier: the role-tier metric
+    (``role_tiers.compute_table``, over the same public rows) decides which tier a call role uses. With no arm clearing the minimums the held default of ``tier_arms.csv`` stays (stage
     ``held``), else the cheapest priced available arm. ``available`` (providers a consumer has configured; None for all) restricts the arms, or
     ``environ`` (a mapping the caller gives) derives it with ``providers_available``. ``effort_providers`` names the providers whose caller applies the
     returned effort (none today: only each model's documented default effort competes). ``role`` names a domain of call (for example ``science``)

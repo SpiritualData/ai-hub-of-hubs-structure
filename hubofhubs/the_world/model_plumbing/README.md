@@ -21,7 +21,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
-| Model Tier Chooser | `model-tier-chooser` | `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})` | Tier metric selector (`tier_selector`) | Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases |
+| Model Tier Chooser | `model-tier-chooser` | `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})` | Tier metric selector (`tier_selector`) | Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Role tier by public evaluations, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases |
 | Vendor Model Caller | `vendor-model-caller` | `hubofhubs.run("vendor-model-caller", ...)` | Multi-provider router (`multi_provider`) | Provider failover |
 
 ## Problems and ideals
@@ -41,7 +41,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Quality tier default (`metric-tier-quality`)
 - Best tier default (`metric-tier-best`)
 - Fast roles pooled cases (`metric-fast-roles-pool`): leader `tier_arm@candidate=3,tier=fast`, 108 of 112 cases
-- Provider failover (`metric-vendor-model-caller`): leader `multi_provider`, 30 of 30 cases
+- Role tier by public evaluations (`metric-role-tier`)
+- and 1 more: all 11 are in [metrics](#metrics) of the full record below
 
 ## Where to go next
 
@@ -62,7 +63,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
-| Model Tier Chooser | `model-tier-chooser` | Tier metric selector (`tier_selector`) | Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases |
+| Model Tier Chooser | `model-tier-chooser` | Tier metric selector (`tier_selector`) | Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Role tier by public evaluations, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases |
 | Vendor Model Caller | `vendor-model-caller` | Multi-provider router (`multi_provider`) | Provider failover |
 
 ### Implementations
@@ -88,6 +89,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Quality tier default (`metric-tier-quality`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
 - Best tier default (`metric-tier-best`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
 - Fast roles pooled cases (`metric-fast-roles-pool`): `esoi run fast_roles_pool --impl tier_arm@tier=fast; esoi run fast_roles_pool --impl tier_arm@tier=balanced; esoi run fast_roles_pool --impl tier_arm@candidate=1,tier=fast; esoi run fast_roles_pool --impl tier_arm@candidate=2,tier=fast; esoi run fast_roles_pool --impl tier_arm@candidate=3,tier=fast`
+- Role tier by public evaluations (`metric-role-tier`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_role_tier_metric.py`
 - Provider failover (`metric-vendor-model-caller`): `esoi run provider_failover --impl multi_provider`
 
 

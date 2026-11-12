@@ -132,6 +132,7 @@ def apply_review(cheap: PlanDecision, raw: Optional[Dict[str, Any]], *, default_
         return PlanDecision(action="deep", goal=goal, deep_brief=brief, rationale=rationale,
                             model_tier=cheap.model_tier, deep_difficulty=cheap.deep_difficulty,
                             deep_difficulty_reason=cheap.deep_difficulty_reason,
+                            deep_model_request=cheap.deep_model_request,
                             deep_target=cheap.deep_target, confidence=cheap.confidence)
     if action == "answer":
         deferred = None
@@ -140,6 +141,7 @@ def apply_review(cheap: PlanDecision, raw: Optional[Dict[str, Any]], *, default_
         return PlanDecision(action="answer", rationale=rationale, deferred_deep=deferred,
                             model_tier=cheap.model_tier, deep_difficulty=cheap.deep_difficulty,
                             deep_difficulty_reason=cheap.deep_difficulty_reason,
+                            deep_model_request=cheap.deep_model_request,
                             deep_target=cheap.deep_target, confidence=cheap.confidence)
     question = (raw.get("confirm_question") or cheap.confirm_question or default_question)
     return PlanDecision(action="confirm", confirm_question=question, rationale=rationale,

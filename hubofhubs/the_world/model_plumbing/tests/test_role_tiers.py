@@ -9,7 +9,7 @@ TABLE = policy.read_table()
 def test_every_row_has_a_known_tier_or_names_another_role_and_an_evidence_mark():
     for role, row in TABLE.items():
         assert row["tier"] in policy.TIERS or row["tier"] in TABLE, role
-        assert row["evidence"].startswith(("measured", "owner's policy, unmeasured")), role
+        assert row["evidence"].strip() and not any(w in row["evidence"].lower() for w in ("unmeasured", "owner's policy")), role
 
 
 def test_classification_roles_are_fast_whatever_a_person_asks():
@@ -18,11 +18,11 @@ def test_classification_roles_are_fast_whatever_a_person_asks():
             assert policy.tier_for(role, "best") == "fast" and row["person_may_set"] == "no", role
 
 
-def test_the_default_for_deep_work_is_balanced_and_a_persons_tier_wins():
-    assert policy.tier_for("main_session") == "balanced"
+def test_the_deep_work_tier_is_the_metrics_and_a_persons_tier_wins():
+    assert policy.tier_for("main_session") == TABLE["main_session"]["tier"]
     assert policy.tier_for("main_session", "fast") == "fast"
     assert policy.tier_for("main_session", "strong") == "quality"
-    assert policy.tier_for("sub_agent", "best") == "best" and policy.tier_for("after_check_resume") == "balanced"
+    assert policy.tier_for("sub_agent", "best") == "best" and policy.tier_for("after_check_resume") == TABLE["main_session"]["tier"]
     assert policy.tier_for("web_search", "best") == "fast"
 
 

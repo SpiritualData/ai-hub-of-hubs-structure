@@ -12,14 +12,14 @@ Part of [Asking a model through one measured path](../README.md)
 - Delegates to: vendor-model-caller
 - Entry call: `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})`
 - Selected implementation: Tier metric selector (`tier_selector`)
-- Metric: Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py) and 194 more
+- Metric: Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Role tier by public evaluations, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py) and 196 more
 
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |
 |---|---|---|---|---|
-| Tier metric selector | `model-tier-chooser:tier_selector` | Keeps the arms at least as good as the tier's held default on public evaluations (anchored minimums) and picks the cheapest and fastest of them by list price and published speed (public_metric.py); passing work per dollar on shared cases stays available as select and pick over measured arms. | [`hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py`](tiers.py) | selected |
+| Tier metric selector | `model-tier-chooser:tier_selector` | Keeps the arms at least as good as the tier's held default on public evaluations (anchored minimums) and picks the cheapest and fastest of them by list price and published speed (public_metric.py); passing work per dollar on shared cases stays available as select and pick over measured arms. Role_tiers.py computes the tier of each call role from the same public rows (the lowest tier unless the next tier up shows a significant gain on the evaluations of the role's kind) and applies the owner's hard constraints after. | [`hubofhubs/the_world/model_plumbing/model_tier_chooser/tiers.py`](tiers.py) | selected |
 
 ## Metrics
 
@@ -32,6 +32,7 @@ Part of [Asking a model through one measured path](../README.md)
 - Quality tier default (`metric-tier-quality`)
 - Best tier default (`metric-tier-best`)
 - Fast roles pooled cases (`metric-fast-roles-pool`): leader `tier_arm@candidate=3,tier=fast`, 108 of 112 cases
+- Role tier by public evaluations (`metric-role-tier`)
 
 ## Where to go next
 

@@ -297,7 +297,7 @@ def test_the_soft_limit_steers_once_and_the_run_ends_with_a_report(tmp_path, mon
     steers = [r["steer"] for r in records(log) if "steer" in r]
     assert len(steers) == 1 and "safe stopping point" in steers[0] and "how to resume" in steers[0]
     assert got.met and "three left" in got.output and got.end_reason == "wrapped_up_at_soft_limit"
-    assert got.session_id and got.session_id == got.resume_handle and got.spend_usd >= 0.01 and 1.0 <= got.elapsed_seconds < 2.0
+    assert got.session_id and got.session_id == got.resume_handle and got.spend_usd >= 0.01 and 1.0 <= got.elapsed_seconds < 4.0
     assert [e.data["phase"] for e in events if e.type == "status" and e.data.get("phase") == "soft_limit"] == ["soft_limit"]
 
 

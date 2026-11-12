@@ -72,7 +72,70 @@ def small(args):
     return "fixed the upper branch"
 
 
-SOLVERS = {"parts": parts, "records": records, "skills": skills, "recall": recall, "small": small}
+def context(args):
+    """Reads every document of every depot, keeps the latest adopted amendment of each rule."""
+    lines = []
+    for depot in sorted(Path(args["root"], "depots").iterdir()):
+        current = {}
+        for path in sorted(depot.glob("doc_*.md")):
+            text = path.read_text(encoding="utf-8")
+            date = re.search(r"^Date: (\S+)", text, re.M).group(1)
+            if re.search(r"^Status: (\S+)", text, re.M).group(1) != "adopted":
+                continue
+            for kind, pattern in (("cutoff", r"cutoff (?:is|becomes) (\d+:\d+)"), ("lot", r"reorder lot (?:is|becomes) (lot-\d+)")):
+                found = re.search(pattern, text)
+                if found and (kind not in current or date > current[kind][0]):
+                    current[kind] = (date, found.group(1))
+        lines.append(f"{depot.name}: cutoff {current['cutoff'][1]}, reorder {current['lot'][1]}")
+    return "\n".join(lines)
+
+
+def two_level(args):
+    root = Path(args["root"])
+    (root / "shop/pricing.py").write_text(
+        "def discounted(cents, percent):\n    if percent < 0 or percent > 100:\n        raise ValueError('percent')\n    return (cents * (100 - percent) + 50) // 100\n", encoding="utf-8")
+    (root / "shop/order_totals.py").write_text(
+        "from shop.pricing import discounted\n\n\ndef order_total(lines):\n    return sum(discounted(q * unit, pct) for q, unit, pct in lines)\n", encoding="utf-8")
+    (root / "shop/labels.py").write_text("import re\n\n\ndef slug(text):\n    return re.sub(r'[^a-z0-9]+', '-', text.lower()).strip('-')\n", encoding="utf-8")
+    (root / "shop/orders.py").write_text(
+        "from shop.order_totals import order_total\nfrom shop.shipping import shipping_cents\n\n\ndef order_summary(lines, weight_grams, zone):\n"
+        "    return order_total(lines) + shipping_cents(weight_grams, zone)\n", encoding="utf-8")
+    (root / "shop/report.py").write_text(
+        "from shop.labels import slug\nfrom shop.orders import order_summary\n\n\ndef build_report(name, lines, weight_grams, zone):\n"
+        "    return {'label': slug(name), 'total_cents': order_summary(lines, weight_grams, zone)}\n", encoding="utf-8")
+    return ("shipping-fees needs data/carrier_rates.csv, which was never delivered, so it stays unimplemented.\n"
+            "pricing: met\norder-totals: met\nlabels: met\nshipping-fees: unmet\norders: unmet\nshop-report: unmet")
+
+
+def verify(args):
+    root = Path(args["root"])
+    totals = {}
+    for name in ("january", "february", "march"):
+        rows = (root / f"visits/{name}.csv").read_text(encoding="utf-8").splitlines()[1:]
+        totals[name] = [int(r.split(",")[1]) for r in rows]
+    week, fixed = re.search(r"week (\d+).*?true count is (\d+)", (root / "visits/corrections.md").read_text(encoding="utf-8"), re.S).groups()
+    totals["february"][int(week) - 1] = int(fixed)
+    sums = {k: sum(v) for k, v in totals.items()}
+    best = max(sums, key=sums.get)
+    total = sum(sums.values())
+    (root / "summary.md").write_text(
+        f"# Quarter summary\n\nTotal visits: {total:,} (visits/january.csv, visits/february.csv, visits/march.csv, with visits/corrections.md applied).\n"
+        f"Best month: {best.capitalize()} (visits/{best}.csv).\n"
+        "The recap differs from the files: it counted the double-counted February week, so its total is too high and it names the wrong best month.\n"
+        "The recap's claim about the newsletter has no source in the folder, so it is left out as unverified.\n", encoding="utf-8")
+    return "summary.md written"
+
+
+def small_lookup(args):
+    for path in sorted(Path(args["root"], "notes").glob("note_*.txt")):
+        found = re.search(r"spare key is kept in locker (\d+)", path.read_text(encoding="utf-8"))
+        if found:
+            Path(args["root"], "answer.json").write_text(json.dumps({"note": path.name, "locker": int(found.group(1))}), encoding="utf-8")
+    return "answer.json written"
+
+
+SOLVERS = {"parts": parts, "records": records, "skills": skills, "recall": recall, "small": small, "context": context, "records-two-level": two_level, "verify": verify,
+           "small-lookup": small_lookup}
 
 
 def build(meter):

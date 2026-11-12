@@ -117,8 +117,9 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, solutions: Any = None, agent_calls: int = agents.DEFAULT_AGENT_CALLS,
                  skills_dir: Union[None, str, Sequence[str]] = None, mcp_config: Optional[str] = None, recall: Optional[Callable[[str], str]] = None,
-                 known_chars: int = KNOWN_CHARS, records: Any = None, hub: Any = None, **kwargs: Any):
+                 known_chars: int = KNOWN_CHARS, records: Any = None, hub: Any = None, review_small_work: bool = True, **kwargs: Any):
         super().__init__(config, **kwargs)
+        self.review_small_work = bool(review_small_work)   # work too small for the full offer is still offered the one review agent, for a written deliverable
         self.solutions = solutions                 # a list of solution ids or specs, or a ``(goal, root)`` callable: the solutions the work may delegate to
         self.agent_calls = int(agent_calls)        # the sub-agent calls the whole run may make (0: none are offered)
         self.skills_dir = skills_dir
@@ -145,14 +146,18 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         scope: List[str] = []
         extras: List[str] = []
         specs: List[agents.SolutionSpec] = []
-        if scratch and self.agent_calls > 0 and agents.wants_agents(folder_facts(root, text)):
-            specs, net = agents.choose_solutions(text, root, self.solutions, records=self.records, hub=self.hub)
+        large = scratch and self.agent_calls > 0 and agents.wants_agents(folder_facts(root, text))
+        small = scratch and self.agent_calls > 0 and self.review_small_work and not large
+        if large or small:
+            specs, net = agents.choose_solutions(text, root, self.solutions, records=self.records, hub=self.hub) if large else agents.review_only(self.hub)
             defined = agents.agent_definitions(specs, net, self.model_of) if specs else {}
-            if defined and self.write_guard(scratch, defined):
+            budget = self.agent_calls if large else min(self.agent_calls, agents.REVIEW_ONLY_CALLS)
+            if defined and self.write_guard(scratch, defined, budget):
                 self.local.tools = tuple(NATIVE_TOOLS) + (agents.AGENT_TOOL,)
                 self.local.solution_of = {agents.agent_name(s.solution): s.solution for s in specs if agents.agent_name(s.solution) in defined}
-                extras.append(agents.agents_note(self.agent_calls, agents.review_agent(specs, defined)))
-            scope = [s.solution for s in specs]
+                review = agents.review_agent(specs, defined)
+                extras.append(agents.agents_note(budget, review) if large else agents.review_only_note(review, budget))
+            scope = [s.solution for s in specs] if large else []
         skills = skills_section(self.skills_dir)
         if skills:
             extras.append(skills)
@@ -171,8 +176,10 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         """The path as the session sees it: the sandbox shows the session's folder as /tmp."""
         return "/tmp/" + os.path.basename(path) if self.local.sandboxed else path
 
-    def write_guard(self, scratch: str, defined: Dict[str, Dict[str, Any]]) -> bool:
-        """Write the agents file, the guard and its settings into the session's private folder; True when all are written. The agents are offered only with the guard in place."""
+    def write_guard(self, scratch: str, defined: Dict[str, Dict[str, Any]], budget: Optional[int] = None) -> bool:
+        """Write the agents file, the guard and its settings into the session's private folder; True when all are written. The agents are offered only with the guard in place.
+        ``budget`` is the calls the guard allows (default ``agent_calls``)."""
+        budget = self.agent_calls if budget is None else int(budget)
         names = os.path.join(scratch, "solution-agents.json"), os.path.join(scratch, "agent-guard.py"), os.path.join(scratch, "agent-guard.json")
         counter, record = os.path.join(scratch, "agent-calls.count"), os.path.join(scratch, "agent-calls.log")
         python = "python3" if self.local.sandboxed else (sys.executable or "python3")
@@ -180,7 +187,7 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
             with open(names[0], "w", encoding="utf-8") as handle:
                 json.dump(defined, handle, indent=1, sort_keys=True)
             with open(names[1], "w", encoding="utf-8") as handle:
-                handle.write(agents.guard_script(sorted(defined), self.agent_calls, self.visible(counter), self.visible(record)))
+                handle.write(agents.guard_script(sorted(defined), budget, self.visible(counter), self.visible(record)))
             with open(names[2], "w", encoding="utf-8") as handle:
                 json.dump(agents.guard_settings(python, self.visible(names[1])), handle, indent=1)
             if not os.path.exists(counter):
@@ -213,6 +220,7 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         result.agent_findings, result.solution_agent_events = [], []        # type: ignore[attr-defined]
         result.turns = int(getattr(self.local, "used_turns", 0) or 0)          # the assistant turns of the session record, counted by ``usage``
         result.subagent_calls = 0
+        result.subagent_report = agents.agent_report([], solution_of)         # type: ignore[attr-defined]
         if not solution_of:
             return
         try:
@@ -222,7 +230,8 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         except (OSError, TypeError):
             return
         result.subagent_calls = sum(1 for c in calls if c.get("agent") in solution_of and not c.get("failed"))      # the calls that ran; a refused one did no work
-        result.agent_findings = agents.outside_the_list(calls, solution_of)              # type: ignore[attr-defined]
+        result.subagent_report = agents.agent_report(calls, solution_of)                 # type: ignore[attr-defined]
+        result.agent_findings = agents.outside_the_list(calls, solution_of)            # type: ignore[attr-defined]
         result.solution_agent_events = agents.session_events(calls, solution_of)         # type: ignore[attr-defined]
         if emit is None:
             return

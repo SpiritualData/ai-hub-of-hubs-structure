@@ -42,7 +42,9 @@ def guard(tmp_path, data, allowed=("read-things",), budget=1):
 def test_one_agent_per_solution_the_records_hold_with_its_own_frame_and_its_roles_tier():
     made = agents.agent_definitions(SPECS, NET, tier_model)
     assert sorted(made) == ["judge-things", "read-things", "sub-thing"]       # a solution with no record gets no agent; names are sorted ids
-    assert made["read-things"]["model"] == "model-of-fast" and made["sub-thing"]["model"] == "model-of-balanced" and made["judge-things"]["model"] == "model-of-quality"
+    tier = {kind: role_tiers.tier_for(agents.ROLE_OF_KIND[kind]) for kind in ("gather", "work", "review")}          # the role table is data and changes with its evidence
+    assert made["read-things"]["model"] == "model-of-" + tier["gather"] and made["sub-thing"]["model"] == "model-of-" + tier["work"]
+    assert made["judge-things"]["model"] == "model-of-" + tier["review"]
     assert made["read-things"]["tools"] == ["Read", "Glob", "Grep"]
     prompt = made["read-things"]["prompt"]
     assert "Read Things (read-things)" in prompt and "Approach: List and read." in prompt and "Next unmet milestone: First." in prompt and "Out of scope: Writing." in prompt
@@ -60,8 +62,8 @@ def test_the_fixed_solutions_exist_in_the_hubs_own_records_and_roles_are_in_the_
     specs, net = agents.choose_solutions("a goal", "/nonexistent-folder")
     assert [s.solution for s in specs] == ["file-editing", "read-files", "response-quality", "web-search"] and all(net.has(s.solution) for s in specs)
     assert {s.kind for s in specs} == {"gather", "work", "review"}
-    assert {role_tiers.tier_for(agents.ROLE_OF_KIND[k]) for k in ("gather", "work", "review")} == {"fast", "balanced", "quality"}
-    assert all(role_tiers.read_table()[r]["evidence"].startswith("owner's policy, unmeasured") for r in agents.ROLE_OF_KIND.values())
+    assert all(role_tiers.tier_for(agents.ROLE_OF_KIND[k]) in ("fast", "balanced", "quality") for k in ("gather", "work", "review"))
+    assert all(r in role_tiers.read_table() for r in agents.ROLE_OF_KIND.values())
 
 
 def test_solutions_come_from_the_consumer_first_then_the_folders_records_then_the_hub():
@@ -74,8 +76,38 @@ def test_solutions_come_from_the_consumer_first_then_the_folders_records_then_th
 
 
 def test_small_work_is_offered_no_agents_by_counts():
-    assert not agents.wants_agents({"files": agents.OFFER_FILES - 1, "chars": 10**6, "goal_chars": agents.OFFER_CHARS - 1})
+    assert not agents.wants_agents({"files": agents.OFFER_FILES - 1, "chars": agents.OFFER_TOTAL_CHARS - 1, "goal_chars": agents.OFFER_CHARS - 1})
     assert agents.wants_agents({"files": agents.OFFER_FILES, "chars": 0, "goal_chars": 0}) and agents.wants_agents({"files": 0, "chars": 0, "goal_chars": agents.OFFER_CHARS})
+
+
+def test_a_few_long_files_are_a_large_folder_by_their_size_together():
+    assert agents.wants_agents({"files": 3, "chars": agents.OFFER_TOTAL_CHARS, "goal_chars": 80})
+    assert not agents.wants_agents({"files": 3, "chars": agents.OFFER_TOTAL_CHARS - 1, "goal_chars": 80})
+
+
+def test_a_solution_is_worked_through_its_children_and_their_own_up_to_the_limit():
+    rows = {"solutions": [{"solution_id": s, "name": s, "purpose": "p", "approach": "", "out_of_scope": "", "milestones": "", "delegates_to": d}
+                          for s, d in (("top", "mid; leaf-a"), ("mid", "leaf-b; leaf-c"), ("leaf-a", "none"), ("leaf-b", "none"), ("leaf-c", "none"))],
+            "intents": [{"intent_id": "i", "name": "Top"}]}
+    net = SolutionNetwork.from_rows(rows)
+    assert agents.with_delegates(["top"], net) == ["top", "mid", "leaf-a", "leaf-b", "leaf-c"]
+    assert agents.with_delegates(["mid", "top"], net, limit=3) == ["mid", "top", "leaf-b"]
+    assert agents.with_delegates(["leaf-a"], net) == ["leaf-a"]
+
+
+def test_the_report_of_a_run_counts_calls_that_ran_by_solution_and_those_refused_by_type():
+    solution_of = {"read-things": "read-things", "judge-things": "judge-things"}
+    calls = agents.agent_calls_in(record(("a", "read-things", "x", False), ("b", "read-things", "y", False), ("c", "judge-things", "z", True), ("d", "general-purpose", "w", True)))
+    assert agents.agent_report(calls, solution_of) == {"offered": ["judge-things", "read-things"], "ran": {"read-things": 2}, "refused": {"judge-things": 1, "general-purpose": 1}}
+    assert agents.agent_report([], {}) == {"offered": [], "ran": {}, "refused": {}}
+
+
+def test_the_review_agent_is_told_to_check_every_claim_against_a_source_and_only_it():
+    made = agents.agent_definitions(SPECS, NET, tier_model)
+    assert "every" in made["judge-things"]["prompt"] and "source" in made["judge-things"]["prompt"] and agents.REVIEW_BRIEF not in made["read-things"]["prompt"]
+    note = agents.agents_note(5, "judge-things")
+    assert "written deliverable" in note and "every figure, name, date and claim against a source file" in note and "unverified" in note
+    assert "written deliverable" not in agents.agents_note(5) and "milestone as met only when a check" in agents.agents_note(5)
 
 
 def test_the_note_names_the_rules_and_the_review_rule_only_with_a_review_agent():
@@ -155,8 +187,15 @@ def runner_in(tmp_path, files, **kwargs):
     return made, str(work)
 
 
-def test_a_small_folder_and_goal_get_no_agents_no_tool_and_no_guard(tmp_path):
+def test_a_small_folder_and_goal_get_only_the_review_agent_by_default(tmp_path):
     runner, work = runner_in(tmp_path, 3)
+    runner.prepare("short goal", "short goal", "", work, "small")
+    launch = runner.launch_settings()
+    assert "Agent" in launch.tools and launch.agents_file is not None and launch.settings_file is not None
+
+
+def test_a_small_folder_and_goal_get_no_agents_no_tool_and_no_guard(tmp_path):
+    runner, work = runner_in(tmp_path, 3, review_small_work=False)
     runner.prepare("short goal", "short goal", "", work, "small")
     launch = runner.launch_settings()
     assert "Agent" not in launch.tools and launch.agents_file is None and launch.settings_file is None and "SOLUTION AGENTS" not in open(launch.append_system_prompt_file).read()
@@ -304,3 +343,8 @@ def test_the_result_carries_turns_and_the_calls_that_ran_and_other_results_carry
     result = DeepResult(met=True)
     runner.report_agents(result, work, None)
     assert result.turns == 7 and result.subagent_calls == 0
+    assert result.subagent_report == {"offered": [], "ran": {}, "refused": {}}          # offered nothing: the record says so, which tells a small cut from a run that did not delegate
+    runner.local.solution_of = {"read-things": "read-things"}
+    shown = DeepResult(met=True)
+    runner.report_agents(shown, work, None)       # no session record to read: offered is still known
+    assert shown.subagent_report["offered"] == ["read-things"] and shown.subagent_calls == 0
