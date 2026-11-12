@@ -15,8 +15,12 @@ def consistency_prompt(reply: str, block: Mapping[str, Any]) -> str:
     meanings = "\n".join(f"- {term}: {meaning}" for term, meaning in TERMS)
     return ("You review one reply. The reply may use these six terms, each with one meaning:\n" + meanings + "\n\nStructure the reply was written from (JSON):\n"
             + json.dumps(block, sort_keys=True)[:1500] + "\n\nReply:\n" + reply[:3000] + "\n\nAnswer ONLY a JSON object with a boolean for each key: "
-            + ", ".join(CONSISTENT_QUESTIONS) + ". A term that does not appear is not a failure. 'framework_is_not_the_point' is true when the reply never names a framework "
-            "or explains the terms for their own sake.")
+            + ", ".join(CONSISTENT_QUESTIONS) + ". The reply is about a person's situation and has a part for each of what the structure holds (the problem, the ideal, the solution, the "
+            "alternatives, the metric, the milestone). 'no_term_replaced_by_a_synonym' is false when any of those parts is said in other words instead of with its term, for example the "
+            "ideal as \"what you are aiming for\", the metric as \"your rate\" or \"the measure\", or the solution as \"strategy\" or \"approach\"; it is true only when each part that is "
+            "present is named with its own term. 'no_term_is_a_bare_label_or_heading' is true when each term sits in a sentence that makes its meaning clear. "
+            "'each_term_has_its_one_meaning' is false when a term is used for something else. A part that is not in the reply is not a failure. "
+            "'framework_is_not_the_point' is true when the reply never names a framework or explains the terms for their own sake.")
 
 
 def stands_alone_prompt(reply: str) -> str:

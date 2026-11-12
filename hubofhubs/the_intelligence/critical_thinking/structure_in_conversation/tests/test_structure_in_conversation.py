@@ -51,3 +51,9 @@ def test_terms_have_one_meaning_each_and_no_em_dash():
 def test_advisory_parse_defaults_to_false():
     assert advisory.parse("no json", ("a", "b")) == {"a": False, "b": False}
     assert advisory.parse('x {"a": true, "b": "yes"} y', ("a", "b")) == {"a": True, "b": False}
+
+
+def test_the_consistency_prompt_names_a_part_said_in_other_words_as_a_failure():
+    prompt = advisory.consistency_prompt("A reply.", {"move": "frame"})
+    assert "what you are aiming for" in prompt and "your rate" in prompt and "strategy" in prompt and "'no_term_replaced_by_a_synonym' is false" in prompt
+    assert "no_term_replaced_by_a_synonym" in advisory.CONSISTENT_QUESTIONS and chr(0x2014) not in prompt
