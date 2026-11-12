@@ -79,11 +79,12 @@ weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
 cost_per_case_usd = 1.00
 seconds_per_case = 600
 
-# The balanced score of the depth stage of Delegated Agent Sessions (evaluation/agent_sessions_depth): five public cases that need depth (parts read
-# separately, records in the folder, a skills folder, an earlier finding) or show that depth is waste (one small fix). A case is worth at most half a
-# dollar and five minutes, fixed before any arm was scored. The weights are those of the other two sets (tests/test_metric_weights.py pins that
-# they are equal), and one case, accuracy/5, exceeds everything cost and time can add, so an arm that uses sub-agents everywhere cannot buy a failed
-# case back; the overuse on the small case shows in cost and time and decides only among arms with equal pass counts.
+# The balanced score of the depth stage of Delegated Agent Sessions (evaluation/agent_sessions_depth): nine public cases that need depth (parts read
+# separately, a large folder of long documents, records in the folder, a two-level record tree with a milestone per solution, a skills folder, an earlier
+# finding, a result to verify against its sources) or show that depth is waste (a one-line fix, a lookup among many tiny files). A case is worth at most half a
+# dollar and five minutes, fixed before any arm was scored on the nine (the first five were scored on the same budget; the new four stay well inside it). The weights
+# are those of the other two sets (tests/test_metric_weights.py pins that they are equal), and one case, accuracy/9, exceeds everything cost and time can add, so an arm
+# that uses sub-agents everywhere cannot buy a failed case back; the overuse on the small cases shows in cost and time and decides only among arms with equal pass counts.
 [balance.agent_sessions_depth]
 weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
 cost_per_case_usd = 0.50

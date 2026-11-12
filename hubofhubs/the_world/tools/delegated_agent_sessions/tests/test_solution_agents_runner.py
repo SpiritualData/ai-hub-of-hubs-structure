@@ -54,7 +54,9 @@ def test_one_agent_per_solution_the_records_hold_with_its_own_frame_and_its_role
 
 
 def test_a_tier_with_no_model_gives_no_agent_rather_than_another_tiers_model():
-    made = agents.agent_definitions(SPECS, NET, lambda tier: None if tier == "quality" else "m")
+    review_tier = role_tiers.tier_for(agents.ROLE_OF_KIND["review"])
+    assert review_tier != role_tiers.tier_for(agents.ROLE_OF_KIND["gather"])        # the table is data: the test needs only two roles on different tiers
+    made = agents.agent_definitions(SPECS, NET, lambda tier: None if tier == review_tier else "m")
     assert "judge-things" not in made and "read-things" in made
 
 
@@ -192,6 +194,11 @@ def test_a_small_folder_and_goal_get_only_the_review_agent_by_default(tmp_path):
     runner.prepare("short goal", "short goal", "", work, "small")
     launch = runner.launch_settings()
     assert "Agent" in launch.tools and launch.agents_file is not None and launch.settings_file is not None
+    defined = json.load(open(launch.agents_file))
+    assert sorted(defined) == ["response-quality"] and runner.local.solution_of == {"response-quality": "response-quality"}      # the one review agent, from the hub's records
+    assert f"BUDGET = {agents.REVIEW_ONLY_CALLS}" in open(launch.settings_file.replace("agent-guard.json", "agent-guard.py")).read()
+    frame = open(launch.append_system_prompt_file).read()
+    assert "offers one agent, the review agent (response-quality)" in frame and "written deliverable" in frame and "needs no agent" in frame
 
 
 def test_a_small_folder_and_goal_get_no_agents_no_tool_and_no_guard(tmp_path):
@@ -207,7 +214,7 @@ def test_a_large_folder_gets_the_agents_the_guard_and_the_frame_note_under_a_fix
     launch = runner.launch_settings()
     assert launch.tools[-1] == "Agent" and launch.agents_file.endswith("solution-agents.json") and launch.settings_file.endswith("agent-guard.json")
     defined = json.load(open(launch.agents_file))
-    assert sorted(defined) == ["judge-things", "read-things"] and defined["judge-things"]["model"] == "model-of-quality"
+    assert sorted(defined) == ["judge-things", "read-things"] and defined["judge-things"]["model"] == "model-of-" + role_tiers.tier_for(agents.ROLE_OF_KIND["review"])
     assert "BUDGET = 3" in open(launch.settings_file.replace("agent-guard.json", "agent-guard.py")).read()
     frame = open(launch.append_system_prompt_file).read()
     assert "At most 3 calls" in frame and "review agent (judge-things)" in frame

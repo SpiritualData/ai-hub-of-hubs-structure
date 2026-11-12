@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[5]
-COMPONENTS = ("agent_sessions", "agent_sessions_hard")
+COMPONENTS = ("agent_sessions", "agent_sessions_hard", "agent_sessions_depth")
 
 
 def table(component):
@@ -37,7 +37,7 @@ def test_the_weights_sum_to_one_and_cost_and_time_are_equal(component):
 
 
 def test_both_sets_use_the_same_weights():
-    assert table("agent_sessions")["weights"] == table("agent_sessions_hard")["weights"]
+    assert table("agent_sessions")["weights"] == table("agent_sessions_hard")["weights"] == table("agent_sessions_depth")["weights"]
 
 
 def test_a_six_of_nine_arm_never_outranks_an_eight_of_nine_arm():

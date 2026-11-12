@@ -9,7 +9,9 @@ stop decision, code check and outside-folder report and adds, each behind a cons
 1. sub-agents scoped to solutions and no others: before the session the hub decides in code which solutions the work may delegate to and writes one Claude Code agent per
    solution (``--agents``), each with its own solution's frame, a compact report form, tools that fit it and the model of its role's tier; a hook passed with ``--settings``
    refuses any other agent and any call past ``agent_calls``; after the session the transcript is read for calls outside the list and the agents' session events. Work whose
-   folder and goal are small (counts, ``solution_agents.wants_agents``) is offered no agents;
+   folder and goal are small (counts of files, of characters and of the goal, ``solution_agents.wants_agents``) is offered only the review agent (``review_small_work``), for a
+   written deliverable; a folder with records of its own is offered an agent for each solution the goal concerns and for the solutions those delegate to; each run's result carries
+   ``subagent_report`` (offered, ran per solution, refused);
 2. the consumer's skills (``skills_dir``, a folder or a list) as a SKILLS section, and an MCP config file (``mcp_config``) passed through with strict MCP kept on;
 3. a KNOWN section: the consumer's ``recall(goal)`` and the earlier investigations of the solutions in scope;
 4. the sub-agents' models come from the role tier table (``solution_agent_gather``, ``solution_agent_work``, ``solution_agent_review``), resolved when the run starts;
