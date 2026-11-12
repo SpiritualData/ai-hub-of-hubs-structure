@@ -198,6 +198,8 @@ class RecordedResearch(SystematicReview):
             chosen = next((r for r in rows if r["investigation_id"] == wanted), None)
         if chosen is None:
             return None
+        if chosen.get("reuse_state") in ("fresh", "stale", "partial"):       # a store that knows how current its own record is (state, thin or old) says so
+            return dict(chosen, state=chosen["reuse_state"])
         smaller = chosen.get("size") in inv.SIZES and inv.SIZES.index(chosen["size"]) < inv.SIZES.index(size)
         due = chosen.get("refresh_on") or ""
         return dict(chosen, state="partial" if smaller else "fresh" if due and due > day else "stale")
