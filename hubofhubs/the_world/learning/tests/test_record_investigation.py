@@ -45,6 +45,25 @@ def test_rewriting_the_same_id_replaces_and_links_fall_back_to_the_top_solution(
     assert len(rows(tmp_path, "investigation_items.csv")) == 1
 
 
+def test_two_writers_at_once_keep_every_row(tmp_path):
+    """The writer reads, merges and writes under one lock, so no row another writer added is dropped (a whole-file rewrite from a stale read lost them)."""
+    import threading
+
+    def write_many(tag):
+        for n in range(15):
+            store.record_investigation({"investigation": dict(ROW, investigation_id=f"inv-{tag}-{n}", question=f"question {tag} {n}"), "items": [ITEM]}, tmp_path)
+
+    threads = [threading.Thread(target=write_many, args=(tag,)) for tag in "abc"]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+    ids = {r["investigation_id"] for r in rows(tmp_path, "investigations.csv")}
+    assert ids == {f"inv-{tag}-{n}" for tag in "abc" for n in range(15)}
+    assert len(rows(tmp_path, "investigation_items.csv")) == 45
+    assert not list(tmp_path.glob("*.tmp"))
+
+
 def test_the_command_reads_a_json_file(tmp_path, capsys):
     path = tmp_path / "spec.json"
     path.write_text(json.dumps({"investigation": ROW, "items": [ITEM]}), encoding="utf-8")

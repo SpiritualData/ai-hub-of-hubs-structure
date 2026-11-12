@@ -9,11 +9,16 @@ each with the request to run, the most overdue first. ``finding_investigation`` 
 Files and columns named before the rename (``research.csv``, ``research_items.csv``, ``research_id``) are still read, in ``read_records`` and ``renamed`` only;
 everything is written under the new names.
 """
+import contextlib
 import csv
+import fcntl
+import hashlib
 import json
+import os
+import tempfile
 from datetime import date
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterator, List, Mapping, Optional, Sequence, Tuple
 
 from esoi import read_csv, split_ids
 
@@ -149,10 +154,13 @@ def earlier_for(question: str, size: str, links: Sequence[str], today: Any = "",
     return dict(best, state="partial" if smaller else "fresh" if best["fresh"] == "yes" else "stale")
 
 
-def record_of(row: Mapping[str, str], root: Any = None) -> Dict[str, Any]:
-    """The stored investigation ``row`` as the record a new investigation returns (its items read from the store), marked reused."""
+def record_of(row: Mapping[str, str], root: Any = None, items: Optional[Sequence[Mapping[str, str]]] = None) -> Dict[str, Any]:
+    """The stored investigation ``row`` as the record a new investigation returns (its items read from the store, or given as ``items`` by a store of another
+    kind), marked reused."""
     columns = {c: row.get(c, "") for c in inv.COLUMNS}
-    items = [{c: i.get(c, "") for c in inv.ITEM_COLUMNS} for i in rows(root, ITEMS) if i.get("investigation_id") == row["investigation_id"]]
+    if items is None:
+        items = [i for i in rows(root, ITEMS) if i.get("investigation_id") == row["investigation_id"]]
+    items = [{c: i.get(c, "") for c in inv.ITEM_COLUMNS} for i in items]
     log = [dict(zip(("source", "query", "date", "hits"), [p.strip() for p in q.split("|")])) for q in inv.parts(columns["queries"])]
     reasons = {e.split(" ", 1)[1]: int(e.split(" ", 1)[0]) for e in inv.parts(columns["screened_out"]) if e.split(" ", 1)[0].isdigit() and " " in e}
     return {"investigation": columns, "items": items, "applied": [{"item": i["item_id"], "applied": i["applied"]} for i in items],
@@ -215,12 +223,32 @@ def standing_schedule(last_run: str = "") -> Dict[str, Any]:
             "request": "Ask the-learning for what learning is due (due_investigations) and carry out each item as an investigation, most overdue first"}
 
 
+@contextlib.contextmanager
+def locked(folder: Any) -> Iterator[None]:
+    """One writer at a time for the investigation files of ``folder``: an exclusive lock held while a writer reads the files and writes them back, so two writers
+    (two processes, or two threads) each see the other's rows. The lock file is kept in the system's temporary folder, keyed by the folder, so no file appears in the records."""
+    key = hashlib.sha1(str(Path(folder).resolve()).encode()).hexdigest()[:16]
+    with open(Path(tempfile.gettempdir()) / f"hubofhubs-investigations-{key}.lock", "w") as handle:
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle, fcntl.LOCK_UN)
+
+
 def write_table(path: Path, columns: Sequence[str], rows_: Sequence[Mapping[str, str]]) -> None:
+    """Write the table whole and swap it in at once, so a reader never sees a half-written file."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(columns), lineterminator="\n")
-        writer.writeheader()
-        writer.writerows({c: r.get(c, "") for c in columns} for r in rows_)
+    handle = tempfile.NamedTemporaryFile("w", newline="", dir=path.parent, prefix=path.name + ".", suffix=".tmp", delete=False)
+    try:
+        with handle:
+            writer = csv.DictWriter(handle, fieldnames=list(columns), lineterminator="\n")
+            writer.writeheader()
+            writer.writerows({c: r.get(c, "") for c in columns} for r in rows_)
+        os.replace(handle.name, path)
+    except BaseException:
+        Path(handle.name).unlink(missing_ok=True)
+        raise
 
 
 def store(investigation: Mapping[str, Any], folder: Any = None) -> str:
@@ -229,14 +257,15 @@ def store(investigation: Mapping[str, Any], folder: Any = None) -> str:
     the new ones. Returns the investigation id."""
     folder = Path(folder or registry.DATA)
     row = investigation["investigation"]
-    held = [r for r in read_records(folder, INVESTIGATIONS) if r["investigation_id"] != row["investigation_id"]]
-    for r in held:
-        if r.get("links") == row.get("links") and r.get("question") == row.get("question") and (r.get("status") or "open") == "open":
-            r["status"] = "superseded"
-    items = [i for i in read_records(folder, ITEMS) if i["investigation_id"] != row["investigation_id"]] + list(investigation["items"])
-    write_table(folder / INVESTIGATIONS, inv.COLUMNS, held + [row])
-    write_table(folder / ITEMS, inv.ITEM_COLUMNS, items)
-    link_findings(row["investigation_id"], row, folder)
+    with locked(folder):      # read, merge and write under one lock: a row another writer added since the caller looked is kept
+        held = [r for r in read_records(folder, INVESTIGATIONS) if r["investigation_id"] != row["investigation_id"]]
+        for r in held:
+            if r.get("links") == row.get("links") and r.get("question") == row.get("question") and (r.get("status") or "open") == "open":
+                r["status"] = "superseded"
+        items = [i for i in read_records(folder, ITEMS) if i["investigation_id"] != row["investigation_id"]] + list(investigation["items"])
+        write_table(folder / INVESTIGATIONS, inv.COLUMNS, held + [row])
+        write_table(folder / ITEMS, inv.ITEM_COLUMNS, items)
+        link_findings(row["investigation_id"], row, folder)
     return row["investigation_id"]
 
 

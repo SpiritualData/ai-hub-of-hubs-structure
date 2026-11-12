@@ -1,0 +1,3442 @@
+[
+ {
+  "id": "first-complete-standard",
+  "area": "first",
+  "kind": "first",
+  "args": {
+   "check": "first",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "complete": true,
+   "linked": "sol-a",
+   "stored": 1,
+   "knowledge_on": [
+    "sol-a"
+   ],
+   "context": 1
+  }
+ },
+ {
+  "id": "first-complete-quick",
+  "area": "first",
+  "kind": "first",
+  "args": {
+   "check": "first",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "quick"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "complete": true,
+   "linked": "sol-a",
+   "stored": 1,
+   "knowledge_on": [
+    "sol-a"
+   ],
+   "context": 1
+  }
+ },
+ {
+  "id": "reuse-same-question",
+  "area": "reuse",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "reuse-related-question",
+  "area": "reuse",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "is there a maintained Python library for drawing a terminal screen",
+    "decision": "pick the library the terminal arm uses",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "judge_says": "prior",
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "reuse-in-the-same-scope",
+  "area": "reuse",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard",
+    "links": [
+     "scope:quest-a"
+    ]
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a",
+    "scope:quest-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "stale-is-extended-in-place",
+  "area": "extend",
+  "kind": "extend",
+  "args": {
+   "check": "extend",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_refresh_on": "2026-10-01",
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "updated": true,
+   "rows": 1,
+   "same_id": true,
+   "items_grew": true,
+   "searched": true
+  }
+ },
+ {
+  "id": "smaller-is-extended-in-place",
+  "area": "extend",
+  "kind": "extend",
+  "args": {
+   "check": "extend",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "quick"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "updated": true,
+   "rows": 1,
+   "same_id": true,
+   "items_grew": true,
+   "searched": true
+  }
+ },
+ {
+  "id": "unrelated-is-not-pulled",
+  "area": "unrelated",
+  "kind": "unrelated",
+  "args": {
+   "check": "unrelated",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which password manager has an open audit",
+    "decision": "pick one for the team",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-b"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "searched": true,
+   "prior_untouched": true
+  }
+ },
+ {
+  "id": "unrelated-is-recorded-on-its-own-solution",
+  "area": "unrelated",
+  "kind": "unrelated_recorded",
+  "args": {
+   "check": "unrelated_recorded",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which password manager has an open audit",
+    "decision": "pick one for the team",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-b"
+   ]
+  },
+  "expect": {
+   "rows": 1,
+   "linked": "sol-b"
+  }
+ },
+ {
+  "id": "a-quick-fact-is-not-burdened",
+  "area": "quick",
+  "kind": "quick",
+  "args": {
+   "check": "quick",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": null
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "rows": 0,
+   "knowledge": 0,
+   "context": 0,
+   "small": true
+  }
+ },
+ {
+  "id": "a-finding-becomes-knowledge-once",
+  "area": "knowledge",
+  "kind": "knowledge_once",
+  "args": {
+   "check": "knowledge_once",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "knowledge": true,
+   "duplicates": 0
+  }
+ },
+ {
+  "id": "a-person's-own-knowledge-is-kept",
+  "area": "knowledge",
+  "kind": "owner_text",
+  "args": {
+   "check": "owner_text",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "owner_row_intact": true,
+   "knowledge": true
+  }
+ },
+ {
+  "id": "a-fenced-investigation-stays-in-its-scope",
+  "area": "scope",
+  "kind": "scope",
+  "args": {
+   "check": "scope",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard",
+    "links": [
+     "scope:quest-b"
+    ]
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a",
+    "scope:quest-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "searched": true,
+   "context_scope": [
+    "quest-b"
+   ]
+  }
+ },
+ {
+  "id": "a-held-knowledge-item-still-records-the-investigation",
+  "area": "gate",
+  "kind": "held",
+  "args": {
+   "check": "held",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "knowledge_held": true
+  },
+  "expect": {
+   "rows": 1,
+   "held_cells": true,
+   "complete": true
+  }
+ },
+ {
+  "id": "a-failing-store-never-fails-the-answer",
+  "area": "gate",
+  "kind": "store_down",
+  "args": {
+   "check": "store_down",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "store_down": true
+  },
+  "expect": {
+   "answered": true,
+   "recorded": false,
+   "said": true
+  }
+ },
+ {
+  "id": "first-complete-full",
+  "area": "first",
+  "kind": "first",
+  "args": {
+   "check": "first",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "full"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "complete": true,
+   "linked": "sol-a",
+   "stored": 1,
+   "knowledge_on": [
+    "sol-a"
+   ],
+   "context": 1
+  }
+ },
+ {
+  "id": "first-on-the-solution-it-serves",
+  "area": "first",
+  "kind": "first",
+  "args": {
+   "check": "first",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-b"
+   ]
+  },
+  "expect": {
+   "complete": true,
+   "linked": "sol-b",
+   "stored": 1,
+   "knowledge_on": [
+    "sol-b"
+   ],
+   "context": 1
+  }
+ },
+ {
+  "id": "first-on-the-solution-the-caller-names",
+  "area": "first",
+  "kind": "first",
+  "args": {
+   "check": "first",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard",
+    "links": [
+     "solution:sol-b"
+    ]
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "complete": true,
+   "linked": "sol-b",
+   "stored": 1,
+   "knowledge_on": [
+    "sol-b"
+   ],
+   "context": 1
+  }
+ },
+ {
+  "id": "reuse-with-the-solution-named",
+  "area": "reuse",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard",
+    "links": [
+     "solution:sol-a"
+    ]
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "reuse-ignores-case-and-spacing",
+  "area": "reuse",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "  Which TERMINAL UI libraries   are adoptable ",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "reuse-a-larger-one-for-a-smaller-ask",
+  "area": "reuse",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "quick"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "a-related-question-the-judge-declines-is-researched",
+  "area": "unrelated",
+  "kind": "unrelated",
+  "args": {
+   "check": "unrelated",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "is there a maintained Python library for drawing a terminal screen",
+    "decision": "pick the library the terminal arm uses",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "judge_says": "",
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "searched": true,
+   "prior_untouched": true
+  }
+ },
+ {
+  "id": "stale-related-question-is-extended-in-place",
+  "area": "extend",
+  "kind": "extend",
+  "args": {
+   "check": "extend",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "is there a maintained Python library for drawing a terminal screen",
+    "decision": "pick the library the terminal arm uses",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_refresh_on": "2026-10-01",
+   "judge_says": "prior",
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "updated": true,
+   "rows": 1,
+   "same_id": true,
+   "items_grew": true,
+   "searched": true
+  }
+ },
+ {
+  "id": "an-unfenced-investigation-is-seen-by-a-fenced-request",
+  "area": "scope",
+  "kind": "reuse",
+  "args": {
+   "check": "reuse",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard",
+    "links": [
+     "scope:quest-b"
+    ]
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "searches": 0,
+   "cited": "2026-11-10",
+   "rows": 1
+  }
+ },
+ {
+  "id": "a-fenced-investigation-is-hidden-from-an-unfenced-request",
+  "area": "scope",
+  "kind": "scope",
+  "args": {
+   "check": "scope",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a",
+    "scope:quest-a"
+   ]
+  },
+  "expect": {
+   "reused": false,
+   "searched": true,
+   "context_scope": []
+  }
+ },
+ {
+  "id": "a-held-knowledge-item-still-extends-the-investigation",
+  "area": "gate",
+  "kind": "held",
+  "args": {
+   "check": "held",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "knowledge_held": true,
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_refresh_on": "2026-10-01",
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "rows": 1,
+   "held_cells": true,
+   "complete": true
+  }
+ },
+ {
+  "id": "a-person's-own-knowledge-is-kept-when-extending",
+  "area": "knowledge",
+  "kind": "owner_text",
+  "args": {
+   "check": "owner_text",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_refresh_on": "2026-10-01",
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "owner_row_intact": true,
+   "knowledge": true
+  }
+ },
+ {
+  "id": "a-quick-fact-with-a-big-weight-is-still-light",
+  "area": "quick",
+  "kind": "quick",
+  "args": {
+   "check": "quick",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "rows": 0,
+   "knowledge": 0,
+   "context": 0,
+   "small": true
+  }
+ },
+ {
+  "id": "the-same-question-asked-twice-is-researched-once",
+  "area": "reuse",
+  "kind": "twice",
+  "args": {
+   "check": "twice",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": "standard"
+   },
+   "places": [
+    "sol-a"
+   ]
+  },
+  "expect": {
+   "reused": true,
+   "rows": 1
+  }
+ },
+ {
+  "id": "a-quick-fact-after-an-investigation-is-not-pulled",
+  "area": "quick",
+  "kind": "quick",
+  "args": {
+   "check": "quick",
+   "web": [
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "termlib is a MIT licensed terminal UI library for Python",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "termlib review",
+     "url": "https://blog.example.org/termlib",
+     "snippet": "An independent review of termlib: stable and widely used",
+     "date": "2026-08-01"
+    },
+    {
+     "title": "termlib",
+     "url": "https://github.com/acme/termlib",
+     "snippet": "duplicate of the first hit",
+     "date": "2026-09-01"
+    },
+    {
+     "title": "oldkit",
+     "url": "https://github.com/acme/oldkit",
+     "snippet": "oldkit is archived and deprecated, Apache-2.0",
+     "date": "2026-02-01"
+    },
+    {
+     "title": "gplkit",
+     "url": "https://github.com/acme/gplkit",
+     "snippet": "gplkit terminal library under the GPL",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "cooking",
+     "url": "https://example.org/pasta",
+     "snippet": "pasta recipes with no relation",
+     "date": "2026-07-01"
+    },
+    {
+     "title": "stale",
+     "url": "https://example.org/stale",
+     "snippet": "an old terminal library note",
+     "date": "2020-01-01"
+    },
+    {
+     "title": "nosource",
+     "url": "",
+     "snippet": "a result with no address",
+     "date": ""
+    },
+    {
+     "title": "vendorkit",
+     "url": "https://vendorkit.example.com/",
+     "snippet": "vendorkit, the fastest terminal library, says its own page",
+     "date": "2026-10-01"
+    }
+   ],
+   "science": [
+    {
+     "title": "A study of terminal UIs",
+     "url": "https://papers.example.org/tui",
+     "abstract": "terminal UI study, library comparison",
+     "year": "2026"
+    }
+   ],
+   "review": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "",
+    "intent_id": "terminal",
+    "today": "2026-11-10",
+    "criteria": {
+     "exclude_terms": [
+      "recipes"
+     ],
+     "since": "2026-01-01",
+     "licence_allow": [
+      "MIT",
+      "Apache-2.0"
+     ],
+     "candidate_hosts": {
+      "vendorkit": [
+       "vendorkit.example.com"
+      ]
+     }
+    },
+    "candidates": [
+     "termlib",
+     "oldkit",
+     "gplkit",
+     "vendorkit"
+    ],
+    "weight": null
+   },
+   "places": [
+    "sol-a"
+   ],
+   "prior": {
+    "question": "which terminal UI libraries are adoptable",
+    "decision": "adopt, adapt or build",
+    "weight": "standard"
+   },
+   "prior_links": [
+    "solution:sol-a"
+   ]
+  },
+  "expect": {
+   "rows": 1,
+   "knowledge": 0,
+   "context": 0,
+   "small": true
+  }
+ }
+]

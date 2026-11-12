@@ -13,7 +13,7 @@ Part of [Awareness of the outside and interaction with it](../README.md)
 - Entry call: `hubofhubs.run("the-learning", '2026-11-03')`
 - Selected implementation: Systematic review (`systematic_review`)
 - Metric: Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../__init__.py), [`hubofhubs/the_world/flow.py`](../flow.py), [`hubofhubs/the_world/interface.py`](../interface.py), [`hubofhubs/the_world/learning/__init__.py`](__init__.py), [`hubofhubs/the_world/learning/interface.py`](interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](registry_research.py) and 196 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../__init__.py), [`hubofhubs/the_world/flow.py`](../flow.py), [`hubofhubs/the_world/interface.py`](../interface.py), [`hubofhubs/the_world/learning/__init__.py`](__init__.py), [`hubofhubs/the_world/learning/interface.py`](interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](registry_research.py) and 197 more
 
 ## One level below
 

@@ -644,6 +644,12 @@ NAMES = {
     "hubofhubs.the_world.learning.investigation_store": (
         "record_investigation",
     ),
+    "hubofhubs.the_world.learning.recorded_research": (
+        "RecordedResearch",
+    ),
+    "hubofhubs.the_world.learning.research_ports": (
+        "ContextSink", "FolderKnowledge", "FolderStore", "InvestigationStore", "KnowledgeSink", "scope_of",
+    ),
     "hubofhubs.the_world.learning.research_freshness_reader.interface": (
         "FreshnessReading",
     ),
