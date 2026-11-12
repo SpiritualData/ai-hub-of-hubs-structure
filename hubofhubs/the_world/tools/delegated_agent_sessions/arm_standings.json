@@ -25,72 +25,75 @@
    "rows": {
     "native_tool_loop_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.9986",
+      "balanced": "0.893",
       "cases": "9",
       "cases_sha": "4fe9b0cc",
+      "cases_total": "27",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.0645",
+      "cost_usd": "0.069",
       "date": "2026-11-11",
       "details": "",
-      "dev": "9/9",
-      "git_sha": "063753e",
+      "dev": "8/9",
+      "git_sha": "2c5c7d9",
       "heldout": "0/0",
       "impl": "native_tool_loop_runner@provider=anthropic,tier=fast",
       "model": "claude-haiku-5-5",
       "model_calls": "9",
-      "passed": "9",
+      "passed": "8",
+      "passed_total": "24",
+      "runs": "3",
       "sample": "",
-      "seconds": "272.4",
+      "seconds": "274.233",
       "tokens_in": "0",
       "tokens_out": "0"
      }
     },
     "solution_agents_native_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.83625",
+      "balanced": "0.8577",
       "cases": "9",
       "cases_sha": "4fe9b0cc",
-      "cases_total": "18",
+      "cases_total": "27",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.3245",
+      "cost_usd": "0.102533",
       "date": "2026-11-11",
-      "details": "forced past ceiling: pooled runs on current code",
+      "details": "",
       "dev": "8/9",
-      "git_sha": "063753e",
+      "git_sha": "2c5c7d9",
       "heldout": "0/0",
       "impl": "solution_agents_native_runner@provider=anthropic,tier=fast",
       "model": "claude-haiku-5-5",
       "model_calls": "9",
       "passed": "8",
-      "passed_total": "15",
-      "runs": "2",
+      "passed_total": "23",
+      "runs": "3",
       "sample": "",
-      "seconds": "979.8",
+      "seconds": "277.033",
       "tokens_in": "0",
       "tokens_out": "0"
      }
     },
     "stream_json_goal_runner@provider=anthropic,tier=fast": {
      "3": {
-      "balanced": "0.89275",
+      "balanced": "0.927933",
       "cases": "9",
       "cases_sha": "4fe9b0cc",
-      "cases_total": "18",
+      "cases_total": "27",
       "component": "agent_sessions_hard",
-      "cost_usd": "0.08685",
+      "cost_usd": "0.0838667",
       "date": "2026-11-11",
-      "details": "forced past ceiling: pooled runs on current code",
+      "details": "",
       "dev": "9/9",
-      "git_sha": "063753e",
+      "git_sha": "2c5c7d9",
       "heldout": "0/0",
       "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
       "model": "claude-haiku-5-5",
       "model_calls": "9",
       "passed": "9",
-      "passed_total": "16",
-      "runs": "2",
+      "passed_total": "25",
+      "runs": "3",
       "sample": "",
-      "seconds": "324.1",
+      "seconds": "312.1",
       "tokens_in": "0",
       "tokens_out": "0"
      }
@@ -102,66 +105,66 @@
  "rows": {
   "native_tool_loop_runner@provider=anthropic,tier=fast": {
    "5": {
-    "balanced": "0.9985",
+    "balanced": "0.9986",
     "cases": "18",
     "cases_sha": "0dcffc5e",
     "component": "agent_sessions",
-    "cost_usd": "0.0281",
+    "cost_usd": "0.0262",
     "date": "2026-11-11",
     "details": "",
     "dev": "18/18",
-    "git_sha": "063753e",
+    "git_sha": "2c5c7d9",
     "heldout": "0/0",
     "impl": "native_tool_loop_runner@provider=anthropic,tier=fast",
     "model": "claude-haiku-5-5",
     "model_calls": "18",
     "passed": "18",
     "sample": "",
-    "seconds": "98.5",
+    "seconds": "88.1",
     "tokens_in": "0",
     "tokens_out": "0"
    }
   },
   "solution_agents_native_runner@provider=anthropic,tier=fast": {
    "5": {
-    "balanced": "0.9981",
+    "balanced": "0.9986",
     "cases": "18",
     "cases_sha": "0dcffc5e",
     "component": "agent_sessions",
-    "cost_usd": "0.0502",
+    "cost_usd": "0.0284",
     "date": "2026-11-11",
-    "details": "",
+    "details": "forced past ceiling: pooled runs on current code",
     "dev": "18/18",
-    "git_sha": "063753e",
+    "git_sha": "2c5c7d9",
     "heldout": "0/0",
     "impl": "solution_agents_native_runner@provider=anthropic,tier=fast",
     "model": "claude-haiku-5-5",
     "model_calls": "18",
     "passed": "18",
     "sample": "",
-    "seconds": "100.1",
+    "seconds": "88.2",
     "tokens_in": "0",
     "tokens_out": "0"
    }
   },
   "stream_json_goal_runner@provider=anthropic,tier=fast": {
    "5": {
-    "balanced": "0.9982",
+    "balanced": "0.9983",
     "cases": "18",
     "cases_sha": "0dcffc5e",
     "component": "agent_sessions",
-    "cost_usd": "0.0439",
+    "cost_usd": "0.0426",
     "date": "2026-11-11",
     "details": "forced past ceiling: pooled runs on current code",
     "dev": "18/18",
-    "git_sha": "063753e",
+    "git_sha": "2c5c7d9",
     "heldout": "0/0",
     "impl": "stream_json_goal_runner@provider=anthropic,tier=fast",
     "model": "claude-haiku-5-5",
     "model_calls": "18",
     "passed": "18",
     "sample": "",
-    "seconds": "103.7",
+    "seconds": "97.4",
     "tokens_in": "0",
     "tokens_out": "0"
    }
@@ -171,202 +174,234 @@
   "depth": {
    "native_tool_loop_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.7876",
+     "balanced": "0.7873",
      "cases": "9",
-     "cost_usd": "0.0432",
+     "cost_usd": "0.0429",
      "date": "2026-11-11",
-     "git_sha": "08199e0",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "7",
-     "seconds": "116.3"
+     "seconds": "145.7"
     },
     {
-     "balanced": "0.9984",
-     "cases": "9",
-     "cost_usd": "0.035",
-     "date": "2026-11-11",
-     "git_sha": "9ed38b4",
-     "model": "claude-haiku-5-5",
-     "passed": "9",
-     "seconds": "154.7"
-    },
-    {
-     "balanced": "0.7864",
+     "balanced": "0.8933",
      "cases": "9",
      "cost_usd": "0.0315",
      "date": "2026-11-11",
-     "git_sha": "9ed38b4",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
-     "passed": "7",
-     "seconds": "250.8"
+     "passed": "8",
+     "seconds": "108.2"
+    },
+    {
+     "balanced": "0.8927",
+     "cases": "9",
+     "cost_usd": "0.0362",
+     "date": "2026-11-11",
+     "git_sha": "2c5c7d9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "167.6"
     }
    ],
    "solution_agents_native_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.8928",
+     "balanced": "0.8932",
      "cases": "9",
-     "cost_usd": "0.0822",
+     "cost_usd": "0.0368",
      "date": "2026-11-11",
-     "git_sha": "08199e0",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "8",
-     "seconds": "132.8"
+     "seconds": "111.0"
     },
     {
-     "balanced": "0.9983",
+     "balanced": "0.8934",
      "cases": "9",
-     "cost_usd": "0.063",
+     "cost_usd": "0.0295",
      "date": "2026-11-11",
-     "git_sha": "9ed38b4",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
-     "passed": "9",
-     "seconds": "150.4"
+     "passed": "8",
+     "seconds": "96.4"
     },
     {
-     "balanced": "0.9959",
+     "balanced": "0.8931",
      "cases": "9",
-     "cost_usd": "0.0836",
+     "cost_usd": "0.0536",
      "date": "2026-11-11",
-     "git_sha": "43d392a",
+     "git_sha": "2c5c7d9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "109.4"
+    }
+   ],
+   "stream_json_goal_runner@provider=anthropic,tier=fast": [
+    {
+     "balanced": "0.8932",
+     "cases": "9",
+     "cost_usd": "0.0374",
+     "date": "2026-11-11",
+     "git_sha": "2c5c7d9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "114.2"
+    },
+    {
+     "balanced": "0.8933",
+     "cases": "9",
+     "cost_usd": "0.0365",
+     "date": "2026-11-11",
+     "git_sha": "2c5c7d9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "104.7"
+    },
+    {
+     "balanced": "0.9988",
+     "cases": "9",
+     "cost_usd": "0.0371",
+     "date": "2026-11-11",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "9",
-     "seconds": "387.4"
+     "seconds": "107.9"
     }
    ]
   },
   "hard": {
    "native_tool_loop_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.9985",
+     "balanced": "0.893",
      "cases": "9",
-     "cost_usd": "0.0705",
+     "cost_usd": "0.0719",
      "date": "2026-11-11",
-     "git_sha": "43d392a",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
-     "passed": "9",
-     "seconds": "283.5"
+     "passed": "8",
+     "seconds": "265.2"
     },
     {
      "balanced": "0.893",
      "cases": "9",
-     "cost_usd": "0.0629",
+     "cost_usd": "0.0677",
      "date": "2026-11-11",
-     "git_sha": "f9b75df",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "8",
-     "seconds": "271.7"
+     "seconds": "277.0"
     },
     {
-     "balanced": "0.9986",
+     "balanced": "0.893",
      "cases": "9",
-     "cost_usd": "0.0645",
+     "cost_usd": "0.0674",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
-     "passed": "9",
-     "seconds": "272.4"
+     "passed": "8",
+     "seconds": "280.5"
     }
    ],
    "solution_agents_native_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.9969",
+     "balanced": "0.7873",
      "cases": "9",
-     "cost_usd": "0.3531",
+     "cost_usd": "0.1035",
      "date": "2026-11-11",
-     "git_sha": "53b5f8b",
-     "model": "claude-haiku-5-5",
-     "passed": "9",
-     "seconds": "450.6"
-    },
-    {
-     "balanced": "0.784",
-     "cases": "9",
-     "cost_usd": "0.2931",
-     "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "7",
-     "seconds": "885.4"
+     "seconds": "277.7"
     },
     {
-     "balanced": "0.8885",
+     "balanced": "0.8929",
      "cases": "9",
-     "cost_usd": "0.3559",
+     "cost_usd": "0.1019",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "8",
-     "seconds": "1074.2"
+     "seconds": "276.7"
+    },
+    {
+     "balanced": "0.8929",
+     "cases": "9",
+     "cost_usd": "0.1022",
+     "date": "2026-11-11",
+     "git_sha": "2c5c7d9",
+     "model": "claude-haiku-5-5",
+     "passed": "8",
+     "seconds": "276.7"
     }
    ],
    "stream_json_goal_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.7872",
+     "balanced": "0.8926",
      "cases": "9",
-     "cost_usd": "0.0868",
+     "cost_usd": "0.0885",
      "date": "2026-11-11",
-     "git_sha": "f9b75df",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
-     "passed": "7",
-     "seconds": "318.6"
+     "passed": "8",
+     "seconds": "337.4"
     },
     {
-     "balanced": "0.7873",
+     "balanced": "0.8927",
      "cases": "9",
-     "cost_usd": "0.0838",
+     "cost_usd": "0.0859",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
-     "passed": "7",
-     "seconds": "302.6"
+     "passed": "8",
+     "seconds": "317.4"
     },
     {
-     "balanced": "0.9982",
+     "balanced": "0.9985",
      "cases": "9",
-     "cost_usd": "0.0899",
+     "cost_usd": "0.0772",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "9",
-     "seconds": "345.6"
+     "seconds": "281.5"
     }
    ]
   },
   "open": {
    "native_tool_loop_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.9985",
+     "balanced": "0.9986",
      "cases": "18",
-     "cost_usd": "0.0281",
+     "cost_usd": "0.0262",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "18",
-     "seconds": "98.5"
+     "seconds": "88.1"
     }
    ],
    "solution_agents_native_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.9981",
+     "balanced": "0.9986",
      "cases": "18",
-     "cost_usd": "0.0502",
+     "cost_usd": "0.0284",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "18",
-     "seconds": "100.1"
+     "seconds": "88.2"
     }
    ],
    "stream_json_goal_runner@provider=anthropic,tier=fast": [
     {
-     "balanced": "0.9982",
+     "balanced": "0.9983",
      "cases": "18",
-     "cost_usd": "0.0439",
+     "cost_usd": "0.0426",
      "date": "2026-11-11",
-     "git_sha": "063753e",
+     "git_sha": "2c5c7d9",
      "model": "claude-haiku-5-5",
      "passed": "18",
-     "seconds": "103.7"
+     "seconds": "97.4"
     }
    ]
   },
