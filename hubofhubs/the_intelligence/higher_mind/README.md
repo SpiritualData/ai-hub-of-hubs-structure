@@ -15,7 +15,7 @@ Higher Mind is the long view across requests. Objectives keeps the live hierarch
 This intent is implemented by the sub-intents and solutions below it; each shows whether it goes deeper.
 
 - [Guidance](guidance/README.md) (solution with implementations): Keep the Planner pointed at the longer-term outcome without taking over the request.
-- [Long-Term Memory](long_term_memory/README.md) (solution with implementations): Let the AI keep and recall what happened across requests.
+- [Long-Term Memory](long_term_memory/README.md) (solution with implementations): Let the AI keep and recall what happened across requests for each subject it serves, a person or a representative, showing each asker only what they may see.
 - [Objectives](objectives/README.md) (solution with implementations): Let the AI keep working toward a goal over many requests and know which objective a request serves.
 
 ## Solutions at a glance

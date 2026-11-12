@@ -1,6 +1,6 @@
 # Representatives
 
-**Purpose:** Let an AI act for a person the way that person would want, within the authority the person gave: the worker categories allowed, the data scope (whose data the AI may read), the person's asking policy and quality profile.
+**Purpose:** Let each representative act as itself over time: as the person it stands for would want, within the authority that person gave, or as the character it is when no person stands behind it.
 
 Breadcrumb: [Top](../../../esoi/README.md) > [Adapting to the humans the system works with](../README.md) > Representatives
 
@@ -8,8 +8,8 @@ Part of [Adapting to the humans the system works with](../README.md)
 
 ## Representatives (`the-representatives`)
 
-- Out of scope: Deciding when to ask (Judgment Calls does that), learning from feedback (Feedback Learning does that) and translating implied priorities (Prioritization does that).
-- Delegates to: judgment-calls, feedback-learning, prioritization
+- Out of scope: Keeping and recalling its history, choosing which part a request needs, deciding when to ask, learning from feedback and translating implied priorities.
+- Delegates to: judgment-calls, feedback-learning, prioritization, long-term-memory, context-retriever
 - Entry call: `hubofhubs.run("the-representatives", '')`
 - Selected implementation: Declared authority (`declared_authority`)
 - Metric: Authority that stays with its person

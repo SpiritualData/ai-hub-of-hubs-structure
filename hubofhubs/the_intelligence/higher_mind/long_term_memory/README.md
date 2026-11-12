@@ -1,6 +1,6 @@
 # Long-Term Memory
 
-**Purpose:** Let the AI keep and recall what happened across requests.
+**Purpose:** Let the AI keep and recall what happened across requests for each subject it serves, a person or a representative, showing each asker only what they may see.
 
 Breadcrumb: [Top](../../../../esoi/README.md) > [How the AI processes information](../../README.md) > [The long view across requests](../README.md) > Long-Term Memory
 
