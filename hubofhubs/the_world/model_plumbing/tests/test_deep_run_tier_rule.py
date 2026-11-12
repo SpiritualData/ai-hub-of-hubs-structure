@@ -45,7 +45,7 @@ def test_the_measurement_is_read_from_the_recorded_standings_per_tier():
 
 def test_every_deep_run_role_lands_on_the_cheap_sufficient_tier_by_default():
     assert {"deep_work_gather", "deep_work_implementation", "deep_work_structure", "deep_work_review", "main_session", "sub_agent", "after_check_resume"} <= set(DEEP)
-    for role in DEEP:
+    for role in (r for r in DEEP if not rt.own_evidence_for(RULES, r)):        # file_editing is judged on its own evidence, below
         assert rt.choose_tier(role, table=TABLE, rules=RULES).tier == "fast" and rt.choose_tier(role, table=TABLE, rules=RULES).source == "default", role
     assert rt.tier_for_task("", table=TABLE) == "fast"         # the tier of a plain ahohs work request
 
@@ -129,3 +129,76 @@ def test_a_sub_agent_runs_on_its_own_default_unless_the_main_session_asks_for_mo
 def test_the_run_record_carries_the_tier_choice_keys():
     keys = rt.escalate(rt.choose_tier("main_session", table=TABLE, rules=RULES), "review", "the reviewer found an unread file", RULES).record()
     assert {"tier", "tier_source", "tier_reason"} <= set(keys)
+
+
+# File editing: the cheapest-sufficient rule on its own measurement (the component file_edit_goals), the same bar.
+INPUTS = {i["role"]: i for i in rt.read_inputs()}
+FAST_EDIT_ROW = dict(component="file_edit_goals", impl="fast_edit", sample="", date="2026-10-31", passed="29", cases="30", model="m-fast-then")
+
+
+def results_file(tmp_path, *rows):
+    path = tmp_path / "results.csv"
+    cols = ("date", "component", "impl", "cases", "passed", "sample", "model")
+    path.write_text(",".join(cols) + "\n" + "".join(",".join(str(r.get(c, "")) for c in cols) + "\n" for r in rows), encoding="utf-8")
+    return path
+
+
+def test_file_editing_follows_the_rule_with_its_own_evidence_and_the_same_bar_stated_once():
+    assert "file_editing" in DEEP and rt.own_evidence_for(RULES, "file_editing") == dict(component="file_edit_goals", arms={"fast": "fast_edit"})
+    assert [r["value"] for r in RULES if r["part"] == "sufficiency" and r["key"] == "pass_rate_bar"] == ["0.66"]          # no second bar
+    assert rt.own_evidence_for(RULES, "main_session") == {}
+
+
+def test_file_editing_default_resolves_to_fast_when_a_current_run_of_the_fast_tier_meets_the_bar(tmp_path):
+    path = results_file(tmp_path, dict(FAST_EDIT_ROW, passed="30", date="2026-10-30"), FAST_EDIT_ROW, dict(FAST_EDIT_ROW, impl="none", passed="0", model="none"),
+                        dict(FAST_EDIT_ROW, sample="sample:3", passed="0", cases="3"))
+    own = rt.own_pass_rates(RULES, "file_editing", "2026-11-11", {"fast": "m-fast-then"}, path)
+    assert own == ({"fast": dict(passed=29, total=30, arms=1, first="2026-10-31", last="2026-10-31")}, [])         # the latest full run; the zero bound and samples are not a tier
+    row = rt.role_row(INPUTS["file_editing"], RULES, {}, {}, "2026-11-11", {"file_editing": "quality"}, own=own)
+    assert row["tier"] == "fast" and row["evidence"].startswith("sufficiency rule") and "file_edit_goals" in row["evidence"] and "fast 29 of 30" in row["evidence"]
+    assert rt.sufficient_tier(RULES, own[0], what="x")["bar"] == 0.66
+    below = rt.own_pass_rates(RULES, "file_editing", "2026-11-11", {"fast": "m-fast-then"}, results_file(tmp_path, dict(FAST_EDIT_ROW, passed="19")))
+    assert rt.role_row(INPUTS["file_editing"], RULES, {}, {}, "2026-11-11", {"file_editing": "fast"}, own=below)["tier"] == "balanced"     # 0.633 is under the bar: one rung above
+
+
+def test_file_editing_evidence_from_another_model_or_past_the_expiry_is_not_used_and_the_row_says_so(tmp_path):
+    path = results_file(tmp_path, FAST_EDIT_ROW)
+    other = rt.own_pass_rates(RULES, "file_editing", "2026-11-11", {"fast": "m-fast-now"}, path)
+    assert other[0] == {} and "different model" in other[1][0]
+    stale = rt.own_pass_rates(RULES, "file_editing", "2027-02-01", {"fast": "m-fast-then"}, path)
+    assert stale[0] == {} and "past the 90 day expiry" in stale[1][0]
+    assert rt.own_pass_rates(RULES, "file_editing", "2026-11-11", {"fast": "m-fast-then"}, tmp_path / "none.csv")[0] == {}
+    row = rt.role_row(INPUTS["file_editing"], RULES, {}, {}, "2026-11-11", {"file_editing": "quality"}, own=other)
+    assert row["tier"] == "quality" and row["evidence"].startswith("STALE OR MISSING") and "previous tier quality is kept" in row["evidence"]     # the rule's fallback, no invented measurement
+
+
+def test_file_editing_on_disk_uses_its_own_evidence_and_says_what_it_found():
+    row = TABLE["file_editing"]
+    assert row["person_may_set"] == "yes" and row["constraint"] == "" and "file_edit_goals" in row["evidence"] and "29 of 30" in row["evidence"]
+    assert "different model" in row["evidence"] or row["tier"] == "fast"      # recorded under another model than the fast tier names: not used, so the tier is kept
+    assert not set(rt.measured_pass_rates()) - {"fast"} and "deep-work" not in row["evidence"]
+
+
+def test_a_person_can_raise_file_editing_and_a_failed_edit_escalates_one_rung_with_a_reason():
+    choice = rt.choose_tier("file_editing", requested="best", table=TABLE, rules=RULES)
+    assert (choice.tier, choice.source) == ("best", "current_input")
+    assert rt.choose_tier("file_editing", standing=lambda role: "balanced", table=TABLE, rules=RULES).source == "standing_guidance"
+    default = rt.choose_tier("file_editing", table=TABLE, rules=RULES)
+    assert default.source == "default" and "sufficiency bar" in default.reason
+    low = rt.TierChoice("file_editing", "fast", "default")
+    up = rt.escalate(low, "after_check", "the edit missed the second call site its own tests exercise", RULES)
+    assert (up.tier, up.source, up.from_tier) == ("balanced", "escalation", "fast")
+
+
+def test_connected_system_operations_stays_on_quality_by_a_stated_constraint_and_a_person_can_set_higher():
+    cons = rt.constraints_for(RULES, "work", "connected_system_operations")
+    assert [(n, a) for n, a, _ in cons] == [("significant_downstream_effect_quality_min", "min:quality")]
+    assert "significant downstream effect" in cons[0][2] and "no measurement" in cons[0][2]
+    row = TABLE["connected_system_operations"]
+    assert row["tier"] == "quality" and row["constraint"] == "significant_downstream_effect_quality_min" and row["person_may_set"] == "yes"
+    assert "connected_system_operations" not in DEEP                                                  # no rule or evidence lowers it
+    assert rt.apply_constraints("fast", cons) == rt.apply_constraints("balanced", cons) == "quality"   # even a metric that picked lower is raised to quality
+    assert rt.apply_constraints("best", cons) == "best"
+    assert rt.tier_for("connected_system_operations", "best", TABLE) == "best" and rt.tier_for("connected_system_operations", table=TABLE) == "quality"
+    with pytest.raises(ValueError):
+        rt.escalate(rt.TierChoice("connected_system_operations", "quality", "default"), "review", "the operation touched the wrong record", RULES)      # not a deep-run role

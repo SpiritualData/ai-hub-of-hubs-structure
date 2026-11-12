@@ -35,7 +35,7 @@ def test_the_rule_file_is_consistent_and_every_part_has_a_reason():
     assert {r["key"] for r in RULES if r["part"] == "stakes"} == {"call", "turn", "task", "structure"}
     assert {r["key"] for r in RULES if r["part"] == "volume"} == {"small", "medium", "large", "session"}
     assert rt.ladder_for(RULES) == ("fast", "balanced", "quality")
-    assert [r["key"] for r in RULES if r["part"] == "revision"] == ["1", "2", "3", "4"]      # the revisions on the owner's instruction are recorded, with his words
+    assert [r["key"] for r in RULES if r["part"] == "revision"] == ["1", "2", "3", "4", "5"]      # the revisions on the owner's instruction are recorded, with his words
     assert any(r["part"] == "assumption" for r in RULES)                                # the dollar values and the cost weight are stated as assumptions
 
 
@@ -53,7 +53,7 @@ def test_every_role_has_a_kind_and_classes_the_rule_defines_and_a_measured_volum
 def test_no_constraint_sets_a_deep_work_tier():
     named = {(r["role"], r["kind"]) for r in RULES if r["part"] == "constraint"}
     assert not any(role.startswith("deep_work") or role == "main_session" for role, _ in named)
-    assert {r["key"] for r in RULES if r["part"] == "constraint"} == {"classify_fast_only", "person_reads_balanced_min", "best_only_on_request_or_watch"}
+    assert {r["key"] for r in RULES if r["part"] == "constraint"} == {"classify_fast_only", "person_reads_balanced_min", "best_only_on_request_or_watch", "significant_downstream_effect_quality_min"}
 
 
 def test_the_required_gain_is_the_larger_of_the_noise_floor_and_the_weighted_cost_over_the_value_of_gain():
@@ -86,7 +86,7 @@ def test_no_deep_run_role_depends_on_the_cost_weight_or_the_value_of_a_gain():
             r["value"] = str(float(r["value"]) * 100)
         if r["part"] == "rule" and r["key"] == "cost_weight":
             r["value"] = "300"
-    for role in rt.deep_run_roles(RULES):
+    for role in (r for r in rt.deep_run_roles(RULES) if not rt.own_evidence_for(RULES, r)):          # a role with its own evidence is tested in test_deep_run_tier_rule.py
         a = rt.role_row(inputs[role], RULES, {}, {}, DAY, measured=measured)["metric_tier"]
         b = rt.role_row(inputs[role], ladder, {}, {}, DAY, measured=measured)["metric_tier"]
         assert a == b == "fast", role

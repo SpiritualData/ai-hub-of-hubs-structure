@@ -60,7 +60,10 @@ def resolution_note(tier: str) -> str:
 # recorded pass rate on the deep-work cases meets the sufficiency bar (``sufficient_tier``); a person's tier, from the current request first and then from
 # standing guidance (``StandingTierGuidance``, a function the consumer supplies), wins over it (``choose_tier``); when the default fails a task the planner
 # moves that task up one rung with a recorded reason (``escalate``), never for later tasks; a sub-agent runs on its own default unless the main session
-# asks for more with a reason (``sub_agent_choice``). Nothing is stored between tasks, so no choice is sticky.
+# asks for more with a reason (``sub_agent_choice``). Nothing is stored between tasks, so no choice is sticky. A deep-run role may have its own evidence
+# source (the ``own_evidence`` rows: file editing reads its own component of the results file, ``own_pass_rates``) in place of the deep-work cases, under the same
+# bar; a run counts only within the expiry and when recorded under the model the tier names that day, and a tier with no counting run is unmeasured. A role that
+# cannot be lowered by any evidence carries a stated constraint instead (connected system operations: ``min:quality``, a person may still set higher).
 # ``compute_table`` recomputes the whole table from the registry for a day; ``write_table`` writes it. The generated columns are ``tier``,
 # ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``; the others are inputs. No clock is read: the day is an argument.
 # ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -235,10 +238,55 @@ def measured_pass_rates(path: Path = STANDINGS, kind: str = "hard") -> Dict[str,
     return found
 
 
-def sufficient_tier(rules: list, measured: Mapping[str, Mapping], rungs: Optional[tuple] = None) -> dict:
+RESULTS = Path(__file__).resolve().parents[4] / "esoi" / "results.csv"
+
+
+def own_evidence_for(rules: list, role: str) -> dict:
+    """The role's own evidence source, from the ``own_evidence`` rows of the rule file: ``{component, arms: {tier: impl}}``, or ``{}`` for a role that is judged on
+    the deep-work cases. Such a role is measured by its own component of the results file, not by the deep-work cases; the same bar applies."""
+    rows = [r for r in rules if r["part"] == "own_evidence" and r["role"] == role]
+    component = next((r["value"] for r in rows if r["key"] == "component"), "")
+    arms = {r["key"].partition(":")[2]: r["value"] for r in rows if r["key"].startswith("arm:")}
+    return dict(component=component, arms=arms) if component else {}
+
+
+def own_pass_rates(rules: list, role: str, day: str, current_models: Optional[Mapping[str, str]] = None, path: Path = RESULTS) -> tuple:
+    """``(measured, caveats)`` of a role judged on its own component: for each tier's arm, the passed and total cases of its latest full row (no sample) in the results
+    file, in the shape of ``measured_pass_rates``. A row counts only when it is no older than ``evidence_max_age_days`` on ``day`` and was recorded under the model the
+    tier names on ``day`` (``current_models``, ``{tier: model}``); a row that fails either is left out and ``caveats`` says which, so a measurement of another model is
+    never read as the tier's. A tier with no counting row is absent, never guessed; an unreadable file gives ``({}, [...])``."""
+    own = own_evidence_for(rules, role)
+    if not own:
+        return {}, []
+    import datetime
+    limit = rule_value(rules, "sufficiency", "evidence_max_age_days")
+    try:
+        with Path(path).open(newline="", encoding="utf-8") as handle:
+            rows = [r for r in csv.DictReader(handle) if r.get("component") == own["component"] and not (r.get("sample") or "").strip()]
+    except OSError:
+        return {}, [f"the results file could not be read, so the component {own['component']} has no recorded measurement"]
+    measured, caveats = {}, []
+    for tier, impl in own["arms"].items():
+        mine = [r for r in rows if r.get("impl") == impl]
+        if not mine:
+            caveats.append(f"no full recorded run of the {tier} arm {impl}")
+            continue
+        row = max(enumerate(mine), key=lambda pair: (pair[1].get("date", ""), pair[0]))[1]
+        age = (datetime.date.fromisoformat(day) - datetime.date.fromisoformat(row["date"])).days
+        if age > limit:
+            caveats.append(f"the latest run of the {tier} arm {impl} is dated {row['date']}, {age} days old on {day}, past the {limit:g} day expiry, so it is not used")
+        elif (current_models or {}).get(tier) != row.get("model"):
+            caveats.append(f"the latest run of the {tier} arm {impl} ({row['passed']} of {row['cases']} cases, {row['date']}) was recorded under a different model from the one "
+                           f"the {tier} tier names on {day}, so it is not a measurement of the {tier} tier and is not used")
+        else:
+            measured[tier] = dict(passed=int(row["passed"]), total=int(row["cases"]), arms=1, first=row["date"], last=row["date"])
+    return measured, caveats
+
+
+def sufficient_tier(rules: list, measured: Mapping[str, Mapping], rungs: Optional[tuple] = None, what: str = "the recorded deep-work cases") -> dict:
     """The default tier of a deep-run role: the lowest rung whose measured pass rate meets the sufficiency bar. A rung with no measurement is skipped (the
     cheapest MEASURED rung that meets the bar is the answer, and ``note`` says which rungs were skipped). When no measured rung meets the bar the tier is the rung
-    above the highest measured one; when nothing is measured the tier is None. Returns ``{tier, bar, note}``."""
+    above the highest measured one; when nothing is measured the tier is None. ``what`` names the cases the rate is over. Returns ``{tier, bar, note}``."""
     bar = rule_value(rules, "sufficiency", "pass_rate_bar")
     rungs = rungs or ladder_for(rules)
     parts, skipped, tier = [], [], None
@@ -256,7 +304,7 @@ def sufficient_tier(rules: list, measured: Mapping[str, Mapping], rungs: Optiona
         tier = rungs[min(top + 1, len(rungs) - 1)]
         parts.append("no measured tier meets the bar, so the rung above the highest measured one")
     skip = f"; no measurement for {', '.join(skipped)}, so the rule falls to the cheapest measured tier that meets the bar" if skipped and tier else ""
-    return dict(tier=tier, bar=bar, note=(f"measured pass rate on the recorded deep-work cases: {'; '.join(parts)}{skip}" if parts else "no tier has a recorded deep-work measurement"))
+    return dict(tier=tier, bar=bar, note=(f"measured pass rate on {what}: {'; '.join(parts)}{skip}" if parts else f"no tier has a measurement on {what}"))
 
 
 @dataclass(frozen=True)
@@ -366,20 +414,29 @@ def describe_step(step: dict) -> str:
             f"(scores of the {step['low']} tier's model to the {step['high']} tier's: {scores}{drop})")
 
 
-def deep_run_row(inputs: Mapping[str, str], rules: list, measured: Mapping[str, Mapping], day: str, previous: Optional[Mapping[str, str]] = None) -> Dict[str, str]:
-    """One finished row of a deep-run role: the tier is the cheapest sufficient one (``sufficient_tier``), the evidence is the recorded pass rates against the bar."""
+def deep_run_row(inputs: Mapping[str, str], rules: list, measured: Mapping[str, Mapping], day: str, previous: Optional[Mapping[str, str]] = None,
+                 own: Optional[tuple] = None) -> Dict[str, str]:
+    """One finished row of a deep-run role: the tier is the cheapest sufficient one (``sufficient_tier``), the evidence is the recorded pass rates against the bar.
+    ``own`` is ``(measured, caveats)`` of a role judged on its own component (``own_pass_rates``): its rates replace the deep-work cases and the caveats are stated."""
     role, kind = inputs["role"], inputs["kind"]
-    got = sufficient_tier(rules, measured)
+    component = own_evidence_for(rules, role).get("component", "") if own is not None else ""
+    if component:
+        measured, caveats = own
+        what, label = f"the recorded cases of the component {component}", f"numbers of the role's own measurement, the component {component}"
+    else:
+        caveats, what, label = [], "the recorded deep-work cases", "numbers of the recorded hard deep-work cases"
+    got = sufficient_tier(rules, measured, what=what)
     rungs = ladder_for(rules, kind, role)
     held = (previous or {}).get(role, "")
     metric_tier = got["tier"] or (held if held in TIERS else rungs[0])
     cons = constraints_for(rules, kind, role)
     final = apply_constraints(metric_tier, cons)
+    said = (" Caveats: " + "; ".join(caveats) + ".") if caveats else ""
     if got["tier"]:
-        head = (f"sufficiency rule (cheapest tier good enough for most deep work, bar {got['bar']:g} pass rate, numbers of the recorded hard deep-work cases); {got['note']}. "
-                f"The rule picks {metric_tier}.")
+        head = f"sufficiency rule (cheapest tier good enough for most deep work, bar {got['bar']:g} pass rate, {label}); {got['note']}. The rule picks {metric_tier}.{said}"
     else:
-        head = f"STALE OR MISSING deep-work measurement on {day}, the rule was not applied: {got['note']}. The previous tier {metric_tier} is kept until one is recorded."
+        head = (f"STALE OR MISSING measurement on {day}, the rule was not applied: {got['note']}.{said} "
+                f"The previous tier {metric_tier} is kept until a current measurement of the tier is recorded.")
     tail = f" The constraint {', '.join(n for n, _, _ in cons)} set the tier to {final}." if cons and final != metric_tier else ""
     follow = f" The role follows {inputs['follows']}, so its tier is that role's." if inputs.get("follows") else ""
     row = {c: inputs.get(c, "") for c in COLUMNS}
@@ -388,12 +445,15 @@ def deep_run_row(inputs: Mapping[str, str], rules: list, measured: Mapping[str, 
 
 
 def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping], prices: Mapping[str, tuple], day: str, previous: Optional[Mapping[str, str]] = None,
-             max_age: float = 45, measured: Optional[Mapping[str, Mapping]] = None) -> Dict[str, str]:
+             max_age: float = 45, measured: Optional[Mapping[str, Mapping]] = None, own: Optional[tuple] = None) -> Dict[str, str]:
     """One finished row: the inputs plus the generated ``tier``, ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``. A deep-run role takes the
-    sufficiency rule over ``measured`` (``measured_pass_rates``); every other role takes the climb."""
+    sufficiency rule over ``measured`` (``measured_pass_rates``), or over its own component's ``own`` (``own_pass_rates``) when the rule file gives it one; every
+    other role takes the climb. A role with its own evidence and no ``own`` given is read against the models the ``arms`` name."""
     role, kind = inputs["role"], inputs["kind"]
     if role in deep_run_roles(rules):
-        return deep_run_row(inputs, rules, measured if measured is not None else measured_pass_rates(), day, previous)
+        if own is None and own_evidence_for(rules, role):
+            own = own_pass_rates(rules, role, day, {tier: row["model"] for tier, row in arms.items() if row.get("model")})
+        return deep_run_row(inputs, rules, measured if measured is not None else measured_pass_rates(), day, previous, own)
     tokens = volume_of(rules, inputs.get("volume", "small") or "small", inputs.get("tokens_in", ""), inputs.get("tokens_out", ""))
     klass = next((r for r in rules if r["part"] == "volume" and r["key"] == (inputs.get("volume") or "small")), {})
     basis = (f"measured: {inputs['volume_basis']}" if inputs.get("volume") == "measured"
