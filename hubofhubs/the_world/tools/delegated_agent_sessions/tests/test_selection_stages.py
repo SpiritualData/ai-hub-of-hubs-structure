@@ -57,13 +57,21 @@ def test_a_failed_real_task_stops_the_arm():
     assert verdict.winner == "" and verdict.stages["a"]["real_task"].startswith("stopped")
 
 
-def test_fisher_matches_a_known_value():
-    assert abs(stages.fisher_two_sided(8, 8, 0, 8) - 2 / comb16()) < 1e-9
+def test_the_lead_test_is_esois_and_matches_a_known_value():
+    from esoi.optimization.leaderboard import stats
+    assert abs(stats.fisher_exact_two_sided(8, 8, 0, 8) - 2 / 12870) < 1e-9   # 2 of C(16, 8) = 12870 tables
+    assert stages.lead_shown((8, 8), (0, 8)) and not stages.lead_shown((25, 27), (24, 27))
 
 
-def comb16():
-    from math import comb
-    return comb(16, 8)
+def test_the_alpha_here_is_the_alpha_the_metric_cascade_declares():
+    import csv
+    from pathlib import Path
+    from esoi.optimization.leaderboard import cascade_stages
+    with (Path(__file__).resolve().parent.parent / "metrics.csv").open(newline="", encoding="utf-8") as handle:
+        cell = next(r for r in csv.DictReader(handle) if r["metric_id"] == "metric-delegated-agent-sessions-hard")["cascading_conditionals"]
+    parsed, problems = cascade_stages.parse(cell)
+    assert problems == []
+    assert [lead.value for lead in parsed[-1].requirement.whole] == [stages.ALPHA]
 
 
 HARD = {"a": [run(8, 9, 0.9, 300)] * 3, "b": [run(8, 9, 0.9, 300)] * 3}

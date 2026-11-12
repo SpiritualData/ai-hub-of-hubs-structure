@@ -1,8 +1,11 @@
-"""The stages of the authoritative metric that the cascade grammar cannot hold, as one pure rule: which arm is selectable and which one the metric selects.
+"""The stages of the authoritative metric as one pure rule: which arm is selectable and which one the metric selects.
 
-The cascade of ``metric-delegated-agent-sessions-hard`` (esoi's grammar) orders the cheap proofs and ranks arms by the balanced number on the hard set.
-Four conditions sit beyond what that grammar can express because they read more than one component or more than one run; they are written here, fixed
-before any arm was scored on them, and read by ``arm_choice`` and by the test that pins the record's ``selected`` to them:
+The cascade of ``metric-delegated-agent-sessions-hard`` (esoi's grammar) declares the same rule for esoi's own check and reports: its ``whole`` stage
+``requires`` the open-ended, hard and depth results at the floors below, asks for ``lead=significant`` at ``ALPHA`` and breaks ties by cost then time
+per case, so esoi's S10, S33, ``esoi cascade`` and ``esoi select`` choose the same arm as this module. This module keeps what the grammar does not hold
+(the real-task stage, the one-case-per-run noise band, the depth set's cost added to the tie-break, the reports per stage) and calls esoi's lead
+test (``lead_shown``). The conditions, fixed before any arm was scored on them, are read by ``arm_choice`` and by the test that pins the record's
+``selected`` to them:
 
 1. ``open_ended``: the mean pass rate of the arm's counting whole runs of the open-ended set is at least ``OPEN_FLOOR`` (17 of 18).
 2. ``hard``: the mean pass rate of its counting whole runs of the hard set is at least ``HARD_FLOOR`` (6 of 9: the six coding cases are checked by hidden
@@ -21,7 +24,6 @@ left out by the caller (``arm_choice.eligible``) before this rule runs. No model
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from math import comb
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 OPEN_FLOOR = 0.94
@@ -54,15 +56,12 @@ def per_case(rows: Sequence[Mapping[str, Any]], key: str) -> float:
     return sum(number(r.get(key)) for r in rows) / cases if cases else float("inf")
 
 
-def fisher_two_sided(a_pass: int, a_all: int, b_pass: int, b_all: int) -> float:
-    """The two-sided exact Fisher p-value of two pass counts (the sum of the tables no likelier than the one seen)."""
-    total, passes = a_all + b_all, a_pass + b_pass
-
-    def chance(k: int) -> float:
-        return comb(passes, k) * comb(total - passes, a_all - k) / comb(total, a_all)
-    seen = chance(a_pass)
-    low, high = max(0, a_all - (total - passes)), min(a_all, passes)
-    return min(1.0, sum(p for p in (chance(k) for k in range(low, high + 1)) if p <= seen * (1 + 1e-9)))
+def lead_shown(ahead: Tuple[int, int], behind: Tuple[int, int]) -> bool:
+    """Whether the pooled pass counts ``(passed, cases)`` of ``ahead`` show a lead over ``behind`` at ``ALPHA``: esoi's decision, the same one the
+    cascade of ``metric-delegated-agent-sessions-hard`` declares (``lead=significant:<alpha>``, ``esoi.optimization.leaderboard.lead_requirement``)."""
+    from esoi.optimization.leaderboard import lead_requirement
+    row = lambda counts: {"passed": str(counts[0]), "cases": str(counts[1])}
+    return lead_requirement.lead_over(lead_requirement.Lead(lead_requirement.SIGNIFICANT, ALPHA), row(ahead), row(behind))[0]
 
 
 @dataclass
@@ -128,7 +127,7 @@ def decide(open_runs: Mapping[str, Sequence[Mapping[str, Any]]], hard_runs: Mapp
     lp, ln = pooled(hard_runs[leader])
     band = 1.0 / (ln / len(hard_runs[leader]))   # less than one case per run is within noise, the same unit the weights protect
     contenders = [a for a in selectable if a == leader or (rate(hard_runs[leader]) - rate(hard_runs[a]) < band
-                                                          and fisher_two_sided(lp, ln, *pooled(hard_runs[a])) >= ALPHA)]
+                                                          and not lead_shown((lp, ln), pooled(hard_runs[a])))]
     with_depth = depth_needed and all(depth_runs.get(a) for a in contenders)   # overuse on the depth set shows as cost, so it counts when every contender ran it
 
     def spend(a: str, key: str) -> float:
