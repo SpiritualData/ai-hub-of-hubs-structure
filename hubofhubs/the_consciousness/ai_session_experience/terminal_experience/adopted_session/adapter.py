@@ -279,7 +279,8 @@ class ScreenAdapter:
 
 def hint_of(status: str) -> str:
     """The key line for a state of the run: whole hints only, the last ones dropped first on a narrow screen."""
-    return {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave"}.get(
+    return {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave",
+            "idle": "type a goal and press Enter | / for commands | ? keys"}.get(
         status, "Esc stop | type + Enter to steer | Tab structure | ? keys")
 
 

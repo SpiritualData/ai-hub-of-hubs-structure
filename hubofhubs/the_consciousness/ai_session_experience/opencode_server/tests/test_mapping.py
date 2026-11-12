@@ -82,8 +82,8 @@ def test_a_stop_ends_what_was_running_as_interrupted_and_says_how_to_resume():
     (call,) = tools(store, root)
     assert call["state"]["status"] == "error" and call["state"]["error"]["message"] == "Step interrupted" and call["state"]["metadata"]["interrupted"] is True
     assert "session.step.failed" in kinds(store) and "session.execution.interrupted" in kinds(store) and root not in store.active
-    (note,) = messages(store, root, "synthetic")
-    assert "Stopped, your work is kept" in note["description"] and "Type resume to continue it" in note["description"]
+    said = [p["text"] for m in messages(store, root, "assistant") for p in m["content"] if p["type"] == "text"]
+    assert len(said) == 1 and "Stopped, your work is kept" in said[0] and "Type resume to continue it" in said[0]
     assert messages(store, root, "idle")[-1]["outcome"] == "interrupted"
 
 
@@ -195,6 +195,29 @@ def test_an_interim_note_that_is_the_answer_is_not_drawn_and_a_lifecycle_note_ne
     t.handle(Finished(outcome="met", report="Today is **Wednesday, November 11, 2026**. The system clock read 6:43 PM.\n\nSecond paragraph."))
     texts = [p["text"] for m in messages(store, root, "assistant") for p in m["content"] if p["type"] == "text"]
     assert len(texts) == 1 and "Second paragraph" in texts[0]
+
+
+def test_a_real_runs_notes_and_figure_updates_leave_the_answer_in_the_closing_only():
+    import json
+    from pathlib import Path
+    from hubofhubs.the_consciousness.ai_session_experience.session_events import event_from_dict
+    fixture = Path(__file__).resolve().parents[5] / "evaluation" / "terminal_presentation" / "real_native_run.json"
+    store, root, t = make()
+    for item in json.loads(fixture.read_text()):
+        t.handle(event_from_dict(item))
+    texts = [p["text"] for m in messages(store, root, "assistant") for p in m["content"] if p["type"] == "text"]
+    assert len(texts) == 1 and texts[0].startswith("Today is **2026-11-11**") and "Goal met" in texts[0]
+
+
+def test_notes_that_are_pieces_of_the_answer_are_dropped_and_a_different_remark_is_kept():
+    store, root, t = make()
+    t.handle(RunStarted(goal="g"))
+    t.handle(Step(step_id="a", kind="note", label="Checking the folder first", state="done"))
+    t.handle(Step(step_id="b", kind="note", label="The file has two lines.", state="done"))
+    t.handle(Step(step_id="c", kind="note", label="It is short.", state="done"))
+    t.handle(Finished(outcome="met", report="The file has two lines. It is short."))
+    texts = [p["text"] for m in messages(store, root, "assistant") for p in m["content"] if p["type"] == "text"]
+    assert texts[0] == "Checking the folder first" and len(texts) == 2 and texts[1].startswith("The file has two lines. It is short.")
 
 
 def test_an_interim_note_that_is_not_the_answer_is_drawn_once_something_follows():

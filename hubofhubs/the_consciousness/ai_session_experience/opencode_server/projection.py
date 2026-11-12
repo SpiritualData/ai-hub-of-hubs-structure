@@ -40,7 +40,9 @@ def message_id_of(event_id: str) -> str:
 class Store:
     """All the state of one served hub session set, and the events that describe changes to it."""
 
-    def __init__(self, directory: str, clock: Callable[[], float] = time.time, buffer: int = BUFFER) -> None:
+    def __init__(self, directory: str, clock: Callable[[], float] = time.time, buffer: int = BUFFER, shown: str = "") -> None:
+        """``shown`` is what the client is told the folder is (it prints it in its footer): the folder's name, so a screen carries no machine path."""
+        directory = shown or directory
         self.directory, self.clock = directory, clock
         self.location = {"directory": directory}
         self.ids = Ids(clock)

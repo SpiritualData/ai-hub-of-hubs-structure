@@ -68,7 +68,7 @@ class SessionView:
     now: float = 0.0
     ended: Optional[float] = None
     typing: str = ""
-    pending_note: str = ""                    # the latest interim note of the harness, held until the next event shows whether it was the answer (``present.is_the_answer``)
+    held_notes: List[str] = field(default_factory=list)     # the interim notes of the harness since the last row drawn, held until a row that draws something shows whether they were the answer (``present.is_the_answer``)
     final: Optional[Finished] = None
     ceiling_usd: Optional[float] = None       # the ceilings the run was given, when it says
     ceiling_seconds: Optional[float] = None
@@ -253,16 +253,20 @@ def event_line(event: SessionEvent, view: SessionView, panel: bool = False) -> s
     if isinstance(event, Step) and event.kind == "note":
         if present.is_lifecycle(event):
             return ""
-        text, held = present.one_line(event.label), view.pending_note
-        view.pending_note = text
-        if held and not (present.is_the_answer(text, held) or present.is_the_answer(held, text)):
-            return held          # an earlier note that was not this one is narration between two steps: shown once, as the words themselves
+        text = present.one_line(event.label)
+        if text:
+            if view.held_notes and (present.is_the_answer(text, view.held_notes[-1]) or present.is_the_answer(view.held_notes[-1], text)):
+                view.held_notes[-1] = max(text, view.held_notes[-1], key=len)      # the same note again, longer (a harness reports the text it has so far): one note
+            else:
+                view.held_notes.append(text)
         return ""
     own = row_of(event, view, panel)
-    held, view.pending_note = view.pending_note, ""
-    if held and isinstance(event, Finished) and present.is_the_answer(held, event.report):
-        held = ""            # the note was the answer (or its beginning): the answer is shown once, in the closing
-    return "\n".join(row for row in (held, own) if row)
+    if not own and not isinstance(event, Finished):
+        return ""            # an event that draws nothing (a figure update, a helper's start beside a panel) neither shows nor drops the notes held: they wait for a row that draws something
+    held, view.held_notes = view.held_notes, []
+    if isinstance(event, Finished):          # text the AI wrote on the way that is, or is part of, the answer has one home, the closing; a remark that is genuinely different stays a quiet row
+        held = [note for note in held if not present.is_the_answer(note, event.report)]
+    return "\n".join(row for row in (*held, own) if row)
 
 
 def row_of(event: SessionEvent, view: SessionView, panel: bool) -> str:

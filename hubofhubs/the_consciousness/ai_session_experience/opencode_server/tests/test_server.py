@@ -98,7 +98,7 @@ def test_lists_are_wrapped_and_the_message_list_honours_the_order():
     bridge, _ = make()
     for path in ("/api/agent", "/api/model", "/api/provider", "/api/command", "/api/permission/request"):
         status, answer = routes.handle(bridge, "GET", path, {}, None)
-        assert status == 200 and set(answer) == {"location", "data"} and answer["location"] == {"directory": "/work"}
+        assert status == 200 and set(answer) == {"location", "data"} and answer["location"] == {"directory": "work"}      # the folder's name: the client prints it, and a screen carries no machine path
     status, session = routes.handle(bridge, "GET", "/api/session", {}, None)
     assert session["cursor"] == {"previous": None, "next": None} and session["data"][0]["id"] == bridge.root
     bridge.store.enqueue_user(bridge.root, "one")
@@ -138,7 +138,7 @@ def test_an_interrupt_is_a_stop_and_the_next_prompt_resumes_the_session_the_run_
     time.sleep(0.2)
     assert bridge.interrupt() is True and isinstance(harness.controls[-1], Stop)
     assert bridge.wait(5) and bridge.last_outcome == "stopped" and messages(bridge, "idle")[-1]["outcome"] == "interrupted"
-    assert any("Type resume" in m["description"] for m in messages(bridge, "synthetic"))
+    assert any("Type resume" in p["text"] for m in messages(bridge, "assistant") for p in m["content"] if p["type"] == "text")
     bridge.prompt("resume", "msg_b")
     time.sleep(0.2)
     assert harness.starts[-1] == ("resume", "S1")

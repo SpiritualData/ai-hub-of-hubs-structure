@@ -59,7 +59,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Scripted actions executed as intended, per format (`metric-agent-action-format`): leader `any_format`, 15 of 15 cases
 - Commands run, refused and contained as scripted (`metric-command-execution`): leader `bubblewrap_wrapper`, 11 of 11 cases
 - The operation is carried out and nothing else (`metric-connected-system-operations`)
-- Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`): leader `solution_agents_native_runner@provider=anthropic,tier=fast`, 9 of 9 cases
+- Harness, context, sub-agents and recursion ranked (`metric-harness-context-subagents-recursion-ranked`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 9 of 9 cases
 - Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `native_tool_calling_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
 - and 5 more: all 15 are in [metrics](#metrics) of the full record below
 

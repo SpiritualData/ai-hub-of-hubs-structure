@@ -67,7 +67,7 @@ class Translator:
         self.open: Dict[str, Tuple[str, str]] = {}                       # message -> (session, tool call) of a call still running
         self.sessions: Dict[str, str] = {MAIN: root}                    # agent id -> session id
         self.helpers: Dict[str, Tuple[str, str, str]] = {}               # agent id -> (parent session, message, tool call) of its task call
-        self.held: Optional[Step] = None
+        self.held: List[Step] = []                                       # interim notes held until a row shows whether they were (part of) the answer
         self.deferred: Dict[Tuple[str, str], Step] = {}                  # a helper's running step, not drawn until its own event says more
         self.linked: set = set()                                         # step keys whose row is a helper's
         self.closed: Optional[Tuple[str, str]] = None                    # (session, message) of the closing text, kept so a later ``Finished`` (the metric after) replaces it
@@ -152,9 +152,12 @@ class Translator:
             self.taken_up(event, sid)
             return
         if event.kind == "note":
-            if not present.is_lifecycle(event):
-                self.flush()
-                self.held = event
+            if not present.is_lifecycle(event) and present.one_line(event.label):
+                last = self.held[-1] if self.held else None
+                if last is not None and (present.is_the_answer(event.label, last.label) or present.is_the_answer(last.label, event.label)):
+                    self.held[-1] = max(event, last, key=lambda s: len(s.label))      # the same note again, longer: one note
+                else:
+                    self.held.append(event)
             return
         key = self.key_of(event)
         if event.kind == "delegate" and key not in self.steps:
@@ -219,8 +222,8 @@ class Translator:
 
     def flush(self, hand_offs: bool = True) -> None:
         """Draw the held note as text, once something shows it was not the answer, and (unless a helper's own event is what is coming) the hand-off rows that waited for one."""
-        note, self.held = self.held, None
-        if note is not None and present.one_line(note.label):
+        notes, self.held = self.held, []
+        for note in notes:
             self.text(self.sessions.get(note.agent_id, self.root), note.label)
         for key, step in list(self.deferred.items() if hand_offs else ()):
             del self.deferred[key]
@@ -316,9 +319,8 @@ class Translator:
             self.store.synthetic(self.root, text, short(text, 160))
 
     def finished(self, event: Finished) -> None:
-        held, self.held = self.held, None
-        if held is not None and event.outcome != "stopped" and not present.is_the_answer(held.label, event.report):
-            self.text(self.root, held.label)
+        if event.outcome != "stopped":                  # text the AI wrote on the way that is, or is part of, the answer has one home, the closing
+            self.held = [note for note in self.held if not present.is_the_answer(note.label, event.report)]
         self.flush()
         for mid, (sid, tid) in list(self.open.items()):
             if event.outcome == "stopped":                # what a stop left running is ended as interrupted, so the stopped state shows
@@ -335,7 +337,7 @@ class Translator:
             return
         if event.outcome == "stopped":
             text = f"Stopped, your work is kept. Session {self.view.session_id or '(none)'} is kept. Type resume to continue it."
-            self.store.synthetic(self.root, text, text)
+            self.text(self.root, text, "error")           # a text of the assistant's, not a notice row: the inline client draws no notice rows, and the stopped state must show there too
             self.store.execution(self.root, "interrupted", reason="user")
             return
         closing = self.closing(event)

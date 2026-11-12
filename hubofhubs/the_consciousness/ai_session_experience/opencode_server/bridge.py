@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import threading
 import time
+from pathlib import PurePath
 from typing import Any, Callable, Dict, Optional
 
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.mapping import Translator
@@ -21,9 +22,10 @@ class Bridge:
     """One served session over one harness. ``build(folder)`` gives the harness (built once, on the first prompt)."""
 
     def __init__(self, build: Callable[[str], Harness], folder: str, *, acting_for: str = "", command: str = "ahohs work", clock: Callable[[], float] = time.time,
-                 steer_wait: float = STEER_WAIT_SECONDS) -> None:
+                 steer_wait: float = STEER_WAIT_SECONDS, folder_name: bool = True) -> None:
         self.build, self.folder, self.steer_wait = build, folder, steer_wait
-        self.store = Store(folder, clock)
+        # the full-screen client prints the folder in its footer: the name, not the machine's path (the inline client joins it to its own folder, so it is told the real one)
+        self.store = Store(folder, clock, shown=PurePath(folder).name if folder_name else "")
         self.root = self.store.ids.make("ses")
         self.store.create_session(self.root, "")
         self.translator = Translator(self.store, self.root, acting_for, command)

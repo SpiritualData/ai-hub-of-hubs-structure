@@ -1,0 +1,11 @@
+[
+ {"type": "usage", "at": 0.0, "agent_id": "main", "ceiling_usd": 20.0, "ceiling_seconds": 14400.0},
+ {"type": "run-started", "at": 0.0, "agent_id": "main", "goal": "What is today?", "harness": "native", "session_id": "", "resumed": false},
+ {"type": "step", "at": 0.0, "agent_id": "main", "step_id": "starting", "kind": "note", "label": "starting the session", "state": "running", "detail": ""},
+ {"type": "step", "at": 0.0, "agent_id": "main", "step_id": "starting", "kind": "note", "label": "session started", "state": "done", "detail": ""},
+ {"type": "step", "at": 0.0, "agent_id": "main", "step_id": "text-0", "kind": "note", "label": "Today is **2026-11-11** (November 11, 2026). I took this from the date given in my environment co...", "state": "done", "detail": ""},
+ {"type": "usage", "at": 0.0, "agent_id": "main", "cost_usd": 0.00098571, "tokens": 151, "calls": 1},
+ {"type": "usage", "at": 0.0, "agent_id": "main", "cost_usd": 0.0009857, "ceiling_usd": 20.0, "ceiling_seconds": 14400.0},
+ {"type": "usage", "at": 0.0, "agent_id": "main", "cost_usd": 0.00098571, "tokens": 151, "calls": 2, "ceiling_usd": 20.0, "ceiling_seconds": 14400.0},
+ {"type": "finished", "at": 0.0, "agent_id": "main", "outcome": "met", "report": "Today is **2026-11-11** (November 11, 2026). I took this from the date given in my environment context; I didn't check it against the system clock. I made no changes to any files.", "changed": [], "session_id": "sess-fixture", "error": "", "cost_usd": 0.00098571, "tokens": 151, "unseen": [], "blocked": [], "end_reason": "", "outside": [], "spend_usd": 0.00098571, "elapsed_seconds": 2.4}
+]

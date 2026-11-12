@@ -219,3 +219,100 @@ def test_an_arm_that_reads_no_key_fails_the_correction_round_trip():
     assert reference["ok"] and reference["score"] == 1.0
     deaf = failed_checks("terminal_presentation.broken.deaf", "steer")
     assert not deaf["ok"] and deaf["checks"]["round-trip-steer"] is False
+
+
+def test_an_arm_that_declares_labels_its_screen_does_not_show_fails_the_three_checks_that_read_them():
+    watch = failed_checks("terminal_presentation.broken.false_labels", "watch")
+    approve = failed_checks("terminal_presentation.broken.false_labels", "approve")
+    pasted = failed_checks("terminal_presentation.broken.false_labels", "pasted_run")
+    assert watch["checks"]["key-hints-present-and-whole"] is False
+    assert approve["checks"]["risky-step-waits-with-preview"] is False
+    assert pasted["checks"]["goal-as-persons-message"] is False
+    # the same screens held to the shared words (the reference declares nothing) pass: it is the false declaration that fails them
+    assert failed_checks("terminal_presentation.impls.reference", "watch")["checks"]["key-hints-present-and-whole"] is True
+    assert failed_checks("terminal_presentation.impls.reference", "approve")["checks"]["risky-step-waits-with-preview"] is True
+    assert failed_checks("terminal_presentation.impls.reference", "pasted_run")["checks"]["goal-as-persons-message"] is True
+
+
+def test_a_real_runs_recorded_events_show_the_answer_once_and_the_old_note_rule_showed_it_twice():
+    pytest.importorskip("textual")
+    new = failed_checks("terminal_presentation.impls.reference", "real_run")
+    assert new["checks"]["answer-once"] is True, new["note"]
+    assert failed_checks("terminal_presentation.broken.flush_on_figure", "real_run")["checks"]["answer-once"] is False
+
+
+def test_the_shared_rule_holds_interim_text_until_a_row_draws_and_drops_what_is_part_of_the_answer():
+    from hubofhubs.the_consciousness.ai_session_experience.session_events import Finished as Done, Step as StepEvent, Usage
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionView, event_line
+    view = SessionView()
+    note = lambda text: StepEvent(step_id="t", kind="note", label=text, state="done")
+    answer = "Today is **2026-11-11**. I took it from my context; I did not check the clock. No files changed."
+    assert event_line(note("Today is **2026-11-11**. I took it from my con..."), view) == ""
+    assert event_line(Usage(cost_usd=0.01), view) == ""          # a figure update draws nothing and does not flush the note
+    assert event_line(Usage(tokens=5), view) == ""
+    assert event_line(Done(outcome="met", report=answer), view).strip() == "" or "Today is" not in event_line(Done(outcome="met", report=answer), view)
+    # pieces of the answer, one note each: both are the closing's, neither is drawn twice
+    view = SessionView()
+    event_line(note("Today is 2026-11-11."), view)
+    event_line(note("I took it from my context; I did not check the clock."), view)
+    assert "Today is" not in event_line(Done(outcome="met", report=answer), view)
+    # a remark that is not the answer stays as a quiet row, with the next row that draws
+    view = SessionView()
+    event_line(note("Checking the folder first"), view)
+    assert "Checking the folder first" in event_line(StepEvent(step_id="s", kind="run", label="ls", state="done"), view)
+
+
+def waiting_capture(labels, *rows):
+    class Ask:
+        type, question, preview = "waiting", "Deploy now?", "creates x"
+
+    class Stop:
+        type, agent_id = "approve", ""
+    cap = Capture("external", 100, 30, labels=dict(labels))
+    cap.snapshots = [snapshot(0.5, *rows)]
+    cap.arrivals = [(0.4, Ask())]
+    cap.controls = [(2.0, Stop(), True)]
+    cap.seconds = 3.0
+    return cap
+
+
+def test_a_declared_choice_label_is_required_on_the_waiting_screen_and_the_shared_words_otherwise():
+    rows = ("Deploy now?", "creates x", "Allow once   Reject")
+    assert C.risky_step_waits_with_preview(waiting_capture({"allow": "Allow once", "refuse": "Reject"}, *rows)) is True
+    assert C.risky_step_waits_with_preview(waiting_capture({"allow": "Allow once", "refuse": "Decline"}, *rows)) is False        # a declared label that is not on the screen
+    assert C.risky_step_waits_with_preview(waiting_capture({"allow": "Allow once", "refuse": ""}, *rows)) is False              # an empty declared label
+    assert C.risky_step_waits_with_preview(waiting_capture({}, *rows)) is False                                                 # nothing declared: the shared words (y and n, approve and refuse)
+    assert C.risky_step_waits_with_preview(waiting_capture({}, "Deploy now?", "creates x", "approve (y) | refuse (n)")) is True
+    assert C.risky_step_waits_with_preview(waiting_capture({"allow": "Allow once", "refuse": "Reject"}, "Deploy now?", "Allow once   Reject")) is False       # the preview must be visible
+
+
+def test_a_declared_stop_hint_is_required_whole_at_every_size_whatever_its_verb():
+    def sized(width, row, labels):
+        cap = Capture("external", width, 24, labels=dict(labels))
+        cap.snapshots = [snapshot(0.5, row)]
+        cap.seconds = 2.0
+        return cap
+    declared = {"stop": "esc interrupt"}
+    assert C.key_hints([sized(100, "esc interrupt   $0.02", declared), sized(56, "esc interrupt  $0.02", declared)]) is True
+    assert C.key_hints([sized(100, "esc interrupt   $0.02", declared), sized(56, "esc...upt", declared)]) is False
+    assert C.key_hints([sized(100, "esc interrupt", {"stop": ""}), sized(56, "esc interrupt", {"stop": ""})]) is False
+    assert C.key_hints([sized(100, "Esc stop | Tab structure", {}), sized(56, "Esc stop", {})]) is True                          # nothing declared: the shared row
+
+
+def test_a_declared_person_marker_must_start_the_goal_row_and_not_the_answers():
+    class Started:
+        type, goal = "run-started", "What is today?"
+
+    class Done:
+        type, report = "finished", "Today is Wednesday."
+
+    def capture(labels, *rows):
+        cap = Capture("external", 100, 30, labels=dict(labels))
+        cap.snapshots = [snapshot(0.5, *rows)]
+        cap.arrivals = [(0.1, Started()), (0.4, Done())]
+        return cap
+    assert C.goal_as_message(capture({"person": "┃"}, "  ┃  What is today?", "  Today is Wednesday.")) is True
+    assert C.goal_as_message(capture({"person": "┃"}, "  ┃  Today is Wednesday.", "  ┃  What is today?")) is False        # the AI's text carries the person's marker: not distinct
+    assert C.goal_as_message(capture({"person": "»»"}, "  ┃  What is today?")) is False                                      # a declared marker that is not on the screen
+    assert C.goal_as_message(capture({"person": ""}, "  ┃  What is today?")) is False
+    assert C.goal_as_message(capture({}, "  ┃  What is today?")) is False and C.goal_as_message(capture({}, "❯ What is today?")) is True

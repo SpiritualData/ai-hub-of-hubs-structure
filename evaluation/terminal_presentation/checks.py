@@ -134,8 +134,27 @@ def risky_step_waits_with_preview(cap: Capture) -> Optional[bool]:
         return False
     text = cap.text_at(seen[-1])
     needle = squash(ask.preview)[:20]
-    return (squash(ask.question)[:15] in squash(text) and (not needle or needle in squash(text))
-            and any(re.search(r"\by\b.*\bn\b|approve.*refuse", r, re.I) for r in seen[-1].rows))
+    return (squash(ask.question)[:15] in squash(text) and (not needle or needle in squash(text)) and choices_offered(cap, seen[-1]))
+
+
+def declared(cap: Capture, name: str) -> Optional[str]:
+    """The word or marker the arm declares its screen uses for ``name`` (``allow``, ``refuse``, ``stop``, ``person``), or None when it declares nothing (the hub's shared words apply).
+    A declared label may be wrong or empty: the checks then fail it, they never fall back to the shared words."""
+    return cap.labels.get(name) if name in cap.labels else None
+
+
+def label_shown(label: str, text: str) -> bool:
+    return bool(label.strip()) and label.strip().lower() in text.lower()
+
+
+def choices_offered(cap: Capture, snap: Any) -> bool:
+    """A choice to allow and a choice to refuse are offered on the waiting screen: the labels the arm declares for them are on the screen (whatever the words); an arm that declares
+    neither is held to the hub's shared words (a row naming y and n, or approve and refuse)."""
+    allow, refuse = declared(cap, "allow"), declared(cap, "refuse")
+    if allow is None and refuse is None:
+        return any(re.search(r"\by\b.*\bn\b|approve.*refuse", r, re.I) for r in snap.rows)
+    text = cap.text_at(snap)
+    return label_shown(allow or "", text) and label_shown(refuse or "", text)
 
 
 def closing_report_complete(cap: Capture) -> Optional[bool]:
@@ -191,16 +210,21 @@ def contrast_ok(cap: Capture) -> Optional[bool]:
 
 def hint_row(cap: Capture) -> Optional[str]:
     end = finish_time(cap)
+    stop = declared(cap, "stop")
     for snap in reversed(cap.snapshots):
         if snap.at <= end:
             for row in snap.rows:
-                if re.search(r"\bEsc\b", row):
+                if (label_shown(stop, row) if stop is not None else re.search(r"\bEsc\b", row)):
                     return row.strip()
     return None
 
 
 def key_hints(caps: Sequence[Capture]) -> Optional[bool]:
+    """A hint for stopping the work is shown whole while it runs, at every size. An arm that declares its stop label is held to that label whole (whatever the verb) on a row of the screen;
+    an arm that declares nothing is held to the hub's shared row (``Esc`` and the word stop, the narrower hints kept from the widest)."""
     rows = [hint_row(c) for c in caps]
+    if any(declared(c, "stop") is not None for c in caps):
+        return all(r is not None for r in rows)
     if any(r is None or "stop" not in r for r in rows):
         return False
     wide = set(rows[max(range(len(caps)), key=lambda i: caps[i].width)].replace("|", " ").split())      # the widest screen's hints are the whole ones
@@ -362,4 +386,12 @@ def goal_as_message(cap: Capture) -> Optional[bool]:
         return None
     goal = re.sub(r"\s+", "", started[0].goal)[:20]
     rows = [r.strip() for r in cap.all_text().splitlines()]
+    marker = declared(cap, "person")
+    if marker is not None:             # the arm declares the marker that sets the person's message apart (whatever it is): their goal follows it, and the AI's answer does not carry it
+        if not marker.strip():
+            return False
+        mine = any(r.startswith(marker.strip()) and goal in re.sub(r"\s+", "", r) for r in rows)
+        answer = re.sub(r"\s+", "", present.strip_markdown(answer_text(cap)))[:20]
+        theirs = bool(answer) and any(r.startswith(marker.strip()) and answer in re.sub(r"\s+", "", r) for r in rows)
+        return mine and not theirs and not any(re.search(r"\bstarted:", r) for r in rows)
     return any(r.startswith(present.GOAL_GLYPH) and goal in re.sub(r"\s+", "", r) for r in rows) and not any(re.search(r"\bstarted:", r) for r in rows)

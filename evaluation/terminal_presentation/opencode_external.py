@@ -186,12 +186,14 @@ def drive(kit_harness: Any, goal: str, size: Tuple[int, int], reactions: Sequenc
     mode = mode or launch.mode_of("", environment())
     width, height = size
     cap = Capture("external", width, height)
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.opencode_client_session import OpencodeClientSession
+    cap.labels = dict(OpencodeClientSession.screen_labels)       # what the arm declares its screen says (the checks read the fact through these)
     work = folder()
     path = client_path()
     run_dir = launch.prepare_run_folder(mode, plugin=environment()["AHOHS_OPENCODE_PLUGIN"] != "off")
     begun = time.monotonic()
     timed = Timed(kit_harness, cap, begun)
-    bridge = Bridge(lambda where: timed, work, acting_for=acting_for)
+    bridge = Bridge(lambda where: timed, work, acting_for=acting_for, folder_name=mode == "full")
     server = OpencodeServer(bridge).start()
     env = launch.client_environment(environment(), run_dir, server.token, mode)
     term = Pty(launch.client_command(path, server.url, bridge.root, mode, goal), size, env, work, history=mode == "inline")
@@ -284,7 +286,7 @@ def ceilings() -> Dict[str, bool]:
 
 def steer() -> Dict[str, Any]:
     def build(size: Tuple[int, int]) -> Capture:
-        kit = stream_kit(folder(), [turn(read("a.txt")), turn(edit("b.txt")), turn(edit("c.txt"), report("Done."))], pause=PAUSE * 2)
+        kit = stream_kit(folder(), [turn(read("a.txt")), turn(edit("b.txt")), turn(edit("c.txt"), report("Done."))], pause=PAUSE * 4)       # slow enough that the note stays "sent" for a few settled frames before the run takes it up
         return drive(kit.harness, "do the work", size, [(event_seen("step", state="running"), b"use the short name"), (shown("use the short name"), b"\r")])
     caps = over_sizes(build)
     return {"checks": {"correction-sent-then-taken-up": over(caps, C.correction_sent_then_taken_up),
@@ -295,7 +297,8 @@ def steer() -> Dict[str, Any]:
 def stop_resume() -> Dict[str, Any]:
     def build(size: Tuple[int, int]) -> Capture:
         kit = stream_kit(folder(), [turn(edit("one.txt")), turn(edit("two.txt")), turn(edit("three.txt"), report("All three."))], pause=PAUSE * 2)
-        return drive(kit.harness, "do the work", size, [(shown("one.txt"), b"\x1b"), (shown("one.txt"), b"\x1b"), (event_seen("finished", outcome="stopped"), b"resume"), (shown("resume"), b"\r")], settle=2.0)
+        started = event_seen("step", label="one.txt")           # the step is the trigger, not its words on the screen (the inline client draws an edit without its file name)
+        return drive(kit.harness, "do the work", size, [(started, b"\x1b"), (started, b"\x1b"), (event_seen("finished", outcome="stopped"), b"resume"), (shown("resume"), b"\r")], settle=2.0)
     caps = over_sizes(build)
     return {"checks": {"stop-then-resume-keeps-work": over(caps, C.stop_then_resume_keeps_work), "round-trip-stop": over(caps, lambda c: C.round_trip(c, "stop", r"stopp|type resume|resume to continue")),
                        "round-trip-resume": over(caps, lambda c: C.combine([bool(c.report and sum(1 for _, e in c.arrivals if e.type == "run-started") >= 2 and "resum" in c.all_text().lower())])),
@@ -305,7 +308,11 @@ def stop_resume() -> Dict[str, Any]:
 def approval(answer: bytes) -> Dict[str, Any]:
     def build(size: Tuple[int, int]) -> Capture:
         kit = stream_kit(folder(), [turn(use("deploy", "release 1.0")), turn(report("Finished."))], pause=0.0)
-        return drive(kit.harness, "do the work", size, [(shown("Allow once"), answer)])
+        inline = launch.mode_of("", environment()) == "inline"
+        reactions: List[Reaction] = [(event_seen("waiting") if inline else shown("Allow once"), answer)]
+        if inline and answer != b"\r":          # the inline client's Esc opens a "Reject permission" message prompt: Enter confirms the refusal
+            reactions.append((shown("Reject permission"), b"\r"))
+        return drive(kit.harness, "do the work", size, reactions)
     caps = over_sizes(build)
     word = "approve" if answer == b"\r" else "refuse"
     shown_ = r"deploy" if word == "approve" else r"refus|blocked|reject"
@@ -325,6 +332,14 @@ def pasted_run() -> Dict[str, Any]:
     return {"checks": {**scenarios.revision_2(caps), "closing-report-complete": over(caps, C.closing_report_complete), "no-row-wider-than-the-terminal": over(caps, C.no_row_wider_than_the_terminal)}}
 
 
+def real_run() -> Dict[str, Any]:
+    """The recorded events of a real native run (``real_native_run.json``) drawn by the client: the answer is on the screen once."""
+    import real_run as recorded
+    caps = over_sizes(lambda size: drive(recorded.RealRun(PAUSE), recorded.GOAL, size))
+    return {"checks": {"answer-once": over(caps, C.answer_once), "no-raw-markdown": over(caps, C.no_raw_markdown), "closing-report-complete": over(caps, C.closing_report_complete),
+                       "no-row-wider-than-the-terminal": over(caps, C.no_row_wider_than_the_terminal)}}
+
+
 def plain() -> Dict[str, Any]:
     import scenarios
     return scenarios.plain(SimpleNamespace(attend=_plain_attend))
@@ -336,7 +351,7 @@ def _plain_attend(*args: Any, **kwargs: Any) -> Any:
 
 
 SCENARIOS = {"watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda: approval(b"\r"), "refuse": lambda: approval(b"\x1b"), "target": target, "plain": plain,
-             "pasted_run": pasted_run}
+             "pasted_run": pasted_run, "real_run": real_run}
 
 
 def run_scenario(name: str) -> Dict[str, Any]:
@@ -345,7 +360,8 @@ def run_scenario(name: str) -> Dict[str, Any]:
         return {"checks": {}, "ceiling": {}, "not_run": sorted(C.REQUIREMENTS), "note": launch.unavailable("", environment()) or "the client is not installed"}
     if name not in SCENARIOS:
         return {"checks": {}, "ceiling": {}}
-    launch.version_of(client_path(), environment())      # one start of the program before the first run is timed: a client that was not used for a while is read from disk once (first output is judged on a warm start)
+    # one whole run, thrown away, before the first scenario is timed: a client not used for a while is read from disk on its first start (up to two seconds), and first output is judged on a warm start
+    drive(stream_kit(folder(), [turn(report("warm"))], pause=0.0).harness, "warm", min(SIZES))
     done = dict(SCENARIOS[name]())
     done["note"] = done.get("note") or f"the real client drew these screens ({launch.mode_of('', environment())} interface)"
     return done

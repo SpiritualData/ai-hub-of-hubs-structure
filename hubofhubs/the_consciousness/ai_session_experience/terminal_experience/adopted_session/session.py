@@ -263,6 +263,8 @@ class AdoptedSession:
             terminal.out, terminal.arm, terminal.reader, terminal.keys, terminal.live = transcript, AdoptedSession(app, ansi=True, title=self.title, theme=self.theme), app.read, AppKeys(app), False
             terminal.lines = None
             terminal.interactive = lambda: True
+            if not goal:        # opened with no goal: the product header and the first-use hint are on the screen before a goal is typed, as in the other arms
+                app.post(app.set_figures, hub.figures_of(SessionView(command=getattr(terminal, "command", "ahohs work")), shutil.get_terminal_size().columns, self.title, False))
             held["transcript"] = transcript
             held["code"] = terminal.run(goal, resume)
         self.host(inside, headless=False)

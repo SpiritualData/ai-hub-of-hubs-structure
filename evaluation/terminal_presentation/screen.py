@@ -64,6 +64,7 @@ class Capture:
     jumps: int = 0
     not_run: Tuple[str, ...] = ()
     note: str = ""
+    labels: Dict[str, str] = field(default_factory=dict)       # the words and marker the arm's own screen uses (``allow``, ``refuse``, ``stop``, ``person``); empty: the hub's shared words
 
     @property
     def final(self) -> Snapshot:

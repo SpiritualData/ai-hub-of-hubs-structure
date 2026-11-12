@@ -148,8 +148,8 @@
  "terminal-session": [
   "acp_client_session",
   "live_session",
-  "polished_session",
   "textual_session",
+  "polished_session",
   "adopted_session",
   "opencode_client_session",
   "line_repl"

@@ -128,5 +128,22 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "presentation-real_run",
+  "kind": "presentation",
+  "origin": "rule: a real native run's recorded events (the interim note is the answer cut with three dots, three figure updates before the finish): the answer is on the screen once (revision 3) (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "real_run"
+  },
+  "requirements": [
+   "X1",
+   "X10",
+   "X13",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

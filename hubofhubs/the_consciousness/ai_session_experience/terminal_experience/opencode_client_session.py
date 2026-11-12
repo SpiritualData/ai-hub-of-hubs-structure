@@ -31,6 +31,9 @@ class OpencodeClientSession:
     REQUIRES = (needs.OPENCODE_BINARY,)
     presentation = "external"                  # the presentation metric does not capture it in process: the client draws it in its own program
     external_scenarios = "opencode_external"   # the module of the metric that runs the real client on a pseudo-terminal (evaluation/terminal_presentation)
+    # The words and the marker the client's own screen uses (full-screen interface), declared so the presentation metric judges the fact (a choice to allow and one to refuse, a hint for stopping,
+    # the person's message set apart) and not the hub's wording. The metric requires each on the screen at the right moment; the control round trips prove each does what it says.
+    screen_labels = {"allow": "Allow once", "refuse": "Reject", "stop": "esc interrupt", "person": "┃"}
 
     def __init__(self, client: str = "") -> None:
         self.client = client
@@ -72,7 +75,8 @@ class OpencodeClientSession:
         if note:
             terminal.say("note: " + note)
         mode = launch.mode_of(str(self.options.get("mode") or ""), env)
-        bridge = Bridge(lambda where: terminal.harness(), folder, acting_for=str(self.options.get("person") or ""), command=getattr(terminal, "command", "ahohs work"))
+        bridge = Bridge(lambda where: terminal.harness(), folder, acting_for=str(self.options.get("person") or ""), command=getattr(terminal, "command", "ahohs work"),
+                        folder_name=mode == "full")
         bridge.resume_id = resume
         run = launch.prepare_run_folder(mode)
         server = OpencodeServer(bridge).start()

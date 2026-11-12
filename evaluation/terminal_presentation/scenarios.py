@@ -47,8 +47,11 @@ def textual_hooks(arm: Any) -> Dict[str, Any]:
 def capture(arm: Any, kit: Any, keys: Any, size: Tuple[int, int], options: Optional[Dict[str, Any]] = None) -> Capture:
     goal = getattr(kit, "goal", "do the work")
     if presentation_of(arm) == "textual":
-        return textual_capture(arm, kit.harness, keys, size, goal=goal, options=options, **textual_hooks(arm))
-    return stream_capture(arm, kit.harness, keys, size, goal=goal, options=options)
+        cap = textual_capture(arm, kit.harness, keys, size, goal=goal, options=options, **textual_hooks(arm))
+    else:
+        cap = stream_capture(arm, kit.harness, keys, size, goal=goal, options=options)
+    cap.labels = dict(getattr(arm, "screen_labels", None) or {})        # what the arm declares its screen says for each control and role (nothing declared: the hub's shared words)
+    return cap
 
 
 def both(arm: Any, build: Callable[[ScriptedKeys], Any], options: Optional[Dict[str, Any]] = None) -> List[Capture]:
@@ -91,6 +94,15 @@ def pasted_run(arm: Any) -> Dict[str, Any]:
     import pasted
     caps = both(arm, lambda keys: pasted.Kit())
     return {"checks": {**revision_2(caps), "closing-report-complete": over(caps, C.closing_report_complete), "no-row-wider-than-the-terminal": over(caps, C.no_row_wider_than_the_terminal)}}
+
+
+def real_run(arm: Any) -> Dict[str, Any]:
+    """A real native run's recorded events (``real_native_run.json``: the interim note is the answer cut with three dots, three figure updates come before the finish), drawn at every size: the
+    answer is on the screen once, the markdown is drawn, the closing is complete."""
+    import real_run as recorded
+    caps = both(arm, lambda keys: recorded.Kit())
+    return {"checks": {"answer-once": over(caps, C.answer_once), "no-raw-markdown": over(caps, C.no_raw_markdown), "closing-report-complete": over(caps, C.closing_report_complete),
+                       "no-row-wider-than-the-terminal": over(caps, C.no_row_wider_than_the_terminal)}}
 
 
 def steer(arm: Any) -> Dict[str, Any]:
@@ -158,7 +170,7 @@ def ceilings(arm: Any) -> Dict[str, Any]:
 
 
 SCENARIOS = {"watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
-             "target": target, "plain": plain, "pasted_run": pasted_run}
+             "target": target, "plain": plain, "pasted_run": pasted_run, "real_run": real_run}
 SECONDS = 30
 
 
@@ -192,4 +204,5 @@ SCENARIO_CHECKS = {"watch": ("each-update-once", "no-row-wider-than-the-terminal
                    "stop_resume": ("stop-then-resume-keeps-work", "round-trip-stop", "round-trip-resume", "closing-report-complete"),
                    "approve": ("risky-step-waits-with-preview", "round-trip-approve"), "refuse": ("risky-step-waits-with-preview", "round-trip-refuse"),
                    "target": ("unavailable-control-shown",), "plain": ("plain-when-not-a-terminal",),
-                   "pasted_run": C.REVISION_2 + ("closing-report-complete", "no-row-wider-than-the-terminal")}
+                   "pasted_run": C.REVISION_2 + ("closing-report-complete", "no-row-wider-than-the-terminal"),
+                   "real_run": ("answer-once", "no-raw-markdown", "closing-report-complete", "no-row-wider-than-the-terminal")}
