@@ -1,0 +1,140 @@
+{
+ "tier": "balanced",
+ "role": "deliverable_judge",
+ "checklist": "29b08c726b8c",
+ "thresholds": {
+  "max_misses": 2,
+  "max_false_alarms": 1
+ },
+ "calibration": {
+  "misses": 3,
+  "false_alarms": 2,
+  "defects": 12,
+  "clean": 12,
+  "detail": [
+   [
+    "no-key-hints",
+    "clean",
+    true
+   ],
+   [
+    "no-key-hints",
+    "defect",
+    true
+   ],
+   [
+    "no-stop-hint",
+    "clean",
+    true
+   ],
+   [
+    "no-stop-hint",
+    "defect",
+    false
+   ],
+   [
+    "repeated-row",
+    "clean",
+    false
+   ],
+   [
+    "repeated-row",
+    "defect",
+    false
+   ],
+   [
+    "repeated-row-finished",
+    "clean",
+    false
+   ],
+   [
+    "repeated-row-finished",
+    "defect",
+    false
+   ],
+   [
+    "no-status-line",
+    "clean",
+    true
+   ],
+   [
+    "no-status-line",
+    "defect",
+    false
+   ],
+   [
+    "no-goal",
+    "clean",
+    true
+   ],
+   [
+    "no-goal",
+    "defect",
+    false
+   ],
+   [
+    "no-preview",
+    "clean",
+    true
+   ],
+   [
+    "no-preview",
+    "defect",
+    true
+   ],
+   [
+    "no-answer-keys",
+    "clean",
+    true
+   ],
+   [
+    "no-answer-keys",
+    "defect",
+    false
+   ],
+   [
+    "no-outcome",
+    "clean",
+    true
+   ],
+   [
+    "no-outcome",
+    "defect",
+    true
+   ],
+   [
+    "no-changed-files",
+    "clean",
+    true
+   ],
+   [
+    "no-changed-files",
+    "defect",
+    false
+   ],
+   [
+    "no-resume-way",
+    "clean",
+    true
+   ],
+   [
+    "no-resume-way",
+    "defect",
+    false
+   ],
+   [
+    "no-helper-row",
+    "clean",
+    true
+   ],
+   [
+    "no-helper-row",
+    "defect",
+    false
+   ]
+  ]
+ },
+ "calibration_met": false,
+ "spend_usd": 1.0301,
+ "calls": 72
+}

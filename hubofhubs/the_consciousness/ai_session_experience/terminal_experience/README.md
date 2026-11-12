@@ -26,7 +26,7 @@ Part of [Working with the AI while it works](../README.md)
 
 ## Metrics
 
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 58 of 58 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 67 of 67 cases
 - Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `live_session`, 7 of 7 cases
 
 ## Problems

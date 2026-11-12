@@ -123,6 +123,16 @@ def test_arms_are_blinded_and_shuffled_and_the_prompt_never_names_an_arm():
     assert not any("live_session" in p or "textual_session" in p for p in seen)
 
 
+def test_a_layer_2_difference_breaks_a_tie_only_beyond_the_run_to_run_spread_and_the_thresholds_are_the_written_ones():
+    assert (judge.MAX_MISSES, judge.MAX_FALSE_ALARMS) == (2, 1)
+    result = {"share": {"a": 0.80, "b": 0.86}, "spread": {"a": 0.05, "b": 0.03}}
+    assert judge.breaks_a_tie(result, "a", "b") == "b"          # 0.06 is more than the larger spread, 0.05
+    result["spread"]["a"] = 0.07
+    assert judge.breaks_a_tie(result, "a", "b") == "a"          # inside the spread: the incumbent stays
+    assert judge.spread([0.8, 0.85, 0.82]) == 0.05
+    assert judge.majority([{"x": True}, {"x": True}, {"x": False}]) == {"x": True}
+
+
 def test_the_calibration_set_pairs_a_clean_frame_with_one_defect_each():
     cases = calibration.load_calibration()
     assert len(cases) == 12

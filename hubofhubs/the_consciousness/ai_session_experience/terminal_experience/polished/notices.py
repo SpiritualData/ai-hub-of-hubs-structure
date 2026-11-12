@@ -29,8 +29,9 @@ OWN = ("hubofhubs",)
 
 
 def default_log_path(environ: Optional[Mapping[str, str]] = None) -> Path:
-    """Where the full records go when no path is given: the state folder of the person, under ``ahohs``."""
-    env = environ if environ is not None else os.environ
+    """Where the full records go when no path is given: the state folder of the person, under ``ahohs``. ``environ`` is the mapping the entry point handed in (the hub's modules never read
+    the process environment themselves; ``tests/test_no_environment.py``); without one the person's home folder is used."""
+    env = environ if environ is not None else {}
     base = Path(env.get("XDG_STATE_HOME") or (Path(env.get("HOME") or Path.home()) / ".local" / "state"))
     return base / "ahohs" / "session.log"
 
@@ -75,10 +76,10 @@ class NoticeFolder(logging.Handler):
     """Routes logging for the screen: the full record to a file, a short line to ``write`` (called from any thread; it must be thread-safe)."""
 
     def __init__(self, write: Callable[[str], None], schedule: Optional[Callable[[float, Callable[[], None]], None]] = None, *, verbosity: int = 0,
-                 log_path: Optional[Path] = None, own: Sequence[str] = OWN):
+                 log_path: Optional[Path] = None, own: Sequence[str] = OWN, environ: Optional[Mapping[str, str]] = None):
         super().__init__()
         self.write, self.schedule, self.verbosity, self.own = write, schedule, verbosity, tuple(own)
-        self.log_path = Path(log_path) if log_path is not None else default_log_path()
+        self.log_path = Path(log_path) if log_path is not None else default_log_path(environ)
         self.file_handler = open_log(self.log_path)
         self.seen: Dict[str, int] = {}
         self.errors_seen: Dict[str, int] = {}

@@ -165,10 +165,11 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | structure_watch | best_tier_call (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
 | structure_watch | findings_only | 18 | 72.2% (49.1% to 87.5%), 13/18 | $0 | 0 (median) | ahead of findings_only, not significant (two-sided sign test p=0.0625) | none recorded |
 | terminal_presentation | live_session (selected) | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 1.7 (median) | selected | none recorded |
-| terminal_presentation | polished_session | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 2 (median) | ahead of polished_session (two-sided sign test p=0.0312) | none recorded |
+| terminal_presentation | polished_session | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 2.1 (median) | ahead of polished_session (two-sided sign test p=0.0312) | none recorded |
 | terminal_presentation | textual_session | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 2 (median) | ahead of textual_session (two-sided sign test p=0.0312) | none recorded |
 | terminal_session | live_session (selected) | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0 (median) | selected | none recorded |
-| terminal_session | line_repl | 67 | 59.7% (47.7% to 70.6%), 40/67 | 0.225 model calls (no price) | 0 (median) | ahead of line_repl (two-sided McNemar p=2.98e-08) | none recorded |
+| terminal_session | line_repl | 67 | 59.7% (47.7% to 70.6%), 40/67 | 0.225 model calls (no price) | 0 (median) | ahead of line_repl (two-sided McNemar p=4.47e-08) | none recorded |
+| terminal_session | polished_session | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0.2 (median) | identical to polished_session on all 67 cases | none recorded |
 | terminal_session | textual_session | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0.1 (median) | identical to textual_session on all 67 cases | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | none | 60 | 50.0% (37.7% to 62.3%), 30/60 | $0 | 0 (median) | ahead of none, not significant (two-sided sign test p=0.718) | none recorded |

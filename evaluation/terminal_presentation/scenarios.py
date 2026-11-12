@@ -112,7 +112,7 @@ def approval(arm: Any, answer: str) -> Dict[str, Any]:
 def target(arm: Any) -> Dict[str, Any]:
     def build(keys: Any) -> Any:
         keys.when("agent-started", "line", "/stop tests")
-        return stream_kit(folder(), [turn(delegate("write the tests", turn(*[edit(f"t{i}.txt") for i in range(6)], report("tests done")))), turn(report("Finished."))], pause=0.1)
+        return stream_kit(folder(), [turn(delegate("write the tests", turn(*[edit(f"t{i}.txt") for i in range(6)], report("tests done")))), turn(report("Finished."))], pause=0.3)     # 0.3 s a step (was 0.1): on a loaded machine the helper could end before the key reached it, a timing flake seen once in 21 runs of live_session
     caps = both(arm, build)
     return {"checks": {"unavailable-control-shown": over(caps, C.unavailable_shown)},
             "ceiling": {"stop-one-helper": all(any(c2.type == "stop" and c2.agent_id for _, c2, _ in cap.controls) for cap in caps)}}

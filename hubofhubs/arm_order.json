@@ -137,15 +137,19 @@
   "plan_derived",
   "single_classifier"
  ],
+ "structure-in-conversation": [
+  "structure_move",
+  "none"
+ ],
  "structure-watch": [
   "best_tier_call",
   "findings_only"
  ],
  "terminal-session": [
   "live_session",
-  "polished_session",
-  "textual_session",
   "acp_client_session",
+  "textual_session",
+  "polished_session",
   "line_repl"
  ],
  "the-hands": [

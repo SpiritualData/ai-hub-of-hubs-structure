@@ -140,7 +140,7 @@ class PolishedApp(App):
                  log_prefixes: Sequence[str] = ("hubofhubs",), log_path: Any = None, verbosity: int = 0, environ: Optional[Mapping[str, str]] = None) -> None:
         super().__init__()
         self.title = title or say("polished.screen.title")
-        self.environ = dict(environ or {})
+        self.env = dict(environ or {})        # the environment the entry point handed in; the screen never reads the process environment
         self.press: Optional[Callable[..., None]] = None
         self.attendance: Any = None
         self.start_hook: Callable[[], None] = lambda: None
@@ -176,7 +176,7 @@ class PolishedApp(App):
         with Vertical(id="bottom-bar"):
             yield ActivityBar(id="activity")
             yield OptionList(id="command-menu")
-            yield PromptBox(id="prompt", soft_wrap=True, tab_behavior="focus", show_line_numbers=False, compact=True, placeholder=words_of.placeholder("ready", self.environ))
+            yield PromptBox(id="prompt", soft_wrap=True, tab_behavior="focus", show_line_numbers=False, compact=True, placeholder=words_of.placeholder("ready", self.env))
             yield KeyHints(id="keys")
 
     def on_mount(self) -> None:
@@ -190,7 +190,7 @@ class PolishedApp(App):
         self.query_one("#head", Static).update(Text(self.title))
         self.prompt_box.focus()
         prefixes, path, verbosity = self.log_args
-        self.folder = NoticeFolder(self.add_line, self.schedule, verbosity=verbosity, log_path=path, own=prefixes)
+        self.folder = NoticeFolder(self.add_line, self.schedule, verbosity=verbosity, log_path=path, own=prefixes, environ=self.env)
         root = logging.getLogger()
         self.detached = [h for h in root.handlers if type(h) is logging.StreamHandler]     # a handler that writes to the terminal would draw over the screen
         for handler in self.detached:
@@ -283,7 +283,7 @@ class PolishedApp(App):
         state = snap.prompt
         if state != self.shown_prompt:
             self.shown_prompt = state
-            self.prompt_box.placeholder = words_of.placeholder(state, self.environ)
+            self.prompt_box.placeholder = words_of.placeholder(state, self.env)
             self.prompt_box.set_class(state == "asking", "-awaiting")
 
     def rows_with_active(self, snap: Snapshot) -> Tuple[List[Tuple[str, str]], Dict[int, str]]:
@@ -347,7 +347,7 @@ class PolishedApp(App):
 
     def read(self, prompt: str) -> Optional[str]:
         self.reading = True
-        self.post(setattr, self.prompt_box, "placeholder", words_of.placeholder("ready", self.environ))
+        self.post(setattr, self.prompt_box, "placeholder", words_of.placeholder("ready", self.env))
         try:
             return self.lines.get()
         finally:
@@ -427,7 +427,7 @@ class PolishedApp(App):
             return False
         try:
             sequence = f"\x1b]52;c;{base64.b64encode(text.encode('utf-8')).decode('ascii')}\x07"
-            if os.environ.get("TMUX"):
+            if self.env.get("TMUX"):
                 sequence = "\x1bPtmux;" + sequence.replace("\x1b", "\x1b\x1b") + "\x1b\\"
             driver.write(sequence)
             return True

@@ -99,6 +99,7 @@
    "role-understanding": "hubofhubs",
    "route-a-request": "hubofhubs",
    "solution-passes": "hubofhubs",
+   "structure-in-conversation": "hubofhubs",
    "structure-in-view": "hubofhubs",
    "structure-watch": "hubofhubs",
    "system-integrity": "hubofhubs",
@@ -249,9 +250,9 @@
  "delegated-agent-sessions": {
   "default": "native_tool_loop_runner@provider=anthropic,tier=fast",
   "evidence": {
-   "detail": "beaten by opencode_hub_runner@provider=anthropic,tier=fast, opencode_runner@provider=anthropic,tier=fast: native_tool_loop_runner@provider=anthropic,tier=fast leads native_tool_calling_loop_runner@provider=anthropic,tier=fast (native_tool_calling_loop_runner@provider=anthropic,tier=fast 0.682 against native_tool_loop_runner@provider=anthropic,tier=fast 0.893; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); best guess, not yet significant: opencode_hub_runner@provider=anthropic,tier=fast leads native_tool_loop_runner@provider=anthropic,tier=fast (opencode_hub_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.893; two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); more cases would settle it; best guess, not yet significant: opencode_runner@provider=anthropic,tier=fast leads native_tool_loop_runner@provider=anthropic,tier=fast (opencode_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.893; two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.195, 9 of 9 cases disagree); more cases would settle it; native_tool_loop_runner@provider=anthropic,tier=fast leads solution_loop_runner@provider=anthropic,tier=fast (solution_loop_runner@provider=anthropic,tier=fast 0.787 against native_tool_loop_runner@provider=anthropic,tier=fast 0.893; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); stream_json_goal_runner@provider=anthropic,tier=fast is exactly equal to native_tool_loop_runner@provider=anthropic,tier=fast on the metric (stream_json_goal_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.893), so native_tool_loop_runner@provider=anthropic,tier=fast stays",
-   "p": 0.195312,
-   "verdict": "LOSS"
+   "detail": "native_tool_loop_runner@provider=anthropic,tier=fast leads native_tool_calling_loop_runner@provider=anthropic,tier=fast (native_tool_calling_loop_runner@provider=anthropic,tier=fast 0.682 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads opencode_hub_runner@provider=anthropic,tier=fast (opencode_hub_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads opencode_runner@provider=anthropic,tier=fast (opencode_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast is better than solution_agents_native_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads solution_loop_runner@provider=anthropic,tier=fast (solution_loop_runner@provider=anthropic,tier=fast 0.787 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads stream_json_goal_runner@provider=anthropic,tier=fast (stream_json_goal_runner@provider=anthropic,tier=fast 0.998 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree)",
+   "p": 0.023438,
+   "verdict": "WIN"
   },
   "modules": {
    "acp_deep_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
@@ -411,8 +412,8 @@
  "long-term-memory": {
   "default": "file_recall",
   "evidence": {
-   "detail": "file_recall leads card_store_recall (card_store_recall 0.918 against file_recall 0.959; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 1 of 17 cases disagree); file_recall leads recent_window (recent_window 0.712 against file_recall 0.959; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.141, 8 of 17 cases disagree)",
-   "p": 0.140625,
+   "detail": "file_recall leads card_store_recall (card_store_recall 0.944 against file_recall 0.972; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 1 of 25 cases disagree); file_recall leads recent_window (recent_window 0.776 against file_recall 0.972; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0781, 9 of 25 cases disagree)",
+   "p": 0.078125,
    "verdict": "WIN"
   },
   "modules": {
@@ -614,6 +615,18 @@
    "network_passes": "hubofhubs.the_intelligence.critical_thinking.solution_passes.passes"
   }
  },
+ "structure-in-conversation": {
+  "default": "none",
+  "evidence": {
+   "detail": "beaten by structure_move: structure_move is better than none (two-sided exact McNemar test, Holm-adjusted p=1.19e-07, 24 of 30 cases disagree)",
+   "p": 0.0,
+   "verdict": "LOSS"
+  },
+  "modules": {
+   "none": "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.moves",
+   "structure_move": "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.moves"
+  }
+ },
  "structure-in-view": {
   "default": "event_tree",
   "evidence": {
@@ -646,9 +659,9 @@
  "terminal-session": {
   "default": "live_session",
   "evidence": {
-   "detail": "live_session is better than line_repl (two-sided exact McNemar test, Holm-adjusted p=2.98e-08, 27 of 67 cases disagree); textual_session is exactly equal to live_session on the metric (textual_session 1 against live_session 1), so live_session stays",
-   "p": 0.0,
-   "verdict": "TIE"
+   "detail": "live_session is better than polished_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0312, 7 of 7 cases disagree); live_session is better than textual_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0312, 7 of 7 cases disagree)",
+   "p": 0.03125,
+   "verdict": "WIN"
   },
   "modules": {
    "acp_client_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.acp_client_session",

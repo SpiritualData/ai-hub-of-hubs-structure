@@ -65,6 +65,9 @@ class PlanDecision:
     delivery: Optional[str] = None
     # The structure move the turn calls for (none, frame, compare, review or focus: structure-in-conversation), self-reported on the planning call; None means none.
     structure_move: Optional[str] = None
+    # Whether the message accepts, or declines, an offer the previous reply made to keep structure (an open offer is shown to the planner); self-reported, false when absent.
+    accepts_offer: bool = False
+    declines_offer: bool = False
     # User clarification/input needed: when action="clarify"
     clarification: Optional[Dict[str, Any]] = None  # {"question": "...", "options": [...], "allow_free_input": bool}
     # EXPLICIT execution-mode signal the planner detected in the user's message (LLM judgment on

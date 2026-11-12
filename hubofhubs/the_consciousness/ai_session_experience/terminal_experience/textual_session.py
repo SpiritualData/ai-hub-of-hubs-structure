@@ -281,6 +281,14 @@ class TextualAttendance(Attendance):
     panel = True
     ansi: bool = False     # the kept transcript is printed to a real terminal when the application closes, so its closing report is styled (markdown rendered) there
 
+    def handle(self, item: Any) -> None:
+        """A note the person sent is a finished fact, so its one home is the transcript: it is written there once when it is sent (the panel keeps only how many notes wait until
+        one is taken up, and the transcript then gets its ``taken up`` line)."""
+        super().handle(item)
+        if item[0] == "sent":
+            seconds = int(self.view.now - self.view.started)
+            self.painter.line(f"[{seconds // 60}:{seconds % 60:02d}] you: {item[1].text[:70]}")
+
     def redraw(self) -> None:
         super().redraw()
         rows = frame(self.view, max(self.width, 40), color=False, transcript=True)[:-1]       # the input line is the screen's own

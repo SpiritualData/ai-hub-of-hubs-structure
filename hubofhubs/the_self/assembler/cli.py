@@ -64,7 +64,7 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
         return 2
     if hasattr(arm, "configure"):       # an arm that starts a program of its own (the ACP client arm) is told what the agent it points at is started with
         arm.configure(harness=name, folder=folder, tier=args.tier, max_spend=args.max_spend, max_time=args.max_time, permission=args.permission, solution=args.solution,
-                      milestone=args.milestone, person=args.person, setting_sources=args.setting_sources)
+                      milestone=args.milestone, person=args.person, setting_sources=args.setting_sources, environ=process_environment())
     code = arm.host_terminal(session, args.goal, args.resume) if interactive and hasattr(arm, "host_terminal") else session.run(args.goal, args.resume)
     last = session.last.final if session.last else None
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1

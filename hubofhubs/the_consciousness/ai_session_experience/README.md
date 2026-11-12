@@ -47,7 +47,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks (`metric-frontend-interface`): leader `json_wire`, 28 of 28 cases
 - Right solution per sub-agent, detail only when opened (`metric-structure-in-view`): leader `event_tree`, 20 of 20 cases
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 58 of 58 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 67 of 67 cases
 - Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `live_session`, 7 of 7 cases
 
 ## Where to go next

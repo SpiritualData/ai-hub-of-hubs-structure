@@ -127,6 +127,8 @@ at the repository root.
 | Route a Request, Route read off the plan (`route-a-request:plan_derived`) | none | none | none | none | no |
 | Route a Request, One cheap classifier call (`route-a-request:single_classifier`) | none | none | none | none | no |
 | Solution Passes, Network passes (`solution-passes:network_passes`) | none | none | none | none | no |
+| Structure in conversation, No structure (`structure-in-conversation:none`) | none | none | none | none | no |
+| Structure in conversation, Structure move (`structure-in-conversation:structure_move`) | none | none | none | none | no |
 | Structure In View, Agents arranged by solution, records read on request (`structure-in-view:event_tree`) | none | none | none | none | no |
 | Structure Watch, Best tier call (`structure-watch:best_tier_call`) | none | none | none | none | no |
 | Structure Watch, Findings only (`structure-watch:findings_only`) | none | none | none | none | no |

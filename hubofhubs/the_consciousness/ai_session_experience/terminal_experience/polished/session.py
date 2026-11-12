@@ -266,11 +266,17 @@ class PolishedSession:
 
     def __init__(self, app: Any = None, ansi: bool = False, *, title: str = "", metric_rows: Optional[Callable[[SessionView], List[str]]] = None,
                  persist: Optional[Callable[[SessionView, Finished], None]] = None, choices: Optional[Callable[[str], Sequence[Any]]] = None,
-                 log_prefixes: Sequence[str] = ("hubofhubs",), log_path: Any = None, verbosity: int = 0):
+                 log_prefixes: Sequence[str] = ("hubofhubs",), log_path: Any = None, verbosity: int = 0, environ: Optional[Mapping[str, str]] = None):
         self.app = app          # the running application when this arm is the one inside ``work``
         self.ansi = ansi        # the transcript will be printed to a terminal when the application closes
         self.title, self.metric_rows, self.persist, self.choices = title, metric_rows, persist, choices
         self.log_prefixes, self.log_path, self.verbosity = tuple(log_prefixes), log_path, verbosity
+        self.env = dict(environ or {})      # the environment the entry point handed in (the screen reads TMUX, VTE_VERSION and the state folder from it, never from the process)
+
+    def configure(self, **options: Any) -> None:
+        """The command hands in what only an entry point may read: the process environment."""
+        if "environ" in options:
+            self.env = dict(options["environ"] or {})
 
     def structure_lines(self, view: Any, width: int = 100) -> List[str]:
         return LiveSession().structure_lines(view, width)
@@ -285,7 +291,7 @@ class PolishedSession:
         interactive prompt (``/harness``, ``/new``, ``/session``) to the menu."""
         from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.app import PolishedApp
         from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.menu import work_commands
-        app = PolishedApp(title=self.title, commands=commands, choices=self.choices, log_prefixes=self.log_prefixes, log_path=self.log_path, verbosity=self.verbosity)
+        app = PolishedApp(title=self.title, commands=commands, choices=self.choices, log_prefixes=self.log_prefixes, log_path=self.log_path, verbosity=self.verbosity, environ=self.env)
         if between_runs:
             app.commands = app.commands + work_commands()
         failure: Dict[str, BaseException] = {}
@@ -367,7 +373,7 @@ class PolishedSession:
         def inside(app: Any) -> None:
             transcript = Transcript(app.add_line)
             arm = PolishedSession(app, ansi=True, title=self.title, metric_rows=self.metric_rows, persist=self.persist, choices=self.choices, log_prefixes=self.log_prefixes,
-                                  log_path=self.log_path, verbosity=self.verbosity)
+                                  log_path=self.log_path, verbosity=self.verbosity, environ=self.env)
             terminal.out, terminal.arm, terminal.reader, terminal.keys, terminal.live = transcript, arm, app.read, AppKeys(app), False
             terminal.lines = None
             terminal.interactive = lambda: True

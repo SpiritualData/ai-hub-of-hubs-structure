@@ -341,8 +341,12 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
     if tree:
         out.append(paint("agents", "dim", color))
         out.extend("  " + line for line in tree)
-    for message in view.messages[-3:]:
-        if not (transcript and message.taken_up):
+    if transcript:
+        waiting = sum(1 for message in view.messages if not message.taken_up)      # the note itself is a finished fact in the transcript; the panel keeps only how many wait
+        if waiting:
+            out.append(f"{waiting} note{'' if waiting == 1 else 's'} waiting: read after the current step")
+    else:
+        for message in view.messages[-3:]:
             out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
     if not transcript:
         for note in view.notices[-2:]:
