@@ -63,6 +63,8 @@ class PlanDecision:
     reply_shape: Optional[str] = None
     # How the reply will be delivered, when the message says so: "spoken" (read aloud) or "written". The planner's structured report; None when the message says nothing.
     delivery: Optional[str] = None
+    # The structure move the turn calls for (none, frame, compare, review or focus: structure-in-conversation), self-reported on the planning call; None means none.
+    structure_move: Optional[str] = None
     # User clarification/input needed: when action="clarify"
     clarification: Optional[Dict[str, Any]] = None  # {"question": "...", "options": [...], "allow_free_input": bool}
     # EXPLICIT execution-mode signal the planner detected in the user's message (LLM judgment on

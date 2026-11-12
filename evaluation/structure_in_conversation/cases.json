@@ -1,0 +1,2348 @@
+[
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "none",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "none",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "stay_out-bare",
+  "kind": "stay_out"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "none",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "none",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "stay_out-full",
+  "kind": "stay_out"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "none",
+    "records": {},
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "none",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "stay_out-empty",
+  "kind": "stay_out"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "none",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "none",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "stay_out-with-relevant",
+  "kind": "stay_out"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "banter",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "none",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "stay_out-unknown-move",
+  "kind": "stay_out"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "none",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "none",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "stay_out-none-with-draft",
+  "kind": "stay_out"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    3
+   ],
+   "edits": 6,
+   "metric": "proposed",
+   "milestone": "proposed",
+   "move": "frame",
+   "offer": [
+    "solution",
+    "alternatives",
+    "metric",
+    "milestone"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "proposed"
+  },
+  "id": "frame_bare-three-alternatives",
+  "kind": "frame_bare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    2
+   ],
+   "edits": 5,
+   "metric": "proposed",
+   "milestone": "proposed",
+   "move": "frame",
+   "offer": [
+    "solution",
+    "alternatives",
+    "metric",
+    "milestone"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "proposed"
+  },
+  "id": "frame_bare-two-alternatives",
+  "kind": "frame_bare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "",
+       "name": "Option 0"
+      },
+      {
+       "description": "",
+       "name": "Option 1"
+      },
+      {
+       "description": "",
+       "name": "Option 2"
+      },
+      {
+       "description": "",
+       "name": "Option 3"
+      },
+      {
+       "description": "",
+       "name": "Option 4"
+      },
+      {
+       "description": "",
+       "name": "Option 5"
+      },
+      {
+       "description": "",
+       "name": "Option 6"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    5
+   ],
+   "edits": 8,
+   "metric": "proposed",
+   "milestone": "proposed",
+   "move": "frame",
+   "offer": [
+    "solution",
+    "alternatives",
+    "metric",
+    "milestone"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "proposed"
+  },
+  "id": "frame_bare-capped-at-five",
+  "kind": "frame_bare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    3
+   ],
+   "edits": 4,
+   "metric": null,
+   "milestone": null,
+   "move": "frame",
+   "offer": [
+    "solution",
+    "alternatives"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "problem",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "proposed"
+  },
+  "id": "frame_bare-no-metric-no-milestone-drafted",
+  "kind": "frame_bare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    2
+   ],
+   "edits": 2,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "frame",
+   "offer": [
+    "alternatives"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "frame_existing-one-held-two-new",
+  "kind": "frame_existing"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    2
+   ],
+   "edits": 2,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "frame",
+   "offer": [
+    "alternatives"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "frame_existing-all-new",
+  "kind": "frame_existing"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "",
+       "name": "  morning   SESSION"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    1
+   ],
+   "edits": 1,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "frame",
+   "offer": [
+    "alternatives"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "frame_existing-same-name-other-spacing",
+  "kind": "frame_existing"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    0
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "frame",
+   "offer": null,
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "reuse_complete-only-held-named",
+  "kind": "reuse_complete"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {},
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    0
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "frame",
+   "offer": null,
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "reuse_complete-no-alternatives-drafted",
+  "kind": "reuse_complete"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "compare",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    2
+   ],
+   "edits": 3,
+   "metric": "proposed",
+   "milestone": null,
+   "move": "compare",
+   "offer": [
+    "alternatives",
+    "metric"
+   ],
+   "parts": [
+    "alternatives",
+    "metric",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "existing"
+  },
+  "id": "compare-solution-no-metric",
+  "kind": "compare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "compare",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    2
+   ],
+   "edits": 2,
+   "metric": "existing",
+   "milestone": null,
+   "move": "compare",
+   "offer": [
+    "alternatives"
+   ],
+   "parts": [
+    "alternatives",
+    "metric",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "compare-full-records",
+  "kind": "compare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "compare",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    3
+   ],
+   "edits": 5,
+   "metric": "proposed",
+   "milestone": null,
+   "move": "compare",
+   "offer": [
+    "solution",
+    "alternatives",
+    "metric"
+   ],
+   "parts": [
+    "alternatives",
+    "metric",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "proposed"
+  },
+  "id": "compare-no-solution-yet",
+  "kind": "compare"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "review",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "review",
+   "offer": null,
+   "parts": [
+    "metric",
+    "milestone",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "review-value-held",
+  "kind": "review"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "review",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Sessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "review",
+   "offer": null,
+   "parts": [
+    "metric",
+    "milestone",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "existing"
+  },
+  "id": "review-no-value-logged",
+  "kind": "review"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {},
+    "held": [],
+    "move": "review",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": "existing",
+   "move": "review",
+   "offer": null,
+   "parts": [
+    "milestone",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "existing"
+  },
+  "id": "review-no-metric-held",
+  "kind": "review"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "review",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      },
+      "m-2": {
+       "name": "Minutes per session",
+       "record": "Current value: 7 (as of 2026-11-05, from the person's own report)",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "authoritative_metric_id": "m-2",
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "review",
+   "offer": null,
+   "parts": [
+    "metric",
+    "milestone",
+    "solution"
+   ],
+   "reading": "7",
+   "solution": "existing"
+  },
+  "id": "review-authoritative-metric-wins",
+  "kind": "review"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "review",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "review",
+   "offer": null,
+   "parts": [],
+   "reading": null,
+   "solution": null
+  },
+  "id": "review-no-matching-solution",
+  "kind": "review"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "focus",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": "existing",
+   "move": "focus",
+   "offer": null,
+   "parts": [
+    "milestone",
+    "problem"
+   ],
+   "reading": null,
+   "solution": null
+  },
+  "id": "focus-problem-and-next-milestone",
+  "kind": "focus"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "focus",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "focus",
+   "offer": null,
+   "parts": [
+    "problem"
+   ],
+   "reading": null,
+   "solution": null
+  },
+  "id": "focus-no-solution-held",
+  "kind": "focus"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "focus",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestone_entries": [
+        {
+         "met": true,
+         "sentence": "Ten sessions logged"
+        }
+       ],
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    0
+   ],
+   "edits": 0,
+   "metric": null,
+   "milestone": null,
+   "move": "focus",
+   "offer": null,
+   "parts": [
+    "problem"
+   ],
+   "reading": null,
+   "solution": null
+  },
+  "id": "focus-every-milestone-met",
+  "kind": "focus"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [
+     "structure:build a steady practice:solution,alternatives,metric,milestone"
+    ],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     }
+    },
+    "relevant_solution_ids": []
+   }
+  },
+  "expect": {
+   "alternatives": [
+    0,
+    3
+   ],
+   "edits": 0,
+   "metric": "proposed",
+   "milestone": "proposed",
+   "move": "frame",
+   "offer": null,
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": null,
+   "solution": "proposed"
+  },
+  "id": "declined-whole-offer-declined",
+  "kind": "declined"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [
+     "structure:s-1:alternatives"
+    ],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "1. Ten sessions logged",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    2
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "existing",
+   "move": "frame",
+   "offer": null,
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "declined-alternatives-offer-declined",
+  "kind": "declined"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      },
+      {
+       "description": "Practice after dinner.",
+       "name": "Evening session"
+      },
+      {
+       "description": "One long session each weekend.",
+       "name": "Weekend block"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [
+     "s-1"
+    ],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    2
+   ],
+   "edits": 2,
+   "metric": "existing",
+   "milestone": "proposed",
+   "move": "frame",
+   "offer": [
+    "alternatives"
+   ],
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "held-no-milestone-for-held-solution",
+  "kind": "held"
+ },
+ {
+  "args": {
+   "turn": {
+    "declined": [],
+    "draft": {
+     "alternatives": [
+      {
+       "description": "Practice before the day starts.",
+       "name": "Morning session"
+      }
+     ],
+     "metric": {
+      "name": "Sessions completed per week",
+      "record": "Counted each week."
+     },
+     "milestone": "Ten sessions logged",
+     "solution_name": "Build a steady practice"
+    },
+    "held": [
+     "s-1"
+    ],
+    "move": "frame",
+    "records": {
+     "ideals": {
+      "i-1": {
+       "name": "A practice that holds without effort"
+      }
+     },
+     "implementations": {
+      "a-1": {
+       "name": "Morning session",
+       "solution_id": "s-1"
+      }
+     },
+     "metrics": {
+      "m-1": {
+       "name": "Sessions completed per week",
+       "record": "Current value: 4 (as of 2026-11-03, from the person's own report)\nSessions per week.",
+       "solution_ids": "s-1"
+      }
+     },
+     "problems": {
+      "p-1": {
+       "name": "Practice is irregular"
+      }
+     },
+     "solutions": {
+      "s-1": {
+       "ideal_ids": "i-1",
+       "milestones": "",
+       "name": "Build a steady practice",
+       "problem_ids": "p-1"
+      }
+     }
+    },
+    "relevant_solution_ids": [
+     "s-1"
+    ]
+   }
+  },
+  "expect": {
+   "alternatives": [
+    1,
+    0
+   ],
+   "edits": 0,
+   "metric": "existing",
+   "milestone": "proposed",
+   "move": "frame",
+   "offer": null,
+   "parts": [
+    "alternatives",
+    "ideal",
+    "metric",
+    "milestone",
+    "problem",
+    "solution"
+   ],
+   "reading": "4",
+   "solution": "existing"
+  },
+  "id": "held-nothing-else-missing",
+  "kind": "held"
+ }
+]
