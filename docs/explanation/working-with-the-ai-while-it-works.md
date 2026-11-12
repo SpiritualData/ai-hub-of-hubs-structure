@@ -48,6 +48,11 @@ terminal (`H`), the consumer's own terminal (`T`), the consumer's chat of every 
 | X31 | start with no goal and be asked for one | one hint line and a prompt; a blank line runs nothing; the typed goal runs |
 | X32 | see who the AI acts for, and the authority in force when asked | a quiet header segment names the Representative; the opened view lists worker categories allowed, data scope, asking policy and stated stop limits; a command lists and switches Representatives between runs; with none named nothing extra shows |
 | X33 | end a run knowing what was done, what is left and the command that resumes it, plus anything done outside the folder | the closing report names the changed files, a "Left" line, the resume command and an outside-folder report |
+| X34 | see each helper with its state, go into one to watch it work, and come back to where you were | the main view lists each helper one level down with its state; entering shows its breadcrumb and live activity; leaving returns to the same view |
+| X35 | message one agent or stop only that agent while it works, in a helper or at the top | a typed line and Escape in a helper are aimed at that agent (the harness receives its id); at the top they are the whole run's; the message shows as queued, then taken up |
+| X36 | enter a helper's own helpers to any depth, always knowing where you are, with one key up one level | a breadcrumb row at every depth and the same keys at every level |
+| X37 | depth never makes the screen worse | at depth 4 the content width, header and footer rows, key hints and the time to enter or leave are within the stated tolerance of depth 1 (no indentation per level, no stacked headers) |
+| X38 | a finished helper stays readable, and its result is shown once | it stays in its parent's list, can be entered to read what it did, and its result appears once in the parent |
 
 ### Manage risk
 
@@ -99,6 +104,11 @@ Read on 2026-11-10 from the code of each surface (the web surfaces read-only; a 
 | X31 | yes: bare `ahohs` | ? | ? | ? | `claude`, `codex` and `aider` open a prompt | a prompt, no goal needed |
 | X32 | yes: `--as`, `/as`, `/who` | ? | ? | ? | none measured | who the AI acts for, and the authority |
 | X33 | yes | part | ? | ? | Claude Code prints the resume command at exit | done, left, resume command, outside-folder report |
+| X34 | yes: Right, Left, Up and Down | ? | ? | ? | Claude Code lists background agents under the prompt | helper rows, a breadcrumb and a live view |
+| X35 | yes: type + Enter and Escape in a helper | ? | ? | ? | Claude Code messages a background agent | a message and a stop aimed at one agent |
+| X36 | yes | ? | ? | ? | none measured | any depth, one key up |
+| X37 | yes | ? | ? | ? | none measured | the same screen at depth 1 and depth 4 |
+| X38 | yes | ? | ? | ? | Claude Code keeps a finished agent's transcript | enter a finished helper, result once |
 
 ## What the best open-source terminal agents do, worth adopting
 

@@ -78,6 +78,8 @@ class AgentEnded(SessionEvent):
     state: str = "met"
     calls: int = 0
     summary: str = ""
+    tokens: Optional[int] = None          # what the helper used, when the harness can say (a helper's own figures; the run's total stays on ``Usage`` of the main agent)
+    cost_usd: Optional[float] = None
 
 
 @dataclass(frozen=True)
@@ -99,6 +101,7 @@ class Waiting(SessionEvent):
 
 @dataclass(frozen=True)
 class Usage(SessionEvent):
+    """Cost, tokens and calls so far. With ``agent_id`` of a helper they are that helper's own figures, which a surface keeps on the helper and not in the run's totals."""
     type: str = "usage"
     cost_usd: Optional[float] = None
     tokens: Optional[int] = None

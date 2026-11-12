@@ -54,9 +54,9 @@ def test_one_agent_per_solution_the_records_hold_with_its_own_frame_and_its_role
 
 
 def test_a_tier_with_no_model_gives_no_agent_rather_than_another_tiers_model():
-    review_tier = role_tiers.tier_for(agents.ROLE_OF_KIND["review"])
-    assert review_tier != role_tiers.tier_for(agents.ROLE_OF_KIND["gather"])        # the table is data: the test needs only two roles on different tiers
-    made = agents.agent_definitions(SPECS, NET, lambda tier: None if tier == review_tier else "m")
+    review_tier = "balanced"
+    tiers = {agents.ROLE_OF_KIND["review"]: review_tier}       # the table puts every deep-run role on one tier by default: plant two tiers here
+    made = agents.agent_definitions(SPECS, NET, lambda tier: None if tier == review_tier else "m", tier_of=lambda role: tiers.get(role, "fast"))
     assert "judge-things" not in made and "read-things" in made
 
 

@@ -205,6 +205,12 @@ def complete(arm: str, meter) -> List[str]:
     return failed
 
 
+#: what an arm's closing says for a met goal and what its screen says while stopped: the shared words (present.py: "Goal met", "Stopped, your work is kept", the key line "type resume to continue")
+#: and the polished arm's own ("Done: the goal was met", "Stopped: your work is kept"); read as words of the arm, not one literal, since the closing wording was changed on 2026-11-11
+MET_WORDS = r"Goal met|goal was met"
+STOPPED_WORDS = r"Stopped|type resume to continue"
+
+
 def escape_resume(arm: str, meter) -> List[str]:
     folder = folder_with({})
     goal = "Create the 25 files n1.txt to n25.txt, one at a time with a separate Write call each, each containing its own number. Then reply done."
@@ -224,9 +230,9 @@ def escape_resume(arm: str, meter) -> List[str]:
             failed.append("resume-finishes-all-files")
         screen.leave()
         shown = screen.text()
-        if not re.search(r"Stopped: your work is kept|stopped", shown):
+        if not re.search(STOPPED_WORDS, shown, re.I):
             failed.append("stop-shown")
-        if "goal was met" not in shown:
+        if not re.search(MET_WORDS, shown):
             failed.append("resumed-run-ends-met")
     finally:
         screen.close()

@@ -28,6 +28,7 @@ from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Seque
 from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Finished, Harness, Step, Steer, Usage, Waiting, short
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import Attendance, LiveSession
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.markdown_text import markdown_lines
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished import text as words_of
@@ -70,6 +71,9 @@ class PolishedAttendance(Attendance):
             super().line(text)
 
     def note(self, text: str) -> None:
+        if self.view.focus.path:       # a note typed inside a helper is a message to that helper: the shared driver routes it to that agent
+            Attendance.line(self, text)
+            return
         message = Steer(text=text, message_id=uuid.uuid4().hex[:8])
         if getattr(self.harness.capabilities, "steer", False):
             ok = self.send(message)
@@ -142,13 +146,22 @@ class PolishedAttendance(Attendance):
         from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.app import Snapshot
         view = self.view
         runs = words_of.runs_of(view)
-        rows, line_map = words_of.dashboard(view, "", self.structure_rows() + list(view.panels))
+        focus = view.focus
+        agent_focus.prune(view, focus)
+        inner = max(self.width - 4, 20)
+        if focus.path:       # inside a helper: where the person is and that helper's own rows, the same at every depth
+            rows = [(agent_focus.breadcrumb(view, focus, inner), "head")] + [(row, "step") for row in agent_focus.agent_lines(view, focus, inner, False)]
+            line_map: Dict[int, str] = {}
+        else:
+            flat = ["  " + row for row in agent_focus.child_rows(view, focus, inner, False)]
+            rows, line_map = words_of.dashboard(view, "", self.structure_rows() + list(view.panels) + flat, with_helpers=not flat)
         busy = self.running and view.status in ("running", "waiting", "stopping")
         return Snapshot(head=words_of.header_text(view, self.title, view.segments, max(self.width - 2, 20)), activity=words_of.activity_text(view), waited=view.elapsed() if busy else None,
                         queued=words_of.waiting_notes(view, len(self.held)), rows=rows, line_map=line_map, runs=[(r.agent_id, r.title) for r in runs],
                         histories={r.agent_id: words_of.history_lines(view, r.agent_id) for r in runs}, metrics=self.metric_block(),
                         prompt=words_of.prompt_state(view, self.running), busy=busy, asking=view.asking is not None,
-                        stopped=view.status == "stopped" and not self.running, structure=bool(self.nodes or view.structure_compact), structure_open=view.show_structure)
+                        stopped=view.status == "stopped" and not self.running, structure=bool(self.nodes or view.structure_compact), structure_open=view.show_structure,
+                        agents_nav=not view.show_structure and bool(focus.path or any(a.state == "running" for a in agent_focus.children(view, agent_focus.MAIN))), inside=bool(focus.path))
 
     def redraw(self) -> None:
         super().redraw()         # the clock, the structure and the consumer's segments and panels (it draws nothing: ``live`` is off)
@@ -263,6 +276,8 @@ class PolishedSession:
     """A full-screen terminal with the polished screen's settled rules (prompt docked at the bottom, a transcript that follows and selects, one activity row, a calm work panel and a
     run detail, queued notes, one closing line, folded warnings, a command menu, copy or stop or ask twice to quit), driven by the hub's own session contract."""
     REQUIRES = (needs.TEXTUAL,)
+    agent_labels = {"enter": "right", "leave": "left", "message": "type", "stop": "esc"}          # the words its key line uses for the agent keys (the presentation metric reads these)
+    agent_keys = {"enter": ("open", ""), "leave": ("close", ""), "next": ("down", ""), "stop": ("esc", "")}      # the keys a script presses to go into a helper, back, to the next helper and to stop the one in view
 
     def __init__(self, app: Any = None, ansi: bool = False, *, title: str = "", metric_rows: Optional[Callable[[SessionView], List[str]]] = None,
                  persist: Optional[Callable[[SessionView, Finished], None]] = None, choices: Optional[Callable[[str], Sequence[Any]]] = None,

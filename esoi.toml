@@ -188,6 +188,19 @@ seconds_per_case = 30
 "no-stray-leading-padding" = 1              # X18: one shared margin, with hanging indents of two
 "repaints-under-bound" = 1                  # at most 10 repaints a second and 4 cursor jumps a repaint
 "first-output-within-a-second" = 1          # Nielsen's one-second limit
+# Revision 4, 2026-11-12 (reason: the owner asked that the views let a person go in and out of sub-agents and talk to them while they work, as in Claude Code, to any depth and without the screen
+# getting worse the deeper in; no arm had been scored on it). The ten checks below were added and their weights fixed here before any arm was scored on them, with the same rule as above (3 where a
+# miss loses the person's control of one agent or hides where they are, 2 where it makes the walk slower or the screen worse). Tolerances: agents_scenarios.TOLERANCE.
+"agents-shown-with-state" = 3               # X34: a helper that is running and not shown cannot be entered
+"agent-view-enter-and-leave" = 3            # X34: going in and coming back to where you were
+"message-reaches-the-right-agent" = 3       # X35: a message to one agent that reaches its parent or the run is a wrong instruction to the wrong agent
+"stop-only-that-agent" = 3                  # X35: stopping the run when one helper was meant loses the other work
+"children-enterable-at-any-depth" = 3       # X36: the same keys and a breadcrumb at depth 1, 2 and 4
+"one-key-up-one-level" = 2                  # X36
+"depth-keeps-the-screen" = 3                # X37: no shrinking by indentation, no stacked headers, the same key hints
+"depth-keeps-latency" = 2                   # X37: entering and leaving as quick at depth 4 as at depth 1
+"finished-agent-enterable" = 2              # X38
+"agent-result-once" = 3                     # X38: the same result twice in the parent is the named problem of this metric
 
 # terminal-presentation, layer 2 (model-judged, advisory, never the gate and not part of the balanced score above): the judge runs the frozen checklist
 # (evaluation/terminal_presentation/judged/checklist.json) three times per frame and takes the majority, tier by the role deliverable_judge. It is run only on request.

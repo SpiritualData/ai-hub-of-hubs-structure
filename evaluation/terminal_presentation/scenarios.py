@@ -169,9 +169,12 @@ def ceilings(arm: Any) -> Dict[str, Any]:
                         "spend-against-ceilings": "of $5.00" in text and "of 30:00" in text, "who-the-ai-acts-for": "for Alex" in text}}
 
 
-SCENARIOS = {"watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
+import agents_scenarios as A  # noqa: E402
+
+SCENARIOS = {**A.SCENARIOS, "watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
              "target": target, "plain": plain, "pasted_run": pasted_run, "real_run": real_run}
 SECONDS = 30
+SECONDS_OF = {name: 120 for name in A.SCENARIOS}      # the hierarchy scenarios walk in and out of helpers at three sizes (and four levels deep), each key given half a second to show
 
 
 def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
@@ -191,14 +194,14 @@ def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
             done["error"] = f"{type(error).__name__}: {error}"
     thread = threading.Thread(target=work, daemon=True)
     thread.start()
-    thread.join(SECONDS)
+    thread.join(SECONDS_OF.get(name, SECONDS))
     if "result" in done:
         return done["result"]
     failed = {c: False for c in ALL_CHECKS if c in SCENARIO_CHECKS[name]}
     return {"checks": failed, "ceiling": {}, "note": done.get("error", "did not finish in time")}
 
 
-SCENARIO_CHECKS = {"watch": ("each-update-once", "no-row-wider-than-the-terminal", "repaints-under-bound", "contrast-4.5", "current-step-visible", "closing-report-complete",
+SCENARIO_CHECKS = {**A.SCENARIO_CHECKS, "watch": ("each-update-once", "no-row-wider-than-the-terminal", "repaints-under-bound", "contrast-4.5", "current-step-visible", "closing-report-complete",
                              "first-output-within-a-second", "key-hints-present-and-whole"),
                    "steer": ("correction-sent-then-taken-up", "round-trip-steer"),
                    "stop_resume": ("stop-then-resume-keeps-work", "round-trip-stop", "round-trip-resume", "closing-report-complete"),

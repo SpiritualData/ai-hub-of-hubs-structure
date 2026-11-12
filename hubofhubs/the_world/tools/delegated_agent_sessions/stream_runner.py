@@ -97,6 +97,11 @@ def cli_version(binary: str, env: Dict[str, str]) -> Optional[Tuple[int, int, in
     return found
 
 
+def stop_task_line(request_id: str, task_id: str) -> str:
+    """The control request that stops ONE running task (a helper) of the session and no other: the CLI kills what the task runs (a long command included) and reports the task as stopped."""
+    return json.dumps({"type": "control_request", "request_id": request_id, "request": {"subtype": "stop_task", "task_id": task_id}}) + "\n"
+
+
 def user_line(text: str) -> str:
     """One stream-json user message, as a line of stdin."""
     return json.dumps({"type": "user", "message": {"role": "user", "content": text}}) + "\n"
@@ -435,6 +440,13 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
     echo_wait_seconds = DEFAULT_ECHO_WAIT_SECONDS
     limit_poll_seconds = 1.0    # how often the ceilings are looked at while the session runs
 
+    live_run: Any = None
+
+    def stop_task(self, task_id: str) -> bool:
+        """Stop one running task of the session in flight through the CLI's own ``stop_task`` control; False when no session is running or the line could not be written."""
+        run = self.live_run
+        return bool(run is not None and task_id and run.write(stop_task_line(uuid.uuid4().hex[:8], task_id)))
+
     def __init__(self, config: Optional[SubprocessConfig] = None, *, root: str = "",
                  model_translator: Optional[Callable[[Optional[str]], Optional[str]]] = None,
                  settings: Optional[GoalSettingsSource] = None, provider: str = "anthropic", tier: str = "", instructions: str = "",
@@ -595,6 +607,7 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
             timeout_seconds=resolve_deep_timeout_seconds(self.cfg.timeout_seconds, settings),
             review=review,
             review_interval=resolve_deep_review_interval_seconds(self.cfg.review_interval_seconds, settings), emit=emit)
+        self.live_run = run       # the session in flight, for a control another thread sends to it (``stop_task``)
         try:
             how, detail = run.drive()
         finally:

@@ -39,7 +39,7 @@ def title_of(goal: str, width: int = TITLE_WIDTH) -> str:
     return cut.rstrip(" ,.;:") + "…"
 
 
-GENERATED_ID = re.compile(r"^(tool|toolu|call|agent|helper)?[-_]?[0-9a-f]*\d[0-9a-f]*$", re.I)
+GENERATED_ID = re.compile(r"^(tool|toolu|call|agent|helper)?[-_]?[0-9a-z]*\d[0-9a-z]*$", re.I)      # a generated id is letters and digits (the CLI's call ids are mixed case, not only hex)
 
 
 def helper_name(agent_id: str) -> str:

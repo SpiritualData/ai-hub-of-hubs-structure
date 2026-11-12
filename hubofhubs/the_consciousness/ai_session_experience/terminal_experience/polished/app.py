@@ -66,6 +66,8 @@ class Snapshot:
     stopped: bool = False
     structure: bool = False
     structure_open: bool = False
+    agents_nav: bool = False         # a helper is in view or one is running: the arrows walk the agents
+    inside: bool = False             # a helper is in view (not the main run)
 
 
 def copy_with_tool(text: str, which: Callable[[str], Any] = shutil.which, run: Optional[Callable[..., Any]] = None) -> Tuple[bool, str]:
@@ -416,7 +418,8 @@ class PolishedApp(App):
     def key_hints(self) -> List[Tuple[str, str]]:
         """The keys worth showing now (see ``text.key_hints``)."""
         snap = self.snap
-        return words_of.key_hints(busy=snap.busy, asking=snap.asking, stopped=snap.stopped, runs=len(snap.runs), detail=self.detail.display, structure=snap.structure)
+        return words_of.key_hints(busy=snap.busy, asking=snap.asking, stopped=snap.stopped, runs=len(snap.runs), detail=self.detail.display, structure=snap.structure,
+                                  agents=snap.agents_nav, inside=snap.inside)
 
     # --- copy, stop, or ask twice to quit ---------------------------------------------------------------------------------------------
 
@@ -542,7 +545,7 @@ class PolishedApp(App):
     def tree_key(self, key: str) -> bool:
         """With the structure open and nothing typed, the arrows move in it (otherwise they move the cursor)."""
         token = {"up": "up", "down": "down", "right": "open", "left": "close"}.get(key)
-        if token and self.snap.structure_open and not self.prompt_box.text and self.press is not None:
+        if token and (self.snap.structure_open or self.snap.agents_nav) and not self.prompt_box.text and self.press is not None:
             self.send(token)
             return True
         return False

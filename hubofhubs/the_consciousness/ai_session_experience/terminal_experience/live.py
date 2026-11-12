@@ -23,7 +23,7 @@ from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Seque
 from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.structure_in_view.tree import flatten, structure_view, tables_of
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, hub_lines
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl import LineRepl
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.structure_lines import structure_lines
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
@@ -105,6 +105,7 @@ class Attendance:
         self.stop_wanted = False
         self.running = False
         self.asking = ""
+        self.pending_nav = 0           # navigation keys pressed and not yet taken in the main thread
         self.lock = threading.Lock()
 
     # --- keys, from any thread ----------------------------------------------------------------------------------------------------
@@ -116,16 +117,66 @@ class Attendance:
         self.inbox.put(("control", control, ok))
         return ok
 
+    def agent_keys(self, token: str) -> bool:
+        """Up, Down, Right and Left walk the agents (``agent_focus``) when the structure tree is not open and there is a helper to pick or a helper in view. Taken in the main thread, in the
+        order the keys were pressed (a Right followed by Escape stops the agent that Right went into). True when the key was taken."""
+        view = self.view
+        focus = view.focus
+        if view.show_structure or token not in ("up", "down", "open", "close"):
+            return False
+        if not focus.path and not agent_focus.children(view, agent_focus.MAIN):
+            return False
+        if token in ("up", "down"):
+            agent_focus.move(view, focus, 1 if token == "down" else -1)
+        elif token == "open":
+            said = agent_focus.enter(view, focus)
+            if said:
+                view.notice(said)
+                return True
+            self.looked()
+        elif agent_focus.leave(focus):
+            self.looked()
+        return True
+
+    def looked(self) -> None:
+        """Where the person is now, said once when the screen cannot show it (plain lines)."""
+        self.inbox.put(("looking", agent_focus.breadcrumb(self.view, self.view.focus, 80)))
+
+    def stop_here(self) -> None:
+        """Escape: the agent in view is stopped and no other; at the main session the whole run is, and the session is kept."""
+        if not self.running:
+            return
+        if self.view.focus.path:
+            who = agent_focus.targets(self.view.focus)
+            agent = self.view.agents.get(who)
+            if agent is not None and agent.state != "running":
+                self.inbox.put(("notice", "That helper has finished; go back with Left to stop the run."))
+            elif not self.send(agent_focus.stop_for(self.view.focus)):
+                self.inbox.put(("notice", "This harness cannot stop one agent; go back to the top and use Escape to stop the whole run."))
+            return
+        self.stop_wanted = True
+        self.send(Stop())
+
     def press(self, token: str, text: str = "") -> None:
+        if token == "focus":        # a screen that has its own list of helpers says which one the person chose ("" is the main session)
+            self.pending_nav += 1
+            self.inbox.put(("nav", "focus", text))
+            return
+        if token in ("up", "down", "open", "close"):
+            self.pending_nav += 1
+            self.inbox.put(("nav", token, text))
+            return
         if token in ("esc", "interrupt"):
-            if self.running:
+            if token == "esc" and (self.view.focus.path or self.pending_nav):      # in a helper, or right after a key that may have moved there: in the order the keys came
+                self.inbox.put(("esc",))
+            elif self.running:
                 self.stop_wanted = True
                 self.send(Stop())
             return
         if token == "typing":
             self.inbox.put(("typing", text))
             return
-        if token in ("tree", "up", "down", "open", "close", "help", "who"):
+        if token in ("tree", "help", "who"):
             self.inbox.put(("key", token, text))
             return
         if token == "eof":
@@ -168,6 +219,16 @@ class Attendance:
             self.asking = ""
             ok = self.send(Approve(ask_id=ask) if word in ("y", "yes", "approve") else Refuse(ask_id=ask, reason="you refused it"))
             self.inbox.put(("answered", ask, ok))
+        elif word.startswith("/enter") or word in ("/up", "/back"):
+            if word.startswith("/enter"):
+                said = agent_focus.enter(self.view, self.view.focus, text[6:].strip())
+                if said:
+                    self.inbox.put(("notice", said))
+                    return
+            elif not agent_focus.leave(self.view.focus):
+                self.inbox.put(("notice", "Already at the main session."))
+                return
+            self.looked()
         elif word.startswith("/stop"):
             name = text[5:].strip()
             agent = self.view.find_agent(name) if name else ""
@@ -176,14 +237,23 @@ class Attendance:
             elif not self.send(Stop(agent_id=agent)) and agent:
                 self.inbox.put(("notice", "This harness cannot stop one agent; use Escape to stop the whole run."))
         elif self.running and not self.stop_wanted:
-            target, body = "", text
+            target, body = agent_focus.targets(self.view.focus), text
             if text.startswith("@") and " " in text:
                 name, body = text[1:].split(" ", 1)
                 target = self.view.find_agent(name)
                 if not target:
                     self.inbox.put(("notice", f"No single agent matches {name!r}."))
                     return
-            message = Steer(text=body.strip(), agent_id=target, message_id=uuid.uuid4().hex[:8])
+            agent = self.view.agents.get(target)
+            if target and agent is not None and agent.state != "running":
+                self.inbox.put(("notice", f"{agent_focus.name_of(self.view, target)} has finished: its result is in this view. Go back with Left to steer the run."))
+                return
+            if target and not getattr(self.harness.capabilities, "target_agents", False):
+                self.inbox.put(("notice", "This harness cannot send a message to one agent while it works; go back to the top to steer the run."))
+                return
+            message = agent_focus.steer_for(self.view.focus, body, uuid.uuid4().hex[:8])
+            if target != message.agent_id:
+                message = replace(message, agent_id=target)
             ok = self.send(message)
             self.inbox.put(("sent", message, ok))
             if not ok:
@@ -224,6 +294,18 @@ class Attendance:
                 self.view.status = "stopping"
                 if not self.live:
                     self.painter.line("stopping: finished work is kept, and the session can be resumed")
+        elif kind == "nav":
+            self.pending_nav = max(self.pending_nav - 1, 0)
+            if item[1] == "focus":
+                if agent_focus.focus_on(self.view, self.view.focus, item[2].strip()):
+                    self.looked()
+            elif not self.agent_keys(item[1]):
+                self.key(item[1], item[2])
+        elif kind == "esc":
+            self.stop_here()
+        elif kind == "looking":
+            if not self.live and not self.panel:       # a screen with a panel shows where the person is in its panel
+                self.painter.line(f"now viewing: {agent_focus.breadcrumb(self.view, self.view.focus, 100)}")
         elif kind == "key":
             self.key(item[1], item[2])
         elif kind == "answered":
@@ -316,6 +398,11 @@ class Attendance:
 
     def retry(self) -> None:
         for message in list(self.unsent):
+            agent = self.view.agents.get(message.agent_id) if message.agent_id else None
+            if agent is not None and agent.state != "running":      # the helper ended before it could be reached: the message is not sent late to nobody
+                self.unsent.remove(message)
+                self.view.notice(f"A message to {agent_focus.name_of(self.view, message.agent_id)} was not delivered: it had finished.")
+                continue
             if self.harness.control(message):
                 self.unsent.remove(message)
                 with self.lock:
@@ -429,6 +516,8 @@ class LiveSession:
     """Drives any harness: live view, Escape stops and keeps the session, resume, steering shown as taken up, sub-agent tree, approvals, closing report; the structure of the
     work (collapsed, opened on request), the ceilings and spend, the hub's stop decision, who the AI acts for, follow-ups that continue a session and a switch of harness."""
     REQUIRES = ()     # the seats it is handed
+    agent_labels = dict(agent_focus.KEY_LABELS)          # the words its screen uses to go into a helper, back, message the one in view and stop it (the presentation metric reads these)
+    agent_keys = {"enter": ("open", ""), "leave": ("close", ""), "next": ("down", ""), "stop": ("esc", "")}      # the keys a script presses for them
 
     def structure_lines(self, view: Any, width: int = 100) -> List[str]:
         return LineRepl().structure_lines(view, width)

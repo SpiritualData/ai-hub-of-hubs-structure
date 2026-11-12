@@ -356,6 +356,9 @@ SCENARIOS = {"watch": watch, "steer": steer, "stop_resume": stop_resume, "approv
 
 def run_scenario(name: str) -> Dict[str, Any]:
     """The scenario's result from the real client's screen; every check is marked not run when the client is not installed."""
+    import agents_scenarios as hierarchy
+    if name in hierarchy.SCENARIO_CHECKS:
+        return {"checks": {}, "ceiling": {}, "not_run": list(hierarchy.SCENARIO_CHECKS[name]), "note": hierarchy.NOT_DRIVEN}
     if not client_path():
         return {"checks": {}, "ceiling": {}, "not_run": sorted(C.REQUIREMENTS), "note": launch.unavailable("", environment()) or "the client is not installed"}
     if name not in SCENARIOS:

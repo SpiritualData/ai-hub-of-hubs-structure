@@ -89,7 +89,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Quality tier default (`metric-tier-quality`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
 - Best tier default (`metric-tier-best`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_tier_public_metric.py`
 - Fast roles pooled cases (`metric-fast-roles-pool`): `esoi run fast_roles_pool --impl tier_arm@tier=fast; esoi run fast_roles_pool --impl tier_arm@tier=balanced; esoi run fast_roles_pool --impl tier_arm@candidate=1,tier=fast; esoi run fast_roles_pool --impl tier_arm@candidate=2,tier=fast; esoi run fast_roles_pool --impl tier_arm@candidate=3,tier=fast`
-- Role tier by public evaluations (`metric-role-tier`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_role_tier_metric.py`
+- Role tier by public evaluations (`metric-role-tier`): `python3 -m pytest hubofhubs/the_world/model_plumbing/tests/test_role_tier_metric.py hubofhubs/the_world/model_plumbing/tests/test_deep_run_tier_rule.py`
 - Provider failover (`metric-vendor-model-caller`): `esoi run provider_failover --impl multi_provider`
 
 

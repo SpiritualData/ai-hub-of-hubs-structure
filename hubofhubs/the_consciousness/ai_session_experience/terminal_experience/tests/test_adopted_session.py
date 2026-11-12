@@ -147,7 +147,8 @@ def test_agent_started_and_ended_are_child_sessions_with_their_state():
     _, _, out = feed([AgentStarted(agent_id="h1", task="write the tests", solution="notes"), AgentEnded(agent_id="h1", state="met"), AgentEnded(agent_id="h1", state="stopped"),
                       AgentEnded(agent_id="h1", state="unmet")])
     states = [type(o[0].child_session.status).__name__ for o in out]
-    assert states == ["RunningSessionStatus", "IdleSessionStatus", "ArchivedSessionStatus", "FailedSessionStatus"]
+    assert states == ["RunningSessionStatus", "IdleSessionStatus", "IdleSessionStatus", "FailedSessionStatus"]      # a stopped helper stays in the list (an archived one would leave it) and says it was stopped
+    assert out[2][0].child_session.name.endswith("(stopped)")
     assert out[0][0].child_session.name == "write the tests" and out[0][0].child_session.agent_type == "notes"
 
 

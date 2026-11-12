@@ -80,6 +80,12 @@ def permission_refusal(block: Mapping[str, Any]) -> str:
     return ""
 
 
+def result_text(block: Mapping[str, Any]) -> str:
+    """The text of a tool result block (a helper's report)."""
+    content = block.get("content")
+    return " ".join(str(part.get("text", "")) for part in content if isinstance(part, dict)) if isinstance(content, list) else str(content or "")
+
+
 class StreamJson:
     """Turns the lines of a Claude Code ``stream-json`` session into events. ``changed`` collects the files the session wrote."""
 
@@ -92,19 +98,79 @@ class StreamJson:
         self.changed: Dict[str, None] = {}
         self.open_agents: Dict[str, None] = {}      # helpers started and not yet ended: a run is not met while one is still working
         self.session_id = ""
+        self.tasks: Dict[str, str] = {}             # the CLI's task id of a helper -> the id this adapter gives it (the id of the call that started it)
+        self.task_ids: Dict[str, str] = {}          # the reverse: our helper id -> the CLI's task id (what a stop or a message to that helper names)
+        self.ended: Dict[str, None] = {}            # helpers whose end was already reported (a helper's end is told by its task notice and by its tool result: one event)
+        self.now_rows: Dict[str, None] = {}         # helpers that have an activity row made from their task lines
+        self.streamed: Dict[str, None] = {}         # helpers whose own messages arrive in the stream (those at depth 1); the others are followed by their task progress
 
     def owner(self, raw: Mapping[str, Any]) -> str:
         parent = raw.get("parent_tool_use_id")
         return str(parent) if parent and str(parent) in self.agents else MAIN
 
+    def task_events(self, raw: Mapping[str, Any]) -> List[SessionEvent]:
+        """The CLI's task lines (``task_started``, ``task_progress``, ``task_notification``): every helper at every depth, with its parent, its figures and its result. A helper
+        below the first level is not in the stream as messages, so these lines are the only way to see it start, work and end."""
+        subtype = raw.get("subtype")
+        task_id = str(raw.get("task_id") or "")
+        ident = str(raw.get("tool_use_id") or "") or self.tasks.get(task_id, "")
+        usage = raw.get("usage") or {}
+        tokens = int(usage.get("total_tokens") or 0) or None
+        calls = int(usage.get("tool_uses") or 0) or None
+        if subtype == "task_started":
+            if not ident or raw.get("task_type") not in (None, "local_agent"):
+                return []
+            self.tasks[task_id], self.task_ids[ident] = ident, task_id
+            if ident in self.agents:
+                return []                                        # the call that started it was in the stream: its helper is already known
+            parent = self.tasks.get(str(raw.get("parent_task_id") or ""), MAIN)
+            task = short(raw.get("description") or raw.get("prompt") or "helper")
+            tagged = SOLUTION_TAG.match(task)
+            solution = tagged.group(1) if tagged else ""
+            task = short(tagged.group(2) or task) if tagged else task
+            self.agents[ident] = parent
+            self.owners[ident] = parent
+            self.open_agents[ident] = None
+            self.kinds[ident], self.labels[ident] = "delegate", task
+            return [AgentStarted(agent_id=ident, parent_id=parent, task=task, solution=solution),
+                    Step(agent_id=parent, step_id=ident, kind="delegate", label=task, state="running")]
+        if ident not in self.agents:
+            return []
+        if subtype == "task_progress":
+            out: List[SessionEvent] = [Usage(agent_id=ident, tokens=tokens, calls=calls)]
+            if ident not in self.streamed and raw.get("description"):
+                self.now_rows[ident] = None
+                out.append(Step(agent_id=ident, step_id=f"{ident}-now", kind="tool", label=short(raw["description"]), state="running"))
+            return out
+        if subtype == "task_notification":
+            state = {"completed": "met", "stopped": "stopped", "killed": "stopped", "failed": "failed"}.get(str(raw.get("status") or ""), "unmet")
+            return self.agent_end(ident, state, str(raw.get("summary") or ""), tokens, calls)
+        return []
+
+    def agent_end(self, ident: str, state: str, summary: str = "", tokens: Optional[int] = None, calls: Optional[int] = None) -> List[SessionEvent]:
+        """The end of a helper, once: its figures and its result, and the activity row it kept closed."""
+        if ident in self.ended:
+            return []
+        self.ended[ident] = None
+        self.open_agents.pop(ident, None)
+        out: List[SessionEvent] = [AgentEnded(agent_id=ident, state=state, calls=calls or 0, summary=short(summary, 600) if summary else "", tokens=tokens)]
+        if ident in self.now_rows:       # the activity row its task lines made is closed with it, even when its own messages began to arrive afterwards
+            out.append(Step(agent_id=ident, step_id=f"{ident}-now", kind="tool", label="", state="failed" if state in ("failed", "unmet") else "done"))
+        out.append(Step(agent_id=self.agents[ident], step_id=ident, kind="delegate", label=self.labels.get(ident, "helper"), state="failed" if state in ("failed", "unmet") else "done"))
+        return out
+
     def events(self, raw: Mapping[str, Any]) -> List[SessionEvent]:
         kind = raw.get("type")
         out: List[SessionEvent] = []
+        if kind == "system" and str(raw.get("subtype") or "").startswith("task_"):
+            return self.task_events(raw)
         if kind == "system" and raw.get("subtype") == "init":
             self.session_id = str(raw.get("session_id") or self.session_id)
             out.append(Step(step_id="starting", kind="note", label="session started", state="done"))
         elif kind == "assistant":
             who = self.owner(raw)
+            if who != MAIN:
+                self.streamed[who] = None
             for block in (raw.get("message") or {}).get("content") or []:
                 if not isinstance(block, dict):
                     continue
@@ -168,9 +234,9 @@ class StreamJson:
         if refusal and ident in self.kinds and ident not in self.agents:       # a refused command shows why it was refused, not just that it failed
             return [Step(agent_id=self.owners.get(ident, MAIN), step_id=ident, kind=self.kinds[ident], label=self.labels.get(ident, ""), state="blocked", detail=refusal)]
         if ident in self.agents:
-            self.open_agents.pop(ident, None)
-            return [AgentEnded(agent_id=ident, state="failed" if failed else "met"),
-                    Step(agent_id=self.agents[ident], step_id=ident, kind="delegate", label=self.labels.get(ident, "helper"), state="failed" if failed else "done")]
+            if ident in self.ended:
+                return []
+            return self.agent_end(ident, "failed" if failed else "met", result_text(block))
         if ident not in self.kinds:
             return []
         return [Step(agent_id=self.owners.get(ident, MAIN), step_id=ident, kind=self.kinds[ident], label=self.labels.get(ident, ""), state="failed" if failed else "done")]

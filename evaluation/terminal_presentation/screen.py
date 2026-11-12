@@ -64,6 +64,7 @@ class Capture:
     jumps: int = 0
     not_run: Tuple[str, ...] = ()
     note: str = ""
+    begun: float = 0.0                                     # the monotonic clock when the capture began (a snapshot's ``at`` is seconds after it)
     labels: Dict[str, str] = field(default_factory=dict)       # the words and marker the arm's own screen uses (``allow``, ``refuse``, ``stop``, ``person``); empty: the hub's shared words
 
     @property
@@ -217,14 +218,24 @@ def replay_stream(chunks: Sequence[Tuple[float, str]], width: int, height: int) 
     return snapshots, {"repaints": repaints, "jumps": jumps, "wide_rows": wide}
 
 
+def stream_peek(out: Any, width: int, height: int) -> Tuple[str, Tuple[str, ...]]:
+    """``(text with the scrollback, visible rows)`` of the screen a stream arm has drawn so far: the writes replayed through the emulator. What a scripted person looks at to see that the screen answered."""
+    screen, stream = emulator(width, height)
+    for _, text in out.groups():
+        stream.feed(text.replace("\n", "\r\n"))
+    rows = tuple(row_text(screen.buffer[y], width) for y in range(height))
+    return "\n".join(tuple(row_text(line, width) for line in screen.history.top) + rows), rows
+
+
 def stream_capture(arm: Any, kit_harness: Any, keys: Any, size: Tuple[int, int], goal: str = "do the work", live: bool = True,
                    options: Optional[Dict[str, Any]] = None) -> Capture:
     """Run the arm's ``attend`` on a terminal of ``size`` and replay what it wrote."""
     width, height = size
     capture = Capture("stream", width, height)
     out = Recorder()
-    begun = time.monotonic()
+    begun = capture.begun = time.monotonic()
     harness = Timed(kit_harness, capture, begun)
+    kit_harness.peek = lambda: stream_peek(out, width, height)      # a scripted person can look at the screen (a harness that wants to wait for it reads this)
     with terminal_size(width, height):
         capture.report = arm.attend(harness, goal, out, keys, tick=0.01, live=live, width=width, **(options or {}))
     capture.seconds = time.monotonic() - begun
@@ -285,8 +296,9 @@ def textual_capture(arm: Any, kit_harness: Any, keys: Any, size: Tuple[int, int]
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import textual_session as session
     width, height = size
     capture = Capture("textual", width, height)
-    begun = time.monotonic()
+    begun = capture.begun = time.monotonic()
     harness = Timed(kit_harness, capture, begun)
+    kit_harness.peek = lambda: ((capture.text_at(capture.snapshots[-1]), capture.snapshots[-1].rows) if capture.snapshots else ("", ()))
     held: Dict[str, Any] = {}
 
     async def drive() -> None:

@@ -92,7 +92,8 @@ def test_the_session_is_lean_framed_and_in_the_working_folder(tmp_path, monkeypa
     assert got.met and got.output == "report written" and got.session_id
     launch = records(log)[0]
     argv = launch["argv"]
-    assert argv[argv.index("--tools") + 1] == ",".join(NATIVE_TOOLS)
+    assert argv[argv.index("--tools") + 1] == ",".join(NATIVE_TOOLS) + ",Agent"      # the general sub-agent tool is offered with the guard in place (test_general_helper.py)
+    assert "--agents" in argv and "--settings" in argv
     assert "WebSearch" in NATIVE_TOOLS and "WebFetch" in NATIVE_TOOLS and "Bash" in NATIVE_TOOLS
     assert argv[argv.index("--setting-sources") + 1] == "" and "--strict-mcp-config" in argv and "--dangerously-skip-permissions" in argv
     frame_path = argv[argv.index("--append-system-prompt-file") + 1]

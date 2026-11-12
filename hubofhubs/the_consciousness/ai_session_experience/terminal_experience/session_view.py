@@ -15,7 +15,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Usage, Waiting, short)
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines, present
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, hub_lines, present
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.markdown_text import markdown_lines
 
 COLOR = {"running": "33", "done": "32", "failed": "31", "blocked": "31", "dim": "", "bold": "1", "ask": "35"}
@@ -43,6 +43,10 @@ class Agent:
     state: str = "running"
     calls: int = 0
     solution: str = ""
+    activity: str = ""                      # what it is doing now (its latest running step), for the row that shows it
+    tokens: Optional[int] = None
+    summary: str = ""                       # its result, once it ended
+    cost_usd: Optional[float] = None
 
 
 @dataclass
@@ -87,6 +91,8 @@ class SessionView:
     authority: List[str] = field(default_factory=list)      # the authority in force, opened with the structure panel or /who
     segments: List[str] = field(default_factory=list)       # extra status segments a consumer supplies, appended to the header
     panels: List[str] = field(default_factory=list)         # extra panel lines a consumer supplies, drawn under the steps
+    focus: agent_focus.Focus = field(default_factory=agent_focus.Focus)      # the agent in view: the main session, or a helper the person went into (``agent_focus``)
+    key_labels: Dict[str, str] = field(default_factory=dict)                 # the words a surface uses for the agent keys (enter, leave, pick, message, stop), when not the shared ones
 
     def apply(self, event: SessionEvent) -> None:
         if isinstance(event, RunStarted):
@@ -97,6 +103,9 @@ class SessionView:
             self.status, self.final, self.ended = "running", None, None
             self.soft_limit, self.hard_limit = False, ""
         elif isinstance(event, Step):
+            owner = self.agents.get(event.agent_id)
+            if owner is not None and event.kind not in ("message-received", "delegate") and event.label:
+                owner.activity = present.one_line(event.label) if event.state == "running" else owner.activity
             if event.kind == "message-received":
                 for message in self.messages:
                     if not message.taken_up and (message.message_id == event.step_id or message.text == event.label or event.step_id == ""):
@@ -111,12 +120,22 @@ class SessionView:
             if self.status in ("waiting",):
                 self.status, self.asking = "running", None
         elif isinstance(event, AgentStarted):
-            self.agents[event.agent_id] = Agent(event.agent_id, event.parent_id, event.task, solution=event.solution)
+            if event.agent_id not in self.agents:        # a helper announced twice (by the stream and by the session record) is one helper, and keeps the state it reached
+                self.agents[event.agent_id] = Agent(event.agent_id, event.parent_id, event.task, solution=event.solution)
         elif isinstance(event, AgentEnded):
             agent = self.agents.get(event.agent_id) or self.agents.setdefault(event.agent_id, Agent(event.agent_id, MAIN, event.agent_id))
             agent.state, agent.calls = event.state, event.calls or agent.calls
+            agent.summary = event.summary or agent.summary
+            agent.tokens = event.tokens if event.tokens is not None else agent.tokens
+            agent.cost_usd = event.cost_usd if event.cost_usd is not None else agent.cost_usd
+            agent.activity = ""
         elif isinstance(event, Waiting):
             self.asking, self.status = event, "waiting"
+        elif isinstance(event, Usage) and event.agent_id != MAIN:       # a helper's own figures stay on the helper: the run's totals are the main agent's
+            agent = self.agents.get(event.agent_id)
+            if agent is not None:
+                agent.tokens = event.tokens if event.tokens is not None else agent.tokens
+                agent.calls = event.calls or agent.calls
         elif isinstance(event, Usage):
             self.cost_usd = event.cost_usd if event.cost_usd is not None else self.cost_usd
             self.tokens = event.tokens if event.tokens is not None else self.tokens
@@ -343,19 +362,27 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         out.append(paint(view.structure_compact, "dim", color))
     steps = [s for s in view.steps.values() if not present.is_lifecycle(s) and not (s.kind == "note" and s.state == "done")]       # the harness's own lifecycle and its narration are not rows
     steps = [s for s in steps if s.state == "running"] if transcript else steps
-    out.extend(step_row(s, color) for s in steps[-rows:])
-    out.extend(view.panels)
-    tree = view.tree_lines(glyphs, running_only=transcript)
-    if tree:
-        out.append(paint("agents", "dim", color))
-        out.extend("  " + line for line in tree)
-    if transcript:
+    focus = view.focus
+    agent_focus.prune(view, focus)
+    if focus.path:      # inside a helper: where the person is, then that helper's own rows (the same rows in the same order at every depth)
+        out.append(agent_focus.breadcrumb(view, focus, max(width - 1, 20), glyphs))
+        out.extend(agent_focus.agent_lines(view, focus, max(width - 1, 20), color, rows))
+        out.extend(view.panels)
+    else:
+        out.extend(step_row(s, color) for s in steps[-rows:])
+        out.extend(view.panels)
+        flat = agent_focus.child_rows(view, focus, max(width - 1, 20), color)
+        if flat:       # the helpers one level down, flat: a helper at any depth is one row of the same width
+            out.append(paint("agents", "dim", color))
+            out.extend("  " + line for line in flat)
+    if transcript and not focus.path:
         waiting = sum(1 for message in view.messages if not message.taken_up)      # the note itself is a finished fact in the transcript; the panel keeps only how many wait
         if waiting:
             out.append(f"{waiting} note{'' if waiting == 1 else 's'} waiting: read after the current step")
-    else:
+    elif not focus.path:
         for message in view.messages[-3:]:
-            out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
+            who = f" to {agent_focus.name_of(view, message.agent_id)}" if message.agent_id and message.agent_id in view.agents else ""
+            out.append(f"you{who}: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
     if not transcript:
         for note in view.notices[-2:]:
             out.append(paint(note, "dim", color))
@@ -370,9 +397,9 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         if view.asking.preview:
             out.append(paint(f"  will change: {short(view.asking.preview, max(width - 20, 20))}", "ask", color))
     keys = {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave"}.get(
-        view.status, "Esc stop | type + Enter to steer | Tab structure | ? keys")
+        view.status, agent_focus.keys_hint(view, focus, view.key_labels) or "Esc stop | type + Enter to steer | Tab structure | ? keys")
     out.append(paint(present.fit_parts(keys, max(width - 1, 20)), "dim", color))
-    out.append(f"> {view.typing}")
+    out.append(f"{agent_focus.prompt(view, focus)}{view.typing}")
     return [clip(line, max(width - 1, 20)) for line in out]
 
 

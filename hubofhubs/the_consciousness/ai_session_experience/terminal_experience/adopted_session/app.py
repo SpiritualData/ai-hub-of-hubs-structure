@@ -9,6 +9,7 @@ import threading
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.adopted_session import adapter as hub
 
 HUB_CSS = """
@@ -102,7 +103,9 @@ def make_app(history_file: Any = None, theme: str = "hub-dark") -> Any:
         CSS = HUB_CSS
         BINDINGS = [Binding("escape", "stop", "Stop", show=False, priority=True), Binding("ctrl+c", "interrupt", "Stop", show=False, priority=True),
                     Binding("ctrl+d", "leave", "Leave", show=False, priority=True), Binding("ctrl+o", "toggle_tool", "Tool output", show=False),
-                    Binding("tab", "structure", "Structure", show=False, priority=True)]
+                    Binding("tab", "structure", "Structure", show=False, priority=True), Binding("up", "agent_up", "Up", show=False, priority=True),
+                    Binding("down", "agent_down", "Down", show=False, priority=True), Binding("right", "agent_enter", "Enter", show=False, priority=True),
+                    Binding("left", "agent_back", "Back", show=False, priority=True)]
 
         def __init__(self) -> None:
             super().__init__()
@@ -370,24 +373,35 @@ def make_app(history_file: Any = None, theme: str = "hub-dark") -> Any:
         def refresh_children(self) -> None:
             if not self.is_mounted:
                 return
-            self.query_one(SubagentList).update_sessions(tuple(self.helpers.values()), selected_session_id=self.viewed)
+            attendance = self.attendance
+            view = getattr(attendance, "view", None)
+            shown = tuple(self.helpers.values())
+            if view is not None:       # the list shows the agents one level below the agent in view, so a helper at any depth is one row of the same width
+                here = {a.agent_id for a in agent_focus.children(view, view.focus.current)}
+                shown = tuple(h for h in shown if h.id in here)
+            self.query_one(SubagentList).update_sessions(shown, selected_session_id=self.viewed)
 
         async def on_subagent_list_selected(self, event: Any) -> None:
+            """A pick in the list (the mouse, or Enter on a row): the shared focus decides, so the keys and the list always agree; the screen follows through ``show_focus``."""
+            if self.press is not None:
+                self.send("focus", event.session_id or "")
+
+        async def show_focus(self, session_id: Optional[str]) -> None:
+            """Show the transcript of one helper (or the main one for ``None``). The input stays in view inside a helper: what the person types goes to that helper."""
             transcripts = self.query_one(SubagentTranscripts)
             area = self.query_one("#messages")
-            if event.session_id is None:
+            if session_id is None:
                 self.viewed = None
                 transcripts.select(None)
                 area.display = True
-                self.query_one(ChatInputContainer).set_subagent_view(False)
             else:
-                self.viewed = event.session_id
+                self.viewed = session_id
                 area.display = False
-                if not transcripts.select(event.session_id):
-                    await transcripts.prepare(event.session_id)
-                    transcripts.select(event.session_id)
-                self.query_one(ChatInputContainer).set_subagent_view(True)
-                await self.refresh_child(event.session_id)
+                if not transcripts.select(session_id):
+                    await transcripts.prepare(session_id)
+                    transcripts.select(session_id)
+                await self.refresh_child(session_id)
+            self.query_one(ChatInputContainer).set_subagent_view(False)
             self.refresh_children()
 
         async def refresh_child(self, session_id: str) -> None:
@@ -418,14 +432,25 @@ def make_app(history_file: Any = None, theme: str = "hub-dark") -> Any:
                 self.press(token, text)
 
         def action_stop(self) -> None:
-            if self.viewed is not None:
-                self.viewed = None
-                self.post(self.show_main)
-                return
-            self.send("esc")
+            self.send("esc")          # inside a helper the shared driver stops that helper only; at the main session it stops the run
 
-        async def show_main(self) -> None:
-            await self.on_subagent_list_selected(SubagentList.Selected(None))
+        def agents_navigable(self) -> bool:
+            view = getattr(self.attendance, "view", None)
+            if view is None or view.show_structure or self.query_one(ChatInputContainer).value:
+                return False
+            return bool(view.focus.path or any(a.state == "running" for a in agent_focus.children(view, agent_focus.MAIN)))
+
+        def action_agent_up(self) -> None:
+            self.send("up")
+
+        def action_agent_down(self) -> None:
+            self.send("down")
+
+        def action_agent_enter(self) -> None:
+            self.send("open")
+
+        def action_agent_back(self) -> None:
+            self.send("close")
 
         def action_interrupt(self) -> None:
             if self.press is not None:
@@ -445,6 +470,8 @@ def make_app(history_file: Any = None, theme: str = "hub-dark") -> Any:
             if action == "structure":
                 box = self.query_one(ChatInputContainer)
                 return not box.value.startswith("/")     # Tab completes a slash command in the input, and shows the structure anywhere else
+            if action.startswith("agent_"):
+                return self.agents_navigable()           # the arrows keep their own meaning in the input unless a helper can be picked or is in view
             return True
 
         async def action_toggle_tool(self) -> None:

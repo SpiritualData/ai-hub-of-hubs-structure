@@ -97,13 +97,18 @@ def header_text(view: SessionView, title: str = "", segments: Sequence[str] = ()
     return present.header(view, width, False, segments, title)
 
 
-def key_hints(*, busy: bool, asking: bool, stopped: bool, runs: int, detail: bool, structure: bool) -> List[Tuple[str, str]]:
+def key_hints(*, busy: bool, asking: bool, stopped: bool, runs: int, detail: bool, structure: bool, agents: bool = False, inside: bool = False) -> List[Tuple[str, str]]:
     """The keys worth showing now, most useful first, only those that would do something: Esc only while the AI works, Tab only with more than one run, Ctrl+C only when idle."""
     hints: List[Tuple[str, str]] = []
     if asking:
         hints.append(("y/n", say("polished.key.answer")))
+    if inside:
+        hints.append(("left", "back"))
     if busy:
-        hints.append(("esc", say("polished.key.stop")))
+        hints.append(("esc", "stop this helper" if inside else say("polished.key.stop")))
+    if agents:
+        hints.append(("up/down", "pick a helper"))
+        hints.append(("right", "enter it"))
     if stopped:
         hints.append(("alt+k", say("polished.key.resume")))
     if runs:
@@ -160,10 +165,10 @@ def step_text(step: Step) -> str:
     return f"{step.kind} {short(step.label, STEP_CHARS)}"
 
 
-def dashboard(view: SessionView, active: str = "", extra: Sequence[str] = ()) -> Tuple[List[Tuple[str, str]], Dict[int, str]]:
+def dashboard(view: SessionView, active: str = "", extra: Sequence[str] = (), with_helpers: bool = True) -> Tuple[List[Tuple[str, str]], Dict[int, str]]:
     """The calm per-run block: ``([(row, kind)], {row index: run id})``. A run is its title, its clock and status, and the steps running now (the finished ones are in the transcript,
     so each update has one home). ``kind`` is ``head``, ``open`` (the run the detail shows), ``clock``, ``step`` or ``hint``. Empty when nothing runs."""
-    runs = runs_of(view)
+    runs = runs_of(view) if with_helpers else [r for r in runs_of(view) if r.agent_id == MAIN]       # the arm that lists the agents itself (flat rows, finished ones too) keeps only the main run here
     if not runs:
         return [], {}
     each = lines_per_run(len(runs))

@@ -19,6 +19,11 @@ SCENARIOS = {
     "plain": ("the same run written to something that is not a terminal", ["X13"]),
     "pasted_run": ("the run the owner pasted on 2026-11-11 at a narrow width: header, goal, steps, answer once, markdown, figures, closing and the resume command (revision 2)", ["X1", "X2", "X3", "X10", "X13", "X16", "X18", "X33"]),
     "real_run": ("a real native run's recorded events (the interim note is the answer cut with three dots, three figure updates before the finish): the answer is on the screen once (revision 3)", ["X1", "X10", "X13", "X18"]),
+    "agents_depth1": ("a run with a helper and a finished sibling: the helper listed with its state, entered, messaged, stopped alone, left, and the finished one read (revision 4, X34 to X38)", ["X34", "X35", "X36", "X38"]),
+    "agents_depth2": ("the same walk with a helper that started a helper", ["X34", "X35", "X36", "X38"]),
+    "agents_depth4": ("the same walk four levels deep: each level entered, a message at the bottom, one key up a level at a time", ["X34", "X35", "X36", "X38"]),
+    "agents_depth_compare": ("the screen inside a helper at depth 4 against depth 1: content width, header and footer rows, key hints and the time to enter, within the stated tolerance", ["X37"]),
+    "real_agents": ("a real fast-tier run over made-up garden notes (one helper that read two files, recorded 2026-11-12): the helper listed, entered while it worked and after it ended, its result once", ["X34", "X38"]),
 }
 # The protocol ceiling column (the structure on request, spend against ceilings, who the AI acts for, a correction shown as taken up, stopping one helper: X24, X26, X32, X6, X8) is read
 # inside the watch, steer and target cases and reported in the details, not scored.

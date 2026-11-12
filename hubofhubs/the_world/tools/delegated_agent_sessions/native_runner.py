@@ -18,6 +18,7 @@ import json
 import os
 import shlex
 import shutil
+import sys
 import re
 import threading
 import time
@@ -32,6 +33,7 @@ from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_d
 from hubofhubs.the_world.tools.command_running import refusal, sandbox_wrap
 from hubofhubs.the_world.tools.deep import DeepResult, ProgressEvent
 from hubofhubs.the_world.tools.events import EVENT_STATUS, EVENT_TOKENS
+from hubofhubs.the_world.tools.delegated_agent_sessions import general_helper as helpers, providers
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig, log
 from hubofhubs.the_world.tools.delegated_agent_sessions.hub_frame import NATIVE_TOOLS, build_frame, scratch_folder
 from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
@@ -130,12 +132,14 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
     limit_poll_seconds = 1.0    # how often the ceilings are looked at while the session runs
     resume_gate = "text_only"   # which code findings are worth a resumed turn (see ``worth_resuming``)
     tools = NATIVE_TOOLS
+    by_task_id = True           # ``steer_agent`` and ``stop_agent`` name a helper by the CLI's task id (the stream's task lines tell it), not by the id of the call that started it
 
     def __init__(self, config: Optional[SubprocessConfig] = None, *, check: bool = True, session_dir: Optional[str] = None,
                  select: Optional[Callable[..., Any]] = None, notes: str = "",
                  ceiling_usd: Union[float, str] = DEFAULT_CEILING_USD, ceiling_seconds: Union[float, str] = DEFAULT_CEILING_SECONDS,
                  ceiling_turns: Optional[int] = None, soft_fraction: float = SOFT_FRACTION, should_continue: Optional[Callable[[Mapping[str, Any]], Any]] = None,
-                 stop_inputs: Optional[Mapping[str, Any]] = None, permission: str = "skip", sandbox: bool = False, sandbox_network: bool = True, **kwargs: Any):
+                 stop_inputs: Optional[Mapping[str, Any]] = None, permission: str = "skip", sandbox: bool = False, sandbox_network: bool = True,
+                 helper_calls: Optional[int] = None, **kwargs: Any):
         super().__init__(config, ceiling_usd=ceiling_usd, ceiling_seconds=ceiling_seconds, soft_fraction=soft_fraction, **kwargs)   # the ceilings are the stream runner's (run_ceilings)
         self.check = bool(check)               # the hub's code check of written text after the session
         self.session_dir = session_dir
@@ -151,6 +155,9 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         self.sandbox = bool(sandbox)           # run the session inside the hub's bubblewrap sandbox (the folder, the session's temporary folder and the CLI's config writable)
         self.sandbox_network = bool(sandbox_network)
         self.local = threading.local()         # per call: the frame file, the temporary folder and the launcher of the run in this thread
+        self.helper_calls = helpers.DEFAULT_CALLS if helper_calls is None else int(helper_calls)    # the general sub-agent calls the whole run may make (0: none is offered)
+        self.live: Any = None                  # (the run's folder, when it started) of the latest run, for what is asked of it from another thread (a helper's cost)
+        self.channel: Any = None               # the channel to the running helpers of the latest run (messages in, a stop), set when helpers are offered
 
     @property
     def cfg(self) -> SubprocessConfig:  # type: ignore[override]
@@ -180,7 +187,8 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
     def launch_settings(self) -> DeepLaunchSettings:
         base = super().launch_settings()
         return dataclasses.replace(
-            base, tools=base.tools if base.tools is not None else tuple(self.tools),
+            base, tools=base.tools if base.tools is not None else tuple(getattr(self.local, "tools", None) or self.tools),
+            agents_file=getattr(self.local, "agents_file", None) or base.agents_file, settings_file=getattr(self.local, "settings_file", None) or base.settings_file,
             setting_sources="" if base.setting_sources is None else base.setting_sources, strict_mcp=True, exclude_dynamic_sections=True,
             append_system_prompt_file=getattr(self.local, "frame_file", None) or base.append_system_prompt_file,
             max_budget_usd=self.remaining_usd(base.max_budget_usd), max_turns=self.remaining_turns(base.max_turns))
@@ -213,7 +221,9 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         self.local.frame_file = None
         self.local.sandboxed = False
         self.local.launcher = self.write_launcher(folder_for_launcher=scratch, root=root)
-        frame = build_frame(brief or goal, preamble or "", root, select=self.select, notes=self.notes)
+        self.local.tools, self.local.agents_file, self.local.settings_file = tuple(self.tools), None, None
+        note = self.offer_helpers(scratch, {}, self.helper_calls)
+        frame = build_frame(brief or goal, preamble or "", root, select=self.select, notes=self.notes, extras=(note,) if note else ())
         if scratch:
             path = os.path.join(scratch, "hub-frame.md")
             try:
@@ -222,6 +232,66 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                 self.local.frame_file = "/tmp/hub-frame.md" if self.local.sandboxed else path   # the sandbox shows the session's folder as /tmp
             except OSError as error:
                 log.warning("hub frame not written (%s): the session runs without it", error)
+
+    def model_of(self, tier: str) -> Optional[str]:
+        """The model of a role's tier for this run's provider, as the CLI takes it; None when no model is chosen for it."""
+        return self.cli_safe(providers.model_for(self.provider, tier))
+
+    def visible(self, path: str) -> str:
+        """The path as the session sees it: the sandbox shows the session's folder as /tmp."""
+        return "/tmp/" + os.path.basename(path) if getattr(self.local, "sandboxed", False) else path
+
+    def offer_helpers(self, scratch: str, defined: Dict[str, Dict[str, Any]], budget: int) -> str:
+        """Offer the general sub-agent (and the ``defined`` agents of an arm that has its own) to this run: writes the agents, the guard and the channel hook, adds the Agent tool and sets
+        ``self.channel``. Returns the frame's note, or ``""`` when nothing is offered (no budget, no folder to write in, or the sub-agent role's tier has no model chosen)."""
+        self.channel = None
+        offered = dict(defined)
+        if budget > 0 and scratch:
+            try:
+                offered.update(helpers.helper_definition(helpers.sub_agent_model(self.model_of, self.tier)))
+            except (KeyError, ValueError) as error:
+                log.warning("no tier for the sub-agent role (%s): no general sub-agent is offered", error)
+        if not offered or budget <= 0 or not scratch:
+            return ""
+        python = "python3" if getattr(self.local, "sandboxed", False) else (sys.executable or "python3")
+        written = helpers.write_offer(scratch, self.visible, python, offered, budget)
+        if written is None:
+            log.warning("the sub-agent guard is not written: the session runs with no sub-agents")
+            return ""
+        self.local.agents_file, self.local.settings_file, self.channel = written
+        self.local.tools = tuple(self.tools) + (helpers.agents.AGENT_TOOL,)
+        return helpers.helper_note(budget) if helpers.HELPER in offered else ""
+
+    def steer_agent(self, task_id: str, text: str, message_id: str = "") -> bool:
+        """Queue a message for the helper the CLI calls ``task_id``: it reads it at its next tool call (``agent_channel``). False when no helper is offered to this run."""
+        channel = self.channel
+        return bool(channel is not None and channel.send(task_id, text, message_id or uuid.uuid4().hex[:8]))
+
+    def stop_agent(self, task_id: str) -> bool:
+        """End one helper. The CLI's own ``stop_task`` stops it at once, a command it runs included; as a fallback its next tool call is refused with the reason that the person stopped it, so it
+        reports what it has. Its own helpers are stopped by the caller, which knows the tree."""
+        channel = self.channel
+        soft = bool(channel is not None and channel.stop(task_id))        # the fallback: the helper's next tool call is refused
+        hard = self.stop_task(task_id)                                    # the CLI's own stop of that task: a helper in a long command ends at once
+        return soft or hard
+
+    def agent_cost(self, task_id: str) -> Optional[float]:
+        """What one helper cost, priced from its own transcript (``subagents/agent-<task id>.jsonl`` beside the session's record) on the hub's table, the same estimate the ceilings use; None
+        when the record cannot be found. The CLI reports one cost for the whole session, the helpers' included."""
+        live = self.live
+        if not live:
+            return None
+        try:
+            record = current_session_file(live[0], live[1], getattr(self.goal_settings(), "claude_config_dir", None))
+            path = os.path.join(os.path.splitext(record)[0], "subagents", f"agent-{task_id}.jsonl") if record else ""
+            return round(estimate_spend(path), 6) if path and os.path.exists(path) else None
+        except Exception:  # noqa: BLE001 -- a figure that cannot be found is no figure
+            return None
+
+    def delivered_messages(self) -> List[Tuple[str, str]]:
+        """``[(task id, message id)]`` the helpers have read since this was last asked."""
+        channel = self.channel
+        return channel.delivered() if channel is not None else []
 
     def write_launcher(self, *, folder_for_launcher: str, root: str) -> str:
         """The program the CLI is started through when a permission mode or the sandbox is asked for: a small script that puts the hub's sandbox prefix
@@ -281,6 +351,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
             self.local.watch.__enter__()
             common["control"] = self.local.watch.wrap(control, self.limit_poll_seconds)
         self.local.started = self.local.watch.started
+        self.live = (root, self.local.started)
         try:
             result = super().run_goal_once(goal=goal, brief=brief, context_preamble=context_preamble, resume_session_id=resume_session_id, **common)
             self.usage(result, root, emit, resumes=0)

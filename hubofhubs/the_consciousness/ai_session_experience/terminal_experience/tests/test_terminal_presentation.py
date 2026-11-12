@@ -316,3 +316,31 @@ def test_a_declared_person_marker_must_start_the_goal_row_and_not_the_answers():
     assert C.goal_as_message(capture({"person": "»»"}, "  ┃  What is today?")) is False                                      # a declared marker that is not on the screen
     assert C.goal_as_message(capture({"person": ""}, "  ┃  What is today?")) is False
     assert C.goal_as_message(capture({}, "  ┃  What is today?")) is False and C.goal_as_message(capture({}, "❯ What is today?")) is True
+
+
+# --- revision 4: the agent hierarchy (agents_scenarios.py) ------------------------------------------------------------------------------
+
+def test_the_reference_walks_helpers_nested_four_deep_and_keeps_the_screen_the_same_at_depth_one_and_four():
+    deep = failed_checks("terminal_presentation.impls.reference", "agents_depth4")
+    assert deep["ok"] and all(deep["checks"].values()) and len(deep["checks"]) == 8
+    compare = failed_checks("terminal_presentation.impls.reference", "agents_depth_compare")
+    assert compare["ok"] and compare["checks"] == {"depth-keeps-the-screen": True, "depth-keeps-latency": True}
+
+
+def test_a_message_that_goes_to_the_parent_and_a_view_that_indents_per_depth_are_caught():
+    parent = failed_checks("terminal_presentation.broken.message_to_parent", "agents_depth2")
+    assert parent["checks"]["message-reaches-the-right-agent"] is False and not parent["ok"]
+    indented = failed_checks("terminal_presentation.broken.indents_per_depth", "agents_depth_compare")
+    assert indented["checks"]["depth-keeps-the-screen"] is False and not indented["ok"]
+
+
+def test_the_recorded_real_run_with_a_helper_is_walked_and_its_result_is_shown_once():
+    got = failed_checks("terminal_presentation.impls.reference", "real_agents")
+    assert got["ok"] and set(got["checks"]) == {"agents-shown-with-state", "agent-view-enter-and-leave", "finished-agent-enterable", "agent-result-once", "answer-once"}
+
+
+def test_a_third_party_client_is_listed_as_not_run_for_the_hierarchy_and_not_scored():
+    import agents_scenarios
+    import opencode_external
+    got = opencode_external.run_scenario("agents_depth4")
+    assert got["checks"] == {} and got["not_run"] == list(agents_scenarios.HIERARCHY_CHECKS) and "not run" in got["note"]

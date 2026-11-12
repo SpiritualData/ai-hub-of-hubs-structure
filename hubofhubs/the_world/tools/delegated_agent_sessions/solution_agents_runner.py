@@ -38,7 +38,7 @@ from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_d
 from hubofhubs.the_intelligence.nervous_system.step_watch import step_findings
 from hubofhubs.the_world.tools.deep import ProgressEvent
 from hubofhubs.the_world.tools.events import EVENT_STATUS
-from hubofhubs.the_world.tools.delegated_agent_sessions import providers, solution_agents as agents
+from hubofhubs.the_world.tools.delegated_agent_sessions import general_helper as helpers, providers, solution_agents as agents
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig
 from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
 from hubofhubs.the_world.tools.delegated_agent_sessions.frame_sections import KNOWN_CHARS, known_section, skills_section
@@ -187,23 +187,12 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         """Write the agents file, the guard and its settings into the session's private folder; True when all are written. The agents are offered only with the guard in place.
         ``budget`` is the calls the guard allows (default ``agent_calls``)."""
         budget = self.agent_calls if budget is None else int(budget)
-        names = os.path.join(scratch, "solution-agents.json"), os.path.join(scratch, "agent-guard.py"), os.path.join(scratch, "agent-guard.json")
-        counter, record = os.path.join(scratch, "agent-calls.count"), os.path.join(scratch, "agent-calls.log")
         python = "python3" if self.local.sandboxed else (sys.executable or "python3")
-        try:
-            with open(names[0], "w", encoding="utf-8") as handle:
-                json.dump(defined, handle, indent=1, sort_keys=True)
-            with open(names[1], "w", encoding="utf-8") as handle:
-                handle.write(agents.guard_script(sorted(defined), budget, self.visible(counter), self.visible(record)))
-            with open(names[2], "w", encoding="utf-8") as handle:
-                json.dump(agents.guard_settings(python, self.visible(names[1])), handle, indent=1)
-            if not os.path.exists(counter):
-                with open(counter, "w", encoding="utf-8") as handle:
-                    handle.write("0")
-        except OSError as error:
-            log.warning("the sub-agent guard is not written (%s): the session runs with no sub-agents", error)
+        written = helpers.write_offer(scratch, self.visible, python, defined, budget)       # the agents, the guard and the channel to each running agent (messages in, a stop)
+        if written is None:
+            log.warning("the sub-agent guard is not written: the session runs with no sub-agents")
             return False
-        self.local.agents_file, self.local.settings_file = self.visible(names[0]), self.visible(names[2])
+        self.local.agents_file, self.local.settings_file, self.channel = written
         return True
 
     def launch_settings(self) -> DeepLaunchSettings:

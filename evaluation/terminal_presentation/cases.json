@@ -145,5 +145,85 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "presentation-agents_depth1",
+  "kind": "presentation",
+  "origin": "rule: a run with a helper and a finished sibling: the helper listed with its state, entered, messaged, stopped alone, left, and the finished one read (revision 4, X34 to X38) (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "agents_depth1"
+  },
+  "requirements": [
+   "X34",
+   "X35",
+   "X36",
+   "X38"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-agents_depth2",
+  "kind": "presentation",
+  "origin": "rule: the same walk with a helper that started a helper (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "agents_depth2"
+  },
+  "requirements": [
+   "X34",
+   "X35",
+   "X36",
+   "X38"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-agents_depth4",
+  "kind": "presentation",
+  "origin": "rule: the same walk four levels deep: each level entered, a message at the bottom, one key up a level at a time (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "agents_depth4"
+  },
+  "requirements": [
+   "X34",
+   "X35",
+   "X36",
+   "X38"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-agents_depth_compare",
+  "kind": "presentation",
+  "origin": "rule: the screen inside a helper at depth 4 against depth 1: content width, header and footer rows, key hints and the time to enter, within the stated tolerance (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "agents_depth_compare"
+  },
+  "requirements": [
+   "X37"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-real_agents",
+  "kind": "presentation",
+  "origin": "rule: a real fast-tier run over made-up garden notes (one helper that read two files, recorded 2026-11-12): the helper listed, entered while it worked and after it ended, its result once (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "real_agents"
+  },
+  "requirements": [
+   "X34",
+   "X38"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

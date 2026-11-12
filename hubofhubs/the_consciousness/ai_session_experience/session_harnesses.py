@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_adapters import LoopLines, StreamJson, loop_log_events, progress_events
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
-    Approve, Capabilities, Control, Finished, Notice, Refuse, RunStarted, SessionEvent, Step, Steer, Stop, Usage, Waiting, short)
+    MAIN, AgentEnded, Approve, Capabilities, Control, Finished, Notice, Refuse, RunStarted, SessionEvent, Step, Steer, Stop, Usage, Waiting, short)
 from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
 
 
@@ -179,8 +179,10 @@ class LoopHarness:
 
 
 class StreamHarness:
-    """A runner with the Claude Code stream contract as a ``Harness``. Optional runner methods: ``approve(ask_id, allowed, reason)``,
-    ``stop_agent(agent_id)`` and ``steer_agent(agent_id, text)``."""
+    """A runner with the Claude Code stream contract as a ``Harness``. Optional runner methods: ``approve(ask_id, allowed, reason)``, and for one helper
+    ``stop_agent(task_id)``, ``steer_agent(task_id, text, message_id)`` and ``delivered_messages()`` (``[(task id, message id)]`` the helper has read since the last call); a helper is
+    named to the runner by the id the CLI gave its task, which the stream's task lines tell (``StreamJson.task_ids``). A message to a helper is shown as taken up (a ``message-received``
+    step with the helper's id) only when the runner says the helper read it; a helper the stream has not announced yet cannot be reached, so the control is not accepted and the surface tries again."""
     name = "stream"
 
     def __init__(self, runner: Any, root: str = ""):
@@ -192,32 +194,112 @@ class StreamHarness:
         self.texts: Dict[str, str] = {}
         self.lock = threading.Lock()
         self.sink: Callable[[SessionEvent], None] = lambda event: None
+        self.stream: Optional[StreamJson] = None
+        self.stopping: Dict[str, None] = {}          # helpers the person stopped: their end is reported as stopped
+        self.quiet: Dict[str, None] = {}             # ids of notes the hub wrote to the main session itself
+        self.aimed: Dict[str, str] = {}              # message id -> the helper it was sent to
+
+    def below(self, agent_id: str) -> List[str]:
+        """``agent_id`` and every helper under it, from the stream's tree."""
+        found, parents = [agent_id], dict(self.stream.agents) if self.stream else {}
+        for _ in range(len(parents)):
+            more = [child for child, parent in parents.items() if parent in found and child not in found]
+            if not more:
+                break
+            found.extend(more)
+        return found
+
+    def poll_delivered(self) -> None:
+        """Tell the surface which messages to helpers were read."""
+        if not hasattr(self.runner, "delivered_messages") or self.stream is None:
+            return
+        by_task = {task: ident for ident, task in self.stream.task_ids.items()}
+        for task, message_id in self.runner.delivered_messages():
+            agent = by_task.get(task) or self.aimed.get(message_id, MAIN)
+            self.sink(Step(agent_id=agent, step_id=message_id, kind="message-received", label=short(self.texts.get(message_id, ""))))
 
     def claim(self) -> List[ControlMessage]:
         with self.lock:
             got, self.inbox = self.inbox, []
         return got
 
+    def task_of(self, agent_id: str) -> Optional[str]:
+        """The id the runner knows a helper by: the CLI's task id when the runner says it names helpers that way (``by_task_id``), else the id the stream gave."""
+        if not getattr(self.runner, "by_task_id", False):
+            return agent_id
+        return self.stream.task_ids.get(agent_id) if self.stream else None
+
+    def stop_helper(self, agent_id: str) -> bool:
+        """Stop one helper and the helpers under it; False when the runner cannot or the stream has not told the CLI's id of one of them yet."""
+        if not hasattr(self.runner, "stop_agent") or self.stream is None:
+            return False
+        ids = self.below(agent_id)
+        tasks = [self.task_of(ident) for ident in ids]
+        if not tasks[0]:
+            return False
+        done = [bool(self.runner.stop_agent(task)) for task in tasks if task]
+        if all(done):
+            for ident in ids:
+                self.stopping[ident] = None
+        return bool(done) and all(done)
+
+    def steer_helper(self, agent_id: str, text: str, message_id: str) -> bool:
+        """Send a message to one running helper; it is taken up when the helper reads it at its next tool call."""
+        if not hasattr(self.runner, "steer_agent") or self.stream is None:
+            return False
+        task = self.task_of(agent_id)
+        if not task or agent_id in self.stream.ended:
+            return False
+        with self.lock:
+            self.texts[message_id], self.aimed[message_id] = text, agent_id
+        sent = bool(self.runner.steer_agent(task, text, message_id))
+        if sent:       # the main session is told, as the person's own words, what was said to the helper (a helper's report of it reads like data to the main session; this does not)
+            name = self.stream.labels.get(agent_id, "a helper")
+            fyi = f"For your information, I sent this message directly to the helper \"{name}\" while it worked: {text}"
+            note_id = message_id + "-fyi"
+            with self.lock:
+                self.quiet[note_id] = None
+                self.inbox.append(ControlMessage(id=note_id, text=fyi))
+        return sent
+
     def seen(self, ids: List[str], where: str) -> None:
         for message_id in ids:
+            if message_id in self.quiet:       # the note that tells the main session about a message to a helper is not a note of the person's to show
+                continue
             self.sink(Step(step_id=message_id, kind="message-received", label=short(self.texts.get(message_id, ""))))
 
     def start(self, goal: str, sink: Callable[[SessionEvent], None], resume_session_id: str = "") -> Finished:
         self.stopped.clear()
         self.sink = sink
-        stream = StreamJson(self.root)
+        stream = self.stream = StreamJson(self.root)
+        self.stopping.clear()
         run_id = short_id()
         sink(RunStarted(goal=goal, harness=self.name, session_id=resume_session_id, resumed=bool(resume_session_id)))
         sink(Step(step_id="starting", kind="note", label="starting the session", state="running"))     # the first seconds show that the run began
 
         def emit(event: Any) -> None:
             for item in progress_events(event, stream=stream):
+                if isinstance(item, AgentEnded) and item.agent_id in self.stopping and item.state == "met":
+                    item = replace(item, state="stopped")        # the person stopped it: it reported what it had and ended
+                if isinstance(item, AgentEnded) and item.cost_usd is None and hasattr(self.runner, "agent_cost") and stream.task_ids.get(item.agent_id):
+                    item = replace(item, cost_usd=self.runner.agent_cost(stream.task_ids[item.agent_id]))       # a helper's own cost, priced from its own record
                 sink(item)
+            self.poll_delivered()
+        quit_ = threading.Event()
+
+        def tick() -> None:
+            while not quit_.wait(0.25):
+                self.poll_delivered()
+        if hasattr(self.runner, "delivered_messages"):
+            threading.Thread(target=tick, daemon=True).start()
         control = RunControl(claim_inputs=self.claim, mark_seen=self.seen, cancel_requested=self.stopped.is_set, poll_seconds=0.02)
         wanted = inspect.signature(self.runner.run_goal).parameters
         extra: Dict[str, Any] = {"control": control} if "control" in wanted else {}
-        result = self.runner.run_goal(goal=goal, brief="", emit=emit, run_id=run_id, resume_session_id=resume_session_id or None,
-                                      cancel_check=self.stopped.is_set, **extra)
+        try:
+            result = self.runner.run_goal(goal=goal, brief="", emit=emit, run_id=run_id, resume_session_id=resume_session_id or None,
+                                          cancel_check=self.stopped.is_set, **extra)
+        finally:
+            quit_.set()
         changed = list(stream.changed)
         for note in getattr(result, "observations", None) or []:
             name = str(note).replace("changed ", "", 1)
@@ -244,12 +326,12 @@ class StreamHarness:
     def control(self, control: Control) -> bool:
         if isinstance(control, Stop):
             if control.agent_id:
-                return bool(hasattr(self.runner, "stop_agent") and self.runner.stop_agent(control.agent_id))
+                return self.stop_helper(control.agent_id)
             self.stopped.set()
             return True
         if isinstance(control, Steer):
             if control.agent_id:
-                return bool(hasattr(self.runner, "steer_agent") and self.runner.steer_agent(control.agent_id, control.text))
+                return self.steer_helper(control.agent_id, control.text, control.message_id or short_id())
             message_id = control.message_id or short_id()
             with self.lock:
                 self.texts[message_id] = control.text

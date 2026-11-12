@@ -22,6 +22,7 @@ from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Finished, Harness, RunStarted, Stop, Waiting, short
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.adopted_session import adapter as hub
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import Attendance, LiveSession
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, event_line, report
 from hubofhubs.the_self.assembler import arm_needs as needs
@@ -83,6 +84,8 @@ class AdoptedAttendance(Attendance):
         self.title, self.color = title, color
         self.adapter = hub.ScreenAdapter(self.view)
         self.last: Any = None
+        self.shown_focus = agent_focus.MAIN         # the agent whose transcript the screen shows
+        self.shown_list: Any = None
 
     def give(self, items: Sequence[Any]) -> None:
         """Hand typed entries to the screen, to be applied in order on its own loop."""
@@ -135,6 +138,14 @@ class AdoptedAttendance(Attendance):
         super().redraw()
         if self.app is None:
             return
+        current = self.view.focus.current
+        if current != self.shown_focus:       # the shared focus moved (a key, or a pick in the list): the screen shows that agent's transcript, or the main one
+            self.shown_focus = current
+            self.app.post(self.app.show_focus, None if current == agent_focus.MAIN else current)
+        shape = (tuple(self.view.focus.path), self.view.focus.cursor, tuple((a.agent_id, a.state) for a in list(self.view.agents.values())))
+        if shape != self.shown_list:       # the list of helpers is drawn again only when the focus, the cursor or a helper's state changed
+            self.shown_list = shape
+            self.app.post(self.app.refresh_children)
         figures = hub.figures_of(self.view, self.width, self.title, self.running, len(self.view.messages) - sum(1 for m in self.view.messages if m.taken_up))
         if figures != self.last:
             self.last = figures
@@ -159,6 +170,8 @@ class AdoptedSession:
     and reasoning, tool-call rows, the diff renderer, approval and question screens, the sub-agent list and transcripts, the loading line and the input with history and slash completion,
     driven by the hub's session contract through an adapter, with who the AI acts for, the structure of the solutions served and the metric before and after added."""
     REQUIRES = (needs.TEXTUAL, needs.PYDANTIC)
+    agent_labels = dict(agent_focus.KEY_LABELS)          # the words its screen uses for the agent keys (the presentation metric reads these)
+    agent_keys = {"enter": ("open", ""), "leave": ("close", ""), "next": ("down", ""), "stop": ("esc", "")}      # the keys a script presses to go into a helper, back, to the next helper and to stop the one in view
 
     def __init__(self, app: Any = None, ansi: bool = False, *, title: str = TITLE, theme: str = "hub-dark", history_file: Any = None):
         self.app = app          # the running application when this arm is the one inside ``work``

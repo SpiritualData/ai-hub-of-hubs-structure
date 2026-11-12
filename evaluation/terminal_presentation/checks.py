@@ -33,6 +33,10 @@ REQUIREMENTS = {
     "no-raw-markdown": ("X10", "X13"), "no-internal-vocabulary": ("X16", "X18"), "answer-once": ("X10", "X18"), "no-empty-figure-segment": ("X3", "X33"),
     "resume-command-unbroken": ("X33",), "header-has-full-name": ("X2", "X3"), "no-stray-leading-padding": ("X18",), "cost-at-cent-precision": ("X3",),
     "goal-as-persons-message": ("X1",),
+    # revision 4 (2026-11-12): the agent hierarchy, X34 to X38 (agents_scenarios.py)
+    "agents-shown-with-state": ("X34",), "agent-view-enter-and-leave": ("X34",), "message-reaches-the-right-agent": ("X35",), "stop-only-that-agent": ("X35",),
+    "children-enterable-at-any-depth": ("X36",), "one-key-up-one-level": ("X36",), "depth-keeps-the-screen": ("X37",), "depth-keeps-latency": ("X37",),
+    "finished-agent-enterable": ("X38",), "agent-result-once": ("X38",),
 }
 REVISION_2 = ("no-raw-markdown", "no-internal-vocabulary", "answer-once", "no-empty-figure-segment", "resume-command-unbroken", "header-has-full-name", "no-stray-leading-padding",
               "cost-at-cent-precision", "goal-as-persons-message")

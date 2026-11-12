@@ -24,6 +24,7 @@ from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Seque
 from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Harness
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import Attendance, LiveSession
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, frame, report, report_parts
 from hubofhubs.the_self.assembler import arm_needs as needs
@@ -208,14 +209,21 @@ def make_app() -> Any:
             view = getattr(self.attendance, "view", None)
             return bool(view is not None and view.show_structure and not self.query_one("#prompt", Input).value)
 
+        def agents_navigable(self) -> bool:
+            """Up, Down, Left and Right walk the agents (``agent_focus``) on an empty prompt when a helper is in view or one is running."""
+            view = getattr(self.attendance, "view", None)
+            if view is None or view.show_structure or self.query_one("#prompt", Input).value:
+                return False
+            return bool(view.focus.path or any(a.state == "running" for a in agent_focus.children(view, agent_focus.MAIN)))
+
         def action_up(self) -> None:
-            if self.tree_open():
+            if self.tree_open() or self.agents_navigable():
                 self.send("up")
             else:
                 self.recall(-1)
 
         def action_down(self) -> None:
-            if self.tree_open():
+            if self.tree_open() or self.agents_navigable():
                 self.send("down")
             else:
                 self.recall(1)
@@ -228,7 +236,7 @@ def make_app() -> Any:
 
         def check_action(self, action: str, parameters: tuple) -> Optional[bool]:
             if action in ("open", "close"):
-                return self.tree_open()       # Right and Left move the cursor in the line unless the structure tree is open
+                return self.tree_open() or self.agents_navigable()       # Right and Left move the cursor in the line unless the structure tree is open or a helper can be entered
             return True
 
         def recall(self, step: int) -> None:
@@ -322,6 +330,8 @@ class TextualSession:
     """A full-screen terminal built on the Textual library: scrollable transcript, live panel, input with history and command completion, markdown answers; every control of
     the shared driver (stop and keep, resume, steer shown as queued and taken up, helper targeting, questions answered by one key, follow-ups, harness switch)."""
     REQUIRES = (needs.TEXTUAL,)
+    agent_labels = dict(agent_focus.KEY_LABELS)          # the words its screen uses for the agent keys (the presentation metric reads these)
+    agent_keys = {"enter": ("open", ""), "leave": ("close", ""), "next": ("down", ""), "stop": ("esc", "")}      # the keys a script presses to go into a helper, back, to the next helper and to stop the one in view
 
     def __init__(self, app: Any = None, ansi: bool = False):
         self.app = app          # the running application when this arm is the one inside ``work``

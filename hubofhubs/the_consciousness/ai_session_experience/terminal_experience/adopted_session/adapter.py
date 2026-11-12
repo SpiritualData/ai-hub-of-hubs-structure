@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Waiting, short)
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import present
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, present
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionView, report_parts, row_of
 
 #: kind -> (present participle, past tense, failure phrase): the verb of a step's row in each state
@@ -117,7 +117,13 @@ class ScreenAdapter:
         task = agent.task if agent is not None else agent_id
         lead = m.PublicMessageEntry(id=f"task-{agent_id}", session_id=agent_id, turn_id=TURN_ID, created_at=0, updated_at=0, generation_status=m.PublicEntryGenerationStatus.COMPLETED,
                                     role="user", content=[m.TextContentBlock(text=task)], source="turn_start")
-        return [lead] + [entry.model_copy(update={"session_id": agent_id}) for key, entry in self.entries.items() if self.owner.get(key) == agent_id]
+        notes = [m.PublicMessageEntry(id=f"note-{agent_id}-{note.message_id}", session_id=agent_id, turn_id=TURN_ID, created_at=0, updated_at=0,
+                                      generation_status=m.PublicEntryGenerationStatus.COMPLETED, role="user",
+                                      content=[m.TextContentBlock(text=note.text + ("" if note.taken_up else "  (queued: it reads it at its next step)"))], source="turn_start")
+                 for note in list(self.view.messages) if note.agent_id == agent_id]        # what the person sent to this helper, shown in its own transcript
+        result = ([m.PublicMessageEntry(id=f"result-{agent_id}", session_id=agent_id, turn_id=TURN_ID, created_at=0, updated_at=0, generation_status=m.PublicEntryGenerationStatus.COMPLETED,
+                                        role="assistant", content=[m.TextContentBlock(text=agent.summary)])] if agent is not None and agent.summary else [])        # what it reported, in its own transcript
+        return [lead] + result + [entry.model_copy(update={"session_id": agent_id}) for key, entry in self.entries.items() if self.owner.get(key) == agent_id] + notes      # what it reported first, then what it did, so a long report does not push its steps off the screen
 
     # --- entries ---------------------------------------------------------------------------------------------------------------------
 
@@ -200,7 +206,8 @@ class ScreenAdapter:
         if isinstance(event, AgentStarted):
             return self.child(event, running=True)
         if isinstance(event, AgentEnded):
-            return self.child(event, running=False)
+            said = [HubLine("result", f"{self.helper_name(event.agent_id) or 'Helper'} result: {short(present.one_line(event.summary), 160)}")] if event.summary else []       # its result, once, in the parent
+            return said + self.child(event, running=False)
         if isinstance(event, Review):
             return self.release(event) + [HubLine("review", f"Review: {present.one_line(event.text) or 'done'}")]
         if isinstance(event, Waiting):
@@ -232,14 +239,16 @@ class ScreenAdapter:
         m = vendored().models
         agent = self.view.agents.get(event.agent_id)
         task = agent.task if agent is not None else event.agent_id
+        stopped = ""
         if running:
             status: Any = m.RunningSessionStatus(active_turn_id=TURN_ID)
         else:
             state = getattr(event, "state", "met")
-            status = (m.IdleSessionStatus() if state in ("met", "not_started") else m.ArchivedSessionStatus() if state == "stopped"
+            status = (m.IdleSessionStatus() if state in ("met", "not_started", "stopped")       # a stopped helper stays in the list (an archived one would leave it) and is named as stopped
                       else m.FailedSessionStatus(message="did not meet its goal" if state == "unmet" else "failed"))
+            stopped = " (stopped)" if state == "stopped" else ""
         old = self.children.get(event.agent_id)
-        child = m.PublicChildSession(id=event.agent_id, name=short(present.one_line(task), 40), agent_type=(agent.solution if agent else "") or "helper", status=status,
+        child = m.PublicChildSession(id=event.agent_id, name=short(present.one_line(task), 22) + stopped, agent_type=(agent.solution if agent else "") or "helper", status=status,
                                      created_at=old.created_at if old is not None else stamp(event), updated_at=stamp(event))
         self.children[event.agent_id] = child
         return [vendored().events.ChildSessionUpdated(child_session=child)]
@@ -291,8 +300,10 @@ def figures_of(view: SessionView, width: int, title: str = "", running: bool = F
         (view.structure_compact,) if view.structure_compact else ((f"serves: {view.solution} | milestone: {short(view.milestone, 50)}",) if view.solution or view.milestone else ()))
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS
     room = max(width - 4 - len(status), 20)         # the key line shares its row with the status line: whole hints only
-    return Figures(header=present.header(view, max(width - 1, 20), False, view.segments, title), hint=present.fit_parts(hint_of(view.status), room), status=status,
-                   structure=structure, help=tuple(HELP_ROWS) if view.show_help else (), running=running and view.status in ("running", "waiting", "stopping"),
+    crumb = (agent_focus.breadcrumb(view, view.focus, max(width - 2, 20)),) if view.focus.path else ()      # where the person is: one row, the same at every depth
+    keys = agent_focus.keys_hint(view, view.focus, view.key_labels) if view.status == "running" else ""
+    return Figures(header=present.header(view, max(width - 1, 20), False, view.segments, title), hint=present.fit_parts(keys or hint_of(view.status), room), status=status,
+                   structure=crumb + structure, help=tuple(HELP_ROWS) if view.show_help else (), running=running and view.status in ("running", "waiting", "stopping"),
                    asking=view.asking is not None, stopped=view.status == "stopped" and not running, note_count=notes)
 
 
