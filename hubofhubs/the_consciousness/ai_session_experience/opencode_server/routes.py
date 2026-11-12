@@ -25,7 +25,16 @@ MODEL_INFO = {"id": "hub", "modelID": "hub", "providerID": "hub", "type": "chat"
               "limit": {"context": 200000, "input": 160000, "output": 32000}}
 # the client prints the provider's name beside the model's, so the provider is named as the product: it says what is serving the session
 PROVIDER = {"id": "hub", "integrationID": "hub", "name": present.PRODUCT, "activation": "enabled", "package": "@opencode/ai/providers/openai-compatible", "settings": {}}
-EMPTY_LISTS = ("/api/command", "/api/skill", "/api/mcp", "/api/reference", "/api/integration", "/api/shell", "/api/form", "/api/vcs/branch", "/api/vcs/status", "/api/plugin")
+# The client's "Getting started" panel (connect from 75+ providers) shows until some integration has a connection, and its model picker lists the models of the providers it knows. The hub is the
+# one integration, already connected (through the environment: nothing for the person to enter), and its models are the hub's tiers, so the panel stays away and the picker offers the hub's own choices.
+INTEGRATION = {"id": "hub", "name": present.PRODUCT, "metadata": {}, "methods": [], "connections": [{"type": "env", "name": "AHOHS"}]}
+
+
+def model_info(tier: str) -> Dict[str, Any]:
+    """The model entry for one of the hub's tiers (which model serves it is the hub's choice, made when the run starts) or for an explicit model the hub serves (named as itself)."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import TIERS
+    return {**MODEL_INFO, "id": tier, "modelID": tier, "name": tier.capitalize() if tier in TIERS else tier, "family": "hub", "cost": []}
+EMPTY_LISTS = ("/api/command", "/api/skill", "/api/mcp", "/api/reference","/api/shell", "/api/form", "/api/vcs/branch", "/api/vcs/status", "/api/plugin")
 NOT_FOUND = {"_tag": "NotFound", "message": "this server does not implement that route"}
 
 
@@ -54,9 +63,11 @@ def handle(bridge: Bridge, method: str, path: str, query: Mapping[str, Any], bod
     if path == "/api/agent":
         return 200, wrapped(bridge, [AGENT])
     if path == "/api/model":
-        return 200, wrapped(bridge, [MODEL_INFO])
+        return 200, wrapped(bridge, [model_info(t) for t in store.tiers] or [MODEL_INFO])
     if path == "/api/model/default":
-        return 200, wrapped(bridge, MODEL_INFO)
+        return 200, wrapped(bridge, model_info(store.model["id"]) if store.tiers else MODEL_INFO)
+    if path == "/api/integration":
+        return 200, wrapped(bridge, [INTEGRATION])
     if path == "/api/provider":
         return 200, wrapped(bridge, [PROVIDER])
     if path == "/api/config":
@@ -109,6 +120,10 @@ def handle(bridge: Bridge, method: str, path: str, query: Mapping[str, Any], bod
         return 200, {"data": []}
     if rest == "permission":
         return 200, {"data": store.open_requests(sid)}
+    if rest == "model" and method == "POST":           # the person picked a tier in the client's model picker: it is the tier of the next run
+        chosen = body.get("model")
+        bridge.select_tier(str(chosen.get("id") or "") if isinstance(chosen, dict) else "")
+        return 204, None
     if rest in ("view", "model", "agent") and method in ("POST", "GET"):
         return 204, None
     if rest == "interrupt" and method == "POST":

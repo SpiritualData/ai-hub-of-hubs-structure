@@ -14,8 +14,9 @@ from esoi import EntryError, Pending
 from hubofhubs.the_self.assembler.oneline import Result
 
 
-def work_command(args: argparse.Namespace, hub: object) -> int:
-    """``ahohs work``: the arguments checked and turned into one ``WorkTerminal`` (the terminal itself knows no harness, folder or environment)."""
+def work_command(args: argparse.Namespace, hub: object, context_provider=None) -> int:
+    """``ahohs work``: the arguments checked and turned into one ``WorkTerminal`` (the terminal itself knows no harness, folder or environment). ``context_provider(focus)`` is a
+    consumer's own source of saved notes (see ``the_intelligence/subconscious/focus_context/settings.py``)."""
     from pathlib import Path
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import work as terminal
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_keys import TtyKeys
@@ -29,13 +30,24 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
         seconds = terminal.seconds_of(args.max_time) if args.max_time is not None else None
         usd = "unlimited" if usd is None and args.max_spend is not None else usd
         seconds = "unlimited" if seconds is None and args.max_time is not None else seconds
-        name, why = (args.harness, "chosen by you") if args.harness else terminal.default_harness()
+        from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_memory import SessionMemory, resolve_resume
+        memory = SessionMemory(folder)
+        args.resume, remembered, said, missing = resolve_resume(memory, args.resume, args.harness)       # the harness that ran a session is recorded with it
+        if missing:
+            raise ValueError(missing)
+        if said:
+            print(said, file=sys.stderr)
+        name, why = (args.harness, "chosen by you") if args.harness else ((remembered, "the one that ran that session") if remembered else terminal.default_harness())
         if name not in terminal.HARNESSES:
             raise ValueError(f"no harness named {name!r}; choose one of {', '.join(terminal.HARNESSES)}")
         holder: dict = {}
         build = terminal.harness_builder(folder=folder, tier=main_session_tier(getattr(args, "task_kind", ""), args.tier), ceiling_usd=usd, ceiling_seconds=seconds, permission=args.permission, environ=process_environment(),
                                          solution=args.solution, milestone=args.milestone, stop_inputs=lambda: holder["terminal"].stop_inputs(),
                                          setting_sources=args.setting_sources)
+        from hubofhubs.the_intelligence.subconscious.focus_context.grounded import grounded_builder
+        from hubofhubs.the_intelligence.subconscious.focus_context.settings import configured, replace_focus
+        settings = replace_focus(configured(getattr(args, "context", ""), process_environment()), getattr(args, "focus", ""))
+        build = grounded_builder(build, settings, context_provider, process_environment())       # the person's own context (None without a settings file or provider)
     except ValueError as error:
         print(f"failed: {error}", file=sys.stderr)
         return 2
@@ -66,6 +78,9 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
         arm.configure(harness=name, folder=folder, tier=args.tier, max_spend=args.max_spend, max_time=args.max_time, permission=args.permission, solution=args.solution,
                       milestone=args.milestone, person=args.person, setting_sources=args.setting_sources, environ=process_environment(), mode=getattr(args, "opencode_mode", ""))
     code = arm.host_terminal(session, args.goal, args.resume) if interactive and hasattr(arm, "host_terminal") else session.run(args.goal, args.resume)
+    for ended in session.reports:        # what ran each session is kept with its id, so `--resume <id>` needs no `--harness`
+        if ended.final is not None and ended.final.session_id:
+            memory.record(ended.final.session_id, ended.view.harness or session.name, args.tier)
     last = session.last.final if session.last else None
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1
 
@@ -103,11 +118,14 @@ def acp_command(args: argparse.Namespace) -> int:
 
 def main_session_choice(task_kind: str = "", requested: str = "", standing=None):
     """The tier choice of a deep-work session (a ``TierChoice``: tier, source and reason, ``record()`` for the run's record): the tier the person names now
-    (``requested``, the ``--tier`` flag), else the tier their standing guidance names (``standing``, a function role to tier a consumer supplies; the command line
+    (``requested``, the ``--tier`` or ``--model`` flag; a model the hub serves is run as named), else the tier their standing guidance names (``standing``, a function role to tier a consumer supplies; the command line
     has none), else the cheapest tier measured good enough for deep work, for the role of the task kind (gather, implementation, structure, review) or the
     implementation role when the kind is not given."""
-    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import task_choice
-    return task_choice(task_kind, requested, standing=standing)
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers, tiers
+    model = tiers.explicit_model("anthropic", requested) if role_tiers.normalise(requested) not in role_tiers.TIERS else None
+    if model:       # a model the hub serves, named instead of a tier: the session runs on exactly that model (its name stands where the tier would)
+        return role_tiers.TierChoice(role_tiers.deep_work_role(task_kind), model, "current_input", "the person named this model in the current request")
+    return role_tiers.task_choice(task_kind, requested, standing=standing)
 
 
 def main_session_tier(task_kind: str = "", requested: str = "", standing=None) -> str:
@@ -129,9 +147,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     work.add_argument("goal", nargs="?", default="", help="what to get done in this folder; leave out for a prompt, and type follow-ups that continue the session")
     work.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick for a person at a terminal)")
     work.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best (strong reads as quality); default: the cheapest tier measured good enough for deep work (the role table), unless your standing guidance names another")
+    work.add_argument("--model", default="", help="an explicit model the hub serves, instead of a tier (see the models in the opencode picker or tiers.served_models); the session runs on exactly that model")
     work.add_argument("--task-kind", default="", choices=("",) + task_kind_choices(), help="the kind of the task (gather, implementation, structure or review), which sets the default tier; unknown reads as implementation")
     work.add_argument("--folder", default=".", help="the folder the work happens in (default: this one)")
-    work.add_argument("--resume", default="", metavar="SESSION", help="continue a session an earlier run named (with the same --harness, in the same folder)")
+    work.add_argument("--resume", default="", metavar="SESSION", help="continue a session an earlier run named, in the same folder: its id, or last for the most recent one (the harness that ran it is used unless you give --harness)")
     work.add_argument("--max-spend", default=None, metavar="USD", help="spend ceiling in dollars, or unlimited (default: the hub's high default)")
     work.add_argument("--max-time", default=None, metavar="TIME", help="time ceiling like 90s, 30m, 2h, or unlimited (default: the hub's high default)")
     work.add_argument("--permission", default="acceptEdits", choices=("acceptEdits", "skip"), help="acceptEdits: files may be read and changed, commands are refused and listed; skip: no permission checks")
@@ -142,6 +161,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     work.add_argument("--terminal", default="", help="the screen: live_session, textual_session, polished_session, adopted_session (the interface of an existing terminal agent, vendored), acp_client_session (an installed ACP client such as Toad draws it) or line_repl (default: the hub's selected one; the best-measured arm that can run stands in when one's library or program is missing, with the reason shown)")
     work.add_argument("--setting-sources", default="project", help="which of the Claude CLI's setting sources a session loads: project (default: this folder's own, never your user-level settings and hooks), or a list such as user,project")
     work.add_argument("--structure-watch", default="on", choices=("on", "off"), help="on (default): one small best-tier look at the records after a run that changed something, when there are records; off: never")
+    work.add_argument("--context", default="", metavar="FILE", help="the file of your own context sources (default: $AHOHS_CONTEXT, else ~/.config/ahohs/context.toml when it exists; none means no saved context)")
+    work.add_argument("--focus", default="", help="the focus whose saved notes are used first (default: the one in the context file)")
     work.add_argument("--plain", action="store_true", help="plain lines even on a terminal")
     work.add_argument("--opencode-mode", default="", choices=("", "full", "inline"), help="with --terminal opencode_client_session: full (the client's full-screen interface, default) or inline (opencode mini, into the terminal's own scrollback)")
     from hubofhubs.the_consciousness.ai_session_experience.opencode_server.command import add_arguments as add_opencode_server
@@ -149,6 +170,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     acp = sub.add_parser("acp", help="serve the hub's session harness as an Agent Client Protocol agent on stdio (an ACP terminal client launches it, for example: toad acp \"ahohs acp\" .); needs the extra acp")
     acp.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick)")
     acp.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best")
+    acp.add_argument("--model", default="", help="an explicit model the hub serves, instead of a tier")
     acp.add_argument("--folder", default=".", help="the folder a session works in when the client names none")
     acp.add_argument("--max-spend", default=None, metavar="USD", help="spend ceiling in dollars, or unlimited")
     acp.add_argument("--max-time", default=None, metavar="TIME", help="time ceiling like 90s, 30m, 2h, or unlimited")
@@ -172,6 +194,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     record.add_argument("--folder", default=None, help="the folder holding the two files (default: the hub's registry)")
     record.add_argument("--allow-gaps", action="store_true", help="write the record even when it lacks parts of its size (the gaps are printed)")
     args = parser.parse_args(argv)
+    if getattr(args, "model", ""):       # --model is a tier-less way to name the session's model: it travels where the tier travels
+        if args.tier:
+            print("failed: give --tier or --model, not both", file=sys.stderr)
+            return 2
+        args.tier = args.model
     if args.command == "investigation":
         from hubofhubs.the_world.learning.investigation_store import record_investigation
         try:

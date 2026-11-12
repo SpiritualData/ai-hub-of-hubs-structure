@@ -14,9 +14,6 @@ from typing import Any, Dict, Iterable, Optional, Tuple
 
 ANY = "*"   # a harness that drives any provider it is given credentials for
 
-#: the tier names a runner uses, and the chooser's tier each one means (the same words ``tier_registry.TIER_OF`` reads)
-TIER_OF = {"fast": "cheap", "cheap": "cheap", "balanced": "mid", "mid": "mid", "best": "strong", "quality": "strong", "strong": "strong"}
-
 #: other spellings of a provider name, mapped to the tier registry's name
 ALIASES = {"google": "gemini", "claude": "anthropic", "chatgpt": "openai"}
 
@@ -63,8 +60,12 @@ def credential_names(provider: str) -> Tuple[str, ...]:
 
 
 def model_for(provider: str, tier: str, folder: Any = None) -> Optional[str]:
-    """The model the tier chooser picked for ``tier`` among ``provider``'s models, or None when it has none for that tier."""
-    from hubofhubs.the_world.model_plumbing.model_tier_chooser import tiers
-    chosen = tiers.choose(folder, available={normalise(provider)}).get(TIER_OF.get((tier or "").strip().lower(), tier)) or {}
-    arm = chosen.get("arm")
-    return arm[1] if arm else None
+    """The model a session on ``provider`` runs for ``tier``: the tier chooser's pick for the tier, or None when it has none for that tier. A tier is one of the
+    hub's four (``role_tiers.TIERS``, its aliases read: ``strong`` is ``quality``); ``best`` is the best tier's own arm and is never answered with another tier's model.
+    A name that is not a tier but is a model the hub serves for the provider (``tiers.served_models``) is that model: a person's explicit choice."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers, tiers
+    name = role_tiers.normalise(tier)
+    if name in role_tiers.TIERS:
+        arm = (tiers.choose(folder, available={normalise(provider)}).get(name) or {}).get("arm")
+        return arm[1] if arm else None
+    return tiers.explicit_model(normalise(provider), tier, folder)

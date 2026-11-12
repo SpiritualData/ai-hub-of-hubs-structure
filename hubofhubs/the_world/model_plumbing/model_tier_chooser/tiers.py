@@ -210,6 +210,32 @@ def choose(folder=None, available=None, credits=None, today="", role="", environ
     return out
 
 
+def served_models(provider, folder=None, today=""):
+    """The models of ``provider`` the hub can serve, in the order of the tier ladder (the chosen arm of each tier first, then the held defaults and the
+    candidates of ``tier_arms.csv`` that have a price in force), without repeats. Read from the chooser and its registry, never written here; a consumer's
+    model picker lists these after the tiers, and a person may name one for a session (``explicit_model``)."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import TIERS
+    wanted = (provider or "").strip().lower()
+    chosen = choose(folder, available={wanted}, today=today)
+    held, candidates = default_arms(folder)
+    prices = registry.read("tier_prices.csv", folder)
+    day = today or date.today().isoformat()
+    pairs = [chosen[t]["arm"] for t in TIERS if (chosen.get(t) or {}).get("arm")]
+    for t in TIERS:
+        pairs += ([held[t]] if t in held else []) + candidates.get(t, [])
+    seen = {}
+    for pair_provider, model in pairs:
+        if pair_provider == wanted and (rates(prices, pair_provider, model, day=day) is not None or any(c["arm"] == (pair_provider, model) for c in chosen.values() if c.get("arm"))):
+            seen[model] = None
+    return list(seen)
+
+
+def explicit_model(provider, name, folder=None):
+    """The model id ``name`` names among ``served_models(provider)`` (case does not matter), or None when the hub does not serve a model by that name. A tier name is never a model."""
+    wanted = (name or "").strip().lower()
+    return next((m for m in served_models(provider, folder) if m.lower() == wanted), None) if wanted else None
+
+
 def portfolio(choices, tiers, prices, credits=()):
     """Passing cases per unit of cost over all tiers for a ``{tier: (provider, model)}`` choice (an unpriced choice counts as 0)."""
     passed = cost = 0.0

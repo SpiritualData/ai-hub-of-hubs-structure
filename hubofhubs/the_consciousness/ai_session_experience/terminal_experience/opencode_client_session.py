@@ -85,7 +85,7 @@ class OpencodeClientSession:
             return terminal.harness() if not tier or tier == chosen else build_tier(where, tier)
 
         bridge = Bridge(build, folder, acting_for=str(self.options.get("person") or ""), command=getattr(terminal, "command", "ahohs work"), folder_name=mode == "full",
-                        tiers=serving.offered_tiers(), tier=chosen)
+                        tiers=serving.offered_choices(), tier=chosen)
         bridge.resume_id = resume
         run = launch.prepare_run_folder(mode)
         server = OpencodeServer(bridge).start()

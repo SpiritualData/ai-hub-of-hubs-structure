@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 import sys
-from typing import Any, Callable
+from typing import Any, Callable, Mapping, Optional, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server import client as launch
 
@@ -14,6 +14,7 @@ def add_arguments(sub: Any) -> None:
     parser = sub.add_parser("opencode-server", help="serve the hub's session harness over the opencode API on the loopback interface, for the stock opencode terminal client to draw (the arm opencode_client_session starts it for you)")
     parser.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick)")
     parser.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best")
+    parser.add_argument("--model", default="", help="an explicit model the hub serves (instead of a tier); the hub's models are listed by the client's model picker")
     parser.add_argument("--folder", default=".", help="the folder the session works in")
     parser.add_argument("--max-spend", default=None, metavar="USD", help="spend ceiling in dollars, or unlimited")
     parser.add_argument("--max-time", default=None, metavar="TIME", help="time ceiling like 90s, 30m, 2h, or unlimited")
@@ -27,20 +28,56 @@ def add_arguments(sub: Any) -> None:
     parser.add_argument("--allow-remote", action="store_true", help="accept a non-loopback --host (the server is then reachable by other machines; the per-run password is the only protection)")
 
 
-def build_for(args: argparse.Namespace, environ: Any) -> Callable[[str], Any]:
-    """``build(folder)`` for the harness the arguments name (the same builder ``ahohs work`` and ``ahohs acp`` use)."""
+PROVIDER = "anthropic"      # the provider the session harnesses drive here
+
+
+def offered_tiers() -> Tuple[str, ...]:
+    """The hub's tiers (``role_tiers.TIERS``: one list, so a tier added or removed there changes every picker with no edit here) that the hub has a model chosen for."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser import role_tiers
+    from hubofhubs.the_world.tools.delegated_agent_sessions import providers
+    return tuple(t for t in role_tiers.TIERS if providers.model_for(PROVIDER, t) is not None)
+
+
+def offered_models() -> Tuple[str, ...]:
+    """The explicit models the hub can serve for the provider (read from the tier chooser's registry), which the picker lists after the tiers."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser import tiers
+    return tuple(tiers.served_models(PROVIDER))
+
+
+def offered_choices() -> Tuple[str, ...]:
+    """What the client's model picker lists: the tiers, then the explicit models."""
+    return offered_tiers() + offered_models()
+
+
+def tier_builder(options: Mapping[str, Any], environ: Any, stop_inputs: Optional[Callable[[], Mapping[str, Any]]] = None) -> Callable[..., Any]:
+    """``build(folder, tier="")`` for the harness the options name (``harness``, ``tier``, ``max_spend``, ``max_time``, ``permission``, ``solution``, ``milestone``, ``setting_sources``): the same builder
+    ``ahohs work`` and ``ahohs acp`` use, with the tier the caller passes (the one the person picked in the client) instead of the option's."""
     from pathlib import Path
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import work as terminal
     from hubofhubs.the_self.assembler.cli import main_session_tier
-    usd = terminal.dollars_of(args.max_spend) if args.max_spend is not None else None
-    seconds = terminal.seconds_of(args.max_time) if args.max_time is not None else None
-    usd = "unlimited" if usd is None and args.max_spend is not None else usd
-    seconds = "unlimited" if seconds is None and args.max_time is not None else seconds
-    name = args.harness or terminal.default_harness()[0]
+    spend, limit = options.get("max_spend"), options.get("max_time")
+    usd = terminal.dollars_of(spend) if spend is not None else None
+    seconds = terminal.seconds_of(limit) if limit is not None else None
+    usd = "unlimited" if usd is None and spend is not None else usd
+    seconds = "unlimited" if seconds is None and limit is not None else seconds
+    name = options.get("harness") or terminal.default_harness()[0]
     if name not in terminal.HARNESSES:
         raise ValueError(f"no harness named {name!r}; choose one of {', '.join(terminal.HARNESSES)}")
-    return lambda folder: terminal.harness_builder(folder=str(Path(folder).resolve()), tier=main_session_tier("", args.tier), ceiling_usd=usd, ceiling_seconds=seconds, permission=args.permission,
-                                                   environ=environ, solution=args.solution, milestone=args.milestone, setting_sources=args.setting_sources)(name)
+    return lambda folder, tier="": terminal.harness_builder(
+        folder=str(Path(folder).resolve()), tier=main_session_tier("", tier or str(options.get("tier") or "")), ceiling_usd=usd, ceiling_seconds=seconds, permission=options.get("permission") or "acceptEdits",
+        environ=environ, solution=options.get("solution") or "", milestone=options.get("milestone") or "", stop_inputs=stop_inputs,
+        setting_sources=options.get("setting_sources") or "project")(name)
+
+
+def default_tier(options: Mapping[str, Any]) -> str:
+    """The tier a run uses when the person picks none: the option's, else the hub's choice for deep work."""
+    from hubofhubs.the_self.assembler.cli import main_session_tier
+    return main_session_tier("", str(options.get("tier") or ""))
+
+
+def build_for(args: argparse.Namespace, environ: Any) -> Callable[..., Any]:
+    """``build(folder, tier="")`` for the harness the arguments name."""
+    return tier_builder(vars(args), environ)
 
 
 def serve_command(args: argparse.Namespace) -> int:
@@ -52,7 +89,7 @@ def serve_command(args: argparse.Namespace) -> int:
     try:
         build = build_for(args, process_environment())
         folder = str(Path(args.folder).resolve())
-        server = OpencodeServer(Bridge(build, folder, acting_for=args.person), host=args.host, port=args.port, allow_remote=args.allow_remote)
+        server = OpencodeServer(Bridge(build, folder, acting_for=args.person, tiers=offered_choices(), tier=default_tier(vars(args))), host=args.host, port=args.port, allow_remote=args.allow_remote)
     except ValueError as error:
         print(f"failed: {error}", file=sys.stderr)
         return 2
