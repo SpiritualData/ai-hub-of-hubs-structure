@@ -15,13 +15,10 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Usage, Waiting, short)
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines, present
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.markdown_text import markdown_lines
 
-ASCII_MARK = {"running": "..", "done": "ok", "failed": "!!", "blocked": "xx"}
-GLYPH_MARK = {"running": "●", "done": "✓", "failed": "✗"}
 COLOR = {"running": "33", "done": "32", "failed": "31", "blocked": "31", "dim": "", "bold": "1", "ask": "35"}
-KIND_WIDTH = 9
 HELP_ROWS = ("Esc or Ctrl-C  stop the run and keep the session (type resume to continue)",
              "type + Enter    steer the run; @name text steers one helper, /stop name stops one",
              "Tab             show or hide the structure tree (which solution each helper works on)",
@@ -71,6 +68,7 @@ class SessionView:
     now: float = 0.0
     ended: Optional[float] = None
     typing: str = ""
+    pending_note: str = ""                    # the latest interim note of the harness, held until the next event shows whether it was the answer (``present.is_the_answer``)
     final: Optional[Finished] = None
     ceiling_usd: Optional[float] = None       # the ceilings the run was given, when it says
     ceiling_seconds: Optional[float] = None
@@ -219,13 +217,10 @@ def clock(seconds: float) -> str:
 
 
 def money(view: SessionView) -> str:
-    when, spent = hub_lines.status_segment(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
-    parts = [when, spent]
-    if view.calls:
-        parts.append(f"{view.calls} calls")
-    if view.tokens:
-        parts.append(f"{view.tokens} tokens")
-    return " | ".join(parts)
+    """The time, the cost, the calls and the tokens as one quiet line; a figure that is missing leaves its segment out, a ceiling is named once it is half used."""
+    when_ceiling, spend_ceiling = present.ceilings_in_view(view)
+    return present.join([present.join([hub_lines.clock(view.elapsed()), when_ceiling], " "), present.join([present.cost_text(view.cost_usd), spend_ceiling], " "),
+                         present.count_text(view.calls, "call"), present.count_text(view.tokens, "token")])
 
 
 def paint(text: str, code: str, color: bool) -> str:
@@ -236,12 +231,8 @@ def paint(text: str, code: str, color: bool) -> str:
 
 
 def step_row(step: Step, color: bool = False, who: str = "") -> str:
-    mark = (GLYPH_MARK if color else ASCII_MARK).get(step.state, "..")
-    who = f"[{who}] " if who else "" if step.agent_id == MAIN else f"[{step.agent_id[:8]}] "
-    if step.kind == "message-received":
-        return f"{paint(mark, step.state, color)} taken up   {short(step.label, 70)}"
-    why = f" (refused: {short(step.detail, 60)})" if step.state == "blocked" and step.detail else ""      # a refused step shows its reason on its own row
-    return f"{paint(mark, step.state, color)} {step.kind:<{KIND_WIDTH - 1}} {who}{short(step.label, 70)}{why}"
+    """One row for a step (``present.step_line``): a glyph and a plain phrase; a helper's step names the helper."""
+    return present.step_line(step, color, who or ("" if step.agent_id == MAIN else "helper"))
 
 
 def metric_line(view: SessionView) -> str:
@@ -259,44 +250,56 @@ def event_line(event: SessionEvent, view: SessionView, panel: bool = False) -> s
 
     ``panel`` says a live panel sits beside this transcript: what the panel shows while it is happening (a running delegation, a helper that started, the running cost)
     is left out here, so each thing has one home and the transcript keeps only what finished."""
-    stamp = f"[{clock(view.now - view.started)}] "
+    if isinstance(event, Step) and event.kind == "note":
+        if present.is_lifecycle(event):
+            return ""
+        text, held = present.one_line(event.label), view.pending_note
+        view.pending_note = text
+        if held and not (present.is_the_answer(text, held) or present.is_the_answer(held, text)):
+            return held          # an earlier note that was not this one is narration between two steps: shown once, as the words themselves
+        return ""
+    own = row_of(event, view, panel)
+    held, view.pending_note = view.pending_note, ""
+    if held and isinstance(event, Finished) and present.is_the_answer(held, event.report):
+        held = ""            # the note was the answer (or its beginning): the answer is shown once, in the closing
+    return "\n".join(row for row in (held, own) if row)
+
+
+def row_of(event: SessionEvent, view: SessionView, panel: bool) -> str:
+    """The row of an event other than an interim note: no clock stamp (the header and the closing say the time), no raw kind word, no harness lifecycle."""
     if isinstance(event, RunStarted):
-        return f"{stamp}{'resumed' if event.resumed else 'started'}: {short(event.goal, 80)} ({event.harness or 'harness'})"
+        return "\n".join(present.goal_line(event.goal, event.resumed))
     if isinstance(event, Step):
         if event.state == "running" and (event.kind != "delegate" or panel):
             return ""
         agent = view.agents.get(event.agent_id)
-        return stamp + step_row(event, who=short(agent.task, 24) if agent else "")
+        return step_row(event, who=short(present.one_line(agent.task), 24) if agent else "")
     if isinstance(event, AgentStarted) and panel:
         return ""
-    if isinstance(event, Usage) and panel:
+    if isinstance(event, Usage):
         return ""
     if isinstance(event, AgentStarted):
-        return f"{stamp}agent started: {short(event.task, 50)}" + (f" ({event.solution})" if event.solution else "") + (" under " + short(view.agents[event.parent_id].task, 24) if event.parent_id in view.agents else "")
+        return f"{present.HELPER_GLYPH} Helper started: {short(present.one_line(event.task), 50)}" + (f" ({event.solution})" if event.solution else "") + (" under " + short(present.one_line(view.agents[event.parent_id].task), 24) if event.parent_id in view.agents else "")
     if isinstance(event, AgentEnded):
         name = view.agents[event.agent_id].task if event.agent_id in view.agents else event.agent_id
-        return f"{stamp}agent {event.state}: {short(name, 60)}"
+        state = {"met": "done", "running": "running"}.get(event.state, "failed")
+        word = {"met": "finished", "unmet": "did not meet its goal", "stopped": "was stopped", "failed": "failed"}.get(event.state, event.state)
+        return f"{present.GLYPHS[state]} Helper {word}: {short(present.one_line(name), 60)}"
     if isinstance(event, Review):
-        return f"{stamp}review: {event.text or 'done'}"
-    if isinstance(event, Usage):
-        bits = [f"{event.calls} call{'' if event.calls == 1 else 's'}"] if event.calls else []
-        if event.cost_usd is not None:
-            ceiling = event.ceiling_usd or view.ceiling_usd
-            bits.append(hub_lines.status_segment(0, event.cost_usd, ceiling, None)[1])
-        return f"{stamp}so far: {', '.join(bits)}" if bits else ""
+        return f"Review: {present.one_line(event.text) or 'done'}"
     if isinstance(event, Notice):
         if event.kind == "soft-limit":
-            return stamp + hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
+            return hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
         if event.kind == "hard-limit":
-            return stamp + hub_lines.hard_limit_line(event.reason)
+            return hub_lines.hard_limit_line(event.reason)
         if event.kind == "decision":
-            return stamp + hub_lines.decision_line(event.decision, event.reason)
+            return hub_lines.decision_line(event.decision, event.reason)
         if event.kind == "outside-folder":
-            return stamp + "outside the folder: " + "; ".join(short(item, 80) for item in event.items)
+            return "outside the folder: " + "; ".join(short(item, 80) for item in event.items)
     if isinstance(event, Waiting):
         helper = view.agents.get(event.agent_id)       # a question from a helper names the helper, so the person knows who is asking
         asker = f" ({short(helper.task, 30)} asks)" if helper is not None and event.agent_id != MAIN else ""
-        return f"{stamp}WAITING FOR YOU{asker}: {event.question}" + (f" It will change: {short(event.preview, 80).rstrip(".")}." if event.preview else "") + " (y to approve, n to refuse)"
+        return f"{present.GLYPHS['waiting']} Waiting for you{asker}: {event.question}" + (f" It will change: {short(event.preview, 80).rstrip(".")}." if event.preview else "") + " (y to approve, n to refuse)"
     return ""
 
 
@@ -325,16 +328,17 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
     ``transcript`` says a scrolling transcript already holds what finished (a finished step, an ended helper, a note, the question, a limit line), so the screen shows only
     what is happening now: running steps, running helpers, messages not yet taken up, cost and time. Each piece of information then has one home."""
     glyphs = color
-    head = f"ahohs  {view.harness or 'run'}  [{view.status}]  {money(view)}"
-    head = " | ".join([head] + ([f"for {view.acting_for}"] if view.acting_for else []) + [segment for segment in view.segments if segment])
-    out = [paint(head, "bold", color), paint(f"goal: {short(view.goal, max(width - 8, 20))}", "dim", color)]
+    out = [present.header(view, max(width - 1, 20), color, view.segments)]
+    if view.goal and not transcript:      # beside a transcript the goal is the person's first message there, and has one home
+        out.append(f"{present.paint(present.GOAL_GLYPH, present.CYAN, color)} {present.paint(short(present.one_line(view.goal), max(width - 4, 20)), present.CYAN, color)}")
     if view.solution or view.milestone:
         out.append(paint(f"serves: {view.solution} | milestone: {short(view.milestone, 50)}", "dim", color))
     if view.show_structure and view.structure_panel:
         out.extend(view.structure_panel)
     elif view.structure_compact:
         out.append(paint(view.structure_compact, "dim", color))
-    steps = [s for s in view.steps.values() if s.state == "running"] if transcript else list(view.steps.values())
+    steps = [s for s in view.steps.values() if not present.is_lifecycle(s) and not (s.kind == "note" and s.state == "done")]       # the harness's own lifecycle and its narration are not rows
+    steps = [s for s in steps if s.state == "running"] if transcript else steps
     out.extend(step_row(s, color) for s in steps[-rows:])
     out.extend(view.panels)
     tree = view.tree_lines(glyphs, running_only=transcript)
@@ -363,23 +367,21 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
             out.append(paint(f"  will change: {short(view.asking.preview, max(width - 20, 20))}", "ask", color))
     keys = {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave"}.get(
         view.status, "Esc stop | type + Enter to steer | Tab structure | ? keys")
-    out.append(paint(keys, "dim", color))
+    out.append(paint(present.fit_parts(keys, max(width - 1, 20)), "dim", color))
     out.append(f"> {view.typing}")
     return [clip(line, max(width - 1, 20)) for line in out]
 
 
-def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:
-    """The closing account of the run."""
+def report_parts(view: SessionView, color: bool = False, width: int = 0) -> Tuple[List[str], List[str]]:
+    """``(body, tail)`` of the closing account: the answer and the quiet detail, then the outcome line and the resume command."""
     done = view.final
     outcome = done.outcome if done else view.status
     glyphs = color
-    title = {"met": "Done: the goal was met", "unmet": "Finished: the goal was not met", "stopped": "Stopped: your work is kept",
-             "failed": "Failed"}.get(outcome, outcome)
-    out = [paint(title, "bold", color)]
+    out: List[str] = []
     if done and done.report:
-        out.extend(["", *markdown_lines(done.report, width, color)])
+        out.extend(markdown_lines(done.report, width, color))      # the answer, once, with its markdown drawn (or its markers taken out when there is no colour)
     if done and done.error and outcome not in ("met", "stopped"):
-        out.append(f"reason: {short(done.error, 120)}")
+        out.append(f"reason: {short(present.one_line(done.error), 120)}")
     files = view.changed()
     if view.solution or view.milestone:
         out.append(f"Served: {view.solution} | milestone: {short(view.milestone, 80)}")
@@ -388,8 +390,8 @@ def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:
     line = metric_line(view)
     if line:
         out.append(line)
-    out.append("")
-    out.append(f"Changed ({len(files)}): " + (", ".join(files) if files else "nothing"))
+    if files:
+        out.append(f"Changed ({len(files)}): " + ", ".join(files))        # a list of files only when there are some; the outcome line says "no files changed" otherwise
     if view.outside:
         out.append("Outside the folder (report only, not undone):")
         out.extend("  " + short(row, 140) for row in view.outside)
@@ -403,21 +405,29 @@ def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:
         out.extend("  " + line for line in tree)
     if done and done.unseen:
         out.append("Not yet taken up (sent again on resume): " + "; ".join(short(m, 40) for m in done.unseen))
-    out.append(f"Cost and time: {money(view)}")
     for line in view.decisions:
         out.append(line)
     if done:
         left = hub_lines.left_line(outcome, done.error, done.end_reason, len(done.unseen))
         if left:
             out.append("Left: " + left)
-    if outcome == "stopped":
-        out.append(f"Session {view.session_id or '(none)'} is kept. Type resume to continue it.")
-    if view.session_id and view.command:
-        out.append("To continue later, in this folder: " + hub_lines.resume_command(view.harness, view.session_id, view.command))
-    if width:
-        out = [piece for line in out for piece in ([line] if "\x1b" in line or len(line) <= width or line.startswith(("|", "```", "    ")) else
+    if width:       # words wrap at word boundaries with a hanging indent; the lines that are copied or drawn as they are (the command, code, tables) are never cut
+        out = [piece for line in out for piece in ([line] if "\x1b" in line or len(line) <= width or line.startswith(("|", "```", "    ", "ahohs ")) else
                                                   textwrap.wrap(line, width, subsequent_indent="  " if line.startswith("  ") else "", break_long_words=False, break_on_hyphens=False) or [line])]
-    return out
+    tail: List[str] = [""]
+    tail.extend(present.outcome_rows(view, color, width))
+    if outcome == "stopped":
+        tail.append(f"Session {view.session_id or '(none)'} is kept. Type resume to continue it.")
+    resume = present.resume_lines(view)
+    if resume:
+        tail.extend(["", *resume])      # the command alone on its own line, whole, so it can be copied
+    return out, tail
+
+
+def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:
+    """The closing account of the run: the answer, the quiet detail, one outcome line, and the command that resumes it."""
+    body, tail = report_parts(view, color, width)
+    return body + tail
 
 
 __all__ = ["Agent", "Message", "SessionReport", "SessionView", "clock", "replay", "event_line", "frame", "money", "report", "step_row"]

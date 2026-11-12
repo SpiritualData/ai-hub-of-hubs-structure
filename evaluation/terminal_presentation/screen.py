@@ -22,7 +22,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
-SIZES = ((80, 24), (120, 40))
+SIZES = ((80, 24), (120, 40), (56, 24))      # the narrow size was added in revision 2 (2026-11-11): the owner used the terminal at about 55 columns
 ENV_LOCK = threading.Lock()
 SGR_FAINT = re.compile(r"\x1b\[2m")
 FAINT_RGB = "\x1b[38;2;114;114;114m"        # the default foreground (229) at half intensity over the default background (0): what a terminal draws for SGR 2
@@ -205,11 +205,11 @@ def replay_stream(chunks: Sequence[Tuple[float, str]], width: int, height: int) 
     for at, text in chunks:
         text = SGR_FAINT.sub(FAINT_RGB, text)
         stream.feed(text.replace("\n", "\r\n"))          # a terminal in its usual mode turns a line feed into a return and a line feed (ONLCR)
-        visible = SGR_ALL.sub("", text)
+        visible = re.sub(r"\x1b\[[0-9;?]*[ -/]*[@-~]|\r", "", text)         # every control sequence, the cursor moves too, takes no room on a row
         jumps += len(MOVES.findall(text))
         if visible.count("\n") >= 3:                      # a frame: the header, the steps, the keys, the input line
             repaints += 1
-            wide += sum(1 for line in visible.split("\n") if len(line.rstrip()) > width)
+            wide += sum(1 for line in visible.split("\n") if len(line.rstrip()) > width and not line.lstrip().startswith("ahohs "))       # the command that resumes stays whole and is soft-wrapped by the terminal (revision 2)
         history = tuple(row_text(line, width) for line in screen.history.top)
         rows = tuple(row_text(screen.buffer[y], width) for y in range(height))
         snapshots.append(Snapshot(at, rows, history, rows, styled_cells(screen, width, height)))

@@ -82,17 +82,21 @@ def structure_expand(arm, name):
 
 
 def ceiling_status(arm, name):
-    kit = stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))], limits=(5.0, 1800.0))
+    # revision of 2026-11-11: a ceiling is named in the header only once half of it is used (the records ask for quiet appearance), so the spend ceiling is set low enough for the
+    # scripted run to use more than half of it and the time ceiling high enough that it does not
+    kit = stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))], limits=(0.01, 1800.0))
     rep, text = attend(arm, kit, ScriptedKeys())
     head = frame(rep.view, 100)[0]
     failed = plain(text)
-    if "of $5.00" not in head or "of 30:00" not in head:
-        failed.append("spent-and-elapsed-against-the-ceilings")
-    if "of $5.00" not in text:
+    if "of $0.01" not in head:
+        failed.append("spent-against-the-ceiling-once-half-used")
+    if "of 30:00" in head:
+        failed.append("time-ceiling-quiet-while-little-is-used")
+    if "of $0.01" not in text:
         failed.append("plain-line-has-the-ceiling")
     bare = stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))])
     rep2, _ = attend(arm, bare, ScriptedKeys())
-    if " of " in frame(rep2.view, 100)[0]:
+    if " of " in frame(rep2.view, 100)[0].replace("Hub of Hubs", ""):      # the product's name has an "of" in it
         failed.append("no-ceiling-no-segment")
     return failed
 
@@ -128,7 +132,7 @@ def end_of_run(arm, name):
     failed = plain(text)
     if "Wrote one.txt." not in text or "Changed (1): one.txt" not in text:
         failed.append("what-was-done")
-    if "To continue later, in this folder: ahohs work --resume sess-" not in text or "--harness stream" not in text:
+    if not any(line.startswith("ahohs work --resume sess-") and "--harness stream" in line for line in text.splitlines()):       # the command whole on its own line (revision of 2026-11-11)
         failed.append("how-to-resume-the-command")
     if "Outside the folder (report only" not in text or "wrote notes.txt outside the folder" not in text:
         failed.append("outside-folder-report")
@@ -194,7 +198,7 @@ def representative(arm, name):
             failed.append("as-lists-and-switches:" + wanted)
     if not terminal.reports or terminal.reports[0].view.acting_for != "sam":
         failed.append("segment-names-who-the-ai-acts-for")
-    if "| for sam" not in frame(terminal.reports[0].view, 100)[0]:
+    if " · for sam" not in frame(terminal.reports[0].view, 100)[0]:
         failed.append("quiet-header-segment")
     kit2 = stream_kit(folder(), [turn(read("a.txt"), hook=lambda: keys.press("tree")), turn(report("Done."))])
     from hubofhubs.the_consciousness.representatives.stop_limits import resolve_stop_limits

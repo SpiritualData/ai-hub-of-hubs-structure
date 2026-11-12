@@ -13,10 +13,11 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.sessi
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import step_row
 
 
-def test_markdown_is_styled_with_colour_and_untouched_without():
+def test_markdown_is_styled_with_colour_and_its_markers_are_taken_out_without():
     text = "# Title\n\nThe **fast** path uses `cache`.\n\n- one\n- two\n\n```\nrun --now\n```"
     plain = markdown_lines(text, color=False)
-    assert plain[0] == "# Title" and "**fast**" in "\n".join(plain)
+    joined = "\n".join(plain)
+    assert plain[0] == "Title" and "The fast path uses cache." in joined and "**" not in joined and "`" not in joined and "# " not in joined and "• one" in joined
     styled = "\n".join(markdown_lines(text, 60, color=True))
     assert "# Title" not in styled and "**" not in styled and "```" not in styled
     assert "• one" in styled and "run --now" in styled
@@ -29,7 +30,7 @@ def test_a_refused_tool_result_carries_its_reason_and_a_path_is_shown_inside_the
     denied = {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "t", "is_error": True,
                                                        "content": "Claude requested permissions to use Bash, but you haven't granted it yet."}]}}
     row = [e for e in stream.events(denied) if isinstance(e, Step)][0]
-    assert row.state == "blocked" and "permission" in row.detail and "refused:" in step_row(row)
+    assert row.state == "blocked" and "permission" in row.detail and "Refused:" in step_row(row)
     write = {"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "w", "name": "Write", "input": {"file_path": "/work/sub/a.txt"}}]}}
     assert stream.events(write)[0].label == "sub/a.txt" and list(stream.changed) == ["sub/a.txt"]
     assert permission_refusal({"content": "file not found"}) == "" and permission_refusal({"content": "bash: x: Permission denied"}) == ""
@@ -53,7 +54,7 @@ def test_the_textual_arm_runs_a_scripted_session_headless_and_leaves_the_transcr
     kit = KITS["stream"](folder, [turn(read("a.txt")), turn(edit("b.txt")), turn(report("**All** done."))], pause=0.01)
     out = io.StringIO()
     rep = TextualSession().attend(kit.harness, "do it", out, ScriptedKeys(), tick=0.01, live=False, width=100)
-    assert rep.final.outcome == "met" and "Changed (1): b.txt" in out.getvalue() and "ok read" in out.getvalue()
+    assert rep.final.outcome == "met" and "Changed (1): b.txt" in out.getvalue() and "Read a.txt" in out.getvalue()
     assert "\x1b" not in out.getvalue()
 
 
@@ -92,9 +93,9 @@ def test_the_textual_screen_and_transcript_never_show_the_same_update_during_a_r
             if row.startswith(("goal:", "structure:", "agents", "serves:")) or row.startswith("  "):
                 continue
             assert not any(row in line for line in lines), (row, lines)
-    assert any("ok read" in line for line in seen[-1][0])
-    done = [row for row in frame(rep.view, 100) if row.startswith("ok ")]
-    assert done and not [row for row in frame(rep.view, 100, transcript=True) if row.startswith("ok ")]       # the same view: shown in full on a screen with no transcript, only what runs beside one
+    assert any("Read a.txt" in line for line in seen[-1][0])
+    done = [row for row in frame(rep.view, 100)[1:] if row.startswith("✓ ")]       # the first row is the header
+    assert done and not [row for row in frame(rep.view, 100, transcript=True)[1:] if row.startswith("✓ ")]     # the same view: shown in full on a screen with no transcript, only what runs beside one
 
 
 def test_the_textual_arm_stops_and_resumes_like_the_reference_terminal():

@@ -40,13 +40,15 @@ def textual_hooks(arm: Any) -> Dict[str, Any]:
     if arm.__class__.__module__.endswith("polished.session"):
         from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.app import PolishedApp, Transcript
         return {"make_app": lambda: PolishedApp(title=arm.title), "transcript_class": Transcript}
-    return {}
+    own = getattr(arm, "capture_hooks", None)       # an arm that brings its own application and transcript says how it is drawn (``adopted_session``: added 2026-11-11, no check or weight changed)
+    return own() if callable(own) else {}
 
 
 def capture(arm: Any, kit: Any, keys: Any, size: Tuple[int, int], options: Optional[Dict[str, Any]] = None) -> Capture:
+    goal = getattr(kit, "goal", "do the work")
     if presentation_of(arm) == "textual":
-        return textual_capture(arm, kit.harness, keys, size, options=options, **textual_hooks(arm))
-    return stream_capture(arm, kit.harness, keys, size, options=options)
+        return textual_capture(arm, kit.harness, keys, size, goal=goal, options=options, **textual_hooks(arm))
+    return stream_capture(arm, kit.harness, keys, size, goal=goal, options=options)
 
 
 def both(arm: Any, build: Callable[[ScriptedKeys], Any], options: Optional[Dict[str, Any]] = None) -> List[Capture]:
@@ -76,6 +78,21 @@ def watch(arm: Any) -> Dict[str, Any]:
             "ceiling": ceilings(arm)["ceiling"]}       # what only the hub can show is read in the same case, as its own column
 
 
+def revision_2(caps: Sequence[Capture]) -> Dict[str, Optional[bool]]:
+    """The checks added in revision 2 (2026-11-11), each over every size."""
+    return {"no-raw-markdown": over(caps, C.no_raw_markdown), "no-internal-vocabulary": over(caps, C.no_internal_vocabulary), "answer-once": over(caps, C.answer_once),
+            "no-empty-figure-segment": over(caps, C.no_empty_figure_segment), "resume-command-unbroken": over(caps, C.resume_command_unbroken),
+            "header-has-full-name": over(caps, C.header_has_full_name), "no-stray-leading-padding": over(caps, C.no_stray_leading_padding),
+            "cost-at-cent-precision": over(caps, C.cost_at_cent_precision), "goal-as-persons-message": over(caps, C.goal_as_message)}
+
+
+def pasted_run(arm: Any) -> Dict[str, Any]:
+    """The run the owner pasted (``pasted.py``), drawn at every size and judged by the revision 2 checks, with the closing report and the header."""
+    import pasted
+    caps = both(arm, lambda keys: pasted.Kit())
+    return {"checks": {**revision_2(caps), "closing-report-complete": over(caps, C.closing_report_complete), "no-row-wider-than-the-terminal": over(caps, C.no_row_wider_than_the_terminal)}}
+
+
 def steer(arm: Any) -> Dict[str, Any]:
     def build(keys: Any) -> Any:
         return stream_kit(folder(), [turn(read("a.txt"), hook=lambda: keys.press("line", "use the short name")), turn(edit("b.txt")), turn(edit("c.txt"), report("Done."))], pause=PAUSE)
@@ -87,10 +104,13 @@ def steer(arm: Any) -> Dict[str, Any]:
 
 def stop_resume(arm: Any) -> Dict[str, Any]:
     def build(keys: Any) -> Any:
-        return stream_kit(folder(), [turn(edit("one.txt")), turn(edit("two.txt"), hook=lambda: (keys.press("esc"), keys.press("line", "resume"))),
+        # the person presses Escape and, as in real use, the screen waits in its stopped state until they type resume a moment later (a stop that resumed in the same instant
+        # left no screen to read an acknowledgement from; revision 2 made the scenario wait, which changes no check)
+        keys.waits_for_input = True
+        return stream_kit(folder(), [turn(edit("one.txt")), turn(edit("two.txt"), hook=lambda: (keys.press("esc"), threading.Timer(0.5, lambda: keys.press("line", "resume")).start())),
                                      turn(edit("three.txt"), report("All three."))], pause=PAUSE)
     caps = both(arm, build)
-    return {"checks": {"stop-then-resume-keeps-work": over(caps, C.stop_then_resume_keeps_work), "round-trip-stop": over(caps, lambda c: C.round_trip(c, "stop", r"stopp")),
+    return {"checks": {"stop-then-resume-keeps-work": over(caps, C.stop_then_resume_keeps_work), "round-trip-stop": over(caps, lambda c: C.round_trip(c, "stop", r"stopp|type resume|resume to continue")),       # the state after a stop: the word stopped, or the line that says how to resume (the header now shows the state as a glyph)
                        "round-trip-resume": over(caps, lambda c: C.combine([bool(c.report and len(c.report.runs) >= 2 and "resum" in c.all_text().lower())])),
                        "closing-report-complete": over(caps, C.closing_report_complete)}}
 
@@ -129,7 +149,7 @@ def ceilings(arm: Any) -> Dict[str, Any]:
         return stream_kit(folder(), [turn(read("a.txt"), hook=lambda: keys.press("tree")), turn(delegate("write the tests", turn(edit("t.txt"), report("ok")))),
                                      turn(edit("b.txt")), turn(report("Done."))], pause=PAUSE, limits=(5.0, 1800.0))
     caps = []
-    for size in SIZES[:1]:
+    for size in ((80, 24),):
         keys = ScriptedKeys()
         caps.append(capture(arm, build(keys), keys, size, {"representative": {"person": "Alex"}}))
     text = caps[0].all_text()
@@ -138,8 +158,8 @@ def ceilings(arm: Any) -> Dict[str, Any]:
 
 
 SCENARIOS = {"watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
-             "target": target, "plain": plain}
-SECONDS = 20
+             "target": target, "plain": plain, "pasted_run": pasted_run}
+SECONDS = 30
 
 
 def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
@@ -168,4 +188,5 @@ SCENARIO_CHECKS = {"watch": ("each-update-once", "no-row-wider-than-the-terminal
                    "steer": ("correction-sent-then-taken-up", "round-trip-steer"),
                    "stop_resume": ("stop-then-resume-keeps-work", "round-trip-stop", "round-trip-resume", "closing-report-complete"),
                    "approve": ("risky-step-waits-with-preview", "round-trip-approve"), "refuse": ("risky-step-waits-with-preview", "round-trip-refuse"),
-                   "target": ("unavailable-control-shown",), "plain": ("plain-when-not-a-terminal",)}
+                   "target": ("unavailable-control-shown",), "plain": ("plain-when-not-a-terminal",),
+                   "pasted_run": C.REVISION_2 + ("closing-report-complete", "no-row-wider-than-the-terminal")}

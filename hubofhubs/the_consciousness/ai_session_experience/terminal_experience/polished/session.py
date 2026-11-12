@@ -104,7 +104,7 @@ class PolishedAttendance(Attendance):
 
     def rows_for(self, event: Any) -> List[str]:
         if isinstance(event, Step) and event.kind == "message-received":
-            return [f"[{words_of.clock(self.view.now - self.view.started)}] " + words_of.pickup_line(1)]
+            return [f"{words_of.present.GLYPHS['done']} " + words_of.pickup_line(1)]
         if isinstance(event, Usage):
             return []
         row = event_line(event, self.view, True)
@@ -144,7 +144,7 @@ class PolishedAttendance(Attendance):
         runs = words_of.runs_of(view)
         rows, line_map = words_of.dashboard(view, "", self.structure_rows() + list(view.panels))
         busy = self.running and view.status in ("running", "waiting", "stopping")
-        return Snapshot(head=words_of.header_text(view, self.title, view.segments), activity=words_of.activity_text(view), waited=view.elapsed() if busy else None,
+        return Snapshot(head=words_of.header_text(view, self.title, view.segments, max(self.width - 2, 20)), activity=words_of.activity_text(view), waited=view.elapsed() if busy else None,
                         queued=words_of.waiting_notes(view, len(self.held)), rows=rows, line_map=line_map, runs=[(r.agent_id, r.title) for r in runs],
                         histories={r.agent_id: words_of.history_lines(view, r.agent_id) for r in runs}, metrics=self.metric_block(),
                         prompt=words_of.prompt_state(view, self.running), busy=busy, asking=view.asking is not None,

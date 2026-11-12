@@ -327,7 +327,7 @@ class WorkTerminal:
         first = True
         while True:
             if not goal:
-                if first:
+                if first and self.reader is None:      # a screen with its own input line shows the hint in the box, before the first goal, and not in the scrollback above the run
                     self.say(INTRO)
                 first = False
                 text = self.read(self.prompt)

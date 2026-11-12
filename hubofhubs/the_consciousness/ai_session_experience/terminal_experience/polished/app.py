@@ -89,17 +89,17 @@ def style_line(text: str) -> Text:
     """A transcript line as the screen draws it: a finished step coloured by how it ended, a question in the question colour, a warning in the warning colour, a note of the person's own in bold cyan."""
     body = text.split("] ", 1)[1] if text.startswith("[") and "] " in text else text
     style = ""
-    if body.startswith("ok "):
+    if body.startswith(("✓ ", "ok ")):
         style = GREEN
-    elif body.startswith(("!! ", "xx ")):
+    elif body.startswith(("✗ ", "⊘ ", "!! ", "xx ")):
         style = RED
-    elif body.startswith("WAITING FOR YOU"):
+    elif body.startswith(("? ", "WAITING FOR YOU")):
         style = f"bold {MAGENTA}"
     elif body.startswith("⚠"):
         style = YELLOW
     elif body.startswith("❯"):
         style = f"bold {CYAN}"
-    return hanging(text, style=style, hang=2)
+    return hanging(text, style=style, hang=0 if body.startswith("ahohs ") else 2)       # a command to copy wraps without an indent put into it
 
 
 class PolishedApp(App):
@@ -108,9 +108,9 @@ class PolishedApp(App):
     CSS = """
     Screen { background: $surface; }
     #head { height: 1; padding: 0 1; background: $panel; color: $text; text-style: bold; }
-    #transcript { height: 1fr; width: 100%; padding: 0 1; scrollbar-size-vertical: 1; overflow-x: hidden; }
+    #transcript { height: 1fr; width: 100%; padding: 0 1; scrollbar-size-vertical: 1; overflow-x: hidden; scrollbar-color: #5f87d7; scrollbar-background: #121212; }
     #work { height: auto; max-height: 14; border-left: thick $warning 60%; padding: 0 1; margin: 0 1; color: $text-muted; overflow: hidden hidden; }
-    #detail { height: 2fr; border-left: thick $warning 80%; border-top: dashed $warning 60%; padding: 0 1; margin: 0 1; color: $text-muted; scrollbar-size-vertical: 1; }
+    #detail { height: 2fr; border-left: thick $warning 80%; border-top: dashed $warning 60%; padding: 0 1; margin: 0 1; color: $text-muted; scrollbar-size-vertical: 1; scrollbar-color: #5f87d7; scrollbar-background: #121212; }
     #detail-body { height: auto; }
     #bottom-bar { dock: bottom; height: auto; }
     #activity { height: 1; padding: 0 1; margin: 0 1; }

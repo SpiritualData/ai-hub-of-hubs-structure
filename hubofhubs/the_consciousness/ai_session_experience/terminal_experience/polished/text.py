@@ -13,7 +13,8 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 from hubofhubs.the_consciousness.ai_session_experience.session_events import MAIN, Finished, Step, short
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import hub_lines
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.words import say
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionView, money, report, step_row
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import present
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionView, money, report_parts, step_row
 
 CLOCK_AFTER = 3          # a wait shorter than this shows no clock: a counter on every instant step would be noise
 GOAL_CHARS = 160
@@ -91,9 +92,9 @@ def waiting_notes(view: SessionView, held: int = 0) -> int:
     return sum(1 for message in view.messages if not message.taken_up) + held
 
 
-def header_text(view: SessionView, title: str = "", segments: Sequence[str] = ()) -> str:
-    head = f"{title or say('polished.screen.title')}  {view.harness or 'run'}  [{view.status}]  {money(view)}"
-    return " | ".join([head] + ([f"for {view.acting_for}"] if view.acting_for else []) + [s for s in segments if s])
+def header_text(view: SessionView, title: str = "", segments: Sequence[str] = (), width: int = 0) -> str:
+    """The header, from the shared rule (``present.header``): the product's full name, the worker, the state as a glyph, the time and cost right-aligned."""
+    return present.header(view, width, False, segments, title)
 
 
 def key_hints(*, busy: bool, asking: bool, stopped: bool, runs: int, detail: bool, structure: bool) -> List[Tuple[str, str]]:
@@ -238,23 +239,14 @@ def outcome_of(view: SessionView) -> str:
 
 
 def closing_line(view: SessionView, color: bool = False) -> str:
-    """The one closing line, the same shape for every run: how it ended, the time and cost (cost unknown when the harness gave none, never zero), the calls."""
-    done = view.final
-    outcome = done.outcome if done is not None else view.status
-    head = {"met": say("polished.closing.met"), "unmet": say("polished.closing.unmet"), "stopped": say("polished.closing.stopped"),
-            "failed": say("polished.closing.failed")}.get(outcome, outcome)
-    mark = {"met": ("\x1b[38;5;77m", "✓ "), "failed": ("\x1b[38;5;203m", "✗ ")}.get(outcome, ("\x1b[38;5;221m", "~ "))      # 256-colour codes: readable on a dark screen (4.5:1)
-    when, spent = hub_lines.status_segment(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
-    parts = [when, spent]
-    if view.calls:
-        parts.append(say("polished.closing.calls" + ("One" if view.calls == 1 else "Other"), count=view.calls))
-    lead = f"{mark[0]}{mark[1]}{head}\x1b[0m" if color else head
-    return " · ".join([lead] + parts)
+    """The one closing line, the same shape for every run (``present.outcome_line``): how it ended, the time, the cost, the calls and the files; a missing figure leaves its segment out."""
+    return present.outcome_line(view, color)
 
 
 def closing_rows(view: SessionView, color: bool = False, width: int = 0) -> Tuple[List[str], List[str]]:
     """``(above, closing)``: the metric before and after once (first, so it sits right under the answer), then the quiet detail the hub's report holds (what was served, what changed,
-    what was blocked, the helpers, what is left, the command that resumes), and last the one closing line. The answer itself is left to the screen to draw."""
+    what was blocked, the helpers, what is left), and last the closing: the one outcome line and the command that resumes, alone on its own line. The answer itself is left to the
+    screen to draw."""
     done = view.final
     if done is None:
         return [], [closing_line(view, color)]
@@ -262,13 +254,12 @@ def closing_rows(view: SessionView, color: bool = False, width: int = 0) -> Tupl
     kept = view.final
     view.final = stub
     try:
-        rows = report(view, color=color, width=width)
+        body, tail = report_parts(view, color=color, width=width)
     finally:
         view.final = kept
-    rows = rows[1:]       # the title: the closing line says it
-    metric = [r for r in rows if plain(r).startswith("Metric ")]
-    detail = [r for r in rows if r.strip() and r not in metric and not plain(r).startswith("Cost and time:")]
-    return metric + detail, [closing_line(view, color)]
+    metric = [r for r in body if plain(r).startswith("Metric ")]
+    detail = [r for r in body if r.strip() and r not in metric]
+    return metric + detail, tail
 
 
 __all__ = ["CLOCK_AFTER", "Run", "activity_text", "back_in_box_line", "clock", "closing_line", "closing_rows", "combine_notes", "dashboard", "ellipsize", "fit_hints",

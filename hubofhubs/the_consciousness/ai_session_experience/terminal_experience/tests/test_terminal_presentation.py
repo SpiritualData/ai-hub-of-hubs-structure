@@ -25,7 +25,7 @@ CHECKLIST_DIGEST = "29b08c726b8c"       # set when the checklist was frozen on 2
 def test_cases_are_the_ones_the_builder_writes():
     build = importlib.import_module("build_cases")
     assert json.loads((COMPONENT / "cases.json").read_text()) == build.CASES
-    assert len({c["id"] for c in build.CASES}) == len(build.CASES) >= 7
+    assert len({c["id"] for c in build.CASES}) == len(build.CASES) >= 8
 
 
 def test_every_check_has_a_weight_and_requirements_and_the_balance_sums_to_one():
@@ -186,6 +186,32 @@ def test_the_reference_draws_each_update_once_and_a_frame_that_is_never_erased_d
     assert failed_checks("terminal_presentation.impls.reference", "watch")["checks"]["each-update-once"] is True
     broken = failed_checks("terminal_presentation.broken.no_erase", "watch")
     assert broken["checks"]["each-update-once"] is False and not broken["ok"]
+
+
+def test_the_run_the_owner_pasted_fails_the_old_look_on_every_revision_2_check_and_passes_the_new_renderers():
+    old = failed_checks("terminal_presentation.broken.old_look", "pasted_run")
+    new = failed_checks("terminal_presentation.impls.reference", "pasted_run")
+    assert not old["ok"] and all(old["checks"][name] is False for name in C.REVISION_2), {k: v for k, v in old["checks"].items() if v is not False}
+    assert new["ok"] and new["score"] == 1.0, new["note"]
+
+
+def test_the_internal_vocabulary_is_read_from_the_renderers_own_names_not_a_hand_list():
+    hyphenated, column, lifecycle = C.internal_words()
+    from hubofhubs.the_consciousness.ai_session_experience.session_events import EVENTS, STEP_KINDS
+    assert set(hyphenated) == {w for w in list(EVENTS) + list(STEP_KINDS) if "-" in w} and "message-received" in hyphenated
+    assert column.match("ok run      date") and column.match("[0:03] ok edit     notes.md") and not column.match("✓ Ran date")
+    assert lifecycle.search("ok note     session started")
+
+
+def test_the_revision_2_checks_judge_a_capture_on_their_own_terms():
+    cap = Capture("stream", 56, 24)
+    cap.snapshots = [snapshot(0.1, "✓ AI Hub of Hubs Structure         0:05 · $0.21", "❯ What is today?", "Today is Wednesday, November 11, 2026.")]
+    cap.raw = "✓ Goal met · 0:05 · $0.21 · 2 calls\nahohs work --resume 0a239607-4796-46d9-a544-6eebe0537683 --harness native\n"
+    assert C.no_raw_markdown(cap) and C.header_has_full_name(cap) and C.resume_command_unbroken(cap) and C.cost_at_cent_precision(cap)
+    cap.raw = "ahohs work --resume\n  0a239607 --harness native\n calls | 135 tokens\n"
+    assert C.resume_command_unbroken(cap) is False and C.no_empty_figure_segment(Capture("stream", 56, 24, snapshots=[snapshot(0.1, " calls | 135 tokens")])) is False
+    assert C.no_raw_markdown(Capture("stream", 56, 24, snapshots=[snapshot(0.1, "Today is **Wednesday**")])) is False
+    assert C.cost_at_cent_precision(Capture("stream", 56, 24, snapshots=[snapshot(0.1, "$0.2077 of $20.00")])) is False
 
 
 def test_an_arm_that_reads_no_key_fails_the_correction_round_trip():

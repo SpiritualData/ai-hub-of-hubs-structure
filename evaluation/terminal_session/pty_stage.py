@@ -196,7 +196,7 @@ def complete(arm: str, meter) -> List[str]:
             failed.append("steps-shown-by-name")
         if "Changed (1): b.txt" not in shown:
             failed.append("closing-report-names-the-file")
-        if "To continue later" not in shown:
+        if "Continue this session later" not in shown:      # revision 2 of the presentation (2026-11-11): the line above the command that resumes
             failed.append("resume-command-named")
         if code != 0:
             failed.append("exit-code-zero")
@@ -294,7 +294,7 @@ def follow_up(arm: str, meter) -> List[str]:
         shown = screen.text()       # read after the screen closes: a full-screen arm prints its transcript on the way out
         if not Path(folder, "c.txt").exists():
             failed.append("follow-up-runs")
-        if "resumed" not in shown and shown.count("To continue later") < 2:
+        if "resumed" not in shown and shown.count("Continue this session later") < 2:
             failed.append("same-session-continued")
     finally:
         screen.close()
@@ -350,8 +350,8 @@ def markdown(arm: str, meter) -> List[str]:
         screen.idle(cap=150)
         screen.leave()
         shown = screen.text()
-        tail = shown.split("Done: the goal was met")[-1] if "Done: the goal was met" in shown else shown
-        if "Done: the goal was met" not in shown and "goal was met" not in shown:
+        tail = shown.split("Goal met")[-1] if "Goal met" in shown else shown
+        if "Goal met" not in shown and "goal was met" not in shown:
             failed.append("answer-reported")
         if re.search(r"\*\*\w|^```|^## ", tail, re.M):
             failed.append("markdown-rendered-not-raw")

@@ -25,7 +25,7 @@ from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Harness
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import Attendance, LiveSession
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, frame, report
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, frame, report, report_parts
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 SLASH_COMMANDS = ("/help", "/tree", "/open", "/close", "/stop", "/resume", "/who", "/quit")
@@ -109,7 +109,7 @@ def make_app() -> Any:
 
         def compose(self) -> ComposeResult:
             yield Static("", id="head")
-            yield RichLog(id="log", wrap=True, markup=False, highlight=False, auto_scroll=True)
+            yield RichLog(id="log", wrap=True, markup=False, highlight=False, auto_scroll=True, min_width=20)       # min_width defaults to 78: a markdown answer was laid out 78 wide and cut at a narrower screen
             yield Static("", id="status")
             yield Static("", id="menu")
             yield Input(placeholder="type a goal, or / for commands", id="prompt")
@@ -291,7 +291,7 @@ class TextualAttendance(Attendance):
 
     def redraw(self) -> None:
         super().redraw()
-        rows = frame(self.view, max(self.width, 40), color=False, transcript=True)[:-1]       # the input line is the screen's own
+        rows = frame(self.view, max(self.width - 2, 40), color=False, transcript=True)[:-1]       # the status panel is padded one column each side       # the input line is the screen's own
         head = rows[0] if rows else ""
         keep = rows[1:]
         if self.app is not None:
@@ -303,13 +303,11 @@ class TextualAttendance(Attendance):
         if done is not None and done.report.strip() and self.app is not None:
             stub = replace(done, report="")
             view.final = stub
-            rows = report(view, color=False)
+            body, tail = report_parts(view, color=False, width=max(self.width - 3, 30))       # the quiet detail and the closing wrap to the log's width, between their parts
             view.final = done
             self.transcript.write("\n")
-            for row in rows[:1]:
-                self.app.add_line(row)
             self.app.add_markdown(done.report.strip())
-            for row in rows[1:]:
+            for row in body + tail:
                 self.app.add_line(row)
             for row in rows_plain:
                 self.transcript.keep(row)

@@ -106,7 +106,7 @@ def first_seconds(arm, name):
     failed = []
     if not (rep.events and rep.events[0].type == "run-started" and rep.events[0].at < 0.35):
         failed.append("start-event-before-the-first-line")
-    if "started" not in text:
+    if "❯" not in text:         # the goal is the person's own message, shown at once (revision of 2026-11-11: it was a "started" line)
         failed.append("start-shown-on-screen")
     return failed
 
@@ -150,7 +150,7 @@ def helper_question_named(arm, name):
     keys = ScriptedKeys().when("waiting", "line", "y")
     out = io.StringIO()
     arm.attend(Asking(keys), "do the work", out, keys, tick=0.01, live=False, width=100)
-    return [] if "write the migration" in out.getvalue().split("WAITING")[-1].split("\n")[0] else ["helper-named-in-its-question"]
+    return [] if "write the migration" in out.getvalue().split("Waiting for you")[-1].split("\n")[0] else ["helper-named-in-its-question"]
 
 
 def markdown_answer(arm, name):
@@ -181,7 +181,7 @@ def stopped_keeps_and_names_resume(arm, name):
 
 def nothing_changed(arm, name):
     rep, text = attend_raw(arm, Raw([INIT, use("r1", "Read", {"file_path": "/work/a.txt"}), done("r1"), RESULT], output="Nothing to change."))
-    return [] if "Changed (0): nothing" in text else ["says-nothing-changed"]
+    return [] if "no files changed" in text else ["says-nothing-changed"]       # in the outcome line (revision of 2026-11-11: it was a "Changed (0): nothing" line)
 
 
 SCENARIOS = {"refused_reason": refused_reason, "helper_file_counts": helper_file_counts, "not_met_while_helper_runs": not_met_while_helper_runs,

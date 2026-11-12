@@ -7,7 +7,7 @@ import re
 import textwrap
 from typing import List
 
-BOLD, DIM, CODE, RESET = "\x1b[1m", "\x1b[2m", "\x1b[36m", "\x1b[0m"
+BOLD, DIM, CODE, RESET = "\x1b[1m", "\x1b[38;5;245m", "\x1b[36m", "\x1b[0m"      # quiet detail is an explicit grey, never SGR 2 (faint is drawn at a strength each terminal chooses)
 HEADING = re.compile(r"^(#{1,6})\s+(.*)$")
 BULLET = re.compile(r"^(\s*)[-*+]\s+(.*)$")
 NUMBERED = re.compile(r"^(\s*)(\d+)[.)]\s+(.*)$")
@@ -24,9 +24,11 @@ def inline(text: str) -> str:
 
 def markdown_lines(text: str, width: int = 0, color: bool = True) -> List[str]:
     """``text`` as lines for a terminal ``width`` wide (0: not wrapped). Without ``color`` the lines are the text as written."""
+    if not color:      # no colour (a pipe, a file, a screen that draws its own markdown): the words, with the markers taken out and the lines wrapped at word boundaries
+        from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.present import strip_markdown
+        plain = strip_markdown(text).splitlines()
+        return [piece for line in plain for piece in (wrap("", line.strip(), width) if width and line.strip() and not line.startswith("    ") else [line])] if width else plain
     lines = text.strip().splitlines()
-    if not color:
-        return lines
     out: List[str] = []
     fenced = False
     for line in lines:

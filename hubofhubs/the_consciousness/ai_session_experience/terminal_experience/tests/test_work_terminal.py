@@ -73,10 +73,12 @@ def test_a_tree_key_with_nothing_to_show_says_so_once():
 
 
 def test_ceilings_show_against_spend_and_time_and_only_when_there_are_some():
-    rep, text = attend(stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))], limits=(5.0, 1800.0)))
-    assert "of $5.00" in frame(rep.view, 100)[0] and "of 30:00" in frame(rep.view, 100)[0]
+    rep, text = attend(stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))], limits=(0.01, 1800.0)))
+    assert "of $0.01" in frame(rep.view, 100)[0] and "of 30:00" not in frame(rep.view, 100)[0]       # a ceiling is named once half of it is used
+    quiet, _ = attend(stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))], limits=(5.0, 1800.0)))
+    assert "of $5.00" not in frame(quiet.view, 100)[0]
     bare, _ = attend(stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))]))
-    assert " of " not in frame(bare.view, 100)[0]
+    assert " of " not in frame(bare.view, 100)[0].replace("Hub of Hubs", "")
 
 
 def test_soft_limit_decision_and_the_end_of_the_run_are_one_line_each():
@@ -110,7 +112,7 @@ def test_extra_commands_segments_panels_and_a_front_door_are_the_bindings_of_a_c
     terminal, text = work({"stream": kit}, ["/mine 3", "/ask what", "go", "/quit"], commands={"mine": lambda rest: "mine got " + rest}, front_door=lambda t: "door: " + t,
                           segments=[lambda view: "seg"], panels=[lambda view: ["panel row"]])
     assert "mine got 3" in text and "door: what" in text
-    assert frame(terminal.reports[0].view, 100)[0].endswith("| seg") and "panel row" in frame(terminal.reports[0].view, 100)
+    assert " · seg" in frame(terminal.reports[0].view, 100)[0] and "panel row" in frame(terminal.reports[0].view, 100)
 
 
 def test_the_representative_is_named_listed_switched_and_its_stop_limits_reach_the_run():

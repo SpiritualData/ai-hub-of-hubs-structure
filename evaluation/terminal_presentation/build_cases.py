@@ -17,6 +17,7 @@ SCENARIOS = {
     "refuse": ("a risky step waits with its preview, then is refused", ["X9", "X19", "X20"]),
     "target": ("stopping one helper, or being told the harness cannot", ["X8"]),
     "plain": ("the same run written to something that is not a terminal", ["X13"]),
+    "pasted_run": ("the run the owner pasted on 2026-11-11 at a narrow width: header, goal, steps, answer once, markdown, figures, closing and the resume command (revision 2)", ["X1", "X2", "X3", "X10", "X13", "X16", "X18", "X33"]),
 }
 # The protocol ceiling column (the structure on request, spend against ceilings, who the AI acts for, a correction shown as taken up, stopping one helper: X24, X26, X32, X6, X8) is read
 # inside the watch, steer and target cases and reported in the details, not scored.

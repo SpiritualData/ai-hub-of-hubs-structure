@@ -110,7 +110,7 @@ def test_the_transcript_keeps_what_finished_and_the_panel_what_is_happening_now(
     assert any("b.txt" in row for row, _ in text.dashboard(view)[0])
     done = Step(step_id="s1", kind="edit", label="b.txt", state="done")
     view.apply(done)
-    assert "ok edit" in event_line(done, view, True)
+    assert "Edited b.txt" in event_line(done, view, True)
     assert not any("b.txt" in row for row, _ in text.dashboard(view)[0])
     started = AgentStarted(agent_id="h", task="tests")
     assert event_line(started, view, True) == "" and event_line(Usage(cost_usd=1.0), view, True) == ""
@@ -125,25 +125,27 @@ def test_the_detail_holds_a_runs_full_history_in_order_newest_last():
 
 # --- the closing: structured fields only, one shape ------------------------------------------------------------------------------------
 
-@pytest.mark.parametrize("outcome,words", [("met", "Done: the goal was met"), ("unmet", "Finished: the goal was not met"), ("stopped", "Stopped: your work is kept"), ("failed", "Failed")])
+@pytest.mark.parametrize("outcome,words", [("met", "Goal met"), ("unmet", "Goal not met"), ("stopped", "Stopped, your work is kept"), ("failed", "Failed")])
 def test_the_closing_line_is_the_outcomes_words_the_time_and_the_cost(outcome, words):
     view = view_of(RunStarted(goal="g"), Usage(cost_usd=0.0123, calls=3), Finished(outcome=outcome), now=42)
     line = text.closing_line(view)
-    assert line.startswith(words) and "0:42" in line and "$0.0123" in line and "3 calls" in line
+    assert words in line and line[0] in "✓✗◐■" and "0:42" in line and "$0.01" in line and "3 calls" in line and "no files changed" in line
 
 
 def test_the_words_of_the_report_never_decide_the_outcome():
     view = view_of(RunStarted(goal="g"), Finished(outcome="failed", report="Done! Everything worked perfectly. The goal was met."))
-    assert text.closing_line(view).startswith("Failed") and "Done" not in text.closing_line(view)
+    assert "Failed" in text.closing_line(view) and "Done" not in text.closing_line(view) and "Goal met" not in text.closing_line(view)
     again = view_of(RunStarted(goal="g"), Finished(outcome="met", report="Failed to do anything."))
-    assert text.closing_line(again).startswith("Done: the goal was met")
+    assert "Goal met" in text.closing_line(again)
 
 
-def test_a_cost_nobody_reported_is_unknown_never_zero_and_a_ceiling_is_shown_against_it():
+def test_a_cost_nobody_reported_is_unknown_never_zero_and_a_ceiling_is_shown_against_it_once_half_used():
     view = view_of(RunStarted(goal="g"), Finished(outcome="met"))
     assert "cost unknown" in text.closing_line(view) and "$0" not in text.closing_line(view)
-    capped = view_of(RunStarted(goal="g"), Usage(cost_usd=1.5, ceiling_usd=5.0), Finished(outcome="met"))
-    assert "$1.50 of $5.00" in text.closing_line(capped)
+    capped = view_of(RunStarted(goal="g"), Usage(cost_usd=3.0, ceiling_usd=5.0), Finished(outcome="met"))
+    assert "$3.00 of $5.00" in text.closing_line(capped)
+    quiet = view_of(RunStarted(goal="g"), Usage(cost_usd=1.5, ceiling_usd=5.0), Finished(outcome="met"))
+    assert "$1.50" in text.closing_line(quiet) and "of $5.00" not in text.closing_line(quiet)
 
 
 def test_the_metric_before_and_after_is_once_first_and_the_closing_line_last():
@@ -152,7 +154,8 @@ def test_the_metric_before_and_after_is_once_first_and_the_closing_line_last():
     above, closing = text.closing_rows(view)
     assert above[0] == "Metric checks: before 1, after 3 (+2)" and sum("before 1" in r for r in above + closing) == 1
     assert any(r.startswith("Changed (1): a.txt") for r in above) and any(r.startswith("Served: s") for r in above)
-    assert len(closing) == 1 and closing[0].startswith("Done: the goal was met")
+    outcome = [r for r in closing if r.strip()]
+    assert len(outcome) == 1 and "Goal met" in outcome[0] and "1 file changed" in outcome[0]
     assert not any(r.startswith("Cost and time") for r in above)      # the closing line carries it: each fact has one home
 
 

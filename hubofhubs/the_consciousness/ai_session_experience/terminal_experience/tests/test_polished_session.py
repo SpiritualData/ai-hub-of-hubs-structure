@@ -138,7 +138,7 @@ def test_a_note_is_never_sent_as_the_answer_to_a_question_the_person_has_not_rea
                   Finished(outcome="stopped", session_id="s1", unseen=("unrelated note",))], [begin(), met()]])
     rep, text = attend(fake, keys)
     assert len(fake.starts) == 1 and boxed == ["unrelated note"] and not [c for c in fake.controls if isinstance(c, Approve)]
-    assert "Your note is back in the box." in text and "WAITING FOR YOU: Deploy the site?" in text and "It will change: the live site" in text
+    assert "Your note is back in the box." in text and "Waiting for you: Deploy the site?" in text and "It will change: the live site" in text
 
 
 def test_a_question_answered_by_y_sends_the_approval_and_a_later_note_is_an_ordinary_one():
@@ -160,7 +160,7 @@ def test_stop_then_resume_continues_the_same_session_and_says_so():
 # --- the closing: structured fields only, the metric once above the one closing line ---------------------------------------------------------------
 
 def closing_index(rows):
-    return max(i for i, row in enumerate(rows) if row.startswith(("Done:", "Finished:", "Stopped:", "Failed")))
+    return max(i for i, row in enumerate(rows) if row.startswith(("✓ ", "✗ ", "◐ ", "■ ")) and " · " in row and ("Goal" in row or "Stopped" in row or "Failed" in row))
 
 
 def test_the_answer_then_the_metric_once_then_the_detail_then_one_closing_line():
@@ -170,26 +170,27 @@ def test_the_answer_then_the_metric_once_then_the_detail_then_one_closing_line()
     rows = text.splitlines()
     metric = [i for i, r in enumerate(rows) if "before 1, after 3 (+2)" in r]
     assert len(metric) == 1 and rows[metric[0]] == "Metric checks passing: before 1, after 3 (+2)"
-    answer = rows.index("All **done**.")
+    answer = rows.index("All done.")       # the markers are taken out in a plain transcript
     closing = closing_index(rows)
-    assert answer < metric[0] < closing == len(rows) - 1 - rows[::-1].index(rows[closing]) and rows[closing].startswith("Done: the goal was met")
-    assert "Changed (1): b.txt" in rows and "Served: notes | milestone: ship" in rows and sum(r.startswith("Done:") for r in rows) == 1
-    assert "$0.0123" in rows[closing] and "3 calls" in rows[closing] and not any(r.startswith("Cost and time") for r in rows)
+    assert answer < metric[0] < closing and "Goal met" in rows[closing]
+    assert "Changed (1): b.txt" in rows and "Served: notes | milestone: ship" in rows and sum("Goal met" in r for r in rows) == 1
+    assert "$0.01" in rows[closing] and "3 calls" in rows[closing] and "1 file changed" in rows[closing] and not any(r.startswith("Cost and time") for r in rows)
+    assert rows[-1].startswith("ahohs work --resume") and len(rows[-1].split()) >= 4       # the resume command is the last line, whole
 
 
 def test_the_outcome_comes_from_the_structured_field_never_from_what_the_worker_wrote():
     fake = Fake([[begin(), Finished(outcome="failed", session_id="s1", error="the worker broke", report="Done! Everything worked and the goal was met.")]])
     rep, text = attend(fake)
     rows = text.splitlines()
-    assert rows[closing_index(rows)].startswith("Failed") and "reason: the worker broke" in rows
+    assert "Failed" in rows[closing_index(rows)] and "reason: the worker broke" in rows
     fake = Fake([[begin(), met(report="Failed to do anything.")]])
     rep, text = attend(fake)
-    assert text.splitlines()[closing_index(text.splitlines())].startswith("Done: the goal was met")
+    assert "Goal met" in text.splitlines()[closing_index(text.splitlines())]
 
 
 def test_the_cost_is_unknown_when_the_worker_gave_none_and_time_is_written_one_way():
     rep, text = attend(Fake([[begin(), met()]]))
-    closing = [r for r in text.splitlines() if r.startswith("Done:")][0]
+    closing = text.splitlines()[closing_index(text.splitlines())]
     assert "cost unknown" in closing and "$0" not in closing
     import re
     assert re.search(r" · \d+:\d\d · ", closing) and not re.search(r"\d+m\d+s", text)
@@ -197,14 +198,14 @@ def test_the_cost_is_unknown_when_the_worker_gave_none_and_time_is_written_one_w
 
 def test_off_a_terminal_there_are_no_escape_codes_and_on_one_the_closing_is_styled():
     rep, text = attend(Fake([[begin(), met(report="# Result\n\nA **bold** claim.")]]))
-    assert "\x1b" not in text and "# Result" in text
+    assert "\x1b" not in text and "Result" in text and "# Result" not in text and "**bold**" not in text and "A bold claim." in text        # the markers are taken out, never shown
     rep, text = attend(Fake([[begin(), met(report="# Result\n\nA **bold** claim.")]]), live=True)
-    assert "\x1b[" in text and "Done: the goal was met" in text and "**bold**" not in text and "# Result" not in text
+    assert "\x1b[" in text and "Goal met" in text and "**bold**" not in text and "# Result" not in text
 
 
 def test_a_stopped_session_names_what_is_kept_and_the_command_that_resumes_it():
     rep, text = attend(Fake([[begin(), Finished(outcome="stopped", session_id="sess-9")]]), command="ahohs work")
-    assert "Stopped: your work is kept" in text and "Session sess-9 is kept." in text and "To continue later, in this folder: ahohs work --resume sess-9" in text
+    assert "Stopped, your work is kept" in text and "Session sess-9 is kept." in text and "ahohs work --resume sess-9" in text.splitlines()[-1]       # the command whole, alone on its last line
 
 
 # --- the transcript keeps what finished, the panel what is happening now ----------------------------------------------------------------------------
@@ -217,9 +218,9 @@ def test_each_update_has_one_home_the_panel_while_it_runs_and_the_transcript_onc
     shown = [any("work.txt" in row for row, _ in s.rows) for s in snaps]
     assert True in shown and shown[-1] is False and shown.index(True) < len(shown) - shown[::-1].index(True)        # in the panel while running, gone when finished
     rows = text.splitlines()
-    assert sum("ok edit" in r and "work.txt" in r for r in rows) == 1                # the transcript has the finished step once
-    assert not [r for r in rows if "agent started" in r]                              # the panel shows a helper that works; the transcript only its ending
-    assert any("agent met: check the tests" in r for r in rows) and any(("check the tests" in row) for s in snaps for row, _ in s.rows)
+    assert sum("Edited work.txt" in r for r in rows) == 1                # the transcript has the finished step once
+    assert not [r for r in rows if "Helper started" in r]                              # the panel shows a helper that works; the transcript only its ending
+    assert any("Helper finished: check the tests" in r for r in rows) and any(("check the tests" in row) for s in snaps for row, _ in s.rows)
 
 
 def test_a_clock_is_shown_after_three_seconds_of_waiting_and_not_before(recorded):
@@ -248,7 +249,7 @@ def test_a_consumer_supplies_its_own_metric_lines_and_a_save_hook_and_neither_ca
     assert saved == [("goal", "met")]
     broken = PolishedSession(metric_rows=lambda view: 1 / 0, persist=lambda view, done: 1 / 0)
     rep, text = attend(Fake([[begin(), met()]]), arm=broken)
-    assert rep.final.outcome == "met" and "Done: the goal was met" in text
+    assert rep.final.outcome == "met" and "Goal met" in text
 
 
 def test_a_consumers_command_and_segment_and_panel_rows_reach_the_screen_through_the_shared_options(recorded):
@@ -285,7 +286,7 @@ def test_the_interactive_prompt_asks_for_a_goal_runs_it_and_leaves_on_quit():
     out = io.StringIO()
     terminal = PolishedSession().work(lambda name: fake, out, lines=["do it", "/quit"], harness="fake", names=("fake",))
     assert isinstance(terminal, WorkTerminal) and len(terminal.reports) == 1 and fake.starts == [("do it", "")]
-    assert "Type a goal and press Enter" in out.getvalue() and "Done: the goal was met" in out.getvalue()
+    assert "Type a goal and press Enter" in out.getvalue() and "Goal met" in out.getvalue()
 
 
 def test_the_arm_is_registered_needs_only_the_screen_library_and_stands_aside_without_it(monkeypatch):

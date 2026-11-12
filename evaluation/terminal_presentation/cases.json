@@ -107,5 +107,26 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "presentation-pasted_run",
+  "kind": "presentation",
+  "origin": "rule: the run the owner pasted on 2026-11-11 at a narrow width: header, goal, steps, answer once, markdown, figures, closing and the resume command (revision 2) (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "pasted_run"
+  },
+  "requirements": [
+   "X1",
+   "X2",
+   "X3",
+   "X10",
+   "X13",
+   "X16",
+   "X18",
+   "X33"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

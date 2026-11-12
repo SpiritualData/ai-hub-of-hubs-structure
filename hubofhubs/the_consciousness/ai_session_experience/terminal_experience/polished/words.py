@@ -109,7 +109,7 @@ WORDS = {
     "polished.help.rows.structure": "Alt+T: show or hide the structure of the work",
     "polished.help.rows.copy": "Drag to select and Ctrl+C copies; Alt+Y copies the last reply",
     # the screen's own start and end
-    "polished.screen.title": "ahohs",
+    "polished.screen.title": "AI Hub of Hubs Structure",
     "polished.screen.intro": "Type a goal and press Enter; it runs in this folder. /help lists commands.",
     "polished.screen.cleared": "The screen is cleared; the session is kept.",
     "polished.screen.starting": "starting",

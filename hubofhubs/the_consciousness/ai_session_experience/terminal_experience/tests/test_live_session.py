@@ -99,7 +99,7 @@ def test_helpers_show_with_their_parent_and_a_helper_can_be_stopped_alone_on_the
 def test_a_terminal_redraws_in_place_and_a_pipe_gets_plain_lines():
     kit = kit_of("stream", [turn(read("a.txt")), turn(report("done"))])
     got, text = attend(kit, ScriptedKeys(), live=True)
-    assert "\x1b[" in text and "Done: the goal was met" in text
+    assert "\x1b[" in text and "Goal met" in text
 
 
 class ScreenOut(io.StringIO):
@@ -161,5 +161,5 @@ def test_the_live_screen_never_keeps_an_old_copy_of_itself_above_when_the_rows_a
 
 def test_the_demo_runs_with_no_model(capsys):
     assert main(["--demo", "stream", "--slow", "0"]) == 0
-    assert "Done: the goal was met" in capsys.readouterr().out
+    assert "Goal met" in capsys.readouterr().out
     assert main([]) == 0

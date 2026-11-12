@@ -188,7 +188,7 @@ def plain_and_replay(arm, name):
         failed.append("replay-redraws-the-same-rows")
     kit = folder_kit(name, [turn(read("a.txt")), turn(edit("b.txt")), turn(report("Done."))], pause=0.0)
     rep, text = attend(arm, kit, ScriptedKeys(), live=True)
-    if "\x1b[" not in text or "Done: the goal was met" not in text:
+    if "\x1b[" not in text or "Goal met" not in text:
         failed.append("redraws-in-place-on-a-terminal")
     return failed
 
