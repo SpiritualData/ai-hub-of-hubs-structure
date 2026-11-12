@@ -52,9 +52,9 @@ def resolution_note(tier: str) -> str:
 # ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``; the others are inputs. No clock is read: the day is an argument.
 # ---------------------------------------------------------------------------------------------------------------------------------------------
 METRIC_RULES = Path(__file__).with_name("role_tier_metrics.csv")
-INPUT_COLUMNS = ("role", "kind", "frequency", "stakes", "follows", "person_may_set", "own_measurement", "reason")
-COLUMNS = ("role", "kind", "frequency", "stakes", "follows", "person_may_set", "tier", "metric_tier", "constraint", "computed_on", "evidence",
-           "own_measurement", "reason")
+INPUT_COLUMNS = ("role", "kind", "frequency", "stakes", "volume", "tokens_in", "tokens_out", "volume_basis", "task_kind", "follows", "person_may_set", "own_measurement", "reason")
+COLUMNS = ("role", "kind", "frequency", "stakes", "volume", "tokens_in", "tokens_out", "volume_basis", "task_kind", "follows", "person_may_set", "tier", "metric_tier",
+           "constraint", "computed_on", "evidence", "own_measurement", "reason")
 
 
 def read_rules(path: Path = METRIC_RULES) -> list:
@@ -91,11 +91,37 @@ def evaluations_for(rules: list, kind: str, role: str = "") -> Dict[str, tuple]:
     return {r["key"]: (float(r["weight"]), r["fit"]) for r in _scoped(rules, "evaluation", kind, role)}
 
 
-def threshold(rules: list, frequency: str, stakes: str, price_low: float, price_high: float) -> tuple:
-    """``(threshold, premium)``: base gain x frequency factor x price premium / stakes factor."""
-    import math
-    premium = max(1.0, math.log2(price_high / price_low)) if price_low > 0 and price_high > 0 else 1.0
-    return rule_value(rules, "rule", "base_gain") * rule_value(rules, "frequency", frequency) * premium / rule_value(rules, "stakes", stakes), premium
+def volume_of(rules: list, volume: str, tokens_in: str = "", tokens_out: str = "") -> tuple:
+    """``(input, output, cache write, cache read)`` tokens per call: the measured numbers the role row gives (volume ``measured``; no cache tokens) or the
+    class's (the ``volume`` row gives input in weight and output in value, in thousands; ``volume_cache_write`` and ``volume_cache_read`` rows give the cache
+    tokens in value)."""
+    if volume == "measured":
+        return float(tokens_in), float(tokens_out), 0.0, 0.0
+    row = next((r for r in rules if r["part"] == "volume" and r["key"] == volume), None)
+    if row is None:
+        raise KeyError(f"role_tier_metrics.csv has no volume class {volume!r}")
+    cache = {part: next((float(r["value"]) * 1000 for r in rules if r["part"] == part and r["key"] == volume), 0.0) for part in ("volume_cache_write", "volume_cache_read")}
+    return float(row["weight"]) * 1000, float(row["value"]) * 1000, cache["volume_cache_write"], cache["volume_cache_read"]
+
+
+def call_cost(price: tuple, tokens: tuple) -> float:
+    """The list cost in USD of one call. ``price`` is ``(input, output[, cache read multiplier, cache write multiplier])`` in USD per million tokens (a missing
+    multiplier counts as 1: no discount is assumed); ``tokens`` is ``(input, output[, cache write, cache read])``. Cache writes and reads are priced as
+    their multipliers of the input price."""
+    read_m, write_m = (price[2], price[3]) if len(price) > 3 else (1.0, 1.0)
+    write_t, read_t = (tokens[2], tokens[3]) if len(tokens) > 3 else (0.0, 0.0)
+    return (price[0] * tokens[0] + price[1] * tokens[1] + price[0] * write_m * write_t + price[0] * read_m * read_t) / 1e6
+
+
+def required_gain(rules: list, frequency: str, stakes: str, price_low: tuple, price_high: tuple, tokens: tuple) -> dict:
+    """What a step up must show: the larger of the noise floor and ``cost_weight x added cost / value of gain``. The added cost is the expected cost of
+    the role's calls: calls per turn or run x (cost of a call on the higher tier's model minus on the lower's), each ``call_cost`` of the list prices with
+    cache reads and writes at their multipliers of the input price. Returns ``{limit, added_cost, value, calls, by_cost}``."""
+    calls = rule_value(rules, "frequency", frequency)
+    added = calls * (call_cost(price_high, tokens) - call_cost(price_low, tokens))
+    value = rule_value(rules, "stakes", stakes)
+    by_cost = rule_value(rules, "rule", "cost_weight") * max(added, 0.0) / value
+    return dict(limit=max(rule_value(rules, "rule", "noise_floor"), by_cost), added_cost=added, value=value, calls=calls, by_cost=by_cost)
 
 
 def gain(evals: Mapping[str, tuple], low: Mapping, high: Mapping) -> dict:
@@ -112,10 +138,11 @@ def gain(evals: Mapping[str, tuple], low: Mapping, high: Mapping) -> dict:
     return dict(gain=value, used={m: (low[m], high[m]) for m in used}, dropped=dropped, direct=direct)
 
 
-def climb(rules: list, kind: str, role: str, frequency: str, stakes: str, arms: Mapping[str, Mapping], prices: Mapping[str, float], day: str,
-          max_age: float = 45) -> dict:
-    """Walk the ladder: stay on a tier unless the next tier up shows a gain that reaches the threshold. ``arms`` is ``{tier: public row}`` and ``prices``
-    ``{tier: list price}``. Returns ``{tier, steps, unmeasured, direct, newest, oldest}``; ``tier`` is None, with ``unmeasured`` saying why, when a number
+def climb(rules: list, kind: str, role: str, frequency: str, stakes: str, arms: Mapping[str, Mapping], prices: Mapping[str, tuple], day: str,
+          max_age: float = 45, tokens: tuple = (840.0, 76.0)) -> dict:
+    """Walk the ladder: stay on a tier unless the next tier up shows a gain that reaches ``required_gain`` (the larger of the noise floor and the cost
+    weight times the expected added cost over the value of gain). ``arms`` is ``{tier: public row}``, ``prices`` ``{tier: (input, output) list price}``
+    and ``tokens`` the (input, output) tokens per call of the role. Returns ``{tier, steps, unmeasured, direct, newest, oldest}``; ``tier`` is None, with ``unmeasured`` saying why, when a number
     the walk needs is stale, missing or unpriced (a stale number is reported, never used)."""
     from hubofhubs.the_world.model_plumbing.model_tier_chooser import public_metric as pm
     rungs = ladder_for(rules, kind, role)
@@ -139,9 +166,9 @@ def climb(rules: list, kind: str, role: str, frequency: str, stakes: str, arms: 
         got = gain(evals, arms[low], arms[high])
         if got["gain"] is None:
             return dict(tier=None, steps=steps, unmeasured=f"no evaluation of the kind {kind} has a number on both the {low} and the {high} tier", direct=0.0, newest="", oldest="")
-        limit, premium = threshold(rules, frequency, stakes, prices[low], prices[high])
-        up = got["gain"] >= limit and got["gain"] > 0
-        steps.append(dict(low=low, high=high, gain=got["gain"], limit=limit, premium=premium, up=up, used=got["used"], dropped=got["dropped"]))
+        need = required_gain(rules, frequency, stakes, prices[low], prices[high], tokens)
+        up = got["gain"] >= need["limit"] and got["gain"] > 0
+        steps.append(dict(low=low, high=high, gain=got["gain"], limit=need["limit"], need=need, up=up, used=got["used"], dropped=got["dropped"]))
         direct.append(got["direct"])
         if up:
             current = high
@@ -168,15 +195,22 @@ def describe_step(step: dict) -> str:
     scores = ", ".join(f"{m} {a:g} to {b:g}" for m, (a, b) in step["used"].items())
     drop = f"; no number on both for {', '.join(step['dropped'])}" if step["dropped"] else ""
     verdict = "step up" if step["up"] else "stay"
-    return (f"{step['low']} to {step['high']}: gain {step['gain']:+.3f} against threshold {step['limit']:.3f}, {verdict} "
+    need = step["need"]
+    bound = "cost" if need["by_cost"] > need["limit"] - 1e-12 and need["by_cost"] > 0 else "noise floor"
+    return (f"{step['low']} to {step['high']}: gain {step['gain']:+.3f} against threshold {step['limit']:.3f} ({bound} binds; added cost {need['added_cost']:.4f} USD per turn or run "
+            f"at {need['calls']:g} calls, value of a full gain {need['value']:g} USD), {verdict} "
             f"(scores of the {step['low']} tier's model to the {step['high']} tier's: {scores}{drop})")
 
 
-def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping], prices: Mapping[str, float], day: str, previous: Optional[Mapping[str, str]] = None,
+def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping], prices: Mapping[str, tuple], day: str, previous: Optional[Mapping[str, str]] = None,
              max_age: float = 45) -> Dict[str, str]:
     """One finished row: the inputs plus the generated ``tier``, ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``."""
     role, kind = inputs["role"], inputs["kind"]
-    got = climb(rules, kind, role, inputs["frequency"], inputs["stakes"], arms, prices, day, max_age)
+    tokens = volume_of(rules, inputs.get("volume", "small") or "small", inputs.get("tokens_in", ""), inputs.get("tokens_out", ""))
+    klass = next((r for r in rules if r["part"] == "volume" and r["key"] == (inputs.get("volume") or "small")), {})
+    basis = (f"measured: {inputs['volume_basis']}" if inputs.get("volume") == "measured"
+             else f"measured class {inputs.get('volume')}: median of recorded Claude Code sessions" if klass.get("fit") == "measured" else f"estimated class {inputs.get('volume') or 'small'}")
+    got = climb(rules, kind, role, inputs["frequency"], inputs["stakes"], arms, prices, day, max_age, tokens)
     rungs = ladder_for(rules, kind, role)
     held = (previous or {}).get(role, "")
     metric_tier = got["tier"] or (held if held in TIERS else rungs[0])
@@ -185,7 +219,7 @@ def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping]
     if got["tier"]:
         kindword = "direct" if got["direct"] >= 0.5 else "proxy"
         head = (f"{kindword} public evidence (direct weight {got['direct']:.2f}); numbers dated {got['oldest']} to {got['newest']}, none older than {max_age:g} days on {day}; "
-                f"frequency {inputs['frequency']}, stakes {inputs['stakes']}; ")
+                f"frequency {inputs['frequency']}, stakes {inputs['stakes']}, tokens per call {tokens[0]:g} in, {tokens[1]:g} out, {tokens[2]:g} cache write, {tokens[3]:g} cache read ({basis}); ")
         body = "; ".join(describe_step(s) for s in got["steps"]) + f". The metric alone picks {metric_tier}."
     else:
         head = f"STALE OR MISSING public numbers on {day}, the metric was not applied: {got['unmeasured']}. "
@@ -203,8 +237,8 @@ def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping]
 
 
 def tier_fillers(day: str, folder=None) -> tuple:
-    """``({tier: public row}, {tier: list price})`` of the model each tier names on ``day`` (the tier choice), from the registry; a tier with no public
-    row or price is left out and the walk reports it."""
+    """``({tier: public row}, {tier: (input, output) list price})`` of the model each tier names on ``day`` (the tier choice), from the registry; a tier
+    with no public row or price is left out and the walk reports it."""
     from hubofhubs.the_world.learning.research_freshness_reader import registry
     from hubofhubs.the_world.model_plumbing.model_tier_chooser import public_metric as pm, tiers
     choice = tiers.choose(folder=folder, today=day)
@@ -221,7 +255,9 @@ def tier_fillers(day: str, folder=None) -> tuple:
         if row is not None:
             arms[tier] = row
         if rate:
-            cost[tier] = sum(rate)
+            row_price = next((r for r in prices if (r["provider"], r["model"]) == (provider, model) and tiers.in_force(r, day) and not (r.get("from_prompt_tokens") or "").strip()), {})
+            mult = lambda name: float(row_price.get(name) or 1.0)         # a blank multiplier means no cache discount is assumed
+            cost[tier] = (rate[0], rate[1], mult("cache_read_multiplier"), mult("cache_write_multiplier"))
     return arms, cost
 
 
@@ -278,3 +314,24 @@ def tier_for(role: str, requested: str = "", table: Optional[Mapping[str, Mappin
         if tier in TIERS:
             return tier
         role = tier
+
+
+MAIN_ROLE = "main_session"
+
+
+def task_kinds(table: Optional[Mapping[str, Mapping[str, str]]] = None) -> Dict[str, str]:
+    """``{task kind: deep-work role}`` from the table's ``task_kind`` column (for example gather, implementation, structure, review)."""
+    rows = table if table is not None else read_table()
+    return {row["task_kind"]: role for role, row in rows.items() if (row.get("task_kind") or "").strip()}
+
+
+def deep_work_role(task_kind: str = "", table: Optional[Mapping[str, Mapping[str, str]]] = None) -> str:
+    """The role a deep-work session runs as: the role of its task kind, or ``main_session`` (which follows the implementation role) when the kind is
+    not given or is not one the table knows. The task kind comes from a classification the caller already made on the fast tier, never from words."""
+    return task_kinds(table).get((task_kind or "").strip().lower(), MAIN_ROLE)
+
+
+def tier_for_task(task_kind: str = "", requested: str = "", table: Optional[Mapping[str, Mapping[str, str]]] = None) -> str:
+    """The tier of a deep-work session of ``task_kind``; a person's explicit tier (``requested``) wins, as for any role that lets a person set it."""
+    rows = table if table is not None else read_table()
+    return tier_for(deep_work_role(task_kind, rows), requested, rows)

@@ -33,7 +33,7 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
         if name not in terminal.HARNESSES:
             raise ValueError(f"no harness named {name!r}; choose one of {', '.join(terminal.HARNESSES)}")
         holder: dict = {}
-        build = terminal.harness_builder(folder=folder, tier=args.tier, ceiling_usd=usd, ceiling_seconds=seconds, permission=args.permission, environ=process_environment(),
+        build = terminal.harness_builder(folder=folder, tier=main_session_tier(getattr(args, "task_kind", ""), args.tier), ceiling_usd=usd, ceiling_seconds=seconds, permission=args.permission, environ=process_environment(),
                                          solution=args.solution, milestone=args.milestone, stop_inputs=lambda: holder["terminal"].stop_inputs(),
                                          setting_sources=args.setting_sources)
     except ValueError as error:
@@ -67,10 +67,17 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1
 
 
-def main_session_tier() -> str:
-    """The default tier of the main session, read from the role tier table (balanced)."""
-    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import tier_for
-    return tier_for("main_session")
+def main_session_tier(task_kind: str = "", requested: str = "") -> str:
+    """The tier of a deep-work session, read from the role tier table: the tier of the role of its task kind (gather, implementation, structure, review),
+    or of the implementation role when the kind is not given; a person's explicit tier (``requested``) wins."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import tier_for_task
+    return tier_for_task(task_kind, requested)
+
+
+def task_kind_choices() -> tuple:
+    """The task kinds the role table knows, for the command line."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import task_kinds
+    return tuple(sorted(task_kinds()))
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -80,7 +87,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     work = sub.add_parser("work", help="run a goal on a real harness in the live terminal; with no goal, a prompt (also what bare ahohs opens)")
     work.add_argument("goal", nargs="?", default="", help="what to get done in this folder; leave out for a prompt, and type follow-ups that continue the session")
     work.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick for a person at a terminal)")
-    work.add_argument("--tier", default=main_session_tier(), help="model tier: fast, balanced, quality or best (strong reads as quality); default: the tier policy of the main session")
+    work.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best (strong reads as quality); default: the tier the role table gives the task kind")
+    work.add_argument("--task-kind", default="", choices=("",) + task_kind_choices(), help="the kind of the task (gather, implementation, structure or review), which sets the default tier; unknown reads as implementation")
     work.add_argument("--folder", default=".", help="the folder the work happens in (default: this one)")
     work.add_argument("--resume", default="", metavar="SESSION", help="continue a session an earlier run named (with the same --harness, in the same folder)")
     work.add_argument("--max-spend", default=None, metavar="USD", help="spend ceiling in dollars, or unlimited (default: the hub's high default)")
