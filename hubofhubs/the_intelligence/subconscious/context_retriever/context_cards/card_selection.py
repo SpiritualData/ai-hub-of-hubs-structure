@@ -769,8 +769,12 @@ CANDIDATE CARDS:
 
 For each card, decide: is it relevant to the task? Rate 0-1 where:
 - 0 = irrelevant (different domain, no overlap)
-- 0.5 = potentially relevant (partial match, might help)
+- 0.2 = shares a word or a broad theme with the task, but is about something else (what the task asks about is not in it)
+- 0.5 = potentially relevant (it covers part of what the task asks about and would change the answer)
 - 1 = essential (directly addresses the task)
+Judge by what the task is ABOUT, never by a word they share: a card about one subject is not relevant to a task about another subject
+because both mention practice, fields, courses or similar words. Candidates come from a loose keyword match, so most of them are NOT
+relevant and returning none is a normal, correct answer; an irrelevant card costs the person's answer more than a missing one.
 
 Respond with ONLY valid JSON (no markdown, no extra text):
 {{

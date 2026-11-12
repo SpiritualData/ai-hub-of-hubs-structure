@@ -939,6 +939,13 @@ class VectorContextAssembler(ContextAssemblerBase):
             h for h in candidates
             if scope_tags_allow((h.payload or {}).get("scope_tags"), turn_scope_tags)
         ]
+        # ``meta["exclude_card_ids"]``: cards the caller says this turn must not retrieve (the card a conversation wrote about
+        # itself: its text is already in front of the turn, and it quotes the replies the turn may be correcting). Matched on the
+        # payload id with or without the display prefix.
+        excluded = {str(x).removeprefix("card:") for x in ((meta or {}).get("exclude_card_ids") or [])}
+        if excluded:
+            candidates = [h for h in candidates
+                          if str((h.payload or {}).get("id") or (h.payload or {}).get("card_id") or "").removeprefix("card:") not in excluded]
 
         if not candidates:
             return AssembledContext()

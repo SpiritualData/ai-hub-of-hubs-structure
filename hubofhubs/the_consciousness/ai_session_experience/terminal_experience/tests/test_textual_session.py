@@ -57,6 +57,46 @@ def test_the_textual_arm_runs_a_scripted_session_headless_and_leaves_the_transcr
     assert "\x1b" not in out.getvalue()
 
 
+def test_the_textual_screen_and_transcript_never_show_the_same_update_during_a_run(monkeypatch):
+    """A finished step, a helper and a queued message were in the transcript and in the live panel at once; now the transcript holds what finished and the panel what is happening."""
+    pytest.importorskip("textual")
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import textual_session as arm
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.scripted import delegate
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import frame
+    folder = tempfile.mkdtemp(prefix="tx-")
+    Path(folder, "a.txt").write_text("alpha\n")
+    keys = ScriptedKeys()
+    kit = KITS["stream"](folder, [turn(read("a.txt")), turn(delegate("check the tests", turn(edit("t.txt")))), turn(edit("b.txt"), hook=lambda: keys.press("line", "also tidy up")),
+                                  turn(edit("c.txt")), turn(report("done"))], pause=0.05)
+    seen = []
+    original = arm.TextualAttendance.redraw
+
+    def watch(self):
+        drawn = []
+        real = self.app.set_status if self.app is not None else None
+        if real is not None:
+            self.app.set_status = lambda rows, head: (drawn.append(list(rows)), real(rows, head))
+        try:
+            original(self)
+        finally:
+            if real is not None:
+                self.app.set_status = real
+        if drawn:
+            seen.append((list(self.transcript.buffer), [row for row in drawn[-1] if row.strip()]))
+    monkeypatch.setattr(arm.TextualAttendance, "redraw", watch)
+    out = io.StringIO()
+    rep = arm.TextualSession().attend(kit.harness, "do it", out, keys, tick=0.01, live=False, width=100)
+    assert rep.final.outcome == "met" and seen
+    for lines, panel in seen:
+        for row in panel:
+            if row.startswith(("goal:", "structure:", "agents", "serves:")) or row.startswith("  "):
+                continue
+            assert not any(row in line for line in lines), (row, lines)
+    assert any("ok read" in line for line in seen[-1][0])
+    done = [row for row in frame(rep.view, 100) if row.startswith("ok ")]
+    assert done and not [row for row in frame(rep.view, 100, transcript=True) if row.startswith("ok ")]       # the same view: shown in full on a screen with no transcript, only what runs beside one
+
+
 def test_the_textual_arm_stops_and_resumes_like_the_reference_terminal():
     pytest.importorskip("textual")
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.textual_session import TextualSession

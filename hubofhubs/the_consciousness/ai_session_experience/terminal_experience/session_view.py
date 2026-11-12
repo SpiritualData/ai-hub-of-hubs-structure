@@ -8,6 +8,7 @@ gets the glyphs and colour. Standard library only.
 """
 from __future__ import annotations
 
+import re
 import textwrap
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
@@ -183,16 +184,18 @@ class SessionView:
     def children(self, parent: str) -> List[Agent]:
         return [a for a in self.agents.values() if a.parent_id == parent]
 
-    def tree_lines(self, glyphs: bool = False) -> List[str]:
+    def tree_lines(self, glyphs: bool = False, running_only: bool = False) -> List[str]:
+        """The helpers as an indented tree; ``running_only`` leaves out the helpers that ended (a surface whose transcript already has their ending line)."""
         lines: List[str] = []
+        known = {key: a for key, a in self.agents.items() if not running_only or a.state == "running"}
 
         def walk(parent: str, depth: int) -> None:
-            for agent in self.children(parent):
+            for agent in [a for a in known.values() if a.parent_id == parent]:
                 mark = ("`- " if not glyphs else "└─ ") if depth else ""
                 calls = f", {agent.calls} call{'' if agent.calls == 1 else 's'}" if agent.calls else ""
                 lines.append(f"{'   ' * max(depth - 1, 0)}{mark}{short(agent.task, 50)}{f' ({agent.solution})' if agent.solution else ''}  [{agent.state}{calls}]")
                 walk(agent.agent_id, depth + 1)
-        top = [a for a in self.agents.values() if a.parent_id not in self.agents]
+        top = [a for a in known.values() if a.parent_id not in known]
         if top:
             lines.append(f"main  [{'running' if self.final is None else 'finished'}]")
             for agent in top:
@@ -248,16 +251,23 @@ def metric_line(view: SessionView) -> str:
     return f"Metric {view.metric or ''}: before {before}, after {now}{change}".replace("  ", " ")
 
 
-def event_line(event: SessionEvent, view: SessionView) -> str:
-    """One plain line for an event, for a log or a screen that cannot redraw. Empty when the event adds nothing to read."""
+def event_line(event: SessionEvent, view: SessionView, panel: bool = False) -> str:
+    """One plain line for an event, for a log or a screen that cannot redraw. Empty when the event adds nothing to read.
+
+    ``panel`` says a live panel sits beside this transcript: what the panel shows while it is happening (a running delegation, a helper that started, the running cost)
+    is left out here, so each thing has one home and the transcript keeps only what finished."""
     stamp = f"[{clock(view.now - view.started)}] "
     if isinstance(event, RunStarted):
         return f"{stamp}{'resumed' if event.resumed else 'started'}: {short(event.goal, 80)} ({event.harness or 'harness'})"
     if isinstance(event, Step):
-        if event.state == "running" and event.kind != "delegate":
+        if event.state == "running" and (event.kind != "delegate" or panel):
             return ""
         agent = view.agents.get(event.agent_id)
         return stamp + step_row(event, who=short(agent.task, 24) if agent else "")
+    if isinstance(event, AgentStarted) and panel:
+        return ""
+    if isinstance(event, Usage) and panel:
+        return ""
     if isinstance(event, AgentStarted):
         return f"{stamp}agent started: {short(event.task, 50)}" + (f" ({event.solution})" if event.solution else "") + (" under " + short(view.agents[event.parent_id].task, 24) if event.parent_id in view.agents else "")
     if isinstance(event, AgentEnded):
@@ -287,8 +297,30 @@ def event_line(event: SessionEvent, view: SessionView) -> str:
     return ""
 
 
-def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8) -> List[str]:
-    """The live screen as lines (no trailing newline). The caller redraws it in place."""
+SGR = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def clip(line: str, width: int) -> str:
+    """``line`` cut to ``width`` visible characters, colour codes kept (they take no room), so a drawn row never wraps and the in-place redraw counts its rows right."""
+    if len(SGR.sub("", line)) <= width:
+        return line
+    out, seen, at = [], 0, 0
+    for found in SGR.finditer(line):
+        take = min(found.start() - at, width - seen)
+        out.append(line[at:at + take])
+        seen += take
+        out.append(found.group())
+        at = found.end()
+    take = max(min(len(line) - at, width - seen), 0)
+    out.append(line[at:at + take])
+    return "".join(out) + ("\x1b[0m" if "\x1b" in line else "")
+
+
+def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8, transcript: bool = False) -> List[str]:
+    """The live screen as lines (no trailing newline). The caller redraws it in place.
+
+    ``transcript`` says a scrolling transcript already holds what finished (a finished step, an ended helper, a note, the question, a limit line), so the screen shows only
+    what is happening now: running steps, running helpers, messages not yet taken up, cost and time. Each piece of information then has one home."""
     glyphs = color
     head = f"ahohs  {view.harness or 'run'}  [{view.status}]  {money(view)}"
     head = " | ".join([head] + ([f"for {view.acting_for}"] if view.acting_for else []) + [segment for segment in view.segments if segment])
@@ -299,23 +331,26 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         out.extend(view.structure_panel)
     elif view.structure_compact:
         out.append(paint(view.structure_compact, "dim", color))
-    shown = list(view.steps.values())[-rows:]
-    out.extend(step_row(s, color) for s in shown)
+    steps = [s for s in view.steps.values() if s.state == "running"] if transcript else list(view.steps.values())
+    out.extend(step_row(s, color) for s in steps[-rows:])
     out.extend(view.panels)
-    if view.agents:
+    tree = view.tree_lines(glyphs, running_only=transcript)
+    if tree:
         out.append(paint("agents", "dim", color))
-        out.extend("  " + line for line in view.tree_lines(glyphs))
+        out.extend("  " + line for line in tree)
     for message in view.messages[-3:]:
-        out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
-    for note in view.notices[-2:]:
-        out.append(paint(note, "dim", color))
-    if view.soft_limit and view.status in ("running", "waiting", "stopping"):
-        out.append(paint(hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds), "running", color))
-    for line in view.decisions[-1:]:
-        out.append(paint(line, "dim", color))
+        if not (transcript and message.taken_up):
+            out.append(f"you: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
+    if not transcript:
+        for note in view.notices[-2:]:
+            out.append(paint(note, "dim", color))
+        if view.soft_limit and view.status in ("running", "waiting", "stopping"):
+            out.append(paint(hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds), "running", color))
+        for line in view.decisions[-1:]:
+            out.append(paint(line, "dim", color))
     if view.show_help:
         out.extend(paint(row, "dim", color) for row in HELP_ROWS)
-    if view.asking is not None:
+    if view.asking is not None and not transcript:
         out.append(paint(f"? {view.asking.question}  [y] approve  [n] refuse", "ask", color))
         if view.asking.preview:
             out.append(paint(f"  will change: {short(view.asking.preview, max(width - 20, 20))}", "ask", color))
@@ -323,7 +358,7 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         view.status, "Esc stop | type + Enter to steer | Tab structure | ? keys")
     out.append(paint(keys, "dim", color))
     out.append(f"> {view.typing}")
-    return [line[:max(width - 1, 20)] if "\x1b" not in line else line for line in out]
+    return [clip(line, max(width - 1, 20)) for line in out]
 
 
 def report(view: SessionView, color: bool = False, width: int = 0) -> List[str]:

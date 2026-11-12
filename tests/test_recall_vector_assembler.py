@@ -156,3 +156,10 @@ def test_assemble_never_raises(broken):
             raise broken
 
     assert VectorContextAssembler(Broken(), num_queries=0).assemble("x").card_ids == []
+
+
+def test_a_card_the_caller_excludes_is_not_retrieved_with_or_without_the_display_prefix():
+    store = FakeStore([VectorHit(id="thread-card", score=0.9, text="t", payload={"id": "thread-card"}),
+                       VectorHit(id="other", score=0.9, text="o", payload={"id": "other"})])
+    ctx = VectorContextAssembler(store, num_queries=0).assemble("words", meta={"exclude_card_ids": ["card:thread-card"]})
+    assert ctx.card_ids == ["other"]

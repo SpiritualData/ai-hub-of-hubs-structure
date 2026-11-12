@@ -28,7 +28,7 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl 
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.structure_lines import structure_lines
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     Approve, Control, Finished, Harness, Refuse, SessionEvent, Step, Steer, Stop, Waiting, short)
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS, SessionReport, SessionView, event_line, frame, report
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS, SessionReport, SessionView, clip, event_line, frame, report
 
 MAX_RESUMES = 8
 REDRAW_SECONDS = 0.1
@@ -40,9 +40,21 @@ class Painter:
     def __init__(self, out: TextIO, live: bool, width: int):
         self.out, self.live, self.width, self.height = out, live, width, 0
 
+    def fit(self, lines: List[str]) -> List[str]:
+        """The rows as the screen will show them: none wider than the terminal now and none more than fit, or the cursor-up that erases the old block would count wrong and the
+        old block would stay above the new one (the same lines twice, one frame apart). A block too tall keeps its two head rows and its tail (the keys and the input line)."""
+        size = shutil.get_terminal_size((self.width, 24))
+        wide = max(min(self.width, size.columns) - 1, 20)
+        rows = [clip(line, wide) for line in lines]
+        room = max(size.lines - 1, 6)
+        if len(rows) > room:
+            rows = rows[:2] + rows[len(rows) - (room - 2):]
+        return rows
+
     def draw(self, lines: List[str]) -> None:
         if not self.live:
             return
+        lines = self.fit(lines)
         self.erase()
         self.out.write("\n".join(lines) + "\n")
         self.height = len(lines)
@@ -62,6 +74,8 @@ class Painter:
 
 class Attendance:
     """One attended session: the events in, the keys in, the controls out."""
+
+    panel = False       # True when a live panel is drawn beside a scrolling transcript (the full-screen arm): the transcript then holds only what finished, the panel only what is happening now
 
     def __init__(self, harness: Harness, goal: str, out: TextIO, keys: Any, clock: Callable[[], float], tick: float, live: bool, width: int, *,
                  records: Any = None, commands: Optional[Mapping[str, Callable[[str], Optional[str]]]] = None,
@@ -188,7 +202,7 @@ class Attendance:
         if isinstance(event, Waiting):
             self.asking = event.ask_id
         if not self.live:
-            self.painter.line(event_line(event, self.view))
+            self.painter.line(event_line(event, self.view, self.panel))
             if isinstance(event, Finished) and event.outcome == "stopped":
                 self.painter.line(f"stopped: finished work is kept; session {event.session_id or '(none)'} can be resumed")
         if hasattr(self.keys, "react"):
@@ -203,7 +217,7 @@ class Attendance:
         elif kind == "sent":
             message, ok = item[1], item[2]
             self.view.sent(message.message_id, message.text, message.agent_id)
-            if not self.live:
+            if not self.live and not self.panel:       # with a panel the queued message is shown there until it is taken up, then the transcript gets the taken-up line
                 self.painter.line(f"[{int(self.view.now - self.view.started) // 60}:{int(self.view.now - self.view.started) % 60:02d}] you: {short(message.text, 70)} ({'queued, read after the current step' if ok else 'waiting to be sent'})")
         elif kind == "control":
             if isinstance(item[1], Stop) and item[2] and not item[1].agent_id:

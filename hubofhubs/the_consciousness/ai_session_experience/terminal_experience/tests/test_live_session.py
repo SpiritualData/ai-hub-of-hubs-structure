@@ -102,6 +102,63 @@ def test_a_terminal_redraws_in_place_and_a_pipe_gets_plain_lines():
     assert "\x1b[" in text and "Done: the goal was met" in text
 
 
+class ScreenOut(io.StringIO):
+    """A terminal of ``columns`` width that applies the cursor-up, erase-below, return and wrapping the redraw uses, and keeps the screen after each in-place draw."""
+
+    def __init__(self, columns):
+        super().__init__()
+        self.columns, self.rows, self.row, self.col, self.snapshots = columns, [""], 0, 0, []
+
+    def isatty(self):
+        return True
+
+    def newline(self):
+        self.row, self.col = self.row + 1, 0
+        while len(self.rows) <= self.row:
+            self.rows.append("")
+
+    def write(self, text):
+        import re
+        at = 0
+        while at < len(text):
+            found = re.match(r"\x1b\[(\d*)([A-Za-z])", text[at:]) if text[at] == "\x1b" else None
+            if found:
+                at += found.end()
+                if found.group(2) == "A":
+                    self.row = max(0, self.row - int(found.group(1) or 1))
+                elif found.group(2) == "J":
+                    self.rows = self.rows[:self.row + 1]
+                    self.rows[self.row] = self.rows[self.row][:self.col]
+                continue
+            char, at = text[at], at + 1
+            if char == "\r":
+                self.col = 0
+            elif char == "\n":
+                self.newline()
+            else:
+                if self.col >= self.columns:
+                    self.newline()
+                self.rows[self.row] = self.rows[self.row].ljust(self.col)[:self.col] + char
+                self.col += 1
+        if text.endswith("\n"):
+            self.snapshots.append(list(self.rows))
+        return super().write(text)
+
+
+def test_the_live_screen_never_keeps_an_old_copy_of_itself_above_when_the_rows_are_wider_than_the_terminal():
+    """A coloured row was never cut to the terminal width, so it wrapped, the erase counted too few rows, and each redraw left the last frame above the new one."""
+    import re
+    kit = kit_of("stream", [turn(read("a.txt")), turn(edit("a_long_file_name_that_will_not_fit_a_narrow_terminal_at_all.txt")), turn(edit("b.txt")), turn(report("done"))], pause=0.05)
+    out = ScreenOut(50)
+    LiveSession().attend(kit.harness, "do it", out, ScriptedKeys(), tick=0.01, live=True, width=50)
+    during = [[re.sub(r"\x1b\[[0-9;]*m", "", row) for row in shot] for shot in out.snapshots[:-1]]
+    assert during
+    for shot in during:
+        assert sum(row.startswith("ahohs") for row in shot) <= 1, shot
+        assert sum("session started" in row for row in shot) <= 1, shot
+        assert all(len(row) <= 50 for row in shot)
+
+
 def test_the_demo_runs_with_no_model(capsys):
     assert main(["--demo", "stream", "--slow", "0"]) == 0
     assert "Done: the goal was met" in capsys.readouterr().out

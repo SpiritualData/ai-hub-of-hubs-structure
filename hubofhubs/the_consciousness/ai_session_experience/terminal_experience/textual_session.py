@@ -277,11 +277,12 @@ class TextualAttendance(Attendance):
 
     app: Any = None
     transcript: Transcript
-    ansi: bool = False       # the kept transcript is printed to a real terminal when the application closes, so its closing report is styled (markdown rendered) there
+    panel = True
+    ansi: bool = False     # the kept transcript is printed to a real terminal when the application closes, so its closing report is styled (markdown rendered) there
 
     def redraw(self) -> None:
         super().redraw()
-        rows = frame(self.view, max(self.width, 40), color=False)[:-1]       # the input line is the screen's own
+        rows = frame(self.view, max(self.width, 40), color=False, transcript=True)[:-1]       # the input line is the screen's own
         head = rows[0] if rows else ""
         keep = rows[1:]
         if self.app is not None:
