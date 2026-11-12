@@ -9,25 +9,30 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "t",
      "text": "The tax return needs the donation receipts from March",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "r",
      "text": "Booked the train to the coast for the second weekend of August",
      "at": "2026-07-03T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "how many tomato seedlings did we choose",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "g"
@@ -43,25 +48,30 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "t",
      "text": "The tax return needs the donation receipts from March",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "r",
      "text": "Booked the train to the coast for the second weekend of August",
      "at": "2026-07-03T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "which receipts does the tax return need",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "t"
@@ -77,25 +87,30 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "t",
      "text": "The tax return needs the donation receipts from March",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "r",
      "text": "Booked the train to the coast for the second weekend of August",
      "at": "2026-07-03T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "explain how volcanoes erupt",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": []
  },
@@ -109,25 +124,30 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "t",
      "text": "The tax return needs the donation receipts from March",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "r",
      "text": "Booked the train to the coast for the second weekend of August",
      "at": "2026-07-03T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "what about it",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": []
  },
@@ -140,7 +160,9 @@
    "query": "tomato seedlings",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": []
  },
@@ -154,19 +176,23 @@
      "id": "old",
      "text": "Ordered tomato seedlings from the nursery",
      "at": "2026-05-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "new",
      "text": "Ordered tomato seedlings from the market",
      "at": "2026-07-10T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings order",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "new",
@@ -183,19 +209,23 @@
      "id": "strong",
      "text": "Quarterly budget review: marketing budget, hiring budget and travel budget",
      "at": "2026-06-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "weak",
      "text": "Budget meeting moved to Friday",
      "at": "2026-07-11T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "marketing budget review hiring travel",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "strong",
@@ -212,19 +242,23 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "g2",
      "text": "Planted tomato seedlings along the fence",
      "at": "2026-07-05T10:00:00Z",
-     "person": "ben"
+     "person": "ben",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "g"
@@ -240,19 +274,23 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "g2",
      "text": "Planted tomato seedlings along the fence",
      "at": "2026-07-05T10:00:00Z",
-     "person": "ben"
+     "person": "ben",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings",
    "person": "ben",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "g2"
@@ -268,19 +306,23 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "t",
      "text": "The tax return needs the donation receipts from March",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings",
    "person": "cho",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": []
  },
@@ -294,19 +336,23 @@
      "id": "ancient",
      "text": "Chose tomato seedlings for the garden",
      "at": "2025-12-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "fresh",
      "text": "Watered the tomato seedlings",
      "at": "2026-07-09T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "fresh"
@@ -322,37 +368,44 @@
      "id": "i1",
      "text": "Tomato seedlings batch number 1",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "i2",
      "text": "Tomato seedlings batch number 2",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "i3",
      "text": "Tomato seedlings batch number 3",
      "at": "2026-07-03T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "i4",
      "text": "Tomato seedlings batch number 4",
      "at": "2026-07-04T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "i5",
      "text": "Tomato seedlings batch number 5",
      "at": "2026-07-05T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings batch",
    "person": "ana",
    "limit": 2,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "i5",
@@ -369,19 +422,23 @@
      "id": "x",
      "text": "Tomato seedlings need sun",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "x",
      "text": "Tomato seedlings need sun and water",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings sun",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "x"
@@ -397,25 +454,30 @@
      "id": "g",
      "text": "We planned the vegetable garden beds and chose tomato seedlings",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "t",
      "text": "The tax return needs the donation receipts from March",
      "at": "2026-07-02T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "r",
      "text": "Booked the train to the coast for the second weekend of August",
      "at": "2026-07-03T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato advice for this weekend",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "r",
@@ -432,19 +494,23 @@
      "id": "odd",
      "text": "Tomato seedlings note",
      "at": "not a date",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     },
     {
      "id": "ok",
      "text": "Tomato seedlings note",
      "at": "2026-07-01T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "tomato seedlings note",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "ok"
@@ -460,13 +526,16 @@
      "id": "pty",
      "text": "Planned the party menu and the guest list",
      "at": "2026-07-04T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "art classes",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": []
  },
@@ -480,16 +549,217 @@
      "id": "p",
      "text": "The vegetable patch is ready for its first sowing",
      "at": "2026-07-04T10:00:00Z",
-     "person": "ana"
+     "person": "ana",
+     "scope_tags": []
     }
    ],
    "query": "when do we begin planting the garden",
    "person": "ana",
    "limit": 5,
-   "now": "2026-07-12T09:00:00Z"
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
   },
   "expect": [
    "p"
+  ]
+ },
+ {
+  "id": "memory-rep-recalls-its-own-earlier-work",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "w",
+     "text": "Reviewed the citations for chapter three",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q1"
+     ]
+    }
+   ],
+   "query": "citations for chapter three",
+   "person": "rep:bailey",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [
+    "quest:q1"
+   ],
+   "scope_mode": "fence"
+  },
+  "expect": [
+   "w"
+  ]
+ },
+ {
+  "id": "memory-rep-never-sees-another-reps-items",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "w",
+     "text": "Reviewed the citations for chapter three",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q1"
+     ]
+    }
+   ],
+   "query": "citations for chapter three",
+   "person": "rep:batman",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [
+    "quest:q1"
+   ],
+   "scope_mode": "fence"
+  },
+  "expect": []
+ },
+ {
+  "id": "memory-character-with-no-person-recalls-its-own",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "c",
+     "text": "Told the guest the lighthouse is closed on Sundays",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "rep:gandalf",
+     "scope_tags": []
+    }
+   ],
+   "query": "is the lighthouse open on Sunday",
+   "person": "rep:gandalf",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [],
+   "scope_mode": "fence"
+  },
+  "expect": [
+   "c"
+  ]
+ },
+ {
+  "id": "memory-fence-hides-an-item-from-another-scope",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "a",
+     "text": "Tomato seedlings plan",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q1"
+     ]
+    },
+    {
+     "id": "b",
+     "text": "Tomato seedlings budget",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q2"
+     ]
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "rep:bailey",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [
+    "quest:q1"
+   ],
+   "scope_mode": "fence"
+  },
+  "expect": [
+   "a"
+  ]
+ },
+ {
+  "id": "memory-turn-with-several-scopes-sees-each",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "a",
+     "text": "Tomato seedlings plan",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q1"
+     ]
+    },
+    {
+     "id": "b",
+     "text": "Tomato seedlings budget",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q2"
+     ]
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "rep:bailey",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [
+    "quest:q1",
+    "quest:q2"
+   ],
+   "scope_mode": "fence"
+  },
+  "expect": [
+   "b",
+   "a"
+  ]
+ },
+ {
+  "id": "memory-affinity-prefers-own-scope-but-reaches-others",
+  "source": "invented-neutral",
+  "kind": "recall",
+  "args": {
+   "items": [
+    {
+     "id": "a",
+     "text": "Tomato seedlings plan",
+     "at": "2026-07-03T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q1"
+     ]
+    },
+    {
+     "id": "b",
+     "text": "Tomato seedlings budget",
+     "at": "2026-07-04T10:00:00Z",
+     "person": "rep:bailey",
+     "scope_tags": [
+      "quest:q2"
+     ]
+    }
+   ],
+   "query": "tomato seedlings",
+   "person": "rep:bailey",
+   "limit": 5,
+   "now": "2026-07-12T09:00:00Z",
+   "scope_tags": [
+    "quest:q1"
+   ],
+   "scope_mode": "affinity"
+  },
+  "expect": [
+   "a",
+   "b"
   ]
  }
 ]

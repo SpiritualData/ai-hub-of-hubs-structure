@@ -13,13 +13,14 @@ HERE = Path(__file__).resolve().parent
 NOW = "2026-07-12T09:00:00Z"
 
 
-def item(ident, text, at, person="ana"):
-    return {"id": ident, "text": text, "at": at, "person": person}
+def item(ident, text, at, person="ana", scope_tags=()):
+    return {"id": ident, "text": text, "at": at, "person": person, "scope_tags": list(scope_tags)}
 
 
-def case(name, items, query, expect, person="ana", limit=5):
+def case(name, items, query, expect, person="ana", limit=5, scope_tags=(), scope_mode="fence"):
     return {"id": "memory-" + name, "source": "invented-neutral", "kind": "recall",
-            "args": {"items": items, "query": query, "person": person, "limit": limit, "now": NOW}, "expect": expect}
+            "args": {"items": items, "query": query, "person": person, "limit": limit, "now": NOW,
+                     "scope_tags": list(scope_tags), "scope_mode": scope_mode}, "expect": expect}
 
 
 def main():
@@ -47,6 +48,13 @@ def main():
         case("unreadable-time-ranks-oldest", [item("odd", "Tomato seedlings note", "not a date"), item("ok", "Tomato seedlings note", "2026-07-01T10:00:00Z")], "tomato seedlings note", ["ok"]),
         case("word-inside-another-word-is-not-a-match", [item("pty", "Planned the party menu and the guest list", "2026-07-04T10:00:00Z")], "art classes", []),
         case("paraphrase-shares-no-word", [item("p", "The vegetable patch is ready for its first sowing", "2026-07-04T10:00:00Z")], "when do we begin planting the garden", ["p"]),
+        # a subject may be an AI representative (even one with no person behind it); an item may carry the scope of the work it came from
+        case("rep-recalls-its-own-earlier-work", [item("w", "Reviewed the citations for chapter three", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"])], "citations for chapter three", ["w"], person="rep:bailey", scope_tags=["quest:q1"]),
+        case("rep-never-sees-another-reps-items", [item("w", "Reviewed the citations for chapter three", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"])], "citations for chapter three", [], person="rep:batman", scope_tags=["quest:q1"]),
+        case("character-with-no-person-recalls-its-own", [item("c", "Told the guest the lighthouse is closed on Sundays", "2026-07-04T10:00:00Z", "rep:gandalf")], "is the lighthouse open on Sunday", ["c"], person="rep:gandalf"),
+        case("fence-hides-an-item-from-another-scope", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["a"], person="rep:bailey", scope_tags=["quest:q1"]),
+        case("turn-with-several-scopes-sees-each", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["b", "a"], person="rep:bailey", scope_tags=["quest:q1", "quest:q2"]),
+        case("affinity-prefers-own-scope-but-reaches-others", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["a", "b"], person="rep:bailey", scope_tags=["quest:q1"], scope_mode="affinity"),
     ]
     (HERE / "cases.json").write_text(json.dumps(cases, indent=1) + "\n")
     print(len(cases), "cases")
