@@ -8,6 +8,7 @@ Everything is fixed fake search results and a scripted judge (no network, no mod
 passed (each case weighs the same; fixed before any arm was scored, in README.md). ``searches`` per arm on the reuse cases is the cost the metric reports."""
 import csv
 import inspect
+from datetime import date
 import json
 import sys
 import tempfile
@@ -91,6 +92,14 @@ def facts(check, args, root, record, searches, context, prior, ids):
                           "context": len(context.items)},
         "reuse": lambda: {"reused": record["reused"], "searches": searches, "cited": (record.get("cited") or {}).get("done_on", ""), "rows": len(rows)},
         "twice": lambda: {"reused": record["reused"], "rows": len(rows)},
+        "observed": lambda: {"rows": len(rows), "searches": searches, "complete": record.get("gaps") == [], "queries_kept": len(args["observed"]),
+                             "queries_logged": len(rows[0]["queries"].split(";")) if rows else 0,
+                             "discipline": bool(rows) and rows[0]["change_my_mind"] == args["would_change"] and "fixed before reading" in rows[0]["criteria"],
+                             "from_the_answer": bool(rows) and rows[0]["synthesis_unknown"] == "The answer leaves the effect size open.",
+                             "revisit_days": (date.fromisoformat(rows[0]["refresh_on"]) - date.fromisoformat(rows[0]["done_on"])).days if rows else 0,
+                             "knowledge": len(know) > 0, "context": len(context.items)},
+        "observed_quick": lambda: {"rows": len(rows), "knowledge": len(know), "context": len(context.items), "recorded": record.get("recorded")},
+        "observed_twice": lambda: {"rows": len(rows), "reused": bool(record.get("reused")), "searches": searches},
         "extend": lambda: {"reused": record["reused"], "updated": record.get("updated", False), "rows": len(rows), "same_id": bool(rows) and rows[0]["investigation_id"] == prior["id"],
                            "items_grew": len(items) > prior["items"], "searched": searches > 0},
         "unrelated": lambda: {"reused": record["reused"], "searched": searches > 0, "prior_untouched": bool(rows) and rows[0]["synthesis_known"] == prior["known"] and rows[0]["done_on"] == prior["done_on"]},
@@ -126,13 +135,19 @@ def adapt(implementation, meter):
                 prior = {"id": row["investigation_id"], "items": len(made["items"]), "known": row["synthesis_known"], "done_on": row["done_on"]}
 
             def ask(prompt):
-                return json.dumps({"answered_by": prior.get("id", "") if args.get("judge_says") == "prior" else ""})
+                return json.dumps({"answered_by": prior.get("id", "") if args.get("judge_says") == "prior" else "", "known": "The answer treats the main point as settled.",
+                                   "contested": "No disagreement seen.", "unknown": "The answer leaves the effect size open.", "moves": "fast"})
             ports = dict(freshness=RegistryScan(), science=science, web=web, plumbing=None, ask=ask, store=store, context=context,
                          knowledge=HoldingKnowledge() if args.get("knowledge_held") else FolderKnowledge(root),
                          placer=lambda question, decision: list(args.get("places", [])))
             arm = implementation(**{k: v for k, v in ports.items() if k in inspect.signature(implementation).parameters})
-            for _ in range(2 if args["check"] in ("knowledge_once", "twice") else 1):
-                record = arm.review(**dict(args["review"], root=root, **({"reuse": False} if args["check"] == "knowledge_once" else {})))
+            for _ in range(2 if args["check"] in ("knowledge_once", "twice", "observed_twice") else 1):
+                if args["check"].startswith("observed"):     # research a turn already did: recorded without a new search
+                    base = args["review"]
+                    record = arm.record_observed(base["question"], base["decision"], args["observed"], answer=args.get("answer", ""), source_criteria=args.get("source_criteria", ""),
+                                                 would_change=args.get("would_change", ""), today=base["today"], root=root)
+                else:
+                    record = arm.review(**dict(args["review"], root=root, **({"reuse": False} if args["check"] == "knowledge_once" else {})))
             searches = web.calls + science.calls
             for _ in range(searches):
                 meter.record()

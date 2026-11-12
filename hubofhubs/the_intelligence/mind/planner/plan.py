@@ -65,6 +65,11 @@ class PlanDecision:
     delivery: Optional[str] = None
     # The structure move the turn calls for (none, frame, compare, review or focus: structure-in-conversation), self-reported on the planning call; None means none.
     structure_move: Optional[str] = None
+    # The decision or use the research of this turn serves (the planner's structured report on the call it already makes); empty for a quick fact, which Learning does not record.
+    # With ``research_criteria`` (what would count as a good source) and ``research_change`` (what would change the conclusion), fixed before the web read.
+    research_decision: str = ""
+    research_criteria: str = ""
+    research_change: str = ""
     # Whether the message accepts, or declines, an offer the previous reply made to keep structure (an open offer is shown to the planner); self-reported, false when absent.
     accepts_offer: bool = False
     declines_offer: bool = False

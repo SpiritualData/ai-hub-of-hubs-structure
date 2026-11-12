@@ -16,6 +16,7 @@ The signature is the interface's; the returned record adds ``reused``, ``recorde
 earlier research), ``knowledge`` (the answer of the knowledge port per finding) and ``updated`` (the investigation extended in place). The review's model calls stay the
 fast tier; the reuse judgement is one extra fast-tier call, made only when related investigations exist and none has the same question.
 """
+import copy
 from datetime import date
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 
@@ -24,7 +25,7 @@ from esoi import Lazy, implementation, split_ids
 from hubofhubs.the_world.learning import investigation_record as inv, investigation_store
 from hubofhubs.the_world.learning.research_freshness_reader.interface import FreshnessReading
 from hubofhubs.the_world.learning.research_ports import FolderKnowledge, FolderStore, norm, scope_of
-from hubofhubs.the_world.learning.systematic_review import SystematicReview, load_json
+from hubofhubs.the_world.learning.systematic_review import SystematicReview, as_hit, load_json
 from hubofhubs.the_world.model_plumbing.interface import ModelPlumbing
 from hubofhubs.the_world.science.interface import WorldKnowing
 from hubofhubs.the_world.tools.web_search.interface import SearchBackend
@@ -33,7 +34,24 @@ PROMPT_REUSE = ("A question is about to be researched. Earlier investigations on
                 "Decision it informs: {decision}\nEarlier investigations (id | date | question | what it found):\n{rows}\n"
                 "Reply with JSON only: {{\"answered_by\": \"<id of the one earlier investigation whose findings answer the question, copied exactly, or an empty string>\"}}. "
                 "An investigation about a related but different question does not answer it. Use no em dashes.")
+PROMPT_FACTS = ("A person asked a question and an answer was written from web results.\nQuestion: {question}\nDecision it informs: {decision}\nAnswer:\n{answer}\n"
+                "Results seen (title: snippet):\n{evidence}\nReply with JSON only: {{\"known\": \"what the answer treats as settled, one or two sentences\", "
+                "\"contested\": \"where sources or the answer disagree or hedge, or 'No disagreement seen.'\", \"unknown\": \"what is not established, one or two sentences\", "
+                "\"moves\": \"fast, normal or slow: how quickly the facts on this subject go out of date\"}}. Use only the answer and the results. Use no em dashes.")
+MOVES = {"fast": 14, "normal": None, "slow": 365}      # how fast the subject moves, as days to the revisit date (normal keeps the size's own)
 KNOWN_FLOOR = "Nothing left unestablished"
+
+
+class ReadReplay:
+    """The pages a turn opened in full, served back to the review's page-opening step: a url the turn read returns its text, any other is not opened (so its item stays a snippet)."""
+
+    def __init__(self, pages: Mapping[str, str]):
+        self.pages = dict(pages)
+
+    def fetch(self, url: str, *, focus: Any = None, **kwargs: Any):
+        from hubofhubs.the_world.observation import Observation
+        text = self.pages.get(url)
+        return Observation(kind="read", text=text) if text else Observation(kind="error", error="not opened in this turn")
 SAME_CELLS = ("investigation_id", "kind", "intent_id", "experiment_id", "question", "decision", "protocol_date", "method")
 
 
@@ -76,6 +94,77 @@ class RecordedResearch(SystematicReview):
             return {**record, "solution_link": filed, "recorded": True, "searched": False, "searches": 0, "cited": cited(earlier, "fresh"), "knowledge": [], "updated": False}
         gap = self.gap_queries(question, earlier) if earlier else []
         record = super().review(question, decision, size=size, links=links, queries=list(queries) or gap, investigation_id=investigation_id, reuse=False, **rest)
+        return self.finish(record, earlier, store, filed, solutions, scope, day, root)
+
+    # --- recording research a turn already did ------------------------------------------------------------------------------------------
+    def record_observed(self, question: str, decision: str, observed: Sequence[Mapping[str, Any]], answer: str = "", read: Optional[Mapping[str, str]] = None,
+                        source_criteria: str = "", would_change: str = "", size: str = "quick", links: Sequence[str] = (), criteria: Optional[Mapping[str, Any]] = None,
+                        intent_id: str = "", experiment_id: str = "", today: str = "", solution_id: str = "", root: Any = None) -> Mapping[str, Any]:
+        """Record the research a turn already did, with no search. ``observed`` is each search the turn made (``{"query", "hits": [{title, url, snippet, date}]}``), ``read``
+        the pages it opened in full (url to text), ``answer`` what it said, ``source_criteria`` and ``would_change`` the discipline stated before reading (what would count as a
+        good source, what would change the conclusion). The record is the review's own (screening with a count for each reason, items graded A to D, a decision for each candidate) built
+        from those hits; what is known, contested and unknown, and how fast the subject moves (the revisit date), come from one fast-tier call over the answer, and the rules' wording
+        stands when it fails. A question with no decision is a quick fact and is not recorded. A fresh earlier investigation that answers the question is not duplicated (it is returned,
+        ``reused``); a stale or smaller one is extended in place, as ``review`` does. Returns what ``review`` returns plus ``recorded``."""
+        day = today or date.today().isoformat()
+        if not (decision or "").strip() or not observed:
+            return {"recorded": False, "reused": False, "searched": False, "searches": 0, "knowledge": [], "cited": {}, "updated": False}
+        store = self.store or FolderStore(root)
+        links = list(links)
+        if not any(link.startswith("solution:") for link in links) and self.placer is not None:
+            links += [f"solution:{s}" for s in self.placer(question, decision) if s]
+        links, filed = investigation_store.with_solution(links, solution_id)
+        solutions, scope = [link[9:] for link in links if link.startswith("solution:")], scope_of(links)
+        earlier = self.earlier(store, question, decision, size, solutions, scope, day)
+        if earlier and earlier["state"] == "fresh":
+            record = investigation_store.record_of(earlier, root, store.items(earlier["investigation_id"]))
+            return {**record, "solution_link": filed, "recorded": True, "searched": False, "searches": 0, "cited": cited(earlier, "fresh"), "knowledge": [], "updated": False, "reused": True}
+        replay = copy.copy(self)
+        replay.observed, replay.science, replay.facts = list(observed), ReadReplay(read or {}), replay.answer_facts(question, decision, answer, observed) if answer else {}
+        record = SystematicReview.review(replay, question, decision, size=size, links=links, criteria=criteria, queries=[str(o.get("query") or "") for o in observed],
+                                         intent_id=intent_id or (solutions[0] if solutions else ""), experiment_id=experiment_id, today=day,
+                                         refresh_days=replay.facts.get("refresh_days"), solution_id=solution_id, root=root,
+                                         reuse=False)
+        row = record["investigation"]
+        if source_criteria:
+            row["criteria"] = f"{row['criteria']}. Sources that count, fixed before reading: {source_criteria}"
+        if would_change:
+            row["change_my_mind"] = would_change
+        return self.finish(record, earlier, store, filed, solutions, scope, day, root)
+
+    def answer_facts(self, question: str, decision: str, answer: str, observed: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+        """One fast-tier extraction from the answer the turn gave: what is known, contested and not established, and how fast the subject moves (the revisit date)."""
+        seen = "\n".join(f"- {h.get('title', '')}: {str(h.get('snippet', ''))[:160]}" for o in observed for h in (o.get("hits") or [])[:6])[:2400]
+        data = load_json(self.say(PROMPT_FACTS.format(question=question, decision=decision, answer=answer[:3000], evidence=seen)))
+        facts = {k: data[k].strip().replace(chr(0x2014), ",") for k in ("known", "contested", "unknown") if isinstance(data.get(k), str) and data[k].strip()}
+        if len(facts) == 3 and data.get("moves") in MOVES:
+            facts["refresh_days"] = MOVES[data["moves"]]
+        return facts if len(facts) >= 3 else {}
+
+    def search(self, plan: Sequence[str], kinds: Sequence[str], day: str, failures: Optional[List[str]] = None):
+        """The review's search, or the turn's own searches when recording research already done (nothing is searched)."""
+        if getattr(self, "observed", None) is None:
+            return super().search(plan, kinds, day, failures)
+        hits: List[Dict[str, str]] = []
+        log: List[Dict[str, Any]] = []
+        for o in self.observed:
+            found = [as_hit(h) for h in o.get("hits") or []]
+            log.append({"source": "web search", "query": str(o.get("query") or ""), "date": day, "hits": len(found)})
+            hits += [dict(h, found_by="web search") for h in found]
+        return hits, log, []
+
+    def plan(self, question: str, candidates: Sequence[str], queries: Sequence[str], size: str) -> List[str]:
+        return [str(q) for q in queries] if getattr(self, "observed", None) is not None else super().plan(question, candidates, queries, size)
+
+    def synthesise(self, items, crit, question, decision, use_model):
+        facts = getattr(self, "facts", None) or {}
+        if facts.get("known"):
+            return facts["known"], facts["contested"], facts["unknown"]
+        return super().synthesise(items, crit, question, decision, use_model)
+
+    def finish(self, record: Mapping[str, Any], earlier: Optional[Mapping[str, str]], store: Any, filed: Mapping[str, Any], solutions: Sequence[str], scope: Sequence[str], day: str,
+               root: Any) -> Mapping[str, Any]:
+        """The record, extended in place when it extends an earlier one, then kept: knowledge items, the investigation through the store port, the context item."""
         row, items = dict(record["investigation"]), [dict(i) for i in record["items"]]
         if earlier:
             row, items = self.extend(earlier, store.items(earlier["investigation_id"]), row, items, day)
