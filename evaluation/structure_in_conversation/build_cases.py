@@ -112,5 +112,30 @@ add("held", "no-milestone-for-held-solution", turn("frame", records(milestones="
 add("held", "nothing-else-missing", turn("frame", records(milestones=""), ["s-1"], draft=dict(DRAFT, alternatives=[ALTERNATIVES[0]]), held_ids=["s-1"]),
     expect("frame", ALL, "existing", (1, 0), "existing", "4", "proposed"))
 
+def many():
+    """A quest that holds several solutions, each with its own problem, ideal and metric (one with a value logged), as a person who has built structure over time."""
+    return {"problems": {"p-1": {"name": "Practice is irregular"}, "p-2": {"name": "Progress is hard to see"}, "p-3": {"name": "Energy runs low"}},
+            "ideals": {"i-1": {"name": "A practice that holds without effort"}, "i-2": {"name": "Visible, steady improvement"}},
+            "solutions": {"s-1": {"name": "Keep a routine", "problem_ids": ["p-1"], "ideal_ids": ["i-1"], "milestones": "1. Ten sessions logged", "authoritative_metric_id": "m-1"},
+                          "s-2": {"name": "Build a skill", "problem_ids": ["p-2"], "ideal_ids": ["i-2"], "milestones": "1. Pass the first checkpoint", "authoritative_metric_id": "m-2"},
+                          "s-3": {"name": "Rest well", "problem_ids": ["p-3"], "ideal_ids": ["i-1"]}},
+            "implementations": {"a-2": {"solution_id": "s-2", "name": "Daily drill"}},
+            "metrics": {"m-1": {"name": "Sessions per week", "solution_ids": ["s-1"], "record": "Current value: 4 (as of 2026-11-03, from the person's own report)"},
+                        "m-2": {"name": "Checkpoint score", "solution_ids": ["s-2"], "record": "Current value: 7 (as of 2026-11-05, from the person's own report)"}}}
+
+
+MANY_ALL = ("problem", "ideal", "solution", "alternatives", "metric", "milestone")
+add("several", "frame-matched-keeps-its-own-metric", turn("frame", many(), ["s-2"]),
+    expect("frame", MANY_ALL, "existing", (1, 3), "existing", "7", "existing", ["alternatives"], 3))
+add("several", "compare-matched", turn("compare", many(), ["s-2"]),
+    expect("compare", ("solution", "alternatives", "metric"), "existing", (1, 3), "existing", "7", None, ["alternatives"], 3))
+add("several", "review-matched-reads-its-value", turn("review", many(), ["s-2"]),
+    expect("review", ("solution", "metric", "milestone"), "existing", (0, 0), "existing", "7", "existing"))
+add("several", "review-other-solution-other-value", turn("review", many(), ["s-1"]),
+    expect("review", ("solution", "metric", "milestone"), "existing", (0, 0), "existing", "4", "existing"))
+add("several", "focus-matched", turn("focus", many(), ["s-2"]), expect("focus", ("problem", "milestone"), None, (0, 0), None, None, "existing"))
+add("several", "none-fits-proposes-a-new-solution", turn("frame", many(), []),
+    expect("frame", ("solution", "alternatives", "metric", "milestone"), "proposed", (0, 3), "proposed", None, "proposed", ["solution", "alternatives", "metric", "milestone"], 6))
+
 (HERE / "cases.json").write_text(json.dumps(cases, indent=1, sort_keys=True) + "\n")
 print(f"{len(cases)} cases")

@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from offline import judge  # noqa: E402
 
-KINDS = ("stay_out", "frame_bare", "frame_existing", "reuse_complete", "compare", "review", "focus", "declined", "held")
+KINDS = ("stay_out", "frame_bare", "frame_existing", "reuse_complete", "compare", "review", "focus", "declined", "held", "several")
 
 
 def part_state(part):

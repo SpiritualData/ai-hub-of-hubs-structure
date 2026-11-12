@@ -47,7 +47,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Metric Upkeep | `metric-upkeep` | `hubofhubs.run("metric-upkeep", ...)` | Record fields (`record_fields`) | Metric states and intermediates are right |
 | Response Quality | `response-quality` | `hubofhubs.run("response-quality", ...)` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Solution Passes | `solution-passes` | `hubofhubs.run("solution-passes", ...)` | Network passes (`network_passes`) | Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost |
-| Structure in conversation | `structure-in-conversation` | `hubofhubs.run("structure-in-conversation", {'turn': {'move': 'none'}})` | No structure (`none`) | Replies make the structure move their turn calls for |
+| Structure in conversation | `structure-in-conversation` | `hubofhubs.run("structure-in-conversation", {'turn': {'move': 'none'}})` | Structure move (`structure_move`) | Replies make the structure move their turn calls for |
 
 ## Problems and ideals
 
@@ -81,7 +81,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Balanced score of a response against its quality profile (`metric-response-quality`): leader `date_arithmetic`, 15 of 15 cases
 - Record-held answers reached and followed (`metric-solution-passes`): leader `network_passes`, 10 of 11 cases
 - Work done right because each touched solution was considered, at a priced cost (`metric-solution-passes-work-outcome`): leader `network_passes`, 10 of 11 cases
-- Replies make the structure move their turn calls for (`metric-structure-in-conversation`): leader `structure_move`, 30 of 30 cases
+- Replies make the structure move their turn calls for (`metric-structure-in-conversation`): leader `structure_move`, 36 of 36 cases
 
 ## Where to go next
 
@@ -126,7 +126,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Metric Upkeep | `metric-upkeep` | Record fields (`record_fields`) | Metric states and intermediates are right |
 | Response Quality | `response-quality` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Solution Passes | `solution-passes` | Network passes (`network_passes`) | Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost |
-| Structure in conversation | `structure-in-conversation` | No structure (`none`) | Replies make the structure move their turn calls for |
+| Structure in conversation | `structure-in-conversation` | Structure move (`structure_move`) | Replies make the structure move their turn calls for |
 
 ### Implementations
 

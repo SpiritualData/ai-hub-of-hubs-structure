@@ -616,11 +616,11 @@
   }
  },
  "structure-in-conversation": {
-  "default": "none",
+  "default": "structure_move",
   "evidence": {
-   "detail": "beaten by structure_move: structure_move is better than none (two-sided exact McNemar test, Holm-adjusted p=1.19e-07, 24 of 30 cases disagree)",
+   "detail": "structure_move is better than none (two-sided exact McNemar test, Holm-adjusted p=1.86e-09, 30 of 36 cases disagree)",
    "p": 0.0,
-   "verdict": "LOSS"
+   "verdict": "WIN"
   },
   "modules": {
    "none": "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.moves",
