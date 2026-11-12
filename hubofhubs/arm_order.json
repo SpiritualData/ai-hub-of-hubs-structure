@@ -146,10 +146,12 @@
   "findings_only"
  ],
  "terminal-session": [
-  "live_session",
   "acp_client_session",
-  "textual_session",
+  "live_session",
   "polished_session",
+  "textual_session",
+  "adopted_session",
+  "opencode_client_session",
   "line_repl"
  ],
  "the-hands": [
@@ -162,7 +164,8 @@
  ],
  "the-learning": [
   "systematic_review",
-  "registry_research"
+  "registry_research",
+  "recorded_research"
  ],
  "the-science": [
   "openalex_semantic",

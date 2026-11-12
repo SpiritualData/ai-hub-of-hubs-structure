@@ -144,6 +144,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | relevant_solutions | records_then_model | 62 | 82.3% (71.0% to 89.8%), 51/62 | $0 | 4.1 (median) | ahead of records_then_model (two-sided sign test p=8.47e-16) | none recorded |
 | request_planning | cue_router (selected) | 105 | 63.8% (54.3% to 72.4%), 67/105 | $0 | 0 (median) | selected | none recorded |
 | request_planning | one_piece | 105 | 22.9% (15.9% to 31.8%), 24/105 | $0 | 0 (median) | ahead of one_piece (two-sided McNemar p=3.38e-08) | none recorded |
+| research_recorded | systematic_review (selected) | 33 | 15.2% (6.7% to 30.9%), 5/33 | 56.8 model calls (no price) | 0 (median) | selected | none recorded |
+| research_recorded | recorded_research | 33 | 100.0% (89.6% to 100.0%), 33/33 | 5.27 model calls (no price) | 0 (median) | recorded_research beats it (two-sided McNemar p=7.45e-09; 33/33, 5.27 model calls (no price) per pass) | none recorded |
 | resolve_a_reference | exact_match (selected) | 32 | 87.5% (71.9% to 95.0%), 28/32 | $0 | 0 (median) | selected | none recorded |
 | resolve_a_reference | shared_words | 32 | 62.5% (45.3% to 77.1%), 20/32 | $0 | 0 (median) | ahead of shared_words (two-sided McNemar p=0.0215) | none recorded |
 | response_quality | evidence_check (selected) | 15 | 100.0% (79.6% to 100.0%), 15/15 | $0 | 0 (median) | selected | none recorded |
@@ -159,14 +161,15 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | search_backend | provider | 40 | 30.0% (18.1% to 45.4%), 12/40 | $0.0001333 | 1.4 (median) | ahead of provider (two-sided McNemar p=1.1e-05) | none recorded |
 | solution_passes | `network_passes` | no run on the whole case set yet (2 partial run(s) recorded) | not stated | not stated | not stated | not compared: no whole run | none recorded |
 | stay_current | registry_scan (selected) | 41 | 100.0% (91.4% to 100.0%), 41/41 | $0 | 0 (median) | selected | none recorded |
-| structure_in_conversation | none (selected) | 30 | 20.0% (9.5% to 37.3%), 6/30 | $0 | 0 (median) | selected | none recorded |
-| structure_in_conversation | structure_move | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0 | 0 (median) | structure_move beats it (two-sided McNemar p=1.19e-07; 30/30, $0 per pass) | none recorded |
+| structure_in_conversation | structure_move (selected) | 36 | 100.0% (90.4% to 100.0%), 36/36 | $0 | 0 (median) | selected | none recorded |
+| structure_in_conversation | none | 36 | 16.7% (7.9% to 31.9%), 6/36 | $0 | 0 (median) | ahead of none (two-sided McNemar p=1.86e-09) | none recorded |
 | structure_in_view | event_tree (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
 | structure_watch | best_tier_call (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
 | structure_watch | findings_only | 18 | 72.2% (49.1% to 87.5%), 13/18 | $0 | 0 (median) | ahead of findings_only, not significant (two-sided sign test p=0.0625) | none recorded |
-| terminal_presentation | live_session (selected) | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 1.7 (median) | selected | none recorded |
-| terminal_presentation | polished_session | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 2.1 (median) | ahead of polished_session (two-sided sign test p=0.0312) | none recorded |
-| terminal_presentation | textual_session | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0 | 2 (median) | ahead of textual_session (two-sided sign test p=0.0312) | none recorded |
+| terminal_presentation | live_session (selected) | 8 | 100.0% (67.6% to 100.0%), 8/8 | $0 | 2.5 (median) | selected | none recorded |
+| terminal_presentation | adopted_session | 8 | 100.0% (67.6% to 100.0%), 8/8 | $0 | 3.9 (median) | ahead of adopted_session (two-sided sign test p=0.0234) | none recorded |
+| terminal_presentation | polished_session | 8 | 100.0% (67.6% to 100.0%), 8/8 | $0 | 3 (median) | ahead of polished_session (two-sided sign test p=0.0234) | none recorded |
+| terminal_presentation | textual_session | 8 | 100.0% (67.6% to 100.0%), 8/8 | $0 | 2.95 (median) | ahead of textual_session (two-sided sign test p=0.0234) | none recorded |
 | terminal_session | live_session (selected) | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0 (median) | selected | none recorded |
 | terminal_session | line_repl | 67 | 59.7% (47.7% to 70.6%), 40/67 | 0.225 model calls (no price) | 0 (median) | ahead of line_repl (two-sided McNemar p=4.47e-08) | none recorded |
 | terminal_session | polished_session | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0.2 (median) | identical to polished_session on all 67 cases | none recorded |

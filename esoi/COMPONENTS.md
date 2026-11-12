@@ -6,7 +6,7 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | Component | Handle | Layer | Role | Serves |
 |---|---|---|---|---|
 | Records and top intent | `esoi-records` | docs | The intent, problems, ideals, solutions, implementations and metrics records, their generated docs and the checker configuration | the-assembler |
-| Status script | `status-script` | scripts | Rewrites the status block of README.md from the records, and its test | research-freshness-reader |
+| Status script | `status-script` | scripts | Rewrites the status block of README.md from the records, and its test,  also the hub's own esoi rule L1 (research is recorded as an investigation) and its test | research-freshness-reader |
 | Registry and docs | `hub-registry` | docs | The registry of hubs (areas, researched candidates, each consumer hub connections and hand-wired services), the example lane config and the guides | research-freshness-reader, the-tools, the-hands |
 | The Self code | `hub-the-self` | core | The Self: the assembly, the flow of a whole response, and Integrity. | role-understanding, system-integrity, the-assembler, the-self |
 | Body code | `hub-the-body` | core | Body: internal context, the card store, run records and intake sources. | card-store, intake-sources, internal-context, the-body |
@@ -15,3 +15,4 @@ Edit the CSV, never this file. The rules are listed by `esoi rules`.
 | Consciousness code | `hub-the-consciousness` | core | Consciousness: Representatives, Judgment Calls, Prioritization, Request Intake and the terminal blocks. | ai-session-experience, feedback-learning, frontend-interface, judgment-calls, prioritization, request-intake, structure-in-view, the-consciousness, the-representatives, terminal-session |
 | Package root and shared test support | `hub-package` | core | The package entry, the packaged selection and the tests that read the whole hub. | the-assembler |
 | Evaluation code | `hub-evaluation` | evaluation | The per-seat cases, scorers and arm wrappers that esoi runs to record results. | the-assembler |
+| Vendored Mistral Vibe interface | `vendored-mistral-vibe-ui` | vendor | Third-party files of the interface adopted for the terminal arm adopted_session, kept as the authors wrote them (Mistral Vibe v2.26.1, Apache-2.0): its licence text and its stylesheet. Its Python files are counted with the Consciousness code, in a folder named vendor. | terminal-session |

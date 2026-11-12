@@ -125,7 +125,9 @@ The table below is generated from the records. Names lead, each part says what i
 | Decision Check | Critical Thinking | 0 | 0 | 0 | none | `decision-check` |
 | Metric Upkeep | Critical Thinking | 0 | 0 | 0 | none | `metric-upkeep` |
 | Solution Passes | Critical Thinking | 0 | 0 | 0 | none | `solution-passes` |
+| Structure in conversation | Critical Thinking | 0 | 0 | 0 | none | `structure-in-conversation` |
 | Nervous System | Intelligence | 4 | 4 | 26 | 2026-10-30 | `nervous-system` |
+| Structure Watch | Nervous System | 0 | 0 | 0 | none | `structure-watch` |
 | Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
 | World | the hub | 7 | 1 | 37 | 2026-10-30 | `the-world` |
 | Science | World | 10 | 2 | 74 | 2026-10-30 | `the-science` |
@@ -149,9 +151,9 @@ The table below is generated from the records. Names lead, each part says what i
 | Prioritization | Consciousness | 0 | 0 | 0 | none | `prioritization` |
 | Request Intake | Consciousness | 0 | 0 | 0 | none | `request-intake` |
 | AI Session Experience | Consciousness | 0 | 0 | 0 | none | `ai-session-experience` |
-| Terminal Experience | AI Session Experience | 1 | 1 | 14 | 2026-11-10 | `terminal-session` |
+| Terminal Experience | AI Session Experience | 2 | 2 | 24 | 2026-11-11 | `terminal-session` |
 | Frontend Interface | AI Session Experience | 0 | 0 | 0 | none | `frontend-interface` |
 | Structure In View | AI Session Experience | 0 | 0 | 0 | none | `structure-in-view` |
 
-76 areas and 497 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+77 areas and 505 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

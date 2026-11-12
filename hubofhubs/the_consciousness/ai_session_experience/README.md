@@ -47,8 +47,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 
 - Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks (`metric-frontend-interface`): leader `json_wire`, 28 of 28 cases
 - Right solution per sub-agent, detail only when opened (`metric-structure-in-view`): leader `event_tree`, 20 of 20 cases
-- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 67 of 67 cases
-- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `live_session`, 7 of 7 cases
+- Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 58 of 58 cases
+- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `acp_client_session`, 5 of 5 cases
 
 ## Where to go next
 
@@ -97,6 +97,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Textual session (full-screen terminal) | `terminal-session:textual_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/textual_session.py](terminal_experience/textual_session.py) |  |
 | Polished session (full-screen terminal with the settled screen rules) | `terminal-session:polished_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/polished/session.py](terminal_experience/polished/session.py) |  |
 | ACP client session (an existing agent terminal draws the hub) | `terminal-session:acp_client_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/acp_client_session.py](terminal_experience/acp_client_session.py) |  |
+| Adopted session (the interface of an existing terminal agent) | `terminal-session:adopted_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/adopted_session/session.py](terminal_experience/adopted_session/session.py) |  |
+| opencode client session (the stock opencode terminal draws the hub over its own HTTP API) | `terminal-session:opencode_client_session` | [hubofhubs/the_consciousness/ai_session_experience/terminal_experience/opencode_client_session.py](terminal_experience/opencode_client_session.py) |  |
 
 ### Metrics
 

@@ -42,7 +42,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Model Plumbing | `model-plumbing` | `hubofhubs.run("model-plumbing", ...)` | Tier chooser then vendor (`via_vendor`) | Model asked at the tier, within the budget |
 | Science | `the-science` | `hubofhubs.run("the-science", 'meditation and attention')` | OpenAlex semantic search (`openalex_semantic`) | Research question finds its paper |
 | Tools | `the-tools` | `hubofhubs.run("the-tools", ...)` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user |
-| Learning | `the-learning` | `hubofhubs.run("the-learning", '2026-11-03')` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants |
+| Learning | `the-learning` | `hubofhubs.run("the-learning", '2026-11-03')` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants, Research recorded and reused |
 | Research Freshness Reader | `research-freshness-reader` | `hubofhubs.run("research-freshness-reader", '2026-10-01')` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
 ## Problems and ideals
@@ -54,6 +54,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Agent harness costly and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
 - Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer often cites a web page, or nothing, instead of the papers and data that bear on it, so the reader cannot check it.
 - The outside is wired into each part by hand (`hprob-the-outside-is-wired-into-each-part-by-hand`): Each part that needs a model or a tool is wired to one vendor or one integration directly, so a better model or tool outside the system cannot be adopted without rewriting parts.
+- Research that decides a part is left in the chat (`hprob-research-is-left-in-the-chat`): A choice between parts rests on a web lookup whose queries, sources, exclusions and reasons stay in a conversation or a commit message, so the next person cannot see what was read, what was left out or when to redo it.
 - Research dates read by hand (`hprob-research-dates-are-read-by-hand`): How old each area's research is has to be worked out by hand, so stale recommendations go unnoticed.
 
 **Ideals**
@@ -69,6 +70,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Research kept current and done as a review (`metric-the-learning`): leader `systematic_review`, 30 of 30 cases
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`)
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`)
+- Research recorded and reused (`metric-research-recorded-and-reused`): leader `recorded_research`, 33 of 33 cases
 - Registry freshness reading (`metric-research-freshness-reader`): leader `registry_scan`, 41 of 41 cases
 
 ## Where to go next
@@ -92,6 +94,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Agent harness costly and slow on a subscription (`hprob-harness-dear-and-slow-on-the-subscription`): An agent harness used on a flat subscription is slow and spends more tokens than the work needs, partly because the context it is given is poor and partly because it repeats work through sub-agents and recursion.
 - Claims without checkable sources (`hprob-claims-without-checkable-sources`): A factual or research answer often cites a web page, or nothing, instead of the papers and data that bear on it, so the reader cannot check it.
 - The outside is wired into each part by hand (`hprob-the-outside-is-wired-into-each-part-by-hand`): Each part that needs a model or a tool is wired to one vendor or one integration directly, so a better model or tool outside the system cannot be adopted without rewriting parts.
+- Research that decides a part is left in the chat (`hprob-research-is-left-in-the-chat`): A choice between parts rests on a web lookup whose queries, sources, exclusions and reasons stay in a conversation or a commit message, so the next person cannot see what was read, what was left out or when to redo it.
 - Research dates read by hand (`hprob-research-dates-are-read-by-hand`): How old each area's research is has to be worked out by hand, so stale recommendations go unnoticed.
 
 ### Ideals
@@ -106,7 +109,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Model Plumbing | `model-plumbing` | Tier chooser then vendor (`via_vendor`) | Model asked at the tier, within the budget |
 | Science | `the-science` | OpenAlex semantic search (`openalex_semantic`) | Research question finds its paper |
 | Tools | `the-tools` | Categories of tools (`composition`) | The best integration of each category is chosen, Share of connections that need no code, Integration added with zero code, Integration served by combined hubs, Integration available within the weekly refresh, Integration credentials stay with their user |
-| Learning | `the-learning` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants |
+| Learning | `the-learning` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants, Research recorded and reused |
 | Research Freshness Reader | `research-freshness-reader` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
 ### Implementations
@@ -118,6 +121,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Tier chooser then vendor | `model-plumbing:via_vendor` | [hubofhubs/the_world/model_plumbing/via_vendor.py](model_plumbing/via_vendor.py) | [model_plumbing](model_plumbing/README.md) |
 | Stale areas and one search | `the-learning:registry_research` | [hubofhubs/the_world/learning/registry_research.py](learning/registry_research.py) |  |
 | Systematic review | `the-learning:systematic_review` | [hubofhubs/the_world/learning/systematic_review.py](learning/systematic_review.py) |  |
+| Recorded and reused research | `the-learning:recorded_research` | [hubofhubs/the_world/learning/recorded_research.py](learning/recorded_research.py) |  |
 | OpenAlex keyword search | `the-science:openalex` | [hubofhubs/the_world/science/openalex.py](science/openalex.py) |  |
 | OpenAlex semantic search | `the-science:openalex_semantic` | [hubofhubs/the_world/science/openalex_semantic.py](science/openalex_semantic.py) |  |
 | OpenAlex keywords, rule rewrite | `the-science:openalex_keywords` | [hubofhubs/the_world/science/openalex_keywords.py](science/openalex_keywords.py) |  |
@@ -133,6 +137,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Research kept current and done as a review (`metric-the-learning`): `esoi run learning_review --impl systematic_review; esoi run learning_review --impl registry_research`
 - Public stage sourced and triangulated (`metric-public-stage-sourced-and-triangulated`): `python3 -m pytest tests/test_public_benchmarks.py`
 - Best in circumstance with variants (`metric-best-in-circumstance-with-variants`): `python3 -m pytest hubofhubs/the_world/tests/test_tiers.py`
+- Research recorded and reused (`metric-research-recorded-and-reused`): `esoi run research_recorded --impl systematic_review; esoi run research_recorded --impl recorded_research`
 - Registry freshness reading (`metric-research-freshness-reader`): `esoi run stay_current --impl registry_scan`
 
 

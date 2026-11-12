@@ -134,8 +134,10 @@ at the repository root.
 | Structure Watch, Findings only (`structure-watch:findings_only`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
 | Terminal Experience, ACP client session (an existing agent terminal draws the hub) (`terminal-session:acp_client_session`) | none | none | `acp` via extra `acp` | program `toad` | no |
+| Terminal Experience, Adopted session (the interface of an existing terminal agent) (`terminal-session:adopted_session`) | none | none | `textual` via extra `textual`<br>`pydantic` via extra `adopted_ui` | none | no |
 | Terminal Experience, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Terminal Experience, Live session (reference terminal) (`terminal-session:live_session`) | none | none | none | none | no |
+| Terminal Experience, opencode client session (the stock opencode terminal draws the hub over its own HTTP API) (`terminal-session:opencode_client_session`) | none | none | none | program `opencode` | no |
 | Terminal Experience, Polished session (full-screen terminal with the settled screen rules) (`terminal-session:polished_session`) | none | none | `textual` via extra `textual` | none | no |
 | Terminal Experience, Textual session (full-screen terminal) (`terminal-session:textual_session`) | none | none | `textual` via extra `textual` | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
@@ -146,6 +148,7 @@ at the repository root.
 | Intelligence, One request through the long view, the target, the Mind and the checks (`the-intelligence:composition`) | none | none | none | none | no |
 | Intuition, What was taken for similar requests (`the-intuition:co_taken`) | none | none | none | none | no |
 | Intuition, Nearest items by wording (`the-intuition:nearest_cards`) | none | none | none | none | no |
+| Learning, Recorded and reused research (`the-learning:recorded_research`) | none | none | none | none | no |
 | Learning, Stale areas and one search (`the-learning:registry_research`) | none | none | none | none | no |
 | Learning, Systematic review (`the-learning:systematic_review`) | none | none | none | none | no |
 | Mind, The four parts of the Mind in order (`the-mind:composition`) | none | none | none | none | no |

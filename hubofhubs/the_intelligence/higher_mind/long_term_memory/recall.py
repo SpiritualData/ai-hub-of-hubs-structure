@@ -1,6 +1,6 @@
 """Long-Term Memory arms: keep what happened across requests as dated items per person, drop them after a retention period, and recall the ones that bear on a
 request. An item is a mapping with ``text``, optionally ``id`` and ``at`` (an ISO time). A subject's items (a person's or an AI representative's) are kept apart: nothing retained for one is
-recalled for another. An item may carry ``scope_tags`` (for example ``quest:<id>``, the access fence: a recall carries what the asker may open and a tagged item sharing none of it is never recalled, and a turn with no scope tags sees no tagged item) and ``affinity_tags`` (ranking only: the turn's own
+recalled for another. An item may carry ``scope_tags`` (for example ``project:<id>``, the access fence: a recall carries what the asker may open and a tagged item sharing none of it is never recalled, and a turn with no scope tags sees no tagged item) and ``affinity_tags`` (ranking only: the turn's own
 scope is preferred and nothing is hidden by it).
 
 ``file_recall`` keeps one JSON file per person and ranks by the share of the query's keywords an item contains, damped by age (the score halves every
@@ -22,7 +22,7 @@ from hubofhubs.the_body.internal_context.card_store.interface import CardStore
 from hubofhubs.the_body.internal_context.card_store.text_sampling import keywords_from_text
 from hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags import affinity_factor
 
-HOME_BOOST = 1.5      # an item of the turn's own affinity scope ranks first (placeholder weights, the same as Quest AI Runner's)
+HOME_BOOST = 1.5      # an item of the turn's own affinity scope ranks first (placeholder weights, the same as the production consumer's)
 AWAY_FACTOR = 0.6
 MAX_AGE_DAYS = 180.0
 HALF_LIFE_DAYS = 60.0

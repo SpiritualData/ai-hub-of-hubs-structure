@@ -659,14 +659,16 @@
  "terminal-session": {
   "default": "live_session",
   "evidence": {
-   "detail": "live_session is better than polished_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0312, 7 of 7 cases disagree); live_session is better than textual_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0312, 7 of 7 cases disagree)",
-   "p": 0.03125,
+   "detail": "live_session is better than adopted_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 8 of 8 cases disagree); live_session is better than polished_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 8 of 8 cases disagree); live_session is better than textual_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 8 of 8 cases disagree)",
+   "p": 0.023438,
    "verdict": "WIN"
   },
   "modules": {
    "acp_client_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.acp_client_session",
+   "adopted_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.adopted_session.session",
    "line_repl": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl",
    "live_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live",
+   "opencode_client_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.opencode_client_session",
    "polished_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.session",
    "textual_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.textual_session"
   }
@@ -727,6 +729,7 @@
    "verdict": "WIN"
   },
   "modules": {
+   "recorded_research": "hubofhubs.the_world.learning.recorded_research",
    "registry_research": "hubofhubs.the_world.learning.registry_research",
    "systematic_review": "hubofhubs.the_world.learning.systematic_review"
   }
