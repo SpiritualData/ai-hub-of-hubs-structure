@@ -1,5 +1,6 @@
 # esoi configuration for ai-hub-of-hubs-structure.
 package = "hubofhubs"
+plugins = ["scripts/esoi_rules.py"]   # the hub's own rule L1 (research is recorded as an investigation)
 layers = ["core"]
 other_layers = ["docs", "tests", "scripts", "evaluation"]
 max_lines = 1500
@@ -173,6 +174,18 @@ seconds_per_case = 30
 "round-trip-steer" = 2
 "round-trip-approve" = 2
 "round-trip-refuse" = 2
+# Revision 2, 2026-11-11 (reason: the owner used the terminal at a narrow width and named what still looked handwritten; revision 1 judged a screen right that he judged wrong). The nine
+# checks below were added and their weights fixed here before any arm was scored on them, with the same rule as above (3 where a miss shows the person raw machinery or breaks a copy,
+# 2 where it makes a figure or a name wrong or hard to read, 1 where it is spacing). Every arm is re-scored on revision 2; the rows of revision 1 describe an earlier set of checks.
+"no-raw-markdown" = 3                       # X10, X13: **bold** and backticks on screen are the model's markup, not the person's words
+"no-internal-vocabulary" = 3                # X16, X18: "ok run      date", "session started", "message-received" are the harness talking to itself
+"answer-once" = 3                           # X10, X18: the answer shown again as a truncated step is the same-update-twice problem in another form
+"resume-command-unbroken" = 3               # X33: a command broken in the middle cannot be copied and run
+"no-empty-figure-segment" = 2               # X3, X33: "calls | 135 tokens" lost its number
+"header-has-full-name" = 2                  # X2, X3: the name spelled out and the header fitting the width
+"cost-at-cent-precision" = 2                # X3: $0.2077 claims a precision nobody needs
+"goal-as-persons-message" = 2               # X1: the goal is the person's own words, not a "started:" status line
+"no-stray-leading-padding" = 1              # X18: one shared margin, with hanging indents of two
 "repaints-under-bound" = 1                  # at most 10 repaints a second and 4 cursor jumps a repaint
 "first-output-within-a-second" = 1          # Nielsen's one-second limit
 
@@ -242,6 +255,12 @@ seconds_per_case = 1
 
 # Opt-in rules (esoi/docs): S36 the overall network on the root solution, S37 every id has an interface and a one-line entry,
 # S38 the paragraph and diagram match the code, S39 the ratchet against the base commit. S38 floors are per intent, set at the measured values.
+# L1 (scripts/esoi_rules.py): a registry finding researched on or after `since` names an investigation that exists; advisory until `fail_from`, then a failure.
+# The 22 findings researched on 2026-11-10 and the older ones are before `since`, so they are not asked for one.
+[rules.L1]
+since = "2026-11-11"
+fail_from = "2026-11-18"
+
 [rules.S36]
 enabled = true
 

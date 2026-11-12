@@ -641,6 +641,9 @@ NAMES = {
     "hubofhubs.the_world.learning.interface": (
         "Staying",
     ),
+    "hubofhubs.the_world.learning.investigation_store": (
+        "record_investigation",
+    ),
     "hubofhubs.the_world.learning.research_freshness_reader.interface": (
         "FreshnessReading",
     ),

@@ -40,3 +40,22 @@ the metric says so. A held-out split is an opt-in setting (`[selection] holdout`
 - The hub core stays standard library plus esoi.
 - No consumer-specific content: prompts and settings of a product stay in that product.
 - Generated blocks (the README tables, `docs/reference/leaderboard.md`, `docs/reference/evidence-by-arm.md`) are never edited by hand; run `scripts/status.py`.
+
+## 5. Research is recorded as an investigation
+
+Research that informs a solution, an arm, a metric or a registry finding is recorded as an investigation in the same pass, before the change it informs. An investigation is
+one question, the decision it informs, a method and criteria, the queries with dates and hit counts, what was screened out and why, one item per kept source (with its
+URL, grade and what it changed), what is known, contested and unknown, the limitations, a decision for each candidate and a date to revisit
+(`hubofhubs/the_world/learning/investigation_record.py` has the standard; `hubofhubs/registry/investigations.csv` has examples).
+
+Write it without editing the CSV files: put the record in a JSON file with `investigation` (the cells of `investigations.csv`) and `items` (one object per kept item; cells
+left out are filled) and run
+
+```bash
+ahohs investigation record FILE.json        # or, in code: from hubofhubs.api import record_investigation
+```
+
+It checks the record against the standard, refuses one with gaps (or `--allow-gaps`) and writes both files. Then name the investigation in the `investigation_id` cell of each
+registry finding it produced and link it to the solution it bears on (`links`: `solution:<id>`). Rule L1 of `scripts/esoi_rules.py` (`esoi check`) reads a finding researched
+on or after the date in `[rules.L1]` of `esoi.toml` and asks for an investigation that exists, and for a source on every kept item; it is advice until its `fail_from` date,
+then a failure. Waive a finding or an item in `waivers.csv` (rule `L1`) with a reason.

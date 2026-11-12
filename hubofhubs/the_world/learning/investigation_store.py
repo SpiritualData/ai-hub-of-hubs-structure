@@ -10,6 +10,7 @@ Files and columns named before the rename (``research.csv``, ``research_items.cs
 everything is written under the new names.
 """
 import csv
+import json
 from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
@@ -260,6 +261,46 @@ def link_findings(investigation_id: str, row: Mapping[str, str], folder: Any = N
     if linked or "investigation_id" not in names:
         write_table(path, names + (["investigation_id"] if "investigation_id" not in names else []), held)
     return linked
+
+
+def slug_id(day: str, question: str) -> str:
+    """The id of an investigation written by hand: ``inv-<day>-<the first words of the question>``."""
+    words = "-".join("".join(c if c.isalnum() else " " for c in question.lower()).split())[:40].strip("-")
+    return f"inv-{day}-{words or 'investigation'}"
+
+
+def record_investigation(spec: Any, folder: Any = None, today: str = "", allow_gaps: bool = False) -> Dict[str, Any]:
+    """The one documented way to write an investigation without editing the CSV files. ``spec`` is a mapping (or the path of a JSON file holding one) with
+    ``investigation`` (the cells of ``investigations.csv``; any left out are filled: ``kind`` review, ``status`` open, ``done_on`` today, ``protocol_date`` the
+    same day, ``refresh_on`` from the size, ``investigation_id`` from the day and the question, ``links`` filed under the top solution when none names one) and
+    ``items`` (one mapping per kept item, with the cells of ``investigation_items.csv``; ``item_id`` is numbered and ``investigation_id`` set). The record is
+    checked against the standard first (``investigation_record.gaps``) and each kept item must name a ``source``; with gaps nothing is written and a
+    ``ValueError`` lists them, unless ``allow_gaps`` is true. The row and items are then written by ``store`` (beside the registry unless ``folder`` is given).
+    Returns ``{"investigation_id", "folder", "gaps"}``."""
+    if not isinstance(spec, Mapping):
+        with open(spec, encoding="utf-8") as handle:
+            spec = json.load(handle)
+    day = day_of(today).isoformat()
+    row = {c: str(v) for c, v in dict(spec.get("investigation") or {}).items() if c in inv.COLUMNS}
+    done = row.get("done_on") or day
+    row.update(kind=row.get("kind") or "review", done_on=done, protocol_date=row.get("protocol_date") or done, status=row.get("status") or "open")
+    row["size"] = row.get("size") or inv.choose_size(spec.get("weight"))
+    links, _ = with_solution(split_ids(row.get("links", "")), "")
+    row["links"] = inv.SEP.join(links)
+    row["refresh_on"] = row.get("refresh_on") or inv.refresh_on(done, row["size"])
+    row["investigation_id"] = row.get("investigation_id") or slug_id(done, row.get("question", ""))
+    row["kept"] = row.get("kept") or str(len(spec.get("items") or ()))
+    items = []
+    for n, raw in enumerate(spec.get("items") or (), 1):
+        item = {c: str(raw.get(c, "")) for c in inv.ITEM_COLUMNS}
+        item.update(investigation_id=row["investigation_id"], item_id=item["item_id"] or f"i{n}")
+        items.append(item)
+    problems = inv.gaps(row, items) + [f"item {i['item_id']} names no source" for i in items if not i["source"].strip()]
+    if problems and not allow_gaps:
+        raise ValueError("investigation " + row["investigation_id"] + " not written: " + "; ".join(problems))
+    where = Path(folder or registry.DATA)
+    store({"investigation": row, "items": items}, where)
+    return {"investigation_id": row["investigation_id"], "folder": str(where), "gaps": problems}
 
 
 def finding_investigation(finding: Mapping[str, str], root: Any = None) -> str:

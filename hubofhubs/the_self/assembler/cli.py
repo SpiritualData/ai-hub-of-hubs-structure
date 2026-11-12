@@ -156,7 +156,23 @@ def main(argv: Optional[List[str]] = None) -> int:
     talk = sub.add_parser("chat", help="talk to the whole hub line by line (/help inside lists the commands)")
     talk.add_argument("--arm", action="append", default=[], metavar="ID=ARM", help="override one solution's arm")
     talk.add_argument("--lock", default=None, help="an esoi.lock.json to keep the locked arms")
+    record = sub.add_parser("investigation", help="write an investigation (research that informs a solution, arm, metric or registry finding) from a JSON file: `ahohs investigation record FILE`")
+    record.add_argument("action", choices=("record",), help="record: check the file against the knowledge search standard and write its rows into investigations.csv and investigation_items.csv")
+    record.add_argument("file", help="JSON with `investigation` (the cells of investigations.csv) and `items` (one object per kept item); cells left out are filled")
+    record.add_argument("--folder", default=None, help="the folder holding the two files (default: the hub's registry)")
+    record.add_argument("--allow-gaps", action="store_true", help="write the record even when it lacks parts of its size (the gaps are printed)")
     args = parser.parse_args(argv)
+    if args.command == "investigation":
+        from hubofhubs.the_world.learning.investigation_store import record_investigation
+        try:
+            done = record_investigation(args.file, args.folder, allow_gaps=args.allow_gaps)
+        except (ValueError, OSError) as error:
+            print(f"failed: {error}", file=sys.stderr)
+            return 1
+        print(done["investigation_id"])
+        for gap in done["gaps"]:
+            print(f"gap: {gap}", file=sys.stderr)
+        return 0
     if args.command is None:
         if not (sys.stdin.isatty() and sys.stdout.isatty()):
             parser.print_help()
