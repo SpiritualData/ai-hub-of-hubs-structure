@@ -11,6 +11,7 @@ import ipaddress
 import json
 import queue
 import secrets
+import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, List, Optional, Tuple
@@ -30,6 +31,16 @@ def is_loopback(host: str) -> bool:
         return host == "localhost"
 
 
+class QuietServer(ThreadingHTTPServer):
+    """``ThreadingHTTPServer`` that says nothing when the client simply went away (an idle keep-alive connection the client closed or reset between requests
+    is normal for a long-lived client such as opencode), and still prints every other failure."""
+
+    def handle_error(self, request: Any, client_address: Any) -> None:
+        if isinstance(sys.exc_info()[1], (ConnectionResetError, BrokenPipeError, ConnectionAbortedError)):
+            return
+        super().handle_error(request, client_address)
+
+
 class OpencodeServer:
     """A running (or startable) server over one ``Bridge``. ``token`` is the per-run password (generated when not given)."""
 
@@ -39,7 +50,7 @@ class OpencodeServer:
         self.bridge, self.heartbeat = bridge, heartbeat
         self.token = secrets.token_urlsafe(24) if token is None else token
         self.requests: List[Tuple[str, str, int]] = []
-        self.httpd = ThreadingHTTPServer((host, port), self.handler())
+        self.httpd = QuietServer((host, port), self.handler())
         self.httpd.daemon_threads = True
         self.thread: Optional[threading.Thread] = None
 

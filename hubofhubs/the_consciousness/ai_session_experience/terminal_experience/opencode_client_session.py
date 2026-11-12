@@ -11,6 +11,7 @@ helper) is the arm's protocol ceiling, named in its record. Outside a terminal i
 """
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, TextIO
@@ -75,8 +76,16 @@ class OpencodeClientSession:
         if note:
             terminal.say("note: " + note)
         mode = launch.mode_of(str(self.options.get("mode") or ""), env)
-        bridge = Bridge(lambda where: terminal.harness(), folder, acting_for=str(self.options.get("person") or ""), command=getattr(terminal, "command", "ahohs work"),
-                        folder_name=mode == "full")
+        from hubofhubs.the_consciousness.ai_session_experience.opencode_server import command as serving
+        chosen = serving.default_tier(self.options)
+        build_tier = serving.tier_builder(self.options, env, getattr(terminal, "stop_inputs", None))
+
+        def build(where: str, tier: str = "") -> Harness:
+            # the tier in use when the person has not picked another is the terminal's own harness (its records and stop inputs); a tier they pick in the client's model picker builds that tier's
+            return terminal.harness() if not tier or tier == chosen else build_tier(where, tier)
+
+        bridge = Bridge(build, folder, acting_for=str(self.options.get("person") or ""), command=getattr(terminal, "command", "ahohs work"), folder_name=mode == "full",
+                        tiers=serving.offered_tiers(), tier=chosen)
         bridge.resume_id = resume
         run = launch.prepare_run_folder(mode)
         server = OpencodeServer(bridge).start()
@@ -88,6 +97,7 @@ class OpencodeClientSession:
             shutil.rmtree(run, ignore_errors=True)
         view = bridge.translator.view
         if mode == "full" and view.final is not None:       # a full-screen client leaves nothing in the scrollback, so the closing line and the resume command are said once it is gone
-            for row in present.outcome_rows(view) + present.resume_lines(view):
+            color = bool(getattr(terminal, "interactive", lambda: False)()) and not os.environ.get("NO_COLOR")   # coloured like the native screen, on a real terminal only
+            for row in present.outcome_rows(view, color=color) + present.resume_lines(view):
                 terminal.say(row)
         return code
