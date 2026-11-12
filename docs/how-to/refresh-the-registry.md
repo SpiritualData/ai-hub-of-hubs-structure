@@ -29,6 +29,12 @@ already looked into before it acts with `system["the-learning"].investigations_f
 2. Search for open-source hubs for the area released or changed since `last_researched`. Prefer official repositories and
    documentation; cite the URL and date of each. Look for what a consumer could connect by configuration and for alternatives
    to compare as arms.
+2b. **Sweep for what the area's name does not describe.** The refresh is area-by-area, so a tool whose category is not an area (a desktop "AI coworker" that
+   bundles channels, approval gates and a sandbox, such as OpenWorker, MIT, created 2026-07-20 and about 19k stars by 2026-11-12) never enters any area's candidate list,
+   and an area researched once in 90 days cannot catch it. Besides the area's own queries, run these and record the queries in the investigation: (a) repositories created
+   since `last_researched` ordered by stars (`gh search repos "agent" --created=">DATE" --sort stars`, and the same for `mcp`, `coworker`, `harness`, `sandbox`); (b) the
+   trending and release lists of the main agent ecosystems; (c) what Joshua or a person's note names. For each repository with over about 1,000 stars that fits no area, add a
+   finding to the nearest area (role `watch`, `adoption` and its reason), or raise a new area. A candidate named by a person is added the same day, not at the next refresh.
 3. Replace the area's rows in `hub_findings.csv` (ids `<prefix>-1`, `<prefix>-2` and so on, where the prefix is the area's
    `finding_id` in `hubs.csv`; at least 2 candidates unless the area names a single one, and at most 16, since a sub-solution
    area may weigh many; split an area that needs more; license, role, one line, evidence URL, today's date, and
