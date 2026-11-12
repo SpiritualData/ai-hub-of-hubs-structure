@@ -71,6 +71,7 @@ class SelfComposition:
         run = {"id": int(began * 1000), "request": request, "person": person, "sources": (context.output or {}).get("sources", []) if context.status == DONE else [],
                "steps": listing(log), "answer": thought.get("answer", ""),
                "attempts": thought.get("attempts", 0), "stopped": thought.get("stopped", "")}
+        run.update({key: thought[key] for key in ("tier", "tier_source", "tier_reason", "tier_from") if thought.get(key)})      # a deep run's tier choice and the reason, recorded with it
         recorded = support(self.body, "the-body", method="record_run", run=run)
         audited = support(self.integrity, "system-integrity", method="audit_run", run=run)
         log += [recorded, audited]

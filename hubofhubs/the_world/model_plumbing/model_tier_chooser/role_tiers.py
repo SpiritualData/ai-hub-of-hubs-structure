@@ -11,9 +11,17 @@ The table path is an argument, nothing is read from the environment."""
 from __future__ import annotations
 
 import csv
+import json
+import re
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Mapping, Optional
+from typing import Callable, Dict, Mapping, Optional
 
+StandingTierGuidance = Callable[[str], str]
+"""The port for a person's earlier guidance on model tiers: given a role, the tier the person has asked that role to run on, or an empty string. The hub holds no
+store of a person's preferences; the consumer supplies this function from its own (a Representative's preferences, a settings file, a memory)."""
+
+STANDINGS = Path(__file__).resolve().parents[2] / "tools" / "delegated_agent_sessions" / "arm_standings.json"
 TABLE = Path(__file__).with_name("role_tiers.csv")
 TIERS = ("fast", "balanced", "quality", "best")
 ALIASES = {"strong": "quality", "cheap": "fast", "mid": "balanced", "science": "fast"}     # science is a call role, not a tier: it reads as fast
@@ -48,6 +56,11 @@ def resolution_note(tier: str) -> str:
 # where the price premium is log2 of the next tier's list price over this tier's (never below 1). Hard constraints (classification fast only, a
 # response a person reads at least balanced, best only for the structure watch) are applied after the metric and recorded as such; the row still
 # shows what the metric alone picked. The models that fill the tiers come from the tier choice (``tiers.choose``), never from a name here.
+# The deep-run roles (the ``deep_run`` rows of the rule file) do not use that climb. Their definition is the owner's: the default is the cheapest tier whose
+# recorded pass rate on the deep-work cases meets the sufficiency bar (``sufficient_tier``); a person's tier, from the current request first and then from
+# standing guidance (``StandingTierGuidance``, a function the consumer supplies), wins over it (``choose_tier``); when the default fails a task the planner
+# moves that task up one rung with a recorded reason (``escalate``), never for later tasks; a sub-agent runs on its own default unless the main session
+# asks for more with a reason (``sub_agent_choice``). Nothing is stored between tasks, so no choice is sticky.
 # ``compute_table`` recomputes the whole table from the registry for a day; ``write_table`` writes it. The generated columns are ``tier``,
 # ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``; the others are inputs. No clock is read: the day is an argument.
 # ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -191,6 +204,157 @@ def apply_constraints(tier: str, constraints: list, order: tuple = TIERS) -> str
     return tier
 
 
+def deep_run_roles(rules: list) -> tuple:
+    """The roles the deep-run definition applies to: the ``deep_run`` rows of the rule file."""
+    return tuple(r["role"] for r in rules if r["part"] == "deep_run" and r["role"])
+
+
+def measured_pass_rates(path: Path = STANDINGS, kind: str = "hard") -> Dict[str, dict]:
+    """``{tier: {passed, total, arms, first, last}}`` of the recorded deep-work cases: for each arm row of the kind in the standings file, the passed and total
+    cases of its latest pooled row, summed per tier (the ``tier=`` of the arm's name). A tier with no row is absent, never guessed; an unreadable file gives ``{}``."""
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    found: Dict[str, dict] = {}
+    for arm, runs in (((data.get("kinds") or {}).get(kind) or {}).get("rows") or {}).items():
+        named = re.search(r"tier=([A-Za-z]+)", arm)
+        if not named or not isinstance(runs, dict) or not runs:
+            continue
+        row = runs[max(runs, key=lambda k: int(k) if str(k).isdigit() else 0)]
+        try:
+            passed, total = int(row["passed_total"]), int(row["cases_total"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        tier = normalise(named.group(1))
+        slot = found.setdefault(tier, dict(passed=0, total=0, arms=0, first=str(row.get("date", "")), last=str(row.get("date", ""))))
+        slot["passed"] += passed
+        slot["total"] += total
+        slot["arms"] += 1
+        slot["first"], slot["last"] = min(slot["first"], str(row.get("date", ""))), max(slot["last"], str(row.get("date", "")))
+    return found
+
+
+def sufficient_tier(rules: list, measured: Mapping[str, Mapping], rungs: Optional[tuple] = None) -> dict:
+    """The default tier of a deep-run role: the lowest rung whose measured pass rate meets the sufficiency bar. A rung with no measurement is skipped (the
+    cheapest MEASURED rung that meets the bar is the answer, and ``note`` says which rungs were skipped). When no measured rung meets the bar the tier is the rung
+    above the highest measured one; when nothing is measured the tier is None. Returns ``{tier, bar, note}``."""
+    bar = rule_value(rules, "sufficiency", "pass_rate_bar")
+    rungs = rungs or ladder_for(rules)
+    parts, skipped, tier = [], [], None
+    for rung in rungs:
+        got = measured.get(rung)
+        if not got or not got["total"]:
+            skipped.append(rung)
+            continue
+        rate = got["passed"] / got["total"]
+        parts.append(f"{rung} {got['passed']} of {got['total']} ({rate:.3f}) over {got['arms']} arm rows, {got['first']} to {got['last']}")
+        if tier is None and rate >= bar:
+            tier = rung
+    if tier is None and parts:
+        top = max(i for i, rung in enumerate(rungs) if rung in measured and measured[rung]["total"])
+        tier = rungs[min(top + 1, len(rungs) - 1)]
+        parts.append("no measured tier meets the bar, so the rung above the highest measured one")
+    skip = f"; no measurement for {', '.join(skipped)}, so the rule falls to the cheapest measured tier that meets the bar" if skipped and tier else ""
+    return dict(tier=tier, bar=bar, note=(f"measured pass rate on the recorded deep-work cases: {'; '.join(parts)}{skip}" if parts else "no tier has a recorded deep-work measurement"))
+
+
+@dataclass(frozen=True)
+class TierChoice:
+    """A tier chosen for a role, with where it came from and why. ``source`` is ``current_input``, ``standing_guidance``, ``default``, ``main_session_ask`` or
+    ``escalation``; ``reason`` is the recorded note (specific for an escalation or an ask); ``from_tier`` is the tier an escalation left."""
+    role: str
+    tier: str
+    source: str
+    reason: str = ""
+    from_tier: str = ""
+
+    def record(self) -> Dict[str, str]:
+        """The keys to merge into the run's own record or event: ``tier``, ``tier_source``, ``tier_reason`` (and ``tier_from`` for an escalation)."""
+        out = {"tier": self.tier, "tier_source": self.source, "tier_reason": self.reason}
+        if self.from_tier:
+            out["tier_from"] = self.from_tier
+        return out
+
+
+def known_tier(tier: str) -> str:
+    name = normalise(tier)
+    if name not in TIERS:
+        raise ValueError(f"{tier!r} is not a tier; the tiers are {', '.join(TIERS)}")
+    return name
+
+
+def settable_role(role: str, rows: Mapping[str, Mapping[str, str]]) -> str:
+    """The role in the follow chain of ``role`` whose ``person_may_set`` is yes, or an empty string when a person may not set it."""
+    seen = []
+    while role in rows and role not in seen:
+        seen.append(role)
+        row = rows[role]
+        if (row.get("person_may_set") or "").strip().lower() == "yes":
+            return role
+        follows = (row.get("follows") or "").strip() or (row.get("tier") or "").strip()
+        role = follows if follows not in TIERS else ""
+    return ""
+
+
+def choose_tier(role: str, requested: str = "", standing: Optional[StandingTierGuidance] = None, table: Optional[Mapping[str, Mapping[str, str]]] = None,
+                rules: Optional[list] = None) -> TierChoice:
+    """The tier of ``role`` for one task, in this order: the tier the person names in the current request (``requested``), the tier their standing guidance on model
+    tiers names (``standing(role)``), else the table's default (for a deep-run role, the cheapest sufficient tier). The first two apply only to a role a person may
+    set. Nothing is remembered between calls. Raises ``KeyError`` for an unknown role and ``ValueError`` for a name that is not a tier."""
+    rows = table if table is not None else read_table()
+    if role not in rows:
+        raise KeyError(f"no tier policy for the role {role!r}; roles: {', '.join(sorted(rows))}")
+    if settable_role(role, rows):
+        if (requested or "").strip():
+            return TierChoice(role, known_tier(requested), "current_input", "the person named this tier in the current request")
+        held = (standing(role) if standing else "") or ""
+        if held.strip():
+            return TierChoice(role, known_tier(held), "standing_guidance", "the person's standing guidance on model tiers names this tier")
+    rules = read_rules() if rules is None else rules
+    followed = rows[role].get("follows") or ""
+    deep = role in deep_run_roles(rules) or followed in deep_run_roles(rules)
+    why = ("the cheapest tier whose recorded pass rate on the deep-work cases meets the sufficiency bar" if deep else "the role table's tier for the role")
+    return TierChoice(role, tier_for(role, "", rows), "default", why)
+
+
+def escalate(choice: TierChoice, signal: str, reason: str, rules: Optional[list] = None) -> TierChoice:
+    """The choice for the one task whose default tier fell short: one rung up the ladder, with the recorded reason. ``signal`` is what said the result was
+    insufficient (the ``escalation`` signal rows of the rule file: after_check, stop_decision or review); ``reason`` must say specifically what the tier did not do.
+    A blank reason, one that only repeats the signal, a role that is not a deep-run role, a tier that is not on the ladder (best) and the top rung are refused.
+    Nothing is stored: the caller uses the returned choice for this task only and chooses again for the next."""
+    rules = read_rules() if rules is None else rules
+    signals = [r["value"] for r in rules if r["part"] == "escalation" and r["key"] == "signal"]
+    if signal not in signals:
+        raise ValueError(f"the signal {signal!r} is not one of {', '.join(signals)}")
+    text = " ".join((reason or "").split())
+    if not text or text.lower() in (signal, signal.replace("_", " ")):
+        raise ValueError("an escalation needs a specific reason: what the tier did not do sufficiently on this task")
+    if choice.role not in deep_run_roles(rules):
+        raise ValueError(f"{choice.role!r} is not a deep-run role, so it is not escalated")
+    rungs = ladder_for(rules)
+    if choice.tier not in rungs:
+        raise ValueError(f"{choice.tier!r} is not a rung the planner climbs; best is a person's explicit tier or the structure watch")
+    at = rungs.index(choice.tier)
+    if at + 1 >= len(rungs):
+        raise ValueError(f"{choice.tier!r} is the top rung; there is no higher tier to escalate to")
+    return TierChoice(choice.role, rungs[at + 1], "escalation", f"{signal}: {text}", from_tier=choice.tier)
+
+
+SUB_AGENT_ROLE = "sub_agent"
+
+
+def sub_agent_choice(asked: str = "", reason: str = "", table: Optional[Mapping[str, Mapping[str, str]]] = None, rules: Optional[list] = None) -> TierChoice:
+    """The tier of a sub-agent: its own default (the cheapest sufficient tier), whatever the main session runs on, unless the main session asks for a named tier
+    and gives a reason, which is recorded. A request with no reason is refused."""
+    if (asked or "").strip():
+        text = " ".join((reason or "").split())
+        if not text:
+            raise ValueError("the main session must give a reason when it asks a sub-agent to run on a higher tier")
+        return TierChoice(SUB_AGENT_ROLE, known_tier(asked), "main_session_ask", text)
+    return choose_tier(SUB_AGENT_ROLE, table=table, rules=rules)
+
+
 def describe_step(step: dict) -> str:
     scores = ", ".join(f"{m} {a:g} to {b:g}" for m, (a, b) in step["used"].items())
     drop = f"; no number on both for {', '.join(step['dropped'])}" if step["dropped"] else ""
@@ -202,10 +366,34 @@ def describe_step(step: dict) -> str:
             f"(scores of the {step['low']} tier's model to the {step['high']} tier's: {scores}{drop})")
 
 
-def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping], prices: Mapping[str, tuple], day: str, previous: Optional[Mapping[str, str]] = None,
-             max_age: float = 45) -> Dict[str, str]:
-    """One finished row: the inputs plus the generated ``tier``, ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``."""
+def deep_run_row(inputs: Mapping[str, str], rules: list, measured: Mapping[str, Mapping], day: str, previous: Optional[Mapping[str, str]] = None) -> Dict[str, str]:
+    """One finished row of a deep-run role: the tier is the cheapest sufficient one (``sufficient_tier``), the evidence is the recorded pass rates against the bar."""
     role, kind = inputs["role"], inputs["kind"]
+    got = sufficient_tier(rules, measured)
+    rungs = ladder_for(rules, kind, role)
+    held = (previous or {}).get(role, "")
+    metric_tier = got["tier"] or (held if held in TIERS else rungs[0])
+    cons = constraints_for(rules, kind, role)
+    final = apply_constraints(metric_tier, cons)
+    if got["tier"]:
+        head = (f"sufficiency rule (cheapest tier good enough for most deep work, bar {got['bar']:g} pass rate, numbers of the recorded hard deep-work cases); {got['note']}. "
+                f"The rule picks {metric_tier}.")
+    else:
+        head = f"STALE OR MISSING deep-work measurement on {day}, the rule was not applied: {got['note']}. The previous tier {metric_tier} is kept until one is recorded."
+    tail = f" The constraint {', '.join(n for n, _, _ in cons)} set the tier to {final}." if cons and final != metric_tier else ""
+    follow = f" The role follows {inputs['follows']}, so its tier is that role's." if inputs.get("follows") else ""
+    row = {c: inputs.get(c, "") for c in COLUMNS}
+    row.update(tier=inputs["follows"] or final, metric_tier=metric_tier, constraint="; ".join(n for n, _, _ in cons), computed_on=day, evidence=head + tail + follow)
+    return row
+
+
+def role_row(inputs: Mapping[str, str], rules: list, arms: Mapping[str, Mapping], prices: Mapping[str, tuple], day: str, previous: Optional[Mapping[str, str]] = None,
+             max_age: float = 45, measured: Optional[Mapping[str, Mapping]] = None) -> Dict[str, str]:
+    """One finished row: the inputs plus the generated ``tier``, ``metric_tier``, ``constraint``, ``computed_on`` and ``evidence``. A deep-run role takes the
+    sufficiency rule over ``measured`` (``measured_pass_rates``); every other role takes the climb."""
+    role, kind = inputs["role"], inputs["kind"]
+    if role in deep_run_roles(rules):
+        return deep_run_row(inputs, rules, measured if measured is not None else measured_pass_rates(), day, previous)
     tokens = volume_of(rules, inputs.get("volume", "small") or "small", inputs.get("tokens_in", ""), inputs.get("tokens_out", ""))
     klass = next((r for r in rules if r["part"] == "volume" and r["key"] == (inputs.get("volume") or "small")), {})
     basis = (f"measured: {inputs['volume_basis']}" if inputs.get("volume") == "measured"
@@ -278,7 +466,8 @@ def compute_table(day: str, folder=None, inputs: Optional[list] = None, rules: O
     if Path(path).exists():
         with Path(path).open(newline="", encoding="utf-8") as handle:
             previous = {r["role"]: (r.get("metric_tier") or r.get("tier") or "") for r in csv.DictReader(handle)}
-    return [role_row(i, rules, arms, prices, day, previous, max_age) for i in inputs]
+    measured = measured_pass_rates()
+    return [role_row(i, rules, arms, prices, day, previous, max_age, measured) for i in inputs]
 
 
 def write_table(day: str, folder=None, path: Path = TABLE) -> list:
@@ -331,7 +520,14 @@ def deep_work_role(task_kind: str = "", table: Optional[Mapping[str, Mapping[str
     return task_kinds(table).get((task_kind or "").strip().lower(), MAIN_ROLE)
 
 
-def tier_for_task(task_kind: str = "", requested: str = "", table: Optional[Mapping[str, Mapping[str, str]]] = None) -> str:
-    """The tier of a deep-work session of ``task_kind``; a person's explicit tier (``requested``) wins, as for any role that lets a person set it."""
+def task_choice(task_kind: str = "", requested: str = "", table: Optional[Mapping[str, Mapping[str, str]]] = None,
+                standing: Optional[StandingTierGuidance] = None) -> TierChoice:
+    """The tier choice of a deep-work session of ``task_kind``: the current request's tier, else the standing guidance's, else the cheapest sufficient tier."""
     rows = table if table is not None else read_table()
-    return tier_for(deep_work_role(task_kind, rows), requested, rows)
+    return choose_tier(deep_work_role(task_kind, rows), requested, standing, rows)
+
+
+def tier_for_task(task_kind: str = "", requested: str = "", table: Optional[Mapping[str, Mapping[str, str]]] = None,
+                  standing: Optional[StandingTierGuidance] = None) -> str:
+    """The tier of a deep-work session of ``task_kind`` (see ``task_choice``); a person's tier wins, as for any role that lets a person set it."""
+    return task_choice(task_kind, requested, table, standing).tier

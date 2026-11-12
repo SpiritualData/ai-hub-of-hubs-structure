@@ -35,7 +35,7 @@ def test_the_rule_file_is_consistent_and_every_part_has_a_reason():
     assert {r["key"] for r in RULES if r["part"] == "stakes"} == {"call", "turn", "task", "structure"}
     assert {r["key"] for r in RULES if r["part"] == "volume"} == {"small", "medium", "large", "session"}
     assert rt.ladder_for(RULES) == ("fast", "balanced", "quality")
-    assert [r["key"] for r in RULES if r["part"] == "revision"] == ["1", "2", "3"]      # the revisions on the owner's instruction are recorded, with his words
+    assert [r["key"] for r in RULES if r["part"] == "revision"] == ["1", "2", "3", "4"]      # the revisions on the owner's instruction are recorded, with his words
     assert any(r["part"] == "assumption" for r in RULES)                                # the dollar values and the cost weight are stated as assumptions
 
 
@@ -77,24 +77,19 @@ def test_cache_reads_and_writes_are_priced_at_their_multipliers_of_the_input_pri
     assert abs(cached["added_cost"] * 10 - plain["added_cost"]) < 1e-12                       # the discount is real: a tenth of the uncached cost
 
 
-def test_the_deep_work_tiers_are_the_measured_session_volume_through_the_cost_term_and_their_sensitivity_is_as_recorded():
-    arms, prices = rt.tier_fillers(DAY)
+def test_no_deep_run_role_depends_on_the_cost_weight_or_the_value_of_a_gain():
     inputs = {i["role"]: i for i in rt.read_inputs()}
-
-    def tier(role, value_scale=1.0, weight_scale=1.0):
-        rules = [dict(r) for r in RULES]
-        for r in rules:
-            if r["part"] == "stakes":
-                r["value"] = str(float(r["value"]) * value_scale)
-            if r["part"] == "rule" and r["key"] == "cost_weight":
-                r["value"] = str(float(r["value"]) * weight_scale)
-        i = inputs[role]
-        return rt.climb(rules, i["kind"], role, i["frequency"], i["stakes"], arms, prices, DAY, 45, rt.volume_of(rules, i["volume"], i["tokens_in"], i["tokens_out"]))["tier"]
-    assert [tier(r) for r in ("deep_work_gather", "deep_work_implementation", "deep_work_structure", "deep_work_review")] == ["fast", "quality", "quality", "balanced"]
-    assert tier("deep_work_implementation", 0.5) == "balanced" and tier("deep_work_implementation", 2) == "quality"       # the recorded sensitivity
-    assert tier("deep_work_implementation", 1, 2) == "balanced" and tier("deep_work_implementation", 1, 0.5) == "quality"
-    for role in ("deep_work_gather", "deep_work_structure", "deep_work_review"):
-        assert len({tier(role, 0.5), tier(role, 2), tier(role, 1, 0.5), tier(role, 1, 2), tier(role)}) == 1, role
+    measured = rt.measured_pass_rates()
+    ladder = [dict(r) for r in RULES]
+    for r in ladder:
+        if r["part"] == "stakes":
+            r["value"] = str(float(r["value"]) * 100)
+        if r["part"] == "rule" and r["key"] == "cost_weight":
+            r["value"] = "300"
+    for role in rt.deep_run_roles(RULES):
+        a = rt.role_row(inputs[role], RULES, {}, {}, DAY, measured=measured)["metric_tier"]
+        b = rt.role_row(inputs[role], ladder, {}, {}, DAY, measured=measured)["metric_tier"]
+        assert a == b == "fast", role
 
 
 def test_a_role_that_spends_many_tokens_stays_on_the_cheap_tier_that_the_cost_term_works_out_by_itself():
@@ -185,7 +180,7 @@ def test_deep_work_takes_its_tier_from_the_task_kind_and_a_person_still_wins():
         assert rt.tier_for_task(kind, table=table) == rt.tier_for(role, table=table)
     assert rt.tier_for_task("", table=table) == rt.tier_for_task("implementation", table=table) == rt.tier_for("main_session", table=table)     # no known kind: implementation
     assert rt.tier_for_task("unheard-of", table=table) == rt.tier_for_task("implementation", table=table)
-    assert rt.tier_for_task("gather", "quality", table) == "quality" and rt.tier_for_task("structure", "fast", table) == "fast" and rt.tier_for("sub_agent", "best", table) == "best"
+    assert rt.tier_for_task("gather", "quality", table) == "quality" and rt.tier_for_task("structure", "fast", table) == "fast" and rt.tier_for("after_check_resume", "best", table) == "best" and rt.tier_for("sub_agent", "best", table) == "fast"     # a sub-agent does not take the main session's tier
     order = {t: i for i, t in enumerate(rt.TIERS)}
     assert order[rt.tier_for_task("gather", table=table)] <= order[rt.tier_for_task("implementation", table=table)] <= order[rt.tier_for_task("structure", table=table)]
 
@@ -203,5 +198,5 @@ def test_no_row_of_the_table_says_unmeasured_names_a_model_or_leaves_evidence_em
     for role, row in rt.read_table().items():
         text = " ".join(row.values()).lower()
         assert row["evidence"] and "unmeasured" not in text and "owner's policy" not in row["evidence"].lower(), role
-        assert row["evidence"].startswith(("direct public", "proxy public", "STALE OR MISSING")), role
+        assert row["evidence"].startswith(("direct public", "proxy public", "sufficiency rule", "STALE OR MISSING")), role
         assert not any(name in text for name in ("haiku", "sonnet", "opus", "fable", "gemini", "gpt", "deepseek")), role

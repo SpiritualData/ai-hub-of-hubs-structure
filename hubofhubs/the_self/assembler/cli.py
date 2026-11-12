@@ -101,11 +101,18 @@ def acp_command(args: argparse.Namespace) -> int:
     return 0
 
 
-def main_session_tier(task_kind: str = "", requested: str = "") -> str:
-    """The tier of a deep-work session, read from the role tier table: the tier of the role of its task kind (gather, implementation, structure, review),
-    or of the implementation role when the kind is not given; a person's explicit tier (``requested``) wins."""
-    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import tier_for_task
-    return tier_for_task(task_kind, requested)
+def main_session_choice(task_kind: str = "", requested: str = "", standing=None):
+    """The tier choice of a deep-work session (a ``TierChoice``: tier, source and reason, ``record()`` for the run's record): the tier the person names now
+    (``requested``, the ``--tier`` flag), else the tier their standing guidance names (``standing``, a function role to tier a consumer supplies; the command line
+    has none), else the cheapest tier measured good enough for deep work, for the role of the task kind (gather, implementation, structure, review) or the
+    implementation role when the kind is not given."""
+    from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import task_choice
+    return task_choice(task_kind, requested, standing=standing)
+
+
+def main_session_tier(task_kind: str = "", requested: str = "", standing=None) -> str:
+    """The tier of a deep-work session: ``main_session_choice(...).tier``."""
+    return main_session_choice(task_kind, requested, standing).tier
 
 
 def task_kind_choices() -> tuple:
@@ -121,7 +128,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     work = sub.add_parser("work", help="run a goal on a real harness in the live terminal; with no goal, a prompt (also what bare ahohs opens)")
     work.add_argument("goal", nargs="?", default="", help="what to get done in this folder; leave out for a prompt, and type follow-ups that continue the session")
     work.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick for a person at a terminal)")
-    work.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best (strong reads as quality); default: the tier the role table gives the task kind")
+    work.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best (strong reads as quality); default: the cheapest tier measured good enough for deep work (the role table), unless your standing guidance names another")
     work.add_argument("--task-kind", default="", choices=("",) + task_kind_choices(), help="the kind of the task (gather, implementation, structure or review), which sets the default tier; unknown reads as implementation")
     work.add_argument("--folder", default=".", help="the folder the work happens in (default: this one)")
     work.add_argument("--resume", default="", metavar="SESSION", help="continue a session an earlier run named (with the same --harness, in the same folder)")

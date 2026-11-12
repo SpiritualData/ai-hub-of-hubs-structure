@@ -22,7 +22,8 @@ def test_the_deep_work_tier_is_the_metrics_and_a_persons_tier_wins():
     assert policy.tier_for("main_session") == policy.tier_for("deep_work_implementation") == TABLE["deep_work_implementation"]["metric_tier"]   # no known task kind: implementation
     assert policy.tier_for("main_session", "fast") == "fast"
     assert policy.tier_for("main_session", "strong") == "quality"
-    assert policy.tier_for("sub_agent", "best") == "best" and policy.tier_for("after_check_resume") == policy.tier_for("main_session")
+    assert policy.tier_for("after_check_resume", "best") == "best" and policy.tier_for("after_check_resume") == policy.tier_for("main_session")
+    assert policy.tier_for("sub_agent", "best") == policy.tier_for("sub_agent") == "fast"       # a sub-agent runs on its own default, not the main session's tier
     assert policy.tier_for("web_search", "best") == "fast"
 
 
