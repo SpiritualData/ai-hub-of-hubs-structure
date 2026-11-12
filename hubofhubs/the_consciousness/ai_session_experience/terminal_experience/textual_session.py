@@ -84,11 +84,12 @@ def make_app() -> Any:
 
     class HubApp(App):
         CSS = """
-        #head { height: 1; padding: 0 1; background: $primary; color: $text; }
-        #log { height: 1fr; padding: 0 1; }
-        #status { height: auto; max-height: 16; padding: 0 1; color: $text-muted; border-top: solid $primary-darken-2; }
+        #head { height: 1; padding: 0 1; background: #005a9e; color: $text; }
+        #log { height: 1fr; padding: 0 1; overflow-x: hidden; scrollbar-color: #5f87d7; scrollbar-background: #121212; }      /* the log wraps its rows (wrap=True), so nothing is wider than it: no horizontal scrollbar */
+        #status { height: auto; max-height: 16; padding: 0 1; color: $text-muted; border-top: solid $primary; }
         #menu { height: auto; padding: 0 1; color: $accent; }
         #prompt { dock: bottom; }
+        #prompt > .input--placeholder { color: #b0b0b0; }
         """
         BINDINGS = [Binding("escape", "stop", "stop", priority=True), Binding("ctrl+c", "interrupt", "stop", priority=True), Binding("ctrl+d", "eof", "leave", priority=True),
                     Binding("tab", "tab", "structure", priority=True), Binding("up", "up", "up", priority=True), Binding("down", "down", "down", priority=True),

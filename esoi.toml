@@ -144,6 +144,45 @@ weights = { accuracy = 0.70, cost = 0.15, time = 0.15 }
 cost_per_case_usd = 0.001
 seconds_per_case = 1
 
+# terminal-presentation (layer 1 of the presentation metric of Terminal Experience, evaluation/terminal_presentation): one case is a scripted session on a fake harness drawn at two
+# sizes (80x24 and 120x40) and read back from the emulated screen, about two seconds and no model call. Weights and budgets fixed on 2026-11-11 before any arm was scored. The balanced
+# score follows the other metrics that must not be bought with speed: accuracy 95%, cost 2.5%, time 2.5%. A case's accuracy is the weighted share of the checks that apply to it
+# (the table below), so a case is graded, not pass or fail; a check an arm cannot be asked (not applicable, or not run for an external client) is left out of the share and listed.
+[balance.terminal_presentation]
+weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
+cost_per_case_usd = 0.001
+seconds_per_case = 30
+
+# The weight of each check inside a case, and why (integers; a case's share is the sum of the weights of its passed checks over the sum of those that applied). 3 where a miss loses
+# the person's work, hides a risk or repeats the problem the owner named (the same update shown twice); 2 where a miss makes the screen harder or slower to use; 1 where the bound
+# is a convention (repaint rate, first output). The control round trips weigh 2 each: a key that does nothing is as bad as a missing key, but each has its own scenario check.
+[balance.terminal_presentation.check_weights]
+"each-update-once" = 3                      # X1, X13: the named problem hprob-the-same-update-is-shown-twice-while-the-ai-works
+"current-step-visible" = 3                  # X2: the first thing a person looks for while it works
+"stop-then-resume-keeps-work" = 3           # X4, X5, X21: losing finished work is the worst outcome
+"risky-step-waits-with-preview" = 3         # X9, X19: an irreversible step must show its effect before the answer
+"closing-report-complete" = 3               # X10, X33: what the run did, what is left and how to continue
+"correction-sent-then-taken-up" = 2         # X6, X23
+"no-row-wider-than-the-terminal" = 2        # X13: a wide row breaks the in-place redraw and scrolls sideways
+"contrast-4.5" = 2                          # X18: WCAG 2.2 success criterion 1.4.3
+"plain-when-not-a-terminal" = 2             # X13
+"key-hints-present-and-whole" = 2           # X4, X6
+"unavailable-control-shown" = 2             # X8: a control the surface cannot do is said so
+"round-trip-stop" = 2
+"round-trip-resume" = 2
+"round-trip-steer" = 2
+"round-trip-approve" = 2
+"round-trip-refuse" = 2
+"repaints-under-bound" = 1                  # at most 10 repaints a second and 4 cursor jumps a repaint
+"first-output-within-a-second" = 1          # Nielsen's one-second limit
+
+# terminal-presentation, layer 2 (model-judged, advisory, never the gate and not part of the balanced score above): the judge runs the frozen checklist
+# (evaluation/terminal_presentation/judged/checklist.json) three times per frame and takes the majority, tier by the role deliverable_judge. It is run only on request.
+[balance.terminal_presentation_judged]
+weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
+cost_per_case_usd = 0.50
+seconds_per_case = 300
+
 # frontend-interface: one case is a few events turned to plain data in memory, so a case is worth at most a tenth of a cent and one second. The weights are the library's defaults and
 # the budgets were fixed before any arm was scored on the cases of evaluation/frontend_interface/build_cases.py.
 [balance.frontend_interface]

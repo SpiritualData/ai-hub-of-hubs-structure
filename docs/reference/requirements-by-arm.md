@@ -61,6 +61,7 @@ at the repository root.
 | Delegated Agent Sessions, Hub's frame on the model's own tool loop (`delegated-agent-sessions:native_tool_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, opencode in the hub's wrapper (`delegated-agent-sessions:opencode_hub_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
 | Delegated Agent Sessions, opencode, one shot (`delegated-agent-sessions:opencode_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `opencode`<br>account note: a key for the provider the arm names (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY or DEEPSEEK_API_KEY); a run bills that provider's account | cli |
+| Delegated Agent Sessions, Hub's frame on the model's own tool loop, with sub-agents scoped to solutions (`delegated-agent-sessions:solution_agents_native_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Hub's own tool loop (`delegated-agent-sessions:solution_loop_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, steerable session (`delegated-agent-sessions:stream_json_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Delegated Agent Sessions, Claude Code, one shot (`delegated-agent-sessions:subprocess_goal_runner`) | `HUBOFHUBS_WRITE_ROOT` | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
@@ -105,6 +106,7 @@ at the repository root.
 | Prioritization, Stated and carried fields (`prioritization:stated_fields`) | none | none | none | none | no |
 | Proactivity, Calendar periods and events (`proactivity:calendar_and_events`) | none | none | none | none | no |
 | Proactivity, Elapsed hours (`proactivity:elapsed_hours`) | none | none | none | none | no |
+| Proactivity, Standing work standard (`proactivity:standing_work_standard`) | none | none | none | none | no |
 | File Reading, Folder reader (`read-files:folder_reader`) | none | none | none | none | no |
 | Relevant Solutions, Records index (`relevant-solutions:records_index`) | none | none | none | none | no |
 | Relevant Solutions, Records index, then a cheap model (`relevant-solutions:records_then_model`) | none | none | none | none | no |
@@ -129,8 +131,10 @@ at the repository root.
 | Structure Watch, Best tier call (`structure-watch:best_tier_call`) | none | none | none | none | no |
 | Structure Watch, Findings only (`structure-watch:findings_only`) | none | none | none | none | no |
 | Integrity, Audit of vendor wording, staleness and configuration (`system-integrity:prompts_as_data`) | none | none | none | none | no |
+| Terminal Experience, ACP client session (an existing agent terminal draws the hub) (`terminal-session:acp_client_session`) | none | none | `acp` via extra `acp` | program `toad` | no |
 | Terminal Experience, Line REPL (ahohs chat) (`terminal-session:line_repl`) | none | none | none | none | no |
 | Terminal Experience, Live session (reference terminal) (`terminal-session:live_session`) | none | none | none | none | no |
+| Terminal Experience, Polished session (full-screen terminal with the settled screen rules) (`terminal-session:polished_session`) | none | none | `textual` via extra `textual` | none | no |
 | Terminal Experience, Textual session (full-screen terminal) (`terminal-session:textual_session`) | none | none | `textual` via extra `textual` | none | no |
 | Assembler, One-call assembly of the whole hub (`the-assembler:zero_config`) | none | none | none | none | no |
 | Body, Declared sources and enduring integrations (`the-body:composition`) | none | none | none | none | no |

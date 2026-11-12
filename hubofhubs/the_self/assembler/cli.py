@@ -62,9 +62,43 @@ def work_command(args: argparse.Namespace, hub: object) -> int:
     if not args.goal and not interactive:
         print("ahohs work needs a goal when it is not on a terminal: ahohs work \"<goal>\"", file=sys.stderr)
         return 2
+    if hasattr(arm, "configure"):       # an arm that starts a program of its own (the ACP client arm) is told what the agent it points at is started with
+        arm.configure(harness=name, folder=folder, tier=args.tier, max_spend=args.max_spend, max_time=args.max_time, permission=args.permission, solution=args.solution,
+                      milestone=args.milestone, person=args.person, setting_sources=args.setting_sources)
     code = arm.host_terminal(session, args.goal, args.resume) if interactive and hasattr(arm, "host_terminal") else session.run(args.goal, args.resume)
     last = session.last.final if session.last else None
     return code if last is None or last.outcome in ("met", "stopped", "unmet") else 1
+
+
+def acp_command(args: argparse.Namespace) -> int:
+    """``ahohs acp``: the hub's session harness served as an Agent Client Protocol agent on stdin and stdout, for an ACP terminal client to draw. A client launches it: ``toad acp "ahohs acp" .``.
+    Nothing is printed to stdout but protocol messages; a missing optional library is said on stderr with the install line (exit 2)."""
+    from pathlib import Path
+    from hubofhubs.the_consciousness.ai_session_experience.acp_agent.server import AcpUnavailable, HubAgent, sdk, serve
+    from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import work as terminal
+    from hubofhubs.the_self.assembler.resolution import process_environment
+    try:
+        sdk()
+        usd = terminal.dollars_of(args.max_spend) if args.max_spend is not None else None
+        seconds = terminal.seconds_of(args.max_time) if args.max_time is not None else None
+        usd = "unlimited" if usd is None and args.max_spend is not None else usd
+        seconds = "unlimited" if seconds is None and args.max_time is not None else seconds
+        name = args.harness or terminal.default_harness()[0]
+        if name not in terminal.HARNESSES:
+            raise ValueError(f"no harness named {name!r}; choose one of {', '.join(terminal.HARNESSES)}")
+
+        def build(folder: str):
+            return terminal.harness_builder(folder=str(Path(folder).resolve()), tier=main_session_tier("", args.tier), ceiling_usd=usd, ceiling_seconds=seconds, permission=args.permission,
+                                            environ=process_environment(), solution=args.solution, milestone=args.milestone, setting_sources=args.setting_sources)(name)
+        steering = bool(build(args.folder).capabilities.steer)
+    except AcpUnavailable as error:
+        print(error, file=sys.stderr)
+        return 2
+    except ValueError as error:
+        print(f"failed: {error}", file=sys.stderr)
+        return 2
+    serve(HubAgent(build, folder=args.folder, steering=steering, acting_for=args.person))
+    return 0
 
 
 def main_session_tier(task_kind: str = "", requested: str = "") -> str:
@@ -98,10 +132,21 @@ def main(argv: Optional[List[str]] = None) -> int:
     work.add_argument("--milestone", default="", help="the milestone it serves")
     work.add_argument("--records", default="", help="the ESOI records the structure view reads (default: this folder when it has esoi.toml)")
     work.add_argument("--as", dest="person", default="", metavar="NAME", help="act for this representative (its authority and stop limits apply; /as switches)")
-    work.add_argument("--terminal", default="", help="the screen: textual_session, live_session or line_repl (default: the hub's selected one; live_session stands in when Textual is not installed)")
+    work.add_argument("--terminal", default="", help="the screen: live_session, textual_session, polished_session, acp_client_session (an installed ACP client such as Toad draws it) or line_repl (default: the hub's selected one; the best-measured arm that can run stands in when one's library or program is missing, with the reason shown)")
     work.add_argument("--setting-sources", default="project", help="which of the Claude CLI's setting sources a session loads: project (default: this folder's own, never your user-level settings and hooks), or a list such as user,project")
     work.add_argument("--structure-watch", default="on", choices=("on", "off"), help="on (default): one small best-tier look at the records after a run that changed something, when there are records; off: never")
     work.add_argument("--plain", action="store_true", help="plain lines even on a terminal")
+    acp = sub.add_parser("acp", help="serve the hub's session harness as an Agent Client Protocol agent on stdio (an ACP terminal client launches it, for example: toad acp \"ahohs acp\" .); needs the extra acp")
+    acp.add_argument("--harness", default="", help="native, adaptive, solution_agents, stream or loop (default: the hub's own pick)")
+    acp.add_argument("--tier", default="", help="model tier: fast, balanced, quality or best")
+    acp.add_argument("--folder", default=".", help="the folder a session works in when the client names none")
+    acp.add_argument("--max-spend", default=None, metavar="USD", help="spend ceiling in dollars, or unlimited")
+    acp.add_argument("--max-time", default=None, metavar="TIME", help="time ceiling like 90s, 30m, 2h, or unlimited")
+    acp.add_argument("--permission", default="acceptEdits", choices=("acceptEdits", "skip"), help="acceptEdits: commands are refused and listed; skip: no permission checks")
+    acp.add_argument("--solution", default="", help="the solution this work serves")
+    acp.add_argument("--milestone", default="", help="the milestone it serves")
+    acp.add_argument("--as", dest="person", default="", metavar="NAME", help="who the AI acts for, said in the first message")
+    acp.add_argument("--setting-sources", default="project", help="which of the Claude CLI's setting sources a session loads")
     one = sub.add_parser("run", help="answer one input with the best-measured arm of the whole hub, or of one id")
     one.add_argument("input")
     one.add_argument("--id", default="hub-of-hubs", help="the solution or intent to run (default: the whole hub)")
@@ -119,6 +164,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         args = parser.parse_args(["work"])
     if args.command == "work":
         return work_command(args, hubofhubs)
+    if args.command == "acp":
+        return acp_command(args)
     if args.command == "chat":
         from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl import LineRepl
         chosen = dict(item.split("=", 1) for item in args.arm)

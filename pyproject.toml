@@ -33,7 +33,8 @@ science = ["httpx>=0.28"]                 # the-science arm: openalex (scholarly
 pages = ["trafilatura>=2.0", "pypdf>=6.0"]     # page extraction and PDF text (both optional; the code degrades honestly without them)
 qdrant = ["qdrant-client>=1.16", "fastembed>=0.8"]   # the-subconscious: the Qdrant vector store (embedded or server) and its local default embedder
 voyage = ["voyageai>=0.3"]                # the-subconscious: the Voyage AI embedder factory
-acp = ["agent-client-protocol>=0.4"]      # delegated-agent-sessions arm: the Agent Client Protocol deep runner (imported inside one function)
+evaluation = ["pyte>=0.8.2"]              # evaluation only, never imported by the package: the terminal emulator (LGPL-3.0) that evaluation/terminal_presentation replays screens through (tested with 0.8.2)
+acp = ["agent-client-protocol>=1.0"]      # (floor raised to 1.0, the version `ahohs acp` and its tests ran on) delegated-agent-sessions arm: the Agent Client Protocol deep runner, and `ahohs acp` (the hub served as an ACP agent, arm terminal-session:acp_client_session); imported inside functions
 bm25 = ["bm25s>=0.3", "PyStemmer>=3.0"]                     # the-subconscious: the BM25 content store
 retrieval = ["numpy>=1.26", "scikit-learn>=1.4", "fastembed>=0.8"]   # context-retriever: the dense arm (a local embedding model), the latent semantic index and the learned reranker
 textual = ["textual>=8.0"]                                   # terminal-session arm: textual_session (a full-screen terminal; rich, its dependency, renders the markdown)

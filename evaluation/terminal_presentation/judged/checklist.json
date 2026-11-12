@@ -1,0 +1,27 @@
+{
+ "version": 1,
+ "frozen_on": "2026-11-11",
+ "rule": "Each item is a yes or no question a person can answer from one text frame alone. 'yes' needs a quote from the frame that shows it; no item may be added, reworded or dropped after an arm was judged (a change is a new version and every arm is judged again).",
+ "sources": {
+  "N": "Nielsen, 10 Usability Heuristics for User Interface Design (1994, reviewed 2024), https://www.nngroup.com/articles/ten-usability-heuristics/",
+  "G": "Amershi et al., Guidelines for Human-AI Interaction, CHI 2019, https://www.microsoft.com/en-us/research/articles/guidelines-for-human-ai-interaction-eighteen-best-practices-for-human-centered-ai-design/",
+  "C": "Command Line Interface Guidelines, https://clig.dev/"
+ },
+ "items": [
+  {"id": "shows-what-it-is-doing-now", "question": "Does the frame show what the run is doing right now (a current step, or a state such as waiting or stopped)?", "source": "N1 Visibility of system status; C Responsiveness; G4", "frames": ["start", "mid_run", "waiting", "stopped"]},
+  {"id": "shows-time-or-cost", "question": "Does the frame show how long the run has gone or what it has cost, or say that the cost is unknown?", "source": "N1; G2", "frames": ["mid_run", "waiting", "finished"]},
+  {"id": "plain-words", "question": "Are the rows in plain words a person would use, with no internal code or identifier as the only description of a step?", "source": "N2 Match between the system and the real world", "frames": ["mid_run", "waiting", "finished"]},
+  {"id": "stop-is-shown", "question": "Does the frame show how to stop the run?", "source": "N3 User control and freedom; G17 Provide global controls", "frames": ["start", "mid_run", "waiting"]},
+  {"id": "stopped-says-kept-and-how-to-continue", "question": "Does the frame say that finished work was kept and how to continue the stopped session?", "source": "N3; G9 Support efficient correction", "frames": ["stopped"]},
+  {"id": "waiting-shows-what-will-change", "question": "Does the frame show what will change if the person approves, before they answer?", "source": "N5 Error prevention; G16 Convey the consequences of user actions", "frames": ["waiting"]},
+  {"id": "waiting-shows-how-to-answer", "question": "Does the frame show how to approve and how to refuse?", "source": "N6 Recognition rather than recall", "frames": ["waiting"]},
+  {"id": "usable-keys-are-shown", "question": "Are the keys that can be used now shown on the frame itself, not only behind a help screen?", "source": "N6; N7 Flexibility and efficiency of use", "frames": ["start", "mid_run", "waiting"]},
+  {"id": "no-update-twice", "question": "Is every update shown only once on the frame (no row repeated, no earlier version of the screen left above the current one)?", "source": "N8 Aesthetic and minimalist design", "frames": ["mid_run", "waiting", "stopped", "finished"]},
+  {"id": "helpers-show-who-they-are", "question": "Does a helper's row name the helper (or the solution it serves) and sit under what started it?", "source": "G11 Make clear why the system did what it did; N1", "frames": ["mid_run", "finished"]},
+  {"id": "outcome-in-a-plain-word", "question": "Does the frame state how the run ended in a plain word (met, not met, stopped or failed)?", "source": "N1; N9 Help users recognize, diagnose and recover from errors", "frames": ["stopped", "finished"]},
+  {"id": "changed-files-listed", "question": "Does the frame list each file that was changed, or say that nothing changed?", "source": "G2; N1", "frames": ["finished"]},
+  {"id": "start-names-the-goal", "question": "Does the frame say what goal is being worked on?", "source": "G1 Make clear what the system can do; N1", "frames": ["start", "mid_run"]},
+  {"id": "fits-the-narrow-terminal", "question": "Does every row fit the terminal width, with no word cut in the middle and no row wrapped onto a second line?", "source": "C Output; N8", "frames": ["narrow"]},
+  {"id": "no-colour-dependence", "question": "Is the state of every step readable from its words or marks alone, without colour?", "source": "C Output: use colour with intention; N4 Consistency and standards", "frames": ["mid_run", "finished"]}
+ ]
+}

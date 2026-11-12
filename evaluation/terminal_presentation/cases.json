@@ -1,0 +1,111 @@
+[
+ {
+  "id": "presentation-watch",
+  "kind": "presentation",
+  "origin": "rule: a run with a read, an edit, a helper and a command, then its report (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "watch"
+  },
+  "requirements": [
+   "X1",
+   "X2",
+   "X10",
+   "X13",
+   "X18"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-steer",
+  "kind": "presentation",
+  "origin": "rule: a correction typed while the run works (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "steer"
+  },
+  "requirements": [
+   "X6",
+   "X23"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-stop_resume",
+  "kind": "presentation",
+  "origin": "rule: Escape then resume, finished work kept (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "stop_resume"
+  },
+  "requirements": [
+   "X4",
+   "X5",
+   "X21",
+   "X33"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-approve",
+  "kind": "presentation",
+  "origin": "rule: a risky step waits with its preview, then is approved (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "approve"
+  },
+  "requirements": [
+   "X9",
+   "X19"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-refuse",
+  "kind": "presentation",
+  "origin": "rule: a risky step waits with its preview, then is refused (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "refuse"
+  },
+  "requirements": [
+   "X9",
+   "X19",
+   "X20"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-target",
+  "kind": "presentation",
+  "origin": "rule: stopping one helper, or being told the harness cannot (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "target"
+  },
+  "requirements": [
+   "X8"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-plain",
+  "kind": "presentation",
+  "origin": "rule: the same run written to something that is not a terminal (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "plain"
+  },
+  "requirements": [
+   "X13"
+  ],
+  "expect": {
+   "failed": []
+  }
+ }
+]

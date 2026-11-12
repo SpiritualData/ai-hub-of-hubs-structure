@@ -1,0 +1,171 @@
+"""Scripted sessions for the presentation metric: the same scripts for every arm, run on a scripted fake harness (no model, no network) at each stated size, each scenario
+naming the checks it makes. A scenario returns ``{"checks": {name: True | False | None}, "ceiling": {name: bool}, "not_run": [names]}``; a check that fails at either size
+fails. The scripted harnesses are the hub's own (``terminal_experience.scripted``)."""
+from __future__ import annotations
+
+import sys
+import tempfile
+import threading
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+
+import checks as C  # noqa: E402
+from screen import SIZES, Capture, plain_capture, stream_capture, textual_capture  # noqa: E402
+
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.scripted import (  # noqa: E402
+    delegate, edit, read, report, run, stream_kit, turn, use)
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_keys import ScriptedKeys  # noqa: E402
+
+PAUSE = 0.2
+ALL_CHECKS = tuple(C.REQUIREMENTS)
+
+
+def folder() -> str:
+    path = tempfile.mkdtemp(prefix="presentation-")
+    Path(path, "a.txt").write_text("alpha\n")
+    return path
+
+
+def presentation_of(arm: Any) -> str:
+    """How an arm is captured: its own ``presentation`` (``stream``, ``textual`` or ``external``), else ``textual`` when it hosts a Textual application, else ``stream``."""
+    return getattr(arm, "presentation", None) or ("textual" if hasattr(arm, "attending") else "stream")
+
+
+def textual_hooks(arm: Any) -> Dict[str, Any]:
+    """The capture hook of a Textual arm that has its own application and transcript class (``polished_session``: added 2026-11-11 when that arm was first scored, so it is drawn by
+    its own screen and not by ``textual_session``'s; no check or weight was changed). Any other Textual arm is drawn by the default hooks."""
+    if arm.__class__.__module__.endswith("polished.session"):
+        from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.app import PolishedApp, Transcript
+        return {"make_app": lambda: PolishedApp(title=arm.title), "transcript_class": Transcript}
+    return {}
+
+
+def capture(arm: Any, kit: Any, keys: Any, size: Tuple[int, int], options: Optional[Dict[str, Any]] = None) -> Capture:
+    if presentation_of(arm) == "textual":
+        return textual_capture(arm, kit.harness, keys, size, options=options, **textual_hooks(arm))
+    return stream_capture(arm, kit.harness, keys, size, options=options)
+
+
+def both(arm: Any, build: Callable[[ScriptedKeys], Any], options: Optional[Dict[str, Any]] = None) -> List[Capture]:
+    caps = []
+    for size in SIZES:
+        keys = ScriptedKeys()
+        caps.append(capture(arm, build(keys), keys, size, options))
+    return caps
+
+
+def over(caps: Sequence[Capture], check: Callable[[Capture], Optional[bool]]) -> Optional[bool]:
+    return C.combine([check(c) for c in caps])
+
+
+def rendering(caps: Sequence[Capture]) -> Dict[str, Optional[bool]]:
+    return {"each-update-once": over(caps, C.each_update_once), "no-row-wider-than-the-terminal": over(caps, C.no_row_wider_than_the_terminal),
+            "repaints-under-bound": over(caps, C.repaints_under_bound), "contrast-4.5": over(caps, C.contrast_ok)}
+
+
+# --- scenarios ----------------------------------------------------------------------------------------------------------------------
+
+def watch(arm: Any) -> Dict[str, Any]:
+    caps = both(arm, lambda keys: stream_kit(folder(), [turn(read("a.txt")), turn(edit("b.txt")), turn(delegate("write the tests", turn(edit("tests.txt"), report("tests done")))),
+                                                      turn(run("echo hi")), turn(report("All done."))], pause=PAUSE))
+    return {"checks": {**rendering(caps), "current-step-visible": over(caps, C.current_step_visible), "closing-report-complete": over(caps, C.closing_report_complete),
+                       "first-output-within-a-second": over(caps, C.first_output), "key-hints-present-and-whole": C.key_hints(caps)},
+            "ceiling": ceilings(arm)["ceiling"]}       # what only the hub can show is read in the same case, as its own column
+
+
+def steer(arm: Any) -> Dict[str, Any]:
+    def build(keys: Any) -> Any:
+        return stream_kit(folder(), [turn(read("a.txt"), hook=lambda: keys.press("line", "use the short name")), turn(edit("b.txt")), turn(edit("c.txt"), report("Done."))], pause=PAUSE)
+    caps = both(arm, build)
+    return {"checks": {"correction-sent-then-taken-up": over(caps, C.correction_sent_then_taken_up),
+                       "round-trip-steer": over(caps, lambda c: C.round_trip(c, "steer", r"you: use the short name|use the short name", "use the short name"))},
+            "ceiling": {"correction-taken-up": bool(over(caps, C.correction_sent_then_taken_up))}}
+
+
+def stop_resume(arm: Any) -> Dict[str, Any]:
+    def build(keys: Any) -> Any:
+        return stream_kit(folder(), [turn(edit("one.txt")), turn(edit("two.txt"), hook=lambda: (keys.press("esc"), keys.press("line", "resume"))),
+                                     turn(edit("three.txt"), report("All three."))], pause=PAUSE)
+    caps = both(arm, build)
+    return {"checks": {"stop-then-resume-keeps-work": over(caps, C.stop_then_resume_keeps_work), "round-trip-stop": over(caps, lambda c: C.round_trip(c, "stop", r"stopp")),
+                       "round-trip-resume": over(caps, lambda c: C.combine([bool(c.report and len(c.report.runs) >= 2 and "resum" in c.all_text().lower())])),
+                       "closing-report-complete": over(caps, C.closing_report_complete)}}
+
+
+def approval(arm: Any, answer: str) -> Dict[str, Any]:
+    def build(keys: Any) -> Any:
+        def react(event: Any) -> None:
+            if event.type == "waiting":
+                threading.Timer(0.8, lambda: keys.press("line", answer)).start()
+        keys.react = react
+        return stream_kit(folder(), [turn(use("deploy", "release 1.0")), turn(report("Finished."))], pause=0.0)
+    caps = both(arm, build)
+    word = "approve" if answer == "y" else "refuse"
+    shown = r"deploy" if answer == "y" else r"refus|blocked"
+    out = {"risky-step-waits-with-preview": over(caps, C.risky_step_waits_with_preview), f"round-trip-{word}": over(caps, lambda c: C.round_trip(c, word, shown))}
+    return {"checks": out}
+
+
+def target(arm: Any) -> Dict[str, Any]:
+    def build(keys: Any) -> Any:
+        keys.when("agent-started", "line", "/stop tests")
+        return stream_kit(folder(), [turn(delegate("write the tests", turn(*[edit(f"t{i}.txt") for i in range(6)], report("tests done")))), turn(report("Finished."))], pause=0.1)
+    caps = both(arm, build)
+    return {"checks": {"unavailable-control-shown": over(caps, C.unavailable_shown)},
+            "ceiling": {"stop-one-helper": all(any(c2.type == "stop" and c2.agent_id for _, c2, _ in cap.controls) for cap in caps)}}
+
+
+def plain(arm: Any) -> Dict[str, Any]:
+    kit = stream_kit(folder(), [turn(read("a.txt")), turn(edit("b.txt"), report("Done."))], pause=0.0)
+    text, rep = plain_capture(arm, kit.harness, ScriptedKeys())
+    return {"checks": {"plain-when-not-a-terminal": C.plain_text(text, ["a.txt", "b.txt"], rep.final.report if rep and rep.final else "")}}
+
+
+def ceilings(arm: Any) -> Dict[str, Any]:
+    def build(keys: Any) -> Any:
+        return stream_kit(folder(), [turn(read("a.txt"), hook=lambda: keys.press("tree")), turn(delegate("write the tests", turn(edit("t.txt"), report("ok")))),
+                                     turn(edit("b.txt")), turn(report("Done."))], pause=PAUSE, limits=(5.0, 1800.0))
+    caps = []
+    for size in SIZES[:1]:
+        keys = ScriptedKeys()
+        caps.append(capture(arm, build(keys), keys, size, {"representative": {"person": "Alex"}}))
+    text = caps[0].all_text()
+    return {"ceiling": {"structure-on-request": "structure" in text.lower() and bool(__import__("re").search(r"structure \(|Tab hides", text)),
+                        "spend-against-ceilings": "of $5.00" in text and "of 30:00" in text, "who-the-ai-acts-for": "for Alex" in text}}
+
+
+SCENARIOS = {"watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
+             "target": target, "plain": plain}
+SECONDS = 20
+
+
+def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
+    """The scenario's result. An arm shown only through an external program (``presentation = "external"``) is not captured here: its screen checks are marked not run."""
+    if presentation_of(arm) == "external":
+        import external
+        return external.run_scenario(name)
+    done: Dict[str, Any] = {}
+
+    def work() -> None:
+        try:
+            done["result"] = SCENARIOS[name](arm)
+        except Exception as error:  # noqa: BLE001 -- an arm that cannot do the scenario fails it
+            done["error"] = f"{type(error).__name__}: {error}"
+    thread = threading.Thread(target=work, daemon=True)
+    thread.start()
+    thread.join(SECONDS)
+    if "result" in done:
+        return done["result"]
+    failed = {c: False for c in ALL_CHECKS if c in SCENARIO_CHECKS[name]}
+    return {"checks": failed, "ceiling": {}, "note": done.get("error", "did not finish in time")}
+
+
+SCENARIO_CHECKS = {"watch": ("each-update-once", "no-row-wider-than-the-terminal", "repaints-under-bound", "contrast-4.5", "current-step-visible", "closing-report-complete",
+                             "first-output-within-a-second", "key-hints-present-and-whole"),
+                   "steer": ("correction-sent-then-taken-up", "round-trip-steer"),
+                   "stop_resume": ("stop-then-resume-keeps-work", "round-trip-stop", "round-trip-resume", "closing-report-complete"),
+                   "approve": ("risky-step-waits-with-preview", "round-trip-approve"), "refuse": ("risky-step-waits-with-preview", "round-trip-refuse"),
+                   "target": ("unavailable-control-shown",), "plain": ("plain-when-not-a-terminal",)}

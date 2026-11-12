@@ -153,5 +153,5 @@ The table below is generated from the records. Names lead, each part says what i
 | Frontend Interface | AI Session Experience | 0 | 0 | 0 | none | `frontend-interface` |
 | Structure In View | AI Session Experience | 0 | 0 | 0 | none | `structure-in-view` |
 
-76 areas and 495 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+76 areas and 497 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

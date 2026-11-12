@@ -148,6 +148,8 @@ CLAUDE_ACCOUNT = requirements.resource("Claude Code needs a Pro, Max, Ultra, Tea
 CLAUDE_CLI_BOUNDARY = requirements.isolatable("cli")
 BUBBLEWRAP = requirements.binary("bwrap", "install bubblewrap (the bubblewrap package of the distribution; https://github.com/containers/bubblewrap); without it commands run with the refusal floor alone",
                                  version_args=("--version",), required=False)
+TOAD_BINARY = requirements.binary("toad", "install Toad, an open-source ACP terminal client (AGPL-3.0, so it is only ever run as its own program, never imported): "
+                                  "uv tool install -U batrachian-toad --python 3.14 (https://github.com/batrachianai/toad); or name another client with AHOHS_ACP_CLIENT", version_args=("--version",))
 ACP_BINARY = requirements.binary("claude-agent-acp", "install the Claude ACP agent with npm; it needs Node 22 or later", version_args=("--version",))
 NODE_BINARY = requirements.binary("node", "install Node 22 or later (the ACP agent declares it)", version_args=("--version",))
 ACP_BOUNDARY = requirements.isolatable("subprocess")

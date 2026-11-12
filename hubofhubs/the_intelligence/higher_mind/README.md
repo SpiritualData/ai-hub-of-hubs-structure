@@ -35,7 +35,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 ## Metrics and their leaders
 
 - A nudge that helps the Planner (`metric-planner-guidance`): leader `rule_gate`, 24 of 24 cases
-- A later request uses what an earlier one learned (`metric-long-term-memory`): leader `file_recall`, 16 of 17 cases
+- A later request uses what an earlier one learned (`metric-long-term-memory`): leader `file_recall`, 24 of 25 cases
 - An objective persists until it is met (`metric-live-objectives`): leader `rolled_up`, 20 of 20 cases
 
 ## Where to go next

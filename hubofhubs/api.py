@@ -252,6 +252,12 @@ NAMES = {
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live": (
         "LiveSession",
     ),
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.session": (
+        "PolishedSession",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.polished.menu": (
+        "MenuItem",
+    ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.work": (
         "WorkTerminal", "default_harness", "harness_builder", "terminal_arm",
     ),
@@ -279,6 +285,10 @@ NAMES = {
     "hubofhubs.the_intelligence.critical_thinking.esoi_application.interface": (
         "EsoiApplying", "RecordsSource",
     ),
+    "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.interface": ("StructureInConversation",),
+    "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.moves": ("MOVES", "NoStructure", "StructureMove", "missing", "ids_of"),
+    "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.terms": ("TERMS", "vocabulary_note"),
+    "hubofhubs.the_intelligence.critical_thinking.structure_in_conversation.advisory": ("advisory_checks",),
     "hubofhubs.the_intelligence.critical_thinking.goal_completion.done_evidence": (
         "CONTINUE", "Reading", "clean_requirements", "continue_decision", "coverage_gap", "coverage_progress", "evidence_coverage", "interim_data",
         "measure", "parse_coverage", "render_continue_plan", "render_coverage_line", "render_requirements", "rubric_coverage",

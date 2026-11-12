@@ -22,6 +22,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Build an autopilot on the hub](how-to/build-an-autopilot-on-the-hub.md)
 - [Render a run in a terminal](how-to/render-a-run-in-a-terminal.md)
 - [Talk to the hub in a terminal](how-to/talk-to-the-hub-in-a-terminal.md)
+- [Draw the hub in an ACP terminal client](how-to/draw-the-hub-in-an-acp-terminal.md)
 - [Release the hub](how-to/release-the-hub.md)
 
 ## Explanation

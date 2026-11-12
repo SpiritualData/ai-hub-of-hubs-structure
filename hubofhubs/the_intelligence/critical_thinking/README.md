@@ -34,6 +34,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - [Metric Upkeep](metric_upkeep/README.md) (solution with implementations): Keep every milestone measurable by the AI's own work, so a turn asked to make progress never has the excuse of waiting on a person.
 - [Response Quality](response_quality/README.md) (solution with implementations): Judge a response against the quality profile that applies to this request.
 - [Solution Passes](solution_passes/README.md) (solution with implementations): Make every relevant solution judge a request against its own records, at every level of the hierarchy, so durable memory and expertise are never skipped.
+- [Structure in conversation](structure_in_conversation/README.md) (solution with implementations): Give a person grounded clarity in a conversation by building the reply on the structure of their intent, and stay out of the way when a turn needs none.
 
 ## Solutions at a glance
 
@@ -46,6 +47,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Metric Upkeep | `metric-upkeep` | `hubofhubs.run("metric-upkeep", ...)` | Record fields (`record_fields`) | Metric states and intermediates are right |
 | Response Quality | `response-quality` | `hubofhubs.run("response-quality", ...)` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Solution Passes | `solution-passes` | `hubofhubs.run("solution-passes", ...)` | Network passes (`network_passes`) | Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost |
+| Structure in conversation | `structure-in-conversation` | `hubofhubs.run("structure-in-conversation", {'turn': {'move': 'none'}})` | No structure (`none`) | Replies make the structure move their turn calls for |
 
 ## Problems and ideals
 
@@ -54,6 +56,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
 - Answer sent while the goal is unmet (`hprob-answer-sent-while-goal-unmet`): A draft that does not meet the goal condition is sent as final after one pass, or hands the work back to the person, although means that could meet it were never tried.
 - Solution skipped or judged broadly (`hprob-solution-skipped-or-judged-broadly`): Work that touches several solutions is judged in one broad pass from general knowledge, or a relevant solution, a scope above it or a solution relying on it is never considered at all.
+- Reply ignores the structure held (`hprob-reply-ignores-the-structure-held`): A reply to a person's question lists general options and ignores the structure the system already holds for what they are working toward: what stands in the way, what good looks like, which alternatives are being compared, how they would tell which works and the next milestone.
 - Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and the pick is seldom checked against the evidence it should rest on.
 - The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and does not reach the prompt.
 - Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
@@ -63,6 +66,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Every request has a target (`hideal-every-request-has-a-target`): For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.
 - A goal is pursued until met or honestly reported (`hideal-a-goal-is-pursued-until-met-or-honestly-reported`): A request is worked on until its goal is met, and when it cannot be, the person is told exactly what was tried and what is missing.
 - Each solution considered on its own records (`hideal-each-solution-considered-on-its-own-records`): Every relevant solution, every scope above it that the change affects and every solution relying on it gets its own consideration, reading its own records first.
+- A reply builds on the structure held (`hideal-a-reply-builds-on-the-structure-held`): A reply that serves a person's intent uses the problem, ideal, solution, alternatives, metric and milestone the system already holds, in sentences that stand on their own, proposes only what is missing, offers at most one way to keep it, and stays plain where structure would only get in the way.
 - Decisions held by independent checks (`hideal-decisions-held-by-independent-checks`): A decision is accepted when small checks that each saw only their own evidence agree, and is settled from quoted evidence or not at all when they do not.
 - Found mistakes not repeated (`hideal-found-mistakes-not-repeated`): A mistake found once becomes a short lesson in the check that made it, kept only while the metric says it pays.
 - Quality is judged per profile (`hideal-quality-is-per-profile`): A response is high quality by the standard of the person and situation it serves, and good by default for someone who has said nothing yet.
@@ -77,12 +81,13 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Balanced score of a response against its quality profile (`metric-response-quality`): leader `date_arithmetic`, 15 of 15 cases
 - Record-held answers reached and followed (`metric-solution-passes`): leader `network_passes`, 10 of 11 cases
 - Work done right because each touched solution was considered, at a priced cost (`metric-solution-passes-work-outcome`): leader `network_passes`, 10 of 11 cases
+- Replies make the structure move their turn calls for (`metric-structure-in-conversation`): leader `structure_move`, 30 of 30 cases
 
 ## Where to go next
 
 - Parent intent: [How the AI processes information](../README.md)
 - Repository: [top README](../../../README.md)
-- Records beside the code: [hubofhubs/the_intelligence/critical_thinking/decision_check](decision_check/README.md), [hubofhubs/the_intelligence/critical_thinking/esoi_application](esoi_application/README.md), [hubofhubs/the_intelligence/critical_thinking/goal_completion](goal_completion/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_translation](metric_translation/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_upkeep](metric_upkeep/README.md), [hubofhubs/the_intelligence/critical_thinking/response_quality](response_quality/README.md), [hubofhubs/the_intelligence/critical_thinking/solution_passes](solution_passes/README.md)
+- Records beside the code: [hubofhubs/the_intelligence/critical_thinking/decision_check](decision_check/README.md), [hubofhubs/the_intelligence/critical_thinking/esoi_application](esoi_application/README.md), [hubofhubs/the_intelligence/critical_thinking/goal_completion](goal_completion/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_translation](metric_translation/README.md), [hubofhubs/the_intelligence/critical_thinking/metric_upkeep](metric_upkeep/README.md), [hubofhubs/the_intelligence/critical_thinking/response_quality](response_quality/README.md), [hubofhubs/the_intelligence/critical_thinking/solution_passes](solution_passes/README.md), [hubofhubs/the_intelligence/critical_thinking/structure_in_conversation](structure_in_conversation/README.md)
 - Records: [intent.csv](intent.csv), [problems.csv](problems.csv), [ideals.csv](ideals.csv)
 - Diagram page: [diagram.md](diagram.md)
 
@@ -95,6 +100,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Goal not turned into a metric (`hprob-goal-not-turned-into-a-metric`): Most requests are answered without a stated target, so it is hard to say whether the goal was met or whether a second try was better.
 - Answer sent while the goal is unmet (`hprob-answer-sent-while-goal-unmet`): A draft that does not meet the goal condition is sent as final after one pass, or hands the work back to the person, although means that could meet it were never tried.
 - Solution skipped or judged broadly (`hprob-solution-skipped-or-judged-broadly`): Work that touches several solutions is judged in one broad pass from general knowledge, or a relevant solution, a scope above it or a solution relying on it is never considered at all.
+- Reply ignores the structure held (`hprob-reply-ignores-the-structure-held`): A reply to a person's question lists general options and ignores the structure the system already holds for what they are working toward: what stands in the way, what good looks like, which alternatives are being compared, how they would tell which works and the next milestone.
 - Cheap model decisions are unreliable (`hprob-cheap-model-decisions-unreliable`): A cheap model asked for a decision in one prompt that mixes every kind of evidence (rules, past examples, descriptions, tool records) often picks wrongly, and the pick is seldom checked against the evidence it should rest on.
 - The same mistakes repeat (`hprob-same-mistakes-repeat`): A check makes the same kind of mistake again and again, though each one was found (an eval failure, a person's correction, a disagreement that was settled), because the lesson stays in a log and does not reach the prompt.
 - Quality judged by one fixed standard (`hprob-one-quality-standard-for-everyone`): Response quality is usually judged by one fixed standard, though what counts as high quality depends on the person, the situation and the goals above the request.
@@ -104,6 +110,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Every request has a target (`hideal-every-request-has-a-target`): For every request and sub-goal, the AI and the person can tell whether the goal was met and how close it came, in terms that roll up to the objective it serves.
 - A goal is pursued until met or honestly reported (`hideal-a-goal-is-pursued-until-met-or-honestly-reported`): A request is worked on until its goal is met, and when it cannot be, the person is told exactly what was tried and what is missing.
 - Each solution considered on its own records (`hideal-each-solution-considered-on-its-own-records`): Every relevant solution, every scope above it that the change affects and every solution relying on it gets its own consideration, reading its own records first.
+- A reply builds on the structure held (`hideal-a-reply-builds-on-the-structure-held`): A reply that serves a person's intent uses the problem, ideal, solution, alternatives, metric and milestone the system already holds, in sentences that stand on their own, proposes only what is missing, offers at most one way to keep it, and stays plain where structure would only get in the way.
 - Decisions held by independent checks (`hideal-decisions-held-by-independent-checks`): A decision is accepted when small checks that each saw only their own evidence agree, and is settled from quoted evidence or not at all when they do not.
 - Found mistakes not repeated (`hideal-found-mistakes-not-repeated`): A mistake found once becomes a short lesson in the check that made it, kept only while the metric says it pays.
 - Quality is judged per profile (`hideal-quality-is-per-profile`): A response is high quality by the standard of the person and situation it serves, and good by default for someone who has said nothing yet.
@@ -119,6 +126,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Metric Upkeep | `metric-upkeep` | Record fields (`record_fields`) | Metric states and intermediates are right |
 | Response Quality | `response-quality` | Links held to their evidence (`evidence_check`) | Balanced score of a response against its quality profile |
 | Solution Passes | `solution-passes` | Network passes (`network_passes`) | Record-held answers reached and followed, Work done right because each touched solution was considered, at a priced cost |
+| Structure in conversation | `structure-in-conversation` | No structure (`none`) | Replies make the structure move their turn calls for |
 
 ### Implementations
 
@@ -143,6 +151,8 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | No em dash | `response-quality:em_dash_free` | [hubofhubs/the_intelligence/critical_thinking/response_quality/em_dash_free.py](response_quality/em_dash_free.py) |  |
 | Figures held to their evidence | `response-quality:grounded_figures` | [hubofhubs/the_intelligence/critical_thinking/response_quality/figure_grounding.py](response_quality/figure_grounding.py) |  |
 | Network passes | `solution-passes:network_passes` | [hubofhubs/the_intelligence/critical_thinking/solution_passes/passes.py](solution_passes/passes.py) |  |
+| No structure | `structure-in-conversation:none` | [hubofhubs/the_intelligence/critical_thinking/structure_in_conversation/moves.py](structure_in_conversation/moves.py) |  |
+| Structure move | `structure-in-conversation:structure_move` | [hubofhubs/the_intelligence/critical_thinking/structure_in_conversation/moves.py](structure_in_conversation/moves.py) |  |
 
 ### Metrics
 
@@ -154,6 +164,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Balanced score of a response against its quality profile (`metric-response-quality`): `esoi run response_quality --impl evidence_check; esoi run response_quality --impl grounded_figures; esoi run response_quality --impl em_dash_free; esoi run response_quality --impl date_arithmetic`
 - Record-held answers reached and followed (`metric-solution-passes`): `esoi run solution_passes --impl network_passes`
 - Work done right because each touched solution was considered, at a priced cost (`metric-solution-passes-work-outcome`): `esoi run solution_passes --impl network_passes`
+- Replies make the structure move their turn calls for (`metric-structure-in-conversation`): `esoi run structure_in_conversation --impl none; esoi run structure_in_conversation --impl structure_move`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

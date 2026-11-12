@@ -20,7 +20,7 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.markd
 
 ASCII_MARK = {"running": "..", "done": "ok", "failed": "!!", "blocked": "xx"}
 GLYPH_MARK = {"running": "●", "done": "✓", "failed": "✗"}
-COLOR = {"running": "33", "done": "32", "failed": "31", "blocked": "31", "dim": "2", "bold": "1", "ask": "35"}
+COLOR = {"running": "33", "done": "32", "failed": "31", "blocked": "31", "dim": "", "bold": "1", "ask": "35"}
 KIND_WIDTH = 9
 HELP_ROWS = ("Esc or Ctrl-C  stop the run and keep the session (type resume to continue)",
              "type + Enter    steer the run; @name text steers one helper, /stop name stops one",
@@ -229,7 +229,10 @@ def money(view: SessionView) -> str:
 
 
 def paint(text: str, code: str, color: bool) -> str:
-    return f"\x1b[{COLOR[code]}m{text}\x1b[0m" if color else text
+    """``text`` in the style named ``code``. ``dim`` is no style at all: the rows it names (the goal, the structure line, the keys) carry information, SGR 2 (faint) is drawn at a
+    strength each terminal chooses (some halve the intensity, some ignore it, reports differ) so its contrast cannot be known, and an explicit grey is unreadable on a light theme;
+    the person's own foreground colour is the one that always has the contrast their theme was set for. The rows stay in order and in place, so the hierarchy is the layout's."""
+    return f"\x1b[{COLOR[code]}m{text}\x1b[0m" if color and COLOR[code] else text
 
 
 def step_row(step: Step, color: bool = False, who: str = "") -> str:
