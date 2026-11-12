@@ -29,6 +29,7 @@ import os
 import sys
 import time
 import uuid
+from collections import OrderedDict
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from esoi import implementation
@@ -46,6 +47,7 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunch
 from hubofhubs.the_world.tools.delegated_agent_sessions.native_runner import NativeToolLoopRunner, SESSION_FOLDER, log
 from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import LimitWatch, current_session_file
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import find_session_file
+from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import track
 from hubofhubs.the_world.tools.delegated_agent_sessions.adaptive_native_runner import folder_facts
 
 STEP_POLL_SECONDS = 2.0     # how often a running session's steps are looked at
@@ -145,6 +147,8 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         self.local.tools = NATIVE_TOOLS
         self.local.agents_file = self.local.settings_file = None
         self.local.solution_of = {}
+        self.local.review_agent = ""
+        self.local.review_stakes = {}
         scope: List[str] = []
         extras: List[str] = []
         specs: List[agents.SolutionSpec] = []
@@ -152,12 +156,13 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
         small = scratch and self.agent_calls > 0 and self.review_small_work and not large
         if large or small:
             specs, net = agents.choose_solutions(text, root, self.solutions, records=self.records, hub=self.hub) if large else agents.review_only(self.hub)
-            defined = agents.agent_definitions(specs, net, self.model_of) if specs else {}
+            defined = agents.agent_definitions(specs, net, self.model_of, goal=text) if specs else {}
             budget = self.agent_calls if large else min(self.agent_calls, agents.REVIEW_ONLY_CALLS)
             if defined and self.write_guard(scratch, defined, budget):
                 self.local.tools = tuple(NATIVE_TOOLS) + (agents.AGENT_TOOL,)
                 self.local.solution_of = {agents.agent_name(s.solution): s.solution for s in specs if agents.agent_name(s.solution) in defined}
                 review = agents.review_agent(specs, defined)
+                self.local.review_agent = review
                 extras.append(agents.agents_note(budget, review) if large else agents.review_only_note(review, budget))
             scope = [s.solution for s in specs] if large else []
         skills = skills_section(self.skills_dir)
@@ -210,6 +215,53 @@ class SolutionAgentsNativeRunner(NativeToolLoopRunner):
     def new_watch(self, root: str, emit: Any) -> LimitWatch:
         return StepWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, spend_of=lambda: self.spend_now(root), emit=emit, log=log, throttle=0.0,
                          budget=self.agent_calls, root=root, config_dir=getattr(self.goal_settings(), "claude_config_dir", None))
+
+    def iterate(self, result: Any, root: str, before: Any, common: Dict[str, Any], emit: Any, cancel_check: Any) -> Any:
+        result = super().iterate(result, root, before, common, emit, cancel_check)
+        return self.ask_review(result, root, before, common, emit, cancel_check)
+
+    def session_calls(self, result: Any, root: str) -> List[Dict[str, Any]]:
+        """The Agent calls of the session so far, read from its record (empty when it cannot be read)."""
+        try:
+            found = find_session_file(result.session_id, root, getattr(self.goal_settings(), "claude_config_dir", None)) if result.session_id else None
+            with open(found, encoding="utf-8", errors="replace") as handle:
+                return agents.agent_calls_in(handle)
+        except (OSError, TypeError):
+            return []
+
+    def ask_review(self, result: Any, root: str, before: Any, common: Dict[str, Any], emit: Any, cancel_check: Any) -> Any:
+        """After the session (and the code check) reported: when the deliverable it wrote has the stakes ``agents.review_wanted`` names, the same session is resumed once with the
+        request to hand it to the review agent, in the foreground, with the person's own goal. Not asked when the session already ran the review, when the run's ceilings are
+        reached, or when there is no review agent. The stakes are on ``result.review_stakes``."""
+        agent = getattr(self.local, "review_agent", "")
+        if not (agent and result.met and result.session_id):
+            return result
+        files: "OrderedDict[str, None]" = OrderedDict()
+        track(root, before, files)
+        goal = str(getattr(self.local, "goal_text", "") or "")
+        stakes = agents.review_stakes(root, list(files), goal)
+        result.review_stakes = {k: v for k, v in stakes.items() if k != "paths"}         # type: ignore[attr-defined]
+        if not agents.review_wanted(stakes):
+            return result
+        if any(c.get("agent") == agent and not c.get("failed") for c in self.session_calls(result, root)):
+            return result                                                              # the session reviewed it already
+        watch = getattr(self.local, "watch", None)
+        if watch is not None and (getattr(watch, "softened", False) or watch.hard_reached()):
+            return result
+        if cancel_check is not None and cancel_check():
+            return result
+        message = agents.review_request(agent, stakes["paths"], goal)
+        again = super(NativeToolLoopRunner, self).run_goal_once(goal=message, brief=message, context_preamble="", resume_session_id=result.session_id, **common)
+        if again.session_id == result.session_id:        # the CLI's cost is the session's running total, sub-agents included: the resumed report already holds the earlier turns
+            again.cost_usd = max(float(result.cost_usd or 0.0), float(again.cost_usd or 0.0))
+        else:
+            again.cost_usd = float(result.cost_usd or 0.0) + float(again.cost_usd or 0.0)
+        again.tokens = int(result.tokens or 0) + int(again.tokens or 0)
+        self.usage(again, root, emit, 1)
+        again.review_stakes = result.review_stakes                                       # type: ignore[attr-defined]
+        if not again.met and again.session_id == result.session_id and not again.cancelled:
+            return result                                                              # a failed review turn does not undo an accepted report
+        return again
 
     def flag_outside(self, result: Any, root: str, emit: Any) -> None:
         super().flag_outside(result, root, emit)

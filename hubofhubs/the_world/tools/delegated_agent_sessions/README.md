@@ -13,7 +13,7 @@ Part of [Using the tools of the outside world](../README.md)
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: `native_tool_loop_runner@provider=anthropic,tier=fast`
 - Metric: Hard deep work finished per cost and time (agent sessions), Open-ended work finished per cost and time (agent sessions), Harness, context, sub-agents and recursion ranked, A run finds what it needs instead of asking
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py) and 196 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/registry_research.py`](../../learning/registry_research.py) and 197 more
 
 ## Implementations
 

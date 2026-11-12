@@ -37,6 +37,7 @@ from hubofhubs.the_world.tools.command_running import clip, run_command
 from hubofhubs.the_world.tools.file_editing.editblock import (DIVIDER, HEAD, UPDATED, apply_edit, find_original_update_blocks,
                                                               find_similar_lines)
 from hubofhubs.the_world.tools.file_reading.read_files import inside
+from hubofhubs.the_world.tools.delegated_agent_sessions.code_check import unsupported   # the hub's code check of written text (its own module; this loop and the arms call it)
 
 FOLDER_VIEW = "folder-view"       # the solution that chooses the files in view and judges which folders to leave out (Subconscious)
 LEFT_OUT_LINES = 25               # folders left out that the folder map names, with the reason
@@ -1268,7 +1269,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, complete, context: str
             entry["advice"] = "Your REPORT was not accepted because a RUN exited non-zero (see above). Fix the cause, then report again."
         else:
             result.met, result.report, result.ended = True, reply.report, "met"
-            found = unsupported(root, list(changed), skip=view.skip) if review and changed else []
+            found = unsupported(root, list(changed), skip=view.skip, goal=goal) if review and changed else []
             wants_review = bool(found or (review == REVIEW_PROSE and any(prose(rel) for rel in changed)))
             if wants_review and found and not allowed("review", [{"findings": len(found), "changed": len(changed)}]):
                 say(f"review: not run ({refused['why']})")
@@ -1311,60 +1312,6 @@ def marked(folder_map: str, shown: Sequence[str]) -> str:
         rel = line.rsplit(" (", 1)[0]
         lines.append(line if rel in inview or not line.endswith("bytes)") else line + "  [not in view: READ it before relying on it]")
     return "\n".join(lines)
-
-
-NUMBER = re.compile(r"(?<![\w.])\d[\d,]*(?:\.\d+)?(?![\w])")
-CITED_FILE = re.compile(r"(?<![\w/.-])[\w./-]*\w\.(?:md|txt|csv|json|yaml|yml|rst|py)(?![\w])")
-
-
-def figures(text: str) -> List[str]:
-    """The numbers of two digits or more in ``text``, without thousands separators or a trailing ``.0``."""
-    out = []
-    for raw in NUMBER.findall(text):
-        value = raw.replace(",", "").rstrip(".")
-        if sum(ch.isdigit() for ch in value) >= 2:
-            out.append(value)
-    return out
-
-
-def derived(known: Sequence[str], limit: int = 150) -> set:
-    """The sums, differences and products of each pair of source figures (the first ``limit`` of them): a figure worked out from two figures the
-    sources hold is supported by them, so the code check does not list it."""
-    values = []
-    for text in sorted(known)[:limit]:
-        try:
-            values.append(float(text))
-        except ValueError:
-            continue
-    out = set()
-    for a in values:
-        for b in values:
-            for result in (a + b, a - b, a * b):
-                if result > 0:
-                    out.add(str(int(result)) if float(result).is_integer() else f"{result:.2f}".rstrip("0").rstrip("."))
-    return out
-
-
-def unsupported(root: str, changed: Sequence[str], limit: int = 20, skip: Collection[str] = ()) -> List[str]:
-    """What code alone can tell about written text, with no model: each figure in a changed prose file that appears in no other file of the folder,
-    and each file it names that is not in the folder. A figure worked out from the sources is listed too; the reviewer decides."""
-    written = {rel: read_text(Path(root) / rel) or "" for rel in changed if prose(rel)}
-    if not written:
-        return []
-    paths = [rel for rel, _, _ in walk(root, skip=skip)]
-    sources = " ".join(read_text(Path(root) / rel) or "" for rel in paths if rel not in changed)
-    known = set(figures(sources))
-    known |= derived(known)
-    names = set(paths) | {rel.rsplit("/", 1)[-1] for rel in paths}
-    found: List[str] = []
-    for rel, text in written.items():
-        for value in dict.fromkeys(figures(text)):
-            if value not in known:
-                found.append(f"{rel}: the figure {value} is in no source file")
-        for name in dict.fromkeys(CITED_FILE.findall(text)):
-            if name not in names and name.lstrip("./") not in names:
-                found.append(f"{rel}: names the file {name}, which is not in the folder")
-    return found[:limit]
 
 
 def reviewed(goal: str, context: str, root: str, view: View, changed: "OrderedDict[str, None]", complete, found: Sequence[str] = (),

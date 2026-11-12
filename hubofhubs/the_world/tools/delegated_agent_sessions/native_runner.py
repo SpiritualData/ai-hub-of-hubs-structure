@@ -40,7 +40,8 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (   
     BACKSTOP_SECONDS, DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, MAX_RESUMES, SOFT_FRACTION, UNLIMITED, WRAP_UP_MESSAGE, LimitWatch, active_watch, ceiling_of,
     current_session_file, decision_of, default_should_continue, estimate_spend, soft_fraction_of, stop_aware)
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import find_session_file
-from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import read_text, snapshot, track, unsupported, walk
+from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import read_text, snapshot, track, walk
+from hubofhubs.the_world.tools.delegated_agent_sessions.code_check import NO_SOURCE, NOT_IN_FOLDER, unsupported
 from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import StreamJsonGoalRunner
 from hubofhubs.the_self.assembler import arm_needs as needs
 
@@ -110,10 +111,10 @@ def worth_resuming(root: str, found: Sequence[str], gate: str = "text_only") -> 
     ``text_only`` (named files always, figures when the folder is all text) or ``named_files`` (named files only)."""
     if gate == "always":
         return list(found)
-    certain = [x for x in found if "is not in the folder" in x]
+    certain = [x for x in found if NOT_IN_FOLDER in x]
     if gate == "named_files":
         return certain
-    figures = [x for x in found if x not in certain]
+    figures = [x for x in found if NO_SOURCE in x]          # a total or count the check could not verify is not certain: a person or a reviewer decides, the session is not resumed for it
     opaque = any(read_text(Path(root) / rel) is None for rel, _, _ in walk(root))
     return certain + ([] if opaque else figures)
 
@@ -266,6 +267,8 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         self.prepare(goal, brief, preamble, root, key)
         before = snapshot(root)
         self.local.emit = emit
+        if resume_session_id is None:
+            self.local.goal_text = brief or goal            # the person's own words: the code check reads the places they name
         common = dict(model=model, max_turns=max_turns, emit=emit, run_id=run_id, working_dir=working_dir, prompt_budget_tokens=prompt_budget_tokens,
                       requester_user_id=requester_user_id, cancel_check=cancel_check, control=control)
         self.local.spent, self.local.used_turns = 0.0, 0
@@ -343,7 +346,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         while True:
             files: "OrderedDict[str, None]" = OrderedDict()
             track(root, before, files)
-            everything = unsupported(root, list(files))
+            everything = unsupported(root, list(files), goal=str(getattr(self.local, "goal_text", "") or ""))
             found = worth_resuming(root, everything, self.resume_gate)
             self.local.resumed = resumes > 0
             if last is not None:

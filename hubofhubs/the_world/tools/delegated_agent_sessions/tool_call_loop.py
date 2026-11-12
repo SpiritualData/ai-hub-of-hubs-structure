@@ -272,7 +272,7 @@ def loop(result: LoopResult, goal: str, working_dir: str, turn, provider: str, c
             refusal_text, kind = PLAN_MESSAGE, "nudge"
             nudges["plan"] += 1
         elif review and changed:
-            found = (worth or (lambda root_, found_: found_))(root, unsupported(root, list(changed)))
+            found = (worth or (lambda root_, found_: found_))(root, unsupported(root, list(changed), goal=goal))
             if found and resumes < 1:
                 refusal_text, kind = (check_message or "A code check of the files you wrote found these:\n") + "\n".join(found), "review"
                 rounds.append(dict(findings=len(found), spend_usd=0.0, elapsed_seconds=0.0, changed=len(changed)))

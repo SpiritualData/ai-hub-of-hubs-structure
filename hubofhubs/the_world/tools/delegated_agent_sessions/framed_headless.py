@@ -135,6 +135,7 @@ class HubWrapped:
         root = os.path.abspath(working_dir or self.cfg.working_dir)                   # type: ignore[attr-defined]
         preamble = self.cfg.context_preamble if context_preamble is None else context_preamble     # type: ignore[attr-defined]
         self.prepare(goal, brief, preamble or "", root)
+        self.local.goal_text = brief or goal
         before = snapshot(root)
         watch = self.local.watch = LimitWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, log=log, throttle=0.0)
         watch.__enter__()
@@ -179,7 +180,7 @@ class HubWrapped:
         while True:
             files: "OrderedDict[str, None]" = OrderedDict()
             track(root, before, files)
-            everything = unsupported(root, list(files))
+            everything = unsupported(root, list(files), goal=str(getattr(self.local, "goal_text", "") or ""))
             found = worth_resuming(root, everything)
             self.local.resumed = resumes > 0
             if last is not None:

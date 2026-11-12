@@ -51,7 +51,7 @@ for line in sys.stdin:
                 sys.exit(0)
         sys.exit(0)
     if "write the report" in text:
-        open("report.md", "w").write("The total is 4242 units.")
+        open("report.md", "w").write("The gate code is 4242.")
     reply = "done: figures fixed" if "code check" in text else "report written"
     # Like the real CLI, the cost is the session's running total: a resumed session reports the earlier turns too. Its ``usage`` is per turn (checked on a real
     # session: turn one 229 output tokens, the resumed turn 3, and the cost and ``modelUsage`` totals 232), so the tokens below are the same each turn and add up.

@@ -105,23 +105,73 @@ def test_the_report_of_a_run_counts_calls_that_ran_by_solution_and_those_refused
 
 
 def test_the_review_agent_is_told_to_check_every_claim_against_a_source_and_only_it():
-    made = agents.agent_definitions(SPECS, NET, tier_model)
-    assert "every" in made["judge-things"]["prompt"] and "source" in made["judge-things"]["prompt"] and agents.REVIEW_BRIEF not in made["read-things"]["prompt"]
-    note = agents.agents_note(5, "judge-things")
-    assert "written deliverable" in note and "every figure, name, date and claim against a source file" in note and "unverified" in note
-    assert "written deliverable" not in agents.agents_note(5) and "milestone as met only when a check" in agents.agents_note(5)
+    made = agents.agent_definitions(SPECS, NET, tier_model, goal="Which port was busiest in March?")
+    prompt = made["judge-things"]["prompt"]
+    assert "every" in prompt and "source" in prompt and agents.REVIEW_BRIEF not in made["read-things"]["prompt"]
+    assert "Which port was busiest in March?" in prompt and "THE REQUEST AS THE PERSON STATED IT" in prompt                  # the person's own words reach the reviewer
+    assert "milestone" not in prompt.lower() and "Purpose:" not in prompt and "Judge the result" not in prompt             # no milestone or purpose framing for a review
+    assert "Verdict:" in prompt and "Milestone:" not in prompt and "Request" not in made["read-things"]["prompt"]
+    assert "Next unmet milestone" in made["read-things"]["prompt"] and "Output:" in made["read-things"]["prompt"]           # the other agents keep their own solution's frame
+    assert "check" in made["judge-things"]["description"] and "hub asks" in made["judge-things"]["description"]
+    assert "milestone as met only when a check" in agents.agents_note(5)
+
+
+def test_the_review_request_carries_the_goal_the_paths_and_what_to_check():
+    text = agents.review_request("judge-things", ["answers.md", "notes/b.md"], "  Report each port's tonnage.  ")
+    assert "answers.md, notes/b.md" in text and "THE REQUEST:\nReport each port's tonnage." in text and "foreground" in text
+    assert "every figure, name, date and claim of the file against a source file" in text and "quote that source" in text and "milestone" not in text.lower()
+
+
+def test_a_review_is_asked_for_by_computed_figures_and_size_and_not_for_a_lookup(tmp_path):
+    folders = iter(range(100))
+
+    def stakes(files, goal="How many voyages left in March, in total?", **sources):
+        folder = tmp_path / f"case{next(folders)}"                         # a folder of its own: an earlier case's deliverable is not a source of the next
+        for name, text in {**sources, **files}.items():
+            (folder / name).parent.mkdir(parents=True, exist_ok=True)
+            (folder / name).write_text(text)
+        return agents.review_stakes(str(folder), list(files), goal)
+    source = {"src.md": "voyage 11: 4400 t\nvoyage 12: 5500 t\n"}
+    many = stakes({"answers.md": "Q1: 19950\nQ2: 988600\nQ3: 51610\n"}, **source)                       # three computed figures: reviewed
+    assert many["computed"] == 3 and agents.review_wanted(many)
+    one_small = stakes({"one.md": "Total: 19950\n"}, **source)                                          # one computed figure in a small file: not reviewed
+    assert one_small["computed"] == 1 and not agents.review_wanted(one_small)
+    one_big = stakes({"big.md": "Total: 19950\n" + "Plain words about the voyages. " * 200}, **source)    # one in a deliverable of real size: reviewed
+    assert one_big["computed"] == 1 and one_big["chars"] >= agents.REVIEW_BIG_CHARS and agents.review_wanted(one_big)
+    quoted = stakes({"quote.md": "Voyage 11 carried 4400 t and voyage 12 carried 5500 t.\n" * 3}, **source)   # quoted from the sources: nothing computed
+    assert quoted["computed"] == 0 and not agents.review_wanted(quoted)
+    assert not agents.review_wanted({"computed": 0, "chars": 10 ** 6}) and not agents.review_wanted({})
+    lookup = stakes({"answer.json": '{"note": "note_07.txt", "locker": 41}'}, **source)                 # not prose: the check reads no figure in it
+    assert lookup["computed"] == 0 and not agents.review_wanted(lookup)
+
+
+def test_the_guard_refuses_a_background_call_and_any_read_of_an_agents_output_file(tmp_path):
+    background = guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things", "run_in_background": True}}, budget=5)
+    assert background["permissionDecision"] == "deny" and "run_in_background set to false" in background["permissionDecisionReason"]
+    unset = guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things"}}, budget=5)          # the call that ran in the background in the evaluation: no flag at all
+    assert unset["permissionDecision"] == "deny" and "not run and not counted" in unset["permissionDecisionReason"]
+    assert guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things", "run_in_background": False}}, budget=5) is None
+    assert not (tmp_path / "count").exists() or (tmp_path / "count").read_text() == "1"                        # a refused background call spent none of the budget
+    path = "/tmp/x/claude-1000/-tmp-work/abc/tasks/a1b2c3d4e5.output"
+    for call in ({"tool_name": "Read", "tool_input": {"file_path": path}}, {"tool_name": "Bash", "tool_input": {"command": f"F={path}; while [ ! -s $F ]; do sleep 5; done"}},
+                 {"tool_name": "Grep", "tool_input": {"pattern": "x", "path": path}}):
+        refused = guard(tmp_path, call, budget=5)
+        assert refused["permissionDecision"] == "deny" and "output file" in refused["permissionDecisionReason"]
+    assert guard(tmp_path, {"tool_name": "Bash", "tool_input": {"command": "ls tasks/ && sleep 1"}}, budget=5) is None      # an ordinary command is left alone
+    assert guard(tmp_path, {"tool_name": "Read", "tool_input": {"file_path": "/work/answers.md"}}, budget=5) is None
 
 
 def test_the_note_names_the_rules_and_the_review_rule_only_with_a_review_agent():
     plain, reviewed = agents.agents_note(7), agents.agents_note(7, "judge-things")
     assert "At most 7 calls" in plain and "separable" in plain and "cannot start another agent" in plain and "review agent" not in plain
-    assert reviewed.startswith(plain) and "judge-things" in reviewed and str(agents.REVIEW_FILES) in reviewed and agents.agents_note(7) == plain
+    assert reviewed.startswith(plain) and "judge-things" in reviewed and "hub decides" in reviewed and agents.agents_note(7) == plain
+    assert "foreground" in plain and "run_in_background set to false" in plain and "Never read an agent's output file" in plain and "never poll or sleep" in plain and "you do not report without it" in plain
 
 
 # --- A: the guard ----------------------------------------------------------------------------------------------------------------
 
 def test_the_guard_allows_a_solution_agent_and_refuses_every_other_agent(tmp_path):
-    assert guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things"}}, budget=5) is None
+    assert guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things", "run_in_background": False}}, budget=5) is None
     for other in ("general-purpose", "Explore", "Plan", "", "read-things-2"):
         refused = guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": other}}, budget=5)
         assert refused["permissionDecision"] == "deny" and "only its solution agents" in refused["permissionDecisionReason"]
@@ -129,7 +179,7 @@ def test_the_guard_allows_a_solution_agent_and_refuses_every_other_agent(tmp_pat
 
 
 def test_the_guard_refuses_calls_past_the_budget_and_counts_only_allowed_ones(tmp_path):
-    call = {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things"}}
+    call = {"tool_name": "Agent", "tool_input": {"subagent_type": "read-things", "run_in_background": False}}
     guard(tmp_path, {"tool_name": "Agent", "tool_input": {"subagent_type": "general-purpose"}}, budget=2)
     assert guard(tmp_path, call, budget=2) is None and guard(tmp_path, call, budget=2) is None
     spent = guard(tmp_path, call, budget=2)
@@ -144,7 +194,7 @@ def test_a_guard_that_cannot_decide_refuses(tmp_path):
 def test_the_settings_hook_both_names_of_the_tool_and_a_deny_for_the_built_in_agents():
     settings = agents.guard_settings("/usr/bin/python3", "/tmp/a guard.py")
     hook = settings["hooks"]["PreToolUse"][0]
-    assert hook["matcher"] == "Agent|Task" and hook["hooks"][0]["command"] == "/usr/bin/python3 '/tmp/a guard.py'"
+    assert hook["matcher"] == "Agent|Task|Read|Bash|Grep|Glob" and hook["hooks"][0]["command"] == "/usr/bin/python3 '/tmp/a guard.py'"
     assert settings["permissions"]["deny"] == ["Agent(general-purpose)", "Agent(Explore)", "Agent(Plan)"]
 
 
@@ -355,3 +405,51 @@ def test_the_result_carries_turns_and_the_calls_that_ran_and_other_results_carry
     shown = DeepResult(met=True)
     runner.report_agents(shown, work, None)       # no session record to read: offered is still known
     assert shown.subagent_report["offered"] == ["read-things"] and shown.subagent_calls == 0
+
+
+# --- the review the hub asks for after the report ---------------------------------------------------------------------------------
+
+def reviewing_runner(tmp_path, monkeypatch, written, calls=(), goal="Report the total of each port."):
+    """A runner that has finished a session which wrote ``written`` (name: text); the resumed session is a stand-in that records the message it was given."""
+    from hubofhubs.the_world.tools.deep import DeepResult
+    from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import snapshot
+    from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import StreamJsonGoalRunner
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    runner, work = runner_in(tmp_path, 1)
+    (tmp_path / "work" / "src.md").write_text("port a: 4400\nport b: 5500\n")
+    before = snapshot(work)
+    for name, text in written.items():
+        (tmp_path / "work" / name).write_text(text)
+    runner.local.review_agent, runner.local.goal_text, runner.local.watch = "judge-things", goal, None
+    sent = []
+
+    def resumed(self, **kwargs):
+        sent.append(kwargs)
+        return DeepResult(met=True, session_id="s1", cost_usd=0.5, tokens=10)
+    monkeypatch.setattr(StreamJsonGoalRunner, "run_goal_once", resumed)
+    monkeypatch.setattr(runner, "session_calls", lambda result, root: list(calls))
+    first = DeepResult(met=True, session_id="s1", cost_usd=0.2, tokens=5)
+    return runner, work, before, first, sent
+
+
+def test_a_deliverable_with_computed_figures_is_sent_to_the_review_agent_with_the_goal_in_the_same_session(tmp_path, monkeypatch):
+    runner, work, before, first, sent = reviewing_runner(tmp_path, monkeypatch, {"answers.md": "A: 19950\nB: 988600\nC: 51610\n"})
+    got = runner.ask_review(first, work, before, {}, None, None)
+    assert len(sent) == 1 and sent[0]["resume_session_id"] == "s1"
+    message = sent[0]["goal"]
+    assert "judge-things" in message and "answers.md" in message and "Report the total of each port." in message and "foreground" in message
+    assert got.cost_usd == 0.5 and got.tokens == 15 and got.review_stakes["computed"] == 3          # the CLI's cost is the session's running total, so it is not added twice
+
+
+def test_no_review_is_asked_for_a_small_quoted_or_already_reviewed_deliverable(tmp_path, monkeypatch):
+    runner, work, before, first, sent = reviewing_runner(tmp_path, monkeypatch, {"answers.md": "Port a carried 4400 and port b 5500.\n"})
+    assert runner.ask_review(first, work, before, {}, None, None) is first and sent == [] and first.review_stakes["computed"] == 0       # quoted: no cost
+    runner, work, before, first, sent = reviewing_runner(tmp_path / "again", monkeypatch, {"answers.md": "A: 19950\nB: 988600\nC: 51610\n"},
+                                                         calls=[{"agent": "judge-things", "failed": False}])
+    assert runner.ask_review(first, work, before, {}, None, None) is first and sent == []                                                 # the session reviewed it itself
+    runner, work, before, first, sent = reviewing_runner(tmp_path / "third", monkeypatch, {"answers.md": "A: 19950\nB: 988600\nC: 51610\n"},
+                                                         calls=[{"agent": "judge-things", "failed": True}])
+    assert runner.ask_review(first, work, before, {}, None, None) is not first and len(sent) == 1                                          # a refused call did not review it
+    runner, work, before, first, sent = reviewing_runner(tmp_path / "fourth", monkeypatch, {"answers.md": "A: 19950\nB: 988600\nC: 51610\n"})
+    runner.local.review_agent = ""
+    assert runner.ask_review(first, work, before, {}, None, None) is first and sent == []                                                 # no review agent offered
