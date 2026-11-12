@@ -22,8 +22,8 @@ def adapt(implementation, meter):
     def run(kind, args):
         arm = fresh()
         for stored in args["items"]:
-            arm.retain({key: stored[key] for key in ("id", "text", "at", "scope_tags") if key in stored}, stored["person"])
-        return [found["id"] for found in arm.recall(args["query"], args["person"], args["limit"], args["now"], args.get("scope_tags", []), args.get("scope_mode", "fence"))]
+            arm.retain({key: stored[key] for key in ("id", "text", "at", "scope_tags", "affinity_tags") if key in stored}, stored["person"])
+        return [found["id"] for found in arm.recall(args["query"], args["person"], args["limit"], args["now"], args.get("scope_tags", []), args.get("affinity_tags", []))]
     return run
 
 

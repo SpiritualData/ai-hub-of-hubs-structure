@@ -25,7 +25,7 @@ Part of [The long view across requests](../README.md)
 
 ## Metrics
 
-- A later request uses what an earlier one learned (`metric-long-term-memory`): leader `file_recall`, 22 of 23 cases
+- A later request uses what an earlier one learned (`metric-long-term-memory`): leader `file_recall`, 24 of 25 cases
 
 ## Where to go next
 

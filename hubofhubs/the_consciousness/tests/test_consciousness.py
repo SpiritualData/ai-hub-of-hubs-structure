@@ -1,4 +1,4 @@
-"""Representatives carry what a person declared and never another person's authority; Judgment Calls decides and times its asks."""
+"""Representatives are one identity each, with a person or a character, and never carry another's authority; Judgment Calls decides and times its asks."""
 from hubofhubs.the_consciousness.judgment_calls.judgment import AskEveryTime, SeverityPolicy
 from hubofhubs.the_consciousness.representatives.representatives import DeclaredAuthority
 
@@ -11,6 +11,19 @@ def test_a_declared_person_keeps_their_authority_and_an_undeclared_person_gets_t
     assert bo["authority"]["allow"] == ["web-search", "the-science"] and bo["authority"]["data_scope"] == ["bo"] and bo["authority"]["person"] == "bo"
     nobody = arm.represent("")
     assert nobody["authority"]["data_scope"] == []
+
+
+def test_a_character_with_no_person_is_its_own_identity_and_never_reaches_past_its_asker():
+    arm = DeclaredAuthority({"batman": {"character": True, "authority": {"allow": ["web-search"], "data_scope": ["ana", "bo"]}, "preferences": {"voice": "gruff"}},
+                             "bailey": {"person": "ana", "authority": {"data_scope": ["team"]}}})
+    batman = arm.represent("batman")
+    assert batman["representative"] == "batman" and batman["person"] == "" and batman["preferences"] == {"voice": "gruff"}
+    assert batman["authority"]["data_scope"] == ["ana", "bo"]
+    assert arm.represent("batman", "ana")["authority"]["data_scope"] == ["ana"]            # the asker is the ceiling
+    assert arm.represent("batman", "cho")["authority"]["data_scope"] == []
+    bailey_for_bo = arm.represent("bailey", "bo")
+    assert bailey_for_bo["person"] == "ana" and bailey_for_bo["authority"]["data_scope"] == []   # a rep asked by B never carries A's scope
+    assert arm.represent("bailey", "ana")["authority"]["data_scope"] == ["ana", "team"] and arm.represent("bailey")["authority"]["data_scope"] == ["ana", "team"]
 
 
 def test_the_severity_policy_proceeds_asks_declines_and_times_the_ask():

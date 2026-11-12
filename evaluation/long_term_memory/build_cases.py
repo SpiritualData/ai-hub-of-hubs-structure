@@ -13,14 +13,14 @@ HERE = Path(__file__).resolve().parent
 NOW = "2026-07-12T09:00:00Z"
 
 
-def item(ident, text, at, person="ana", scope_tags=()):
-    return {"id": ident, "text": text, "at": at, "person": person, "scope_tags": list(scope_tags)}
+def item(ident, text, at, person="ana", scope_tags=(), affinity_tags=()):
+    return {"id": ident, "text": text, "at": at, "person": person, "scope_tags": list(scope_tags), "affinity_tags": list(affinity_tags)}
 
 
-def case(name, items, query, expect, person="ana", limit=5, scope_tags=(), scope_mode="fence"):
+def case(name, items, query, expect, person="ana", limit=5, scope_tags=(), affinity_tags=()):
     return {"id": "memory-" + name, "source": "invented-neutral", "kind": "recall",
             "args": {"items": items, "query": query, "person": person, "limit": limit, "now": NOW,
-                     "scope_tags": list(scope_tags), "scope_mode": scope_mode}, "expect": expect}
+                     "scope_tags": list(scope_tags), "affinity_tags": list(affinity_tags)}, "expect": expect}
 
 
 def main():
@@ -52,9 +52,11 @@ def main():
         case("rep-recalls-its-own-earlier-work", [item("w", "Reviewed the citations for chapter three", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"])], "citations for chapter three", ["w"], person="rep:bailey", scope_tags=["quest:q1"]),
         case("rep-never-sees-another-reps-items", [item("w", "Reviewed the citations for chapter three", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"])], "citations for chapter three", [], person="rep:batman", scope_tags=["quest:q1"]),
         case("character-with-no-person-recalls-its-own", [item("c", "Told the guest the lighthouse is closed on Sundays", "2026-07-04T10:00:00Z", "rep:gandalf")], "is the lighthouse open on Sunday", ["c"], person="rep:gandalf"),
-        case("fence-hides-an-item-from-another-scope", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["a"], person="rep:bailey", scope_tags=["quest:q1"]),
+        case("fence-hides-an-item-from-a-scope-the-asker-cannot-open", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["a"], person="rep:bailey", scope_tags=["quest:q1"]),
         case("turn-with-several-scopes-sees-each", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["b", "a"], person="rep:bailey", scope_tags=["quest:q1", "quest:q2"]),
-        case("affinity-prefers-own-scope-but-reaches-others", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"])], "tomato seedlings", ["a", "b"], person="rep:bailey", scope_tags=["quest:q1"], scope_mode="affinity"),
+        case("affinity-prefers-the-selected-scope-and-still-reaches-another", [item("a", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"], ["quest:q1"]), item("b", "Tomato seedlings budget", "2026-07-04T10:00:00Z", "rep:bailey", ["quest:q2"], ["quest:q2"])], "tomato seedlings", ["a", "b"], person="rep:bailey", scope_tags=["quest:q1", "quest:q2"], affinity_tags=["quest:q1"]),
+        case("affinity-never-crosses-the-access-fence", [item("z", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q9"], ["quest:q9"])], "tomato seedlings", [], person="rep:bailey", scope_tags=["quest:q1", "quest:q2"], affinity_tags=["quest:q9"]),
+        case("a-turn-with-no-scope-sees-no-scoped-item", [item("z", "Tomato seedlings plan", "2026-07-03T10:00:00Z", "rep:bailey", ["quest:q1"])], "tomato seedlings", [], person="rep:bailey"),
     ]
     (HERE / "cases.json").write_text(json.dumps(cases, indent=1) + "\n")
     print(len(cases), "cases")
