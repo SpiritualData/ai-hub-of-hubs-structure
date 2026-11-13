@@ -9,6 +9,7 @@ import subprocess
 from typing import Any, Callable, List, Mapping, Optional, Sequence, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server import client as launch
+from hubofhubs.the_consciousness.ai_session_experience.opencode_server.terminal_run import run_full_screen
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.bridge import Bridge, SlashCommand
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.server import OpencodeServer
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import present
@@ -48,7 +49,11 @@ def host_in_opencode(build: Callable[..., Any], folder: str, *, client: str = ""
     server = OpencodeServer(bridge).start()
     try:
         invocation = launch.client_command(path, server.url, bridge.root, chosen_mode, goal)
-        code = subprocess.run(invocation, cwd=folder, env=launch.client_environment(env, run, server.token, chosen_mode), check=False).returncode
+        client_env = launch.client_environment(env, run, server.token, chosen_mode)
+        if chosen_mode == "full":        # the client's own "Continue opencode -s ..." box is left out: the program that hosts the session prints the command that reopens it
+            code = run_full_screen(invocation, folder, client_env)
+        else:
+            code = subprocess.run(invocation, cwd=folder, env=client_env, check=False).returncode
     finally:
         server.stop()
         shutil.rmtree(run, ignore_errors=True)
