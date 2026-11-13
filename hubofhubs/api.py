@@ -261,6 +261,12 @@ NAMES = {
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.work": (
         "WorkTerminal", "default_harness", "harness_builder", "terminal_arm",
     ),
+    "hubofhubs.the_consciousness.ai_session_experience.opencode_server.host": (
+        "SlashCommand", "host_in_opencode", "opencode_available",
+    ),
+    "hubofhubs.the_consciousness.ai_session_experience.opencode_server.command": (
+        "default_tier", "offered_choices",
+    ),
     "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.trace": (
         "WorkTrace", "domain_of", "project", "validate",
     ),

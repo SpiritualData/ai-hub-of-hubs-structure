@@ -11,9 +11,6 @@ helper) is the arm's protocol ceiling, named in its record. Outside a terminal i
 """
 from __future__ import annotations
 
-import os
-import shutil
-import subprocess
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, TextIO
 
 from esoi import implementation
@@ -61,8 +58,8 @@ class OpencodeClientSession:
 
     def host_terminal(self, terminal: Any, goal: str = "", resume: str = "", environ: Optional[Mapping[str, str]] = None) -> int:
         """Serve the session, launch the client on this terminal pointed at it, and return its exit code. If the client is missing, say why and run in the standard-library terminal."""
-        from hubofhubs.the_consciousness.ai_session_experience.opencode_server.bridge import Bridge
-        from hubofhubs.the_consciousness.ai_session_experience.opencode_server.server import OpencodeServer
+        from hubofhubs.the_consciousness.ai_session_experience.opencode_server import command as serving
+        from hubofhubs.the_consciousness.ai_session_experience.opencode_server.host import host_in_opencode
         from hubofhubs.the_self.assembler.resolution import process_environment
         env = dict(environ if environ is not None else process_environment())
         reason = launch.unavailable(self.client, env)
@@ -71,12 +68,6 @@ class OpencodeClientSession:
             terminal.say(f"{reason}; using the standard terminal instead")
             terminal.arm = LiveSession()
             return terminal.run(goal, resume)
-        path = launch.find(self.client, env)
-        note = launch.version_note(launch.version_of(path, env))
-        if note:
-            terminal.say("note: " + note)
-        mode = launch.mode_of(str(self.options.get("mode") or ""), env)
-        from hubofhubs.the_consciousness.ai_session_experience.opencode_server import command as serving
         chosen = serving.default_tier(self.options)
         build_tier = serving.tier_builder(self.options, env, getattr(terminal, "stop_inputs", None))
 
@@ -84,20 +75,6 @@ class OpencodeClientSession:
             # the tier in use when the person has not picked another is the terminal's own harness (its records and stop inputs); a tier they pick in the client's model picker builds that tier's
             return terminal.harness() if not tier or tier == chosen else build_tier(where, tier)
 
-        bridge = Bridge(build, folder, acting_for=str(self.options.get("person") or ""), command=getattr(terminal, "command", "ahohs work"), folder_name=mode == "full",
-                        tiers=serving.offered_choices(), tier=chosen)
-        bridge.resume_id = resume
-        run = launch.prepare_run_folder(mode)
-        server = OpencodeServer(bridge).start()
-        try:
-            command = launch.client_command(path, server.url, bridge.root, mode, goal)
-            code = subprocess.run(command, cwd=folder, env=launch.client_environment(env, run, server.token, mode), check=False).returncode
-        finally:
-            server.stop()
-            shutil.rmtree(run, ignore_errors=True)
-        view = bridge.translator.view
-        if mode == "full" and view.final is not None:       # a full-screen client leaves nothing in the scrollback, so the closing line and the resume command are said once it is gone
-            color = bool(getattr(terminal, "interactive", lambda: False)()) and not os.environ.get("NO_COLOR")   # coloured like the native screen, on a real terminal only
-            for row in present.outcome_rows(view, color=color) + present.resume_lines(view):
-                terminal.say(row)
-        return code
+        color = bool(getattr(terminal, "interactive", lambda: False)())      # coloured like the native screen, on a real terminal only
+        return host_in_opencode(build, folder, client=self.client, mode=str(self.options.get("mode") or ""), environ=env, person=str(self.options.get("person") or ""),
+                    command=getattr(terminal, "command", "ahohs work"), goal=goal, resume=resume, tiers=serving.offered_choices(), tier=chosen, say=terminal.say, color=color)

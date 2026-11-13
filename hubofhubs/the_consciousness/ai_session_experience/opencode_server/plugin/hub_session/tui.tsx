@@ -2,7 +2,7 @@ import { Plugin } from "@opencode/plugin/tui"
 
 // What only the hub knows, in the client's own slots. The hub server puts it in the session's metadata (`hub`), already worded by the hub's shared presentation rules; this file only places it.
 //   session.composer.top  one quiet line above the prompt, at every width: who the work serves, who the AI acts for, a spend note (only once a ceiling is half used or a cost is under a cent),
-//                         the metric before and after at the end, and the person's notes as sent, then taken up
+//                         the metric before and after at the end, the consumer's own short lines (`header`), and the person's notes as sent, then taken up
 //   sidebar.content       the same in full, in the client's sidebar (the client shows it only on a wide terminal)
 //   session.panel         the structure overview with spend and time against the ceilings, opened by the /structure command
 type Note = { text: string; taken_up: boolean }
@@ -18,6 +18,7 @@ type Hub = {
   corrections?: Note[]
   structure?: string[]
   authority?: string[]
+  header?: string[]
 }
 
 export default Plugin.define({
@@ -31,7 +32,7 @@ export default Plugin.define({
     const line = (sessionID?: string) => {
       const h = hub(sessionID)
       const notes = (h.corrections ?? []).map((n) => (n.taken_up ? "taken up: " : "sent: ") + n.text)
-      return [h.serves ? "serves " + h.serves : "", h.acting_for ? "for " + h.acting_for : "", h.quiet ?? "", h.metric ?? "", ...notes].filter((part) => part).join(" · ")
+      return [h.serves ? "serves " + h.serves : "", h.acting_for ? "for " + h.acting_for : "", h.quiet ?? "", h.metric ?? "", ...(h.header ?? []), ...notes].filter((part) => part).join(" · ")
     }
 
     context.ui.slot({
@@ -47,6 +48,9 @@ export default Plugin.define({
           {hub(props.sessionID).milestone ? <text fg={muted()}>{hub(props.sessionID).milestone}</text> : null}
           {hub(props.sessionID).acting_for ? <text fg={muted()}>{"for " + hub(props.sessionID).acting_for}</text> : null}
           {hub(props.sessionID).metric ? <text fg={muted()}>{hub(props.sessionID).metric}</text> : null}
+          {(hub(props.sessionID).header ?? []).map((row) => (
+            <text fg={muted()}>{row}</text>
+          ))}
         </box>
       ),
     })

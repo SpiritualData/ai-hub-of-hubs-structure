@@ -34,7 +34,7 @@ def model_info(tier: str) -> Dict[str, Any]:
     """The model entry for one of the hub's tiers (which model serves it is the hub's choice, made when the run starts) or for an explicit model the hub serves (named as itself)."""
     from hubofhubs.the_world.model_plumbing.model_tier_chooser.role_tiers import TIERS
     return {**MODEL_INFO, "id": tier, "modelID": tier, "name": tier.capitalize() if tier in TIERS else tier, "family": "hub", "cost": []}
-EMPTY_LISTS = ("/api/command", "/api/skill", "/api/mcp", "/api/reference","/api/shell", "/api/form", "/api/vcs/branch", "/api/vcs/status", "/api/plugin")
+EMPTY_LISTS = ("/api/skill", "/api/mcp", "/api/reference","/api/shell", "/api/form", "/api/vcs/branch", "/api/vcs/status", "/api/plugin")
 NOT_FOUND = {"_tag": "NotFound", "message": "this server does not implement that route"}
 
 
@@ -72,6 +72,8 @@ def handle(bridge: Bridge, method: str, path: str, query: Mapping[str, Any], bod
         return 200, wrapped(bridge, [PROVIDER])
     if path == "/api/config":
         return 200, [{"type": "directory", "path": store.directory}]
+    if path == "/api/command":                           # the consumer's own slash commands (the client lists them with its own)
+        return 200, wrapped(bridge, [{"name": c.name, "description": c.description} for c in bridge.commands.values()])
     if path in EMPTY_LISTS:
         return 200, wrapped(bridge, [])
     if path == "/api/mcp/resource":
@@ -126,6 +128,9 @@ def handle(bridge: Bridge, method: str, path: str, query: Mapping[str, Any], bod
         return 204, None
     if rest in ("view", "model", "agent") and method in ("POST", "GET"):
         return 204, None
+    if rest == "command" and method == "POST":         # the person chose one of the consumer's commands in the slash menu
+        known = bridge.command(str(body.get("name") or ""), str(body.get("text") or ""))
+        return (204, None) if known else (404, {"_tag": "NotFound", "message": "no such command"})
     if rest == "interrupt" and method == "POST":
         return 200, {"interrupted": bridge.interrupt()}
     if rest == "prompt" and method == "POST":

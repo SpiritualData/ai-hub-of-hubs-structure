@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import dataclasses
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.projection import Store
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
@@ -60,8 +60,9 @@ def counts(diff: str) -> Tuple[int, int]:
 class Translator:
     """One run's events turned into store changes, in order. ``root`` is the session id; ``acting_for`` is who the AI acts for; ``command`` is how the resume command starts."""
 
-    def __init__(self, store: Store, root: str, acting_for: str = "", command: str = "ahohs work") -> None:
+    def __init__(self, store: Store, root: str, acting_for: str = "", command: str = "ahohs work", header: Optional[Callable[[], Sequence[str]]] = None) -> None:
         self.store, self.root, self.acting_for = store, root, acting_for
+        self.header = header                                             # a consumer's own short lines for the client plugin (read at each publish)
         self.view = session_view.SessionView(command=command, acting_for=acting_for)
         self.steps: Dict[Tuple[str, str], Tuple[str, str, str]] = {}      # (agent, step id) -> (session, message, tool call)
         self.open: Dict[str, Tuple[str, str]] = {}                       # message -> (session, tool call) of a call still running
@@ -89,7 +90,14 @@ class Translator:
                         "spend": spend, "time": present.join([hub_lines.clock(view.elapsed()), when_ceiling], " "),
                         "calls": view.calls or 0, "tokens": view.tokens or 0, "metric": session_view.metric_line(view),
                         "outcome": done.outcome if done else "", "corrections": list(self.corrections), "structure": view.tree_lines(glyphs=True),
-                        "authority": list(view.authority)}}
+                        "authority": list(view.authority), "header": self.header_lines()}}
+
+    def header_lines(self) -> List[str]:
+        """The consumer's lines, each one short line; a consumer whose lines cannot be read leaves them out (they decorate the screen, they never stop it)."""
+        try:
+            return [present.one_line(str(line)) for line in (self.header() if self.header else ()) if str(line).strip()]
+        except Exception:  # noqa: BLE001
+            return []
 
     def publish(self) -> None:
         self.store.set_metadata(self.root, self.hub_metadata())

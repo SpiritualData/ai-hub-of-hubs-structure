@@ -8,8 +8,9 @@ from __future__ import annotations
 
 import threading
 import time
+from dataclasses import dataclass
 from pathlib import PurePath
-from typing import Any, Callable, Dict, Optional, Tuple
+from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.mapping import Translator
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.projection import Store
@@ -18,12 +19,24 @@ from hubofhubs.the_consciousness.ai_session_experience.session_events import App
 STEER_WAIT_SECONDS = 3.0
 
 
+@dataclass(frozen=True)
+class SlashCommand:
+    """A command a consumer adds to the client's slash menu: ``name`` (typed after the slash), a one-line ``description`` the menu shows, and ``run(argument)``, which does the command and returns
+    the lines to say (one quiet row in the transcript) or an empty result to say nothing. It runs on the server's thread, never inside the harness, so a command works while a run works."""
+    name: str
+    description: str
+    run: Callable[[str], Union[str, Sequence[str], None]]
+
+
 class Bridge:
     """One served session over one harness. ``build(folder)`` gives the harness (built once, on the first prompt)."""
 
     def __init__(self, build: Callable[[str], Harness], folder: str, *, acting_for: str = "", command: str = "ahohs work", clock: Callable[[], float] = time.time,
-                 steer_wait: float = STEER_WAIT_SECONDS, folder_name: bool = True, tiers: Tuple[str, ...] = (), tier: str = "") -> None:
-        """With ``tiers`` the client's model picker lists them and ``build(folder, tier)`` is called with the tier in use (the one the person last picked, else ``tier``); without, ``build(folder)``."""
+                 steer_wait: float = STEER_WAIT_SECONDS, folder_name: bool = True, tiers: Tuple[str, ...] = (), tier: str = "",
+                 commands: Sequence[SlashCommand] = (), header: Optional[Callable[[], Sequence[str]]] = None) -> None:
+        """With ``tiers`` the client's model picker lists them and ``build(folder, tier)`` is called with the tier in use (the one the person last picked, else ``tier``); without, ``build(folder)``.
+        A consumer's own ``commands`` join the client's slash menu (a command typed as a line, such as ``/name argument``, runs the same way), and ``header`` gives the short lines its plugin shows
+        beside who the work serves (read again whenever the session's state is published and after each command)."""
         self.build, self.folder, self.steer_wait = build, folder, steer_wait
         self.tier = tier if tier in tiers else ""
         self.built_tier = ""
@@ -31,7 +44,8 @@ class Bridge:
         self.store = Store(folder, clock, shown=PurePath(folder).name if folder_name else "", tiers=tuple(tiers), tier=self.tier)
         self.root = self.store.ids.make("ses")
         self.store.create_session(self.root, "")
-        self.translator = Translator(self.store, self.root, acting_for, command)
+        self.commands: Dict[str, SlashCommand] = {c.name: c for c in commands}
+        self.translator = Translator(self.store, self.root, acting_for, command, header=header)
         self.lock = threading.RLock()
         self.harness: Optional[Harness] = None
         self.thread: Optional[threading.Thread] = None
@@ -84,10 +98,40 @@ class Bridge:
             thread.join(timeout)
         return not self.running
 
+    # --- the consumer's commands --------------------------------------------------------------------------------------------------
+
+    def command(self, name: str, argument: str = "") -> bool:
+        """Run the consumer's command ``name`` (with or without its slash) and say what it returned as one quiet row. False when no command has that name."""
+        found = self.commands.get(name.lstrip("/").strip())
+        if found is None:
+            return False
+        try:
+            said = found.run(argument.strip())
+        except Exception as error:  # noqa: BLE001 -- a command that fails says so in the transcript and never ends the session
+            said = f"/{found.name} failed: {type(error).__name__}: {error}"
+        self.say(said)
+        return True
+
+    def say(self, lines: Union[str, Sequence[str], None]) -> None:
+        """One quiet row in the transcript (the lines joined) for something the program running the session wants the person to read; the header lines are read again with it. Callable from any thread."""
+        parts = [lines] if isinstance(lines, str) else [str(line) for line in (lines or ())]
+        text = "\n".join(line for line in parts if line.strip())
+        with self.lock:
+            if text:
+                self.store.synthetic(self.root, text, text.splitlines()[0][:160])
+            self.translator.publish()
+
+    def typed_command(self, text: str) -> bool:
+        """True when ``text`` is a line for one of the consumer's commands (``/name`` and what follows), which is then run and is never a message to the AI."""
+        word, _, rest = text.strip().partition(" ")
+        return word.startswith("/") and word[1:] in self.commands and self.command(word, rest)
+
     # --- the client's requests ----------------------------------------------------------------------------------------------------
 
     def prompt(self, text: str, message_id: str = "") -> Dict[str, Any]:
         """A person's message. With no run it starts one (a follow-up or a resume continues the hub session the last run named); with a run it is a steer."""
+        if self.typed_command(text):                  # a line for a command of the consumer's runs now, even while a run works, and is not a message
+            return {"id": message_id or self.store.ids.make("inb"), "kind": "command"}
         with self.lock:
             if not self.running:
                 iid = self.store.enqueue_user(self.root, text, "steer", message_id)
