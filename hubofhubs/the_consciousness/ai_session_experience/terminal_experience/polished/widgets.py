@@ -433,7 +433,7 @@ class KeyHints(Static):
         for key, label in hints:
             if t.plain:
                 t.append("  ")
-            t.append(key, style=key_style)
+            t.append(words_of.present.key_name(key), style=key_style)
             t.append(f" {label}", style=label_style)
         return t
 

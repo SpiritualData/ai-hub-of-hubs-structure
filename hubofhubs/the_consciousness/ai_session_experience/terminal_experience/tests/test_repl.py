@@ -70,4 +70,4 @@ def test_a_run_that_cannot_start_shows_what_to_set():
         raise Pending("hub-of-hubs", ["set SOME_KEY"])
 
     code, shown = run("hi\n", door)
-    assert code == 0 and "needs setup" in shown
+    assert code == 0 and "Needs setup" in shown

@@ -129,14 +129,22 @@ class Translator:
             return []                                    # the helper's own tool call already says it
         helper = self.helpers.get(event.agent_id)
         who =f"[{short(helper.task, 40)}] " if event.agent_id != MAIN and helper is not None else (f"[{event.agent_id[:8]}] " if event.agent_id != MAIN else "")
-        why = f" (refused: {short(event.detail, 60)})" if event.state == "blocked" and event.detail else ""
-        title = f"{who}{event.kind} {event.label}".strip() + why
-        call_id = f"step:{event.agent_id}:{event.step_id or event.label}"
+        from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import present
+        if present.is_bookkeeping_step(event):
+            return []                                    # the agent's own task list is not work on the goal
+        why = ""
+        subject = present.subject_of(event) if event.kind in ("read", "edit", "search") else present.clip_words(present.one_line(event.label), 70)
+        title = f"{who}{event.kind} {subject}".strip()
         status = STATUS.get(event.state, "in_progress")
+        if present.is_failed_command(event):             # a command that did not work or was refused: one plain line, quiet (not a red failure), the raw text only in the detail
+            title = who + (present.refusal_words(event.detail) if event.state == "blocked" else "A command did not work")
+            status = "failed" if "you refused" in (event.detail or "").lower() else "completed"        # the person's own refusal is theirs to see; the rest is quiet
+            why = " "
+        call_id = f"step:{event.agent_id}:{event.step_id or event.label}"
         if call_id not in self.opened:
             self.opened[call_id] = status
             update: Dict[str, Any] = {"sessionUpdate": "tool_call", "toolCallId": call_id, "title": title, "kind": KINDS.get(event.kind, "other"), "status": status}
-            if event.detail and not why:
+            if event.detail:                              # the raw refusal or error text is kept here, in the detail, and never in the title
                 update["content"] = tool_content(event.detail)
             return [update]
         self.opened[call_id] = status

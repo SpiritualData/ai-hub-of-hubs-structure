@@ -134,7 +134,7 @@ def test_brief_and_line():
     assert brief_of([], "garden") == ""
     assert line_of(4, "garden") == "Using 4 saved notes about garden" and line_of(1, "garden") == "Using 1 saved note about garden" and line_of(0, "garden") == ""
     import re
-    assert "—" not in text and not re.search(r"\bquests?\b", text.lower())
+    assert chr(0x2014) not in text and not re.search(r"\bquests?\b", text.lower())
 
 
 class Fake:

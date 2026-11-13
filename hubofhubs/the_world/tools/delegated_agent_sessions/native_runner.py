@@ -33,21 +33,24 @@ from hubofhubs.the_body.internal_context.run_store.jsonl_ledger import private_d
 from hubofhubs.the_world.tools.command_running import refusal, sandbox_wrap
 from hubofhubs.the_world.tools.deep import DeepResult, ProgressEvent
 from hubofhubs.the_world.tools.events import EVENT_STATUS, EVENT_TOKENS
-from hubofhubs.the_world.tools.delegated_agent_sessions import general_helper as helpers, providers
+from hubofhubs.the_world.tools.delegated_agent_sessions import answer_check, general_helper as helpers, providers
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import SubprocessConfig, log
 from hubofhubs.the_world.tools.delegated_agent_sessions.hub_frame import NATIVE_TOOLS, build_frame, scratch_folder
 from hubofhubs.the_world.tools.delegated_agent_sessions.launch import DeepLaunchSettings
 from hubofhubs.the_world.tools.delegated_agent_sessions.control import ControlMessage, RunControl
 from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (   # the ceilings are shared with the other runners; the names stay importable from here
     BACKSTOP_SECONDS, DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, MAX_RESUMES, SOFT_FRACTION, UNLIMITED, WRAP_UP_MESSAGE, LimitWatch, active_watch, ceiling_of,
-    current_session_file, decision_of, default_should_continue, estimate_spend, soft_fraction_of, stop_aware)
-from hubofhubs.the_world.tools.delegated_agent_sessions.session import find_session_file
+    current_session_file, decision_of, default_should_continue, estimate_spend, session_spend, soft_fraction_of, stop_aware)
+from hubofhubs.the_world.tools.delegated_agent_sessions.session import find_session_file, resolve_session_file
 from hubofhubs.the_world.tools.delegated_agent_sessions.solution_loop import read_text, snapshot, track, walk
 from hubofhubs.the_world.tools.delegated_agent_sessions.code_check import NO_SOURCE, NOT_IN_FOLDER, unsupported
 from hubofhubs.the_world.tools.delegated_agent_sessions.stream_runner import StreamJsonGoalRunner
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 SESSION_FOLDER = "native-loop-sessions"
+#: Commands that only read (no flag of theirs writes), allowed by rule when the permission mode asks before running a command. ``find`` is here with its running and deleting flags denied.
+READ_ONLY_COMMANDS = ("ls", "cat", "head", "tail", "wc", "grep", "rg", "find", "sort", "uniq", "cut", "tr", "pwd", "file", "stat", "du", "tree", "basename", "dirname", "diff", "echo", "date")
+READ_ONLY_DENIED = ("Bash(find:*-exec*)", "Bash(find:*-execdir*)", "Bash(find:*-ok*)", "Bash(find:*-delete*)", "Bash(find:*-fprint*)")
 CHECK_MESSAGE = ("A code check of the files you wrote found these. It only reads the text files of the folder, so a figure you computed or read from a database, "
                  "a command's output or a web page is not a finding: keep it and say in the file where it came from. Remove or correct a figure only when you cannot "
                  "account for it, and name only files that exist. Then report again.\n")
@@ -139,7 +142,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                  ceiling_usd: Union[float, str] = DEFAULT_CEILING_USD, ceiling_seconds: Union[float, str] = DEFAULT_CEILING_SECONDS,
                  ceiling_turns: Optional[int] = None, soft_fraction: float = SOFT_FRACTION, should_continue: Optional[Callable[[Mapping[str, Any]], Any]] = None,
                  stop_inputs: Optional[Mapping[str, Any]] = None, permission: str = "skip", sandbox: bool = False, sandbox_network: bool = True,
-                 helper_calls: Optional[int] = None, **kwargs: Any):
+                 helper_calls: Optional[int] = None, check_answer: bool = True, **kwargs: Any):
         super().__init__(config, ceiling_usd=ceiling_usd, ceiling_seconds=ceiling_seconds, soft_fraction=soft_fraction, **kwargs)   # the ceilings are the stream runner's (run_ceilings)
         self.check = bool(check)               # the hub's code check of written text after the session
         self.session_dir = session_dir
@@ -157,6 +160,11 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         self.local = threading.local()         # per call: the frame file, the temporary folder and the launcher of the run in this thread
         self.helper_calls = helpers.DEFAULT_CALLS if helper_calls is None else int(helper_calls)    # the general sub-agent calls the whole run may make (0: none is offered)
         self.live: Any = None                  # (the run's folder, when it started) of the latest run, for what is asked of it from another thread (a helper's cost)
+        self.check_answer = bool(check_answer)  # the answer check after the session (one fast-tier call; a resume on a fail)
+        self.run_context: Any = None           # the ``RunContext`` a wrapper attached for the run about to start (the person's words, the saved notes), or None
+        self.run_notes = ""                    # the saved-notes block of this run, carried by the helpers' brief
+        self.original_input = ""           # the person's first message of the session, verbatim (``answer_check``, the stop decision's goal, the helpers' brief)
+        self.answer_asker: Any = None           # the answer check's model call (None: built from the hub's Claude CLI provider on the answer check role's tier); tests inject one
         self.channel: Any = None               # the channel to the running helpers of the latest run (messages in, a stop), set when helpers are offered
 
     @property
@@ -223,6 +231,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         self.local.launcher = self.write_launcher(folder_for_launcher=scratch, root=root)
         self.local.tools, self.local.agents_file, self.local.settings_file = tuple(self.tools), None, None
         note = self.offer_helpers(scratch, {}, self.helper_calls)
+        self.allow_read_only(scratch)
         frame = build_frame(brief or goal, preamble or "", root, select=self.select, notes=self.notes, extras=(note,) if note else ())
         if scratch:
             path = os.path.join(scratch, "hub-frame.md")
@@ -232,6 +241,25 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                 self.local.frame_file = "/tmp/hub-frame.md" if self.local.sandboxed else path   # the sandbox shows the session's folder as /tmp
             except OSError as error:
                 log.warning("hub frame not written (%s): the session runs without it", error)
+
+    def allow_read_only(self, scratch: str) -> None:
+        """In a permission mode that asks before a command (``acceptEdits``), nobody is there to answer in a headless session, so the CLI refuses every command it cannot prove harmless, a
+        quoted ``find`` or a ``grep`` with a pattern included. Looking around the person's own folder is what a run starts with, so the read-only commands of ``READ_ONLY_COMMANDS`` are
+        allowed by rule (the ``deny`` rules keep ``find`` from running or deleting anything). Anything else, a loop or a command that writes, is still refused and listed."""
+        if self.permission == "skip" or not scratch:
+            return
+        rules = {"permissions": {"allow": [f"Bash({name}:*)" for name in READ_ONLY_COMMANDS], "deny": list(READ_ONLY_DENIED)}}
+        real = os.path.join(scratch, "agent-guard.json" if self.local.settings_file else "permission-rules.json")
+        try:
+            base: Dict[str, Any] = {}
+            if self.local.settings_file and os.path.exists(real):
+                with open(real, encoding="utf-8") as handle:
+                    base = json.load(handle)
+            with open(real, "w", encoding="utf-8") as handle:
+                json.dump(helpers.agent_channel.merge_settings(base, rules), handle, indent=1)
+            self.local.settings_file = self.visible(real)
+        except (OSError, ValueError) as error:
+            log.warning("read-only command rules not written (%s): commands the CLI cannot check are refused", error)
 
     def model_of(self, tier: str) -> Optional[str]:
         """The model of a role's tier for this run's provider, as the CLI takes it; None when no model is chosen for it."""
@@ -248,7 +276,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         offered = dict(defined)
         if budget > 0 and scratch:
             try:
-                offered.update(helpers.helper_definition(helpers.sub_agent_model(self.model_of, self.tier)))
+                offered.update(helpers.helper_definition(helpers.sub_agent_model(self.model_of, self.tier), self.original_input, self.run_notes))
             except (KeyError, ValueError) as error:
                 log.warning("no tier for the sub-agent role (%s): no general sub-agent is offered", error)
         if not offered or budget <= 0 or not scratch:
@@ -278,11 +306,11 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
     def agent_cost(self, task_id: str) -> Optional[float]:
         """What one helper cost, priced from its own transcript (``subagents/agent-<task id>.jsonl`` beside the session's record) on the hub's table, the same estimate the ceilings use; None
         when the record cannot be found. The CLI reports one cost for the whole session, the helpers' included."""
-        live = self.live
+        live = self.live_session
         if not live:
             return None
         try:
-            record = current_session_file(live[0], live[1], getattr(self.goal_settings(), "claude_config_dir", None))
+            record = resolve_session_file(live[0], live[1], getattr(self.goal_settings(), "claude_config_dir", None))
             path = os.path.join(os.path.splitext(record)[0], "subagents", f"agent-{task_id}.jsonl") if record else ""
             return round(estimate_spend(path), 6) if path and os.path.exists(path) else None
         except Exception:  # noqa: BLE001 -- a figure that cannot be found is no figure
@@ -334,6 +362,11 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         preamble = self.cfg.context_preamble if context_preamble is None else context_preamble
         key = resume_session_id or run_id or uuid.uuid4().hex
         self.local.resumed = False
+        given = self.run_context                           # what a wrapper told this runner apart from the goal text (``run_context``): the person's words, the saved notes
+        if resume_session_id is None or not self.original_input:
+            self.original_input = (given.original if given is not None and given.original else "") or brief or goal    # the person's first message, verbatim: the reference of the stop decision, the helpers' brief and the answer check
+        self.run_notes = given.notes if given is not None else ""
+        self.local.hub_resumes = 0
         self.prepare(goal, brief, preamble, root, key)
         before = snapshot(root)
         self.local.emit = emit
@@ -356,6 +389,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
             result = super().run_goal_once(goal=goal, brief=brief, context_preamble=context_preamble, resume_session_id=resume_session_id, **common)
             self.usage(result, root, emit, resumes=0)
             result = self.iterate(result, root, before, common, emit, cancel_check)
+            result = self.answer_round(result, root, common, emit, cancel_check)
             self.flag_outside(result, root, emit)
             self.finish(result, root, emit)
         finally:
@@ -373,8 +407,8 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
         now = time.monotonic()
         if now - float(getattr(self.local, "estimated_at", 0.0) or 0.0) >= 3.0:
             self.local.estimated_at = now
-            self.local.estimate = estimate_spend(current_session_file(root, getattr(self.local, "started", None) or now,
-                                                                      getattr(self.goal_settings(), "claude_config_dir", None)))
+            watch = getattr(self.local, "watch", None)
+            self.local.estimate = session_spend(root, getattr(watch, "session_id", ""), getattr(self.goal_settings(), "claude_config_dir", None))      # this run's own session, by id
         return max(settled, float(getattr(self.local, "estimate", 0.0) or 0.0))
 
     def new_watch(self, root: str, emit: Any) -> LimitWatch:
@@ -427,7 +461,7 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
             last = found
             if not everything:
                 return result
-            facts = dict(rounds=list(rounds), spend_usd=float(self.local.spent), turns=int(self.local.used_turns), resumes=resumes, findings=list(found),
+            facts = dict(goal=self.original_input, rounds=list(rounds), spend_usd=float(self.local.spent), turns=int(self.local.used_turns), resumes=resumes, findings=list(found),
                          unchecked_findings=[x for x in everything if x not in found], changed_outcome=changed_outcome,
                          elapsed_seconds=self.local.watch.elapsed(), ceiling_usd=self.ceiling_usd,
                          ceiling_seconds=self.ceiling_seconds, ceiling_turns=self.ceiling_turns, soft_fraction=self.soft_fraction)
@@ -460,12 +494,63 @@ class NativeToolLoopRunner(StreamJsonGoalRunner):
                 again.cost_usd = float(result.cost_usd or 0.0) + float(again.cost_usd or 0.0)
             again.tokens = int(result.tokens or 0) + int(again.tokens or 0)
             resumes += 1
+            self.local.hub_resumes = resumes
             self.usage(again, root, emit, resumes)
             if not again.met and again.session_id == result.session_id and not again.cancelled:
                 return result      # a failed second turn does not undo an accepted first one
             result = again
             if not result.met or not result.session_id:
                 return result
+
+    def answer_round(self, result: DeepResult, root: str, common: Dict[str, Any], emit: Any, cancel_check: Any) -> DeepResult:
+        """The answer check (``answer_check``): the final answer is held to the person's first message, verbatim, and on a fail the same session is resumed once with a steer built
+        from it. The resume limit, the ceilings and a cancel apply as for the code check's resumes. The record is ``result.answer_check``."""
+        original = str(self.original_input or "").strip()
+        if not (self.check and self.check_answer and result.met and result.session_id and str(result.output or "").strip() and original):
+            return result
+        ask = self.answer_asker
+        if ask is None:
+            try:
+                ask = answer_check.answer_ask(self.model_of, self.tier, claude_path=self.__dict__["_cfg"].claude_path or "claude")
+            except Exception as error:  # noqa: BLE001 -- a check that cannot be set up is no opinion
+                log.warning("answer check not set up (%s): the answer stands", error)
+                ask = None
+        watch = self.local.watch
+        taken: Dict[str, Any] = {}
+
+        def allowed() -> str:
+            if int(getattr(self.local, "hub_resumes", 0) or 0) >= MAX_RESUMES:
+                return "resume_cap"
+            if watch.softened or watch.hard_reached():
+                return "ceiling_reached"
+            return "cancelled" if cancel_check is not None and cancel_check() else ""
+
+        def tell(phase: str, text: str, data: Mapping[str, Any]) -> None:
+            if emit is not None:
+                try:
+                    emit(ProgressEvent(type=EVENT_STATUS, text=text, data=dict(data, phase=phase)))
+                except Exception:  # noqa: BLE001 -- a sink that fails never stops the run
+                    pass
+
+        def resume(message: str) -> Optional[str]:
+            again = super(NativeToolLoopRunner, self).run_goal_once(goal=message, brief=message, context_preamble="", resume_session_id=result.session_id, **common)
+            if again.session_id == result.session_id:        # the CLI's cost is the session's running total: the resumed report already holds the earlier turns
+                again.cost_usd = max(float(result.cost_usd or 0.0), float(again.cost_usd or 0.0))
+            else:
+                again.cost_usd = float(result.cost_usd or 0.0) + float(again.cost_usd or 0.0)
+            again.tokens = int(result.tokens or 0) + int(again.tokens or 0)
+            self.local.hub_resumes = int(getattr(self.local, "hub_resumes", 0) or 0) + 1
+            self.usage(again, root, emit, int(self.local.hub_resumes))
+            if not again.met and again.session_id == result.session_id and not again.cancelled:
+                return None      # a failed second turn does not undo an accepted first one
+            taken["again"] = again
+            return again.output or ""
+
+        record = answer_check.run_round(original, str(result.output), ask, resume, allowed=allowed, emit=tell)
+        if "again" in taken and record["answer"] != result.output:
+            result = taken["again"]
+        result.answer_check = record                         # type: ignore[attr-defined]
+        return result
 
     def flag_outside(self, result: DeepResult, root: str, emit: Any) -> None:
         """Report, on the result, what the session wrote or ran outside the working folder (``result.outside_folder``, a list of short lines). A report only."""

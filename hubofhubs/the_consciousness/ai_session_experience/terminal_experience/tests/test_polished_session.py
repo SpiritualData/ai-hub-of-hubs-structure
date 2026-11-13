@@ -91,7 +91,7 @@ def test_a_note_is_the_persons_own_line_counted_while_it_waits_and_shown_as_take
     fake = Fake([[begin(), typed(keys, "use the short name"), 0.25, taken("use the short name"), 0.25, met()]])
     rep, text = attend(fake, keys)
     assert [c.text for c in fake.controls if isinstance(c, Steer)] == ["use the short name"]
-    assert "❯ you: use the short name" in text and text.count("Your note was taken up.") == 1
+    assert "❯ You: use the short name" in text and text.count("Your note was taken up.") == 1
     assert "(queued" not in text and text.count("use the short name") <= 2        # the person's own line, no tag and no count, never restated
     queued = [s.queued for s in snaps]
     assert 1 in queued and queued[-1] == 0 and queued.index(1) < len(queued) - 1
@@ -103,7 +103,7 @@ def test_several_notes_no_run_took_up_become_one_next_message_in_the_order_typed
     rep, text = attend(fake, keys)
     assert fake.starts == [("goal", ""), ("first note\n\nsecond note", "s1")] and len(rep.runs) == 2
     assert "Sending your 2 waiting notes as one message." in text
-    assert text.count("you: first note") == 1 and text.count("you: second note") == 1      # echoed when typed, not a second time when sent
+    assert text.count("You: first note") == 1 and text.count("You: second note") == 1      # echoed when typed, not a second time when sent
     assert not [c for c in fake.controls if isinstance(c, Steer)]       # this worker cannot take one while it works
 
 
@@ -153,7 +153,7 @@ def test_stop_then_resume_continues_the_same_session_and_says_so():
     keys = ScriptedKeys()
     fake = Fake([[begin(), lambda sink: (keys.press("esc"), keys.press("line", "resume")), 0.1, Finished(outcome="stopped", session_id="s1")], [begin(), met()]])
     rep, text = attend(fake, keys)
-    assert fake.starts == [("goal", ""), ("goal", "s1")] and "resuming session s1" in text and "stopped: finished work is kept" in text
+    assert fake.starts == [("goal", ""), ("goal", "s1")] and "resuming session s1" in text and "Stopping: finished work is kept" in text
     assert [r.outcome for r in rep.runs] == ["stopped", "met"]
 
 
@@ -182,7 +182,7 @@ def test_the_outcome_comes_from_the_structured_field_never_from_what_the_worker_
     fake = Fake([[begin(), Finished(outcome="failed", session_id="s1", error="the worker broke", report="Done! Everything worked and the goal was met.")]])
     rep, text = attend(fake)
     rows = text.splitlines()
-    assert "Failed" in rows[closing_index(rows)] and "reason: the worker broke" in rows
+    assert "Failed" in rows[closing_index(rows)] and "Reason: the worker broke" in rows
     fake = Fake([[begin(), met(report="Failed to do anything.")]])
     rep, text = attend(fake)
     assert "Goal met" in text.splitlines()[closing_index(text.splitlines())]
@@ -205,7 +205,7 @@ def test_off_a_terminal_there_are_no_escape_codes_and_on_one_the_closing_is_styl
 
 def test_a_stopped_session_names_what_is_kept_and_the_command_that_resumes_it():
     rep, text = attend(Fake([[begin(), Finished(outcome="stopped", session_id="sess-9")]]), command="ahohs work")
-    assert "Stopped, your work is kept" in text and "Session sess-9 is kept." in text and "ahohs work --resume sess-9" in text.splitlines()[-1]       # the command whole, alone on its last line
+    assert "Stopped" in text and text.count("Finished work is kept") == 1 and "ahohs work --resume sess-9" in text.splitlines()[-1]       # the command whole, alone on its last line
 
 
 # --- the transcript keeps what finished, the panel what is happening now ----------------------------------------------------------------------------
@@ -219,7 +219,7 @@ def test_each_update_has_one_home_the_panel_while_it_runs_and_the_transcript_onc
     assert True in shown and shown[-1] is False and shown.index(True) < len(shown) - shown[::-1].index(True)        # in the panel while running, gone when finished
     rows = text.splitlines()
     assert sum("Edited work.txt" in r for r in rows) == 1                # the transcript has the finished step once
-    assert not [r for r in rows if "Helper started" in r]                              # the panel shows a helper that works; the transcript only its ending
+    assert not [r for r in rows if "Helper started" in r] and any("Helper: check the tests" in r for r in rows)        # the transcript names the helper once, as the heading of its rows, and says its ending
     assert any("Helper finished: check the tests" in r for r in rows) and any(("check the tests" in row) for s in snaps for row, _ in s.rows)
 
 
@@ -235,7 +235,7 @@ def test_a_clock_is_shown_after_three_seconds_of_waiting_and_not_before(recorded
 def test_a_warning_notice_of_the_contract_is_one_line_and_the_decision_lines_are_the_hubs():
     fake = Fake([[begin(), Notice(kind="soft-limit"), Notice(kind="decision", decision="stop", reason="plateau"), met()]])
     rep, text = attend(fake)
-    assert sum("wrapping up:" in r for r in text.splitlines()) == 1 and "hub decision: stop, the last round gained almost nothing" in text
+    assert sum("Wrapping up:" in r for r in text.splitlines()) == 1 and "Hub decision: stop, the last round gained almost nothing" in text
 
 
 # --- the consumer's extension points -----------------------------------------------------------------------------------------------------------------------

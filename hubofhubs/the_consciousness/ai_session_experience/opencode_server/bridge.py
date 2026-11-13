@@ -9,7 +9,7 @@ from __future__ import annotations
 import threading
 import time
 from pathlib import PurePath
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.mapping import Translator
 from hubofhubs.the_consciousness.ai_session_experience.opencode_server.projection import Store
@@ -22,10 +22,13 @@ class Bridge:
     """One served session over one harness. ``build(folder)`` gives the harness (built once, on the first prompt)."""
 
     def __init__(self, build: Callable[[str], Harness], folder: str, *, acting_for: str = "", command: str = "ahohs work", clock: Callable[[], float] = time.time,
-                 steer_wait: float = STEER_WAIT_SECONDS, folder_name: bool = True) -> None:
+                 steer_wait: float = STEER_WAIT_SECONDS, folder_name: bool = True, tiers: Tuple[str, ...] = (), tier: str = "") -> None:
+        """With ``tiers`` the client's model picker lists them and ``build(folder, tier)`` is called with the tier in use (the one the person last picked, else ``tier``); without, ``build(folder)``."""
         self.build, self.folder, self.steer_wait = build, folder, steer_wait
+        self.tier = tier if tier in tiers else ""
+        self.built_tier = ""
         # the full-screen client prints the folder in its footer: the name, not the machine's path (the inline client joins it to its own folder, so it is told the real one)
-        self.store = Store(folder, clock, shown=PurePath(folder).name if folder_name else "")
+        self.store = Store(folder, clock, shown=PurePath(folder).name if folder_name else "", tiers=tuple(tiers), tier=self.tier)
         self.root = self.store.ids.make("ses")
         self.store.create_session(self.root, "")
         self.translator = Translator(self.store, self.root, acting_for, command)
@@ -46,8 +49,9 @@ class Bridge:
 
     def start(self, goal: str, message_id: str = "") -> None:
         with self.lock:
-            if self.harness is None:
-                self.harness = self.build(self.folder)
+            if self.harness is None or self.built_tier != self.tier:        # a tier picked since the last run is the tier of this one (the session continues on the new harness)
+                self.harness = self.build(self.folder, self.tier) if self.store.tiers else self.build(self.folder)
+                self.built_tier = self.tier
             harness, resume = self.harness, self.resume_id
             self.running, self.starting = True, message_id
             self.thread = threading.Thread(target=self.work, args=(harness, goal, resume), daemon=True)
@@ -105,6 +109,14 @@ class Bridge:
         with self.lock:
             self.store.emit("session.inbox.delivery.changed", {"sessionID": self.root, "inboxID": iid, "delivery": "queue"}, self.root)
         return {"id": iid, "kind": "queued"}
+
+    def select_tier(self, tier: str) -> bool:
+        """The person picked a tier in the client's model picker. It applies to the next run (a run that works keeps the tier it started with); a name that is not one of the hub's tiers is ignored."""
+        with self.lock:
+            if not self.store.select_model(self.root, tier):
+                return False
+            self.tier = tier
+            return True
 
     def interrupt(self) -> bool:
         with self.lock:

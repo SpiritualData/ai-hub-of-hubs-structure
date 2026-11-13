@@ -29,7 +29,7 @@ def test_the_breadcrumb_is_never_wider_than_the_room_and_keeps_where_you_are():
     agent_focus.focus_on(view, view.focus, "a4")
     for width in (120, 56, 30):
         row = agent_focus.breadcrumb(view, view.focus, width)
-        assert len(row) <= width and row.startswith(("main", "...")) and "task number 4" in row[:width] or width == 30
+        assert len(row) <= width and row.startswith(("Main", "...")) and "task number 4" in row[:width] or width == 30
     assert agent_focus.focus_on(view, view.focus, "nothing") is False and view.focus.current == "a4"
     assert agent_focus.focus_on(view, view.focus, "") and view.focus.path == []
 
@@ -56,6 +56,6 @@ def test_the_view_of_a_helper_has_the_same_shape_at_depth_one_and_four_and_a_fin
     view.apply(AgentEnded(agent_id="a2", state="met", summary="two finds", tokens=1500))
     agent_focus.focus_on(view, view.focus, "a1")
     rows = "\n".join(agent_focus.child_rows(view, view.focus, 80))
-    assert "task number 2" in rows and "[done]" in rows and "two finds" in rows and rows.count("two finds") == 1
+    assert "task number 2" in rows and "Done:" in rows and "two finds" in rows and rows.count("two finds") == 1
     agent_focus.enter(view, view.focus)
     assert "Result: two finds" in "\n".join(agent_focus.agent_lines(view, view.focus, 80))

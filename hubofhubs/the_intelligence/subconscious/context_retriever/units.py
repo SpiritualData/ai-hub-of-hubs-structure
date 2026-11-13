@@ -241,6 +241,7 @@ ITEM_META = {
     "author_role": "who wrote it relative to the request: requester, other_person, assistant, system",
     "timestamp": "when it was written or last changed (ISO 8601), so an arm can compute its age relative to the request",
     "affinity_tags": "its home groupings, '<kind>:<id>' (hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.affinity_tags): a project, a repository, a topic",
+    "overview": "true for a short statement of what its home grouping is (a focus); an arm that puts the request's focus first always offers it",
     "scope_tags": "who may see it (hubofhubs.the_intelligence.subconscious.context_retriever.context_cards.scope_tags): a hard fence, read by the source meter's out-of-scope count",
 }
 # A request MAY carry the same vocabulary: ``timestamp`` (when it is asked), ``affinity_tags`` (its focus) and ``scope_tags`` (what it may read).

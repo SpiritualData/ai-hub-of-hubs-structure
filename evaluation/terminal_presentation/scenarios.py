@@ -21,6 +21,7 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.sessi
 
 PAUSE = 0.2
 ALL_CHECKS = tuple(C.REQUIREMENTS)
+DRAWN = threading.local()        # the captures the scenario running in this thread has made
 
 
 def folder() -> str:
@@ -51,6 +52,7 @@ def capture(arm: Any, kit: Any, keys: Any, size: Tuple[int, int], options: Optio
     else:
         cap = stream_capture(arm, kit.harness, keys, size, goal=goal, options=options)
     cap.labels = dict(getattr(arm, "screen_labels", None) or {})        # what the arm declares its screen says for each control and role (nothing declared: the hub's shared words)
+    getattr(DRAWN, "caps", []).append(cap)       # every screen a scenario draws is judged by the capitalisation policy (``run_scenario``)
     return cap
 
 
@@ -170,8 +172,9 @@ def ceilings(arm: Any) -> Dict[str, Any]:
 
 
 import agents_scenarios as A  # noqa: E402
+import feed_scenarios as F  # noqa: E402
 
-SCENARIOS = {**A.SCENARIOS, "watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
+SCENARIOS = {**A.SCENARIOS, **F.SCENARIOS, "watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
              "target": target, "plain": plain, "pasted_run": pasted_run, "real_run": real_run}
 SECONDS = 30
 SECONDS_OF = {name: 120 for name in A.SCENARIOS}      # the hierarchy scenarios walk in and out of helpers at three sizes (and four levels deep), each key given half a second to show
@@ -188,8 +191,12 @@ def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
     done: Dict[str, Any] = {}
 
     def work() -> None:
+        DRAWN.caps = []
         try:
-            done["result"] = SCENARIOS[name](arm)
+            result = SCENARIOS[name](arm)
+            if "labels-capitalised" not in result.get("checks", {}):        # revision 5: the capitalisation policy is read on every screen the scenario drew
+                result = {**result, "checks": {**result.get("checks", {}), "labels-capitalised": C.combine([C.labels_capitalised(c) for c in DRAWN.caps])}}
+            done["result"] = result
         except Exception as error:  # noqa: BLE001 -- an arm that cannot do the scenario fails it
             done["error"] = f"{type(error).__name__}: {error}"
     thread = threading.Thread(target=work, daemon=True)
@@ -201,7 +208,7 @@ def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
     return {"checks": failed, "ceiling": {}, "note": done.get("error", "did not finish in time")}
 
 
-SCENARIO_CHECKS = {**A.SCENARIO_CHECKS, "watch": ("each-update-once", "no-row-wider-than-the-terminal", "repaints-under-bound", "contrast-4.5", "current-step-visible", "closing-report-complete",
+SCENARIO_CHECKS = {**{name: (*checks, "labels-capitalised") for name, checks in {**A.SCENARIO_CHECKS}.items()}, **F.SCENARIO_CHECKS, "watch": ("each-update-once", "no-row-wider-than-the-terminal", "repaints-under-bound", "contrast-4.5", "current-step-visible", "closing-report-complete",
                              "first-output-within-a-second", "key-hints-present-and-whole"),
                    "steer": ("correction-sent-then-taken-up", "round-trip-steer"),
                    "stop_resume": ("stop-then-resume-keeps-work", "round-trip-stop", "round-trip-resume", "closing-report-complete"),
@@ -209,3 +216,4 @@ SCENARIO_CHECKS = {**A.SCENARIO_CHECKS, "watch": ("each-update-once", "no-row-wi
                    "target": ("unavailable-control-shown",), "plain": ("plain-when-not-a-terminal",),
                    "pasted_run": C.REVISION_2 + ("closing-report-complete", "no-row-wider-than-the-terminal"),
                    "real_run": ("answer-once", "no-raw-markdown", "closing-report-complete", "no-row-wider-than-the-terminal")}
+SCENARIO_CHECKS = {name: tuple(dict.fromkeys((*checks, "labels-capitalised"))) for name, checks in SCENARIO_CHECKS.items()}      # revision 5: every scenario is also read for capital letters

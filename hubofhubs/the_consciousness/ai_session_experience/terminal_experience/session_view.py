@@ -14,17 +14,17 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
-    MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Usage, Waiting, short)
+    MAIN, AgentEnded, AgentStarted, Finished, Notice, Review, RunStarted, SessionEvent, Step, Usage, Waiting, is_bookkeeping, short)
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, hub_lines, present
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.markdown_text import markdown_lines
 
 COLOR = {"running": "33", "done": "32", "failed": "31", "blocked": "31", "dim": "", "bold": "1", "ask": "35"}
-HELP_ROWS = ("Esc or Ctrl-C  stop the run and keep the session (type resume to continue)",
-             "type + Enter    steer the run; @name text steers one helper, /stop name stops one",
-             "Tab             show or hide the structure tree (which solution each helper works on)",
-             "Up, Down, Right the tree: move, open the solution's fields and connections; Left closes",
-             "y or n          answer a question the run asks",
-             "?               show or hide this list (on an empty line)")
+HELP_ROWS = ("Esc or Ctrl-C  Stop the run and keep the session (type resume to continue)",
+             "Type + Enter    Steer the run; @name text steers one helper, /stop name stops one",
+             "Tab             Show or hide the structure tree (which solution each helper works on)",
+             "Up, Down, Right Move in the tree and open a solution's fields and connections; Left closes",
+             "Y or N          Answer a question the run asks",
+             "?               Show or hide this list (on an empty line)")
 
 
 @dataclass
@@ -93,6 +93,10 @@ class SessionView:
     panels: List[str] = field(default_factory=list)         # extra panel lines a consumer supplies, drawn under the steps
     focus: agent_focus.Focus = field(default_factory=agent_focus.Focus)      # the agent in view: the main session, or a helper the person went into (``agent_focus``)
     key_labels: Dict[str, str] = field(default_factory=dict)                 # the words a surface uses for the agent keys (enter, leave, pick, message, stop), when not the shared ones
+    group_notes: List[str] = field(default_factory=list)                     # the narration that came before the steps in ``group``
+    group: List[Step] = field(default_factory=list)                         # finished steps of one kind gathered for one summary row (``present.group_line``), drawn when the run of them ends
+    failures: Dict[str, int] = field(default_factory=dict)                  # how often each kind of command (``present.tried_words``) did not work, so a repeat is one counted line
+    stopped_by_person: List[str] = field(default_factory=list)               # the agents the person asked to stop: only their ending is drawn as a row (a whole-run stop is said once, in the closing)
 
     def apply(self, event: SessionEvent) -> None:
         if isinstance(event, RunStarted):
@@ -103,6 +107,12 @@ class SessionView:
             self.status, self.final, self.ended = "running", None, None
             self.soft_limit, self.hard_limit = False, ""
         elif isinstance(event, Step):
+            if is_bookkeeping(event.kind, event.label):
+                return           # the agent's own task list is not work on the goal (``session_events.BOOKKEEPING_TOOLS``)
+            if present.is_failed_command(event) and getattr(self.steps.get(event.step_id), "state", "") != "failed":
+                label = event.label or getattr(self.steps.get(event.step_id), "label", "")
+                key = present.tried_words(label) if event.kind == "run" else "check"
+                self.failures[key] = self.failures.get(key, 0) + 1
             owner = self.agents.get(event.agent_id)
             if owner is not None and event.kind not in ("message-received", "delegate") and event.label:
                 owner.activity = present.one_line(event.label) if event.state == "running" else owner.activity
@@ -152,7 +162,7 @@ class SessionView:
             elif event.kind == "outside-folder":
                 self.outside = [item for item in event.items if item not in self.outside] + self.outside
         elif isinstance(event, Review):
-            self.notices.append("review: " + (event.text or "done"))
+            self.notices.append("Review: " + (event.text or "done"))
         elif isinstance(event, Finished):
             self.final, self.asking = event, None
             self.status = "stopped" if event.outcome == "stopped" else "finished"
@@ -182,9 +192,14 @@ class SessionView:
         return hits[0] if len(hits) == 1 else ""
 
     def blocked(self) -> List[str]:
-        rows = [f"{s.label}: {s.detail or 'blocked'}" for s in self.steps.values() if s.state == "blocked"]
+        commands = [s for s in self.steps.values() if s.state == "blocked" and present.is_failed_command(s)]
+        rows = [f"{present.clip_words(present.one_line(s.label), 60)}: {s.detail or 'blocked'}" for s in self.steps.values() if s.state == "blocked" and not present.is_failed_command(s)]
+        if commands:       # refused commands are one summary, not each raw command and the mode's own words
+            words = {present.refusal_words(s.detail) for s in commands}
+            summary = words.pop() if len(words) == 1 else "Skipped a command that could not be checked"
+            rows.append(summary if len(commands) == 1 else summary.replace("a command", f"{len(commands)} commands").replace("that was", "that were").replace("that could", "that could"))
         for line in (self.final.blocked if self.final else ()):
-            if line not in rows:
+            if line not in rows and not commands:
                 rows.append(line)
         return rows
 
@@ -210,14 +225,14 @@ class SessionView:
             for agent in [a for a in known.values() if a.parent_id == parent]:
                 mark = ("`- " if not glyphs else "└─ ") if depth else ""
                 calls = f", {agent.calls} call{'' if agent.calls == 1 else 's'}" if agent.calls else ""
-                lines.append(f"{'   ' * max(depth - 1, 0)}{mark}{short(agent.task, 50)}{f' ({agent.solution})' if agent.solution else ''}  [{agent.state}{calls}]")
+                lines.append(f"{'   ' * max(depth - 1, 0)}{mark}{present.helper_name(agent.task, 50)}{f' ({agent.solution})' if agent.solution else ''}  [{agent.state.capitalize()}{calls}]")
                 walk(agent.agent_id, depth + 1)
         top = [a for a in known.values() if a.parent_id not in known]
         if top:
-            lines.append(f"main  [{'running' if self.final is None else 'finished'}]")
+            lines.append(f"Main  [{'Running' if self.final is None else 'Finished'}]")
             for agent in top:
                 calls = f", {agent.calls} call{'' if agent.calls == 1 else 's'}" if agent.calls else ""
-                lines.append(f"{'`- ' if not glyphs else chr(0x2514) + chr(0x2500) + ' '}{short(agent.task, 50)}{f' ({agent.solution})' if agent.solution else ''}  [{agent.state}{calls}]")
+                lines.append(f"{'`- ' if not glyphs else chr(0x2514) + chr(0x2500) + ' '}{present.helper_name(agent.task, 50)}{f' ({agent.solution})' if agent.solution else ''}  [{agent.state.capitalize()}{calls}]")
                 walk(agent.agent_id, 2)
         return lines
 
@@ -249,9 +264,35 @@ def paint(text: str, code: str, color: bool) -> str:
     return f"\x1b[{COLOR[code]}m{text}\x1b[0m" if color and COLOR[code] else text
 
 
-def step_row(step: Step, color: bool = False, who: str = "") -> str:
+def step_row(step: Step, color: bool = False, who: str = "", times: int = 1, detail: bool = False) -> str:
     """One row for a step (``present.step_line``): a glyph and a plain phrase; a helper's step names the helper."""
-    return present.step_line(step, color, who or ("" if step.agent_id == MAIN else "helper"))
+    return present.step_line(step, color, who or ("" if step.agent_id == MAIN else "helper"), times, detail)
+
+
+def failure_times(view: SessionView, step: Step) -> int:
+    """How many commands of the same kind have not worked so far in this run (1 for the first)."""
+    if not present.is_failed_command(step):
+        return 1
+    return max(view.failures.get(present.tried_words(step.label) if step.kind == "run" else "check", 1), 1)
+
+
+def feed_steps(view: SessionView, steps: Sequence[Step]) -> List[Step]:
+    """The steps a feed or panel draws: no lifecycle, no helper's live ``now`` row once it is closed, no finished hand-off (the helper's own ending says it), and a command that
+    failed more than once drawn as one step (the first), counted by ``failure_times``."""
+    seen: Dict[str, None] = {}
+    out: List[Step] = []
+    for step in steps:
+        if present.is_lifecycle(step) or (step.kind == "note" and step.state == "done") or (present.is_status(step) and step.state != "running"):
+            continue
+        if step.kind == "delegate" and step.state != "running" and step.step_id in view.agents:
+            continue
+        if present.is_failed_command(step):
+            key = present.tried_words(step.label) if step.kind == "run" else "check"
+            if key in seen:
+                continue
+            seen[key] = None
+        out.append(step)
+    return out
 
 
 def metric_line(view: SessionView) -> str:
@@ -278,14 +319,55 @@ def event_line(event: SessionEvent, view: SessionView, panel: bool = False) -> s
                 view.held_notes[-1] = max(text, view.held_notes[-1], key=len)      # the same note again, longer (a harness reports the text it has so far): one note
             else:
                 view.held_notes.append(text)
-        return ""
+        return flush_group(view)         # the narration comes after the steps that came before it: they are drawn now
+    step = finished_step(event, view)
+    if step is not None and present.group_key(step) is not None:
+        before = flush_group(view) if view.group and present.group_key(view.group[0]) != present.group_key(step) else ""
+        if not view.group:
+            view.group_notes, view.held_notes = view.held_notes, []         # the notes written before these steps are drawn before their row
+        view.group.append(step)
+        return before        # consecutive steps of one kind are one line, drawn when the run of them ends
     own = row_of(event, view, panel)
     if not own and not isinstance(event, Finished):
         return ""            # an event that draws nothing (a figure update, a helper's start beside a panel) neither shows nor drops the notes held: they wait for a row that draws something
+    grouped = flush_group(view, event.report if isinstance(event, Finished) else None)
     held, view.held_notes = view.held_notes, []
     if isinstance(event, Finished):          # text the AI wrote on the way that is, or is part of, the answer has one home, the closing; a remark that is genuinely different stays a quiet row
         held = [note for note in held if not present.is_the_answer(note, event.report)]
-    return "\n".join(row for row in (*held, own) if row)
+    return "\n".join(row for row in (grouped, *held, own) if row)
+
+
+def plain_event(event: SessionEvent) -> str:
+    """One plain line for an event whose row could not be built (the fallback of every view's show path): what kind of event, and its words when it has them."""
+    if isinstance(event, Step):
+        text = present.one_line(event.label)
+        return (text[:1].upper() + text[1:]) if text and event.kind != "note" else ""
+    if isinstance(event, Notice):
+        return present.one_line(event.text)
+    if isinstance(event, (Finished, Usage, RunStarted)):
+        return ""
+    return ""
+
+
+def finished_step(event: SessionEvent, view: SessionView) -> Optional[Step]:
+    """The step an ending or a finished step event is about (a bare ending carries no label: the view has the step), or None for an event that is not a finished, drawable step."""
+    if not isinstance(event, Step) or event.state == "running" or present.is_status(event) or is_bookkeeping(event.kind, event.label):
+        return None
+    if event.kind == "delegate" or (event.kind == "tool" and not (event.label or getattr(view.steps.get(event.step_id), "label", ""))):
+        return None
+    return event if event.label else view.steps.get(event.step_id, event)
+
+
+def flush_group(view: SessionView, answer: Optional[str] = None) -> str:
+    """The notes written before the steps gathered so far and then the one row for those steps (``present.group_line``), emptied; an empty string when none are waiting. With the ``answer``
+    the notes that are part of it are left out (the closing has them)."""
+    steps, view.group = view.group, []
+    notes, view.group_notes = view.group_notes, []
+    if answer is not None:
+        notes = [note for note in notes if not present.is_the_answer(note, answer)]
+    if not steps:
+        return "\n".join(notes)
+    return "\n".join([*notes, present.group_line(steps, False, present.helper_marker(view, steps[0].agent_id), failure_times(view, steps[0]))])
 
 
 def row_of(event: SessionEvent, view: SessionView, panel: bool) -> str:
@@ -293,32 +375,36 @@ def row_of(event: SessionEvent, view: SessionView, panel: bool) -> str:
     if isinstance(event, RunStarted):
         return "\n".join(present.goal_line(event.goal, event.resumed))
     if isinstance(event, Step):
-        if event.state == "running" and (event.kind != "delegate" or panel):
+        if event.state == "running" or present.is_status(event) or is_bookkeeping(event.kind, event.label):
             return ""
-        agent = view.agents.get(event.agent_id)
-        return step_row(event, who=short(present.one_line(agent.task), 24) if agent else "")
-    if isinstance(event, AgentStarted) and panel:
-        return ""
+        if event.kind == "delegate" and event.step_id in view.agents:
+            return ""            # the helper's own start and ending rows say it: a hand-off row would say it a third time
+        step = event if event.label else view.steps.get(event.step_id, event)      # an ending carries no label of its own: the row is the step's
+        if step.kind == "tool" and not step.label:
+            return ""            # a tool with no name is nothing to read (never ``Used`` alone)
+        return step_row(step, who=present.helper_marker(view, event.agent_id), times=failure_times(view, step))
     if isinstance(event, Usage):
         return ""
-    if isinstance(event, AgentStarted):
-        return f"{present.HELPER_GLYPH} Helper started: {short(present.one_line(event.task), 50)}" + (f" ({event.solution})" if event.solution else "") + (" under " + short(present.one_line(view.agents[event.parent_id].task), 24) if event.parent_id in view.agents else "")
+    if isinstance(event, AgentStarted):      # the helper's name is said once, here, as the heading of its rows; they carry only the marker
+        return f"{present.HELPER_GLYPH} Helper: {present.helper_name(event.task)}" + (f" ({event.solution})" if event.solution else "")
     if isinstance(event, AgentEnded):
+        if event.state == "stopped" and event.agent_id not in view.stopped_by_person:
+            return ""        # a stop of the whole run is said once, in the closing; only a helper the person stopped on its own gets a row
         name = view.agents[event.agent_id].task if event.agent_id in view.agents else event.agent_id
         state = {"met": "done", "running": "running"}.get(event.state, "failed")
         word = {"met": "finished", "unmet": "did not meet its goal", "stopped": "was stopped", "failed": "failed"}.get(event.state, event.state)
-        return f"{present.GLYPHS[state]} Helper {word}: {short(present.one_line(name), 60)}"
+        return f"{present.GLYPHS[state]} Helper {word}: {present.helper_name(name)}"
     if isinstance(event, Review):
         return f"Review: {present.one_line(event.text) or 'done'}"
     if isinstance(event, Notice):
         if event.kind == "soft-limit":
             return hub_lines.soft_limit_line(view.elapsed(), view.cost_usd, view.ceiling_usd, view.ceiling_seconds)
         if event.kind == "hard-limit":
-            return hub_lines.hard_limit_line(event.reason)
+            return ""        # a stop at a ceiling is said once, in the closing (``present.stop_lines``): the Finished event follows at once
         if event.kind == "decision":
             return hub_lines.decision_line(event.decision, event.reason)
         if event.kind == "outside-folder":
-            return "outside the folder: " + "; ".join(short(item, 80) for item in event.items)
+            return "Outside the folder: " +"; ".join(short(item, 80) for item in event.items)
     if isinstance(event, Waiting):
         helper = view.agents.get(event.agent_id)       # a question from a helper names the helper, so the person knows who is asking
         asker = f" ({short(helper.task, 30)} asks)" if helper is not None and event.agent_id != MAIN else ""
@@ -355,12 +441,13 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
     if view.goal and not transcript:      # beside a transcript the goal is the person's first message there, and has one home
         out.append(f"{present.paint(present.GOAL_GLYPH, present.CYAN, color)} {present.paint(short(present.one_line(view.goal), max(width - 4, 20)), present.CYAN, color)}")
     if view.solution or view.milestone:
-        out.append(paint(f"serves: {view.solution} | milestone: {short(view.milestone, 50)}", "dim", color))
+        out.append(paint(f"Serves: {view.solution} | Milestone: {short(view.milestone, 50)}", "dim", color))
     if view.show_structure and view.structure_panel:
         out.extend(view.structure_panel)
     elif view.structure_compact:
-        out.append(paint(view.structure_compact, "dim", color))
-    steps = [s for s in view.steps.values() if not present.is_lifecycle(s) and not (s.kind == "note" and s.state == "done")]       # the harness's own lifecycle and its narration are not rows
+        out.append(paint(present.TEXT["structure"], "dim", color))
+        out.append("  " + present.clip_words(view.structure_compact, max(width - 4, 20)))
+    steps = feed_steps(view, list(view.steps.values()))       # the harness's own lifecycle, its narration, a closed live row and a finished hand-off are not rows
     steps = [s for s in steps if s.state == "running"] if transcript else steps
     focus = view.focus
     agent_focus.prune(view, focus)
@@ -369,20 +456,20 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
         out.extend(agent_focus.agent_lines(view, focus, max(width - 1, 20), color, rows))
         out.extend(view.panels)
     else:
-        out.extend(step_row(s, color) for s in steps[-rows:])
+        out.extend(present.group_line(run, color, present.helper_marker(view, run[0].agent_id), failure_times(view, run[0])) for run in present.group_runs(steps)[-rows:])
         out.extend(view.panels)
         flat = agent_focus.child_rows(view, focus, max(width - 1, 20), color)
         if flat:       # the helpers one level down, flat: a helper at any depth is one row of the same width
-            out.append(paint("agents", "dim", color))
+            out.append(paint(present.TEXT["agents"], "dim", color))
             out.extend("  " + line for line in flat)
     if transcript and not focus.path:
         waiting = sum(1 for message in view.messages if not message.taken_up)      # the note itself is a finished fact in the transcript; the panel keeps only how many wait
         if waiting:
-            out.append(f"{waiting} note{'' if waiting == 1 else 's'} waiting: read after the current step")
+            out.append(present.TEXT["notes_waiting"].format(count=waiting, s="" if waiting == 1 else "s"))
     elif not focus.path:
         for message in view.messages[-3:]:
             who = f" to {agent_focus.name_of(view, message.agent_id)}" if message.agent_id and message.agent_id in view.agents else ""
-            out.append(f"you{who}: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued: read after the current step'})")
+            out.append(f"You{who}: {short(message.text, 60)}  ({'taken up' if message.taken_up else 'queued, read after the current step'})")
     if not transcript:
         for note in view.notices[-2:]:
             out.append(paint(note, "dim", color))
@@ -393,11 +480,11 @@ def frame(view: SessionView, width: int = 80, color: bool = False, rows: int = 8
     if view.show_help:
         out.extend(paint(row, "dim", color) for row in HELP_ROWS)
     if view.asking is not None and not transcript:
-        out.append(paint(f"? {view.asking.question}  [y] approve  [n] refuse", "ask", color))
+        out.append(paint(f"? {view.asking.question}  [Y] approve  [N] refuse", "ask", color))
         if view.asking.preview:
-            out.append(paint(f"  will change: {short(view.asking.preview, max(width - 20, 20))}", "ask", color))
-    keys = {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave"}.get(
-        view.status, agent_focus.keys_hint(view, focus, view.key_labels) or "Esc stop | type + Enter to steer | Tab structure | ? keys")
+            out.append(paint(f"  Will change: {short(view.asking.preview, max(width - 20, 20))}", "ask", color))
+    keys = {"waiting": present.TEXT["keys_waiting"], "stopping": present.TEXT["keys_stopping"], "stopped": present.TEXT["keys_stopped"]}.get(
+        view.status, agent_focus.keys_hint(view, focus, view.key_labels) or present.TEXT["keys_default"])
     out.append(paint(present.fit_parts(keys, max(width - 1, 20)), "dim", color))
     out.append(f"{agent_focus.prompt(view, focus)}{view.typing}")
     return [clip(line, max(width - 1, 20)) for line in out]
@@ -412,7 +499,7 @@ def report_parts(view: SessionView, color: bool = False, width: int = 0) -> Tupl
     if done and done.report:
         out.extend(markdown_lines(done.report, width, color))      # the answer, once, with its markdown drawn (or its markers taken out when there is no colour)
     if done and done.error and outcome not in ("met", "stopped"):
-        out.append(f"reason: {short(present.one_line(done.error), 120)}")
+        out.append(f"Reason: {short(present.one_line(done.error), 120)}")
     files = view.changed()
     if view.solution or view.milestone:
         out.append(f"Served: {view.solution} | milestone: {short(view.milestone, 80)}")
@@ -448,7 +535,8 @@ def report_parts(view: SessionView, color: bool = False, width: int = 0) -> Tupl
     tail: List[str] = [""]
     tail.extend(present.outcome_rows(view, color, width))
     if outcome == "stopped":
-        tail.append(f"Session {view.session_id or '(none)'} is kept. Type resume to continue it.")
+        for line in present.stop_lines(view):          # said once, here: what was kept, how to continue, how to raise a ceiling
+            tail.extend(present.wrap(line, width, "", "") if width else [line])
     resume = present.resume_lines(view)
     if resume:
         tail.extend(["", *resume])      # the command alone on its own line, whole, so it can be copied

@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import Any, List, Mapping, Sequence
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import short
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.present import helper_name as present_name
 
 
 def agents_text(node: Mapping[str, Any]) -> str:
@@ -18,27 +19,27 @@ def agents_text(node: Mapping[str, Any]) -> str:
 def detail_lines(detail: Mapping[str, Any], indent: str, width: int) -> List[str]:
     """The fields and the connections of one expanded solution."""
     if not detail.get("known"):
-        return [f"{indent}{detail.get('note') or 'no record for this solution'}"]
+        return [f"{indent}{detail.get('note') or 'No record for this solution'}"]
     fields, links = detail.get("fields") or {}, detail.get("connections") or {}
     out: List[str] = []
-    for label, key in (("purpose", "purpose"), ("approach", "approach")):
+    for label, key in (("Purpose", "purpose"), ("Approach", "approach")):
         if fields.get(key):
             out.append(f"{indent}{label}: {short(fields[key], width)}")
     metric = fields.get("metric") or {}
     if metric.get("id"):
         latest = metric.get("latest") or {}
         value = f"{latest.get('balanced') or latest.get('passed', '')} ({latest.get('impl', '')}, {latest.get('date', '')})" if latest else "not measured"
-        out.append(f"{indent}metric: {metric.get('name') or metric['id']}: {value}")
+        out.append(f"{indent}Metric: {metric.get('name') or metric['id']}: {value}")
     if (fields.get("selected") or {}).get("id"):
-        out.append(f"{indent}selected: {fields['selected'].get('name') or fields['selected']['id']}")
+        out.append(f"{indent}Selected: {fields['selected'].get('name') or fields['selected']['id']}")
     for number, milestone in enumerate(fields.get("milestones") or (), 1):
-        out.append(f"{indent}milestone {number} [{'met' if milestone.get('met') else 'open'}]: {short(milestone.get('text', ''), width)}")
+        out.append(f"{indent}Milestone {number} [{'met' if milestone.get('met') else 'open'}]: {short(milestone.get('text', ''), width)}")
     for problem in links.get("problems") or ():
-        out.append(f"{indent}problem {problem.get('name') or problem['id']}: {short(problem.get('problem', ''), width)}")
+        out.append(f"{indent}Problem {problem.get('name') or problem['id']}: {short(problem.get('problem', ''), width)}")
     for ideal in links.get("ideals") or ():
-        out.append(f"{indent}ideal {ideal.get('name') or ideal['id']}: {short(ideal.get('principle', ''), width)}")
+        out.append(f"{indent}Ideal {ideal.get('name') or ideal['id']}: {short(ideal.get('principle', ''), width)}")
     for delegate in links.get("delegates") or ():
-        out.append(f"{indent}delegates to {delegate.get('name') or delegate['id']}: {short(delegate.get('purpose', ''), width)}")
+        out.append(f"{indent}Delegates to {delegate.get('name') or delegate['id']}: {short(delegate.get('purpose', ''), width)}")
     return out
 
 
@@ -58,5 +59,5 @@ def structure_lines(view: Mapping[str, Any], width: int = 100, selected: str = "
             walk(node.get("children") or (), depth + 1)
     walk(view.get("tree") or (), 0)
     for agent in view.get("unplaced") or ():
-        lines.append(f"{'  ' if selected else ''}  helper {short(agent.get('task', ''), 40)} [{agent.get('state')}] (no solution)")
+        lines.append(f"{'  ' if selected else ''}  Helper {present_name(agent.get('task', ''))} [{agent.get('state')}] (no solution)")
     return lines

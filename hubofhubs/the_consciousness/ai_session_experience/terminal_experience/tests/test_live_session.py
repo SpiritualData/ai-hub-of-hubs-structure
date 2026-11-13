@@ -67,7 +67,7 @@ def test_a_steer_is_shown_sent_then_taken_up_and_reaches_the_next_call(name):
     kit = kit_of(name, [turn(read("a.txt"), hook=lambda: keys.press("line", "use the short name")), turn(edit("b.txt"), report("ok"))])
     got, text = attend(kit, keys)
     assert any(isinstance(c, Steer) and ok for c, ok in got.controls)
-    assert "you: use the short name" in text and "taken up" in text
+    assert "You: use the short name" in text and "taken up" in text
     assert kit.trace.heard(1, "use the short name") and not kit.trace.heard(0, "use the short name")
 
 

@@ -32,11 +32,11 @@ DEFAULT_SETTING_SOURCES = "project"
 KEPT_ENVIRONMENT = ("HOME", "PATH", "USER", "LOGNAME", "LANG", "LC_ALL", "TERM", "TMPDIR", "SHELL", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME", "XDG_RUNTIME_DIR")
 HELPER_NOTE = "When you hand work to a helper, begin its description with [{solution}] (the solution it serves), for example: [{solution}] check the plan."
 INTRO = "Type a goal and press Enter; it runs in this folder. /help lists commands."
-COMMAND_HELP = ("/harness [name]  show or switch the harness (a new session starts, with a recap of the last run)",
-                "/new             start a new session on the same harness",
-                "/session         show the session id",
-                "/help            list commands and keys",
-                "/quit            leave (Ctrl-D too)")
+COMMAND_HELP = ("/harness [name]  Show or switch the harness (a new session starts, with a recap of the last run)",
+                "/new             Start a new session on the same harness",
+                "/session         Show the session id",
+                "/help            List commands and keys",
+                "/quit            Leave (Ctrl-D too)")
 WIDTH = 17
 
 
@@ -135,7 +135,7 @@ def harness_builder(*, folder: str, tier: str = "balanced", ceiling_usd: Any = N
         config_dir = settings.claude_config_dir
         # the runners of the Claude CLI forward every raw stream line as a progress event, so no file is tailed for the steps
         harness: Any = Limited(inner, ceiling_usd=shown_usd, ceiling_seconds=shown_seconds,
-                               spend_now=None if name == "loop" else (lambda since: estimate_spend(current_session_file(folder, since, config_dir))))
+                               spend_now=None if name == "loop" else (lambda since: runner.spend_estimate()))       # the run's own session by id, never the newest file of a folder other sessions share
         if solution:
             harness = Framed(harness, solution=solution, milestone=milestone)
             harness = Briefed(harness, HELPER_NOTE.format(solution=solution))
@@ -244,16 +244,16 @@ class WorkTerminal:
     def as_person(self, name: str) -> None:
         if not name:
             if not self.people:
-                self.say("no representatives are listed; the hub's default applies")
+                self.say("No representatives are listed; the hub's default applies")
             for each in self.people:
                 self.say(("* " if each == self.person else "  ") + each)
             return
         if self.people and name not in self.people:
-            self.say(f"no representative named {name!r}; choose one of {', '.join(self.people)}")
+            self.say(f"No representative named {name!r}; choose one of {', '.join(self.people)}")
             return
         self.person = name
         self.harnesses.clear()          # the stop limits of the new representative reach the next run's harness; the session goes on
-        self.say(f"now acting for {name}; the next run uses their authority")
+        self.say(f"Now acting for {name}; the next run uses their authority")
 
     # --- commands --------------------------------------------------------------------------------------------------------------------
 
@@ -264,20 +264,20 @@ class WorkTerminal:
 
     def switch(self, name: str) -> None:
         if name == self.name:
-            self.say(f"already on {name}")
+            self.say(f"Already on {name}")
             return
         if name not in self.names:
-            self.say(f"no harness named {name!r}; choose one of {', '.join(self.names)}")
+            self.say(f"No harness named {name!r}; choose one of {', '.join(self.names)}")
             return
         try:
             self.harnesses.setdefault(name, self.build(name))
         except Exception as error:  # noqa: BLE001 -- a harness that cannot be built is said, and the session stays where it was
-            self.say(f"cannot use {name}: {error}")
+            self.say(f"Cannot use {name}: {error}")
             return
         if self.last is not None:
             self.recap = recap_of(self.last)
         self.name, self.session = name, ""
-        self.say(f"harness is now {name}: the next goal starts a new session" + (", with a recap of the last run" if self.recap else ""))
+        self.say(f"Harness is now {name}: the next goal starts a new session" + (", with a recap of the last run" if self.recap else ""))
 
     def command_of(self, text: str) -> bool:
         """Handle a slash command; True when it was one (and so is not a goal)."""
@@ -289,7 +289,7 @@ class WorkTerminal:
             if rest:
                 self.switch(rest)
             else:
-                self.say(f"harness: {self.name}" + (f" ({self.why})" if self.why else "") + f"; available: {', '.join(self.names)}")
+                self.say(f"Harness: {self.name}" +(f" ({self.why})" if self.why else "") + f"; available: {', '.join(self.names)}")
         elif word == "as":
             self.as_person(rest)
         elif word == "who":
@@ -299,9 +299,9 @@ class WorkTerminal:
                 self.say(row)
         elif word == "new":
             self.session, self.recap = "", ""
-            self.say("a new session starts with the next goal")
+            self.say("A new session starts with the next goal")
         elif word == "session":
-            self.say(f"session: {self.session or '(none yet)'} on {self.name}")
+            self.say(f"Session: {self.session or '(none yet)'} on {self.name}")
         elif word in ("help", "keys"):
             for row in COMMAND_HELP + (("/as [name]       list or switch who the AI acts for", "/who             show the authority in force") if self.represent or self.people else ()) + tuple(f"/{name:<16}(this build's own command)" for name in self.extra) + (("/ask <text>      send a line to the front door instead of the run",) if self.front_door else ()):
                 self.say(row)
@@ -317,7 +317,7 @@ class WorkTerminal:
             answer = self.front_door(rest)
             self.say(str(getattr(answer, "answer", answer) or "").strip())
         else:
-            self.say(f"unknown command /{word}; /help lists them")
+            self.say(f"Unknown command /{word}; /help lists them")
         return True
 
     # --- the loop --------------------------------------------------------------------------------------------------------------------

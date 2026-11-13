@@ -201,6 +201,15 @@ seconds_per_case = 30
 "depth-keeps-latency" = 2                   # X37: entering and leaving as quick at depth 4 as at depth 1
 "finished-agent-enterable" = 2              # X38
 "agent-result-once" = 3                     # X38: the same result twice in the parent is the named problem of this metric
+# Revision 5, 2026-11-12 (reason: the owner ran the full-screen views on a real task and named what was still wrong: the agent's task-list tools in the feed, raw failed commands, a stop said four ways, lowercase
+# labels and a clipped footer; revision 4 judged those screens right). The five checks below were added and their weights fixed here before any arm was scored on them, with the same rule as above (3
+# where a miss shows machinery or says one thing several times, 2 where it is wording or layout). The capitalisation check runs on every scenario of every arm; its exemptions are defined once,
+# in checks.CAPITAL_EXEMPT.
+"no-bookkeeping-tool-lines" = 3             # X39: TaskCreate, TaskUpdate and the like are the agent's own list, not work on the goal
+"failed-command-one-muted-line" = 3         # X40: raw, cut-off shell text in the feed shouts about a step the agent worked around
+"ceiling-stop-said-once" = 3                # X41: a stop said four ways is the same-update-twice problem again
+"labels-capitalised" = 2                    # X42: sentence case on every label (exemptions: checks.CAPITAL_EXEMPT)
+"footer-clean-at-every-width" = 2           # X43: a cut word or a doubled name in the footer reads as broken
 
 # terminal-presentation, layer 2 (model-judged, advisory, never the gate and not part of the balanced score above): the judge runs the frozen checklist
 # (evaluation/terminal_presentation/judged/checklist.json) three times per frame and takes the majority, tier by the role deliverable_judge. It is run only on request.

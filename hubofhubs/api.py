@@ -605,6 +605,21 @@ NAMES = {
     "hubofhubs.the_intelligence.subconscious.interface": (
         "Remembering",
     ),
+    "hubofhubs.the_intelligence.subconscious.focus_context.interface": (
+        "FocusContexting",
+    ),
+    "hubofhubs.the_intelligence.subconscious.focus_context.brief": (
+        "FocusContext",
+    ),
+    "hubofhubs.the_intelligence.subconscious.focus_context.settings": (
+        "ContextSettings", "Source", "configured", "read_settings",
+    ),
+    "hubofhubs.the_intelligence.subconscious.focus_context.sources": (
+        "load_notes",
+    ),
+    "hubofhubs.the_intelligence.subconscious.focus_context.grounded": (
+        "Grounded", "grounded_builder",
+    ),
     "hubofhubs.the_intelligence.subconscious.intuition.co_taken": (
         "CoTaken",
     ),

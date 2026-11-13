@@ -117,6 +117,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Relevant Solutions | Subconscious | 0 | 0 | 0 | none | `relevant-solutions` |
 | Local File Context | Subconscious | 0 | 0 | 0 | none | `local-file-context` |
 | Folder View | Local File Context | 0 | 0 | 0 | none | `folder-view` |
+| Focus Context | Subconscious | 0 | 0 | 0 | none | `focus-context` |
 | Critical Thinking | Intelligence | 0 | 0 | 0 | none | `critical-thinking` |
 | ESOI Application | Critical Thinking | 0 | 0 | 0 | none | `esoi-application` |
 | Metric Translation | Critical Thinking | 0 | 0 | 0 | none | `metric-translation` |

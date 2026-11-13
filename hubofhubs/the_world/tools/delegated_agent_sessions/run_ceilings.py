@@ -113,7 +113,7 @@ def stop_aware(decider: Optional[Callable[[Mapping[str, Any]], Mapping[str, Any]
         rounds = facts.get("rounds")
         if chosen is None or not rounds or not facts.get("findings"):      # nothing to iterate on, or no stop decision assembled: the fallback decides
             return dict(decision_dict(fallback(facts)))
-        verdict = chosen(history_of_rounds(rounds, facts, goal=goal, done_standard=done_standard, stated=stated, policy=policy))
+        verdict = chosen(history_of_rounds(rounds, facts, goal=goal or str(facts.get("goal") or ""), done_standard=done_standard, stated=stated, policy=policy))   # the person's own words, when the runner gives them
         return {"continue": bool(verdict.get("continue", verdict.get("decision") == "continue")), "reason": str(verdict.get("code") or verdict.get("decision") or ""),
                 "decision": str(verdict.get("decision") or ""), "left": str(verdict.get("left") or "")}
     return decide
@@ -143,6 +143,7 @@ class LimitWatch:
         self.ceiling_usd, self.ceiling_seconds, self.soft_fraction = ceiling_usd, ceiling_seconds, soft_fraction
         self.spend_of, self.emit, self.log, self.throttle = spend_of, emit, log, throttle
         self.started = time.monotonic()
+        self.session_id = ""                  # the session this run priced by, set by the runner once it knows it (``session_spend``)
         self.softened, self.hard, self.settled = False, "", 0.0
         self.estimated_at, self.estimate = 0.0, 0.0
         self.live: Dict[str, float] = {}      # the running calls' spend so far, by call, for a runner that knows its own spend (a text loop and its helpers)
@@ -274,6 +275,26 @@ def current_session_file(root: str, since: float, config_dir: Optional[str] = No
         except OSError:
             continue
     return best[1]
+
+
+def session_spend(root: str, session_id: Optional[str], config_dir: Optional[str] = None) -> float:
+    """List-price dollars of ONE session, found by its own id: its record and the records of the helpers it started (``<session>/subagents/*.jsonl``), which the CLI's single cost figure
+    includes. 0.0 while the id is unknown or the record is not written yet. Never the newest file of the folder: another session open in the same folder (a second terminal, a lane's task)
+    is not this run, and its whole history priced here once stopped a run of a few cents at a $20 ceiling."""
+    if not session_id:
+        return 0.0
+    try:
+        from hubofhubs.the_world.tools.delegated_agent_sessions.session import resolve_session_file
+        main = resolve_session_file(root, session_id, config_dir)
+        if main is None:
+            return 0.0
+        total = estimate_spend(str(main))
+        helpers = main.with_suffix("") / "subagents"
+        if helpers.is_dir():
+            total += sum(estimate_spend(str(path)) for path in helpers.glob("agent-*.jsonl"))
+        return total
+    except Exception:  # noqa: BLE001 -- an estimate that fails is no estimate
+        return 0.0
 
 
 CACHE_WRITE_ONE_HOUR, CACHE_WRITE_FIVE_MINUTES, CACHE_READ = 2.0, 1.25, 0.1   # the provider's multiples of the plain input price for a cached prefix

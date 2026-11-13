@@ -225,5 +225,37 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "presentation-feed_noise",
+  "kind": "presentation",
+  "origin": "rule: a run with the agent's task-list tools, reads of files that are not there, commands that did not work (one repeated) and a helper with a long name: no bookkeeping line, one short muted line per failed kind, a clean footer at 56, 80 and 120 columns (revision 5, X39 X40 X42 X43) (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "feed_noise"
+  },
+  "requirements": [
+   "X39",
+   "X40",
+   "X42",
+   "X43"
+  ],
+  "expect": {
+   "failed": []
+  }
+ },
+ {
+  "id": "presentation-ceiling_stop",
+  "kind": "presentation",
+  "origin": "rule: a run stopped at its spend ceiling while a helper works: said once, with what is kept, how to continue and how to raise the limit (revision 5, X41 X42) (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "ceiling_stop"
+  },
+  "requirements": [
+   "X41",
+   "X42"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

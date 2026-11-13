@@ -111,7 +111,7 @@ class PolishedAttendance(Attendance):
             return [f"{words_of.present.GLYPHS['done']} " + words_of.pickup_line(1)]
         if isinstance(event, Usage):
             return []
-        row = event_line(event, self.view, True)
+        row = self.guarded(lambda: event_line(event, self.view, True), event)
         return [row] if row else []
 
     def show(self, event: Any) -> None:
@@ -121,8 +121,6 @@ class PolishedAttendance(Attendance):
             self.asking, self.unanswered = event.ask_id, True
         for row in self.rows_for(event):
             self.painter.line(row)
-        if isinstance(event, Finished) and event.outcome == "stopped":
-            self.painter.line(f"stopped: finished work is kept; session {event.session_id or '(none)'} can be resumed")
         if hasattr(self.keys, "react"):
             self.keys.react(event)
 

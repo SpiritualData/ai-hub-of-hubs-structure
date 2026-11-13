@@ -23,7 +23,7 @@ from hubofhubs.the_consciousness.ai_session_experience.session_events import MAI
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import present
 
 #: the keys an arm's screen uses for each action, as it says them on screen (an arm that uses others declares them in its own ``screen_labels``)
-KEY_LABELS: Dict[str, str] = {"enter": "Right", "leave": "Left", "pick": "Up/Down", "message": "type + Enter", "stop": "Esc"}
+KEY_LABELS: Dict[str, str] = {"enter": "Right", "leave": "Left", "pick": "Up/Down", "message": "Type + Enter", "stop": "Esc"}
 NAME_CHARS = 18                  # the most characters of an agent's name in a breadcrumb or a prompt, so the line is as wide at any depth
 RESULT_LINES = 3
 
@@ -68,7 +68,7 @@ def running_below(view: Any, who: str) -> int:
 
 def name_of(view: Any, who: str) -> str:
     agent = view.agents.get(who)
-    return "main" if who == MAIN or agent is None else short(present.one_line(agent.task), NAME_CHARS)
+    return "Main" if who == MAIN or agent is None else present.helper_name(agent.task, NAME_CHARS)
 
 
 def prune(view: Any, focus: Focus) -> None:
@@ -142,7 +142,7 @@ def breadcrumb(view: Any, focus: Focus, width: int, glyphs: bool = False) -> str
     """One row that says where the person is, ``main > helper > helper``, never wider than ``width``: when the path is long the middle is cut to an ellipsis and the first and the last
     names stay, so the row is the same shape at depth 1 and at depth 4."""
     sep = " › " if glyphs else " > "
-    names = ["main"] + [name_of(view, who) for who in focus.path]
+    names = ["Main"] + [name_of(view, who) for who in focus.path]
     shapes = [names] + ([[names[0], "...", *names[-2:]]] if len(names) > 3 else []) + ([[names[0], "...", names[-1]]] if len(names) > 2 else []) + [["...", names[-1]]]
     for shape in shapes:
         text = sep.join(shape)
@@ -197,10 +197,16 @@ def child_rows(view: Any, focus: Focus, width: int, color: bool = False, shown: 
         agent = rows[index]
         mark = (">" if not color else "›") if index == focus.cursor else " "
         deeper = running_below(view, agent.agent_id)
-        tail = agent.activity if agent.state == "running" else short(present.one_line(agent.summary), 40)
+        tail = present.one_line(agent.activity if agent.state == "running" else agent.summary)
         more = f" (+{deeper} below)" if deeper else ""
-        text = f"{mark}{index + 1}. {glyph_of(agent, color)} {short(present.one_line(agent.task), 28)} [{state_word(agent)}]{more}"
-        out.append(text + (f" {short(tail, 40)}" if tail else ""))
+        head = f"{mark}{index + 1}. {glyph_of(agent, color)} {state_word(agent).capitalize()}: "      # the state comes before the name, so cutting the name never hides it
+        room = max(width - 2 - present.visible(head) - len(more), 12)                              # the caller indents the rows by two
+        full = present.helper_name(agent.task)       # the same short name the feed and the closing use
+        name = present.clip_words(full, room)
+        left = room - len(name)
+        duplicate = bool(tail) and (present.is_the_answer(tail, agent.task) or present.is_the_answer(agent.task, tail))
+        extra = f" · {present.clip_words(tail, left - 3)}" if tail and not duplicate and left >= 16 else ""
+        out.append(head + name + more + extra)
     if len(rows) > shown:
         out.append(f"  ({len(rows)} here; Up and Down move)")
     return out
@@ -210,7 +216,7 @@ def message_rows(view: Any, focus: Focus, limit: int = 2) -> List[str]:
     """The messages the person sent to the agent in view (or to the whole run at the main level), each as queued until the harness says it was taken up."""
     mine = [m for m in view.messages if (m.agent_id or MAIN) == focus.current]
     who = "" if not focus.path else f" to {name_of(view, focus.current)}"
-    return [f"you{who}: {short(m.text, 50)}  ({'taken up' if m.taken_up else 'queued: it reads it at its next step'})" for m in mine[-limit:]]
+    return [f"You{who}: {short(m.text, 50)}  ({'taken up' if m.taken_up else 'queued, it reads it at its next step'})" for m in mine[-limit:]]
 
 
 def agent_lines(view: Any, focus: Focus, width: int, color: bool = False, rows: int = 8) -> List[str]:
@@ -221,9 +227,9 @@ def agent_lines(view: Any, focus: Focus, width: int, color: bool = False, rows: 
     agent = view.agents.get(who)
     if agent is None:
         return []
-    out = [f"{glyph_of(agent, color)} {short(present.one_line(agent.task), max(width - 30, 20))}  {state_word(agent)}" + (f" · {figures(agent)}" if figures(agent) else "")]
+    out = [f"{glyph_of(agent, color)} {state_word(agent).capitalize()}: {present.helper_name(agent.task, max(width - 30, 20))}" + (f" · {figures(agent)}" if figures(agent) else "")]
     own = [s for s in view.steps.values() if s.agent_id == who and not present.is_lifecycle(s) and s.kind != "delegate" and s.label]
-    out.extend(step_row(s, color) for s in own[-rows:])
+    out.extend(step_row(s, color, detail=True) for s in own[-rows:])       # inside the helper every step is its own row, the command of a failed one too (the feed folds them)
     if agent.state != "running" and agent.summary:
         wrapped = present.wrap(present.one_line(agent.summary), max(width - 12, 20), "Result: ", "  ")
         out.extend(wrapped[:RESULT_LINES])
@@ -244,8 +250,8 @@ def keys_hint(view: Any, focus: Focus, labels: Optional[Dict[str, str]] = None) 
 
 def key_rows(labels: Optional[Dict[str, str]] = None) -> Sequence[str]:
     word = {**KEY_LABELS, **(labels or {})}
-    return (f"{word['pick']}, {word['enter']}   pick a helper and go into it to watch it and talk to it; {word['leave']} goes back up one level",
-            f"{word['message']}   send a message to the agent in view; {word['stop']} stops that one only (at the top, the whole run)")
+    return (f"{word['pick']}, {word['enter']}   Pick a helper and go into it to watch it and talk to it; {word['leave']} goes back up one level",
+            f"{word['message']}   Send a message to the agent in view; {word['stop']} stops that one only (at the top, the whole run)")
 
 
 __all__ = ["Focus", "focus_on", "KEY_LABELS", "agent_lines", "below", "breadcrumb", "child_rows", "children", "enter", "keys_hint", "leave", "listing", "message_rows", "move", "name_of", "prompt",

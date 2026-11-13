@@ -259,7 +259,8 @@ def test_the_shared_rule_holds_interim_text_until_a_row_draws_and_drops_what_is_
     # a remark that is not the answer stays as a quiet row, with the next row that draws
     view = SessionView()
     event_line(note("Checking the folder first"), view)
-    assert "Checking the folder first" in event_line(StepEvent(step_id="s", kind="run", label="ls", state="done"), view)
+    event_line(StepEvent(step_id="s", kind="run", label="ls", state="done"), view)        # a finished step waits for others of its kind: one summary row
+    assert "Checking the folder first" in event_line(StepEvent(step_id="t", kind="edit", label="a.txt", state="done"), view)
 
 
 def waiting_capture(labels, *rows):
@@ -344,3 +345,81 @@ def test_a_third_party_client_is_listed_as_not_run_for_the_hierarchy_and_not_sco
     import opencode_external
     got = opencode_external.run_scenario("agents_depth4")
     assert got["checks"] == {} and got["not_run"] == list(agents_scenarios.HIERARCHY_CHECKS) and "not run" in got["note"]
+
+
+# --- revision 5 (2026-11-12): the checks that would have caught what the owner saw in a real run -------------------------------------------------------
+
+class Notice:
+    type, kind = "notice", "hard-limit"
+
+
+class Failed:
+    type, kind, state, agent_id, label = "step", "run", "failed", "main", "for f in a b; do echo $f; done"
+
+
+def screen_of(*lines, width=80, arrivals=(), raw=None):
+    cap = Capture("stream", width, 24, arrivals=list(arrivals))
+    cap.snapshots = [snapshot(1.0, *lines)]
+    cap.raw = raw if raw is not None else "\n".join(lines)
+    return cap
+
+
+def test_bookkeeping_tool_lines_are_caught():
+    assert C.no_bookkeeping_lines(screen_of("✓ Used TaskCreate", "✓ Read a.txt")) is False
+    assert C.no_bookkeeping_lines(screen_of("✓ Read a.txt")) is True
+
+
+def test_a_raw_or_cut_failed_command_is_caught_and_a_muted_plain_line_passes():
+    old = screen_of("✗ Command failed: for f in a b; do echo $f; done", arrivals=[(0.0, Failed())])
+    assert C.failed_command_muted(old) is False
+    cut = screen_of("○ Tried to go through several files, did not work...", arrivals=[(0.0, Failed())])
+    assert C.failed_command_muted(cut) is False
+    new = screen_of("○ Tried to go through several files, did not work", arrivals=[(0.0, Failed())])
+    assert C.failed_command_muted(new) is True
+    red = screen_of("○ Tried to go through several files, did not work", arrivals=[(0.0, Failed())])
+    red.snapshots[0] = snapshot(1.0, "○ Tried to go through several files, did not work", styled=[((255, 95, 95), None, "○ Tried to go through several files, did not work", False)])
+    assert C.failed_command_muted(red) is False
+
+
+def test_a_stop_said_four_ways_is_caught_and_one_message_passes():
+    old = screen_of("Helper was stopped: Find one", "Handed off Find one", "stopped at its spend ceiling: finished work is kept", "stopped: finished work is kept; session s can be resumed",
+                    "ahohs work --resume s --harness native", arrivals=[(0.0, Notice())])
+    assert C.ceiling_stop_said_once(old) is False
+    new = screen_of("■ Stopped at the spend limit of $20.00 · 0:03", "Finished work is kept. Type resume to continue.", "Raise the spend limit with --max-spend <dollars>.",
+                    "", "Continue this session later, in this folder:", "ahohs work --resume s", arrivals=[(0.0, Notice())])
+    assert C.ceiling_stop_said_once(new) is True
+
+
+def test_lowercase_labels_are_caught_and_the_exemptions_hold():
+    assert C.labels_capitalised(screen_of("structure: no solution named; 1 helper", "agents")) is False
+    assert C.labels_capitalised(screen_of("type resume to continue | quit to leave")) is False
+    assert C.labels_capitalised(screen_of("Structure", "Agents", "Type resume to continue, or quit to leave")) is True
+    assert C.labels_capitalised(screen_of("✓ Read notes/a.md", "ahohs work --resume s1", "src/app.py changed", "↳ ✓ Read 2 files: a.md, b.md", "$0.01 · 0:03", "1,350 tokens")) is True
+    long = "X" + "x" * 69
+    assert C.labels_capitalised(screen_of(long, "continued words of the line above")) is True        # a wrapped continuation is exempt
+    agent = Step("whatever")
+    agent.label = "write the tests"
+    assert C.labels_capitalised(screen_of("write the tests", arrivals=[(0.0, agent)])) is True        # the agent's own words are not the screen's labels
+
+
+def test_a_clipped_or_doubled_footer_is_caught_at_every_width():
+    agent = Step("x")
+    agent.label = "Find one interesting finding in psychic practice files"
+    for width in (56, 80, 120):
+        broken = screen_of("structure: no solution named; 1 helper (Tab shows th", "agents", "  >1. ■ Find one interesting find... [stopped] Find", width=width, arrivals=[(0.0, agent)])
+        assert C.footer_clean(broken) is False
+        doubled = screen_of("Agents", "  > 1. ✓ Done: Find one interesting finding · Find one interesting finding", width=width, arrivals=[(0.0, agent)])
+        assert C.footer_clean(doubled) is False
+        clean = screen_of("Agents", "  > 1. ■ Stopped: Find one interesting…", "Type resume to continue, or quit to leave", width=width, arrivals=[(0.0, agent)])
+        assert C.footer_clean(clean) is True
+        no_heading = screen_of("  > 1. ■ Stopped: Find one…", width=width, arrivals=[(0.0, agent)])
+        assert C.footer_clean(no_heading) is False
+
+
+def test_the_new_scenarios_are_cases_and_the_external_clients_are_not_run_on_them():
+    import feed_scenarios
+    ids = {c["id"] for c in json.loads((COMPONENT / "cases.json").read_text())}
+    assert {"presentation-feed_noise", "presentation-ceiling_stop"} <= ids
+    for name in feed_scenarios.SCENARIO_CHECKS:
+        external = importlib.import_module("external").run_scenario(name)
+        assert external["checks"] == {} and set(external["not_run"]) == set(feed_scenarios.SCENARIO_CHECKS[name])

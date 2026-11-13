@@ -60,8 +60,8 @@ def test_structure_is_collapsed_until_asked_and_opens_one_solution():
     kit = stream_kit(folder(), [turn(delegate("[alpha] check", turn(edit("x.txt"), report("ok")))),
                                 turn(read("a.txt"), hook=lambda: [keys.press(k) for k in ("tree", "open")]), turn(report("Done."))], frame={"solution": "alpha"})
     rep, text = attend(kit, keys, records=TABLES)
-    assert "purpose: Do alpha." in text and text.index("structure (") < text.index("purpose:")
-    assert rep.view.structure_compact.startswith("structure: Alpha")
+    assert "Purpose: Do alpha." in text and text.index("Structure (") < text.index("Purpose:")
+    assert rep.view.structure_compact.startswith("Alpha")
     assert "\x1b[" not in text
 
 
@@ -85,8 +85,8 @@ def test_soft_limit_decision_and_the_end_of_the_run_are_one_line_each():
     kit = stream_kit(folder(), [turn(edit("one.txt")), turn(soft_limit(), decide("code_finding")), turn(refuse_round("resume_limit"), outside("wrote x elsewhere"), report("Done."))],
                      limits=(0.01, 1800.0))
     rep, text = attend(kit)
-    assert text.count("wrapping up:") == 1 and "spend ceiling" in text
-    assert "hub decision: go on, the check found something to fix" in text and "hub decision: stop, it already went round once more" in text
+    assert text.count("Wrapping up:") == 1 and "spend ceiling" in text
+    assert "Hub decision: go on, the check found something to fix" in text and "Hub decision: stop, it already went round once more" in text
     assert "Left: the hub chose not to go round again" in text and "Outside the folder (report only" in text and "ahohs work --resume sess-" in text
 
 
@@ -98,7 +98,7 @@ def test_a_follow_up_continues_the_session_and_a_switch_starts_a_new_one_with_a_
     first, second, third = terminal.reports
     assert second.events[0].resumed and second.final.session_id == first.final.session_id and second.final.report == "Second."
     assert third.events[0].harness == "loop" and not third.events[0].resumed and loop.trace.heard(0, "Earlier in this conversation")
-    assert "no harness named 'nope'" in text
+    assert "No harness named 'nope'" in text
 
 
 def test_with_no_goal_it_asks_and_a_blank_line_runs_nothing():
@@ -125,7 +125,7 @@ def test_the_representative_is_named_listed_switched_and_its_stop_limits_reach_t
     assert terminal.stop_inputs()["stated"] == {"one_pass": True}
     terminal.run()
     text = out.getvalue()
-    assert "* alex" in text and "no representative named 'nobody'" in text and "worker categories allowed: files" in text and "now acting for sam" in text
+    assert "* alex" in text and "No representative named 'nobody'" in text and "Worker categories allowed: files" in text and "Now acting for sam" in text
     assert terminal.reports[0].view.acting_for == "sam" and terminal.stop_inputs()["stated"] == {}
     bare = stream_kit(folder(), [turn(read("a.txt")), turn(report("Done."))])
     rep, plain = attend(bare)
@@ -137,7 +137,7 @@ def test_the_words_the_header_and_the_resume_command_use():
     assert hub_lines.status_segment(42, None, None, None) == ("0:42", "cost unknown")
     assert "42 percent of the spend ceiling" in hub_lines.soft_limit_line(10, 0.42, 1.0, 3600.0)
     assert hub_lines.reason_words("plateau") == "the last round gained almost nothing"
-    assert hub_lines.resume_command("stream", "abc") == "ahohs work --resume abc --harness stream"
+    assert hub_lines.resume_command("abc") == "ahohs work --resume abc"       # the harness is recorded with the session, so the command is the id only
     assert hub_lines.left_line("met", "", "", 0) == ""
     assert seconds_of("90s") == 90 and seconds_of("2h") == 7200 and seconds_of("3") == 180 and seconds_of("unlimited") is None
     assert dollars_of("$5") == 5.0 and dollars_of("unlimited") is None

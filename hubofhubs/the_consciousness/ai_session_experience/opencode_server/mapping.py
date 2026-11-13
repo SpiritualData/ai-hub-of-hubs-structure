@@ -336,7 +336,7 @@ class Translator:
                 self.store.replace_text(self.closed[0], self.closed[1], text)
             return
         if event.outcome == "stopped":
-            text = f"Stopped, your work is kept. Session {self.view.session_id or '(none)'} is kept. Type resume to continue it."
+            text = f"{present.stop_headline(self.view)}. " + " ".join(present.stop_lines(self.view))       # said once, in the shared words
             self.text(self.root, text, "error")           # a text of the assistant's, not a notice row: the inline client draws no notice rows, and the stopped state must show there too
             self.store.execution(self.root, "interrupted", reason="user")
             return

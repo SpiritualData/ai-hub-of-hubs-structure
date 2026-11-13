@@ -67,31 +67,36 @@ def soft_limit_line(elapsed: float, cost: Optional[float], ceiling_usd: Optional
     """One line: the run is wrapping up, and why."""
     share, what = nearest_ceiling(elapsed, cost, ceiling_usd, ceiling_seconds)
     if not what:
-        return "wrapping up: it reached the soft limit of its ceiling and is finishing at a safe stopping point"
+        return "Wrapping up: it reached the soft limit of its ceiling and is finishing at a safe stopping point"
     when, spent = status_segment(elapsed, cost, ceiling_usd, ceiling_seconds)
     used = when if what == "time" else spent
-    return f"wrapping up: {int(share * 100)} percent of the {CEILING_WORDS[what]} ceiling is used ({used}); finishing at a safe stopping point, then you can resume or raise it"
+    return f"Wrapping up: {int(share * 100)} percent of the {CEILING_WORDS[what]} ceiling is used ({used}); finishing at a safe stopping point, then you can resume or raise it"
 
 
 def hard_limit_line(what: str) -> str:
-    return f"stopped at its {CEILING_WORDS.get(what, what or 'ceiling')} ceiling: finished work is kept and the session can be resumed"
+    return f"Stopped at the {CEILING_WORDS.get(what, what or 'ceiling')} limit: finished work is kept and the session can be resumed"
+
+
+def stopping_line() -> str:
+    """The one line shown at the moment a stop was asked for (the closing says the rest once the run has ended)."""
+    return "Stopping: finished work is kept, and the session can be resumed"
 
 
 def decision_line(decision: str, reason: str) -> str:
-    return f"hub decision: {'go on' if decision == 'continue' else 'stop'}, {reason_words(reason)}"
+    return f"Hub decision: {'go on' if decision == 'continue' else 'stop'}, {reason_words(reason)}"
 
 
 def left_line(outcome: str, error: str, end_reason: str, unseen: int) -> str:
     """What is left, in one sentence, from how the run ended; empty when the run met its goal with nothing waiting."""
     parts = []
     if outcome == "stopped":
-        parts.append("the run was stopped before it finished")
+        pass            # the closing's stop lines say it (``present.stop_lines``)
     elif outcome in ("unmet", "failed"):
         parts.append("the goal is not yet met")
     if end_reason.startswith("resume_stopped:"):
         parts.append("the hub chose not to go round again because " + reason_words(end_reason.split(":", 1)[1]))
     elif end_reason.startswith("stopped_at_hard_limit"):
-        parts.append("it hit its " + CEILING_WORDS.get(end_reason.split(":")[-1], "") + " ceiling")
+        pass            # said once by the closing's stop lines
     elif end_reason == "wrapped_up_at_soft_limit":
         parts.append("it wrapped up at the soft limit of its ceiling, so some work may be unfinished")
     if error and outcome not in ("met", "stopped") and not end_reason.startswith("stopped_at_hard_limit"):
@@ -132,18 +137,18 @@ def authority_lines(representative: Optional[Mapping[str, Any]], limits: Optiona
     authority = representative.get("authority") or {}
     ask = authority.get("ask") or {}
     asking = ", ".join(f"{key}: {value}" for key, value in ask.items()) if isinstance(ask, Mapping) and ask else "none declared, so the hub's default"
-    lines = [f"acting for: {representative['person']}",
-             "  worker categories allowed: " + (", ".join(str(x) for x in authority.get("allow") or ()) or "none"),
-             "  data scope: " + (", ".join(str(x) for x in authority.get("data_scope") or ()) or "none"),
-             f"  asking policy: {asking}"]
+    lines = [f"Acting for: {representative['person']}",
+             "  Worker categories allowed: " + (", ".join(str(x) for x in authority.get("allow") or ()) or "none"),
+             "  Data scope: " + (", ".join(str(x) for x in authority.get("data_scope") or ()) or "none"),
+             f"  Asking policy: {asking}"]
     words = stop_limit_words(limits)
-    lines.append("  stop limits: " + (words or "none stated"))
+    lines.append("  Stop limits: " + (words or "none stated"))
     return lines
 
 
-def resume_command(harness: str, session_id: str, command: str = "ahohs work") -> str:
-    """The command that continues the session, to be run in the same folder."""
-    return f"{command} --resume {session_id}" + (f" --harness {harness}" if harness else "")
+def resume_command(session_id: str, command: str = "ahohs work") -> str:
+    """The command that continues the session, to be run in the same folder: the id only, because the harness that ran it is recorded with it (``session_memory``)."""
+    return f"{command} --resume {session_id}"
 
 
 __all__ = ["REASONS", "clock", "decision_line", "dollars", "hard_limit_line", "authority_lines", "left_line", "nearest_ceiling", "stop_limit_words", "reason_words", "resume_command", "soft_limit_line", "status_segment"]

@@ -319,7 +319,7 @@ MIND_TREE = (
     ("higher-mind", "the-intelligence"), ("long-term-memory", "higher-mind"), ("live-objectives", "higher-mind"), ("guidance", "higher-mind"),
     ("the-subconscious", "the-intelligence"), ("the-intuition", "the-subconscious"), ("cards-from-files", "local-file-context"),
     ("context-retriever", "the-subconscious"), ("relevant-solutions", "the-subconscious"),
-    ("local-file-context", "the-subconscious"), ("folder-view", "local-file-context"),
+    ("local-file-context", "the-subconscious"), ("folder-view", "local-file-context"), ("focus-context", "the-subconscious"),
     ("critical-thinking", "the-intelligence"), ("esoi-application", "critical-thinking"), ("metric-translation", "critical-thinking"),
     ("goal-completion", "critical-thinking"), ("response-quality", "critical-thinking"), ("decision-check", "critical-thinking"), ("metric-upkeep", "critical-thinking"),
     ("solution-passes", "critical-thinking"), ("structure-in-conversation", "critical-thinking"),

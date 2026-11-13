@@ -24,7 +24,10 @@ def test_a_step_is_one_tool_call_started_then_updated_with_its_kind_and_state_ma
     assert again[0]["sessionUpdate"] == "tool_call_update" and again[0]["toolCallId"] == first[0]["toolCallId"] and again[0]["status"] == "completed"
     assert {k: mapping.KINDS[k] for k in ("read", "run", "check", "tool")} == {"read": "read", "run": "execute", "check": "execute", "tool": "other"}
     blocked = t.updates(Step(step_id="s2", kind="run", label="rm x", state="blocked", detail="needs approval"))[0]
-    assert blocked["status"] == "failed" and "refused: needs approval" in blocked["title"]
+    assert blocked["status"] == "completed" and "could not be checked" in blocked["title"] and "needs approval" not in blocked["title"]      # one plain quiet line; the raw text is in the detail
+    outside = t.updates(Step(step_id="s3", kind="run", label="head x", state="blocked", detail="head in '/elsewhere/x' was blocked"))[0]
+    assert "not allowed in this folder" in outside["title"] and "/elsewhere" not in outside["title"]
+    assert t.updates(Step(step_id="s4", kind="tool", label="TaskCreate", state="done")) == []      # the agent's own task list is never drawn
 
 
 def test_a_helper_is_a_tool_call_titled_with_its_task_and_solution_and_its_steps_name_it():
@@ -179,8 +182,8 @@ def test_a_client_sees_tool_calls_a_plan_a_permission_request_with_its_preview_a
     preview = (tool_call.content[0] if hasattr(tool_call, "content") else tool_call["content"][0])
     assert "deploy" in str(tool_call) and "will change" in str(preview).lower() or "creates" in str(preview)
     assert not Path(folder, "deployed.txt").exists()
-    refused = [u for u in client.updates if u["sessionUpdate"] == "tool_call_update" and "deploy" in u.get("title", "")][-1]
-    assert refused["status"] == "failed" and "refused: you refused it" in refused["title"]
+    refused = [u for u in client.updates if u["sessionUpdate"] == "tool_call_update" and "you refused it" in u.get("title", "")][-1]
+    assert refused["status"] == "failed" and "not run because you refused it" in refused["title"]
     last = [u for u in client.updates if u["sessionUpdate"] == "agent_message_chunk"][-1]["content"]["text"]
     assert "checks passing: before 1, after 1" in last          # the refused deploy did not move the metric
     assert response.field_meta["hub"]["outcome"] in ("met", "unmet")

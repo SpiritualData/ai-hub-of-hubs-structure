@@ -32,13 +32,18 @@ def line_of(count: int, focus: str) -> str:
     return f"Using {count} {noun} about {focus}" if focus else f"Using {count} {noun}"
 
 
-def brief_of(notes: Sequence[Note], focus: str) -> str:
-    """The text added after the goal: what is already known (each note numbered with its title), then the rule for using it."""
+def notes_block(notes: Sequence[Note], focus: str) -> str:
+    """What is already known (each note numbered with its title), with no rule: the block a helper's brief carries beside its own rule."""
     if not notes:
         return ""
     head = f"What is already known about {focus}, saved by the person:" if focus else "What is already known, saved by the person:"
     body = "\n\n".join(f"[{number}] {note.title}\n{note.text}".rstrip() for number, note in enumerate(notes, 1))
-    return f"{head}\n\n{body}\n\n{RULE}"
+    return f"{head}\n\n{body}"
+
+
+def brief_of(notes: Sequence[Note], focus: str) -> str:
+    """The text added after the goal: what is already known (each note numbered with its title), then the rule for using it."""
+    return f"{notes_block(notes, focus)}\n\n{RULE}" if notes else ""
 
 
 def context_of(focus: str, notes: Sequence[Note]) -> FocusContext:

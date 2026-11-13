@@ -41,6 +41,8 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | agent_sessions_hard | subprocess_goal_runner@provider=anthropic,tier=balanced | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0.1106 | 30.8 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | agent_sessions_hard | subprocess_goal_runner@provider=anthropic,tier=best | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0.2499 | 22.8 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | agent_sessions_hard | subprocess_goal_runner@provider=anthropic,tier=fast | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0.0094 | 22.7 (median) | not compared: no run on the same cases as the selected arm | none recorded |
+| answer_fidelity | answer_check@input=original | 18 | 94.4% (74.2% to 99.0%), 17/18 | $0.0004647 | 3.6 (median) | not compared: no run on the same cases as the selected arm | none recorded |
+| answer_fidelity | no_check | 18 | 44.4% (24.6% to 66.3%), 8/18 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | assemble_the_whole | zero_config | 68 | 100.0% (94.7% to 100.0%), 68/68 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | call_a_model | gemini (selected) | 50 | 100.0% (92.9% to 100.0%), 50/50 | $0.000158 | 0.85 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | claude_cli | 3 | 100.0% (43.9% to 100.0%), 3/3 | $0.0002333 | 2.6 (median) | complementary arm, not ranked | none recorded |
@@ -89,8 +91,11 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | fast_roles_pool | tier_arm@tier=balanced | 112 | 95.5% (90.0% to 98.1%), 107/112 | $0.006412 | 2.3 (median) | ahead of tier_arm@tier=balanced, not significant (two-sided McNemar p=1) | none recorded |
 | feedback_learning | scoped_record_edit (selected) | 19 | 100.0% (83.2% to 100.0%), 19/19 | $0 | 0 (median) | selected | none recorded |
 | feedback_learning | kept_note | 19 | 0.0% (0.0% to 16.8%), 0/19 | no passing case | 0 (median) | ahead of kept_note (two-sided McNemar p=3.81e-06) | none recorded |
-| file_edit_goals | fast_edit (selected) | 30 | 96.7% (83.3% to 99.4%), 29/30 | $0.0001793 | 1.8 (median) | selected | none recorded |
-| file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.972) | none recorded |
+| file_edit_goals | fast_edit (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.00051 | 2.95 (median) | selected | none recorded |
+| file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.991) | none recorded |
+| focus_context | configured_focus_context (selected) | 20 | 95.0% (76.4% to 99.1%), 19/20 | $0 | 0 (median) | selected | none recorded |
+| focus_context | filesystem_search | 20 | 35.0% (18.1% to 56.7%), 7/20 | $0 | 0 (median) | ahead of filesystem_search (two-sided McNemar p=0.000549) | none recorded |
+| focus_context | no_context | 20 | 20.0% (8.1% to 41.6%), 4/20 | $0 | 0 (median) | ahead of no_context (two-sided McNemar p=0.000549) | none recorded |
 | folder_view | evidence_ranked (selected) | 41 | 95.1% (83.9% to 98.7%), 39/41 | $0 | 0.3 (median) | selected | none recorded |
 | folder_view | model_pick | 33 | 97.0% (84.7% to 99.5%), 32/33 | 0.5 model calls (no price) | 1 (median) | model_pick: best guess, no per-case rows to test (model_pick 0.97 against evidence_ranked 0.97) | none recorded |
 | folder_view | ported_baseline | 41 | 17.1% (8.5% to 31.3%), 7/41 | $0 | 0.1 (median) | ahead of ported_baseline (two-sided sign test p=1.94e-06) | none recorded |

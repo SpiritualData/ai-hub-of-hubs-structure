@@ -77,6 +77,7 @@ def runner_for(tmp_path, monkeypatch, fake_mode="", **kwargs):
     monkeypatch.setenv("FAKE_LOG", str(log))
     env = {"PATH": "/usr/bin:/bin", "FAKE_LOG": str(log), "FAKE_MODE": fake_mode}
     cfg = SubprocessConfig(working_dir=str(work), claude_path=fake_claude(tmp_path), review_interval_seconds=0, timeout_seconds=60)
+    kwargs.setdefault("check_answer", False)       # the answer check makes its own launch; its tests (test_answer_check.py) turn it on
     runner = NativeToolLoopRunner(cfg, settings=GoalSettings(environment=lambda: dict(env)), provider="anthropic", tier="fast",
                                   session_dir=str(tmp_path / "sessions"), **kwargs)
     return runner, log, work

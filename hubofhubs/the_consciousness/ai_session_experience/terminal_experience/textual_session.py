@@ -24,7 +24,7 @@ from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Seque
 from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Harness
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, present
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import Attendance, LiveSession
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, frame, report, report_parts
 from hubofhubs.the_self.assembler import arm_needs as needs
@@ -113,7 +113,7 @@ def make_app() -> Any:
             yield RichLog(id="log", wrap=True, markup=False, highlight=False, auto_scroll=True, min_width=20)       # min_width defaults to 78: a markdown answer was laid out 78 wide and cut at a narrower screen
             yield Static("", id="status")
             yield Static("", id="menu")
-            yield Input(placeholder="type a goal, or / for commands", id="prompt")
+            yield Input(placeholder=present.TEXT["prompt_goal"], id="prompt")
 
         def on_mount(self) -> None:
             self.query_one("#prompt", Input).focus()
@@ -166,7 +166,7 @@ def make_app() -> Any:
 
         def read(self, prompt: str) -> Optional[str]:
             self.reading = True
-            self.set_prompt("type a goal and press Enter" if prompt.strip() == ">" else prompt)
+            self.set_prompt(present.TEXT["prompt_goal_enter"] if prompt.strip() == ">" else prompt)
             try:
                 return self.lines.get()
             finally:
@@ -295,7 +295,7 @@ class TextualAttendance(Attendance):
         super().handle(item)
         if item[0] == "sent":
             seconds = int(self.view.now - self.view.started)
-            self.painter.line(f"[{seconds // 60}:{seconds % 60:02d}] you: {item[1].text[:70]}")
+            self.painter.line(f"[{seconds // 60}:{seconds % 60:02d}] You:{item[1].text[:70]}")
 
     def redraw(self) -> None:
         super().redraw()

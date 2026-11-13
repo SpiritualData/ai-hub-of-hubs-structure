@@ -83,7 +83,7 @@ def test_a_stop_ends_what_was_running_as_interrupted_and_says_how_to_resume():
     assert call["state"]["status"] == "error" and call["state"]["error"]["message"] == "Step interrupted" and call["state"]["metadata"]["interrupted"] is True
     assert "session.step.failed" in kinds(store) and "session.execution.interrupted" in kinds(store) and root not in store.active
     said = [p["text"] for m in messages(store, root, "assistant") for p in m["content"] if p["type"] == "text"]
-    assert len(said) == 1 and "Stopped, your work is kept" in said[0] and "Type resume to continue it" in said[0]
+    assert len(said) == 1 and said[0].startswith("Stopped.") and "Finished work is kept" in said[0] and "Type resume to continue" in said[0]
     assert messages(store, root, "idle")[-1]["outcome"] == "interrupted"
 
 
@@ -242,7 +242,7 @@ def test_the_closing_is_the_answer_then_one_outcome_line_then_the_resume_command
     closing = [p["text"] for m in messages(store, root, "assistant") for p in m["content"] if p["type"] == "text"][-1]
     assert closing.startswith("Today is **Wednesday, November 11, 2026**") and "didn't change any files." in closing
     assert "✓ Goal met · 0:05 · $0.21 · 2 calls · 135 tokens · no files changed" in closing
-    assert closing.rstrip().endswith("```\nahohs work --resume 0a239607-4796-46d9-a544-6eebe0537683 --harness native\n```") and "Continue this session later, in this folder:" in closing
+    assert closing.rstrip().endswith("```\nahohs work --resume 0a239607-4796-46d9-a544-6eebe0537683\n```") and "Continue this session later, in this folder:" in closing
     assert closing.count("Goal met") == 1
 
 
@@ -279,7 +279,7 @@ def test_the_hub_metadata_carries_what_the_plugin_places():
     t.handle(RunStarted(goal="g", solution="notes", milestone="m", frame="f", metric="checks", metric_before=1.0))
     t.handle(AgentStarted(agent_id="h", task="t"))
     hub = t.hub_metadata()["hub"]
-    assert (hub["serves"], hub["milestone"], hub["acting_for"], hub["helpers"]) == ("notes", "m", "the owner", 1) and "before 1" in hub["metric"] and hub["structure"][0].startswith("main")
+    assert (hub["serves"], hub["milestone"], hub["acting_for"], hub["helpers"]) == ("notes", "m", "the owner", 1) and "before 1" in hub["metric"] and hub["structure"][0].startswith("Main")
 
 
 def test_ids_sort_in_the_order_they_were_made_and_events_carry_a_sequence_per_session():

@@ -373,3 +373,55 @@ def test_a_message_typed_while_it_works_is_taken_up_and_shown_sent_then_taken_up
         assert users == ["go", "use the short name"] and any("use the short name" in prompt for prompt in kit.trace.prompts)      # the harness's own model was given it
     finally:
         server.stop()
+
+
+# --- the hub as the client's provider, its tiers as the model list --------------------------------------------------------------------------------------
+
+def tiered():
+    built, harness = [], Fake()
+
+    def build(folder, tier=""):
+        built.append(tier)
+        return harness
+    return Bridge(build, "/work", steer_wait=0.3, tiers=("fast", "balanced", "quality"), tier="balanced"), harness, built
+
+
+def test_the_hub_is_one_connected_integration_so_the_connect_a_provider_panel_has_nothing_to_ask():
+    bridge, _, _ = tiered()
+    status, answer = routes.handle(bridge, "GET", "/api/integration", {}, None)
+    assert status == 200 and [i["id"] for i in answer["data"]] == ["hub"] and answer["data"][0]["connections"]       # the client shows its panel only while no integration has a connection
+    assert routes.handle(bridge, "GET", "/api/provider", {}, None)[1]["data"][0]["id"] == "hub"
+
+
+def test_the_models_listed_are_the_tiers_and_the_default_is_the_tier_in_use():
+    bridge, _, _ = tiered()
+    listed = routes.handle(bridge, "GET", "/api/model", {}, None)[1]["data"]
+    assert [m["id"] for m in listed] == ["fast", "balanced", "quality"] and {m["providerID"] for m in listed} == {"hub"} and all(m["cost"] == [] for m in listed)
+    assert routes.handle(bridge, "GET", "/api/model/default", {}, None)[1]["data"]["id"] == "balanced"
+    assert bridge.store.sessions[bridge.root]["model"] == {"id": "balanced", "providerID": "hub"}
+
+
+def test_a_tier_picked_in_the_model_picker_is_the_tier_of_the_next_run_and_an_unknown_name_is_ignored():
+    bridge, harness, built = tiered()
+    waiting = bridge.store.subscribe()
+    assert routes.handle(bridge, "POST", f"/api/session/{bridge.root}/model", {}, {"model": {"id": "nonsense", "providerID": "hub"}})[0] == 204
+    assert bridge.tier == "balanced" and waiting.empty()
+    assert routes.handle(bridge, "POST", f"/api/session/{bridge.root}/model", {}, {"model": {"id": "fast", "providerID": "hub"}})[0] == 204
+    event = waiting.get_nowait()
+    assert event["type"] == "session.model.selected" and event["data"]["model"]["id"] == "fast" and event["data"]["previous"]["id"] == "balanced"
+    bridge.prompt("first", "msg_one0000000000000000000000")
+    time.sleep(0.2)
+    harness.release.set()
+    assert bridge.wait(5)
+    assert built == ["fast"]
+    routes.handle(bridge, "POST", f"/api/session/{bridge.root}/model", {}, {"model": {"id": "quality", "providerID": "hub"}})
+    harness.release.clear()
+    bridge.prompt("second", "msg_two0000000000000000000000")
+    time.sleep(0.2)
+    harness.release.set()
+    assert bridge.wait(5)
+    assert built == ["fast", "quality"] and harness.starts[-1] == ("second", "S1")      # the session continues on the harness built for the new tier
+
+def test_without_tiers_the_hub_is_the_single_model_it_was():
+    bridge, _ = make()
+    assert [m["id"] for m in routes.handle(bridge, "GET", "/api/model", {}, None)[1]["data"]] == ["hub"]

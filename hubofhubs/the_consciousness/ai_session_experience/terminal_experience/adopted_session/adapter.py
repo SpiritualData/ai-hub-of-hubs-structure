@@ -18,7 +18,7 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience impor
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionView, report_parts, row_of
 
 #: kind -> (present participle, past tense, failure phrase): the verb of a step's row in each state
-KIND_WORDS = {"read": ("Reading", "Read", "Could not read"), "edit": ("Editing", "Edited", "Could not edit"), "run": ("Running", "Ran", "Command failed:"),
+KIND_WORDS = {"read": ("Reading", "Read", "Could not read"), "search": ("Searching", "Searched", "Could not search"), "edit": ("Editing", "Edited", "Could not edit"), "run": ("Running", "Ran", "Command failed:"),
               "check": ("Checking", "Checked", "Check failed:"), "tool": ("Using", "Used", "Could not use"), "delegate": ("Handing off", "Handed off", "Could not hand off")}
 SESSION_ID = "hub-session"
 TURN_ID = "hub-turn"
@@ -168,10 +168,15 @@ class ScreenAdapter:
         if step.state == "running":
             return m.RunningEffectState()
         if step.state == "failed":
+            if present.is_failed_command(step):       # a command that did not work is said in a few plain words, never as its raw shell text
+                shown = d.EffectResultDisplay(success=False, verb="Did not work", message=present.tried_words(step.label) if step.kind == "run" else "a check", suffix=suffix)
+                return m.FailedEffectState(error=m.PublicError(message=step.detail or "did not work"), display=shown, output_text=step.detail)       # the raw text stays in the detail
             shown = d.EffectResultDisplay(success=False, verb=words[2], message=label, suffix=suffix)
             return m.FailedEffectState(error=m.PublicError(message=step.detail or "failed"), display=shown, output_text=step.detail)
         if step.state == "blocked":
             why = f" ({short(present.one_line(step.detail), 60)})" if step.detail else ""
+            if present.is_failed_command(step):
+                return m.CancelledEffectState(reason=step.detail or "refused", display=d.EffectResultDisplay(success=False, verb="Skipped", message=present.refusal_words(step.detail).replace("Skipped ", "", 1), suffix=suffix))
             return m.CancelledEffectState(reason=step.detail or "refused", display=d.EffectResultDisplay(success=False, verb="Refused", message=label + why, suffix=suffix))
         return m.CompletedEffectState(display=d.EffectResultDisplay(success=True, verb=words[1], message=label, suffix=suffix))
 
@@ -183,9 +188,10 @@ class ScreenAdapter:
         self.steps[step.step_id] = step
         m, d = vendored().models, vendored().display
         words = KIND_WORDS.get(step.kind, ("Using", "Used", "Could not use"))
-        label = present.one_line(step.label) or step.kind
+        label = (present.subject_of(step) if step.kind in ("read", "edit", "search") else present.helper_name(step.label, 40) if step.kind == "delegate"
+                 else present.clip_words(present.one_line(step.label), 70)) or step.kind      # never a full path, and a helper by its short name
         helper = self.helper_name(step.agent_id)
-        suffix = f" · {helper}" if helper else ""
+        suffix = f" {present.HELPER_GLYPH}" if helper else ""       # the marker of a helper's rows; its name is said once, when it starts
         call = d.EffectCallDisplay(summary=label, verb=words[0], suffix=suffix, status_text=words[0])       # the loading line says the kind of work; the row says what (one home)
         entry = m.PublicEffectEntry(**self.base(step, step.step_id), title=label, detail=self.detail(step, label, call), state=self.state(step, label, words, suffix))
         before = self.entries.get(step.step_id)
@@ -216,10 +222,7 @@ class ScreenAdapter:
             text = row_of(event, self.view, True)
             return self.release(event) + ([HubLine("limit" if event.kind in ("soft-limit", "hard-limit") else "notice", text)] if text else [])
         if isinstance(event, Finished):
-            out = self.release(event, event.report)
-            if event.outcome == "stopped":
-                out.append(HubLine("stopped", f"stopped: finished work is kept; session {event.session_id or '(none)'} can be resumed"))
-            return out
+            return self.release(event, event.report)        # a stop is said once, in the closing (``present.stop_lines``)
         return []
 
     def step(self, step: Step) -> List[Any]:
@@ -248,7 +251,7 @@ class ScreenAdapter:
                       else m.FailedSessionStatus(message="did not meet its goal" if state == "unmet" else "failed"))
             stopped = " (stopped)" if state == "stopped" else ""
         old = self.children.get(event.agent_id)
-        child = m.PublicChildSession(id=event.agent_id, name=short(present.one_line(task), 22) + stopped, agent_type=(agent.solution if agent else "") or "helper", status=status,
+        child = m.PublicChildSession(id=event.agent_id, name=present.helper_name(task, 22) + stopped, agent_type=(agent.solution if agent else "") or "helper", status=status,
                                      created_at=old.created_at if old is not None else stamp(event), updated_at=stamp(event))
         self.children[event.agent_id] = child
         return [vendored().events.ChildSessionUpdated(child_session=child)]
@@ -288,22 +291,22 @@ class ScreenAdapter:
 
 def hint_of(status: str) -> str:
     """The key line for a state of the run: whole hints only, the last ones dropped first on a narrow screen."""
-    return {"waiting": "y approve | n refuse | Esc stop", "stopping": "stopping, session is kept", "stopped": "type resume to continue | quit to leave",
-            "idle": "type a goal and press Enter | / for commands | ? keys"}.get(
-        status, "Esc stop | type + Enter to steer | Tab structure | ? keys")
+    return {"waiting": present.TEXT["keys_waiting"], "stopping": present.TEXT["keys_stopping"], "stopped": present.TEXT["keys_stopped"],
+            "idle": present.TEXT["prompt_goal_enter"] + " | / for commands | ? keys"}.get(status, present.TEXT["keys_default"])
 
 
 def figures_of(view: SessionView, width: int, title: str = "", running: bool = False, notes: int = 0) -> Figures:
     """The header, key line, status line and structure rows from the view (the shared rules: ``present.header``, the structure rows the driver keeps)."""
     status = present.join([present.count_text(view.calls, "call"), present.count_text(view.tokens, "token")])
     structure = tuple(view.structure_panel) if view.show_structure and view.structure_panel else (
-        (view.structure_compact,) if view.structure_compact else ((f"serves: {view.solution} | milestone: {short(view.milestone, 50)}",) if view.solution or view.milestone else ()))
+        (present.TEXT["structure"] + ": " + view.structure_compact,) if view.structure_compact else ((f"Serves: {view.solution} | Milestone: {short(view.milestone, 50)}",) if view.solution or view.milestone else ()))
+    activity = tuple(present.activity_rows(view, max(width - 4, 20)))       # this screen draws no step of its own as a row: what is happening now is one compact block above the input
     from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS
     room = max(width - 4 - len(status), 20)         # the key line shares its row with the status line: whole hints only
     crumb = (agent_focus.breadcrumb(view, view.focus, max(width - 2, 20)),) if view.focus.path else ()      # where the person is: one row, the same at every depth
     keys = agent_focus.keys_hint(view, view.focus, view.key_labels) if view.status == "running" else ""
     return Figures(header=present.header(view, max(width - 1, 20), False, view.segments, title), hint=present.fit_parts(keys or hint_of(view.status), room), status=status,
-                   structure=crumb + structure, help=tuple(HELP_ROWS) if view.show_help else (), running=running and view.status in ("running", "waiting", "stopping"),
+                   structure=crumb + activity + structure, help=tuple(HELP_ROWS) if view.show_help else (), running=running and view.status in ("running", "waiting", "stopping"),
                    asking=view.asking is not None, stopped=view.status == "stopped" and not running, note_count=notes)
 
 

@@ -46,6 +46,31 @@ def run(command: str) -> Beat:
     return Beat("run", command)
 
 
+def fail_run(command: str) -> Beat:
+    """A shell command that did not work (the tool result is an error)."""
+    return Beat("fail_run", command)
+
+
+def fail_read(path: str) -> Beat:
+    """A read of a file that is not there (the tool result is an error)."""
+    return Beat("fail_read", path)
+
+
+def bookkeeping(name: str = "TaskCreate") -> Beat:
+    """The agent's own task-list tool (``session_events.BOOKKEEPING_TOOLS``): work on nothing the person asked for."""
+    return Beat("bookkeeping", name)
+
+
+def search(pattern: str) -> Beat:
+    """A search of the folder (the Grep tool)."""
+    return Beat("search", pattern)
+
+
+def hard_stop(what: str = "spend") -> Beat:
+    """The run is stopped at its ``what`` ceiling (``spend`` or ``time``): the work is kept and the session can be resumed."""
+    return Beat("hard", what)
+
+
 def check(command: str) -> Beat:
     return Beat("check", command)
 
@@ -262,6 +287,13 @@ class ScriptedStreamRunner:
                     say(ProgressEvent(type="status", text="The soft limit is reached.", data={"phase": "soft_limit"}))
                 elif beat.kind == "decide":
                     say(ProgressEvent(type="status", text="The hub's code check found things; the session is resumed once more.", data={"phase": "hub_resume", "reason": beat.label}))
+                elif beat.kind == "hard":
+                    self.end_reason = "stopped_at_hard_limit:" + beat.label
+                    self.places[session] = (turn_index, beat_index + 1)
+                    stopped_at = DeepResult(met=False, cancelled=True, session_id=session, cost_usd=spent, error="The run was stopped at its hard limit.")
+                    stopped_at.end_reason = self.end_reason        # type: ignore[attr-defined]
+                    stopped_at.spend_usd, stopped_at.elapsed_seconds = spent, 1.0       # type: ignore[attr-defined]
+                    return stopped_at
                 elif beat.kind == "refuse":
                     self.end_reason = "resume_stopped:" + beat.label
                 elif beat.kind == "outside":
@@ -305,6 +337,18 @@ class ScriptedStreamRunner:
             result()
         elif beat.kind == "run":
             tool_use("Bash", {"command": beat.label})
+            result()
+        elif beat.kind == "fail_run":
+            tool_use("Bash", {"command": beat.label})
+            result(True)
+        elif beat.kind == "fail_read":
+            tool_use("Read", {"file_path": beat.label})
+            result(True)
+        elif beat.kind == "search":
+            tool_use("Grep", {"pattern": beat.label})
+            result()
+        elif beat.kind == "bookkeeping":
+            tool_use(beat.label, {"subject": "the plan"})
             result()
         elif beat.kind == "delegate":
             tool_use("Task", {"description": beat.label})
@@ -423,4 +467,4 @@ def demo_harness(kind: str, folder: str, pause: float = 0.6, keys: Any = None) -
 
 
 __all__ = ["Beat", "KITS", "Kit", "ScriptedStreamRunner", "Trace", "Turn", "check", "decide", "delegate", "demo_harness", "edit", "loop_kit", "outside", "read", "refuse_round", "report", "run",
-           "soft_limit", "stream_kit", "turn", "use"]
+           "soft_limit", "stream_kit", "turn", "use", "bookkeeping", "fail_read", "fail_run", "hard_stop", "search"]

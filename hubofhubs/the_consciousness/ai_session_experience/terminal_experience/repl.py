@@ -23,10 +23,10 @@ from hubofhubs.the_consciousness.ai_session_experience.terminal_experience impor
 
 HELP = "\n".join((
     "Type a message and press Enter to run it through the hub.",
-    "/help   show this list",
-    "/trail  show or hide the work behind each reply",
-    "/later  fold an open question without answering it",
-    "/quit   leave (Ctrl-D or Ctrl-C also leave)",
+    "/help   Show this list",
+    "/trail  Show or hide the work behind each reply",
+    "/later  Fold an open question without answering it",
+    "/quit   Leave (Ctrl-D or Ctrl-C also leave)",
     "When a question is open, your next line answers it (a number picks an option).",
 ))
 #: Blocks drawn while the turn runs; the rest (the live line, folded rows) are drawn once by ``settle``.
@@ -45,10 +45,10 @@ def turn(front_door: Callable[[str], Any], text: str, state: TerminalState, trai
     try:
         result = front_door(text)
     except Pending as pending:
-        out.write(f"needs setup: {pending}\n")
+        out.write(f"Needs setup: {pending}\n")
         return
     except EntryError as error:
-        out.write(f"failed: {error}\n")
+        out.write(f"Failed: {error}\n")
         return
     state.new_turn(f"turn-{number}")
     if trail_on:

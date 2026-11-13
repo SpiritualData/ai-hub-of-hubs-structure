@@ -301,11 +301,11 @@ def test_the_detail_keeps_the_full_history_follows_the_newest_step_and_stops_whe
         assert not app.detail.follow
         app.apply_snapshot(Snapshot(busy=True, prompt="busy", runs=[("main", "Add the rows")], histories={"main": [f"step {i}" for i in range(90)]}, rows=[("▾ x", "open")], line_map={0: "main"}))
         await pilot.pause()
-        assert len(app.detail.lines) == 90 and not app.detail.follow and "scrolled back" in app.detail.text().plain
+        assert len(app.detail.lines) == 90 and not app.detail.follow and "Scrolled back" in app.detail.text().plain
         app.detail.scroll_end(animate=False)
         await pilot.pause()
         app.detail.page_forward()
-        assert app.detail.follow and "following" in app.detail.text().plain
+        assert app.detail.follow and "Following" in app.detail.text().plain
     run_app(build)
 
 

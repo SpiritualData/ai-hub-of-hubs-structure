@@ -37,7 +37,10 @@ REQUIREMENTS = {
     "agents-shown-with-state": ("X34",), "agent-view-enter-and-leave": ("X34",), "message-reaches-the-right-agent": ("X35",), "stop-only-that-agent": ("X35",),
     "children-enterable-at-any-depth": ("X36",), "one-key-up-one-level": ("X36",), "depth-keeps-the-screen": ("X37",), "depth-keeps-latency": ("X37",),
     "finished-agent-enterable": ("X38",), "agent-result-once": ("X38",),
+    # revision 5 (2026-11-12): the feed, the stop and the words, X39 to X43 (feed_scenarios.py; the capitalisation check runs on every scenario)
+    "no-bookkeeping-tool-lines": ("X39",), "failed-command-one-muted-line": ("X40",), "ceiling-stop-said-once": ("X41",), "labels-capitalised": ("X42",), "footer-clean-at-every-width": ("X43",),
 }
+REVISION_5 = ("no-bookkeeping-tool-lines", "failed-command-one-muted-line", "ceiling-stop-said-once", "labels-capitalised", "footer-clean-at-every-width")
 REVISION_2 = ("no-raw-markdown", "no-internal-vocabulary", "answer-once", "no-empty-figure-segment", "resume-command-unbroken", "header-has-full-name", "no-stray-leading-padding",
               "cost-at-cent-precision", "goal-as-persons-message")
 #: the protocol ceiling column: hub information a surface may be unable to show at all (a miss there, not a rendering fault)
@@ -399,3 +402,171 @@ def goal_as_message(cap: Capture) -> Optional[bool]:
         theirs = bool(answer) and any(r.startswith(marker.strip()) and answer in re.sub(r"\s+", "", r) for r in rows)
         return mine and not theirs and not any(re.search(r"\bstarted:", r) for r in rows)
     return any(r.startswith(present.GOAL_GLYPH) and goal in re.sub(r"\s+", "", r) for r in rows) and not any(re.search(r"\bstarted:", r) for r in rows)
+
+
+# --- revision 5 (2026-11-12): what the owner saw in a real run of the full-screen views --------------------------------------------------------------------------------------
+# Added after arms were scored on revision 4, from the owner's own words about a real run (bookkeeping lines, raw failed commands, a stop said four ways, lowercase labels, a clipped footer);
+# their weights are fixed in esoi.toml before any arm is scored on them.
+
+#: Exempt from the capitalisation policy, defined once (the metric record names the same list): file names and paths, shell commands a person types (the resume command, a slash command), key
+#: names (they are written capitalised), and any text the agent itself supplied (its answer, a step's file or command, a helper's task, a note, the person's own goal). Wrapped continuation lines
+#: (a row that follows a row that filled the width) are exempt too. Every other row that starts a sentence, a label or an item must begin with a capital letter, a digit or a symbol, and so
+#: must the intro phrase before a colon.
+CAPITAL_EXEMPT = ("a path or a file name", "a shell command the person types (the resume command, a slash command)", "a key name", "text the agent supplied (answer, step, task, note, goal)",
+                  "a wrapped continuation line")
+
+
+def agent_text(cap: Capture) -> str:
+    """Every string the agent or the person supplied during the run (the scenario's own words), lower-cased: rows made of these are the agent's text, not the screen's labels."""
+    parts: List[str] = []
+    for _, e in cap.arrivals:
+        for name in ("label", "task", "summary", "report", "question", "preview", "goal", "detail", "error", "text"):
+            value = getattr(e, name, "")
+            if isinstance(value, str) and value:
+                parts.append(value)
+        parts.extend(str(x) for x in getattr(e, "changed", ()))
+    for _, control, _ok in cap.controls:
+        parts.append(getattr(control, "text", "") or "")
+    return " ".join(parts).lower()
+
+
+def lead_of(row: str) -> str:
+    """The first word a person reads in a row: leading symbols, glyphs, cursor marks, list numbers and clock stamps taken off."""
+    text = STAMP.sub("", row.strip())
+    return re.sub(r"^(?:[^\w\s]+\s*|\d+[.)]\s+)+", "", text)
+
+
+def starts_lowercase(row: str, agent: str, width: int, previous: str) -> bool:
+    """True when ``row`` begins a sentence, label or item with a lowercase letter that is not exempt."""
+    text = row.strip()
+    if not text or DECORATION.match(text):
+        return False
+    body = lead_of(text)
+    if not body or not body[0].isalpha() or not body[0].islower():
+        return False
+    first = body.split()[0]
+    if "/" in first or "." in first.strip(".,;:") or "_" in first or first.startswith(("ahohs", "http")) or re.match(r"^[\w.-]+\.\w{1,5}\b", body):
+        return False                                  # a path, a file name or a command the person types
+    if " ".join(body.lower().split()[:3]) in agent or body.lower()[:25] in agent:
+        return False                                  # the agent's or the person's own words
+    if previous and (len(previous.rstrip()) >= width - 25 or (len(previous.strip()) >= 40 and previous.rstrip()[-1] not in ".!?:;)")):
+        return False                                  # a wrapped continuation of the row above (it filled the width, or it is a prose line that did not end)
+    return True
+
+
+def intro_lowercase(row: str, agent: str) -> bool:
+    """True when the phrase before a colon starts a label with a lowercase letter that is not the agent's own text (``structure: x``, ``helper: y``)."""
+    found = re.match(r"^\W*(?:\[\d+:\d\d\]\s*)?([A-Za-z][A-Za-z ]{1,30}):\s", row.strip())
+    if not found:
+        return False
+    phrase = found.group(1)
+    return phrase[0].islower() and phrase.lower() not in agent and not phrase.startswith(("ahohs",))
+
+
+def labels_capitalised(cap: Capture) -> Optional[bool]:
+    """Every line a person reads begins with a capital, a digit or a symbol, and so does every intro phrase before a colon (the exemptions are ``CAPITAL_EXEMPT``), on every screen the
+    scenario drew (the rows as they stood at every snapshot, and the lines the arm wrote)."""
+    agent = agent_text(cap)
+    screens = [list(s.scroll) + list(s.rows) for s in cap.snapshots] + [logical_lines(cap)]
+    seen = False
+    for rows in screens:
+        previous = ""
+        for row in rows:
+            if row.strip():
+                seen = True
+                if starts_lowercase(row, agent, cap.width, previous) or intro_lowercase(row, agent):
+                    return False
+            previous = row
+    return True if seen else None
+
+
+def bookkeeping_names() -> Tuple[str, ...]:
+    from hubofhubs.the_consciousness.ai_session_experience.session_events import BOOKKEEPING_TOOLS
+    return tuple(sorted(BOOKKEEPING_TOOLS))
+
+
+def no_bookkeeping_lines(cap: Capture) -> Optional[bool]:
+    """The agent's own task-list tools are never drawn: no step, row or panel names one of ``BOOKKEEPING_TOOLS`` at any moment."""
+    text =cap.all_text() + "\n" + "\n".join(logical_lines(cap))
+    return not any(re.search(r"\b" + name + r"\b", text) for name in bookkeeping_names())
+
+
+def red(rgb: Optional[Sequence[int]]) -> bool:
+    return bool(rgb) and rgb[0] >= 170 and rgb[1] <= 130 and rgb[2] <= 130
+
+
+def failed_command_muted(cap: Capture) -> Optional[bool]:
+    """A command that did not work is one short muted line: what was tried in a few words, no raw shell text, no ``...`` cut, not drawn in the colour of an error, and a repeat counted, never a
+    new line each time."""
+    failed = [(at, e) for at, e in cap.arrivals if e.type == "step" and e.kind == "run" and e.state == "failed"]
+    if not failed:
+        return None
+    for at, e in failed:        # once it has failed, the raw command is not on the screen (while it ran, the screen may name it)
+        after = "\n".join(cap.text_at(s) for s in cap.snapshots if s.at >= at + GRACE)
+        if e.label and e.label in after + "\n" + "\n".join(logical_lines(cap)):
+            return False                                  # the raw command reached the screen
+    lines = [l.strip() for l in logical_lines(cap) if re.search(r"did not work|could not be checked", l)]
+    if not lines or any(len(l) > 70 or "..." in l or "Command failed" in l for l in lines):
+        return False
+    for snap in cap.snapshots:
+        for fg, _bg, sample, _named in snap.styled:
+            if re.search(r"did not work|could not be checked", sample) and red(fg):
+                return False
+    return True
+
+
+def ceiling_stop_said_once(cap: Capture) -> Optional[bool]:
+    """A run stopped at its ceiling says so once, in plain words: what happened, that finished work is kept, how to continue and how to raise the limit, in one place; no second line says the
+    same (a helper that was stopped, a hand-off, ``stopped:`` and the limit line)."""
+    if not any(e.type == "notice" and e.kind == "hard-limit" for _, e in cap.arrivals):
+        return None
+    lines = [l.strip() for l in logical_lines(cap) if l.strip()]
+    limit = [l for l in lines if re.search(r"\bat the (spend|time) (limit|ceiling)\b|\bat its (spend|time) (limit|ceiling)\b", l, re.I)]       # what happened, said once (how to raise it is its own line)
+    kept = [l for l in lines if re.search(r"work is kept", l, re.I)]
+    resume = [l for l in lines if "--resume" in l and l.startswith("ahohs")]
+    raise_how = [l for l in lines if re.search(r"--max-(spend|time)", l)]
+    echoes = [l for l in lines if re.search(r"was stopped|Handed off|^stopped:|stopped at its|Used\s*[·]?\s*$", l, re.I)]
+    return len(limit) == 1 and len(kept) == 1 and len(resume) == 1 and len(raise_how) == 1 and not echoes
+
+
+def clipped_word(row: str, agent: str) -> bool:
+    """A row that ends with an ellipsis after a word cut in the middle (``Find one interesting find…``): the text before it is not a whole-word start of anything the agent said."""
+    found = re.search(r"(\S.*?)(…|\.\.\.)\s*$", row.strip())
+    if not found:
+        return False
+    stem = re.sub(r"[\s,;:-]+$", "", found.group(1)).lower()
+    words = stem.split()
+    if len(words) < 2:
+        return False
+    at = agent.find(" ".join(words[-3:]))
+    if at < 0:
+        return False
+    after = agent[at + len(" ".join(words[-3:])):][:1]
+    return after.isalnum()                                  # the agent's word goes on: it was cut inside it
+
+
+def repeated_words(row: str) -> bool:
+    """The same run of three words twice in one row (a name printed twice)."""
+    words = re.findall(r"\w{3,}", row.lower())
+    grams = [tuple(words[i:i + 3]) for i in range(len(words) - 2)]
+    return len(grams) != len(set(grams))
+
+
+def footer_clean(cap: Capture) -> Optional[bool]:
+    """The live area below the feed (the structure, agents and key rows) is laid out whole at this width: no row cut inside a word, none ending at the very edge in a letter, none with a name
+    twice, an Agents heading above the helper rows, and no half hint."""
+    agent = agent_text(cap)
+    seen = False
+    for snap in cap.snapshots:
+        rows = [r.rstrip() for r in snap.live if r.strip()]
+        for index, row in enumerate(rows):
+            body = row.strip()
+            if re.match(r"^[>›]?\s*\d+\.\s", body):
+                seen = True
+                if not any(r.strip() in ("Agents", "Agents:") for r in rows[:index]):
+                    return False                                  # helper rows without their heading
+            if clipped_word(row, agent) or repeated_words(row) or re.search(r"\(Tab shows\s?\w{0,3}$|\bTab shows th$", body):
+                return False
+            if len(row) >= cap.width - 1 and row[-1:].isalnum() and re.match(r"^[>›]?\s*\d+\.\s", body):
+                return False                                      # an agent row cut at the edge
+    return True if seen else None

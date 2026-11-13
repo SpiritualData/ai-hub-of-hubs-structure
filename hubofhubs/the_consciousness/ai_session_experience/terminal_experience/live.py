@@ -23,12 +23,12 @@ from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Seque
 from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.structure_in_view.tree import flatten, structure_view, tables_of
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, hub_lines
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, hub_lines, present
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.repl import LineRepl
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.structure_lines import structure_lines
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
     Approve, Control, Finished, Harness, Refuse, SessionEvent, Step, Steer, Stop, Waiting, short)
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS, SessionReport, SessionView, clip, event_line, frame, report
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import HELP_ROWS, SessionReport, SessionView, clip, event_line, frame, plain_event, report
 
 MAX_RESUMES = 8
 REDRAW_SECONDS = 0.1
@@ -266,15 +266,50 @@ class Attendance:
 
     # --- the main thread ----------------------------------------------------------------------------------------------------------
 
+    def run_folder(self) -> str:
+        """The folder the run works in (the harness, or the one it wraps, says it), or an empty string."""
+        harness = self.harness
+        for _ in range(6):
+            root = getattr(harness, "root", "") or getattr(getattr(harness, "runner", None), "root", "")
+            if root:
+                return str(root)
+            harness = getattr(harness, "harness", None)
+            if harness is None:
+                break
+        return ""
+
+    def guarded(self, make: Callable[[], Any], event: SessionEvent, fallback: Any = "") -> Any:
+        """``make()``, or, when drawing the event fails, the event as one plain line (or ``fallback`` where the caller needs another shape): a render error never ends the session or the
+        run. The first error is written once, with its trace, to a log file in the run's own folder; the rest are only counted."""
+        try:
+            return make()
+        except Exception as error:  # noqa: BLE001 -- a view that cannot draw an event is not the run's failure
+            self.render_errors = getattr(self, "render_errors", 0) + 1
+            if self.render_errors == 1:
+                self.log_render_error(event, error)
+            return plain_event(event) if fallback == "" else fallback
+
+    def log_render_error(self, event: SessionEvent, error: BaseException) -> None:
+        import os
+        import traceback
+        folder = self.run_folder()
+        if not folder:
+            return
+        try:
+            target = os.path.join(folder, ".ahohs")
+            os.makedirs(target, exist_ok=True)
+            with open(os.path.join(target, "render_errors.log"), "a", encoding="utf-8") as handle:
+                handle.write(f"Could not draw a {type(event).__name__} event: {type(error).__name__}: {error}\n" + "".join(traceback.format_exception(error)) + "\n")
+        except OSError:
+            pass
+
     def show(self, event: SessionEvent) -> None:
         self.events.append(event)
         self.view.apply(event)
         if isinstance(event, Waiting):
             self.asking = event.ask_id
         if not self.live:
-            self.painter.line(event_line(event, self.view, self.panel))
-            if isinstance(event, Finished) and event.outcome == "stopped":
-                self.painter.line(f"stopped: finished work is kept; session {event.session_id or '(none)'} can be resumed")
+            self.painter.line(self.guarded(lambda: event_line(event, self.view, self.panel), event))
         if hasattr(self.keys, "react"):
             self.keys.react(event)
 
@@ -288,12 +323,12 @@ class Attendance:
             message, ok = item[1], item[2]
             self.view.sent(message.message_id, message.text, message.agent_id)
             if not self.live and not self.panel:       # with a panel the queued message is shown there until it is taken up, then the transcript gets the taken-up line
-                self.painter.line(f"[{int(self.view.now - self.view.started) // 60}:{int(self.view.now - self.view.started) % 60:02d}] you: {short(message.text, 70)} ({'queued, read after the current step' if ok else 'waiting to be sent'})")
+                self.painter.line(f"[{int(self.view.now - self.view.started) // 60}:{int(self.view.now - self.view.started) % 60:02d}] You: {short(message.text, 70)} ({'queued, read after the current step' if ok else 'waiting to be sent'})")
         elif kind == "control":
             if isinstance(item[1], Stop) and item[2] and not item[1].agent_id:
                 self.view.status = "stopping"
                 if not self.live:
-                    self.painter.line("stopping: finished work is kept, and the session can be resumed")
+                    self.painter.line(hub_lines.stopping_line())
         elif kind == "nav":
             self.pending_nav = max(self.pending_nav - 1, 0)
             if item[1] == "focus":
@@ -334,17 +369,17 @@ class Attendance:
         view.selected = min(view.selected, max(len(nodes) - 1, 0))
         helpers = sum(len(node["agents"]) for node in nodes) + len(data["unplaced"])
         if not nodes and not helpers:
-            view.structure_compact, view.structure_panel = "", (["structure (Tab hides)"] + ["  " + row for row in view.authority] if view.authority and view.show_structure else [])
+            view.structure_compact, view.structure_panel = "", ([present.TEXT["structure"] + " (Tab hides)"] +["  " + row for row in view.authority] if view.authority and view.show_structure else [])
         else:
             roots = data["tree"]
             lead = ", ".join(f"{root['name']} [{root['state']}]" + (" > " + ", ".join(c["name"] for c in root["children"]) if root["children"] else "") for root in roots[:2])
-            view.structure_compact = f"structure: {lead or 'no solution named'}; {helpers} helper{'' if helpers == 1 else 's'} (Tab shows the tree)"
+            view.structure_compact = f"{lead}; {helpers} helper{'' if helpers == 1 else 's'} {present.TEXT['structure_tab']}" if lead else ""      # with no solution named there is nothing to say here: the Agents block lists the helpers
             selected = self.nodes[view.selected] if self.nodes else ""
             rows = ["  " + row for row in structure_lines(data, max(self.width - 6, 40), selected)] + (["  " + row for row in view.authority] if view.authority else [])
             room = max(shutil.get_terminal_size((80, 24)).lines - 14, 6) if self.live else 10 ** 6      # the frame never grows taller than the screen
             if len(rows) > room:
                 rows = rows[:room - 1] + [f"  ... {len(rows) - room + 1} more rows (close a solution with Left)"]
-            view.structure_panel = ["structure (Up and Down move, Right opens a solution's fields, Left closes, Tab hides)"] + rows
+            view.structure_panel = [present.TEXT["structure_hint"]] + rows
         self.data = data
         return data
 
@@ -438,9 +473,14 @@ class Attendance:
                     self.handle(self.inbox.get(timeout=self.tick))
                 except queue.Empty:
                     pass
+                except Exception as error:  # noqa: BLE001 -- an event a view cannot draw never ends the run: it is logged once and the run goes on
+                    self.guarded(lambda: (_ for _ in ()).throw(error), Step(kind="note", label=""))
                 self.retry()
                 if self.clock() - last >= REDRAW_SECONDS:
-                    self.redraw()
+                    try:
+                        self.redraw()
+                    except Exception as error:  # noqa: BLE001 -- the same for the live screen
+                        self.guarded(lambda: (_ for _ in ()).throw(error), Step(kind="note", label=""))
                     last = self.clock()
         except KeyboardInterrupt:
             self.press("interrupt")

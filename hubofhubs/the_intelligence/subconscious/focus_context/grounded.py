@@ -7,7 +7,9 @@ from dataclasses import replace
 from typing import Any, Callable, Mapping, Optional
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import RunStarted, SessionEvent, Step
+from hubofhubs.the_intelligence.subconscious.focus_context.brief import notes_block
 from hubofhubs.the_intelligence.subconscious.focus_context.settings import ContextSettings
+from hubofhubs.the_world.tools.delegated_agent_sessions.run_context import RunContext, attach
 from hubofhubs.the_intelligence.subconscious.focus_context.sources import Provider, load_notes
 
 STEP_ID = "focus-context"
@@ -42,6 +44,10 @@ class Grounded:
             found = self.gather(goal)
         except Exception:  # noqa: BLE001 -- context only enriches: a failure here is no context, never a failed run
             found = None
+        notes = notes_block(found.notes, found.focus) if found is not None else ""
+        # the runner is told the person's own words and the saved notes apart from the goal text it is started with (which carries the brief), so its checks read the words
+        # and the helpers it offers carry the notes; a resumed turn keeps the first message
+        attach(self.harness, RunContext(original="" if resume_session_id else goal, notes=notes))
         if found is None or not found.brief:
             return self.harness.start(goal, sink, resume_session_id)
         said = {"done": False}

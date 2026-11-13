@@ -134,8 +134,11 @@ SCENARIOS = {"watch": run_watch, "steer": run_steer, "stop_resume": run_stop_res
 def run_scenario(name: str) -> Dict[str, Any]:
     """The scenario's protocol-layer result; every check that reads the client's own screen is listed as not run."""
     import agents_scenarios as hierarchy
+    import feed_scenarios as feed
     if name in hierarchy.SCENARIO_CHECKS:
         return {"checks": {}, "ceiling": {}, "not_run": list(hierarchy.SCENARIO_CHECKS[name]), "note": hierarchy.NOT_DRIVEN}
+    if name in feed.SCENARIO_CHECKS:
+        return {"checks": {}, "ceiling": {}, "not_run": list(feed.SCENARIO_CHECKS[name]), "note": feed.NOT_DRIVEN}
     try:
         import acp  # noqa: F401
     except ImportError:

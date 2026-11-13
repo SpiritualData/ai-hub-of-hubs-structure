@@ -42,6 +42,7 @@ def build(tmp_path, program, **kwargs):
     (tmp_path / "work").mkdir(exist_ok=True)      # the folder the harness works in; the fake program and its log stay outside it
     config = SubprocessConfig(working_dir=str(tmp_path / "work"), claude_path=program, timeout_seconds=30.0)
     settings = GoalSettings(environment=lambda: {"PATH": "/usr/bin:/bin", "ANTHROPIC_API_KEY": "test"})
+    kwargs.setdefault("check_answer", False)       # the answer check makes its own model call; its tests (test_answer_check.py) turn it on
     return OpencodeHubRunner(config, provider="anthropic", tier="fast", settings=settings, model_for=lambda p, t: "tier-model", **kwargs)
 
 

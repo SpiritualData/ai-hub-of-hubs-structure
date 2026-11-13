@@ -30,6 +30,7 @@ from esoi import implementation
 
 from hubofhubs.the_world.tools.deep import DeepResult, ProgressEvent
 from hubofhubs.the_world.tools.events import EVENT_STATUS
+from hubofhubs.the_world.tools.delegated_agent_sessions import answer_check, providers
 from hubofhubs.the_world.tools.delegated_agent_sessions.contract import CANCEL_POLL_SECONDS, kill_process_group, log, stop_process_group
 from hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner import DEFAULT_TIMEOUT_SECONDS, OpencodeRunner, Parsed, list_price
 from hubofhubs.the_world.tools.delegated_agent_sessions.hub_frame import build_frame
@@ -50,9 +51,12 @@ class HubWrapped:
 
     def __init__(self, *args: Any, check: bool = True, notes: str = "", select: Optional[Callable[..., Any]] = None,
                  ceiling_usd: Union[float, str] = DEFAULT_CEILING_USD, ceiling_seconds: Union[float, str] = DEFAULT_CEILING_SECONDS, soft_fraction: float = SOFT_FRACTION,
-                 should_continue: Optional[Callable[[Mapping[str, Any]], Any]] = None, stop_inputs: Optional[Mapping[str, Any]] = None, **kwargs: Any):
+                 should_continue: Optional[Callable[[Mapping[str, Any]], Any]] = None, stop_inputs: Optional[Mapping[str, Any]] = None,
+                 check_answer: bool = True, **kwargs: Any):
         super().__init__(*args, **kwargs)
         self.check, self.notes, self.select = bool(check), notes, select
+        self.check_answer = bool(check_answer)       # the answer check after the run (``answer_check``)
+        self.answer_asker: Any = None                # its model call; None builds one from the hub's Claude CLI provider
         self.ceiling_usd = ceiling_of(ceiling_usd, "ceiling_usd")
         self.ceiling_seconds = ceiling_of(ceiling_seconds, "ceiling_seconds")
         self.soft_fraction = soft_fraction_of(soft_fraction)
@@ -136,12 +140,16 @@ class HubWrapped:
         preamble = self.cfg.context_preamble if context_preamble is None else context_preamble     # type: ignore[attr-defined]
         self.prepare(goal, brief, preamble or "", root)
         self.local.goal_text = brief or goal
+        given = getattr(self, "run_context", None)         # what a wrapper told this runner apart from the goal text (``run_context``)
+        self.local.original_input = (given.original if given is not None else "") or brief or goal          # the person's own words, verbatim: the stop decision's goal and the answer check's only reference
+        self.local.hub_resumes = 0
         before = snapshot(root)
         watch = self.local.watch = LimitWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, log=log, throttle=0.0)
         watch.__enter__()
         try:
             result = super().run_once(goal, brief, model, context_preamble, working_dir, cancel_check)      # type: ignore[misc]
             result = self.iterate(result, root, before, model, cancel_check)
+            self.answer_round(result, root, model, cancel_check)
             result.spend_usd = max(float(result.cost_usd or 0.0), watch.spend())        # type: ignore[attr-defined]
             result.elapsed_seconds = watch.elapsed()                                    # type: ignore[attr-defined]
             result.resume_handle = result.session_id                                    # type: ignore[attr-defined]
@@ -189,7 +197,7 @@ class HubWrapped:
             last = found
             if not everything:
                 return result
-            facts = dict(rounds=list(rounds), spend_usd=watch.spend(), turns=0, resumes=resumes, findings=list(found), unchecked_findings=[x for x in everything if x not in found],
+            facts = dict(goal=str(getattr(self.local, "original_input", "") or ""), rounds=list(rounds), spend_usd=watch.spend(), turns=0, resumes=resumes, findings=list(found), unchecked_findings=[x for x in everything if x not in found],
                          changed_outcome=changed_outcome, elapsed_seconds=watch.elapsed(), ceiling_usd=self.ceiling_usd, ceiling_seconds=self.ceiling_seconds,
                          ceiling_turns=None, soft_fraction=self.soft_fraction)
             try:
@@ -207,12 +215,57 @@ class HubWrapped:
                 return result
             more = self.resume(result.session_id, CHECK_MESSAGE + "\n".join(found), model, root, cancel_check, time.monotonic())
             resumes += 1
+            self.local.hub_resumes = resumes
             if more.error and not more.text.strip():
                 return result            # a failed continuation does not undo the accepted first report
             cost = more.cost_usd if more.cost_usd else list_price(self.provider, self.model or "", more.tokens_in, more.tokens_out)     # type: ignore[attr-defined]
             result.output = more.text.strip() or result.output
             result.tokens = int(result.tokens or 0) + more.tokens_in + more.tokens_out
             result.cost_usd = float(result.cost_usd or 0.0) + float(cost or 0.0)
+
+    def answer_round(self, result: DeepResult, root: str, model: Optional[str], cancel_check: Any) -> DeepResult:
+        """The answer check (``answer_check``) for a harness run: the final answer against the person's own words, one resume of the harness's session on a fail, within the shared
+        resume limit and ceilings. The record is ``result.answer_check``."""
+        original = str(getattr(self.local, "original_input", "") or "").strip()
+        if not (self.check and getattr(self, "check_answer", True) and result.met and result.session_id and str(result.output or "").strip() and original):
+            return result
+        ask = getattr(self, "answer_asker", None)
+        if ask is None:
+            try:
+                ask = answer_check.answer_ask(lambda tier: providers.model_for("anthropic", tier))     # the person's Claude CLI login, whichever harness ran
+            except Exception as error:  # noqa: BLE001 -- a check that cannot be set up is no opinion
+                log.warning("answer check not set up (%s): the answer stands", error)
+        watch: LimitWatch = self.local.watch
+        emit = getattr(self.local, "emit", None)
+
+        def allowed() -> str:
+            if int(getattr(self.local, "hub_resumes", 0) or 0) >= MAX_RESUMES:
+                return "resume_cap"
+            if watch.softened or watch.soften() or watch.hard_reached():
+                return "ceiling_reached"
+            return "cancelled" if cancel_check is not None and cancel_check() else ""
+
+        def tell(phase: str, text: str, data: Mapping[str, Any]) -> None:
+            if emit is not None:
+                try:
+                    emit(ProgressEvent(type=EVENT_STATUS, text=text, data=dict(data, phase=phase)))
+                except Exception:  # noqa: BLE001 -- a sink that fails never stops the run
+                    pass
+
+        def resume(message: str) -> Optional[str]:
+            more = self.resume(result.session_id, message, model, root, cancel_check, time.monotonic())
+            self.local.hub_resumes = int(getattr(self.local, "hub_resumes", 0) or 0) + 1
+            if more.error and not more.text.strip():
+                return None
+            cost = more.cost_usd if more.cost_usd else list_price(self.provider, self.model or "", more.tokens_in, more.tokens_out)     # type: ignore[attr-defined]
+            result.tokens = int(result.tokens or 0) + more.tokens_in + more.tokens_out
+            result.cost_usd = float(result.cost_usd or 0.0) + float(cost or 0.0)
+            return more.text.strip()
+
+        record = answer_check.run_round(original, str(result.output), ask, resume, allowed=allowed, emit=tell)
+        result.output = record["answer"]
+        result.answer_check = record                         # type: ignore[attr-defined]
+        return result
 
     # --- the account of the run --------------------------------------------------------------------------------------------------------
 

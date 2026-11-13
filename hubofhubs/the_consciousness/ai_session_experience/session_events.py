@@ -19,7 +19,7 @@ from typing import Any, Callable, Dict, Mapping, Optional, Tuple
 
 MAIN = "main"
 
-STEP_KINDS = ("read", "edit", "run", "check", "tool", "delegate", "note", "message-received")
+STEP_KINDS = ("read", "search", "edit", "run", "check", "tool", "delegate", "note", "message-received")
 STEP_STATES = ("running", "done", "failed", "blocked")
 OUTCOMES = ("met", "unmet", "stopped", "failed")
 AGENT_STATES = ("running", "met", "unmet", "stopped", "failed", "not_started")
@@ -245,11 +245,22 @@ class Harness(typing.Protocol):
     def control(self, control: Control) -> bool: ...
 
 
+#: The agent's own planning and bookkeeping tools (its task list). They are not work on the person's goal, so no surface draws them as a step; the adapters never emit one and a view that
+#: is handed one anyway leaves it out (``is_bookkeeping``). A kind of tool, declared once here.
+BOOKKEEPING_TOOLS = frozenset({"TaskCreate", "TaskUpdate", "TaskList", "TaskGet", "TodoWrite", "TodoRead"})
+
+
+def is_bookkeeping(kind: str, label: str) -> bool:
+    """True for a ``tool`` step whose tool is one of ``BOOKKEEPING_TOOLS`` (the label begins with the tool's name)."""
+    words = str(label or "").split()
+    return kind == "tool" and bool(words) and words[0] in BOOKKEEPING_TOOLS
+
+
 def short(text: Any, chars: int = 100) -> str:
     one = " ".join(str(text or "").split())
     return one if len(one) <= chars else one[:max(chars - 3, 0)] + "..."
 
 
-__all__ = ["AGENT_STATES", "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "MAIN", "NOTICE_KINDS", "Notice", "OUTCOMES", "Refuse",
+__all__ = ["BOOKKEEPING_TOOLS", "is_bookkeeping", "AGENT_STATES", "AgentEnded", "AgentStarted", "Approve", "Capabilities", "Control", "Finished", "Harness", "MAIN", "NOTICE_KINDS", "Notice", "OUTCOMES", "Refuse",
            "Resume", "Review", "RunStarted", "STEP_KINDS", "STEP_STATES", "SessionEvent", "Step", "Steer", "Stop", "Usage", "Waiting",
            "control_from_dict", "event_from_dict", "short"]

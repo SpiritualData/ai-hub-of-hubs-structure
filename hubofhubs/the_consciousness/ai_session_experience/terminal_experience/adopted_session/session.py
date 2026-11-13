@@ -22,9 +22,9 @@ from esoi import implementation
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import Finished, Harness, RunStarted, Stop, Waiting, short
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.adopted_session import adapter as hub
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience import agent_focus, hub_lines
 from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.live import Attendance, LiveSession
-from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, event_line, report
+from hubofhubs.the_consciousness.ai_session_experience.terminal_experience.session_view import SessionReport, SessionView, event_line, plain_event, report
 from hubofhubs.the_self.assembler import arm_needs as needs
 
 TITLE = ""      # the header names the product in full (``present.PRODUCT``) unless a consumer gives its own title
@@ -101,12 +101,10 @@ class AdoptedAttendance(Attendance):
         self.view.apply(event)
         if isinstance(event, Waiting):
             self.asking = event.ask_id
-        row = event_line(event, self.view, True)
+        row = self.guarded(lambda: event_line(event, self.view, True), event)
         if row:
             self.painter.line(row)
-        if isinstance(event, Finished) and event.outcome == "stopped":
-            self.painter.line(f"stopped: finished work is kept; session {event.session_id or '(none)'} can be resumed")
-        self.give(self.adapter.translate(event))
+        self.give(self.guarded(lambda: self.adapter.translate(event), event, fallback=[hub.HubLine("notice", plain_event(event))] if plain_event(event) else []))
         if hasattr(self.keys, "react"):
             self.keys.react(event)
 
@@ -116,14 +114,14 @@ class AdoptedAttendance(Attendance):
             message = item[1]
             self.view.sent(message.message_id, message.text, message.agent_id)
             seconds = int(self.view.now - self.view.started)
-            self.painter.line(f"[{seconds // 60}:{seconds % 60:02d}] you: {short(message.text, 70)}")
+            self.painter.line(f"[{seconds // 60}:{seconds % 60:02d}] You: {short(message.text, 70)}")
             self.give([hub.NoteSent(message.message_id, message.text, message.agent_id)])
             return
         super().handle(item)
         if kind == "answered":
             self.give([hub.AskClosed(item[1])])
         elif kind == "control" and isinstance(item[1], Stop) and item[2] and not item[1].agent_id:
-            self.give([hub.HubLine("stopping", "stopping: finished work is kept, and the session can be resumed")])
+            self.give([hub.HubLine("stopping", hub_lines.stopping_line())])
         elif kind == "notice":
             self.give([hub.HubLine("notice", item[1])])
 

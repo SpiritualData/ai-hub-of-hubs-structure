@@ -53,6 +53,11 @@ terminal (`H`), the consumer's own terminal (`T`), the consumer's chat of every 
 | X36 | enter a helper's own helpers to any depth, always knowing where you are, with one key up one level | a breadcrumb row at every depth and the same keys at every level |
 | X37 | depth never makes the screen worse | at depth 4 the content width, header and footer rows, key hints and the time to enter or leave are within the stated tolerance of depth 1 (no indentation per level, no stacked headers) |
 | X38 | a finished helper stays readable, and its result is shown once | it stays in its parent's list, can be entered to read what it did, and its result appears once in the parent |
+| X39 | the feed shows work on my goal, not the agent's own bookkeeping | the agent's task-list tools (a declared set in `session_events`) never appear as a step or a row |
+| X40 | a command that did not work and was worked around does not shout | one short muted line saying what was tried in a few words, no raw shell text and no cut-off words, counted when it repeats; the command stays in the step's detail |
+| X41 | a run stopped at its ceiling says so once | one place says what happened, that finished work is kept, how to continue and how to raise the limit, with the resume command alone on its own line; no second line says the same |
+| X42 | every label and status line is written in sentence case | each line that starts a sentence, a label or an item, and each intro phrase before a colon, begins with a capital letter, a digit or a symbol (file names and paths, commands the person types, key names, the agent's own text and wrapped continuation lines are exempt) |
+| X43 | the footer is laid out cleanly at every width | at 56, 80 and 120 columns the structure, agents and key rows have a heading per block, no word cut in the middle, no name printed twice and no half hint |
 
 ### Manage risk
 
@@ -109,6 +114,11 @@ Read on 2026-11-10 from the code of each surface (the web surfaces read-only; a 
 | X36 | yes | ? | ? | ? | none measured | any depth, one key up |
 | X37 | yes | ? | ? | ? | none measured | the same screen at depth 1 and depth 4 |
 | X38 | yes | ? | ? | ? | Claude Code keeps a finished agent's transcript | enter a finished helper, result once |
+| X39 | yes | ? | ? | ? | Claude Code folds its task list into one panel | no bookkeeping tool in the feed |
+| X40 | yes | ? | ? | ? | Claude Code folds repeated tool calls into one summary line | one muted line for a failed command |
+| X41 | yes | ? | ? | ? | none measured | one stop message with the resume command |
+| X42 | yes | ? | ? | ? | none measured | capital letters on every label |
+| X43 | yes | ? | ? | ? | none measured | footer rows at 56, 80 and 120 columns |
 
 ## What the best open-source terminal agents do, worth adopting
 

@@ -118,10 +118,10 @@ class NestedHarness:
         return lambda text, rows: self.probe.crumb(level) in crumb_row(rows)
 
     def at_main(self, text: str, rows: Sequence[str]) -> bool:
-        return bool(rows) and not crumb_row(rows) and any(self.probe.word(1) in r and "running" in r or self.probe.word(1) in r and "stopped" in r for r in rows)
+        return bool(rows) and not crumb_row(rows) and any(self.probe.word(1) in r and "running" in r.lower() or self.probe.word(1) in r and "stopped" in r.lower() for r in rows)
 
     def shows(self, word: str) -> Callable[[str, Sequence[str]], bool]:
-        return lambda text, rows: word in text
+        return lambda text, rows: word in text.lower()       # sentence case on screen: the state word is matched whatever its case
 
     # --- the Harness contract -----------------------------------------------------------------------------------------------------
 
@@ -172,7 +172,7 @@ class NestedHarness:
         sink(AgentStarted(agent_id="agent-z", parent_id=MAIN, task=sibling_task))
         sink(Step(agent_id="agent-z", step_id="z-read", kind="read", label=f"{sibling_word}.md", state="running"))
         sink(Usage(cost_usd=0.001, tokens=100, calls=2))
-        self.until(lambda text, rows: any(probe_word in r and "running" in r for r in rows for probe_word in (self.probe.word(1),)))
+        self.until(lambda text, rows: any(probe_word in r and "running" in r.lower() for r in rows for probe_word in (self.probe.word(1),)))
         self.mark("main")
         for level in range(1, self.depth + 1):                 # in, to any depth
             self.press("enter")
@@ -201,7 +201,7 @@ class NestedHarness:
         sink(AgentEnded(agent_id="agent-z", state="met", calls=1, tokens=50, summary="RESULT-ZULU two finds"))
         sink(Step(agent_id=MAIN, step_id="agent-z", kind="delegate", label=sibling_task, state="done"))
         self.press("leave")
-        self.until(lambda text, rows: self.at_main(text, rows) and any("stopped" in r for r in rows))
+        self.until(lambda text, rows: self.at_main(text, rows) and any("stopped" in r.lower() for r in rows))
         self.mark("main3")
         self.press("next")                                     # the finished sibling stays in the list and can be entered
         self.press("enter")
@@ -281,11 +281,11 @@ def screen(cap: Capture, probe: Probe, name: str) -> Tuple[str, Tuple[str, ...]]
 
 
 def crumb_row(rows: Sequence[str]) -> str:
-    return next((r for r in rows if "main" in r and re.search(r" [>›] ", r)), "")
+    return next((r for r in rows if "main" in r.lower() and re.search(r" [>›] ", r)), "")
 
 
 def row_with(rows: Sequence[str], *words: str) -> str:
-    return next((r for r in rows if all(w in r for w in words)), "")
+    return next((r for r in rows if all(w.lower() in r.lower() for w in words)), "")       # sentence case on screen (``Running``): the state word is matched whatever its case
 
 
 # --- the checks: each over one capture and its probe, True, False, or None when the run never got there --------------------

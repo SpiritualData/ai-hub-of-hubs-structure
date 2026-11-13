@@ -54,7 +54,7 @@ from hubofhubs.the_world.tools.delegated_agent_sessions.contract import (
     resume_target_missing, signal_process_group)
 from hubofhubs.the_world.tools.delegated_agent_sessions.launch import build_deep_argv
 from hubofhubs.the_world.tools.delegated_agent_sessions.run_ceilings import (
-    DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, SOFT_FRACTION, LimitWatch, active_watch, ceiling_of, current_session_file, estimate_spend, soft_fraction_of)
+    DEFAULT_CEILING_SECONDS, DEFAULT_CEILING_USD, SOFT_FRACTION, LimitWatch, active_watch, ceiling_of, current_session_file, estimate_spend, session_spend, soft_fraction_of)
 from hubofhubs.the_world.tools.delegated_agent_sessions.session import (
     describe_session_activity, monitor_claude_session, resolve_session_file, resolved_model_from_session, session_file_size, session_replay_tokens,
     worker_output_is_thin)
@@ -441,6 +441,7 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
     limit_poll_seconds = 1.0    # how often the ceilings are looked at while the session runs
 
     live_run: Any = None
+    live_session: Any = None        # (folder, session id) of the session this runner started last
 
     def stop_task(self, task_id: str) -> bool:
         """Stop one running task of the session in flight through the CLI's own ``stop_task`` control; False when no session is running or the line could not be written."""
@@ -462,8 +463,13 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
         """The ceilings of one run, priced from the session's own record (the CLI reports cost only when a session ends)."""
         config_dir = self.goal_settings().claude_config_dir
         watch = LimitWatch(self.ceiling_usd, self.ceiling_seconds, self.soft_fraction, emit=emit, log=log)
-        watch.spend_of = lambda: estimate_spend(current_session_file(root, watch.started, config_dir))
+        watch.spend_of = lambda: session_spend(root, watch.session_id, config_dir)
         return watch
+
+    def spend_estimate(self) -> float:
+        """List-price dollars the session in flight (or the latest one) has used so far, by its own id; 0.0 before there is one."""
+        live = self.live_session
+        return session_spend(live[0], live[1], self.goal_settings().claude_config_dir) if live else 0.0
 
     def run_goal(self, *, goal: str, brief: str, model: Optional[str] = None,
                  max_turns: Optional[int] = None,
@@ -567,6 +573,10 @@ class StreamJsonGoalRunner(SubprocessGoalRunner):
             goal_given=bool(goal.strip()), session_flag=session_flag, session_id=session_id,
             launch=self.launch_settings())
 
+        self.live_session = (effective_dir, session_id)         # the session this run prices and is asked about (``spend_estimate``), never the newest file of the folder
+        watch_now = active_watch()
+        if watch_now is not None:
+            watch_now.session_id = session_id
         stop_monitor = threading.Event()
         monitor_thread = None
         if emit is not None:

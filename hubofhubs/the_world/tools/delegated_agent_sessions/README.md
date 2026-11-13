@@ -12,8 +12,8 @@ Part of [Using the tools of the outside world](../README.md)
 - Delegates to: file-editing, connected-system-operations, planner, command-execution, agent-action-format
 - Entry call: `hubofhubs.run("delegated-agent-sessions", ...)`
 - Selected implementation: `native_tool_loop_runner@provider=anthropic,tier=fast`
-- Metric: Hard deep work finished per cost and time (agent sessions), Open-ended work finished per cost and time (agent sessions), Harness, context, sub-agents and recursion ranked, A run finds what it needs instead of asking
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 206 more
+- Metric: Hard deep work finished per cost and time (agent sessions), Open-ended work finished per cost and time (agent sessions), Harness, context, sub-agents and recursion ranked, A run finds what it needs instead of asking, The final answer does what the person asked, about what they named
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 208 more
 
 ## Implementations
 
@@ -37,6 +37,7 @@ Part of [Using the tools of the outside world](../README.md)
 - Open-ended work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions`): leader `native_tool_calling_loop_runner@provider=anthropic,tier=fast`, 18 of 18 cases
 - Hard deep work finished per cost and time (agent sessions) (`metric-delegated-agent-sessions-hard`): leader `stream_json_goal_runner@provider=anthropic,tier=fast`, 9 of 9 cases
 - A run finds what it needs instead of asking (`metric-agent-resourcefulness`)
+- The final answer does what the person asked, about what they named (`metric-answer-fidelity`): leader `answer_check@input=original`, 17 of 18 cases
 
 ## Where to go next
 

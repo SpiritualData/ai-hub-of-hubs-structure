@@ -24,6 +24,8 @@ SCENARIOS = {
     "agents_depth4": ("the same walk four levels deep: each level entered, a message at the bottom, one key up a level at a time", ["X34", "X35", "X36", "X38"]),
     "agents_depth_compare": ("the screen inside a helper at depth 4 against depth 1: content width, header and footer rows, key hints and the time to enter, within the stated tolerance", ["X37"]),
     "real_agents": ("a real fast-tier run over made-up garden notes (one helper that read two files, recorded 2026-11-12): the helper listed, entered while it worked and after it ended, its result once", ["X34", "X38"]),
+    "feed_noise": ("a run with the agent's task-list tools, reads of files that are not there, commands that did not work (one repeated) and a helper with a long name: no bookkeeping line, one short muted line per failed kind, a clean footer at 56, 80 and 120 columns (revision 5, X39 X40 X42 X43)", ["X39", "X40", "X42", "X43"]),
+    "ceiling_stop": ("a run stopped at its spend ceiling while a helper works: said once, with what is kept, how to continue and how to raise the limit (revision 5, X41 X42)", ["X41", "X42"]),
 }
 # The protocol ceiling column (the structure on request, spend against ceilings, who the AI acts for, a correction shown as taken up, stopping one helper: X24, X26, X32, X6, X8) is read
 # inside the watch, steer and target cases and reported in the details, not scored.

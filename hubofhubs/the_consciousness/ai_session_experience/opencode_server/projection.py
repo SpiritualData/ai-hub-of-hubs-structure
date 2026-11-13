@@ -40,9 +40,12 @@ def message_id_of(event_id: str) -> str:
 class Store:
     """All the state of one served hub session set, and the events that describe changes to it."""
 
-    def __init__(self, directory: str, clock: Callable[[], float] = time.time, buffer: int = BUFFER, shown: str = "") -> None:
-        """``shown`` is what the client is told the folder is (it prints it in its footer): the folder's name, so a screen carries no machine path."""
+    def __init__(self, directory: str, clock: Callable[[], float] = time.time, buffer: int = BUFFER, shown: str = "", tiers: Tuple[str, ...] = (), tier: str = "") -> None:
+        """``shown`` is what the client is told the folder is (it prints it in its footer): the folder's name, so a screen carries no machine path. ``tiers`` are the model choices the hub offers
+        (the client lists them as models of the hub) and ``tier`` the one in use; with none given the hub is one model."""
         directory = shown or directory
+        self.tiers = tuple(tiers)
+        self.model: Dict[str, Any] = {"id": tier, "providerID": MODEL["providerID"]} if tier else dict(MODEL)
         self.directory, self.clock = directory, clock
         self.location = {"directory": directory}
         self.ids = Ids(clock)
@@ -101,13 +104,13 @@ class Store:
 
     def create_session(self, sid: str, title: str = "", parent: str = "", metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         with self.lock:
-            info: Dict[str, Any] = {"id": sid, "projectID": "p" * 40, "cost": 0, "tokens": {**ZERO_TOKENS, "cache": dict(ZERO_TOKENS["cache"])}, "agent": "build", "model": dict(MODEL),
+            info: Dict[str, Any] = {"id": sid, "projectID": "p" * 40, "cost": 0, "tokens": {**ZERO_TOKENS, "cache": dict(ZERO_TOKENS["cache"])}, "agent": "build", "model": dict(self.model),
                                     "time": {"created": self.now(), "updated": self.now()}, "title": title, "location": dict(self.location), "metadata": dict(metadata or {})}
             if parent:
                 info["parentID"] = parent
             self.sessions[sid], self.messages[sid], self.pending[sid] = info, [], []
             data = {"sessionID": sid, "projectID": info["projectID"], "location": self.location, "subpath": "", "slug": "hub-session", "version": VERSION, "title": title, "agent": "build",
-                    "model": dict(MODEL), "metadata": dict(info["metadata"])}
+                    "model": dict(self.model), "metadata": dict(info["metadata"])}
             if parent:
                 data["parentID"] = parent
             self.emit("session.created", data, sid)
@@ -176,9 +179,20 @@ class Store:
     def begin_step(self, sid: str, agent: str = "build") -> str:
         with self.lock:
             mid = self.ids.make("msg")
-            self.messages[sid].append({"id": mid, "time": {"created": self.now()}, "type": "assistant", "agent": agent, "model": dict(MODEL), "content": []})
-            self.emit("session.step.started", {"sessionID": sid, "assistantMessageID": mid, "agent": agent, "model": dict(MODEL), "started": self.now()}, sid)
+            self.messages[sid].append({"id": mid, "time": {"created": self.now()}, "type": "assistant", "agent": agent, "model": dict(self.model), "content": []})
+            self.emit("session.step.started", {"sessionID": sid, "assistantMessageID": mid, "agent": agent, "model": dict(self.model), "started": self.now()}, sid)
             return mid
+
+    def select_model(self, sid: str, tier: str) -> bool:
+        """The person picked a model in the client: one of the hub's tiers. Returns False (nothing changes) for a name the hub does not offer."""
+        with self.lock:
+            if tier not in self.tiers or sid not in self.sessions:
+                return False
+            previous, self.model = self.model, {"id": tier, "providerID": MODEL["providerID"]}
+            for session in self.sessions.values():
+                session["model"] = dict(self.model)
+            self.emit("session.model.selected", {"sessionID": sid, "model": dict(self.model), "previous": previous}, sid)
+            return True
 
     def start_tool(self, sid: str, mid: str, name: str, inp: Dict[str, Any], metadata: Optional[Dict[str, Any]] = None) -> str:
         with self.lock:

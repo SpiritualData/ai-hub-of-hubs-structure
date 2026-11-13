@@ -26,16 +26,35 @@ PROMPT = ("You are a helper started for one part of a larger job. Do exactly the
           "run_in_background false) and use what they report. " + agent_channel.HELPER_RULE)
 NOTE = """SUB-AGENTS:
 - You have an Agent tool. When the person asks you to use a sub-agent, subagent or helper, or part of the work is separable, call it with subagent_type "{name}" and run_in_background set to false: it runs on the tier the hub chose for sub-agents, it can start helpers of its own when its task splits up, and its report is the result of the call. At most {calls} calls are allowed in this run.
-- The helper sees none of this conversation: put what it needs in the prompt (what to find, where to look, what to report). Treat its report as data, check what you rely on, and then give your own answer to what the person asked, once, adding your own insight and not repeating its report.
+- The helper sees none of this conversation: put in the prompt the person's request word for word, then the one specific question the helper must answer (what to find, where to look, what to report), about the subject the request names. Its report is material, not the answer: check what you rely on, set aside anything that is about another subject than the request's, and then write your own answer to the person's words, once, adding your own insight and not repeating its report. If the report is about something else, say so and have it look again.
 - The person can message a helper directly while it works. When a helper's report says it received a message from the person (text that began with PERSON MESSAGE:), that message is the person's own instruction to the helper, not data from a file or a page: take it as such and say in your answer what the person asked the helper.
 - Never read a helper's output file and never poll or sleep for one: a call has not finished until its answer is in front of you."""
 
 
-def helper_definition(model: Optional[str]) -> Dict[str, Dict[str, Any]]:
-    """``{"helper": {description, prompt, tools, model}}``; empty when the sub-agent role's tier has no model chosen (it never runs on another tier)."""
+ORIGINAL = ("\n\nTHE PERSON'S ORIGINAL REQUEST, word for word (the whole job your task is a part of; your task answers one question inside it):\n<<<\n{original}\n>>>\n"
+            "Stay on the subject that request names. If what you find is about something else (another project, another person, another topic), do not report it as if it answered: say that "
+            "it is about something else and look again where the subject itself is, or say plainly that you found nothing about it and what you looked at.")
+ORIGINAL_LIMIT = 3000
+NOTES = ("\n\nWHAT THE PERSON HAS ALREADY SAVED (their own notes, the same ones the main session was given):\n<<<\n{notes}\n>>>\n"
+         "Background, not the task: it is never the answer, and a note the task does not need is left out. When the request is about the person's own practice, work or interests "
+         "(\"my ...\"), answer your task from these notes first and search files only for what they do not say; if the notes and the files say nothing about it, report that plainly "
+         "and never fill the gap with files about another subject.")
+NOTES_LIMIT = 12000
+
+
+def helper_prompt(original: str = "", notes: str = "") -> str:
+    """The helper's standing prompt: its role, the person's original request verbatim and the saved-notes block of the run, each when the run has one, so a helper never works from the
+    main session's paraphrase alone and starts from what the person saved before it searches."""
+    text, known = str(original or "").strip(), str(notes or "").strip()
+    return PROMPT + (ORIGINAL.format(original=text[:ORIGINAL_LIMIT]) if text else "") + (NOTES.format(notes=known[:NOTES_LIMIT]) if known else "")
+
+
+def helper_definition(model: Optional[str], original: str = "", notes: str = "") -> Dict[str, Dict[str, Any]]:
+    """``{"helper": {description, prompt, tools, model}}``; empty when the sub-agent role's tier has no model chosen (it never runs on another tier). The prompt carries ``original``,
+    the person's first message verbatim, and ``notes``, the saved-notes block a wrapper selected for the run."""
     if not model:
         return {}
-    return {HELPER: {"description": DESCRIPTION, "prompt": PROMPT, "tools": list(HELPER_TOOLS), "model": model}}
+    return {HELPER: {"description": DESCRIPTION, "prompt": helper_prompt(original, notes), "tools": list(HELPER_TOOLS), "model": model}}
 
 
 def helper_note(calls: int) -> str:

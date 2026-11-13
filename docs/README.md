@@ -15,6 +15,7 @@ The pages are in four folders by what they are for. Start with the tutorial.
 - [Refresh the registry](how-to/refresh-the-registry.md)
 - [Register a second consumer](how-to/register-a-second-consumer.md)
 - [Adopt the hub](how-to/adopt-the-hub.md)
+- [Start ahohs work from your own notes](how-to/start-ahohs-from-your-own-notes.md)
 - [Emit a work trace](how-to/emit-a-work-trace.md)
 - [Acknowledge a turn](how-to/acknowledge-a-turn.md)
 - [Decide what a person is told while a turn runs](how-to/decide-what-a-person-is-told.md)

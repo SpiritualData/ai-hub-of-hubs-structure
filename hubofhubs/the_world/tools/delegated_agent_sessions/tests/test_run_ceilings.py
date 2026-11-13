@@ -151,6 +151,30 @@ def test_the_spend_estimate_counts_each_message_once_and_prices_the_cache(tmp_pa
     assert run_ceilings.estimate_spend(str(tmp_path / "missing.jsonl")) == 0.0 and run_ceilings.estimate_spend(None) == 0.0
 
 
+def test_a_run_is_priced_by_its_own_session_not_by_another_session_in_the_same_folder(tmp_path, monkeypatch):
+    """Two sessions share one folder: a long one a person keeps open and this run's own. Pricing the newest file once charged the long one's whole history to the run and stopped it at its
+    spend ceiling; pricing by the session id counts the run's own record and its helpers' records only."""
+    import importlib
+    import json
+    headless_runner = importlib.import_module("hubofhubs.the_world.tools.delegated_agent_sessions.headless_runner")
+    monkeypatch.setattr(headless_runner, "list_price", lambda provider, model, tin, tout: tin * 1e-6 + tout * 1e-5)
+    project = tmp_path / "config" / "projects" / "-some-folder"
+    (project / "mine" / "subagents").mkdir(parents=True)
+
+    def record(path, tokens):
+        path.write_text(json.dumps({"type": "assistant", "message": {"id": "m", "model": "x", "usage": {"input_tokens": tokens, "output_tokens": 0}}}) + "\n")
+    record(project / "mine.jsonl", 1_000_000)                               # $1.00
+    record(project / "mine" / "subagents" / "agent-a1.jsonl", 500_000)      # $0.50, a helper of this session
+    record(project / "foreign.jsonl", 100_000_000)                          # $100.00, another session, touched after this run began
+    config = str(tmp_path / "config")
+    assert run_ceilings.session_spend(str(tmp_path), "mine", config) == pytest.approx(1.5)
+    assert run_ceilings.session_spend(str(tmp_path), "", config) == 0.0 and run_ceilings.session_spend(str(tmp_path), "unknown", config) == 0.0
+    watch = LimitWatch(20.0, None, spend_of=lambda: run_ceilings.session_spend(str(tmp_path), watch.session_id, config), throttle=0.0)
+    assert watch.state()[0] == "ok"                      # no session id yet: nothing is priced
+    watch.session_id = "mine"
+    assert watch.spend() == pytest.approx(1.5) and watch.state() == ("ok", "")
+
+
 def test_a_hard_stop_names_the_hard_limit_whatever_the_runner_said_about_the_stop():
     from types import SimpleNamespace
     watch = LimitWatch(None, 1.0)

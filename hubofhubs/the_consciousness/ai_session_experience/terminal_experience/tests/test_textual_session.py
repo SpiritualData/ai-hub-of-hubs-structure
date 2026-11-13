@@ -30,7 +30,7 @@ def test_a_refused_tool_result_carries_its_reason_and_a_path_is_shown_inside_the
     denied = {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "t", "is_error": True,
                                                        "content": "Claude requested permissions to use Bash, but you haven't granted it yet."}]}}
     row = [e for e in stream.events(denied) if isinstance(e, Step)][0]
-    assert row.state == "blocked" and "permission" in row.detail and "Refused:" in step_row(row)
+    assert row.state == "blocked" and "permission" in row.detail and "Skipped a command that could not be checked" in step_row(row)      # a refused command is one muted line, the reason stays in the step's detail
     write = {"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "w", "name": "Write", "input": {"file_path": "/work/sub/a.txt"}}]}}
     assert stream.events(write)[0].label == "sub/a.txt" and list(stream.changed) == ["sub/a.txt"]
     assert permission_refusal({"content": "file not found"}) == "" and permission_refusal({"content": "bash: x: Permission denied"}) == ""
@@ -90,7 +90,7 @@ def test_the_textual_screen_and_transcript_never_show_the_same_update_during_a_r
     assert rep.final.outcome == "met" and seen
     for lines, panel in seen:
         for row in panel:
-            if row.startswith(("goal:", "structure:", "agents", "serves:")) or row.startswith("  "):
+            if row.startswith(("Goal:", "Structure", "Agents", "Serves:")) or row.startswith("  "):
                 continue
             assert not any(row in line for line in lines), (row, lines)
     assert any("Read a.txt" in line for line in seen[-1][0])

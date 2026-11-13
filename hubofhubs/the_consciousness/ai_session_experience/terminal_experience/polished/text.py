@@ -103,12 +103,12 @@ def key_hints(*, busy: bool, asking: bool, stopped: bool, runs: int, detail: boo
     if asking:
         hints.append(("y/n", say("polished.key.answer")))
     if inside:
-        hints.append(("left", "back"))
+        hints.append(("left", "Back"))
     if busy:
-        hints.append(("esc", "stop this helper" if inside else say("polished.key.stop")))
+        hints.append(("esc", "Stop this helper" if inside else say("polished.key.stop")))
     if agents:
-        hints.append(("up/down", "pick a helper"))
-        hints.append(("right", "enter it"))
+        hints.append(("up/down", "Pick a helper"))
+        hints.append(("right", "Enter it"))
     if stopped:
         hints.append(("alt+k", say("polished.key.resume")))
     if runs:
@@ -162,7 +162,7 @@ def lines_per_run(count: int) -> int:
 
 
 def step_text(step: Step) -> str:
-    return f"{step.kind} {short(step.label, STEP_CHARS)}"
+    return present.clip_words(present.step_phrase(step), STEP_CHARS)       # a plain phrase with the short subject (``Editing summary.txt``), never the raw kind word
 
 
 def dashboard(view: SessionView, active: str = "", extra: Sequence[str] = (), with_helpers: bool = True) -> Tuple[List[Tuple[str, str]], Dict[int, str]]:

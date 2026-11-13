@@ -110,10 +110,11 @@ def test_the_transcript_keeps_what_finished_and_the_panel_what_is_happening_now(
     assert any("b.txt" in row for row, _ in text.dashboard(view)[0])
     done = Step(step_id="s1", kind="edit", label="b.txt", state="done")
     view.apply(done)
-    assert "Edited b.txt" in event_line(done, view, True)
-    assert not any("b.txt" in row for row, _ in text.dashboard(view)[0])
+    assert event_line(done, view, True) == ""            # a finished step waits for the steps of its kind that may follow: they are one summary row
     started = AgentStarted(agent_id="h", task="tests")
-    assert event_line(started, view, True) == "" and event_line(Usage(cost_usd=1.0), view, True) == ""
+    assert "Edited b.txt" in event_line(started, view, True)         # the next kind of event draws it
+    assert not any("b.txt" in row for row, _ in text.dashboard(view)[0])
+    assert "Helper: tests" in event_line(started, view, True) and event_line(Usage(cost_usd=1.0), view, True) == ""
 
 
 def test_the_detail_holds_a_runs_full_history_in_order_newest_last():
@@ -125,7 +126,7 @@ def test_the_detail_holds_a_runs_full_history_in_order_newest_last():
 
 # --- the closing: structured fields only, one shape ------------------------------------------------------------------------------------
 
-@pytest.mark.parametrize("outcome,words", [("met", "Goal met"), ("unmet", "Goal not met"), ("stopped", "Stopped, your work is kept"), ("failed", "Failed")])
+@pytest.mark.parametrize("outcome,words", [("met", "Goal met"), ("unmet", "Goal not met"), ("stopped", "Stopped"), ("failed", "Failed")])
 def test_the_closing_line_is_the_outcomes_words_the_time_and_the_cost(outcome, words):
     view = view_of(RunStarted(goal="g"), Usage(cost_usd=0.0123, calls=3), Finished(outcome=outcome), now=42)
     line = text.closing_line(view)
@@ -228,7 +229,7 @@ def test_a_consumers_commands_are_described_by_their_docstrings_and_its_choices_
         """publish the next release"""
     commands = menu.builtin_commands() + menu.custom_commands({"release": release, "plain": lambda rest: None})
     items = {i.label: i for i in menu.menu_items("/", commands)}
-    assert items["/release"].description == "publish the next release" and items["/plain"].description == "a command of this build"
+    assert items["/release"].description == "publish the next release" and items["/plain"].description == "A command of this build"
     pick = lambda typed: [menu.MenuItem("Alpha", "the first", "/choose a", True), menu.MenuItem("Beta", "the second", "/choose b", True)]
     assert [i.label for i in menu.menu_items("/choose ", commands, pick)] == ["Alpha", "Beta"]
     assert menu.menu_items("/choose ", commands, lambda typed: 1 / 0) == []

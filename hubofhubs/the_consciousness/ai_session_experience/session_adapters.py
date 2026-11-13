@@ -15,7 +15,7 @@ import re
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence
 
 from hubofhubs.the_consciousness.ai_session_experience.session_events import (
-    MAIN, AgentEnded, AgentStarted, Notice, Review, SessionEvent, Step, Usage, Waiting, event_from_dict, short)
+    MAIN, AgentEnded, AgentStarted, Notice, Review, SessionEvent, Step, Usage, Waiting, event_from_dict, is_bookkeeping, short)
 
 LOOP_ACTION = re.compile(r"^call (\d+): (READ|EDIT|RUN|DELEGATE|USE|NOTE)\s*(.*?)\s+(ok|failed)$")
 LOOP_CHECK = re.compile(r"^call (\d+): check (passed|failed)$")
@@ -23,7 +23,8 @@ LOOP_REVIEW = re.compile(r"^review: (.*)$")
 SOLUTION_TAG = re.compile(r"^\s*\[([a-z0-9][a-z0-9_-]*)\]\s*(.*)$", re.S)     # a helper's description may start with the solution it serves: "[the-mind] check the plan"
 LOOP_KINDS = {"READ": "read", "EDIT": "edit", "RUN": "run", "DELEGATE": "delegate", "USE": "tool", "NOTE": "note"}
 
-READ_TOOLS = ("Read", "Glob", "Grep", "LS", "WebFetch", "WebSearch", "NotebookRead")
+READ_TOOLS = ("Read", "WebFetch", "NotebookRead")
+SEARCH_TOOLS = ("Glob", "Grep", "LS", "WebSearch")
 EDIT_TOOLS = ("Edit", "Write", "MultiEdit", "NotebookEdit")
 AGENT_TOOLS = ("Task", "Agent")
 
@@ -73,7 +74,8 @@ def permission_refusal(block: Mapping[str, Any]) -> str:
     content = block.get("content")
     text = " ".join(str(part.get("text", "")) for part in content if isinstance(part, dict)) if isinstance(content, list) else str(content or "")
     low = text.lower()
-    refused = ("needs approval", "haven't granted", "requested permissions", "asks before", "not allowed", "doesn't allow", "was blocked", "permission mode")
+    refused = ("needs approval", "haven't granted", "requested permissions", "asks before", "not allowed", "doesn't allow", "was blocked", "permission mode",
+               "requires approval", "can't be checked before it runs", "multiple operations")      # the permission mode also refuses a compound command or a loop it cannot check in advance
     if any(mark in low for mark in refused) and "permission denied" not in low:      # the CLI's own words when the permission mode refuses a tool (an operating-system "permission denied" is a failure, not a refusal)
         first = text.strip().splitlines()[0] if text.strip() else "permission refused"
         return short(first.split(". ")[0], 120)
@@ -215,6 +217,8 @@ class StreamJson:
             path = path[len(self.root):]
         if name in READ_TOOLS:
             step_kind, label = "read", path or name
+        elif name in SEARCH_TOOLS:
+            step_kind, label = "search", path or name
         elif name in EDIT_TOOLS:
             step_kind, label = "edit", path or name
             if path:
@@ -223,6 +227,8 @@ class StreamJson:
             step_kind, label = "run", str(given.get("command") or name)
         else:
             step_kind, label = "tool", name + (f" {path}" if path else "")
+            if is_bookkeeping(step_kind, label):
+                return []        # the agent's own task list is not work on the goal: nothing is drawn, and its result (no known id) draws nothing either
         self.kinds[ident] = step_kind
         self.labels[ident] = short(label)
         return [Step(agent_id=who, step_id=ident, kind=step_kind, label=short(label), state="running")]

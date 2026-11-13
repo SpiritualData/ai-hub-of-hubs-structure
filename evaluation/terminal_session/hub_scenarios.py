@@ -132,7 +132,7 @@ def end_of_run(arm, name):
     failed = plain(text)
     if "Wrote one.txt." not in text or "Changed (1): one.txt" not in text:
         failed.append("what-was-done")
-    if not any(line.startswith("ahohs work --resume sess-") and "--harness stream" in line for line in text.splitlines()):       # the command whole on its own line (revision of 2026-11-11)
+    if not any(line.startswith("ahohs work --resume sess-") and "--harness" not in line for line in text.splitlines()):       # the command whole on its own line (revision of 2026-11-11)
         failed.append("how-to-resume-the-command")
     if "Outside the folder (report only" not in text or "wrote notes.txt outside the folder" not in text:
         failed.append("outside-folder-report")

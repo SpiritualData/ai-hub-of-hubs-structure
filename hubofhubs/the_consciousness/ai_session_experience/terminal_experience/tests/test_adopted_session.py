@@ -136,7 +136,7 @@ def test_each_kind_of_step_has_its_own_effect_and_each_state_its_own_state():
 
 def test_a_helpers_step_names_the_helper_and_a_note_is_narration_unless_it_is_the_answer():
     _, _, out = feed([AgentStarted(agent_id="h1", task="write the tests"), Step(agent_id="h1", step_id="t", kind="edit", label="tests.txt", state="done")])
-    assert out[1][0].entry.state.display.suffix == " · write the tests"
+    assert out[1][0].entry.state.display.suffix == " ↳"      # the marker of a helper's rows: its name is said once, when it starts
     _, _, out = feed([Step(step_id="n1", kind="note", label="Looking at the notes"), Step(step_id="n2", kind="note", label="Now the plan"), Finished(outcome="met", report="All done.")])
     assert out[0] == [] and [type(i).__name__ for i in out[1]] == ["HistoryEntryAdded"] and out[1][0].entry.content[0].text == "Looking at the notes"
     _, _, out = feed([Step(step_id="n1", kind="note", label="Today is Wednesday, Nov..."), Finished(outcome="met", report="Today is Wednesday, November 11.")])
@@ -163,10 +163,10 @@ def test_waiting_is_an_approval_with_its_preview_or_a_question_when_the_options_
 
 def test_a_notice_and_a_review_are_quiet_hub_lines_and_a_stop_names_the_session_that_resumes():
     _, _, out = feed([Notice(kind="soft-limit"), Notice(kind="decision", decision="stop", reason="plateau"), Review(text="two corrections"), Finished(outcome="stopped", session_id="s9")])
-    assert out[0][0].kind == "limit" and "wrapping up" in out[0][0].text
-    assert out[1][0].kind == "notice" and out[1][0].text.startswith("hub decision: stop")
+    assert out[0][0].kind == "limit" and "Wrapping up" in out[0][0].text
+    assert out[1][0].kind == "notice" and out[1][0].text.startswith("Hub decision: stop")
     assert out[2][0] == hub.HubLine("review", "Review: two corrections")
-    assert out[3][0] == hub.HubLine("stopped", "stopped: finished work is kept; session s9 can be resumed")
+    assert not [h for entries in out for h in entries if getattr(h, "kind", "") == "stopped"]      # a stop is said once, in the closing
 
 
 def test_a_note_sent_is_taken_up_by_the_harnesss_message_received_step():
@@ -182,7 +182,7 @@ def test_the_closing_is_the_answer_once_the_detail_one_outcome_line_and_the_resu
     assert closing.answer == "All **done**." and closing.state == "met"
     assert sum("Metric checks passing: before 1, after 3 (+2)" in row for row in closing.detail) == 1 and "Changed (1): b.txt" in closing.detail
     assert len(closing.outcome) == 1 and closing.outcome[0].startswith("✓ Goal met") and "$0.21" in closing.outcome[0] and "1 file changed" in closing.outcome[0]
-    assert closing.resume == ("Continue this session later, in this folder:", "ahohs work --resume s1 --harness stream")
+    assert closing.resume == ("Continue this session later, in this folder:", "ahohs work --resume s1")
     assert closing.answer not in "\n".join(closing.detail + closing.outcome + closing.resume)
 
 
@@ -205,7 +205,7 @@ def test_a_note_typed_while_the_ai_works_is_shown_once_as_sent_and_then_as_taken
     queued = [i for i, rows in enumerate(mine) if rows and "queued" in rows[0]]
     taken = [i for i, rows in enumerate(mine) if rows and "taken up" in rows[0]]
     assert queued and taken and max(queued) < min(taken)
-    assert text.count("you: use the short name") == 1 and "Your note was taken up: use the short name" in text
+    assert text.count("You: use the short name") == 1 and "Your note was taken up: use the short name" in text
 
 
 @pytest.mark.parametrize("key,control", [("y", Approve), ("n", Refuse)])
@@ -242,8 +242,8 @@ def test_escape_stops_and_keeps_the_session_and_typing_resume_continues_it():
             await pilot.press(*"resume", "enter")
     rep, text, samples = play(fake, during=during)
     assert any(isinstance(c, Stop) for c in fake.controls) and fake.starts == [("goal", ""), ("goal", "s1")]
-    assert [r.outcome for r in rep.runs] == ["stopped", "met"] and "stopped: finished work is kept; session s1 can be resumed" in text
-    assert any("stopped" in " ".join(rows) for rows in samples)
+    assert [r.outcome for r in rep.runs] == ["stopped", "met"] and text.count("inished work is kept") == 1 and "ahohs work --resume s1" in text      # a stop is said once
+    assert any("Type resume to continue, or quit to leave" in " ".join(rows) for rows in samples)      # while stopped, the key line says how to go on
 
 
 # --- the closing on the screen, and the width -------------------------------------------------------------------------------------------
@@ -259,7 +259,7 @@ def test_the_header_names_the_product_in_full_and_everything_fits_80_and_56_colu
     assert "Wednesday, November 11, 2026" in flat and "**" not in flat and "$0.21" in flat and flat.count("Metric checks: before 1, after 2") == 1
     assert "ahohs work --resume s1" in flat.replace("\n", " ") and re.search(r"Goal met", flat)
     resume = [line for line in text.splitlines() if "--resume" in line]
-    assert len(resume) == 1 and resume[0] == "ahohs work --resume s1 --harness stream"        # one unbroken line in the text a person copies from
+    assert len(resume) == 1 and resume[0] == "ahohs work --resume s1"        # one unbroken line in the text a person copies from
 
 
 def test_who_the_ai_acts_for_is_in_the_header_and_the_structure_is_one_key_away():
@@ -267,13 +267,13 @@ def test_who_the_ai_acts_for_is_in_the_header_and_the_structure_is_one_key_away(
     seen = {}
 
     async def during(pilot, app):
-        if app.attendance is not None and app.attendance.running and "structure: notes" in " ".join(rows_of(app)) and "tab" not in seen:
+        if app.attendance is not None and app.attendance.running and "Structure: notes" in " ".join(rows_of(app)) and "tab" not in seen:
             seen["tab"] = True
             await pilot.press("tab")
     rep, text, samples = play(fake, during=during, representative={"person": "Alex"})
     assert any("for Alex" in rows[0] for rows in samples)                                            # who the AI acts for, quietly, in the header
-    assert any("structure: notes [running]; 0 helpers (Tab shows the tree)" in " ".join(rows) for rows in samples)   # the solution the work serves, one quiet row from the first frame
-    assert any("acting for: Alex" in " ".join(rows) for rows in samples)                              # and the authority in force, one key (Tab) away
+    assert any("Structure: notes [running]; 0 helpers (Tab shows the tree)" in " ".join(rows) for rows in samples)   # the solution the work serves, one quiet row from the first frame
+    assert any("Acting for: Alex" in " ".join(rows) for rows in samples)                              # and the authority in force, one key (Tab) away
 
 
 # --- the boundaries ---------------------------------------------------------------------------------------------------------------------
