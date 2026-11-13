@@ -43,19 +43,31 @@ def find(client: str, environ: Optional[Mapping[str, str]] = None) -> str:
     places = [on_path] + ([str(Path(home) / "tools" / "opencode" / "bin" / "opencode")] if home else [])
     found = [p for p in dict.fromkeys(places) if p and Path(p).is_file()]
     for path in found:
-        if VERSION.fullmatch(version_of(path, environ) or "") and version_of(path, environ).split(".")[0] == TESTED_VERSION.split(".")[0]:
+        version = version_of(path, environ)
+        if VERSION.fullmatch(version or "") and version.split(".")[0] == TESTED_VERSION.split(".")[0]:
             return path
     return found[0] if found else ""
 
 
+VERSIONS: Dict[Any, str] = {}          # (path, size, modified) -> version: the program is asked once per run of this process, not on every availability check
+
+
 def version_of(path: str, environ: Optional[Mapping[str, str]] = None) -> str:
-    """The client's version (``2.2.7``) by running ``--version``, or an empty string when it will not say."""
+    """The client's version (``2.2.7``) by running ``--version`` (asked once per file and process), or an empty string when it will not say."""
+    try:
+        stat = Path(path).stat()
+    except OSError:
+        return ""
+    key = (path, stat.st_size, stat.st_mtime_ns)
+    if key in VERSIONS:
+        return VERSIONS[key]
     try:
         run = subprocess.run([path, "--version"], capture_output=True, text=True, timeout=20, env=dict(environ) if environ is not None else None)
     except (OSError, subprocess.SubprocessError):
         return ""
     found = VERSION.search(run.stdout + run.stderr)
-    return found.group(0) if found else ""
+    VERSIONS[key] = found.group(0) if found else ""
+    return VERSIONS[key]
 
 
 def version_note(version: str) -> str:
