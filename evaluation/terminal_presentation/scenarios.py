@@ -173,11 +173,12 @@ def ceilings(arm: Any) -> Dict[str, Any]:
 
 import agents_scenarios as A  # noqa: E402
 import feed_scenarios as F  # noqa: E402
+import capabilities_scenarios as K  # noqa: E402
 
 SCENARIOS = {**A.SCENARIOS, **F.SCENARIOS, "watch": watch, "steer": steer, "stop_resume": stop_resume, "approve": lambda arm: approval(arm, "y"), "refuse": lambda arm: approval(arm, "n"),
-             "target": target, "plain": plain, "pasted_run": pasted_run, "real_run": real_run}
+             "target": target, "plain": plain, "pasted_run": pasted_run, "real_run": real_run, "capabilities": K.in_process}
 SECONDS = 30
-SECONDS_OF = {name: 120 for name in A.SCENARIOS}      # the hierarchy scenarios walk in and out of helpers at three sizes (and four levels deep), each key given half a second to show
+SECONDS_OF = {**{name: 120 for name in A.SCENARIOS}, "capabilities": 300}    # the hierarchy scenarios walk in and out of helpers at three sizes (and four levels deep), each key given half a second to show
 
 
 def run_scenario(arm: Any, name: str) -> Dict[str, Any]:
@@ -214,6 +215,7 @@ SCENARIO_CHECKS = {**{name: (*checks, "labels-capitalised") for name, checks in 
                    "stop_resume": ("stop-then-resume-keeps-work", "round-trip-stop", "round-trip-resume", "closing-report-complete"),
                    "approve": ("risky-step-waits-with-preview", "round-trip-approve"), "refuse": ("risky-step-waits-with-preview", "round-trip-refuse"),
                    "target": ("unavailable-control-shown",), "plain": ("plain-when-not-a-terminal",),
-                   "pasted_run": C.REVISION_2 + ("closing-report-complete", "no-row-wider-than-the-terminal"),
+                   "capabilities": K.CHECKS,
+                   "pasted_run": C.REVISION_2 +("closing-report-complete", "no-row-wider-than-the-terminal"),
                    "real_run": ("answer-once", "no-raw-markdown", "closing-report-complete", "no-row-wider-than-the-terminal")}
 SCENARIO_CHECKS = {name: tuple(dict.fromkeys((*checks, "labels-capitalised"))) for name, checks in SCENARIO_CHECKS.items()}      # revision 5: every scenario is also read for capital letters

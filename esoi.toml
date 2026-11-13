@@ -210,6 +210,17 @@ seconds_per_case = 30
 "ceiling-stop-said-once" = 3                # X41: a stop said four ways is the same-update-twice problem again
 "labels-capitalised" = 2                    # X42: sentence case on every label (exemptions: checks.CAPITAL_EXEMPT)
 "footer-clean-at-every-width" = 2           # X43: a cut word or a doubled name in the footer reads as broken
+# Revision 6, 2026-11-12 (reason: the owner tried every arm and named the richness of the screen as what the metric missed: a command palette, many commands, tabs or switching between sessions,
+# going into and out of helpers, a different presentation per kind of update; the stock client was the richest and the reference terminal had none, and revisions 1 to 5 had scored them
+# level). The six checks below were added and their weights fixed here before any arm was scored on them. All 2: a missing convenience makes the screen slower to use but loses no work and
+# hides no risk (the rule for a 2 above), and no one of them is worth more than another by the owner's words. The thresholds (5 rows listed, 12 in all, 4 distinct markers) are in
+# evaluation/terminal_presentation/capabilities_scenarios.py, judgement set before scoring and not fitted.
+"command-surface-listed" = 2                # X44: the discovery action shows a list, not a hint
+"command-surface-broad" = 2                 # X44: many commands, not a handful
+"session-list-and-resume" = 2               # X45: earlier sessions can be listed and one resumed
+"session-switching" = 2                     # X46: tabs, or a picker that switches between sessions
+"agent-navigation" = 2                      # X47: going into a helper and back (hub arms are driven; clients are read through their own surface)
+"kind-presentation" = 2                     # X48: a different marker for a read, an edit, a command, a command that failed and a helper
 
 # terminal-presentation, layer 2 (model-judged, advisory, never the gate and not part of the balanced score above): the judge runs the frozen checklist
 # (evaluation/terminal_presentation/judged/checklist.json) three times per frame and takes the majority, tier by the role deliverable_judge. It is run only on request.
@@ -217,6 +228,14 @@ seconds_per_case = 30
 weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
 cost_per_case_usd = 0.50
 seconds_per_case = 300
+
+# terminal-trial (the human trial stage of metric-terminal-presentation, evaluation/terminal_trial): one case is an aspect a person who used the arms on a real terminal commented on, read from an
+# append-only ledger in memory, so a case is worth at most a tenth of a cent and a second. Weights fixed on 2026-11-12 before any arm was recorded: accuracy 95%, cost 2.5%, time 2.5%, like the
+# presentation metric it belongs to. Every aspect weighs the same (a case's graded score is 1 for a recorded strength, 0 otherwise); no aspect is weighted up for the arm that earned it.
+[balance.terminal_trial]
+weights = { accuracy = 0.95, cost = 0.025, time = 0.025 }
+cost_per_case_usd = 0.001
+seconds_per_case = 1
 
 # frontend-interface: one case is a few events turned to plain data in memory, so a case is worth at most a tenth of a cent and one second. The weights are the library's defaults and
 # the budgets were fixed before any arm was scored on the cases of evaluation/frontend_interface/build_cases.py.

@@ -362,6 +362,9 @@ def run_scenario(name: str) -> Dict[str, Any]:
         return {"checks": {}, "ceiling": {}, "not_run": list(hierarchy.SCENARIO_CHECKS[name]), "note": hierarchy.NOT_DRIVEN}
     if name in feed.SCENARIO_CHECKS:
         return {"checks": {}, "ceiling": {}, "not_run": list(feed.SCENARIO_CHECKS[name]), "note": feed.NOT_DRIVEN}
+    if name == "capabilities":        # revision 6: the real client's own palette and rows are read for the capability checks
+        import capabilities_scenarios
+        return capabilities_scenarios.opencode()
     if not client_path():
         return {"checks": {}, "ceiling": {}, "not_run": sorted(C.REQUIREMENTS), "note": launch.unavailable("", environment()) or "the client is not installed"}
     if name not in SCENARIOS:

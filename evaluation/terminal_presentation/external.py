@@ -139,6 +139,9 @@ def run_scenario(name: str) -> Dict[str, Any]:
         return {"checks": {}, "ceiling": {}, "not_run": list(hierarchy.SCENARIO_CHECKS[name]), "note": hierarchy.NOT_DRIVEN}
     if name in feed.SCENARIO_CHECKS:
         return {"checks": {}, "ceiling": {}, "not_run": list(feed.SCENARIO_CHECKS[name]), "note": feed.NOT_DRIVEN}
+    if name == "capabilities":        # revision 6: Toad's own footer, palette and sessions screen are read in a pseudo-terminal
+        import capabilities_scenarios
+        return capabilities_scenarios.toad()
     try:
         import acp  # noqa: F401
     except ImportError:

@@ -58,6 +58,11 @@ terminal (`H`), the consumer's own terminal (`T`), the consumer's chat of every 
 | X41 | a run stopped at its ceiling says so once | one place says what happened, that finished work is kept, how to continue and how to raise the limit, with the resume command alone on its own line; no second line says the same |
 | X42 | every label and status line is written in sentence case | each line that starts a sentence, a label or an item, and each intro phrase before a colon, begins with a capital letter, a digit or a symbol (file names and paths, commands the person types, key names, the agent's own text and wrapped continuation lines are exempt) |
 | X43 | the footer is laid out cleanly at every width | at 56, 80 and 120 columns the structure, agents and key rows have a heading per block, no word cut in the middle, no name printed twice and no half hint |
+| X44 | I can ask the screen what it can do | one action (a help line, a command palette) shows a list of at least 5 rows that were not on the screen, and at least 12 across the surfaces it opens |
+| X45 | I can list earlier sessions and resume one | the surfaces name a list of sessions and a way to open one |
+| X46 | I can switch between sessions | tabs, or a picker that switches between sessions |
+| X47 | I can go into a helper and back from the screen | a key or command names the helper and the way in, and it works (a hub terminal is driven through its keys) |
+| X48 | each kind of update looks different | the rows for a read, an edit, a command, a command that did not work and a helper begin with at least 4 different markers |
 
 ### Manage risk
 
@@ -119,6 +124,11 @@ Read on 2026-11-10 from the code of each surface (the web surfaces read-only; a 
 | X41 | yes | ? | ? | ? | none measured | one stop message with the resume command |
 | X42 | yes | ? | ? | ? | none measured | capital letters on every label |
 | X43 | yes | ? | ? | ? | none measured | footer rows at 56, 80 and 120 columns |
+| X44 | yes | ? | ? | ? | none measured | a palette or help that lists, at least 12 rows across surfaces |
+| X45 | yes | ? | ? | ? | none measured | sessions listed with a way to resume |
+| X46 | yes | ? | ? | ? | none measured | tabs or a session switcher |
+| X47 | yes | ? | ? | ? | none measured | into a helper and back |
+| X48 | yes | ? | ? | ? | none measured | a different marker per kind of update |
 
 ## What the best open-source terminal agents do, worth adopting
 

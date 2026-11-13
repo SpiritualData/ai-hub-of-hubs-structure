@@ -257,5 +257,23 @@
   "expect": {
    "failed": []
   }
+ },
+ {
+  "id": "presentation-capabilities",
+  "kind": "presentation",
+  "origin": "rule: what a person can do from the screen beyond watching, each a probe of the arm's own screen: a command list that lists, many commands, a list of sessions and a way to resume, tabs or switching between sessions, going into a helper, and a different marker for each kind of update (revision 6, X44 to X48) (docs/explanation/working-with-the-ai-while-it-works.md)",
+  "args": {
+   "scenario": "capabilities"
+  },
+  "requirements": [
+   "X44",
+   "X45",
+   "X46",
+   "X47",
+   "X48"
+  ],
+  "expect": {
+   "failed": []
+  }
  }
 ]

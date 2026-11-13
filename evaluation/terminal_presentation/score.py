@@ -15,7 +15,6 @@ sys.path.insert(0, str(HERE.parent))
 
 import checks as C  # noqa: E402
 import scenarios as S  # noqa: E402
-
 CONFIG = HERE.parent.parent / "esoi.toml"
 
 

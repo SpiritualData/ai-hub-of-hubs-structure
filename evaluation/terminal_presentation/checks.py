@@ -40,6 +40,10 @@ REQUIREMENTS = {
     # revision 5 (2026-11-12): the feed, the stop and the words, X39 to X43 (feed_scenarios.py; the capitalisation check runs on every scenario)
     "no-bookkeeping-tool-lines": ("X39",), "failed-command-one-muted-line": ("X40",), "ceiling-stop-said-once": ("X41",), "labels-capitalised": ("X42",), "footer-clean-at-every-width": ("X43",),
 }
+# revision 6 (2026-11-12): the richness of the screen, X44 to X48 (capabilities_scenarios.py), scored for every arm including the stock clients
+REQUIREMENTS.update({"command-surface-listed": ("X44",), "command-surface-broad": ("X44",), "session-list-and-resume": ("X45",), "session-switching": ("X46",), "agent-navigation": ("X47",),
+                     "kind-presentation": ("X48",)})
+REVISION_6 = ("command-surface-listed", "command-surface-broad", "session-list-and-resume", "session-switching", "agent-navigation", "kind-presentation")
 REVISION_5 = ("no-bookkeeping-tool-lines", "failed-command-one-muted-line", "ceiling-stop-said-once", "labels-capitalised", "footer-clean-at-every-width")
 REVISION_2 = ("no-raw-markdown", "no-internal-vocabulary", "answer-once", "no-empty-figure-segment", "resume-command-unbroken", "header-has-full-name", "no-stray-leading-padding",
               "cost-at-cent-precision", "goal-as-persons-message")

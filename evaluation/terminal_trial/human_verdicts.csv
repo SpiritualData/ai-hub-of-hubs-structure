@@ -1,0 +1,12 @@
+verdict_id,date,who,arm,aspect,verdict,reason,source
+hv-001,2026-11-12,owner,opencode_client_session,overall-richness,strength,The richest of the terminals tried,trial of every terminal arm on a real terminal
+hv-002,2026-11-12,owner,opencode_client_session,command-palette,strength,Has a command palette,trial of every terminal arm on a real terminal
+hv-003,2026-11-12,owner,opencode_client_session,many-commands,strength,Many commands,trial of every terminal arm on a real terminal
+hv-004,2026-11-12,owner,opencode_client_session,tabs-and-sessions,strength,Has tabs,trial of every terminal arm on a real terminal
+hv-005,2026-11-12,owner,opencode_client_session,agent-navigation,strength,Can enter and leave agents,trial of every terminal arm on a real terminal
+hv-006,2026-11-12,owner,opencode_client_session,per-kind-presentation,strength,Presents each kind of update differently,trial of every terminal arm on a real terminal
+hv-007,2026-11-12,owner,adopted_session,clean-screen,strength,The cleanest of the terminals tried,trial of every terminal arm on a real terminal
+hv-008,2026-11-12,owner,polished_session,design-and-colour,strength,The best design and colour,trial of every terminal arm on a real terminal
+hv-009,2026-11-12,owner,acp_client_session,overall-richness,strength,Full,trial of every terminal arm on a real terminal
+hv-010,2026-11-12,owner,acp_client_session,fits-small-screen,limit,Needs a large screen,trial of every terminal arm on a real terminal
+hv-011,2026-11-12,owner,live_session,overall-richness,limit,None of the richness the others have,trial of every terminal arm on a real terminal

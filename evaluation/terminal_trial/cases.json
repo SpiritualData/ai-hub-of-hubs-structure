@@ -1,0 +1,92 @@
+[
+ {
+  "id": "trial-agent-navigation",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "agent-navigation"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-clean-screen",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "clean-screen"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-command-palette",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "command-palette"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-design-and-colour",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "design-and-colour"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-fits-small-screen",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "fits-small-screen"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-many-commands",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "many-commands"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-overall-richness",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "overall-richness"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-per-kind-presentation",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "per-kind-presentation"
+  },
+  "requirements": [],
+  "expect": {}
+ },
+ {
+  "id": "trial-tabs-and-sessions",
+  "kind": "aspect",
+  "origin": "human evidence: what a person who used the arms on a real terminal said about this aspect (human_verdicts.csv)",
+  "args": {
+   "aspect": "tabs-and-sessions"
+  },
+  "requirements": [],
+  "expect": {}
+ }
+]
