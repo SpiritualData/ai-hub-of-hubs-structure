@@ -43,6 +43,7 @@ at the repository root.
 | Context Retriever, Dense bge-small vectors (`context-retriever:dense_bge_small`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
 | Context Retriever, Local feature reranker (`context-retriever:feature_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
 | Context Retriever, Feature reranker without priors (`context-retriever:feature_rerank_no_priors`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
+| Context Retriever, Whole-item BM25F with the request's focus first (`context-retriever:focus_first`) | none | none | none | none | no |
 | Context Retriever, BM25F and dense by rank fusion (`context-retriever:hybrid_rrf`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
 | Context Retriever, Learned reranker (`context-retriever:learned_rerank`) | none | none | `fastembed` via extra `retrieval`<br>`numpy` via extra `retrieval`<br>`sklearn` via extra `retrieval` | download BAAI/bge-small-en-v1.5 (fastembed, ONNX), 67 MB (optional) | no |
 | Context Retriever, Scan of the live sources (`context-retriever:live_scan`) | none | none | none | none | no |
@@ -71,6 +72,10 @@ at the repository root.
 | Feedback Learning, Kept note (`feedback-learning:kept_note`) | none | none | none | none | no |
 | Feedback Learning, Scoped record edit (`feedback-learning:scoped_record_edit`) | none | none | none | none | no |
 | File Editing, One-call file edit (`file-editing:fast_edit`) | `HUBOFHUBS_WRITE_ROOT` | none | none | none | no |
+| Focus Context, The configured focus first (`focus-context:configured_focus_context`) | none | none | none | none | no |
+| Focus Context, Notes found by the request's words (`focus-context:filesystem_search`) | none | none | none | none | no |
+| Focus Context, Candidates ranked by words, relevance judged by the fast tier (`focus-context:llm_judged_focus_context`) | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
+| Focus Context, Nothing gathered (`focus-context:no_context`) | none | none | none | none | no |
 | Folder View, Folders judged by evidence, files ranked by what the work points at (`folder-view:evidence_ranked`) | none | none | none | none | no |
 | Folder View, Evidence candidates, then one cheap model call (`folder-view:model_pick`) | none | none | none | program `claude`<br>account note: Claude Code needs a Pro, Max, Ultra, Team, Enterprise or Console account (the free claude.ai plan does not include it); a run bills that account (https://code.claude.com/docs/en/setup) | cli |
 | Folder View, Names, whole folder, shared words (the harness as it was) (`folder-view:ported_baseline`) | none | none | none | none | no |

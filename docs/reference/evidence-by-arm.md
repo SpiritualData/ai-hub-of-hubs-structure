@@ -41,8 +41,9 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | agent_sessions_hard | subprocess_goal_runner@provider=anthropic,tier=balanced | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0.1106 | 30.8 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | agent_sessions_hard | subprocess_goal_runner@provider=anthropic,tier=best | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0.2499 | 22.8 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | agent_sessions_hard | subprocess_goal_runner@provider=anthropic,tier=fast | 7 | 100.0% (64.6% to 100.0%), 7/7 | $0.0094 | 22.7 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| answer_fidelity | answer_check@input=original | 18 | 94.4% (74.2% to 99.0%), 17/18 | $0.0004647 | 3.6 (median) | not compared: no run on the same cases as the selected arm | none recorded |
-| answer_fidelity | no_check | 18 | 44.4% (24.6% to 66.3%), 8/18 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
+| answer_fidelity | no_check (selected) | 18 | 44.4% (24.6% to 66.3%), 8/18 | $0 | 0 (median) | selected | none recorded |
+| answer_fidelity | answer_check@input=original | 18 | 94.4% (74.2% to 99.0%), 17/18 | $0.0005176 | 3.35 (median) | answer_check@input=original beats it (two-sided Fisher p=0.00273; 17/18, $0.0005176 per pass) | none recorded |
+| answer_fidelity | answer_check@input=paraphrase | 18 | 44.4% (24.6% to 66.3%), 8/18 | $0.001075 | 3.45 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | assemble_the_whole | zero_config | 68 | 100.0% (94.7% to 100.0%), 68/68 | $0 | 0 (median) | not compared: no run on the same cases as the selected arm | none recorded |
 | call_a_model | gemini (selected) | 50 | 100.0% (92.9% to 100.0%), 50/50 | $0.000158 | 0.85 (median) | complementary arm, not ranked | none recorded |
 | call_a_model | claude_cli | 3 | 100.0% (43.9% to 100.0%), 3/3 | $0.0002333 | 2.6 (median) | complementary arm, not ranked | none recorded |
@@ -93,9 +94,10 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | feedback_learning | kept_note | 19 | 0.0% (0.0% to 16.8%), 0/19 | no passing case | 0 (median) | ahead of kept_note (two-sided McNemar p=3.81e-06) | none recorded |
 | file_edit_goals | fast_edit (selected) | 30 | 100.0% (88.6% to 100.0%), 30/30 | $0.00051 | 2.95 (median) | selected | none recorded |
 | file_edit_goals | none | 30 | 0.0% (0.0% to 11.4%), 0/30 | no passing case | 0.9 (median) | none: best guess, no per-case rows to test (none 0.298 against fast_edit 0.991) | none recorded |
-| focus_context | configured_focus_context (selected) | 20 | 95.0% (76.4% to 99.1%), 19/20 | $0 | 0 (median) | selected | none recorded |
-| focus_context | filesystem_search | 20 | 35.0% (18.1% to 56.7%), 7/20 | $0 | 0 (median) | ahead of filesystem_search (two-sided McNemar p=0.000549) | none recorded |
-| focus_context | no_context | 20 | 20.0% (8.1% to 41.6%), 4/20 | $0 | 0 (median) | ahead of no_context (two-sided McNemar p=0.000549) | none recorded |
+| focus_context | llm_judged_focus_context (selected) | 52 | 92.3% (81.8% to 97.0%), 48/52 | $0.0009458 | 3.8 (median) | selected | none recorded |
+| focus_context | configured_focus_context | 52 | 84.6% (72.5% to 92.0%), 44/52 | $0 | 0 (median) | ahead of configured_focus_context, not significant (two-sided McNemar p=0.388) | none recorded |
+| focus_context | filesystem_search | 52 | 21.2% (12.2% to 34.0%), 11/52 | $0 | 0 (median) | ahead of filesystem_search (two-sided McNemar p=4.37e-11) | none recorded |
+| focus_context | no_context | 52 | 46.2% (33.3% to 59.5%), 24/52 | $0 | 0 (median) | ahead of no_context (two-sided McNemar p=2.38e-07) | none recorded |
 | folder_view | evidence_ranked (selected) | 41 | 95.1% (83.9% to 98.7%), 39/41 | $0 | 0.3 (median) | selected | none recorded |
 | folder_view | model_pick | 33 | 97.0% (84.7% to 99.5%), 32/33 | 0.5 model calls (no price) | 1 (median) | model_pick: best guess, no per-case rows to test (model_pick 0.97 against evidence_ranked 0.97) | none recorded |
 | folder_view | ported_baseline | 41 | 17.1% (8.5% to 31.3%), 7/41 | $0 | 0.1 (median) | ahead of ported_baseline (two-sided sign test p=1.94e-06) | none recorded |
@@ -172,14 +174,23 @@ the two-sided result against the selected arm, on the held-out cases, and the gr
 | structure_in_view | event_tree (selected) | 20 | 100.0% (83.9% to 100.0%), 20/20 | $0 | 0 (median) | selected | none recorded |
 | structure_watch | best_tier_call (selected) | 18 | 100.0% (82.4% to 100.0%), 18/18 | $0 | 0 (median) | selected | none recorded |
 | structure_watch | findings_only | 18 | 72.2% (49.1% to 87.5%), 13/18 | $0 | 0 (median) | ahead of findings_only, not significant (two-sided sign test p=0.0625) | none recorded |
-| terminal_presentation | live_session (selected) | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 2.6 (median) | selected | none recorded |
-| terminal_presentation | adopted_session | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 3.9 (median) | ahead of adopted_session (two-sided sign test p=0.0117) | none recorded |
-| terminal_presentation | polished_session | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 3.1 (median) | ahead of polished_session (two-sided sign test p=0.0117) | none recorded |
-| terminal_presentation | textual_session | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 3 (median) | ahead of textual_session (two-sided sign test p=0.0117) | none recorded |
+| terminal_presentation | opencode_client_session (selected) | 17 | 47.1% (26.2% to 69.0%), 8/17 | $0 | 3 (median) | selected | none recorded |
+| terminal_presentation | acp_client_session | 17 | 29.4% (13.3% to 53.1%), 5/17 | $0 | 0 (median) | ahead of acp_client_session, not significant (two-sided sign test p=1) | none recorded |
+| terminal_presentation | adopted_session | 17 | 47.1% (26.2% to 69.0%), 8/17 | $0 | 6.2 (median) | adopted_session is ahead, not significant (two-sided sign test p=1; 8/17, $0 per pass) | none recorded |
+| terminal_presentation | live_session | 17 | 76.5% (52.7% to 90.4%), 13/17 | $0 | 4.4 (median) | live_session is ahead, not significant (two-sided sign test p=0.245; 13/17, $0 per pass) | none recorded |
+| terminal_presentation | polished_session | 17 | 52.9% (31.0% to 73.8%), 9/17 | $0 | 4.8 (median) | polished_session is ahead, not significant (two-sided sign test p=1; 9/17, $0 per pass) | none recorded |
+| terminal_presentation | textual_session | 17 | 58.8% (36.0% to 78.4%), 10/17 | $0 | 4.7 (median) | textual_session is ahead, not significant (two-sided sign test p=1; 10/17, $0 per pass) | none recorded |
 | terminal_session | live_session (selected) | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0 (median) | selected | none recorded |
 | terminal_session | line_repl | 67 | 59.7% (47.7% to 70.6%), 40/67 | 0.225 model calls (no price) | 0 (median) | ahead of line_repl (two-sided McNemar p=4.47e-08) | none recorded |
 | terminal_session | polished_session | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0.2 (median) | identical to polished_session on all 67 cases | none recorded |
 | terminal_session | textual_session | 67 | 100.0% (94.6% to 100.0%), 67/67 | 0.134 model calls (no price) | 0.1 (median) | identical to textual_session on all 67 cases | none recorded |
+| terminal_trial | opencode_client_session (selected) | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 0 (median) | selected | none recorded |
+| terminal_trial | acp_client_session | 9 | 88.9% (56.5% to 98.0%), 8/9 | $0 | 0 (median) | ahead of acp_client_session, not significant (two-sided sign test p=1) | none recorded |
+| terminal_trial | adopted_session | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 0 (median) | ahead of adopted_session, not significant (two-sided sign test p=1) | none recorded |
+| terminal_trial | line_repl | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 0 (median) | ahead of line_repl, not significant (two-sided sign test p=1) | none recorded |
+| terminal_trial | live_session | 9 | 88.9% (56.5% to 98.0%), 8/9 | $0 | 0 (median) | ahead of live_session, not significant (two-sided sign test p=1) | none recorded |
+| terminal_trial | polished_session | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 0 (median) | ahead of polished_session, not significant (two-sided sign test p=1) | none recorded |
+| terminal_trial | textual_session | 9 | 100.0% (70.1% to 100.0%), 9/9 | $0 | 0 (median) | ahead of textual_session, not significant (two-sided sign test p=1) | none recorded |
 | watch_for_risk | consent_gate (selected) | 60 | 63.3% (50.7% to 74.4%), 38/60 | $0 | 0 (median) | selected | none recorded |
 | watch_for_risk | none | 60 | 50.0% (37.7% to 62.3%), 30/60 | $0 | 0 (median) | ahead of none, not significant (two-sided sign test p=0.718) | none recorded |
 | watch_for_risk | overseer | 36 | 91.7% (78.2% to 97.1%), 33/36 | $7.576e-05 | 0.4 (median) | ahead of overseer, not significant (two-sided Fisher p=0.718) | none recorded |

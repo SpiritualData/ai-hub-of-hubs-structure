@@ -24,7 +24,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 |---|---|---|---|---|
 | Frontend Interface | `frontend-interface` | `hubofhubs.run("frontend-interface", ...)` | Plain JSON picture of the session (`json_wire`) | Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks |
 | Structure In View | `structure-in-view` | `hubofhubs.run("structure-in-view", ...)` | Agents arranged by solution, records read on request (`event_tree`) | Right solution per sub-agent, detail only when opened |
-| Terminal Experience | `terminal-session` | `hubofhubs.run("terminal-session", {'lines': ['/quit']})` | Live session (reference terminal) (`live_session`) | Terminal screen as drawn (presentation) after the correctness gate, Scripted sessions that end right and requirements met |
+| Terminal Experience | `terminal-session` | `hubofhubs.run("terminal-session", {'lines': ['/quit']})` | opencode client session (the stock opencode terminal draws the hub over its own HTTP API) (`opencode_client_session`) | Terminal screen as drawn (presentation) after the correctness gate, Scripted sessions that end right and requirements met |
 
 ## Problems and ideals
 
@@ -48,7 +48,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks (`metric-frontend-interface`): leader `json_wire`, 28 of 28 cases
 - Right solution per sub-agent, detail only when opened (`metric-structure-in-view`): leader `event_tree`, 20 of 20 cases
 - Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 58 of 58 cases
-- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `acp_client_session`, 5 of 5 cases
+- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `opencode_client_session`, 5 of 6 cases
 
 ## Where to go next
 
@@ -82,7 +82,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 |---|---|---|---|
 | Frontend Interface | `frontend-interface` | Plain JSON picture of the session (`json_wire`) | Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks |
 | Structure In View | `structure-in-view` | Agents arranged by solution, records read on request (`event_tree`) | Right solution per sub-agent, detail only when opened |
-| Terminal Experience | `terminal-session` | Live session (reference terminal) (`live_session`) | Terminal screen as drawn (presentation) after the correctness gate, Scripted sessions that end right and requirements met |
+| Terminal Experience | `terminal-session` | opencode client session (the stock opencode terminal draws the hub over its own HTTP API) (`opencode_client_session`) | Terminal screen as drawn (presentation) after the correctness gate, Scripted sessions that end right and requirements met |
 
 ### Implementations
 
@@ -105,7 +105,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 - Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks (`metric-frontend-interface`): `esoi run frontend_interface --impl json_wire`
 - Right solution per sub-agent, detail only when opened (`metric-structure-in-view`): `esoi run structure_in_view --impl event_tree`
 - Scripted sessions that end right and requirements met (`metric-terminal-session`): `esoi run terminal_session --impl line_repl`
-- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): `esoi run terminal_presentation --impl live_session; esoi run terminal_presentation --impl textual_session; esoi run terminal_session --impl live_session`
+- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): `esoi run terminal_presentation --impl live_session; esoi run terminal_presentation --impl textual_session; esoi run terminal_trial --impl live_session; esoi run terminal_session --impl live_session`
 
 
 *Generated from the CSV files beside this page by `esoi readmes`. Edit the CSV files, not this page.*

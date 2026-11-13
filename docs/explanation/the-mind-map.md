@@ -130,7 +130,7 @@ The table below is generated from the records. Names lead, each part says what i
 | Nervous System | Intelligence | 4 | 4 | 26 | 2026-10-30 | `nervous-system` |
 | Structure Watch | Nervous System | 0 | 0 | 0 | none | `structure-watch` |
 | Proactivity | Intelligence | 0 | 0 | 0 | none | `proactivity` |
-| World | the hub | 7 | 1 | 37 | 2026-10-30 | `the-world` |
+| World | the hub | 7 | 1 | 38 | 2026-10-30 | `the-world` |
 | Science | World | 10 | 2 | 74 | 2026-10-30 | `the-science` |
 | Tools | World | 0 | 0 | 0 | none | `the-tools` |
 | Web Search | Tools | 0 | 0 | 0 | none | `web-search` |
@@ -156,5 +156,5 @@ The table below is generated from the records. Names lead, each part says what i
 | Frontend Interface | AI Session Experience | 0 | 0 | 0 | none | `frontend-interface` |
 | Structure In View | AI Session Experience | 0 | 0 | 0 | none | `structure-in-view` |
 
-77 areas and 505 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
+77 areas and 506 researched candidates in all; every area is listed in [../reference/registry.md](../reference/registry.md).
 <!-- seats:end -->

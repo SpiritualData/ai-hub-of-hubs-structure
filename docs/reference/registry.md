@@ -82,7 +82,7 @@ The file is generated: run `python3 scripts/status.py` and never edit between th
 
 | Area | Serves | Status | Call | Built on | Candidates | Findings | Public evidence rows | Researched |
 |---|---|---|---|---|---|---|---|---|
-| channels | Two-way chat channels | builds_on | keep | OpenClaw | none | 1 | 0 | 2026-10-30 |
+| channels | Two-way chat channels | builds_on | keep | OpenClaw | none | 2 | 0 | 2026-10-30 |
 | inbound_mail | Turning real people's mail into asks | compared | coexist | none | Google Gmail remote MCP; workspace-mcp; AgentMail; Postmark inbound; Nylas | 4 | 0 | 2026-10-30 |
 | voice | Spoken conversation with the brain | compared | keep | none | Pipecat; LiveKit Agents; OpenAI Realtime API; faster-whisper; whisper.cpp; Deepgram; TEN Framework | 8 | 0 | 2026-10-30 |
 | integration_aggregators | One connection to the long tail of apps with managed auth | compared | coexist | none | Composio; Activepieces; Pipedream Connect; Nango; Arcade; Klavis AI; n8n; Zapier MCP | 10 | 0 | 2026-10-30 |

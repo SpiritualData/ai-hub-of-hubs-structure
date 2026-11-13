@@ -29,7 +29,7 @@ Part of [Working with the AI while it works](../README.md)
 ## Metrics
 
 - Scripted sessions that end right and requirements met (`metric-terminal-session`): leader `live_session`, 58 of 58 cases
-- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `acp_client_session`, 5 of 5 cases
+- Terminal screen as drawn (presentation) after the correctness gate (`metric-terminal-presentation`): leader `opencode_client_session`, 5 of 6 cases
 
 ## Problems
 
