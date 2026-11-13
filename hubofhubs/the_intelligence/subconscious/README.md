@@ -41,7 +41,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Solution | Handle | Entry call | Selected implementation | Metric |
 |---|---|---|---|---|
 | Context Retriever | `context-retriever` | `hubofhubs.run("context-retriever", ...)` | BM25 over chunk text (`bm25_body`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
-| Focus Context | `focus-context` | `hubofhubs.run("focus-context", ...)` | The configured focus first (`configured_focus_context`) | The person's own notes reach the brief, little else, nothing outside the scope |
+| Focus Context | `focus-context` | `hubofhubs.run("focus-context", ...)` | Candidates ranked by words, relevance judged by the fast tier (`llm_judged_focus_context`) | The person's own notes reach the brief, little else, nothing outside the scope |
 | Intuition | `the-intuition` | `hubofhubs.run("the-intuition", {'request': 'what is the latest Rust version?'})` | What was taken for similar requests (`co_taken`) | Unasked items are taken and useful |
 | Local File Context | `local-file-context` | `hubofhubs.run("local-file-context", ...)` | Folder view and card builder, called as they are selected (`composition`) | A working folder is ready as context |
 | Relevant Solutions | `relevant-solutions` | `hubofhubs.run("relevant-solutions", ...)` | Records index (`records_index`) | Solutions needing consideration named, recall first |
@@ -67,7 +67,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 ## Metrics and their leaders
 
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-context-retriever`): leader `bm25_body`, 203 of 395 cases
-- The person's own notes reach the brief, little else, nothing outside the scope (`metric-focus-context`): leader `configured_focus_context`, 19 of 20 cases
+- The person's own notes reach the brief, little else, nothing outside the scope (`metric-focus-context`): leader `llm_judged_focus_context`, 48 of 52 cases
 - Unasked items are taken and useful (`metric-the-intuition`): leader `co_taken`, 20 of 20 cases
 - A working folder is ready as context (`metric-local-file-context`)
 - Solutions needing consideration named, recall first (`metric-relevant-solutions`): leader `records_index`, 49 of 62 cases
@@ -105,7 +105,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Solution | Handle | Selected | Metric |
 |---|---|---|---|
 | Context Retriever | `context-retriever` | BM25 over chunk text (`bm25_body`) | Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources |
-| Focus Context | `focus-context` | The configured focus first (`configured_focus_context`) | The person's own notes reach the brief, little else, nothing outside the scope |
+| Focus Context | `focus-context` | Candidates ranked by words, relevance judged by the fast tier (`llm_judged_focus_context`) | The person's own notes reach the brief, little else, nothing outside the scope |
 | Intuition | `the-intuition` | What was taken for similar requests (`co_taken`) | Unasked items are taken and useful |
 | Local File Context | `local-file-context` | Folder view and card builder, called as they are selected (`composition`) | A working folder is ready as context |
 | Relevant Solutions | `relevant-solutions` | Records index (`records_index`) | Solutions needing consideration named, recall first |
@@ -137,6 +137,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Nothing gathered | `focus-context:no_context` | [hubofhubs/the_intelligence/subconscious/focus_context/arms.py](focus_context/arms.py) |  |
 | Notes found by the request's words | `focus-context:filesystem_search` | [hubofhubs/the_intelligence/subconscious/focus_context/arms.py](focus_context/arms.py) |  |
 | The configured focus first | `focus-context:configured_focus_context` | [hubofhubs/the_intelligence/subconscious/focus_context/arms.py](focus_context/arms.py) |  |
+| Candidates ranked by words, relevance judged by the fast tier | `focus-context:llm_judged_focus_context` | [hubofhubs/the_intelligence/subconscious/focus_context/arms.py](focus_context/arms.py) |  |
 | Nearest items by wording | `the-intuition:nearest_cards` | [hubofhubs/the_intelligence/subconscious/intuition/nearest_cards.py](intuition/nearest_cards.py) |  |
 | What was taken for similar requests | `the-intuition:co_taken` | [hubofhubs/the_intelligence/subconscious/intuition/co_taken.py](intuition/co_taken.py) |  |
 | Folder view and card builder, called as they are selected | `local-file-context:composition` | [hubofhubs/the_intelligence/subconscious/local_file_context/flow.py](local_file_context/flow.py) |  |
@@ -156,7 +157,7 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 ### Metrics
 
 - Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources (`metric-context-retriever`): `esoi run context_retrieval --impl bm25_body; esoi run context_retrieval --impl bm25_fielded; esoi run context_retrieval --impl bm25_whole_files; esoi run context_retrieval --impl lsi; esoi run context_retrieval --impl dense_bge_small; esoi run context_retrieval --impl hybrid_rrf; esoi run context_retrieval --impl feature_rerank; esoi run context_retrieval --impl feature_rerank_no_priors; esoi run context_retrieval --impl learned_rerank; esoi run context_retrieval --impl abstaining_hybrid; esoi run context_retrieval --impl abstaining_learned; esoi run context_retrieval --impl abstaining_recency; esoi run context_retrieval --impl abstaining_affinity; esoi run context_retrieval --impl abstaining_aware; esoi run context_retrieval --impl abstaining_fenced; esoi run context_retrieval --impl live_scan; esoi run context_retrieval --impl llm_rerank`
-- The person's own notes reach the brief, little else, nothing outside the scope (`metric-focus-context`): `esoi run focus_context --impl no_context; esoi run focus_context --impl filesystem_search; esoi run focus_context --impl configured_focus_context`
+- The person's own notes reach the brief, little else, nothing outside the scope (`metric-focus-context`): `esoi run focus_context --impl no_context; esoi run focus_context --impl filesystem_search; esoi run focus_context --impl configured_focus_context; esoi run focus_context --impl llm_judged_focus_context --max-calls 700 (FOCUS_CONTEXT_JUDGE=scripted for the model-free plumbing stage)`
 - Unasked items are taken and useful (`metric-the-intuition`): `esoi run intuition --impl nearest_cards; esoi run intuition --impl co_taken`
 - A working folder is ready as context (`metric-local-file-context`): `none`
 - Solutions needing consideration named, recall first (`metric-relevant-solutions`): `esoi run relevant_solutions --impl records_index; esoi run relevant_solutions --impl records_then_model`

@@ -70,6 +70,7 @@
    "esoi-application": "hubofhubs",
    "feedback-learning": "hubofhubs",
    "file-editing": "hubofhubs",
+   "focus-context": "hubofhubs",
    "folder-view": "hubofhubs",
    "frontend-interface": "hubofhubs",
    "goal-completion": "hubofhubs",
@@ -214,6 +215,7 @@
    "dense_bge_small": "hubofhubs.the_intelligence.subconscious.context_retriever.dense",
    "feature_rerank": "hubofhubs.the_intelligence.subconscious.context_retriever.fusion",
    "feature_rerank_no_priors": "hubofhubs.the_intelligence.subconscious.context_retriever.fusion",
+   "focus_first": "hubofhubs.the_intelligence.subconscious.context_retriever.focus_first",
    "hybrid_rrf": "hubofhubs.the_intelligence.subconscious.context_retriever.fusion",
    "learned_rerank": "hubofhubs.the_intelligence.subconscious.context_retriever.learned",
    "live_scan": "hubofhubs.the_intelligence.subconscious.context_retriever.aware",
@@ -250,9 +252,9 @@
  "delegated-agent-sessions": {
   "default": "native_tool_loop_runner@provider=anthropic,tier=fast",
   "evidence": {
-   "detail": "native_tool_loop_runner@provider=anthropic,tier=fast leads native_tool_calling_loop_runner@provider=anthropic,tier=fast (native_tool_calling_loop_runner@provider=anthropic,tier=fast 0.682 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads opencode_hub_runner@provider=anthropic,tier=fast (opencode_hub_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads opencode_runner@provider=anthropic,tier=fast (opencode_runner@provider=anthropic,tier=fast 0.893 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast is better than solution_agents_native_runner@provider=anthropic,tier=fast (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads solution_loop_runner@provider=anthropic,tier=fast (solution_loop_runner@provider=anthropic,tier=fast 0.787 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree); native_tool_loop_runner@provider=anthropic,tier=fast leads stream_json_goal_runner@provider=anthropic,tier=fast (stream_json_goal_runner@provider=anthropic,tier=fast 0.998 against native_tool_loop_runner@provider=anthropic,tier=fast 0.999; best guess, not yet significant, two-sided exact sign test on per-case balanced scores, Holm-adjusted p=1, 9 of 9 cases disagree)",
-   "p": 0.023438,
-   "verdict": "WIN"
+   "detail": "lead 25/27 vs 24/27 not significant at 0.05; native_tool_loop_runner@provider=anthropic,tier=fast cheaper per case",
+   "p": 1.0,
+   "verdict": "TIE"
   },
   "modules": {
    "acp_deep_runner": "hubofhubs.the_world.tools.delegated_agent_sessions.acp_runner",
@@ -301,12 +303,26 @@
  "file-editing": {
   "default": "fast_edit",
   "evidence": {
-   "detail": "best guess, not yet significant: none 0.298 against fast_edit 0.972 on the point estimate; no case counts or per-case rows allow a test",
+   "detail": "best guess, not yet significant: none 0.298 against fast_edit 0.991 on the point estimate; no case counts or per-case rows allow a test",
    "p": null,
    "verdict": "WIN"
   },
   "modules": {
    "fast_edit": "hubofhubs.the_world.tools.file_editing.fast_edit"
+  }
+ },
+ "focus-context": {
+  "default": "llm_judged_focus_context",
+  "evidence": {
+   "detail": "llm_judged_focus_context leads configured_focus_context (configured_focus_context 0.846 against llm_judged_focus_context 0.923; best guess, not yet significant, two-sided exact McNemar test, Holm-adjusted p=0.388, 12 of 52 cases disagree); llm_judged_focus_context is better than filesystem_search (two-sided exact McNemar test, Holm-adjusted p=4.37e-11, 37 of 52 cases disagree); llm_judged_focus_context is better than no_context (two-sided exact McNemar test, Holm-adjusted p=2.38e-07, 24 of 52 cases disagree)",
+   "p": 0.0,
+   "verdict": "WIN"
+  },
+  "modules": {
+   "configured_focus_context": "hubofhubs.the_intelligence.subconscious.focus_context.arms",
+   "filesystem_search": "hubofhubs.the_intelligence.subconscious.focus_context.arms",
+   "llm_judged_focus_context": "hubofhubs.the_intelligence.subconscious.focus_context.arms",
+   "no_context": "hubofhubs.the_intelligence.subconscious.focus_context.arms"
   }
  },
  "folder-view": {
@@ -657,11 +673,11 @@
   }
  },
  "terminal-session": {
-  "default": "live_session",
+  "default": "opencode_client_session",
   "evidence": {
-   "detail": "live_session is better than adopted_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 8 of 8 cases disagree); live_session is better than polished_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 8 of 8 cases disagree); live_session is better than textual_session (two-sided exact sign test on per-case balanced scores, Holm-adjusted p=0.0234, 8 of 8 cases disagree)",
-   "p": 0.023438,
-   "verdict": "WIN"
+   "detail": "no rival implementation was measured on the same cases",
+   "p": null,
+   "verdict": "UNMEASURED"
   },
   "modules": {
    "acp_client_session": "hubofhubs.the_consciousness.ai_session_experience.terminal_experience.acp_client_session",

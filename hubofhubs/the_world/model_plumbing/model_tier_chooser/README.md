@@ -13,7 +13,7 @@ Part of [Asking a model through one measured path](../README.md)
 - Entry call: `hubofhubs.run("model-tier-chooser", {'available': ['anthropic']})`
 - Selected implementation: Tier metric selector (`tier_selector`)
 - Metric: Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Role tier by public evaluations, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases
-- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 208 more
+- Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 209 more
 
 ## Implementations
 
