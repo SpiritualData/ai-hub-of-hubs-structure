@@ -15,6 +15,13 @@ Part of [What the Mind sees and does for one request](../README.md)
 - Metric: Handoffs keep authority, budget and cancellation
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Delegation
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** Handoffs keep authority, budget and cancellation. A piece goes to its worker only with the authority, within the budget and while the request is not cancelled; otherwise it is refused with the reason, and a stop reaches the worker's own hook.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

@@ -15,6 +15,16 @@ Part of [Finding and preparing information for the Mind](../README.md)
 - Metric: Unasked items are taken and useful
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Intuition
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | What was taken for similar requests (`co_taken`) | 100% (20 of 20 cases) | free | selected |
+| 2 | Nearest items by wording (`nearest_cards`) | 50% (10 of 20 cases) | free |  |
+
+**How it is scored:** Unasked items are taken and useful. An offered item is useful often enough that it is kept, and nothing is offered when nothing bears on the request.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

@@ -15,6 +15,19 @@ Part of [Local File Context](../README.md)
 - Metric: Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../../critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Cards From Files
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Import graph topic cards (`import_graph_topic_cards`) | score 0.61 (112 of 252 cases) | free | selected |
+| 2 | Cochange topic cards (`cochange_topic_cards`) | score 0.58 (102 of 252 cases) | free |  |
+| 3 | Topic cards replay (`topic_cards_replay`) | score 0.42 (42 of 252 cases) | free |  |
+
+7 more compared; the full list is in the results log.
+
+**How it is scored:** Balanced score of a builder's cards on file-finding, topic and orientation cases, with the store's size. A card groups information on one topic from many files, so a card builder is judged by one number: whether its cards serve a mix of cases (finding a file, the files a topic task needed, the neighbourhood of a file) from a store small enough to be topic cards, at a price in money and time a team would pay.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

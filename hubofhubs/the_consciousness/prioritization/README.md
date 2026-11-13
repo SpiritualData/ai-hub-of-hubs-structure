@@ -13,7 +13,17 @@ Part of [Adapting to the humans the system works with](../README.md)
 - Entry call: `hubofhubs.run("prioritization", ...)`
 - Selected implementation: Stated and carried fields (`stated_fields`)
 - Metric: Work, asks and milestones in the order the stated rules give
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../ai_session_experience/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../ai_session_experience/acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../ai_session_experience/acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../ai_session_experience/acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../ai_session_experience/acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../ai_session_experience/acp_agent/tests/test_acp_agent.py) and 170 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../ai_session_experience/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../ai_session_experience/acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../ai_session_experience/acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../ai_session_experience/acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../ai_session_experience/acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../ai_session_experience/acp_agent/tests/test_acp_agent.py) and 172 more
+
+### Top implementations of Prioritization
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Stated and carried fields (`stated_fields`) | score 1.00 (34 of 34 cases) | free | selected |
+| 2 | As given (`as_given`) | score 0.32 (1 of 34 cases) | free |  |
+
+**How it is scored:** Work, asks and milestones in the order the stated rules give. The three things that compete for a person's attention (the work the AI starts unasked, the asks it puts to the person and the person's solution milestones) come back in the order the rules a person states or the data carries give for each.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Implementations
 

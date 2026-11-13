@@ -15,6 +15,13 @@ Part of [Using the tools of the outside world](../README.md)
 - Metric: Files read inside the folder
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 209 more
 
+### Top implementations of File Reading
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** Files read inside the folder. Files of a folder are listed and read, a path outside the folder is refused, and what is not text or too large is skipped.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

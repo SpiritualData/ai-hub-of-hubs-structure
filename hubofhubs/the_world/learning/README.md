@@ -15,6 +15,16 @@ Part of [Awareness of the outside and interaction with it](../README.md)
 - Metric: Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants, Research recorded and reused
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../__init__.py), [`hubofhubs/the_world/flow.py`](../flow.py), [`hubofhubs/the_world/interface.py`](../interface.py), [`hubofhubs/the_world/learning/__init__.py`](__init__.py), [`hubofhubs/the_world/learning/interface.py`](interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](recorded_research.py) and 209 more
 
+### Top implementations of Learning
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Systematic review (`systematic_review`) | 100% (30 of 30 cases) | free | selected |
+| 2 | Stale areas and one search (`registry_research`) | 3% (1 of 30 cases) | free |  |
+
+**How it is scored:** Research kept current and done as a review. Every research area is inside its refresh window, and every knowledge search the hub does is a review whose record has the parts its size requires.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## One level below
 
 - [Research Freshness Reader](research_freshness_reader/README.md) (solution with implementations): Read the registry's recorded dates and report how old each area's research is.

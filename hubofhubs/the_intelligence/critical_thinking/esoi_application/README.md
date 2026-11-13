@@ -15,6 +15,16 @@ Part of [Holding a request to a measure](../README.md)
 - Metric: Edits change exactly the field proposed
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../decision_check/remainder.py) and 255 more
 
+### Top implementations of ESOI Application
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Record field edit (`record_field_edit`) | 100% (10 of 10 cases) | free | selected |
+| 2 | Append to description (`append_to_description`) | 0% (0 of 10 cases) | n/a |  |
+
+**How it is scored:** Edits change exactly the field proposed. A proposed edit to a spec or metric changes exactly the field it names, an addition is made once, an edit the records location holds for approval is reported as proposed, and an edit that cannot be applied changes nothing.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

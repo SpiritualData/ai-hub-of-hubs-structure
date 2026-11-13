@@ -13,7 +13,14 @@ Part of [The parts working as one whole](../README.md)
 - Entry call: `hubofhubs.run("the-assembler", {})`
 - Selected implementation: One-call assembly of the whole hub (`zero_config`)
 - Metric: Whole assembly
-- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`conftest.py`](../../../conftest.py) and 461 more
+- Implemented by: [`.env.example`](../../../.env.example), [`.gitignore`](../../../.gitignore), [`CHANGELOG.md`](../../../CHANGELOG.md), [`CLAUDE.md`](../../../CLAUDE.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), [`LICENSE`](../../../LICENSE), [`NOTICE`](../../../NOTICE), [`conftest.py`](../../../conftest.py) and 462 more
+
+### Top implementations of Assembler
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** Whole assembly. Every seat resolves to its selected arm or says exactly what to pass, and no consumer wording enters the hub.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Implementations
 

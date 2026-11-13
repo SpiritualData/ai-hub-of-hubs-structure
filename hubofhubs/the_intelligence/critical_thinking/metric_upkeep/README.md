@@ -15,6 +15,13 @@ Part of [Holding a request to a measure](../README.md)
 - Metric: Metric states and intermediates are right
 - Implemented by: [`hubofhubs/the_intelligence/critical_thinking/metric_upkeep/upkeep.py`](upkeep.py)
 
+### Top implementations of Metric Upkeep
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** Metric states and intermediates are right. A metric's state matches what its fields say, a reading is recorded once, and an intermediate metric is added once, only when the check agrees it tracks the parent's done test.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

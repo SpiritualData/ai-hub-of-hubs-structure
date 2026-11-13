@@ -12,7 +12,16 @@ Part of [Working with the AI while it works](../README.md)
 - Entry call: `hubofhubs.run("structure-in-view", ...)`
 - Selected implementation: Agents arranged by solution, records read on request (`event_tree`)
 - Metric: Right solution per sub-agent, detail only when opened
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../acp_agent/tests/test_acp_agent.py) and 170 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../acp_agent/tests/test_acp_agent.py) and 172 more
+
+### Top implementations of Structure In View
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Agents arranged by solution, records read on request (`event_tree`) | score 1.00 (20 of 20 cases) | free | selected |
+
+**How it is scored:** Right solution per sub-agent, detail only when opened. The tree shows each sub-agent on the solution it works on in the right hierarchy, stays free of field detail until a solution is opened, then carries that solution's named fields and connections, and an unknown solution is handled.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Implementations
 

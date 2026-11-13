@@ -15,6 +15,16 @@ Part of [Using the tools of the outside world](../README.md)
 - Metric: Goal met by its own tests
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 209 more
 
+### Top implementations of File Editing
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | One-call file edit (`fast_edit`) | score 0.99 (30 of 30 cases) | $0.0005 | selected |
+| 2 | `none` | score 0.30 (0 of 30 cases) | n/a |  |
+
+**How it is scored:** Goal met by its own tests. A single-file edit counts as done only when its own written tests pass after the arm has run, with the tests restored by the harness.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

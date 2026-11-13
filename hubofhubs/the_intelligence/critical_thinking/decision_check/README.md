@@ -15,6 +15,17 @@ Part of [Holding a request to a measure](../README.md)
 - Metric: Decisions right within a call cap
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](remainder.py) and 255 more
 
+### Top implementations of Decision Check
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Independent views, adjudicated on disagreement (`agreement_check`) | 95% (20 of 21 cases) | free | selected |
+| 2 | One verify call over all the evidence (`single_verify`) | 95% (20 of 21 cases) | free |  |
+| 3 | Draft as given (`draft_as_given`) | 48% (10 of 21 cases) | free |  |
+
+**How it is scored:** Decisions right within a call cap. A draft decision is right more often after the check than before, within the declared number of model calls, and a decision the checks cannot settle is an abstain rather than a guess.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

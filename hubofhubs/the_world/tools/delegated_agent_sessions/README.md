@@ -15,6 +15,21 @@ Part of [Using the tools of the outside world](../README.md)
 - Metric: Hard deep work finished per cost and time (agent sessions), Open-ended work finished per cost and time (agent sessions), Harness, context, sub-agents and recursion ranked, A run finds what it needs instead of asking, The final answer does what the person asked, about what they named
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 209 more
 
+### Top implementations of Delegated Agent Sessions
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Claude Code, steerable session (`stream_json_goal_runner@provider=anthropic,tier=fast`) | score 1.00 (9 of 9 cases) | $0.0041 |  |
+| 2 | Hub's frame on the model's own tool loop, with sub-agents scoped to solutions (`solution_agents_native_runner@provider=anthropic,tier=fast`) | score 0.89 (8 of 9 cases) | $0.0067 |  |
+| 3 | Hub's frame on the model's own tool loop (`native_tool_loop_runner@provider=anthropic,tier=fast`) | score 0.89 (8 of 9 cases) | $0.0045 | selected |
+
+The one in use is chosen at the deciding stage of the cascade (see the leaderboard), which can differ from the latest run ranked here.
+
+1 more compared; the full list is in the results log.
+
+**How it is scored:** Harness, context, sub-agents and recursion ranked. Harnesses are ranked by cost and time at the same pass rate, across the context given to them and their use of sub-agents and recursion.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

@@ -45,6 +45,19 @@ This intent is implemented by the sub-intents and solutions below it; each shows
 | Learning | `the-learning` | `hubofhubs.run("the-learning", '2026-11-03')` | Systematic review (`systematic_review`) | Research kept current and done as a review, Public stage sourced and triangulated, Best in circumstance with variants, Research recorded and reused |
 | Research Freshness Reader | `research-freshness-reader` | `hubofhubs.run("research-freshness-reader", '2026-10-01')` | Registry date scan (`registry_scan`) | Registry freshness reading |
 
+### Top implementations of Science
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | OpenAlex semantic search (`openalex_semantic`) | score 0.53 (52 of 150 cases) | free | selected |
+| 2 | Semantic and web paper search (`openalex_semantic_and_web`) | score 0.51 (49 of 150 cases) | $0.0003 |  |
+| 3 | Web research (`web_research`) | score 0.37 (18 of 150 cases) | $0.0007 |  |
+
+3 more compared; the full list is in the results log.
+
+**How it is scored:** Research question finds its paper. The paper that answers a research question is among the observations an arm returns.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Problems and ideals
 
 **Problems**

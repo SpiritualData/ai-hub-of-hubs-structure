@@ -15,6 +15,19 @@ Part of [Holding a request to a measure](../README.md)
 - Metric: Goals judged met only when they are, and iteration stopped when it should be
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../decision_check/remainder.py) and 255 more
 
+### Top implementations of Goal Completion
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Independent review, then the stop rule (`independent_review`) | score 1.00 (65 of 65 cases) | free | selected |
+| 2 | Pragmatic stop rule (`pragmatic_stop`) | score 0.98 (63 of 65 cases) | free |  |
+| 3 | Outcome is not empty (`nonempty`) | score 0.68 (29 of 65 cases) | free |  |
+
+1 more compared; the full list is in the results log.
+
+**How it is scored:** Goals judged met only when they are, and iteration stopped when it should be. An outcome is met only when it is present, complete as declared and holds every requirement of the done-standard; and iteration the person did not ask for goes on only while the expected gain toward the next milestone is worth its cost, stopping when the goal or milestone is met, at a person's, policy's or ceiling's bound, on a plateau, an oscillation or a regress, and asking when only a person can supply what is missing.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

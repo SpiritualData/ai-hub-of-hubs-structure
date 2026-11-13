@@ -15,6 +15,21 @@ Part of [Holding a request to a measure](../README.md)
 - Metric: Balanced score of a response against its quality profile
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../decision_check/remainder.py) and 255 more
 
+### Top implementations of Response Quality
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Day counts that match the calendar (`date_arithmetic`) | score 1.00 (15 of 15 cases) | free |  |
+| 2 | No em dash (`em_dash_free`) | score 1.00 (15 of 15 cases) | free |  |
+| 3 | Links held to their evidence (`evidence_check`) | score 1.00 (15 of 15 cases) | free | selected |
+
+The one in use is chosen at the deciding stage of the cascade (see the leaderboard), which can differ from the latest run ranked here.
+
+1 more compared; the full list is in the results log.
+
+**How it is scored:** Balanced score of a response against its quality profile. One balanced score for each quality profile, with the weights and targets of the profile fixed before any method is scored.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

@@ -15,6 +15,17 @@ Part of [Local File Context](../README.md)
 - Metric: Needed files shown within the budget, nothing risky or useless read, what was left out said
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../../critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Folder View
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Folders judged by evidence, files ranked by what the work points at (`evidence_ranked`) | score 0.98 (39 of 41 cases) | free | selected |
+| 2 | Evidence candidates, then one cheap model call (`model_pick`) | 97% (32 of 33 cases) | 0.5 calls |  |
+| 3 | Names, whole folder, shared words (the harness as it was) (`ported_baseline`) | score 0.70 (7 of 41 cases) | free |  |
+
+**How it is scored:** Needed files shown within the budget, nothing risky or useless read, what was left out said. The files a piece of work needs are among the first shown within a fixed budget, with little else; no file of a credentials, backup or private folder, and no dependency, build or cache file, is shown unasked; a file the goal names inside a risky folder comes back flagged and not shown; and the folders left out are listed.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

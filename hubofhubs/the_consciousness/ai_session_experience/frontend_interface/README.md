@@ -12,7 +12,16 @@ Part of [Working with the AI while it works](../README.md)
 - Entry call: `hubofhubs.run("frontend-interface", ...)`
 - Selected implementation: Plain JSON picture of the session (`json_wire`)
 - Metric: Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../acp_agent/tests/test_acp_agent.py) and 170 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../acp_agent/tests/test_acp_agent.py) and 172 more
+
+### Top implementations of Frontend Interface
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Plain JSON picture of the session (`json_wire`) | score 1.00 (28 of 28 cases) | free | selected |
+
+**How it is scored:** Every event and control reaches a frontend as plain data, with the run facts and no terminal leaks. A separate frontend gets every event and control of a session, and the facts a person looks for (cost, helpers, changed files, steer acknowledgement, pending input), as plain data that names nothing of a terminal.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Implementations
 

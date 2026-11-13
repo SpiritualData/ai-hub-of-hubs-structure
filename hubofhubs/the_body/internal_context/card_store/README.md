@@ -15,6 +15,15 @@ Part of [Internal Context](../README.md)
 - Metric: Cards found again, none lost
 - Implemented by: [`hubofhubs/the_body/__init__.py`](../../__init__.py), [`hubofhubs/the_body/filemodes.py`](../../filemodes.py), [`hubofhubs/the_body/flow.py`](../../flow.py), [`hubofhubs/the_body/hands/__init__.py`](../../hands/__init__.py), [`hubofhubs/the_body/hands/integrations.py`](../../hands/integrations.py), [`hubofhubs/the_body/hands/interface.py`](../../hands/interface.py), [`hubofhubs/the_body/hands/tests/test_hands.py`](../../hands/tests/test_hands.py), [`hubofhubs/the_body/intake_sources/__init__.py`](../../intake_sources/__init__.py) and 64 more
 
+### Top implementations of Card Store
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Local card store (`local_card_store`) | 100% (35 of 35 cases) | free | selected |
+
+**How it is scored:** Cards found again, none lost. A card that was added is found again by its words, and adding the same id twice loses nothing.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

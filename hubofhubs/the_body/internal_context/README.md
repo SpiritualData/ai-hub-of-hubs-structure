@@ -15,6 +15,13 @@ Part of [The form and internal context of a system](../README.md)
 - Metric: An internal source reaches the AI through one declaration
 - Implemented by: [`hubofhubs/the_body/__init__.py`](../__init__.py), [`hubofhubs/the_body/filemodes.py`](../filemodes.py), [`hubofhubs/the_body/flow.py`](../flow.py), [`hubofhubs/the_body/hands/__init__.py`](../hands/__init__.py), [`hubofhubs/the_body/hands/integrations.py`](../hands/integrations.py), [`hubofhubs/the_body/hands/interface.py`](../hands/interface.py), [`hubofhubs/the_body/hands/tests/test_hands.py`](../hands/tests/test_hands.py), [`hubofhubs/the_body/intake_sources/__init__.py`](../intake_sources/__init__.py) and 64 more
 
+### Top implementations of Internal Context
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** An internal source reaches the AI through one declaration. An internal source is declared once and its context reaches the AI.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## One level below
 
 - [Card Store](card_store/README.md) (solution with implementations): Keep cards and find them again.

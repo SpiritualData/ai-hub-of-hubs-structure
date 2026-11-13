@@ -13,7 +13,17 @@ Part of [The parts working as one whole](../README.md)
 - Entry call: `hubofhubs.run("role-understanding", 'the-assembler')`
 - Selected implementation: Role checked against the part's calls (`checked_role`)
 - Metric: Roles stated as recorded and contradictions found
-- Implemented by: [`hubofhubs/the_self/__init__.py`](../__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](../assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](../assembler/arm_needs.py), [`hubofhubs/the_self/assembler/availability.py`](../assembler/availability.py), [`hubofhubs/the_self/assembler/cli.py`](../assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](../assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](../assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](../assembler/resolution.py) and 28 more
+- Implemented by: [`hubofhubs/the_self/__init__.py`](../__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](../assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](../assembler/arm_needs.py), [`hubofhubs/the_self/assembler/availability.py`](../assembler/availability.py), [`hubofhubs/the_self/assembler/cli.py`](../assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](../assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](../assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](../assembler/resolution.py) and 29 more
+
+### Top implementations of Role Understanding
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Role checked against the part's calls (`checked_role`) | score 1.00 (13 of 13 cases) | free | selected |
+| 2 | Role as the record states it (`recorded_role`) | score 0.78 (9 of 13 cases) | free |  |
+
+**How it is scored:** Roles stated as recorded and contradictions found. A part's behaviour matches the role the whole gives it.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Implementations
 

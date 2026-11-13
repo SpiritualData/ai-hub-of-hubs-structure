@@ -15,6 +15,15 @@ Part of [Asking a model through one measured path](../README.md)
 - Metric: Tier default by the tier's own public metric, Fast tier default, Balanced tier default, Quality tier default, Best tier default, Role tier by public evaluations, Tier passing work per cost, Model quality on hard maths, Vendor arms answer, Fast roles pooled cases
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 209 more
 
+### Top implementations of Model Tier Chooser
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Tier metric selector (`tier_selector`) | 100% (36 of 36 cases) | free | selected |
+
+**How it is scored:** Tier default by the tier's own public metric. The default for each of the four tiers (fast, balanced, quality, best) is the cheapest and fastest arm that is at least as good as the tier's held default on public evaluations, by metric-tier-fast, -balanced, -quality and -best; best is capability only.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

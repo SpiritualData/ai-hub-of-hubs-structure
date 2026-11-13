@@ -15,6 +15,19 @@ Part of [Finding and preparing information for the Mind](../README.md)
 - Metric: Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Context Retriever
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | BM25 over chunk text (`bm25_body`) | score 0.66 (203 of 395 cases) | free | selected |
+| 2 | BM25F over path, title and body (`bm25_fielded`) | score 0.63 (187 of 395 cases) | free |  |
+| 3 | BM25F and dense by rank fusion (`hybrid_rrf`) | score 0.60 (169 of 395 cases) | free |  |
+
+13 more compared; the full list is in the results log.
+
+**How it is scored:** Balanced score of retrieval on file, topic, orientation, no-context, memory, public-repository and grouping requests, with the index size and the cost of reading sources. An arm is judged by one number: whether what a request needs is among the units shown within a fixed token budget, in the right order, without noise tokens (an outdated fact counts as noise), nothing is shown when nothing is needed, and the arm does not read the sources at request time, at an index size, price and time a consumer would pay.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

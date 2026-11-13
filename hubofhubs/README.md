@@ -15,6 +15,13 @@ Bring in what is outside the system and let the AI act on it through the best av
 - Metric: Task pass rate and cost per passing task
 - Implemented by: [`hubofhubs/the_world/__init__.py`](the_world/__init__.py), [`hubofhubs/the_world/flow.py`](the_world/flow.py), [`hubofhubs/the_world/interface.py`](the_world/interface.py), [`hubofhubs/the_world/learning/__init__.py`](the_world/learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](the_world/learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](the_world/learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](the_world/learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](the_world/learning/recorded_research.py) and 209 more
 
+### Top implementations of World
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** Task pass rate and cost per passing task. Task pass rate and cost per passing task, per hub.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## The Self (`the-self`)
 
 Keep every part working as one whole for one request.
@@ -24,7 +31,18 @@ Keep every part working as one whole for one request.
 - Entry call: `hubofhubs.run("the-self", ...)`
 - Selected implementation: Responds through every container (`composition`)
 - Metric: The assembled whole answers a real request, Integrated efficiency of the whole, The front door works on a plain install
-- Implemented by: [`hubofhubs/the_self/__init__.py`](the_self/__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](the_self/assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](the_self/assembler/arm_needs.py), [`hubofhubs/the_self/assembler/availability.py`](the_self/assembler/availability.py), [`hubofhubs/the_self/assembler/cli.py`](the_self/assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](the_self/assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](the_self/assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](the_self/assembler/resolution.py) and 28 more
+- Implemented by: [`hubofhubs/the_self/__init__.py`](the_self/__init__.py), [`hubofhubs/the_self/assembler/__init__.py`](the_self/assembler/__init__.py), [`hubofhubs/the_self/assembler/arm_needs.py`](the_self/assembler/arm_needs.py), [`hubofhubs/the_self/assembler/availability.py`](the_self/assembler/availability.py), [`hubofhubs/the_self/assembler/cli.py`](the_self/assembler/cli.py), [`hubofhubs/the_self/assembler/interface.py`](the_self/assembler/interface.py), [`hubofhubs/the_self/assembler/oneline.py`](the_self/assembler/oneline.py), [`hubofhubs/the_self/assembler/resolution.py`](the_self/assembler/resolution.py) and 29 more
+
+### Top implementations of The Self
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | `whole_hub` | 0% (0 of 6 cases) | n/a |  |
+
+The one in use is chosen at the deciding stage of the cascade (see the leaderboard), which can differ from the latest run ranked here.
+
+**How it is scored:** The assembled whole answers a real request. The whole answers a real request as one capable assistant.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Body (`the-body`)
 
@@ -37,6 +55,13 @@ Let the hub apply to one particular system by declaring where its data lives, wh
 - Metric: A system applies the hub to itself
 - Implemented by: [`hubofhubs/the_body/__init__.py`](the_body/__init__.py), [`hubofhubs/the_body/filemodes.py`](the_body/filemodes.py), [`hubofhubs/the_body/flow.py`](the_body/flow.py), [`hubofhubs/the_body/hands/__init__.py`](the_body/hands/__init__.py), [`hubofhubs/the_body/hands/integrations.py`](the_body/hands/integrations.py), [`hubofhubs/the_body/hands/interface.py`](the_body/hands/interface.py), [`hubofhubs/the_body/hands/tests/test_hands.py`](the_body/hands/tests/test_hands.py), [`hubofhubs/the_body/intake_sources/__init__.py`](the_body/intake_sources/__init__.py) and 64 more
 
+### Top implementations of Body
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** A system applies the hub to itself. A system declares its own sources and acts through the hub without code written for each part.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Intelligence (`the-intelligence`)
 
 Turn one request and what is known into a response that meets its goal.
@@ -48,6 +73,13 @@ Turn one request and what is known into a response that meets its goal.
 - Metric: A request is answered from what bears on it
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](the_intelligence/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](the_intelligence/critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](the_intelligence/critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](the_intelligence/critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](the_intelligence/critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](the_intelligence/critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](the_intelligence/critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](the_intelligence/critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Intelligence
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** A request is answered from what bears on it. One request is answered from the information that bears on it and no more.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Consciousness (`the-consciousness`)
 
 Keep the system aligned with the humans and policies it works for.
@@ -57,7 +89,14 @@ Keep the system aligned with the humans and policies it works for.
 - Entry call: `hubofhubs.run("the-consciousness", '')`
 - Selected implementation: Representative, priorities and feedback (`composition`)
 - Metric: A representative asks when the person would want to be asked
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](the_consciousness/ai_session_experience/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](the_consciousness/ai_session_experience/acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](the_consciousness/ai_session_experience/acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](the_consciousness/ai_session_experience/acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](the_consciousness/ai_session_experience/acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py) and 170 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](the_consciousness/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](the_consciousness/ai_session_experience/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](the_consciousness/ai_session_experience/acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](the_consciousness/ai_session_experience/acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](the_consciousness/ai_session_experience/acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](the_consciousness/ai_session_experience/acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py) and 172 more
+
+### Top implementations of Consciousness
+
+No implementation has a recorded result yet, so the choice is not backed by a measurement.
+
+**How it is scored:** A representative asks when the person would want to be asked. A representative asks a person when that person would want to be asked and acts as the person wants.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## One level below
 

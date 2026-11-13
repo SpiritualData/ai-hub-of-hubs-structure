@@ -15,6 +15,16 @@ Part of [Using the tools of the outside world](../README.md)
 - Metric: Search finds the source
 - Implemented by: [`hubofhubs/the_world/__init__.py`](../../__init__.py), [`hubofhubs/the_world/flow.py`](../../flow.py), [`hubofhubs/the_world/interface.py`](../../interface.py), [`hubofhubs/the_world/learning/__init__.py`](../../learning/__init__.py), [`hubofhubs/the_world/learning/interface.py`](../../learning/interface.py), [`hubofhubs/the_world/learning/investigation_record.py`](../../learning/investigation_record.py), [`hubofhubs/the_world/learning/investigation_store.py`](../../learning/investigation_store.py), [`hubofhubs/the_world/learning/recorded_research.py`](../../learning/recorded_research.py) and 209 more
 
+### Top implementations of Web Search
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Gemini grounding (`gemini`) | 80% (32 of 40 cases) | $0.0001 | selected |
+| 2 | Provider-native search (`provider`) | 30% (12 of 40 cases) | $0.0001 |  |
+
+**How it is scored:** Search finds the source. A top-five search hit comes from a page or site that holds the answer to a factual question.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

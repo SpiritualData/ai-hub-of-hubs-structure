@@ -15,6 +15,16 @@ Part of [Holding a request to a measure](../README.md)
 - Metric: Replies make the structure move their turn calls for
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../decision_check/remainder.py) and 255 more
 
+### Top implementations of Structure in conversation
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Structure move (`structure_move`) | 100% (36 of 36 cases) | free | selected |
+| 2 | No structure (`none`) | 17% (6 of 36 cases) | free |  |
+
+**How it is scored:** Replies make the structure move their turn calls for. A reply carries the structure its turn calls for and no more: a plain turn stays plain, a turn that calls for structure shows the problem, ideal, solution, alternatives, metric and milestone from the records first and the draft for what is missing, no existing record is duplicated, a metric value is only one the records hold, and at most one offer keeps the missing pieces.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

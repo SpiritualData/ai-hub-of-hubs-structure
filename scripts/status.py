@@ -14,9 +14,11 @@ from esoi import config as esoi_config  # noqa: E402
 from esoi import registry as esoi_registry  # noqa: E402
 from esoi import read_tree  # noqa: E402
 from esoi import read_csv  # noqa: E402
-from hubofhubs.the_self.integrity import evidence_summary, render_docs, requirements_doc  # noqa: E402
+from hubofhubs.the_self.integrity import evidence_summary, readme_compared, render_docs, requirements_doc  # noqa: E402
 
-TARGETS = (("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
+TARGETS = (("README.md", readme_compared.COUNTS_BEGIN, readme_compared.COUNTS_END),
+           ("README.md", readme_compared.COMPARED_BEGIN, readme_compared.COMPARED_END),
+           ("docs/explanation/the-mind-map.md", render_docs.STATUS_BEGIN, render_docs.STATUS_END),
            ("docs/reference/registry.md", render_docs.DETAIL_BEGIN, render_docs.DETAIL_END),
            ("docs/reference/status.md", render_docs.CONTAINERS_BEGIN, render_docs.CONTAINERS_END),
            ("docs/reference/status.md", evidence_summary.HEADLINE_BEGIN, evidence_summary.HEADLINE_END),
@@ -90,7 +92,9 @@ def blocks():
             evidence_summary.UNMEASURED_BEGIN: evidence_summary.unmeasured_block(config, registry, ROOT),
             evidence_summary.ARMS_BEGIN: evidence_summary.arms_block(config, registry),
             evidence_summary.LEADERBOARD_BEGIN: evidence_summary.leaderboard_block(config, registry, ROOT),
-            requirements_doc.BEGIN: requirements_doc.requirements_block()}
+            requirements_doc.BEGIN: requirements_doc.requirements_block(),
+            readme_compared.COUNTS_BEGIN: readme_compared.counts_block(registry),
+            readme_compared.COMPARED_BEGIN: readme_compared.compared_block(config, registry)}
 
 
 def main(argv):

@@ -12,7 +12,22 @@ Part of [Working with the AI while it works](../README.md)
 - Entry call: `hubofhubs.run("terminal-session", {'lines': ['/quit']})`
 - Selected implementation: opencode client session (the stock opencode terminal draws the hub over its own HTTP API) (`opencode_client_session`)
 - Metric: Terminal screen as drawn (presentation) after the correctness gate, Scripted sessions that end right and requirements met
-- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../acp_agent/tests/test_acp_agent.py) and 172 more
+- Implemented by: [`docs/reference/work-trace-event.schema.json`](../../../../docs/reference/work-trace-event.schema.json), [`hubofhubs/the_consciousness/__init__.py`](../../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/__init__.py`](../__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__init__.py`](../acp_agent/__init__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/__main__.py`](../acp_agent/__main__.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/mapping.py`](../acp_agent/mapping.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/server.py`](../acp_agent/server.py), [`hubofhubs/the_consciousness/ai_session_experience/acp_agent/tests/test_acp_agent.py`](../acp_agent/tests/test_acp_agent.py) and 174 more
+
+### Top implementations of Terminal Experience
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Live session (reference terminal) (`live_session`) | score 0.99 (58 of 58 cases) | free |  |
+| 2 | Textual session (full-screen terminal) (`textual_session`) | score 0.98 (58 of 58 cases) | free |  |
+| 3 | Polished session (full-screen terminal with the settled screen rules) (`polished_session`) | score 0.96 (58 of 58 cases) | free |  |
+
+The one in use is chosen at the deciding stage of the cascade (see the leaderboard), which can differ from the latest run ranked here.
+
+2 more compared; the full list is in the results log.
+
+**How it is scored:** Scripted sessions that end right and requirements met. A scripted session answers every turn and ends cleanly, and a person working with the AI while it works can watch, stop, resume, steer, see helpers, approve and read the result on two harnesses.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
 
 ## Implementations
 

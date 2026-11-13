@@ -15,6 +15,16 @@ Part of [The form and internal context of a system](../README.md)
 - Metric: Declared integrations are reachable and used
 - Implemented by: [`docs/explanation/compared.md`](../../../docs/explanation/compared.md), [`docs/explanation/glossary.md`](../../../docs/explanation/glossary.md), [`docs/explanation/how-we-measure.md`](../../../docs/explanation/how-we-measure.md), [`docs/explanation/layout-of-the-hub.md`](../../../docs/explanation/layout-of-the-hub.md), [`docs/explanation/public-evidence.md`](../../../docs/explanation/public-evidence.md), [`docs/explanation/resolution-design.md`](../../../docs/explanation/resolution-design.md), [`docs/explanation/science-search.md`](../../../docs/explanation/science-search.md), [`docs/explanation/terminal-harness.md`](../../../docs/explanation/terminal-harness.md) and 58 more
 
+### Top implementations of Hands
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Declared and used (`declared_and_used`) | 100% (8 of 8 cases) | free | selected |
+| 2 | Declaration only (`declaration_only`) | 50% (4 of 8 cases) | free |  |
+
+**How it is scored:** Declared integrations are reachable and used. Every enduring integration a system declares is reachable by the AI, and one that is declared but never used is reported.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |

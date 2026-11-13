@@ -15,6 +15,19 @@ Part of [Finding and preparing information for the Mind](../README.md)
 - Metric: The person's own notes reach the brief, little else, nothing outside the scope
 - Implemented by: [`hubofhubs/the_intelligence/__init__.py`](../../__init__.py), [`hubofhubs/the_intelligence/critical_thinking/__init__.py`](../../critical_thinking/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/__init__.py`](../../critical_thinking/decision_check/__init__.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/agreement.py`](../../critical_thinking/decision_check/agreement.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/checks.py`](../../critical_thinking/decision_check/checks.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/interface.py`](../../critical_thinking/decision_check/interface.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/mistakes.py`](../../critical_thinking/decision_check/mistakes.py), [`hubofhubs/the_intelligence/critical_thinking/decision_check/remainder.py`](../../critical_thinking/decision_check/remainder.py) and 255 more
 
+### Top implementations of Focus Context
+
+| # | Implementation | Result | Cost per pass | In use |
+|---|---|---|---|---|
+| 1 | Candidates ranked by words, relevance judged by the fast tier (`llm_judged_focus_context`) | 92% (48 of 52 cases) | $0.0009 | selected |
+| 2 | The configured focus first (`configured_focus_context`) | 85% (44 of 52 cases) | free |  |
+| 3 | Nothing gathered (`no_context`) | 46% (24 of 52 cases) | free |  |
+
+1 more compared; the full list is in the results log.
+
+**How it is scored:** The person's own notes reach the brief, little else, nothing outside the scope. The notes a request needs from the person's saved notes about their focus are in the brief, with few others, and no note outside the person's scope is shown; a request about something else gets next to nothing.
+Result is the share of the metric's cases an implementation passes (its balanced score when it has one); cost per pass is dollars per passing case.
+
 ## Implementations
 
 | Implementation | Handle | Purpose | Code | Selected |
