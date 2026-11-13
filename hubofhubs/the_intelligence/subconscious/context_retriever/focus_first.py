@@ -8,7 +8,11 @@ A relevance floor comes first: an item counts only when it bears on the request,
 word such as "time" or "plot" is not evidence), or, for an item at home in the focus, the request is about the focus itself (it names the focus, says "my"/"our", or is borne on by a home item with at least
 ``MIN_SHARED`` terms).
 A request that nothing bears on gets no item at all, not even the overview: the overview is offered because the request is about the focus, never in its place.
-The constants were written before any case was scored."""
+The constants were written before any case was scored.
+
+The floor is a word count, and a word count is only a ranking: it cannot tell a note that bears on a request from one that shares a stray word. It stays as the baseline arm
+``focus-context:configured_focus_context``; the arm that decides relevance with a model (``llm_judged_focus_context``) sets ``FLOOR = False`` and uses this arm only to
+order a generous list of candidates for the judge."""
 from __future__ import annotations
 
 import re
@@ -32,6 +36,7 @@ FILL_HOME = 3          # when the request touches the focus, at least this many 
 class FocusFirst(Bm25WholeFiles):
     """Whole-item BM25F, the request's focus first, the scope fence kept, the focus's overview always offered."""
     REQUIRES = ()
+    FLOOR = True      # True: the word-count floor and the away share gate what is returned. False: a generous candidate list (every item that matches at all, the focus first), because the caller's own judge decides relevance
 
     def retrieve(self, query: str, files: Optional[Mapping[str, str]] = None, budget_tokens: int = DEFAULT_BUDGET, history: Sequence[Any] = (),
                  meta: Optional[Mapping[str, Mapping[str, Any]]] = None, request: Optional[Mapping[str, Any]] = None) -> List[Hit]:
@@ -53,7 +58,7 @@ class FocusFirst(Bm25WholeFiles):
                        or any(home and shared >= MIN_SHARED for _, _, home, shared in seen))
         rows = []
         for unit, item, at_home, shared in seen:
-            if shared < MIN_SHARED and not (at_home and about_focus):
+            if self.FLOOR and shared < MIN_SHARED and not (at_home and about_focus):
                 continue         # the relevance floor: nothing in this item bears on the request
             rows.append((unit.index, at_home, bool(item.get("overview")), raw.get(unit.index, 0.0), parse_time(item.get("timestamp")) or 0.0))
         best = max((score for _, _, _, score, _ in rows), default=0.0)
@@ -62,7 +67,7 @@ class FocusFirst(Bm25WholeFiles):
         for index, home, overview, score, stamp in rows:
             if home and (overview or score > 0):
                 chosen.append((index, True, overview, score, stamp))
-            elif not home and best > 0 and score >= AWAY_SHARE * best:
+            elif not home and best > 0 and score > 0 and (score >= AWAY_SHARE * best or not self.FLOOR):      # a candidate list keeps every away item that matches at all
                 chosen.append((index, False, False, score, stamp))
         if touched:
             taken = {row[0] for row in chosen}

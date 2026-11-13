@@ -158,7 +158,7 @@ class Fake:
 def test_grounded_harness_adds_brief_and_one_screen_line():
     inner, seen = Fake(), []
     settings = ContextSettings(focus="garden", sources=(), max_notes=3)
-    run = Grounded(inner, settings, provider=lambda focus: NOTES)
+    run = Grounded(inner, settings, provider=lambda focus: NOTES, arm=ConfiguredFocusContext())
     run.start("what do my notes say about tomatoes?", seen.append)
     assert inner.goals[0].startswith("what do my notes say about tomatoes?\n\nWhat is already known about garden")
     started = [e for e in seen if isinstance(e, RunStarted)]
@@ -170,7 +170,7 @@ def test_grounded_harness_adds_brief_and_one_screen_line():
 
 def test_grounded_without_context_passes_the_goal_through_and_builder_is_identity_without_settings():
     inner, seen = Fake(), []
-    Grounded(inner, ContextSettings(focus="garden"), provider=lambda focus: []).start("hello", seen.append)
+    Grounded(inner, ContextSettings(focus="garden"), provider=lambda focus: [], arm=ConfiguredFocusContext()).start("hello", seen.append)
     assert inner.goals == ["hello"] and not [e for e in seen if isinstance(e, Step)]
 
     def build(name):

@@ -118,18 +118,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-tomato",
     "plot-tomato-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-tomato-new"
+   ],
    "fenced": [
     "neighbour-tomato"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -251,7 +256,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -259,10 +265,15 @@
     "plot-tomato-new",
     "plot-tomato-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-tomato"
+   ],
    "fenced": [
     "neighbour-tomato"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -384,18 +395,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-tomato",
     "plot-tomato-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-tomato-new"
+   ],
    "fenced": [
     "neighbour-tomato"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -517,12 +533,14 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -644,7 +662,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -653,7 +672,8 @@
    "allowed": [
     "plot-overview"
    ],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 3
   }
  },
  {
@@ -820,12 +840,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -992,12 +1014,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -1164,12 +1188,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -1336,12 +1362,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -1508,12 +1536,638 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_time-tomato",
+  "kind": "trivial_guided_time",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "What time is it?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-tomato",
+     "title": "Growing tomato",
+     "text": "Stake the tomato plants early and pinch the side shoots every week",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-tomato-pick",
+     "title": "tomato care",
+     "text": "Pick tomatoes when the shoulders turn fully red",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-tomato-new",
+     "title": "Latest note",
+     "text": "Compost the tomato bed in autumn",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-tomato",
+     "title": "Kitchen tomato",
+     "text": "Slow tomato sauce: simmer tomatoes with garlic for an hour",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-tomato",
+     "title": "Neighbour's tomato",
+     "text": "The neighbour's tomato plant and bed notes: Stake the tomato plants early and pinch the side shoots every week",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_date-tomato",
+  "kind": "trivial_guided_date",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "What is the date today?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-tomato",
+     "title": "Growing tomato",
+     "text": "Stake the tomato plants early and pinch the side shoots every week",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-tomato-pick",
+     "title": "tomato care",
+     "text": "Pick tomatoes when the shoulders turn fully red",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-tomato-new",
+     "title": "Latest note",
+     "text": "Compost the tomato bed in autumn",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-tomato",
+     "title": "Kitchen tomato",
+     "text": "Slow tomato sauce: simmer tomatoes with garlic for an hour",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-tomato",
+     "title": "Neighbour's tomato",
+     "text": "The neighbour's tomato plant and bed notes: Stake the tomato plants early and pinch the side shoots every week",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-many_relevant-tomato",
+  "kind": "many_relevant",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "tell me everything my notes say about growing tomato plants in the bed",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-tomato",
+     "title": "Growing tomato",
+     "text": "Stake the tomato plants early and pinch the side shoots every week",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-tomato-pick",
+     "title": "tomato care",
+     "text": "Pick tomatoes when the shoulders turn fully red",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-tomato-new",
+     "title": "Latest note",
+     "text": "Compost the tomato bed in autumn",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-tomato",
+     "title": "Kitchen tomato",
+     "text": "Slow tomato sauce: simmer tomatoes with garlic for an hour",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-tomato",
+     "title": "Neighbour's tomato",
+     "text": "The neighbour's tomato plant and bed notes: Stake the tomato plants early and pinch the side shoots every week",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-tomato-m1",
+     "title": "Tomato sowing",
+     "text": "What I do about sowing for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (sowing)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-11"
+    },
+    {
+     "id": "plot-tomato-m2",
+     "title": "Tomato staking",
+     "text": "What I do about staking for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (staking)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-12"
+    },
+    {
+     "id": "plot-tomato-m3",
+     "title": "Tomato watering",
+     "text": "What I do about watering for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (watering)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-13"
+    },
+    {
+     "id": "plot-tomato-m4",
+     "title": "Tomato feeding",
+     "text": "What I do about feeding for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (feeding)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-14"
+    },
+    {
+     "id": "plot-tomato-m5",
+     "title": "Tomato pests",
+     "text": "What I do about pests for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (pests)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-15"
+    },
+    {
+     "id": "plot-tomato-m6",
+     "title": "Tomato harvest",
+     "text": "What I do about harvest for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (harvest)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-16"
+    },
+    {
+     "id": "plot-tomato-m7",
+     "title": "Tomato saving seed",
+     "text": "What I do about saving seed for the tomato plants in the bed: Stake the tomato plants early and pinch the side shoots every week (saving seed)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-17"
+    }
+   ],
+   "max_notes": 15
+  },
+  "expect": {
+   "needed": [
+    "plot-tomato",
+    "plot-tomato-pick",
+    "plot-tomato-new",
+    "plot-tomato-m1",
+    "plot-tomato-m2",
+    "plot-tomato-m3",
+    "plot-tomato-m4",
+    "plot-tomato-m5",
+    "plot-tomato-m6",
+    "plot-tomato-m7"
+   ],
+   "allowed": [
+    "plot-overview",
+    "plot-watering"
+   ],
+   "fenced": [
+    "neighbour-tomato"
+   ],
+   "max_pages": 4
   }
  },
  {
@@ -1635,18 +2289,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-bean",
     "plot-bean-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-bean-new"
+   ],
    "fenced": [
     "neighbour-bean"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -1768,7 +2427,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -1776,10 +2436,15 @@
     "plot-bean-new",
     "plot-bean-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-bean"
+   ],
    "fenced": [
     "neighbour-bean"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -1901,18 +2566,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-bean",
     "plot-bean-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-bean-new"
+   ],
    "fenced": [
     "neighbour-bean"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -2034,12 +2704,14 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -2161,7 +2833,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -2170,7 +2843,8 @@
    "allowed": [
     "plot-overview"
    ],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 3
   }
  },
  {
@@ -2337,12 +3011,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -2509,12 +3185,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -2681,12 +3359,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -2853,12 +3533,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -3025,12 +3707,638 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_time-bean",
+  "kind": "trivial_guided_time",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "What time is it?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-bean",
+     "title": "Growing bean",
+     "text": "Sow bean seeds after the last frost along a string trellis",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-bean-pick",
+     "title": "bean care",
+     "text": "Harvest bean pods young so the plant keeps flowering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-bean-new",
+     "title": "Latest note",
+     "text": "Rotate the bean bed with the cabbages next year",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-bean",
+     "title": "Kitchen bean",
+     "text": "Bean soup: soak the beans overnight and boil for two hours",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-bean",
+     "title": "Neighbour's bean",
+     "text": "The neighbour's bean plant and bed notes: Sow bean seeds after the last frost along a string trellis",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_date-bean",
+  "kind": "trivial_guided_date",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "What is the date today?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-bean",
+     "title": "Growing bean",
+     "text": "Sow bean seeds after the last frost along a string trellis",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-bean-pick",
+     "title": "bean care",
+     "text": "Harvest bean pods young so the plant keeps flowering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-bean-new",
+     "title": "Latest note",
+     "text": "Rotate the bean bed with the cabbages next year",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-bean",
+     "title": "Kitchen bean",
+     "text": "Bean soup: soak the beans overnight and boil for two hours",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-bean",
+     "title": "Neighbour's bean",
+     "text": "The neighbour's bean plant and bed notes: Sow bean seeds after the last frost along a string trellis",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-many_relevant-bean",
+  "kind": "many_relevant",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "tell me everything my notes say about growing bean plants in the bed",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-bean",
+     "title": "Growing bean",
+     "text": "Sow bean seeds after the last frost along a string trellis",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-bean-pick",
+     "title": "bean care",
+     "text": "Harvest bean pods young so the plant keeps flowering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-bean-new",
+     "title": "Latest note",
+     "text": "Rotate the bean bed with the cabbages next year",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-bean",
+     "title": "Kitchen bean",
+     "text": "Bean soup: soak the beans overnight and boil for two hours",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-bean",
+     "title": "Neighbour's bean",
+     "text": "The neighbour's bean plant and bed notes: Sow bean seeds after the last frost along a string trellis",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-bean-m1",
+     "title": "Bean sowing",
+     "text": "What I do about sowing for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (sowing)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-11"
+    },
+    {
+     "id": "plot-bean-m2",
+     "title": "Bean staking",
+     "text": "What I do about staking for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (staking)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-12"
+    },
+    {
+     "id": "plot-bean-m3",
+     "title": "Bean watering",
+     "text": "What I do about watering for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (watering)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-13"
+    },
+    {
+     "id": "plot-bean-m4",
+     "title": "Bean feeding",
+     "text": "What I do about feeding for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (feeding)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-14"
+    },
+    {
+     "id": "plot-bean-m5",
+     "title": "Bean pests",
+     "text": "What I do about pests for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (pests)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-15"
+    },
+    {
+     "id": "plot-bean-m6",
+     "title": "Bean harvest",
+     "text": "What I do about harvest for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (harvest)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-16"
+    },
+    {
+     "id": "plot-bean-m7",
+     "title": "Bean saving seed",
+     "text": "What I do about saving seed for the bean plants in the bed: Sow bean seeds after the last frost along a string trellis (saving seed)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-17"
+    }
+   ],
+   "max_notes": 15
+  },
+  "expect": {
+   "needed": [
+    "plot-bean",
+    "plot-bean-pick",
+    "plot-bean-new",
+    "plot-bean-m1",
+    "plot-bean-m2",
+    "plot-bean-m3",
+    "plot-bean-m4",
+    "plot-bean-m5",
+    "plot-bean-m6",
+    "plot-bean-m7"
+   ],
+   "allowed": [
+    "plot-overview",
+    "plot-watering"
+   ],
+   "fenced": [
+    "neighbour-bean"
+   ],
+   "max_pages": 4
   }
  },
  {
@@ -3152,18 +4460,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-rose",
     "plot-rose-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-rose-new"
+   ],
    "fenced": [
     "neighbour-rose"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -3285,7 +4598,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -3293,10 +4607,15 @@
     "plot-rose-new",
     "plot-rose-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-rose"
+   ],
    "fenced": [
     "neighbour-rose"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -3418,18 +4737,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-rose",
     "plot-rose-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-rose-new"
+   ],
    "fenced": [
     "neighbour-rose"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -3551,12 +4875,14 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -3678,7 +5004,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -3687,7 +5014,8 @@
    "allowed": [
     "plot-overview"
    ],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 3
   }
  },
  {
@@ -3854,12 +5182,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -4026,12 +5356,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -4198,12 +5530,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -4370,12 +5704,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -4542,12 +5878,638 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_time-rose",
+  "kind": "trivial_guided_time",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "What time is it?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-rose",
+     "title": "Growing rose",
+     "text": "Prune the rose canes in late winter and feed the plant in spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-rose-pick",
+     "title": "rose care",
+     "text": "Mulch the rose bed in early summer to hold moisture",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-rose-new",
+     "title": "Latest note",
+     "text": "Check the rose leaves for black spot after rain",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-rose",
+     "title": "Kitchen rose",
+     "text": "Rose petal jam: boil petals with sugar and lemon",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-rose",
+     "title": "Neighbour's rose",
+     "text": "The neighbour's rose plant and bed notes: Prune the rose canes in late winter and feed the plant in spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_date-rose",
+  "kind": "trivial_guided_date",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "What is the date today?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-rose",
+     "title": "Growing rose",
+     "text": "Prune the rose canes in late winter and feed the plant in spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-rose-pick",
+     "title": "rose care",
+     "text": "Mulch the rose bed in early summer to hold moisture",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-rose-new",
+     "title": "Latest note",
+     "text": "Check the rose leaves for black spot after rain",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-rose",
+     "title": "Kitchen rose",
+     "text": "Rose petal jam: boil petals with sugar and lemon",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-rose",
+     "title": "Neighbour's rose",
+     "text": "The neighbour's rose plant and bed notes: Prune the rose canes in late winter and feed the plant in spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-many_relevant-rose",
+  "kind": "many_relevant",
+  "source": "invented-neutral",
+  "heldout": false,
+  "args": {
+   "request": "tell me everything my notes say about growing rose plants in the bed",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-rose",
+     "title": "Growing rose",
+     "text": "Prune the rose canes in late winter and feed the plant in spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-rose-pick",
+     "title": "rose care",
+     "text": "Mulch the rose bed in early summer to hold moisture",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-rose-new",
+     "title": "Latest note",
+     "text": "Check the rose leaves for black spot after rain",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-rose",
+     "title": "Kitchen rose",
+     "text": "Rose petal jam: boil petals with sugar and lemon",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-rose",
+     "title": "Neighbour's rose",
+     "text": "The neighbour's rose plant and bed notes: Prune the rose canes in late winter and feed the plant in spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-rose-m1",
+     "title": "Rose sowing",
+     "text": "What I do about sowing for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (sowing)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-11"
+    },
+    {
+     "id": "plot-rose-m2",
+     "title": "Rose staking",
+     "text": "What I do about staking for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (staking)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-12"
+    },
+    {
+     "id": "plot-rose-m3",
+     "title": "Rose watering",
+     "text": "What I do about watering for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (watering)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-13"
+    },
+    {
+     "id": "plot-rose-m4",
+     "title": "Rose feeding",
+     "text": "What I do about feeding for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (feeding)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-14"
+    },
+    {
+     "id": "plot-rose-m5",
+     "title": "Rose pests",
+     "text": "What I do about pests for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (pests)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-15"
+    },
+    {
+     "id": "plot-rose-m6",
+     "title": "Rose harvest",
+     "text": "What I do about harvest for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (harvest)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-16"
+    },
+    {
+     "id": "plot-rose-m7",
+     "title": "Rose saving seed",
+     "text": "What I do about saving seed for the rose plants in the bed: Prune the rose canes in late winter and feed the plant in spring (saving seed)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-17"
+    }
+   ],
+   "max_notes": 15
+  },
+  "expect": {
+   "needed": [
+    "plot-rose",
+    "plot-rose-pick",
+    "plot-rose-new",
+    "plot-rose-m1",
+    "plot-rose-m2",
+    "plot-rose-m3",
+    "plot-rose-m4",
+    "plot-rose-m5",
+    "plot-rose-m6",
+    "plot-rose-m7"
+   ],
+   "allowed": [
+    "plot-overview",
+    "plot-watering"
+   ],
+   "fenced": [
+    "neighbour-rose"
+   ],
+   "max_pages": 4
   }
  },
  {
@@ -4669,18 +6631,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-herb",
     "plot-herb-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-herb-new"
+   ],
    "fenced": [
     "neighbour-herb"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -4802,7 +6769,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -4810,10 +6778,15 @@
     "plot-herb-new",
     "plot-herb-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-herb"
+   ],
    "fenced": [
     "neighbour-herb"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -4935,18 +6908,23 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
-    "plot-overview",
     "plot-herb",
     "plot-herb-pick"
    ],
-   "allowed": [],
+   "allowed": [
+    "plot-overview",
+    "plot-watering",
+    "plot-herb-new"
+   ],
    "fenced": [
     "neighbour-herb"
-   ]
+   ],
+   "max_pages": 3
   }
  },
  {
@@ -5068,12 +7046,14 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -5195,7 +7175,8 @@
       "focus:fitness"
      ]
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [
@@ -5204,7 +7185,8 @@
    "allowed": [
     "plot-overview"
    ],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 3
   }
  },
  {
@@ -5371,12 +7353,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -5543,12 +7527,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -5715,12 +7701,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -5887,12 +7875,14 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
   }
  },
  {
@@ -6059,12 +8049,638 @@
      ],
      "timestamp": "2026-10-05"
     }
-   ]
+   ],
+   "max_notes": 5
   },
   "expect": {
    "needed": [],
    "allowed": [],
-   "fenced": []
+   "fenced": [],
+   "max_pages": 1
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_time-herb",
+  "kind": "trivial_guided_time",
+  "source": "invented-neutral",
+  "heldout": true,
+  "args": {
+   "request": "What time is it?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-herb",
+     "title": "Growing herb",
+     "text": "Keep the herb pots by the kitchen door and cut basil often",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-herb-pick",
+     "title": "herb care",
+     "text": "Divide the herb clumps every third spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-herb-new",
+     "title": "Latest note",
+     "text": "Bring the herb pots indoors before the first frost",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-herb",
+     "title": "Kitchen herb",
+     "text": "Herb butter: mash chopped herbs into soft butter",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-herb",
+     "title": "Neighbour's herb",
+     "text": "The neighbour's herb plant and bed notes: Keep the herb pots by the kitchen door and cut basil often",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-trivial_guided_date-herb",
+  "kind": "trivial_guided_date",
+  "source": "invented-neutral",
+  "heldout": true,
+  "args": {
+   "request": "What is the date today?",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-herb",
+     "title": "Growing herb",
+     "text": "Keep the herb pots by the kitchen door and cut basil often",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-herb-pick",
+     "title": "herb care",
+     "text": "Divide the herb clumps every third spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-herb-new",
+     "title": "Latest note",
+     "text": "Bring the herb pots indoors before the first frost",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-herb",
+     "title": "Kitchen herb",
+     "text": "Herb butter: mash chopped herbs into soft butter",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-herb",
+     "title": "Neighbour's herb",
+     "text": "The neighbour's herb plant and bed notes: Keep the herb pots by the kitchen door and cut basil often",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-time",
+     "title": "Sowing time",
+     "text": "Sow at the same time every morning, the day after rain, and note the date on the seed packet",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-01"
+    },
+    {
+     "id": "plot-day",
+     "title": "Daily round",
+     "text": "Walk the beds each day and write what changed in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-10"
+    },
+    {
+     "id": "plot-sum",
+     "title": "Seed counts",
+     "text": "Count the seeds, two rows of twelve make twenty four plants for the bed",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-09-20"
+    },
+    {
+     "id": "plot-mean",
+     "title": "Garden terms",
+     "text": "Mulch means a layer of straw or leaves; compost means rotted plant waste",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-01"
+    },
+    {
+     "id": "plot-tools",
+     "title": "Tools",
+     "text": "Clean the spade and the shears after use and oil the hinges",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-05"
+    },
+    {
+     "id": "pref-time",
+     "title": "Answering time and date questions",
+     "text": "Standing guidance for answers about the clock and the calendar: give the time in Pacific time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."
+    },
+    {
+     "id": "plot-timing-1",
+     "title": "Timing of sowing",
+     "text": "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-11"
+    },
+    {
+     "id": "plot-timing-2",
+     "title": "Timing of watering",
+     "text": "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-12"
+    },
+    {
+     "id": "plot-timing-3",
+     "title": "Timing of harvest",
+     "text": "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-13"
+    }
+   ],
+   "max_notes": 5
+  },
+  "expect": {
+   "needed": [
+    "pref-time"
+   ],
+   "allowed": [],
+   "fenced": [],
+   "max_pages": 2
+  }
+ },
+ {
+  "id": "focus-context-many_relevant-herb",
+  "kind": "many_relevant",
+  "source": "invented-neutral",
+  "heldout": true,
+  "args": {
+   "request": "tell me everything my notes say about growing herb plants in the bed",
+   "focus": "garden",
+   "scope": [
+    "team:mine"
+   ],
+   "notes": [
+    {
+     "id": "plot-overview",
+     "title": "My vegetable garden",
+     "text": "A small vegetable and herb plot behind the house; the aim is food for the table all summer.",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "overview": true
+    },
+    {
+     "id": "plot-herb",
+     "title": "Growing herb",
+     "text": "Keep the herb pots by the kitchen door and cut basil often",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-04-02"
+    },
+    {
+     "id": "plot-herb-pick",
+     "title": "herb care",
+     "text": "Divide the herb clumps every third spring",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-06-15"
+    },
+    {
+     "id": "plot-herb-new",
+     "title": "Latest note",
+     "text": "Bring the herb pots indoors before the first frost",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-10-20"
+    },
+    {
+     "id": "plot-watering",
+     "title": "Watering",
+     "text": "Water the beds early in the morning, never at midday",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-03-01"
+    },
+    {
+     "id": "kitchen-herb",
+     "title": "Kitchen herb",
+     "text": "Herb butter: mash chopped herbs into soft butter",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-05-05"
+    },
+    {
+     "id": "kitchen-practice",
+     "title": "Kitchen practice",
+     "text": "Practice knife skills: dice an onion every evening for a week",
+     "affinity_tags": [
+      "focus:kitchen"
+     ],
+     "timestamp": "2026-07-01"
+    },
+    {
+     "id": "neighbour-herb",
+     "title": "Neighbour's herb",
+     "text": "The neighbour's herb plant and bed notes: Keep the herb pots by the kitchen door and cut basil often",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "scope_tags": [
+      "team:neighbour"
+     ],
+     "timestamp": "2026-08-01"
+    },
+    {
+     "id": "f1",
+     "title": "Printer toner replacement model number",
+     "text": "Printer toner replacement model number",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f2",
+     "title": "Parking permit renewal reminder",
+     "text": "Parking permit renewal reminder",
+     "affinity_tags": [
+      "focus:office"
+     ]
+    },
+    {
+     "id": "f3",
+     "title": "Piano practice",
+     "text": "Piano practice: scales for ten minutes then the new piece",
+     "affinity_tags": [
+      "focus:music"
+     ]
+    },
+    {
+     "id": "f4",
+     "title": "Running practice plan",
+     "text": "Running practice plan: three easy runs a week",
+     "affinity_tags": [
+      "focus:fitness"
+     ]
+    },
+    {
+     "id": "plot-herb-m1",
+     "title": "Herb sowing",
+     "text": "What I do about sowing for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (sowing)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-11"
+    },
+    {
+     "id": "plot-herb-m2",
+     "title": "Herb staking",
+     "text": "What I do about staking for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (staking)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-12"
+    },
+    {
+     "id": "plot-herb-m3",
+     "title": "Herb watering",
+     "text": "What I do about watering for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (watering)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-13"
+    },
+    {
+     "id": "plot-herb-m4",
+     "title": "Herb feeding",
+     "text": "What I do about feeding for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (feeding)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-14"
+    },
+    {
+     "id": "plot-herb-m5",
+     "title": "Herb pests",
+     "text": "What I do about pests for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (pests)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-15"
+    },
+    {
+     "id": "plot-herb-m6",
+     "title": "Herb harvest",
+     "text": "What I do about harvest for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (harvest)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-16"
+    },
+    {
+     "id": "plot-herb-m7",
+     "title": "Herb saving seed",
+     "text": "What I do about saving seed for the herb plants in the bed: Keep the herb pots by the kitchen door and cut basil often (saving seed)",
+     "affinity_tags": [
+      "focus:garden"
+     ],
+     "timestamp": "2026-07-17"
+    }
+   ],
+   "max_notes": 15
+  },
+  "expect": {
+   "needed": [
+    "plot-herb",
+    "plot-herb-pick",
+    "plot-herb-new",
+    "plot-herb-m1",
+    "plot-herb-m2",
+    "plot-herb-m3",
+    "plot-herb-m4",
+    "plot-herb-m5",
+    "plot-herb-m6",
+    "plot-herb-m7"
+   ],
+   "allowed": [
+    "plot-overview",
+    "plot-watering"
+   ],
+   "fenced": [
+    "neighbour-herb"
+   ],
+   "max_pages": 4
   }
  }
 ]

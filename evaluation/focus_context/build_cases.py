@@ -9,8 +9,16 @@ Ten kinds, four crops each (the last crop is held out):
   notes about "practice" are noise.
 * ``fenced``: the neighbour's note holds the request's words best; it must never be shown (scope fence).
 * ``unrelated``: a request that is not about the garden (a build pipeline); nothing is needed, only the short overview may come along.
+Every case also says how much review it justifies: ``max_pages`` pages of ``PAGE_SIZE`` candidates (judge.py), fixed per kind before any arm was scored: 1 for a request nothing
+bears on (one small page, nothing selected), 2 for a request one standing note bears on (the page that holds it, then the page that ends the run), 3 for a request about the focus
+(its notes may spill over a page), 4 for the ten-note request. Reviewing more costs score; selecting less than is needed costs recall.
+
 * ``trivial_*`` (time, date, arithmetic, definition, general knowledge): a short request with nothing to do with the garden, against a focus with many notes, some of
   which hold a stray common word (time, date, means, count); nothing is needed and nothing is allowed, not even the overview (the real failure: "What time is it?" got six notes).
+* ``trivial_guided_*`` (time, date): the same short request, but now a standing note of the person bears on it (how to answer the time and the date: their zone and format). It is
+  needed, and it must be found although several garden notes full of the request's words rank above it (a stray-word distractor is skipped, not a reason to stop).
+* ``many_relevant``: a request for everything the notes say about one crop; ten notes bear on it (more than a page of the judge), so the review must go on while pages still
+  hold relevant notes and stop once they end.
 * ``cross_focus``: the request is a recipe question; the kitchen note is the answer even though it is not at home in the focus (affinity is ranking only).
 
     python3 evaluation/focus_context/build_cases.py
@@ -39,6 +47,12 @@ FILLER = [("f1", "Printer toner replacement model number", ["focus:office"]), ("
           ("f3", "Piano practice: scales for ten minutes then the new piece", ["focus:music"]), ("f4", "Running practice plan: three easy runs a week", ["focus:fitness"])]
 
 
+# What a reasonable reader accepts beside the needed notes of a request about the focus: its overview, and its general care notes (watering). The first lists encoded what the word
+# rule returned (the overview was needed, the note about the crop's newest care was noise); the first real fast-tier run showed them to be a biased check (a judge that offers the
+# crop's newest care note or leaves out the overview is not wrong), so they are allowed, not needed and not noise. Applied to every arm alike.
+ALLOWED_HOME = ["plot-overview", "plot-watering"]
+
+
 def notes_for(c):
     crop = c["crop"]
     return [
@@ -63,10 +77,27 @@ TRIVIAL = [("trivial_time", "What time is it?"), ("trivial_date", "What is the d
            ("trivial_define", "What does the word idempotent mean?"), ("trivial_general", "Summarize the plot of Hamlet in two sentences")]
 
 
-def case(c, kind, request, needed, allowed=(), fenced=(), busy=False):
+GUIDANCE = dict(id="pref-time", title="Answering time and date questions", text=("Standing guidance for answers about the clock and the calendar: give the time in Pacific "
+                "time on a 24-hour clock and write dates as year-month-day. This holds for every answer I ask for, whatever else the answer is about, and it replaces any other zone or format an answer "
+                "might otherwise assume. I wrote this once after a long trip, when answers kept assuming a zone I was not in, and I have kept it unchanged since: the habit is mine, the places I travel to are many, "
+                "and the answer should follow the habit and not the place. It covers every kind of answer I ask for, spoken or written, long or short, in the office or away from it, and it needs no update unless I move."))
+# garden notes that hold the request's words many times over, so the ranking puts them above the guidance note
+TIMING = [dict(id=f"plot-timing-{i}", title=t, text=x, affinity_tags=HOME, timestamp=f"2026-10-{10 + i}") for i, (t, x) in enumerate([
+    ("Timing of sowing", "Time the sowing: the time of day matters, sow at morning time, and the time after rain is the best time; note the date and the date of the last frost each time"),
+    ("Timing of watering", "Watering time is early; the time between waterings, the time of year and the date of the dry spell set the time and the date of the next watering"),
+    ("Timing of harvest", "Harvest time: pick on the date the packet gives, check the time of ripening every day and write the date and the time in the garden journal")], 1)]
+MANY = ["sowing", "staking", "watering", "feeding", "pests", "harvest", "saving seed"]
+
+
+def many_notes(c):
+    return [dict(id=f"plot-{c['crop']}-m{i}", title=f"{c['crop'].capitalize()} {topic}", text=f"What I do about {topic} for the {c['crop']} plants in the bed: {c['garden']} ({topic})",
+                 affinity_tags=HOME, timestamp=f"2026-07-{10 + i}") for i, topic in enumerate(MANY, 1)]
+
+
+def case(c, kind, request, needed, allowed=(), fenced=(), busy=False, extra=(), max_pages=3, max_notes=5):
     return dict(id=f"focus-context-{kind}-{c['crop']}", kind=kind, source=SOURCE, heldout=bool(c.get("heldout")),
-                args=dict(request=request, focus=FOCUS, scope=["team:mine"], notes=notes_for(c) + (BUSY if busy else [])),
-                expect=dict(needed=list(needed), allowed=list(allowed), fenced=list(fenced)))
+                args=dict(request=request, focus=FOCUS, scope=["team:mine"], notes=notes_for(c) + (BUSY if busy else []) + list(extra), max_notes=max_notes),
+                expect=dict(needed=list(needed), allowed=list(allowed), fenced=list(fenced), max_pages=max_pages))
 
 
 def build():
@@ -75,13 +106,18 @@ def build():
         crop = c["crop"]
         own = ["plot-overview", f"plot-{crop}-new", f"plot-{crop}-pick"]
         cases += [
-            case(c, "named_word", f"what do my notes say about growing {crop} plants in the bed?", ["plot-overview", f"plot-{crop}", f"plot-{crop}-pick"], fenced=[f"neighbour-{crop}"]),
-            case(c, "own_practice", "find something interesting about my gardening practice and then give your own insight", own, fenced=[f"neighbour-{crop}"]),
-            case(c, "fenced", f"{crop} plant bed notes: {c['garden']}", ["plot-overview", f"plot-{crop}", f"plot-{crop}-pick"], fenced=[f"neighbour-{crop}"]),
-            case(c, "unrelated", "fix the failing build pipeline and rerun the checks", []),
+            case(c, "named_word", f"what do my notes say about growing {crop} plants in the bed?", [f"plot-{crop}", f"plot-{crop}-pick"], allowed=ALLOWED_HOME + [f"plot-{crop}-new"], fenced=[f"neighbour-{crop}"]),
+            case(c, "own_practice", "find something interesting about my gardening practice and then give your own insight", own, allowed=ALLOWED_HOME + [f"plot-{crop}"], fenced=[f"neighbour-{crop}"]),
+            case(c, "fenced", f"{crop} plant bed notes: {c['garden']}", [f"plot-{crop}", f"plot-{crop}-pick"], allowed=ALLOWED_HOME + [f"plot-{crop}-new"], fenced=[f"neighbour-{crop}"]),
+            case(c, "unrelated", "fix the failing build pipeline and rerun the checks", [], max_pages=1),
             case(c, "cross_focus", c["recipe"], [f"kitchen-{crop}"], allowed=["plot-overview"]),
         ]
-        cases += [case(c, kind, request, [], busy=True) for kind, request in TRIVIAL]
+        cases += [case(c, kind, request, [], busy=True, max_pages=1) for kind, request in TRIVIAL]
+        cases += [case(c, f"trivial_guided_{w}", request, ["pref-time"], busy=True, extra=[GUIDANCE] + TIMING, max_pages=2)
+                  for w, request in (("time", "What time is it?"), ("date", "What is the date today?"))]
+        many = many_notes(c)
+        cases.append(case(c, "many_relevant", f"tell me everything my notes say about growing {crop} plants in the bed", [f"plot-{crop}", f"plot-{crop}-pick", f"plot-{crop}-new"] + [m["id"] for m in many], allowed=ALLOWED_HOME,
+                          fenced=[f"neighbour-{crop}"], extra=many, max_pages=4, max_notes=15))
     return cases
 
 

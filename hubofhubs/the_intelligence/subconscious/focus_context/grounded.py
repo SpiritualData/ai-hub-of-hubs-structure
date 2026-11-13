@@ -16,22 +16,25 @@ STEP_ID = "focus-context"
 class Grounded:
     """``Harness`` over another harness (``.harness``): the goal plus what is already known about the focus."""
 
-    def __init__(self, harness: Any, settings: ContextSettings, provider: Optional[Provider] = None, environ: Optional[Mapping[str, str]] = None):
+    def __init__(self, harness: Any, settings: ContextSettings, provider: Optional[Provider] = None, environ: Optional[Mapping[str, str]] = None, arm: Any = None):
         self.harness, self.settings, self.provider, self.variables = harness, settings, provider, environ
+        self.arm = arm          # the gathering arm; None is the one whose fast-tier judge decides relevance
         self.name, self.capabilities = harness.name, harness.capabilities
         self.last = None            # the FocusContext of the latest run, for a caller that wants to show or record it
         self.problems: list = []
 
     def __getattr__(self, name: str) -> Any:
-        if name in ("harness", "settings", "provider", "variables"):
+        if name in ("harness", "settings", "provider", "variables", "arm"):
             raise AttributeError(name)
         return getattr(self.harness, name)
 
     def gather(self, goal: str):
-        from hubofhubs.the_intelligence.subconscious.focus_context.arms import ConfiguredFocusContext
+        from hubofhubs.the_intelligence.subconscious.focus_context.arms import LlmJudgedFocusContext
         notes, self.problems = load_notes(self.settings, self.provider, self.variables)
-        self.last = ConfiguredFocusContext().gather(goal, notes, focus=self.settings.focus, max_notes=self.settings.max_notes,
-                                                    budget_tokens=self.settings.budget_tokens, scope=self.settings.scope)
+        arm = self.arm if self.arm is not None else LlmJudgedFocusContext()
+        self.last = arm.gather(goal, notes, focus=self.settings.focus, max_notes=self.settings.max_notes, budget_tokens=self.settings.budget_tokens, scope=self.settings.scope)
+        if getattr(arm, "failure", ""):
+            self.problems = list(self.problems) + [f"the relevance judge failed ({arm.failure}); no saved notes were added"]
         return self.last
 
     def start(self, goal: str, sink: Callable[[SessionEvent], None], resume_session_id: str = ""):
