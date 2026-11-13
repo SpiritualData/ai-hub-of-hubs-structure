@@ -101,6 +101,7 @@ def test_the_presentation_metric_marks_every_check_not_run_when_the_client_is_ab
     monkeypatch.syspath_prepend(str(root / "evaluation" / "terminal_presentation"))
     monkeypatch.syspath_prepend(str(root / "evaluation"))
     monkeypatch.setenv("PATH", str(tmp_path))
+    monkeypatch.setenv("HOME", str(tmp_path))
     monkeypatch.delenv("AHOHS_OPENCODE_CLIENT", raising=False)
     import opencode_external
     done = opencode_external.run_scenario("watch")

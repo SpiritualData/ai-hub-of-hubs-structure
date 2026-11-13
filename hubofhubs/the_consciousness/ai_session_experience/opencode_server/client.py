@@ -30,11 +30,22 @@ def program(client: str, environ: Optional[Mapping[str, str]] = None) -> str:
 
 
 def find(client: str, environ: Optional[Mapping[str, str]] = None) -> str:
-    """The path of the client program, or an empty string when it is not there."""
+    """The path of the client program, or an empty string when it is not there. A client named by the option or ``AHOHS_OPENCODE_CLIENT`` is used as named. When none is named, the
+    usual places are searched (``opencode`` on the path, then ``~/tools/opencode/bin/opencode``, where the install hint puts it) and the one of the tested major version wins, so a
+    program on the path of an older major version never hides the right one."""
     name = program(client, environ)
     if "/" in name:
         return name if Path(name).is_file() else ""
-    return shutil.which(name, path=(environ or {}).get("PATH") or None) or ""
+    on_path = shutil.which(name, path=(environ or {}).get("PATH") or None) or ""
+    if client or (environ or {}).get(CLIENT_ENV):
+        return on_path
+    home = environ.get("HOME", "") if environ is not None else str(Path.home())
+    places = [on_path] + ([str(Path(home) / "tools" / "opencode" / "bin" / "opencode")] if home else [])
+    found = [p for p in dict.fromkeys(places) if p and Path(p).is_file()]
+    for path in found:
+        if VERSION.fullmatch(version_of(path, environ) or "") and version_of(path, environ).split(".")[0] == TESTED_VERSION.split(".")[0]:
+            return path
+    return found[0] if found else ""
 
 
 def version_of(path: str, environ: Optional[Mapping[str, str]] = None) -> str:

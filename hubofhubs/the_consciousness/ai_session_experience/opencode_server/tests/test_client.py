@@ -88,3 +88,15 @@ def test_the_server_package_imports_only_the_standard_library_and_the_hub():
             names = [a.name for a in node.names] if isinstance(node, ast.Import) else [node.module or ""] if isinstance(node, ast.ImportFrom) and not node.level else []
             for name in names:
                 assert name.split(".")[0] in allowed, (path.name, name)
+
+
+def test_an_unnamed_client_prefers_the_tested_major_over_an_older_one_on_the_path(tmp_path, monkeypatch):
+    """With no client named, the usual places are searched and the tested major version wins, so no setting is needed for the hub's selected terminal to open."""
+    old, new = tmp_path / "bin" / "opencode", tmp_path / "tools" / "opencode" / "bin" / "opencode"
+    for path, version in ((old, "1.19.5"), (new, "2.2.7")):
+        path.parent.mkdir(parents=True)
+        path.write_text(f"#!/bin/sh\necho {version}\n")
+        path.chmod(0o755)
+    environ = {"HOME": str(tmp_path), "PATH": str(old.parent)}
+    assert client.find("", environ) == str(new)
+    assert client.find("", {"HOME": str(tmp_path), "PATH": str(old.parent), client.CLIENT_ENV: str(old)}) == str(old)
